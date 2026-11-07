@@ -1,0 +1,11 @@
+geopandas>=1.0
+shapely>=2.0
+pyproj
+pyogrio
+duckdb>=1.1
+numpy
+pandas
+pyarrow
+scipy
+matplotlib
+requests

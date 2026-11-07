@@ -1,0 +1,358 @@
+"""Stage: clean years, impute missing ones, pick heights, merge Overture/OSM
+geometry -> final San Francisco building table.
+
+Year rules (see CLAUDE.md "Year cleaning"):
+  * raw year = most common non-zero assessor year on the map parcel (ties -> earliest)
+  * missing        : no year, or < 1835, or > CURRENT_YEAR             -> impute
+  * spike          : a round year whose count dwarfs its neighbours
+                     (e.g. 1900: 14.6k vs ~400/yr nearby) = placeholder -> impute (<= raw)
+  * burned         : raw < 1906 inside the 1906 burned area (outside the
+                     unburned islands) — those buildings burned           -> impute (>= 1906.5)
+  * land_not_yet   : raw earlier than the land under it existed           -> impute (>= land year)
+  imputation = median year of the nearest good-year buildings (k<=12, <=150 m),
+  respecting the bound above; deterministic hash jitter only as a last resort.
+  Imputed rows get year_confidence = estimated.
+
+Heights: 2010 LiDAR median height (DataSF footprints) for buildings that existed
+in 2010; stories x 3.3 m + 1.5 m for newer ones or when LiDAR is missing; then
+OSM/Overture height; then 7 m.
+
+Geometry precedence (most real first):
+  1. OSM hand-modelled building parts (via Overture building_part) — stepped towers, domes' drums, wings
+  2. DataSF 2016 footprints
+  3. Overture/OSM footprints for buildings missing from the 2016 snapshot (newer construction)
+
+Outputs:
+  data/interim/sf_buildings.parquet  (+ .fgb for QGIS)
+  data/interim/reports/sf_years.png, sf_buildings_summary.json
+"""
+from __future__ import annotations
+
+import json
+import zlib
+from collections import Counter
+
+import geopandas as gpd
+import numpy as np
+import pandas as pd
+import shapely
+from scipy.spatial import cKDTree
+from shapely.geometry import shape
+
+from common import CURRENT_YEAR, INTERIM, MANUAL, RAW, STILL_EXISTS, log
+from download_overture import RELEASE
+
+UTM = "EPSG:32610"
+REPORTS = INTERIM / "reports"
+OUT = INTERIM / "sf_buildings.parquet"
+
+USE_CATEGORIES = ["unknown", "single-family home", "residential", "commercial", "office",
+                  "industrial", "government / civic", "other"]
+USE_MAP = {"SRES": 1, "MRES": 2, "COMR": 3, "COMM": 3, "COMH": 3, "COMO": 4, "IND": 5, "GOVT": 6, "MISC": 7}
+CONF = {"exact": 0, "estimated": 1, "procedural": 2, "reconstructed": 3}
+
+
+def stable_hash01(key: str) -> float:
+    return (zlib.crc32(key.encode()) % 100003) / 100003.0
+
+
+def pick_year(years) -> int:
+    ys = [int(y) for y in years]
+    if not ys:
+        return 0
+    c = Counter(ys).most_common()
+    top = c[0][1]
+    return min(y for y, n in c if n == top)
+
+
+def spike_years(raw: pd.Series) -> set[int]:
+    h = Counter(raw[raw > 0].astype(int))
+    spikes = set()
+    for y, n in h.items():
+        if y % 5 != 0 or y > 1950:
+            continue
+        neigh = [h.get(y + d, 0) for d in (-4, -3, -2, -1, 1, 2, 3, 4) if (y + d) % 5 != 0]
+        base = max(np.median(neigh), 1.0)
+        if n >= 25 and n > 4 * base:
+            spikes.add(y)
+    return spikes
+
+
+def load_polygons(path) -> gpd.GeoDataFrame | None:
+    if not path.exists():
+        return None
+    return gpd.read_file(path).to_crs(UTM)
+
+
+def main():
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    df = gpd.read_parquet(INTERIM / "sf_joined.parquet").to_crs(UTM)
+    df["source"] = "datasf_footprints_2016"
+    df["raw_year"] = df.years.apply(pick_year)
+    df["n_distinct_years"] = df.years.apply(lambda v: len(set(v)))
+
+    # ---------------------------------------------------------------- Overture gap fill
+    df = pd.concat([df, overture_extras(df)], ignore_index=True)
+    df = gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
+
+    raw = df.raw_year.fillna(0).astype(int)
+    spikes = spike_years(raw)
+    log(f"years: placeholder spike years detected: {sorted(spikes)}")
+
+    reason = np.array(["ok"] * len(df), dtype=object)
+    reason[(raw <= 0) | (raw < 1835) | (raw > CURRENT_YEAR)] = "missing"
+    reason[raw.isin(spikes).values & (reason == "ok")] = "spike"
+    lower = np.full(len(df), -np.inf)
+    upper = np.full(len(df), np.inf)
+    upper[reason == "spike"] = raw[reason == "spike"]
+
+    cent = df.geometry.representative_point()
+
+    fire = load_polygons(INTERIM / "fire_1906.geojson")
+    in_fire = np.zeros(len(df), bool)
+    if fire is not None:
+        in_fire = cent.within(shapely.union_all(fire.geometry.values)).values
+        burned = in_fire & (raw.values > 0) & (raw.values < 1906) & (reason != "missing")
+        reason[burned] = "burned"
+        lower[in_fire] = np.maximum(lower[in_fire], 1906.5)
+        upper[burned] = np.inf
+        log(f"years: {in_fire.sum()} buildings in 1906 burned area; {burned.sum()} with impossible pre-1906 years")
+    else:
+        log("years: WARNING no fire_1906 polygon yet; burned-area rule skipped")
+
+    land = load_polygons(MANUAL / "land_not_before.geojson")
+    if land is not None:
+        for _, r in land.iterrows():
+            inside = cent.within(r.geometry).values
+            bad = inside & (raw.values > 0) & (raw.values < r.year) & (reason == "ok")
+            reason[bad] = "land_not_yet"
+            lower[inside] = np.maximum(lower[inside], r.year)
+            log(f"years: {inside.sum()} buildings on {r['name']} (land from {r.year}); {bad.sum()} predate it")
+
+    # ---------------------------------------------------------------- imputation
+    good = reason == "ok"
+    xy = np.column_stack([cent.x.values, cent.y.values])
+    tree = cKDTree(xy[good])
+    good_years = raw.values[good].astype(float)
+    year = raw.values.astype(float)
+    need = np.where(~good)[0]
+    dist, idx = tree.query(xy[need], k=12, distance_upper_bound=150)
+    victorian = np.sort(good_years[good_years < 1906])
+    fallback = 0
+    for j, i in enumerate(need):
+        ok = np.isfinite(dist[j])
+        cands = good_years[idx[j][ok]]
+        cands = cands[(cands >= lower[i]) & (cands <= upper[i])]
+        if len(cands):
+            year[i] = float(np.median(cands))
+        else:
+            fallback += 1
+            h = stable_hash01(str(df.sf16_bldgid.iloc[i] or i))
+            if reason[i] == "spike":
+                # draw from the empirical distribution of *exact* years in the
+                # 25 years up to the placeholder (e.g. 1900 -> real Victorian-era shape)
+                lo = raw.values[i] - 25
+                pool = victorian[(victorian >= lo) & (victorian <= raw.values[i])]
+                year[i] = np.quantile(pool, h) if len(pool) > 20 else raw.values[i] - 12 * h
+            elif reason[i] == "burned" or lower[i] == 1906.5:
+                year[i] = 1906.5 + 7 * h                  # post-fire rebuild 1906-1913
+            elif np.isfinite(lower[i]):
+                year[i] = lower[i] + 3 * h
+            else:
+                year[i] = 1925 + 20 * h
+        year[i] = min(max(year[i], lower[i]), upper[i], CURRENT_YEAR)
+    log(f"years: imputed {len(need)} ({fallback} without usable neighbours)")
+    conf = np.where(good, "exact", "estimated")
+
+    # sub-year jitter so a whole tract doesn't pop on the same frame
+    jit = np.array([stable_hash01(f"j{k}") for k in range(len(df))])
+    df["start_year"] = np.floor(year) + 0.9 * jit
+    df.loc[df.start_year < lower, "start_year"] = lower[df.start_year < lower]
+    df["end_year"] = float(STILL_EXISTS)
+    df["year_confidence"] = conf
+    df["year_reason"] = reason
+    df["in_fire_zone"] = in_fire
+
+    # ---------------------------------------------------------------- heights
+    df["height"] = heights(df)
+    df["base"] = 0.0
+    df["use"] = df.use_code.map(USE_MAP).fillna(0).astype(int)
+    df["kind"] = "building"
+
+    # ---------------------------------------------------------------- OSM 3D parts
+    df = apply_parts(df)
+
+    validate(df)
+    report(df, raw, spikes)
+    df = df.to_crs(4326)
+    keep = ["sf16_bldgid", "mapblklot", "address", "raw_year", "start_year", "end_year", "year_confidence",
+            "year_reason", "height", "base", "stories", "units", "use", "use_definition", "kind", "source",
+            "in_fire_zone", "geometry"]
+    df = df[keep]
+    df.to_parquet(OUT)
+    df.assign(stories=df.stories.astype(float)).to_file(INTERIM / "sf_buildings.fgb", driver="FlatGeobuf")
+    log(f"buildings: wrote {OUT} ({len(df)} features)")
+
+
+def heights(df: gpd.GeoDataFrame) -> np.ndarray:
+    lidar = df.hgt_median_m.astype(float).values
+    stories = df.stories.astype(float).values
+    ov = df.overture_height.astype(float).values if "overture_height" in df else np.full(len(df), np.nan)
+    start = df.start_year.values
+    h = np.full(len(df), np.nan)
+    use_lidar = np.isfinite(lidar) & (lidar >= 2.5) & (start < 2010)
+    h[use_lidar] = lidar[use_lidar]
+    from_st = ~np.isfinite(h) & np.isfinite(stories) & (stories > 0)
+    h[from_st] = stories[from_st] * 3.3 + 1.5
+    from_ov = ~np.isfinite(h) & np.isfinite(ov) & (ov > 2)
+    h[from_ov] = ov[from_ov]
+    h[~np.isfinite(h)] = 7.0
+    return np.clip(h, 2.5, 340.0)
+
+
+def read_overture(typ: str) -> gpd.GeoDataFrame:
+    path = RAW / "overture" / RELEASE / f"{typ}.parquet"
+    try:
+        g = gpd.read_parquet(path)
+    except ValueError:  # no geo metadata: geometry stored as WKB
+        d = pd.read_parquet(path)
+        g = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry))
+    if g.crs is None:
+        g = g.set_crs(4326)
+    return g
+
+
+def overture_extras(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """OSM/Overture buildings with no counterpart in the 2016 DataSF snapshot."""
+    ov = read_overture("building").to_crs(UTM)
+    ov = ov[ov.geometry.area > 15]
+    counties = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
+    sf = counties[(counties.STATEFP == "06") & (counties.COUNTYFP == "075")].to_crs(UTM).geometry.iloc[0]
+    ov = ov[ov.representative_point().within(sf)]
+    # area of each Overture building covered by DataSF footprints
+    hits = gpd.sjoin(ov[["geometry"]], df[["geometry"]], predicate="intersects", how="left")
+    covered = np.zeros(len(ov))
+    pos = {k: i for i, k in enumerate(ov.index)}
+    fp_geom = df.geometry
+    for oi, fi in zip(hits.index, hits.index_right):
+        if pd.isna(fi):
+            continue
+        covered[pos[oi]] += ov.geometry.loc[oi].intersection(fp_geom.iloc[int(fi)]).area
+    frac = covered / ov.geometry.area.values
+    extra = ov[frac < 0.3].copy()
+    log(f"overture: {len(ov)} buildings in SF, {len(extra)} not in the 2016 DataSF footprints")
+    # year: parcel under the centroid -> assessor
+    by_map = pd.read_parquet(INTERIM / "sf_assessor_by_map.parquet")
+    parcels = gpd.read_parquet(INTERIM / "sf_parcels_active.parquet") if (INTERIM / "sf_parcels_active.parquet").exists() else None
+    if parcels is None:
+        import glob
+        parcels = gpd.GeoDataFrame(pd.concat([gpd.read_file(p) for p in sorted(glob.glob(str(RAW / "sf_parcels" / "page-*.geojson")))]), crs=4326)
+        parcels = parcels[parcels.active.astype(str).str.lower() == "true"][["mapblklot", "geometry"]]
+        parcels.to_parquet(INTERIM / "sf_parcels_active.parquet")
+    parcels = parcels.to_crs(UTM)
+    pts = gpd.GeoDataFrame({"oid": extra.index}, geometry=extra.representative_point(), crs=UTM)
+    j = gpd.sjoin(pts, parcels, predicate="within", how="left").drop_duplicates("oid").set_index("oid")
+    extra["mapblklot"] = j.mapblklot.reindex(extra.index).values
+    extra = extra.join(by_map, on="mapblklot")
+    extra["years"] = extra["years"].apply(lambda v: list(v) if isinstance(v, (list, np.ndarray)) else [])
+    extra["raw_year"] = extra.years.apply(pick_year)
+    extra["overture_height"] = extra.height
+    extra["hgt_median_m"] = np.nan
+    extra["sf16_bldgid"] = "ov:" + extra.id.astype(str)
+    extra["source"] = np.where(extra.source_dataset == "OpenStreetMap", "osm_via_overture", "overture")
+    extra["stories"] = extra.stories.fillna(extra.num_floors)
+    extra["start_year"] = extra.raw_year
+    cols = ["sf16_bldgid", "mapblklot", "years", "raw_year", "stories", "units", "use_code", "use_definition",
+            "address", "hgt_median_m", "overture_height", "source", "geometry"]
+    return extra[cols].reset_index(drop=True)
+
+
+def apply_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Replace flat footprint extrusions with OSM building parts where mapped."""
+    parts = read_overture("building_part").to_crs(UTM)
+    bld = read_overture("building").to_crs(UTM)
+    bld = bld[bld.id.isin(parts.building_id)].set_index("id")
+    drop, add = set(), []
+    for bid, ps in parts.groupby("building_id"):
+        if bid not in bld.index:
+            continue
+        outline = bld.loc[bid]
+        ph = ps.height.astype(float)
+        if ph.isna().all() and pd.isna(outline.height):
+            continue
+        cands = df.sindex.query(outline.geometry, predicate="intersects")
+        cands = [c for c in cands if df.geometry.iloc[c].intersection(outline.geometry).area > 0.5 * df.geometry.iloc[c].area]
+        if not cands:
+            continue
+        donor = max(cands, key=lambda c: df.geometry.iloc[c].area)
+        row = df.iloc[donor]
+        for _, p in ps.iterrows():
+            h = p.height if pd.notna(p.height) else (outline.height if pd.notna(outline.height) else row.height)
+            base = p.min_height if pd.notna(p.min_height) else 0.0
+            if h - base < 0.5 or p.geometry.area < 2:
+                continue
+            r = row.copy()
+            r["geometry"] = p.geometry
+            r["height"] = float(h - base)
+            r["base"] = float(base)
+            r["source"] = "osm_parts_via_overture"
+            r["sf16_bldgid"] = f"part:{p.id}"
+            add.append(r)
+        drop.update(cands)
+    log(f"parts: replaced {len(drop)} footprints with {len(add)} OSM building parts")
+    df = df.drop(df.index[list(drop)])
+    if add:
+        df = pd.concat([df, gpd.GeoDataFrame(add, crs=UTM)], ignore_index=True)
+    return gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
+
+
+def validate(df: gpd.GeoDataFrame):
+    problems = []
+    if (df.start_year > CURRENT_YEAR + 1).any():
+        problems.append(f"{(df.start_year > CURRENT_YEAR + 1).sum()} start_year in the future")
+    if (df.start_year >= df.end_year).any():
+        problems.append("start_year >= end_year")
+    if df.in_fire_zone.any():
+        bad = df.in_fire_zone & (df.start_year < 1906.3)
+        if bad.any():
+            problems.append(f"{bad.sum()} buildings in the 1906 burned area predate the fire")
+    if (df.height <= 0).any():
+        problems.append("non-positive heights")
+    if problems:
+        raise SystemExit("VALIDATION FAILED: " + "; ".join(problems))
+    log("validate: ok")
+
+
+def report(df, raw, spikes):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, axes = plt.subplots(2, 1, figsize=(11, 6.5), sharex=True)
+    bins = np.arange(1840, CURRENT_YEAR + 2)
+    axes[0].hist(raw[raw > 0], bins=bins, color="#b5543a")
+    axes[0].set_title("Assessor year_property_built (raw, per footprint)")
+    axes[0].set_yscale("log")
+    for y in sorted(spikes):
+        axes[0].axvline(y + 0.5, color="#333", lw=0.6, ls=":")
+    exact = df.year_confidence == "exact"
+    axes[1].hist([df.start_year[exact], df.start_year[~exact]], bins=bins, stacked=True,
+                 color=["#4096a0", "#e8923c"], label=["exact", "estimated"])
+    axes[1].set_title("Cleaned start_year")
+    axes[1].set_yscale("log")
+    axes[1].legend()
+    fig.tight_layout()
+    fig.savefig(REPORTS / "sf_years.png", dpi=110)
+    summary = {
+        "features": int(len(df)),
+        "by_source": df.source.value_counts().to_dict(),
+        "by_confidence": df.year_confidence.value_counts().to_dict(),
+        "by_reason": df.year_reason.value_counts().to_dict(),
+        "spike_years": sorted(int(s) for s in spikes),
+        "height_median": float(df.height.median()),
+    }
+    (REPORTS / "sf_buildings_summary.json").write_text(json.dumps(summary, indent=2))
+    log(f"report: {summary}")
+
+
+if __name__ == "__main__":
+    main()
