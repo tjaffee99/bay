@@ -10,12 +10,13 @@ import {MapboxOverlay} from '@deck.gl/mapbox';
 import {AmbientLight, DirectionalLight, LightingEffect} from '@deck.gl/core';
 import type {Layer, PickingInfo} from '@deck.gl/core';
 import {SolidPolygonLayer} from '@deck.gl/layers';
+import {TimeExtension} from './layers/time-extension';
 
 import {WATER, LAND, LAND_SIDE} from './palette';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
-import {landmarkLayers, landmarkInfo, loadLandmarks, type LandmarkSet} from './landmarks';
+import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
-import {eraAt, events, eventTime, populationAt} from './data/tables';
+import {eraAt, events, eventTime, populationLabelAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
 
@@ -37,6 +38,8 @@ let buildings: BuildingSet | null = null;
 let landmarks: LandmarkSet | null = null;
 let trees: TreeSet | null = null;
 let land: any[] = [];
+let fire: any[] = [];
+const fadeTime = new TimeExtension({mode: 'fade'});
 
 // ---------------------------------------------------------------- map + deck
 const map = new maplibregl.Map({
@@ -90,11 +93,28 @@ function landLayer() {
   });
 }
 
+/** 18 Apr 1906: the burned district darkens, then fades as the city rebuilds. */
+function fireLayer() {
+  return new SolidPolygonLayer({
+    id: 'fire-1906',
+    data: fire,
+    getPolygon: (p: number[][][]) => p.map(ring => ring.map(c => [c[0], c[1], 0.4])),
+    getFillColor: [74, 52, 40, 175],
+    pickable: false,
+    extensions: [fadeTime],
+    getYears: [1906.296, 1910],
+    currentYear: state.year,
+    growYears: 0.02,
+    shrinkYears: 3.2
+  } as any);
+}
+
 function render() {
   const layers: Layer[] = [];
   if (land.length) layers.push(landLayer());
+  if (fire.length && state.year >= 1906 && state.year < 1910) layers.push(fireLayer());
   if (trees && state.showTrees) layers.push(...treesLayer(trees, state.year));
-  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality));
+  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, state.showLandmarks && !!landmarks));
   if (landmarks && state.showLandmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   overlay.setProps({layers});
   updateOverlays();
@@ -128,9 +148,9 @@ function updateOverlays() {
     eraTitle.textContent = era?.title ?? '';
     eraSubtitle.textContent = era?.subtitle ?? '';
   }
-  const pop = populationAt(state.year);
-  popValue.textContent = pop == null ? '—' : Math.round(pop).toLocaleString('en-US');
-  popArea.textContent = pop == null ? '' : 'San Francisco';
+  const pop = populationLabelAt(state.year);
+  popValue.textContent = pop == null ? '—' : Math.round(pop.value).toLocaleString('en-US');
+  popArea.textContent = pop == null ? '' : pop.label;
 }
 
 slider.addEventListener('input', () => {
@@ -300,6 +320,17 @@ async function boot() {
       render();
     })
     .catch(e => console.warn('land', e));
+  fetch('data/fire-1906.json')
+    .then(r => r.json())
+    .then(gj => {
+      for (const f of gj.features) {
+        const g = f.geometry;
+        if (g.type === 'Polygon') fire.push(g.coordinates);
+        else if (g.type === 'MultiPolygon') fire.push(...g.coordinates);
+      }
+      render();
+    })
+    .catch(() => {});
   const lmP = loadLandmarks()
     .then(l => {
       landmarks = l;
@@ -312,9 +343,16 @@ async function boot() {
       render();
     })
     .catch(e => console.warn('trees', e));
-  buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));
+  // ?nobuildings skips the city (fast landmark previews / debugging)
+  if (!new URLSearchParams(location.search).has('nobuildings')) {
+    buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));
+  }
   render();
   await Promise.all([landP, lmP, treeP]);
+  if (buildings && landmarks) {
+    buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
+    render();
+  }
   loading.classList.add('done');
   (window as any).__ready = true;
 }

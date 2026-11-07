@@ -64,6 +64,8 @@ def load_streets() -> gpd.GeoDataFrame:
 def street_rows(st, name):
     base, typ = norm(name)
     rows = st[st.base == base]
+    if rows.empty and " " in base:  # e.g. "Clinton Park" stored as street CLINTON, type PARK
+        rows = st[st.base == base.rsplit(" ", 1)[0]]
     if typ and (rows.type == typ).any():
         rows = rows[rows.type == typ]
     return rows
@@ -93,10 +95,26 @@ def intersection(st, a: str, b: str):
     return Point((pa.x + pb.x) / 2, (pa.y + pb.y) / 2), f"closest-approach {d:.0f}m"
 
 
+EXPLICIT = re.compile(r"@\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)")
+TO_UTM = None
+
+
+def explicit_point(note: str):
+    """Researchers mark mid-block vertices with '@lat,lon' in the note."""
+    m = EXPLICIT.search(note or "")
+    if not m:
+        return None
+    lat, lon = float(m.group(1)), float(m.group(2))
+    return gpd.GeoSeries([Point(lon, lat)], crs=4326).to_crs(UTM).iloc[0]
+
+
 def ring_from(rows, st, log_rows, label):
     pts = []
     for r in rows:
-        p, how = intersection(st, r["street_a"], r["street_b"])
+        p = explicit_point(r.get("note", ""))
+        how = "explicit"
+        if p is None:
+            p, how = intersection(st, r["street_a"], r["street_b"])
         log_rows.append({"ring": label, "seq": r.get("seq"), "street_a": r["street_a"], "street_b": r["street_b"],
                          "method": how, "x": p.x if p else "", "y": p.y if p else ""})
         if p is not None:

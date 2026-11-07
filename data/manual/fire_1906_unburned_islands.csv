@@ -1,0 +1,47 @@
+island,seq,street_a,street_b,note,source_url
+russian_hill,1,Taylor St,Broadway,Start: corner of Broadway & Taylor,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,2,Taylor St,Broadway,"@37.79692,-122.41438 W 1/2 block on Broadway",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,3,Taylor St,Vallejo St,"@37.79785,-122.41456 N to Vallejo midway Taylor-Jones (nearest intersection Taylor or Jones & Vallejo)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,4,Jones St,Vallejo St,W along Vallejo to Jones,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,5,Jones St,Green St,"@37.79845,-122.41553 N 3/4 block on Jones toward Green",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,6,Jones St,Green St,"@37.79834,-122.41635 W 1/2 block (mid-block)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,7,Jones St,Vallejo St,"@37.79811,-122.41630 S 1/4 block (mid-block, 1/2 block W of Jones)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,8,Leavenworth St,Vallejo St,"@37.79801,-122.41712 W to Leavenworth (midway Vallejo-Green)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,9,Leavenworth St,Green St,N on Leavenworth to Green,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,10,Leavenworth St,Green St,"@37.79858,-122.41640 E 1/2 block on Green",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,11,Jones St,Union St,"@37.79905,-122.41648 N 1/2 block (mid-block Green-Union, 1/2 block W of Jones)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,12,Jones St,Union St,"@37.79919,-122.41537 E to Jones and 75 ft beyond",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,13,Jones St,Green St,"@37.79872,-122.41527 S to Green (~75 ft E of Jones); O.D. Baldwin and Mrs. Edward Huber houses at Jones & Green survived (LA Herald)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,14,Jones St,Green St,"@37.79874,-122.41507 E 50 ft on Green",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,15,Taylor St,Union St,"@37.79921,-122.41517 N 1/2 block",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,16,Taylor St,Union St,"@37.79936,-122.41403 E to Taylor (midway Green-Union)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,17,Taylor St,Green St,S on Taylor,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,18,Taylor St,Vallejo St,"S on Taylor to Vallejo; houses of the Livermore, Sheppard, Worcester, Jenks families on Vallejo between Jones and Taylor survived (LA Herald)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,19,Taylor St,Vallejo St,"@37.79801,-122.41333 E 1/4 block on Vallejo",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,20,Taylor St,Vallejo St,"@37.79778,-122.41329 S 1/4 block",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+russian_hill,21,Taylor St,Vallejo St,"@37.79773,-122.41370 W 1/4 block back to Taylor, then S to start",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+jackson_square,1,Montgomery St,Jackson St,"NW corner. LA Herald (24 Apr 1906): 'The one remaining spot unburned within the district is bounded by Montgomery, Battery, Jackson and Washington' - includes the Appraisers' Building and Hotaling warehouses (451-473 Jackson)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+jackson_square,2,Sansome St,Jackson St,Along Jackson (N side burned),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+jackson_square,3,Battery St,Jackson St,NE corner,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+jackson_square,4,Battery St,Washington St,"SE corner; Appraisers' Building saved by soldiers of Co. D, 22nd Infantry, marines from the revenue cutter Bear and employees (LA Herald; Kennedy)",https://sfmuseum.org/1906/kennedy.html
+jackson_square,5,Sansome St,Washington St,Along Washington. Waters map shows the unburned area extending S to Merchant St between Sansome and Battery (not adopted),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+jackson_square,6,Montgomery St,Washington St,"@37.79558,-122.40291 Montgomery Block extension: on Washington ~120 ft E of Montgomery (building was ~122 ft deep; approximate)",https://en.wikipedia.org/wiki/Montgomery_Block
+jackson_square,7,Montgomery St,Merchant St,"@37.79513,-122.40281 Montgomery Block SE corner (approx) at Merchant St",https://en.wikipedia.org/wiki/Montgomery_Block
+jackson_square,8,Montgomery St,Merchant St,"Montgomery Block (628 Montgomery, SE corner of Montgomery & Washington, site of Transamerica Pyramid) survived the 1906 fire",https://en.wikipedia.org/wiki/Montgomery_Block
+jackson_square,9,Montgomery St,Washington St,Back N along Montgomery to Jackson,https://en.wikipedia.org/wiki/Montgomery_Block
+us_mint,1,5th St,Mission St,Old U.S. Mint (88 5th St) - granite building saved by Supt. Frank Leach and staff,https://en.wikipedia.org/wiki/Old_San_Francisco_Mint
+us_mint,2,Mint St,Mission St,,https://en.wikipedia.org/wiki/Old_San_Francisco_Mint
+us_mint,3,Mint St,Jessie St,,https://en.wikipedia.org/wiki/Old_San_Francisco_Mint
+us_mint,4,5th St,Jessie St,N side: Jessie St (now Mint Plaza),https://en.wikipedia.org/wiki/Old_San_Francisco_Mint
+post_office_7th_mission,1,7th St,Mission St,"U.S. Courthouse & Post Office (1905; now James R. Browning Court of Appeals, 95 7th St) - only one room damaged by fire",https://en.wikipedia.org/wiki/James_R._Browning_United_States_Court_of_Appeals_Building
+post_office_7th_mission,2,7th St,Stevenson St,Building fronts 7th between Mission and Stevenson,https://en.wikipedia.org/wiki/James_R._Browning_United_States_Court_of_Appeals_Building
+post_office_7th_mission,3,7th St,Stevenson St,"@37.78059,-122.41119 Rear (NE) line ~1/3 block toward 6th (approx footprint per Waters map)",https://data.sfgov.org/d/yk2r-b4e8
+post_office_7th_mission,4,7th St,Mission St,"@37.77980,-122.41019 Approx footprint per Waters map",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_15th_guerrero,1,15th St,Guerrero St,"@37.76708,-122.42346 LOW CONFIDENCE: unidentified ~0.4-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (between Guerrero and Valencia just N of 15th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_15th_guerrero,2,15th St,Guerrero St,"@37.76708,-122.42387 LOW CONFIDENCE: unidentified ~0.4-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (between Guerrero and Valencia just N of 15th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_15th_guerrero,3,15th St,Guerrero St,"@37.76743,-122.42388 LOW CONFIDENCE: unidentified ~0.4-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (between Guerrero and Valencia just N of 15th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_15th_guerrero,4,15th St,Guerrero St,"@37.76744,-122.42345 LOW CONFIDENCE: unidentified ~0.4-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (between Guerrero and Valencia just N of 15th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_14th_guerrero,1,14th St,Guerrero St,"@37.76807,-122.42356 LOW CONFIDENCE: unidentified ~0.3-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (just E of Guerrero near 14th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_14th_guerrero,2,14th St,Guerrero St,"@37.76803,-122.42391 LOW CONFIDENCE: unidentified ~0.3-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (just E of Guerrero near 14th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_14th_guerrero,3,14th St,Guerrero St,"@37.76836,-122.42395 LOW CONFIDENCE: unidentified ~0.3-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (just E of Guerrero near 14th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8
+waters_spot_14th_guerrero,4,14th St,Guerrero St,"@37.76839,-122.42356 LOW CONFIDENCE: unidentified ~0.3-acre unburned spot shown only on the R.J. Waters map as digitized by DataSF (just E of Guerrero near 14th); not named in any text source",https://data.sfgov.org/d/yk2r-b4e8

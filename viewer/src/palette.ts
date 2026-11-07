@@ -3,7 +3,7 @@ export type RGB = [number, number, number];
 export type RGBA = [number, number, number, number];
 
 export const WATER = '#a7c7d4';
-export const LAND: RGBA = [237, 232, 219, 255];
+export const LAND: RGBA = [222, 218, 202, 255];
 export const LAND_SIDE: RGBA = [196, 186, 165, 255];
 export const PARK: RGBA = [196, 214, 166, 255];
 

@@ -9,7 +9,7 @@ import {TimeExtension} from './time-extension';
 import type {ColumnarFile} from '../data/columnar';
 import {buildingColor, CONFIDENCE, CONFIDENCE_COLORS} from '../palette';
 
-export const BUILDING_MATERIAL = {ambient: 0.48, diffuse: 0.62, shininess: 10, specularColor: [36, 34, 30] as [number, number, number]};
+export const BUILDING_MATERIAL = {ambient: 0.56, diffuse: 0.66, shininess: 10, specularColor: [36, 34, 30] as [number, number, number]};
 
 const polygonTime = new TimeExtension({mode: 'polygon'});
 
@@ -24,6 +24,10 @@ export type BuildingSet = {
   qualityColors: Uint8Array;
   file?: ColumnarFile;
   data: any;
+  /** lon/lat centroid of each feature (for landmark replacement tests). */
+  centroids: Float64Array;
+  /** 1 = replaced by a landmark reconstruction (hidden while landmarks are shown). */
+  replaced: Uint8Array;
   /** Extra per-feature info for the click popup. */
   info: (i: number) => Record<string, string | number>;
 };
@@ -78,6 +82,24 @@ function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
   const vertexValid = Uint16Array.from(c.vertex_valid as Uint8Array);
   const meta = file.header.meta;
   const uses: string[] = meta.use_categories ?? [];
+  const [ox, oy] = file.header.origin;
+  const pos = c.positions as Float32Array;
+  const starts = c.start_indices as Uint32Array;
+  const ringEnd = c.vertex_valid as Uint8Array;
+  const centroids = new Float64Array(n * 2);
+  for (let f = 0; f < n; f++) {
+    let sx = 0;
+    let sy = 0;
+    let k = 0;
+    for (let v = starts[f]; v < starts[f + 1]; v++) {
+      sx += pos[v * file.dim];
+      sy += pos[v * file.dim + 1];
+      k++;
+      if (ringEnd[v] === 0) break; // outer ring only
+    }
+    centroids[f * 2] = ox + sx / Math.max(k, 1);
+    centroids[f * 2 + 1] = oy + sy / Math.max(k, 1);
+  }
   const data = {
     length: n,
     startIndices: c.start_indices,
@@ -99,6 +121,8 @@ function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
     qualityColors,
     file,
     data,
+    centroids,
+    replaced: new Uint8Array(n),
     info: i => {
       const out: Record<string, string | number> = {};
       const raw = (c.raw_year as Int16Array)?.[i];
@@ -135,6 +159,8 @@ async function fromSample(): Promise<BuildingSet> {
     colors,
     qualityColors,
     data: feats,
+    centroids: new Float64Array(feats.flatMap(f => f.geometry.coordinates[0][0])),
+    replaced: new Uint8Array(n),
     info: i => ({Built: fmtYear(start[i]), Removed: end[i] < 9000 ? fmtYear(end[i]) : '—', Height: `${height[i]} m`, Source: 'sample'})
   };
 }
@@ -143,7 +169,7 @@ function fmtYear(y: number) {
   return Math.floor(y).toString();
 }
 
-export function buildingsLayer(set: BuildingSet, year: number, quality: boolean) {
+export function buildingsLayer(set: BuildingSet, year: number, quality: boolean, hideReplaced: boolean) {
   const colors = quality ? set.qualityColors : set.colors;
   const common = {
     id: 'buildings',
@@ -159,8 +185,9 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean)
       return target as any;
     },
     getYears: (_: any, {index, target}: {index: number; target: number[]}) => {
-      target[0] = set.start[index];
-      target[1] = set.end[index];
+      const hidden = hideReplaced && set.replaced[index] === 1;
+      target[0] = hidden ? 1e5 : set.start[index];
+      target[1] = hidden ? 1e5 : set.end[index];
       return target as any;
     },
     currentYear: year,
@@ -168,7 +195,7 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean)
     shrinkYears: 0.6,
     // Buildings destroyed in a year get a scorched tint as they sink.
     endTint: [0.42, 0.3, 0.24, 0.65],
-    updateTriggers: {getFillColor: quality},
+    updateTriggers: {getFillColor: quality, getYears: [hideReplaced, set.replaced]},
     extensions: [polygonTime]
   };
   if (set.kind === 'binary') {

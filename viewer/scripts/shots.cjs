@@ -15,7 +15,7 @@ const path = require('path');
     page.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.log(`[${s.name}] ${m.type()}: ${m.text().slice(0, 300)}`); });
     page.on('pageerror', e => console.log(`[${s.name}] pageerror: ${e.message}`));
     await page.goto(`${url}#${s.hash}`, {waitUntil: 'load'});
-    await page.waitForFunction(() => window.__ready === true, null, {timeout: 180000});
+    await page.waitForFunction(() => window.__ready === true, null, {timeout: 400000});
     if (s.year !== undefined) await page.evaluate(y => window.__setYear(y), s.year);
     await page.waitForTimeout(s.wait || 2500);
     const t0 = Date.now();

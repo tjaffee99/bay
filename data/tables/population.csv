@@ -1,0 +1,46 @@
+year,area,population,source_url,note
+1769,san_francisco,160,https://foundsf.org/Searching_for_the_Yelamu_in_San_Francisco,estimate: Yelamu Ohlone living in what is now San Francisco at European contact (c. 1769-1776); Randall Milliken estimates 160-300 - lower bound shown
+1776,presidio,193,https://en.wikipedia.org/wiki/Presidio_of_San_Francisco,"estimate: soldiers, women and children of the Anza expedition who came to found the Presidio and Mission (colonists only; excludes Yelamu)"
+1815,mission_dolores,1100,https://en.wikipedia.org/wiki/Mission_San_Francisco_de_As%C3%ADs,"estimate: average Indigenous population at Mission Dolores at its 1810-1820 peak (~1,100)"
+1833,presidio,250,https://sfmuseum.org/hist1/early.html,"estimate: population of the Presidio post c. 1833 per W. H. Davis (~250 men, women and children)"
+1844,san_francisco,50,https://sfmuseum.org/hist1/early.html,estimate: Yerba Buena village - about a dozen houses and fifty residents by 1844
+1846,san_francisco,200,https://foundsf.org/Early_Social_Statistics_on_San_Francisco,estimate: Yerba Buena by mid-summer 1846 numbered upwards of two hundred (Annals of San Francisco)
+1847,san_francisco,459,https://sfmuseum.org/hist1/early.html,estimate: local census of June 1847 published in the California Star (459 souls); population was a little over 300 in Jan 1847
+1848,san_francisco,812,https://sfmuseum.org/hist1/early.html,"estimate: 1848 school census - 575 males, 177 females, 60 children (before the gold-rush influx); Wikipedia gives ~1,000 for Jan 1848"
+1849,san_francisco,25000,https://en.wikipedia.org/wiki/History_of_San_Francisco,"estimate: population reached ~25,000 by Dec 1849 (from ~1,000 in Jan 1848)"
+1850,san_francisco,34776,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab08.txt,"estimate: 1850 federal census returns for San Francisco were destroyed by fire; the commonly used substitute (footnoted by the Census Bureau) is the 1852 California state census count of 34,776"
+1860,san_francisco,56802,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab09.txt,decennial census (city and county coextensive since 1856)
+1870,san_francisco,149473,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab10.txt,decennial census (city and county coextensive since 1856)
+1880,san_francisco,233959,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab11.txt,decennial census (city and county coextensive since 1856)
+1890,san_francisco,298997,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab12.txt,decennial census (city and county coextensive since 1856)
+1900,san_francisco,342782,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab13.txt,decennial census (city and county coextensive since 1856)
+1910,san_francisco,416912,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab14.txt,decennial census (city and county coextensive since 1856)
+1920,san_francisco,506676,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab15.txt,decennial census (city and county coextensive since 1856)
+1930,san_francisco,634394,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab16.txt,decennial census (city and county coextensive since 1856)
+1940,san_francisco,634536,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab17.txt,decennial census (city and county coextensive since 1856)
+1950,san_francisco,775357,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab18.txt,decennial census (city and county coextensive since 1856)
+1960,san_francisco,740316,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab19.txt,decennial census (city and county coextensive since 1856)
+1970,san_francisco,715674,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab20.txt,decennial census (city and county coextensive since 1856)
+1980,san_francisco,678974,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab21.txt,decennial census (city and county coextensive since 1856)
+1990,san_francisco,723959,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab22.txt,decennial census (city and county coextensive since 1856)
+2000,san_francisco,776733,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/estimates-e4-2000-2010/E4_2000-2010_Report_Final_EOC_000.xlsx,decennial census (4/1/2000 census count as published in CA DOF E-4)
+2010,san_francisco,805235,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/e-4-population-estimates-for-cities-counties-and-the-state-2011-2020-with-2010-and-2020-census-benchmark/E-4_2010-2020-Internet-Version.xlsx,decennial census (4/1/2010)
+2020,san_francisco,873965,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/e-4-population-estimates-for-cities-counties-and-the-state-2011-2020-with-2010-and-2020-census-benchmark/E-4_2010-2020-Internet-Version.xlsx,decennial census (4/1/2020)
+1860,bay_area_9county,114074,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1870,bay_area_9county,265808,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1880,bay_area_9county,422128,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1890,bay_area_9county,547618,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1900,bay_area_9county,658111,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,"decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census); Contra Costa 1900 cell is blank on the county page - implied value 18,046 matches https://en.wikipedia.org/wiki/Contra_Costa_County,_California"
+1910,bay_area_9county,925708,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1920,bay_area_9county,1182911,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1930,bay_area_9county,1578009,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1940,bay_area_9county,1734308,https://census.bayareametro.gov/historical-data/1860-1940/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census)
+1950,bay_area_9county,2681322,https://census.bayareametro.gov/historical-data/1950/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census; verified against the 9 county pages)
+1960,bay_area_9county,3638939,https://census.bayareametro.gov/historical-data/1960/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census; verified against the 9 county pages)
+1970,bay_area_9county,4628199,https://census.bayareametro.gov/historical-data/1970/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census; verified against the 9 county pages)
+1980,bay_area_9county,5179784,https://census.bayareametro.gov/historical-data/1980/bay_area,decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census; verified against the 9 county pages)
+1990,bay_area_9county,6023577,https://census.bayareametro.gov/historical-data/1990/bay_area,"decennial census; sum of 9 county totals (MTC/ABAG Bay Area Census; verified against the 9 county pages); CA DOF E-4 revised 1990 county counts sum to 6,020,147"
+2000,bay_area_9county,6784348,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/estimates-e4-2000-2010/E4_2000-2010_Report_Final_EOC_000.xlsx,"decennial census; sum of 9 county Census 2000 counts as carried in CA DOF E-4 (Alameda 1,443,939; San Mateo 707,163; Solano 394,930); originally published counts (Wikipedia county pages: 1,443,741 / 707,161 / 394,542) give 6,783,760"
+2010,bay_area_9county,7150739,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/e-4-population-estimates-for-cities-counties-and-the-state-2011-2020-with-2010-and-2020-census-benchmark/E-4_2010-2020-Internet-Version.xlsx,decennial census; sum of 9 county 4/1/2010 counts
+2020,bay_area_9county,7765640,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates/e-4-population-estimates-for-cities-counties-and-the-state-2011-2020-with-2010-and-2020-census-benchmark/E-4_2010-2020-Internet-Version.xlsx,decennial census; sum of 9 county 4/1/2020 counts
+2026,san_francisco,845658,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA Dept. of Finance E-1, provisional, 1 Jan 2026; revised 1 Jan 2025 = 844,394). U.S. Census Vintage 2025 gives 826,079 for 1 Jul 2025: https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/counties/totals/co-est2025-alldata.csv"

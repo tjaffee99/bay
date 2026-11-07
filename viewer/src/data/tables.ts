@@ -95,7 +95,28 @@ function series(match: (area: string) => boolean): PopPoint[] {
     .sort((a, b) => a.year - b.year);
 }
 
-export const sfPopulation = series(a => /san[ _-]?francisco/.test(a) && !/bay|county_total|9/.test(a));
+export const sfPopulation = series(a => /san[ _-]?francisco/.test(a) && !/bay|county_total|9/.test(a)).filter(p => p.year >= 1844);
+
+/** Pre-1844 rows describe different places (Yelamu, Presidio, Mission): shown as-is, not interpolated. */
+const AREA_LABELS: Record<string, string> = {
+  san_francisco: 'Yelamu Ohlone',
+  presidio: 'Presidio of San Francisco',
+  mission_dolores: 'Mission Dolores'
+};
+const earlyRows = popRows
+  .map(r => ({year: +r.year, pop: +String(r.population).replace(/[, ]/g, ''), area: r.area, estimate: /estim/i.test(r.note || '')}))
+  .filter(r => r.year < 1844 && r.pop > 0)
+  .sort((a, b) => a.year - b.year);
+
+export function populationLabelAt(year: number): {value: number; label: string} | null {
+  if (sfPopulation.length && year >= sfPopulation[0].year) {
+    const v = populationAt(year);
+    return v == null ? null : {value: v, label: 'San Francisco'};
+  }
+  const r = [...earlyRows].reverse().find(e => e.year <= year);
+  if (!r) return null;
+  return {value: r.pop, label: `${AREA_LABELS[r.area] ?? r.area}${r.estimate ? ', estimate' : ''} (${r.year})`};
+}
 
 export function eraAt(year: number): Era | undefined {
   return eras.find(e => year >= e.start && year < e.end);

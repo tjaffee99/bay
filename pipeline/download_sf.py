@@ -52,6 +52,7 @@ def main():
         select="cnn,street,st_type,streetname,f_node_cnn,t_node_cnn,active,layer,date_added,date_dropped,line",
         page_size=50000,
     )
+    socrata_pages("3nje-yn2u", RAW / "sf_rpd_parks", fmt="geojson", page_size=50000)
     # Census TIGER/Line: county outlines (they extend into the water) + area water
     # polygons, used to derive a detailed modern land polygon.
     download_file("https://www2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip",

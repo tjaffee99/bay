@@ -1,0 +1,107 @@
+seq,street_a,street_b,note,source_url
+1,The Embarcadero,Green St,"@37.80201,-122.40013 NE start. 1906 East St (now The Embarcadero) at the foot of Filbert St; Filbert no longer meets the Embarcadero, true corner ~150 m NW of this intersection. Burned area lies SW (inland); waterfront strip and Telegraph Hill east slope to the N were saved by Navy/fireboat crews",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+2,The Embarcadero,Broadway,Along East St (waterfront). A tiny unburned triangle at East St/Pacific Ave/Drumm St (~0.5 acre) is omitted,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+3,The Embarcadero,Washington St,Along East St; blocks opposite the Ferry Building burned to the waterfront street (Kennedy),https://sfmuseum.org/1906/kennedy.html
+4,The Embarcadero,Mission St,"@37.79394,-122.39267 Line actually ~50 ft north of Mission St; buildings on both sides of Mission east of Steuart were saved (Kennedy)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+5,Steuart St,Mission St,"@37.79338,-122.39337 ~50 ft north of Mission; boundary then runs S along Steuart (burned W of Steuart)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+6,Steuart St,Howard St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+7,Main St,Howard St,Burned N of Howard / W of Main; waterfront block E of Main and S of Howard unburned,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+8,Main St,East Tehama St,"@37.78999,-122.39263 Mid-block between Howard and Folsom (nearest alley used)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+9,Beale St,East Tehama St,"@37.78948,-122.39328 Mid-block; true vertex ~3/4 block SW of Main (≈1/4 block short of Beale). Small unburned notch at NW corner of Main & Folsom",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+10,Beale St,Folsom St,"@37.78886,-122.39251 True vertex on Folsom ~1/4 block NE of Beale",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+11,Main St,Folsom St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+12,Main St,Harrison St,Burned W of Main; Rincon Hill east slope unburned,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+13,Beale St,Harrison St,Line then runs S on Beale ~1/2 block (mid-block Harrison-Bryant),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+14,Fremont St,Harrison St,"@37.78615,-122.39128 True vertex is on the former line of Fremont St midway between Harrison and Bryant (Fremont now ends at Harrison; Bay Bridge approach occupies site). Segment from Beale runs along the Harrison-Bryant mid-block line",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+15,Delancey St,Federal St,1906 'First & Federal' (Delancey St lies on the old First St alignment south of Bryant). Line follows the base of Rincon Hill; hill itself unburned,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+16,Delancey St,Brannan St,1906 'First & Brannan' (Pacific Mail dock area S of Brannan unburned); burned N of Brannan from First to Second,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+17,2nd St,Brannan St,Fire crossed to the SE corner of 2nd & Brannan (Lachman & Jacobi warehouse) - a ~1/2-block jog E of 2nd just S of Brannan is simplified here,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+18,2nd St,Townsend St,Burned W of 2nd; S side of Townsend (SP depots) not scorched (LA Herald 24 Apr 1906),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+19,7th St,Townsend St,"@37.77094,-122.40277 Burned along N side of Townsend; true corner ~1/2 block W of 7th (mid-block 7th-8th)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+20,Langton St,Brannan St,"@37.77156,-122.40354 Mid-block: line runs N from Townsend to midway Brannan-Townsend, then W to 8th. Nearest intersection only; prefer coordinate",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+21,8th St,Brannan St,"@37.77068,-122.40465 True vertex on 8th midway between Brannan and Townsend; line then runs NW along 8th",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+22,8th St,Bryant St,"@37.77191,-122.40620 True vertex on 8th midway between Bryant and Brannan; line then runs SW along the mid-block line toward 9th (LA Herald describes it along Bryant's south side instead)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+23,9th St,Brannan St,"@37.77045,-122.40804 Mid-block line ~100 ft SW of 9th; line then turns N to Bryant",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+24,9th St,Bryant St,"@37.77106,-122.40883 ~100 ft SW of 9th on Bryant; burned N of Bryant from here to Juniper",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+25,10th St,Bryant St,Along Bryant (burned to the N),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+26,11th St,Bryant St,"Burned N of Bryant to former Juniper St (midway 10th-11th; Juniper no longer reaches Bryant), then along a line ~75 ft N of Bryant to 11th - NE corner of 11th & Bryant spared",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+27,11th St,Harrison St,Salt-water supply at 11th & Bryant held the fire at Harrison (Kennedy),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+28,14th St,Harrison St,Along Harrison (burned to the W); Harrison bends N-S here,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+29,14th St,Folsom St,Fire crossed to SE corner of Folsom & 14th (LA Herald),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+30,15th St,Folsom St,"@37.76734,-122.41550 Line runs S on Folsom to ~1/4 block N of 15th, then W 1/2 block and S to 15th - NW corner of 15th & Folsom spared",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+31,15th St,Shotwell St,"@37.76690,-122.41601 Mid-block on 15th between Folsom and Shotwell; burned N of 15th",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+32,15th St,South Van Ness Ave,1906 Howard St (renamed South Van Ness Ave S of 13th). Private water supply held the fire at Howard St (Kennedy),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+33,18th St,South Van Ness Ave,Burned W of Howard (S. Van Ness) from 15th to 18th; block 17th-18th/Howard-Shotwell shaken but unburned,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+34,18th St,Capp St,"@37.76192,-122.41791 Line on 18th to ~1/3 block E of Capp, then S 75 ft and W to Capp",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+35,19th St,Capp St,"@37.75950,-122.41804 Burned W of Capp; true vertex on Capp midway 19th-20th (fire held here with water relayed from a cistern at 19th & Folsom); row of houses on N side of 20th between Capp and Mission survived",https://sfmuseum.org/1906/kennedy.html
+36,20th St,Mission St,"@37.75947,-122.41859 Mid-block (19th-20th) halfway between Capp and Mission; line then steps S 1/4 block",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+37,20th St,Mission St,"@37.75903,-122.41909 On Mission 1/4 block N of 20th. Waters map places this part ~1/2 block further W (San Carlos St)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+38,20th St,Mission St,Fire held at 20th; Almora building on N side of 20th collapsed and blocked it (Kennedy),https://sfmuseum.org/1906/kennedy.html
+39,20th St,Lexington St,Along N side of 20th,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+40,Valencia St,Liberty St,"@37.75775,-122.42042 Only place the fire crossed 20th: Harney building at SE corner of 20th & Valencia; burned ~1/2 block S of 20th between Lexington and Valencia. Liberty St is the nearest intersection on Valencia; true vertex is on Lexington mid-block",https://sfmuseum.org/1906/kennedy.html
+41,Valencia St,Liberty St,,https://sfmuseum.org/1906/kennedy.html
+42,20th St,Valencia St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+43,20th St,Dolores St,NE corner of 20th & Dolores dynamited; fire held at 20th with water from hydrant at 20th & Church (Kennedy). SW corner of burned area,https://sfmuseum.org/1906/kennedy.html
+44,Clinton Park,Dolores St,Dolores St was the W limit from 20th to Clinton Park; Dolores here meets Market St,https://sfmuseum.org/1906/kennedy.html
+45,Clinton Park,Guerrero St,Fire stopped at Clinton Park with water piped across Market from a hydrant on Buchanan St (Kennedy); unburned N of Clinton Park W of Guerrero,https://sfmuseum.org/1906/kennedy.html
+46,Duboce Ave,Guerrero St,1906 13th St (now Duboce Ave W of Valencia). A 50-ft jog near this corner is ignored,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+47,Guerrero St,Market St,Burned E of Guerrero; line follows Market NE to Gough,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+48,Gough St,Market St,Burned E of Gough from Market to Page,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+49,Gough St,Page St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+50,Octavia St,Page St,"@37.77399,-122.42318 Hayes Valley ('ham and eggs') fire: line ran 1/4-1/2 block E of Octavia between Page and Fell (stair-step at Lily, Oak, Hickory). True vertex: Page midway between Gough and Octavia",https://sfmuseum.org/1906/kennedy.html
+51,Octavia St,Lily St,"@37.77445,-122.42327 True vertex ~1/2 block E of Octavia at Lily (stair-step simplified)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+52,Octavia St,Fell St,"@37.77580,-122.42394 True vertex on Fell ~1/4 block E of Octavia",https://sfmuseum.org/1906/kennedy.html
+53,Octavia St,Fell St,From Fell north the fire was stopped along Octavia St (Kennedy: 'a permanent boundary'),https://sfmuseum.org/1906/kennedy.html
+54,Octavia St,Fulton St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+55,Laguna St,Fulton St,"@37.77838,-122.42623 Fire went ~3/4 block W of Octavia on the half-block just N of Fulton (to former Ash Ave). True vertex ~1/4 block short of Laguna. Waters map shows this lobe S of Fulton (between Birch and Fulton) instead",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+56,Laguna St,Fulton St,"@37.77884,-122.42632 Former Ash Ave (present Ash St line, mid-block Fulton-McAllister) ~3/4 block W of Octavia. Nearest existing intersection is a full block off - prefer coordinate",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+57,Gough St,Ash St,"@37.77900,-122.42509 Former Octavia St & Ash Ave (Octavia no longer exists between Fulton and Golden Gate). Nearest existing intersection is Gough & Ash - prefer coordinate",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+58,Gough St,McAllister St,"@37.77947,-122.42518 Former Octavia St & McAllister St (vanished intersection). Fire reached Octavia between McAllister and Golden Gate at 12:30 a.m. 19 Apr (Kennedy)",https://sfmuseum.org/1906/kennedy.html
+59,Gough St,McAllister St,"@37.77957,-122.42436 On McAllister ~1/2 block W of Gough; NW corner of Gough & McAllister burned (LA Herald)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+60,Gough St,Golden Gate Ave,"@37.78004,-122.42446 Former Locust Ave (mid-block alley Golden Gate-McAllister) 1/2 block W of Gough",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+61,Gough St,Golden Gate Ave,"@37.78014,-122.42364 On Gough at former Locust Ave; burned E of Gough",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+62,Gough St,Golden Gate Ave,Fire stopped at Golden Gate Ave W of Van Ness on the evening of 18 Apr (Kennedy),https://sfmuseum.org/1906/kennedy.html
+63,Van Ness Ave,Golden Gate Ave,Van Ness Ave firebreak begins: burned E of Van Ness from Golden Gate to Sutter,https://sfmuseum.org/1906/kennedy.html
+64,Van Ness Ave,Sutter St,Fire crossed Van Ness between Sutter and Clay (night of 19-20 Apr),https://sfmuseum.org/1906/kennedy.html
+65,Franklin St,Sutter St,W of Van Ness: stopped along Franklin and the N side of Sutter about 3 a.m. 20 Apr with dynamite and water relayed from Laguna St; Western Addition saved,https://sfmuseum.org/1906/kennedy.html
+66,Franklin St,Clay St,"Kennedy's summary says 'Sutter to Sacramento' but his narrative, the official boundary and LA Herald all give Clay",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+67,Van Ness Ave,Clay St,Claus Spreckels mansion at SW corner Clay & Van Ness gutted; Van Ness again the limit N of Clay,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+68,Van Ness Ave,Filbert St,Burned E of Van Ness to Filbert (Viavi building at Green & Van Ness dynamited 20 Apr),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+69,Polk St,Filbert St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+70,Polk St,Greenwich St,Residents held the fire at Greenwich between Polk and Larkin (vinegar used) (Kennedy),https://sfmuseum.org/1906/kennedy.html
+71,Hyde St,Greenwich St,Along Greenwich (burned to the S). LA Herald instead reports the line along Larkin to Lombard; official boundary and Waters map follow Greenwich to Hyde,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+72,Hyde St,Lombard St,"@37.80231,-122.41968 Line runs N on Hyde to ~1/3 block N of Lombard",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+73,Leavenworth St,Lombard St,"@37.80241,-122.41885 Mid-block: ~1/2 block E of Hyde, 1/3 block N of Lombard",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+74,Leavenworth St,Chestnut St,"@37.80303,-122.41897 On Chestnut midway Hyde-Leavenworth",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+75,Leavenworth St,Chestnut St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+76,Leavenworth St,Chestnut St,"@37.80267,-122.41806 Notch: line runs S on Leavenworth 1/2 block toward Lombard",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+77,Leavenworth St,Chestnut St,"@37.80270,-122.41779 Notch: ~1/6 block E of Leavenworth, 1/2 block S of Chestnut",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+78,Leavenworth St,Chestnut St,"@37.80317,-122.41788 Back on Chestnut ~1/6 block E of Leavenworth",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+79,Jones St,Chestnut St,"@37.80328,-122.41706 On Chestnut ~1/3 block W of Jones",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+80,Jones St,Francisco St,"@37.80414,-122.41723 On Francisco ~1/3 block W of Jones",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+81,Jones St,Francisco St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+82,Jones St,Bay St,Burned E of Jones from Francisco to Bay (Columbus Ave crosses nearby),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+83,Taylor St,Bay St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+84,Taylor St,Beach St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+85,Mason St,Beach St,"@37.80738,-122.41480 On Beach midway Taylor-Mason",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+86,Mason St,Jefferson St,"@37.80832,-122.41498 NW limit at the bay shore 'midway between the foot of Mason and foot of Taylor'. Waterfront: present Jefferson St used as the 1906 shoreline/seawall proxy",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+87,Mason St,Jefferson St,Waterfront (bay shore); fire burned to the seawall from Mason St eastward (Kennedy),https://sfmuseum.org/1906/kennedy.html
+88,Powell St,The Embarcadero,Waterfront proxy (Jefferson St / The Embarcadero),https://sfmuseum.org/1906/kennedy.html
+89,Grant Ave,The Embarcadero,Waterfront proxy,https://sfmuseum.org/1906/kennedy.html
+90,Kearny St,The Embarcadero,Waterfront proxy (North Point St junction),https://sfmuseum.org/1906/kennedy.html
+91,Bay St,The Embarcadero,Waterfront proxy,https://sfmuseum.org/1906/kennedy.html
+92,Sansome St,The Embarcadero,Waterfront at Sansome/Chestnut: N slope of Telegraph Hill burned to the shore; E of here the waterfront at the foot of Telegraph Hill was saved by naval forces (Kennedy),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+93,Kearny St,Chestnut St,Telegraph Hill notch begins: unburned summit and E/S slopes lie to the SE. Burned N of Chestnut,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+94,Kearny St,Lombard St,"@37.80373,-122.40578 True vertex on Lombard midway Kearny-Montgomery (diagonal from Kearny & Chestnut)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+95,Kearny St,Lombard St,"@37.80357,-122.40710 On Lombard ~1/3 block W of Kearny",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+96,Kearny St,Greenwich St,"@37.80310,-122.40701 ~1/3 block W of Kearny, midway Greenwich-Lombard",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+97,Kearny St,Greenwich St,"@37.80317,-122.40649 On Kearny midway Greenwich-Lombard; burned W of Kearny",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+98,Kearny St,Filbert St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+99,Montgomery St,Filbert St,"@37.80191,-122.40503 On Filbert ~1/4 block W of Montgomery; unburned Telegraph Hill houses (saved partly with wine-soaked sacks) to the N/E",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+100,Montgomery St,Union St,"@37.80099,-122.40483 On Union ~1/4 block W of Montgomery",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+101,Montgomery St,Union St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+102,Montgomery St,Green St,Burned S of Green,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+103,Sansome St,Green St,"@37.80021,-122.40342 Green midway Montgomery-Sansome; line follows base of Telegraph Hill NE to Sansome & Union (Waters map: via Sansome & Green)",https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+104,Sansome St,Union St,,https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
+105,Battery St,Union St,Official description is garbled between Filbert and Union (half-block steps); Battery & Union per Waters map,https://data.sfgov.org/d/yk2r-b4e8
+106,Battery St,Filbert St,Burned E of Battery up to Filbert; closes back to East St & Filbert (seq 1),https://www.guardiansofthecity.org/sffd/fires/great_fires/1906/fire_boundry.html
