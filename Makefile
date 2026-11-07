@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings export trees ground dev build shots clean-interim
+.PHONY: setup sf download land fire overture join buildings export trees ground dev build deploy shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -47,6 +47,16 @@ dev:
 
 build:
 	cd viewer && npm run build
+
+# Publish viewer/dist to the gh-pages branch, served at https://bay.theojaffee.net
+# (viewer/public/CNAME). The branch holds one generated commit, replaced on each
+# deploy, so built data doesn't pile up in history. The git metadata lives in a
+# fresh temp dir; nothing in the repo is touched.
+deploy: build
+	cd viewer/dist && export GIT_DIR=$$(mktemp -d) GIT_WORK_TREE=. && \
+	  git init -q -b gh-pages && git add -A && \
+	  git commit -q -m "Deploy $$(git -C $(CURDIR) rev-parse --short HEAD)" && \
+	  git push -f $$(git -C $(CURDIR) remote get-url origin) gh-pages
 
 clean-interim:
 	rm -rf data/interim/*
