@@ -52,11 +52,14 @@ build:
 # (viewer/public/CNAME). The branch holds one generated commit, replaced on each
 # deploy, so built data doesn't pile up in history. The git metadata lives in a
 # fresh temp dir; nothing in the repo is touched.
+DEPLOY_URL = $(shell git remote get-url origin)
+DEPLOY_SHA = $(shell git rev-parse --short HEAD)
+
 deploy: build
 	cd viewer/dist && export GIT_DIR=$$(mktemp -d) GIT_WORK_TREE=. && \
 	  git init -q -b gh-pages && git add -A && \
-	  git commit -q -m "Deploy $$(git -C $(CURDIR) rev-parse --short HEAD)" && \
-	  git push -f $$(git -C $(CURDIR) remote get-url origin) gh-pages
+	  git commit -q -m "Deploy $(DEPLOY_SHA)" && \
+	  git push -f $(DEPLOY_URL) gh-pages
 
 clean-interim:
 	rm -rf data/interim/*
