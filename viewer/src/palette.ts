@@ -5,7 +5,12 @@ export type RGBA = [number, number, number, number];
 export const WATER = '#a7c7d4';
 export const LAND: RGBA = [222, 218, 202, 255];
 export const LAND_SIDE: RGBA = [196, 186, 165, 255];
-export const PARK: RGBA = [196, 214, 166, 255];
+export const PARK: RGBA = [186, 208, 152, 255];
+export const GROUND_COLORS: Record<string, RGBA> = {
+  park: PARK,
+  wood: [150, 184, 122, 255],
+  sand: [236, 226, 196, 255]
+};
 
 // Palettes by construction era. Victorians are famously painted; interwar
 // stucco is cream/white; post-war is white/grey; towers read as pale glass.

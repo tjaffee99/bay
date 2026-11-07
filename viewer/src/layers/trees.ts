@@ -11,7 +11,9 @@ import {MeshBuilder, circle} from '../landmarks/kit';
 import {TimeExtension} from './time-extension';
 
 export type TreeSet = {
+  id: string;
   origin: [number, number];
+  growYears: number;
   forms: {data: any; count: number}[];
 };
 
@@ -59,8 +61,8 @@ const GREENS: [number, number, number][][] = [
   [[118, 150, 86]]
 ];
 
-export async function loadTrees(): Promise<TreeSet | null> {
-  const f = await loadColumnar('data/sf-trees.bin.gz');
+export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', growYears = 6): Promise<TreeSet> {
+  const f = await loadColumnar(url);
   const c = f.columns;
   const n = f.header.counts.features;
   const scale = f.header.meta.position_scale ?? 1e-7;
@@ -101,14 +103,14 @@ export async function loadTrees(): Promise<TreeSet | null> {
       }
     };
   });
-  return {origin: f.header.origin, forms};
+  return {id, origin: f.header.origin, growYears, forms};
 }
 
 export function treesLayer(trees: TreeSet, year: number): Layer[] {
   return trees.forms.map(
     (f, k) =>
       new SimpleMeshLayer({
-        id: `trees-${k}`,
+        id: `trees-${trees.id}-${k}`,
         data: f.data,
         mesh: MESHES[k],
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
@@ -117,7 +119,7 @@ export function treesLayer(trees: TreeSet, year: number): Layer[] {
         pickable: false,
         extensions: [treeTime],
         currentYear: year,
-        growYears: 6,
+        growYears: trees.growYears,
         shrinkYears: 0.5
       } as any)
   );

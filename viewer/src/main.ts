@@ -12,7 +12,7 @@ import type {Layer, PickingInfo} from '@deck.gl/core';
 import {SolidPolygonLayer} from '@deck.gl/layers';
 import {TimeExtension} from './layers/time-extension';
 
-import {WATER, LAND, LAND_SIDE} from './palette';
+import {WATER, LAND, LAND_SIDE, GROUND_COLORS} from './palette';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
@@ -36,7 +36,8 @@ const state = {
 
 let buildings: BuildingSet | null = null;
 let landmarks: LandmarkSet | null = null;
-let trees: TreeSet | null = null;
+let trees: TreeSet[] = [];
+let ground: {kind: string; poly: number[][][]; years: [number, number]}[] = [];
 let land: any[] = [];
 let fire: any[] = [];
 const fadeTime = new TimeExtension({mode: 'fade'});
@@ -93,6 +94,25 @@ function landLayer() {
   });
 }
 
+/** Parks, woods and beaches, fading in from their (researched) start years. */
+function groundLayer() {
+  return new SolidPolygonLayer({
+    id: 'ground',
+    data: ground,
+    getPolygon: (d: any) => {
+      const z = d.kind === 'sand' ? 0.12 : d.kind === 'park' ? 0.2 : 0.28;
+      return d.poly.map((ring: number[][]) => ring.map(c => [c[0], c[1], z]));
+    },
+    getFillColor: (d: any) => GROUND_COLORS[d.kind] ?? GROUND_COLORS.park,
+    pickable: false,
+    extensions: [fadeTime],
+    getYears: (d: any) => d.years,
+    currentYear: state.year,
+    growYears: 6,
+    shrinkYears: 1
+  } as any);
+}
+
 /** 18 Apr 1906: the burned district darkens, then fades as the city rebuilds. */
 function fireLayer() {
   return new SolidPolygonLayer({
@@ -113,7 +133,8 @@ function render() {
   const layers: Layer[] = [];
   if (land.length) layers.push(landLayer());
   if (fire.length && state.year >= 1906 && state.year < 1910) layers.push(fireLayer());
-  if (trees && state.showTrees) layers.push(...treesLayer(trees, state.year));
+  if (ground.length) layers.push(groundLayer());
+  if (state.showTrees) for (const t of trees) layers.push(...treesLayer(t, state.year));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, state.showLandmarks && !!landmarks));
   if (landmarks && state.showLandmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   overlay.setProps({layers});
@@ -337,12 +358,25 @@ async function boot() {
       render();
     })
     .catch(e => console.warn('landmarks', e));
-  const treeP = loadTrees()
-    .then(t => {
-      trees = t;
+  const treeP = Promise.all([
+    loadTrees('data/sf-trees.bin.gz', 'street', 6).then(t => trees.push(t)),
+    loadTrees('data/sf-woods.bin.gz', 'woods', 12).then(t => trees.push(t))
+  ])
+    .then(() => render())
+    .catch(e => console.warn('trees', e));
+  fetch('data/sf-ground.json')
+    .then(r => r.json())
+    .then(gj => {
+      const order: Record<string, number> = {sand: 0, park: 1, wood: 2};
+      for (const f of gj.features) {
+        const p = f.properties;
+        const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates : [];
+        for (const poly of polys) ground.push({kind: p.kind, poly, years: [p.start_year, p.end_year]});
+      }
+      ground.sort((a, b) => (order[a.kind] ?? 1) - (order[b.kind] ?? 1));
       render();
     })
-    .catch(e => console.warn('trees', e));
+    .catch(() => {});
   // ?nobuildings skips the city (fast landmark previews / debugging)
   if (!new URLSearchParams(location.search).has('nobuildings')) {
     buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));

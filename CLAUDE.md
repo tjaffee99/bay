@@ -47,7 +47,18 @@ make dev        # viewer at http://localhost:5173
 ```
 
 Pipeline stages (each idempotent, cached in data/raw or data/interim):
-`download_sf` → `land` → `fire_1906` → `sf_join` → `sf_buildings` → `sf_export`, plus `download_overture`, `trees`.
+`download_sf` → `land` → `fire_1906` → `sf_join` → `sf_buildings` → `sf_export`, plus `download_overture` (buildings, parts, base land/land_use), `trees` (street trees), `ground` (parks, woods, sand + woodland trees).
+
+## Landmarks (viewer/src/landmarks/)
+
+Hand-modelled low-poly reconstructions built at runtime with a small mesh kit (`kit.ts`: prisms, lofts, domes, gables, hips, beams, parabolic cables, ribbons). Each landmark (`types.ts`) has `built: [construction start, completion]` (the model rises over that span), `end`, an anchor, cited `facts`/`sources`, and optional `replaces` polygons — the generic footprint extrusions under a *standing* landmark are hidden while landmarks are shown.
+All dimensions come from `data/research/landmarks.md` (sources per item); anything estimated says so in the model's facts ("Model: …").
+
+* `golden-gate-bridge.ts` · `downtown.ts` (Transamerica, Salesforce Tower, Transit Center + park) · `neighborhoods.ts` (Legion of Honor, Painted Ladies, 722 Steiner)
+* `stadiums.ts`: Oracle Park, Chase Center, Kezar 1925/1990, Candlestick 1960/1971, Seals Stadium 1931/1946, Ewing Field (+1926 grandstand fire), Recreation Park, Cow Palace
+* `city.ts`: Bay Bridge (west span; 1936 east span demolished in stages 2014–16; 2013 SAS + skyway), Ferry Building, City Hall 1915 + old City Hall (–1906), Coit Tower, Palace of Fine Arts 1915/1967, Sutro Tower, Alcatraz (cellhouse, lighthouses 1854/1909, water tower), Fort Point, Mission Dolores (adobe + basilica), Cliff House 1863/1896/1909, Sutro Baths, Embarcadero Freeway (1959–91), Golden Gate Park buildings (Conservatory, windmills, Temple of Music, de Young 1919/2005, Cal Academy 2008)
+
+Known model limits: the map is flat (no terrain), so hilltop landmarks (Coit, Sutro Tower) stand on the ground plane and bridge approaches/anchorages stand on it too; LOW CONFIDENCE models (Kezar 1925, old City Hall, Recreation Park, 1936 east-span alignment, Embarcadero Freeway route) say so in their facts.
 
 ## Decisions log (deviations from the original brief, with reasons)
 
@@ -59,7 +70,8 @@ Pipeline stages (each idempotent, cached in data/raw or data/interim):
 6. **Heights:** 2010 LiDAR median height from the DataSF footprints for buildings that existed in 2010; stories × 3.3 m + 1.5 m for newer ones; then OSM/Overture height; then 7 m.
 7. **Missing SF years are imputed from neighbours** (median of nearest exact-year buildings within 150 m, respecting bounds), not ACS — ACS returns for Phase 5 (Census API now requires a key).
 8. **Population counter:** San Francisco city/county until Phase 5, then 9-county total.
-9. **Built data in git:** `viewer/public/data/sf-buildings.bin.gz` and friends are committed at milestones so a fresh clone runs with `npm install && npm run dev`; otherwise regenerate with `make sf`.
+9. **Trees:** street trees are real (DataSF positions; planting year recorded or estimated from trunk diameter). Park woods use real OSM wood extents with procedural positions inside (no per-tree survey exists) — confidence `procedural`. Woods are dated by park year, Golden Gate Park's documented east→west reclamation, the 1886 Presidio planting, and Lands End's 1930s planting.
+10. **Built data in git:** `viewer/public/data/sf-buildings.bin.gz` and friends are committed at milestones so a fresh clone runs with `npm install && npm run dev`; otherwise regenerate with `make sf`.
 
 ## Year cleaning (SF assessor roll)
 
@@ -94,7 +106,7 @@ Each phase ends with something runnable in the browser.
 * **Phase 1 — SF modern-data era** ✅ (first pass) pipeline + 177k buildings, confidence overlay, picking. Acceptance: 60 fps on a laptop (check on real GPU — CI/headless uses software GL), roughly matches known history.
 * **Phase 2 — Time-varying land and water**: historical bay + marsh (SFEI), fill polygons with emplacement years (USGS), coastline grows outward; validation that no building predates its land.
 * **Phase 3 — Pre-1906 SF and the fire**: trace street grid and built-up extent from Sanborn/Coast Survey/Rumsey maps for snapshot years; buildings from traced footprints where maps show them (Sanborn maps show individual footprints!), procedural only where unavoidable; `end_year = 1906` inside the burned zone; 1906 event.
-* **Phase 4 — Landmarks, infrastructure, storytelling**: reconstructed landmarks (in progress early per owner request), freeways/rail with lifespans, eras, events, population.
+* **Phase 4 — Landmarks, infrastructure, storytelling**: ~50 reconstructed landmarks, eras, events and population done early (owner request); still to do: rail (Key System, cable cars), Central Freeway, other freeways, Transbay Terminal 1939.
 * **Phase 5 — Region**: San Mateo → Alameda → Santa Clara → Marin → Contra Costa → rest; Overture + county years + ACS imputation; PMTiles + low-zoom aggregate.
 * **Phase 6 — Farmland and orchards** from historical topo maps and aerials.
 * **Phase 7 — Polish and ship**: performance, mobile, shareable URLs (done early: `#year=…&c=lng,lat&z=…&p=…&b=…`), attribution panel, deploy.

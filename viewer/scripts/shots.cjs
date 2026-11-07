@@ -17,6 +17,8 @@ const path = require('path');
     await page.goto(`${url}#${s.hash}`, {waitUntil: 'load'});
     await page.waitForFunction(() => window.__ready === true, null, {timeout: 400000});
     if (s.year !== undefined) await page.evaluate(y => window.__setYear(y), s.year);
+    for (const sel of s.click || []) await page.click(sel);
+    if (s.mouse) await page.mouse.click(s.mouse[0], s.mouse[1]);
     await page.waitForTimeout(s.wait || 2500);
     const t0 = Date.now();
     await page.screenshot({path: path.join(outdir, `${s.name}.png`), timeout: 300000});

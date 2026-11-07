@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings export trees dev build shots clean-interim
+.PHONY: setup sf download land fire overture join buildings export trees ground dev build shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -12,7 +12,7 @@ setup:
 	cd viewer && npm install
 
 # ---- San Francisco ---------------------------------------------------------
-sf: download land fire overture join buildings export trees
+sf: download land fire overture join buildings export trees ground
 
 download:
 	$(P) ../$(PY) download_sf.py
@@ -35,8 +35,11 @@ buildings: join overture fire
 export: buildings
 	$(P) ../$(PY) sf_export.py
 
-trees: download
+trees: buildings
 	$(P) ../$(PY) trees.py
+
+ground: download overture
+	$(P) ../$(PY) ground.py
 
 # ---- viewer ----------------------------------------------------------------
 dev:
