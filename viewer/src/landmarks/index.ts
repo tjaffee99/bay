@@ -11,6 +11,7 @@ import type {Landmark} from './types';
 import {goldenGateBridge} from './golden-gate-bridge';
 import {transamerica, salesforceTower, transitCenter} from './downtown';
 import {legionOfHonor, paintedLadies, kavanaughHouse} from './neighborhoods';
+import {STADIUMS} from './stadiums';
 
 export const LANDMARKS: Landmark[] = [
   goldenGateBridge,
@@ -19,7 +20,8 @@ export const LANDMARKS: Landmark[] = [
   transitCenter,
   legionOfHonor,
   paintedLadies,
-  kavanaughHouse
+  kavanaughHouse,
+  ...STADIUMS
 ];
 
 export type LandmarkSet = {
@@ -38,6 +40,9 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
   });
   const replaced: LandmarkSet['replaced'] = [];
   LANDMARKS.forEach((lm, idx) => {
+    // Only standing landmarks replace today's footprints: a demolished
+    // stadium's site holds later buildings that must stay visible.
+    if (lm.end < 9000) return;
     for (const poly of lm.replaces ?? []) {
       const ll = poly.map(p => localToLngLat(lm.anchor, p));
       const xs = ll.map(p => p[0]);

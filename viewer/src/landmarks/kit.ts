@@ -277,6 +277,28 @@ export class MeshBuilder {
     return this;
   }
 
+  /** Surface between two matching polylines (e.g. a sloped seating bowl). */
+  ribbon(a: V3[], b: V3[], closed = false) {
+    const n = a.length;
+    for (let i = 0; i < (closed ? n : n - 1); i++) {
+      const j = (i + 1) % n;
+      this.quad(a[i], a[j], b[j], b[i]);
+    }
+    return this;
+  }
+
+  /** Vertical wall along a path with per-vertex bottom/top heights. */
+  wallProfile(path: V2[], z0: number | number[], z1: number | number[], closed = false) {
+    const n = path.length;
+    const lo = (i: number) => (Array.isArray(z0) ? z0[i] : z0);
+    const hi = (i: number) => (Array.isArray(z1) ? z1[i] : z1);
+    for (let i = 0; i < (closed ? n : n - 1); i++) {
+      const j = (i + 1) % n;
+      this.quad([path[i][0], path[i][1], lo(i)], [path[j][0], path[j][1], lo(j)], [path[j][0], path[j][1], hi(j)], [path[i][0], path[i][1], hi(i)]);
+    }
+    return this;
+  }
+
   get vertexCount() {
     return this.pos.length / 3;
   }
@@ -298,6 +320,14 @@ export function rect(cx: number, cy: number, sx: number, sy: number): V2[] {
     [cx + sx / 2, cy + sy / 2],
     [cx - sx / 2, cy + sy / 2]
   ];
+}
+
+/** Rectangle rotated so its local +y axis points at `bearing`. */
+export function rotRect(cx: number, cy: number, sx: number, sy: number, bearing: number): V2[] {
+  const a = (-bearing * Math.PI) / 180;
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  return rect(0, 0, sx, sy).map(([x, y]) => [cx + c * x - s * y, cy + s * x + c * y] as V2);
 }
 
 export function circle(cx: number, cy: number, r: number, segs = 16, rx = r, ry = r): V2[] {
