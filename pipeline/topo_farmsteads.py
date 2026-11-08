@@ -385,68 +385,123 @@ def detect_symbols(img, g, debug=None):
         r["shape_ok"] = (r["area_mm2"] >= a_min and r["elong"] <= 2.6 and r["solidity"] >= 0.82
                          and r["rect_fill"] >= 0.62)
         sym_ok[r["i"]] = r["shape_ok"]
-    # --- context in a window around each candidate (light ink = hairlines of lettering,
-    # soft edges; components are only followed inside the window)
-    R = int(round(1.2 * ppm))
-    thick_t = max(2.0, 0.09 * ppm)
+    # --- context in a window around each candidate. Light ink (hairlines of lettering,
+    # soft edges) connects a blob to the rest of its glyph; components are only followed
+    # inside the window, so roads and rails leaving it are "lines", not glyphs.
+    R = int(round(2.0 * ppm))
     small_k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     min_letter = 0.2 * ppm
+    ann_in, ann_out = 0.45 * ppm, 1.2 * ppm
+    thick_t = max(2.5, 0.13 * ppm)
+    # big lettering: thick (>= 0.34 mm) ink masses that are not symbols (stems, bowls of
+    # large serif capitals); their hairlines are often too faint to connect the serifs
+    dtc = cv2.distanceTransform(core, cv2.DIST_L2, 3)
+    from scipy import ndimage
+    dmax = ndimage.maximum(dtc, lab, np.arange(n))
+    del dtc
+    glyph_mass = np.zeros(n, bool)
+    shp = {r["i"]: r for r in recs}
+    for i in range(1, n):
+        if area_mm2[i] < 0.2 or dmax[i] < 0.17 * ppm:
+            continue
+        r = shp.get(i)
+        if r is not None and r["shape_ok"]:
+            continue
+        if st[i, 2] > 6 * ppm or st[i, 3] > 6 * ppm:
+            continue                          # town blocks, long heavy lines
+        glyph_mass[i] = True
+    gm_pts = []
+    for i in np.nonzero(glyph_mass)[0]:
+        x, y, w, h, _ = st[i]
+        ys_, xs_ = np.nonzero(lab[y:y + h, x:x + w] == i)
+        sel = slice(None, None, 4)
+        gm_pts.append(np.column_stack([xs_[sel] + x, ys_[sel] + y]))
+    gm_tree = cKDTree(np.concatenate(gm_pts)) if gm_pts else None
     for r in recs:
         cx, cy = int(round(r["x"])), int(round(r["y"]))
         y0, y1, x0, x1 = max(cy - R, 0), min(cy + R + 1, H), max(cx - R, 0), min(cx + R + 1, W)
+        ccx, ccy = r["x"] - x0, r["y"] - y0
         mxw = mx[y0:y1, x0:x1]
         lp = max(float(np.percentile(mxw, 80)), 0.8 * paper)
-        lightw = ((mxw < 0.80 * lp) & hue_ok[y0:y1, x0:x1]).astype(np.uint8)
+        inkw = ink[y0:y1, x0:x1]
+        lightw = ((mxw < 0.80 * lp) & hue_ok[y0:y1, x0:x1]).astype(np.uint8) | inkw
         labw = lab[y0:y1, x0:x1]
         own = labw == r["i"]
-        lightw[own] = 1
-        symw = cv2.dilate(sym_ok[labw].astype(np.uint8) | own, small_k) > 0
+        symw = cv2.dilate((sym_ok[labw] | own).astype(np.uint8), small_k) > 0
+        hh_, ww_ = own.shape
+        # light components
         ncl, cl, cst, _ = cv2.connectedComponentsWithStats(lightw, connectivity=8)
         c = int(np.bincount(cl[own]).argmax())
         comp = cl == c
-        bx, by, bw, bh, _ = cst[c]
-        touches = bx == 0 or by == 0 or bx + bw >= cl.shape[1] or by + bh >= cl.shape[0]
-        resid = comp & ~symw
-        # thick dark strokes attached to the blob (letter stems, rails), not hairlines or
-        # the thin casings of roads
-        dtc = cv2.distanceTransform(ink[y0:y1, x0:x1], cv2.DIST_L2, 3)
-        resid_thick = int(((dtc >= thick_t) & resid).sum())
-        # holes (letter counters) near the blob
+
+        def touching(st_):
+            return st_[0] == 0 or st_[1] == 0 or st_[0] + st_[2] >= ww_ or st_[1] + st_[3] >= hh_
+        touches = touching(cst[c])
+        # dark sub-components: lines leaving the window vs bounded glyph parts
+        nd, dl, dst, _ = cv2.connectedComponentsWithStats(inkw, connectivity=8)
+        leaving = np.zeros(nd, bool)
+        for q in range(1, nd):
+            leaving[q] = touching(dst[q])
+        resid_dark = int((comp & (inkw > 0) & ~symw & ~leaving[dl]).sum())
+        # thick strokes (letter stems, >= ~0.26 mm) joined to the blob through light ink
+        dtw = cv2.distanceTransform(inkw, cv2.DIST_L2, 3)
+        resid_thick = int((comp & (dtw >= thick_t) & ~symw).sum())
+        # on a line: the blob's own dark component runs straight through its centre (rails)
+        on_line = False
+        od = int(np.bincount(dl[own]).argmax())
+        if od > 0 and leaving[od]:
+            ys_, xs_ = np.nonzero((dl == od) & ~symw)
+            if len(xs_) > 20:
+                dx, dy = xs_ - ccx, ys_ - ccy
+                rr = np.hypot(dx, dy)
+                sel = (rr > ann_in) & (rr < ann_out)
+                if sel.sum() > 20:
+                    P = np.column_stack([dx[sel], dy[sel]])
+                    cov = P.T @ P / len(P)
+                    wv, vv = np.linalg.eigh(cov)
+                    u = vv[:, 1]
+                    along = P @ u
+                    perp = np.abs(P @ np.array([-u[1], u[0]]))
+                    if (np.median(perp) < 0.12 * ppm and (along > 0).mean() > 0.25 and (along < 0).mean() > 0.25):
+                        on_line = True
+        # holes (letter counters) near the blob, for glyphs not attached to lines
         holes = 0
-        cnts, hier = cv2.findContours(comp.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-        if hier is not None:
-            for q, hh in enumerate(hier[0]):
-                if hh[3] >= 0:
-                    ha = cv2.contourArea(cnts[q])
-                    if (3 if not touches else 0.02 * ppm ** 2) <= ha <= 0.25 * ppm ** 2:
-                        hx, hy, hw2, hh2 = cv2.boundingRect(cnts[q])
-                        if (max(hw2, hh2) < 0.8 * ppm and max(hw2, hh2) < 2.5 * max(min(hw2, hh2), 1)
-                                and math.hypot(hx + hw2 / 2 - (cx - x0), hy + hh2 / 2 - (cy - y0)) < 0.9 * ppm):
-                            holes += 1
-        # other compact non-symbol components (letters) in the window
+        if not touches:
+            cnts, hier = cv2.findContours(comp.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+            if hier is not None:
+                for q, hh in enumerate(hier[0]):
+                    if hh[3] >= 0:
+                        ha = cv2.contourArea(cnts[q])
+                        if 3 <= ha <= 0.25 * ppm ** 2:
+                            hx, hy, hw2, hh2 = cv2.boundingRect(cnts[q])
+                            if max(hw2, hh2) < 0.8 * ppm and math.hypot(hx + hw2 / 2 - ccx, hy + hh2 / 2 - ccy) < 0.9 * ppm:
+                                holes += 1
+        # other compact non-symbol components (letters) within 1.3 mm
         letters = 0
         for q in range(1, ncl):
             if q == c:
                 continue
             qx, qy, qw, qh, qa = cst[q]
-            if qx == 0 or qy == 0 or qx + qw >= cl.shape[1] or qy + qh >= cl.shape[0]:
+            if touching(cst[q]) or max(qw, qh) < min_letter or qa < 0.02 * ppm ** 2:
                 continue
-            if max(qw, qh) < min_letter or qa < 0.02 * ppm ** 2:
+            if math.hypot(qx + qw / 2 - ccx, qy + qh / 2 - ccy) > 1.3 * ppm:
                 continue
-            qm = cl[qy:qy + qh, qx:qx + qw] == q
-            if (qm & symw[qy:qy + qh, qx:qx + qw]).sum() > 0.5 * qa:
-                continue
-            if max(qw, qh) > 4 * min(qw, qh) and qa < 0.35 * qw * qh:
-                pass
             if max(qw, qh) >= 4.5 * max(min(qw, qh), 1):
                 continue                      # a dash, not a letter
+            qm = cl[qy:qy + qh, qx:qx + qw] == q
+            if (qm & symw[qy:qy + qh, qx:qx + qw]).sum() > 0.5 * qa:
+                continue                      # another building symbol
             letters += 1
-        ring = np.ones(own.shape, bool)
-        ring[max(cy - y0 - R // 2, 0):cy - y0 + R // 2, max(cx - x0 - R // 2, 0):cx - x0 + R // 2] = False
-        wfrac = float(water[y0:y1, x0:x1][~ring].mean())
-        r.update({"touches": bool(touches), "resid_px": int(resid.sum()), "resid_thick_mm2": resid_thick / ppm ** 2,
-                  "holes": holes, "letters_near": letters, "water": wfrac,
-                  "own_px": int(own.sum())})
+        wr = int(round(0.6 * ppm))
+        wwin = water[max(cy - wr, 0):cy + wr + 1, max(cx - wr, 0):cx + wr + 1]
+        big_text = False
+        if gm_tree is not None:
+            dgm, _ = gm_tree.query([r["x"], r["y"]], distance_upper_bound=1.5 * ppm)
+            big_text = bool(np.isfinite(dgm))
+        r.update({"touches": bool(touches), "resid_dark_mm2": resid_dark / ppm ** 2,
+                  "resid_thick_mm2": resid_thick / ppm ** 2, "big_text": big_text,
+                  "on_line": on_line, "holes": holes, "letters_near": letters,
+                  "water": float(wwin.mean()), "own_px": int(own.sum())})
     # --- dash-dot boundaries: a candidate on the extension of a long dash
     D = np.array(dashes) if dashes else None
     dtree = cKDTree(D[:, :2]) if dashes else None
@@ -460,12 +515,14 @@ def detect_symbols(img, g, debug=None):
             reasons.append("elongated")
         if r["solidity"] < 0.82 or r["rect_fill"] < 0.62:
             reasons.append("shape")
-        if r["resid_thick_mm2"] > 0.03:
-            reasons.append("glyph")           # thick strokes attached: a letter
+        if r["resid_thick_mm2"] > 0.02:
+            reasons.append("glyph")           # letter stems hang on it: part of a word
+        if r["big_text"]:
+            reasons.append("bigtext")         # next to the strokes of large lettering
+        if r["on_line"]:
+            reasons.append("online")          # knot on a rail / heavy line
         if r["holes"] >= 1:
             reasons.append("counter")         # a letter with a counter (a, e, o, R …)
-        if not r["touches"] and r["resid_px"] > 0.9 * r["own_px"] + 0.03 * ppm ** 2:
-            reasons.append("serif")           # isolated glyph with hairlines
         if r["letters_near"] >= 2:
             reasons.append("text")
         if r["water"] > 0.06:

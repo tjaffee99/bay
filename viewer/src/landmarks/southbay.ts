@@ -987,6 +987,262 @@ const paypalPark = landmark(
   [rotPoly(rect(0, 5, 152, 152), 32.6)]
 );
 
+// =================================================================== SANTA CLARA VALLEY: MISSIONS, HOUSES, AVIATION
+
+// ---- Mission Santa Clara de Asís (frame 65.6°: +v = the facade, facing the Mission Gardens; bell tower on the +u side)
+const MISSION_SC: V2 = [-121.94158, 37.349245];
+const ADOBE = '#EFE7D6';
+
+function missionSantaClara(b: MeshBuilder, variant: '1825' | '1861' | '1928') {
+  b.frame(0, 0, 0, 65.6, () => {
+    // nave 20 m wide (OSM), narrower sanctuary behind the altar
+    b.color(ADOBE);
+    boxR(b, [-8.5, 11.5, -25, 22.6], 0, 9);
+    boxR(b, [-6, 5.7, -36.3, -25], 0, 8);
+    b.color(TILE).gable(1.5, -1.2, 21, 48.4, 9, 4.6, true);
+    b.gable(-0.15, -30.7, 12.5, 11.8, 8, 3.4, true);
+    // low wing west of the facade (the 1822–25 adobe cloister wall)
+    b.color(ADOBE);
+    boxR(b, [-34.5, -12.6, 25.1, 28], 0, 3.6);
+    b.color(TILE).gable(-23.5, 26.5, 22, 3.6, 3.6, 0.8, false);
+    if (variant === '1861') {
+      // 1861: wooden facade with two bell towers built over the adobe front
+      b.color('#E8E2D5');
+      boxR(b, [-12.6, 13.1, 22.6, 28], 0, 14);
+      b.tri([-5, 28, 14], [5.5, 28, 14], [0.25, 28, 18]).tri([-5, 22.6, 14], [5.5, 22.6, 14], [0.25, 22.6, 18]);
+      for (const x of [-9.2, 9.7]) {
+        b.box(x, 25.3, 14, 5.4, 5.4, 6);
+        b.box(x, 25.3, 20, 4.4, 4.4, 3.5);
+        b.color('#8E8A84').pyramid(rect(x, 25.3, 4.6, 4.6), 23.5, [x, 25.3, 29]).color('#E8E2D5');
+      }
+      return;
+    }
+    // adobe-style facade: scalloped parapet, painted niches and pilasters (the 1928 church replicates the 1825 front)
+    b.color(ADOBE);
+    boxR(b, [-12.6, 8, 22.6, 27.2], 0, 12.5);
+    const top: V2[] = [[-12.6, 12.5], [-10, 13.2], [-7.5, 14.5], [-5, 14.8], [-3, 16.3], [-1.2, 17], [1, 16.3], [3, 14.8], [5.5, 14.5], [8, 13]];
+    for (let i = 0; i < top.length - 1; i++) {
+      const [x0, z0] = top[i];
+      const [x1, z1] = top[i + 1];
+      for (const y of [22.6, 27.2]) b.quad([x0, y, 12.5], [x1, y, 12.5], [x1, y, z1], [x0, y, z0]);
+      b.quad([x0, 22.6, z0], [x1, 22.6, z1], [x1, 27.2, z1], [x0, 27.2, z0]);
+    }
+    b.color('#B98E6A');
+    for (const x of [-9.5, -5.2, 3.2]) b.box(x, 27.3, 2, 1.0, 0.2, 9.5); // painted pilasters
+    b.color('#6E5A4A').box(-1.2, 27.3, 0, 3.2, 0.2, 5.5); // door
+    if (variant === '1928') {
+      // bell tower: two stages and a domed lantern (photo estimate ≈ 22 m)
+      b.color(ADOBE);
+      boxR(b, [8, 13.1, 22.6, 28], 0, 13);
+      boxR(b, [8.5, 12.6, 23.1, 27.5], 13, 17.5);
+      b.color('#5A5048');
+      b.box(10.55, 25.3, 14, 4.2, 1.6, 2.6).box(10.55, 25.3, 14, 1.6, 4.2, 2.6);
+      b.color(ADOBE).cylinder(10.55, 25.3, 1.7, 17.5, 19.5, 8);
+      b.color(TILE).dome(10.55, 25.3, 1.9, 19.5, 2, 8, 2);
+    }
+  });
+}
+
+const missionSC1825 = landmark(
+  'mission_santa_clara_1825',
+  'Mission Santa Clara de Asís (adobe church)',
+  'building',
+  [1822.5, 1825.6],
+  1861.0,
+  MISSION_SC,
+  b => missionSantaClara(b, '1825'),
+  {
+    Built: '1822–1825: the fifth mission church, of adobe, on today\'s site (the mission had moved twice since 1777 after floods and earthquakes)',
+    Model: 'nave and sanctuary on the footprint of the 1928 replica (same site and plan); adobe front after the 1928 replica of it; heights estimated (LOW CONFIDENCE)'
+  },
+  [WIKI + 'Mission_Santa_Clara_de_As%C3%ADs']
+);
+const missionSC1861 = landmark(
+  'mission_santa_clara_1861',
+  'Mission Santa Clara de Asís (1861 facade)',
+  'building',
+  [1861.0, 1861.5],
+  1926.82,
+  MISSION_SC,
+  b => missionSantaClara(b, '1861'),
+  {
+    '1861': 'a wooden facade with two bell towers was built over the old adobe front; in 1885 the adobe nave walls were removed to widen the church',
+    Fate: 'destroyed by fire on Oct 25, 1926',
+    Model: 'facade and tower heights estimated from photographs (LOW CONFIDENCE); nave on the 1928 footprint'
+  },
+  [WIKI + 'Mission_Santa_Clara_de_As%C3%ADs']
+);
+const missionSC1928 = landmark(
+  'mission_santa_clara_1928',
+  'Mission Santa Clara de Asís',
+  'building',
+  [1927.3, 1928.95],
+  9999,
+  MISSION_SC,
+  b => missionSantaClara(b, '1928'),
+  {
+    Built: 'rebuilt 1927–28 after the fire of 1926 as an enlarged replica of the 1825 church; consecrated 1929; chapel of Santa Clara University',
+    Model:
+      'outline from OpenStreetMap (© OSM contributors, ODbL); bell tower position from the orthophoto; scalloped parapet, wall and tower heights estimated from photographs'
+  },
+  [WIKI + 'Mission_Santa_Clara_de_As%C3%ADs'],
+  [rotPoly(rect(-10.7, -4.2, 50, 66), 65.6)]
+);
+
+// ---- Winchester Mystery House (frame 0°; outline = OSM house limited to the historic house)
+const WINCHESTER: V2 = [-121.951149, 37.318349];
+const WINCH_PLAN: {o: V2[]; h: V2[][]}[] = [{"o":[[3.8,13.6],[4.8,13.6],[4.9,10.1],[9.6,10.2],[9.6,12.3],[14.8,12.3],[15.8,13.4],[15.6,15.3],[17.2,15.4],[18.1,16.1],[17.9,17.3],[18.6,17.7],[19.6,17.1],[21.8,19.6],[26.3,15.2],[28.7,17.4],[30.0,16.9],[30.0,-21.6],[24.3,-21.6],[24.3,-23.7],[20.0,-23.7],[19.5,-16.2],[12.8,-16.9],[13.2,-25.6],[18.3,-25.6],[18.2,-32.6],[23.2,-32.7],[23.1,-38.5],[19.7,-38.4],[19.6,-40.0],[13.0,-40.0],[13.0,-38.4],[9.3,-38.3],[9.4,-30.2],[4.0,-30.2],[4.0,-31.8],[-3.3,-31.1],[-3.3,-26.2],[-2.5,-26.2],[-2.5,-25.1],[1.0,-25.1],[1.7,-28.4],[9.7,-28.4],[9.8,-18.4],[7.6,-18.4],[8.3,-10.9],[1.6,-10.9],[1.8,-12.6],[0.7,-12.6],[0.6,-13.5],[-3.8,-13.4],[-3.8,-14.2],[-10.0,-13.4],[-10.0,-14.6],[-20.3,-14.5],[-17.6,-15.0],[-17.6,-22.9],[-16.6,-24.0],[-17.6,-25.3],[-17.7,-37.0],[-26.8,-36.9],[-27.3,-28.6],[-28.1,-28.6],[-28.0,-22.8],[-30.1,-22.8],[-30.8,-9.6],[-26.8,-9.7],[-26.7,-5.0],[-25.0,-5.0],[-25.0,-3.1],[-23.5,-3.1],[-23.5,-2.5],[-17.8,-2.5],[-17.8,0.6],[-26.8,0.2],[-26.8,2.7],[-29.2,2.7],[-29.2,8.7],[-22.7,8.7],[-22.7,6.7],[-22.2,6.7],[-22.1,8.4],[-18.0,8.3],[-18.0,6.6],[-15.6,6.6],[-15.6,4.5],[-11.6,4.5],[-11.6,11.7],[-7.6,11.7],[-7.6,15.5],[-9.4,15.6],[-9.4,20.0],[3.7,20.0]],"h":[[[-17.8,-8.2],[-14.6,-8.3],[-14.6,-7.0],[-12.3,-7.1],[-11.7,-6.0],[-17.8,-5.9]]]}];
+const WINCH_RECTS: [number, number, number, number][] = [[-11.6,30.0,-10.8,10.0],[16.0,30.0,-16.4,15.2],[-7.6,3.6,-10.8,20.0],[-26.8,-20.0,-36.8,-5.2],[9.6,12.8,-38.4,12.4],[-30.0,-20.0,-22.8,-9.6],[-30.4,0.8,-13.6,-9.6],[9.6,18.4,-38.4,-25.6],[9.2,23.2,-38.4,-32.8],[-26.8,-18.0,0.4,6.8],[-29.2,-15.6,2.8,6.8],[-29.2,-22.8,2.8,8.8],[8.0,12.8,-18.4,-12.0],[-2.4,1.2,-31.2,-25.2],[-0.4,4.0,-31.6,-28.4]];
+
+function winchesterHouse(b: MeshBuilder) {
+  b.color('#E2D2A6');
+  for (const p of WINCH_PLAN) b.prism(p.o, 0, 8.5, {holes: p.h});
+  // roofscape: steep hipped roofs over every wing, broken into ≤ 10 m bays (many small gables and peaks)
+  b.color('#8F4E3E');
+  const pitch = Math.tan((40 * Math.PI) / 180);
+  for (const [u0, u1, v0, v1] of WINCH_RECTS) {
+    const nu = Math.max(1, Math.round((u1 - u0) / 10));
+    const nv = Math.max(1, Math.round((v1 - v0) / 10));
+    const du = (u1 - u0) / nu;
+    const dv = (v1 - v0) / nv;
+    for (let i = 0; i < nu; i++) {
+      for (let j = 0; j < nv; j++) {
+        b.hip(u0 + du * (i + 0.5), v0 + dv * (j + 0.5), du + 0.6, dv + 0.6, 8.5, (Math.min(du, dv) / 2 + 0.3) * pitch);
+      }
+    }
+  }
+  // round towers with conical roofs (orthophoto)
+  b.color('#E2D2A6').cylinder(31.5, -16.5, 3.8, 0, 12, 12);
+  b.color('#8F4E3E').pyramid(circle(31.5, -16.5, 4.1, 12), 12, [31.5, -16.5, 17.5]);
+  b.color('#E2D2A6').cylinder(30, 16.5, 3, 0, 11, 10);
+  b.color('#B0683F').dome(30, 16.5, 3.2, 11, 3, 10, 3);
+}
+
+const winchester = landmark(
+  'winchester_mystery_house',
+  'Winchester Mystery House',
+  'building',
+  [1886.5, 1906.25],
+  9999,
+  WINCHESTER,
+  b => winchesterHouse(b),
+  {
+    Built: 'Sarah Winchester bought the farmhouse in 1886 and kept building until the 1906 earthquake (the house was under construction for two decades); 160 rooms at her death in 1922; opened to the public in 1923',
+    Style: 'Victorian, with Gothic and Romanesque features; up to five levels in places',
+    Model:
+      'outline from OpenStreetMap (© OSM contributors, ODbL), limited to the historic house; turret positions from the orthophoto; wall height, roof pitch and colours estimated — the many small roofs are a simplified roofscape'
+  },
+  [WIKI + 'Winchester_Mystery_House'],
+  [rect(0, -10, 66, 60)]
+);
+
+const winchesterTower = landmark(
+  'winchester_tower_1906',
+  'Winchester House seven-storey tower',
+  'tower',
+  [1895.0, 1900.0],
+  1906.3,
+  WINCHESTER,
+  b => {
+    b.color('#E2D2A6').box(10, 0, 0, 6, 6, 24);
+    b.color('#8F4E3E').pyramid(rect(10, 0, 6.6, 6.6), 24, [10, 0, 31]);
+  },
+  {
+    Fate: 'the seven-storey tower collapsed in the earthquake of Apr 18, 1906 and was not rebuilt',
+    Model: 'height from the seven storeys (≈ 3.4 m each); position on the house and build years ESTIMATED (LOW CONFIDENCE)'
+  },
+  [WIKI + 'Winchester_Mystery_House']
+);
+
+// ---- Hangar One, Moffett Field (frame 157.8°): 1,133 × 308 ft, 198 ft high, elongated catenary section
+const HANGAR_ONE: V2 = [-122.053965, 37.412951];
+
+function hangarProfile(): [number, number][] {
+  // catenary z = H − a(cosh(x/a) − 1) through (±46.5, 0), H = 60.4 m
+  const H = 198 * FT;
+  const W = 46.5;
+  let a = 24;
+  for (let i = 0; i < 40; i++) {
+    const f = a * (Math.cosh(W / a) - 1) - H;
+    a += f > 0 ? 0.25 : -0.25;
+    if (Math.abs(f) < 0.3) break;
+  }
+  const out: [number, number][] = [];
+  for (let i = 0; i <= 10; i++) {
+    const x = W * (1 - i / 10);
+    out.push([x, Math.max(0, H - a * (Math.cosh(x / a) - 1))]);
+  }
+  return out;
+}
+
+function hangarOne(b: MeshBuilder, skin: string) {
+  b.frame(0, 0, 0, 157.8, () => {
+    const prof = hangarProfile();
+    const L = 134.5; // straight body ±134.5 m; rounded "orange-peel" door ends to ±173.5 m (OSM)
+    b.color(skin);
+    for (const s of [-1, 1]) {
+      for (let i = 0; i < prof.length - 1; i++) {
+        const [x0, z0] = prof[i];
+        const [x1, z1] = prof[i + 1];
+        b.quad([s * x0, -L, z0], [s * x0, L, z0], [s * x1, L, z1], [s * x1, -L, z1]);
+      }
+    }
+    // ends: the section swept round half an ellipse (39 m deep)
+    for (const e of [-1, 1]) {
+      const n = 8;
+      for (let k = 0; k < n; k++) {
+        const t0 = (Math.PI * k) / n;
+        const t1 = (Math.PI * (k + 1)) / n;
+        for (let i = 0; i < prof.length - 1; i++) {
+          const P = (t: number, j: number): V3 => {
+            const [x, z] = prof[j];
+            return [x * Math.cos(t), e * (L + Math.sin(t) * x * (39 / 46.5)), z];
+          };
+          b.quad(P(t0, i), P(t1, i), P(t1, i + 1), P(t0, i + 1));
+        }
+      }
+    }
+    // concrete apron strip and the door rails along the sides
+    b.color('#9C9A94').box(0, 0, 0, 97, 2, 0.4);
+  });
+}
+
+const hangarOne1933 = landmark(
+  'hangar_one_1933',
+  'Hangar One, Moffett Field',
+  'building',
+  [1931.8, 1933.6],
+  2011.3,
+  HANGAR_ONE,
+  b => hangarOne(b, '#B9BDBF'),
+  {
+    Built: 'built 1931–33 for the US Navy airship USS Macon (moved in Oct 15, 1933)',
+    Size: '1,133 × 308 ft (345 × 94 m), 198 ft (60 m) high; 8 acres of floor',
+    Design: 'Karl Arnstein with Wilbur Watson Associates: steel girders sheathed in galvanized steel, inward-curving walls forming an elongated catenary, "orange-peel" doors at both ends',
+    Fate: 'the toxic siding was stripped from Apr 2011 to mid-2012, leaving the bare frame',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); section a catenary through the documented width and height; end doors as half-ellipses'
+  },
+  [WIKI + 'Hangar_One_(Mountain_View,_California)'],
+  [rotPoly(rect(0, 0, 95, 349), 157.8)]
+);
+
+const hangarOne2025 = landmark(
+  'hangar_one',
+  'Hangar One, Moffett Field (restored)',
+  'building',
+  [2010.5, 2025.95],
+  9999,
+  HANGAR_ONE,
+  b => hangarOne(b, '#C3C7C9'),
+  {
+    'Bare frame': '2011–2025 the skeleton stood without its skin (shown as a frame)',
+    Restored: 're-skinned and restored by Planetary Ventures (Google) under a NASA lease; reported complete Dec 2025, celebrated Mar 2026',
+    Model: 'same geometry as the 1933 hangar; the frame phase stands for the stripped skeleton'
+  },
+  [WIKI + 'Hangar_One_(Mountain_View,_California)'],
+  [rotPoly(rect(0, 0, 95, 349), 157.8)]
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -1004,5 +1260,12 @@ export const SOUTHBAY: Landmark[] = [
   stanfordStadium2006,
   levisStadium,
   sapCenter,
-  paypalPark
+  paypalPark,
+  missionSC1825,
+  missionSC1861,
+  missionSC1928,
+  winchester,
+  winchesterTower,
+  hangarOne1933,
+  hangarOne2025
 ];

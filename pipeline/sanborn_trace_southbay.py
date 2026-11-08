@@ -669,8 +669,24 @@ def extract(key):
             feats.append({"id": f"{key}_{cls[0]}{i + 1}", "cls": cls, "zone": zone, "px_centroid": [round(cx, 1), round(cy, 1)],
                           "px_ring": np.round(np.asarray(poly.exterior.coords), 1).tolist(), "area_m2": round(float(Polygon(ext, hw).area), 1),
                           "ring_utm": np.round(ext, 2).tolist(), "holes_utm": [np.round(h, 2).tolist() for h in hw]})
+    # dark-ochre "fire proof construction" fills (hue <= 23, saturated) fall inside the yellow frame mask: re-class them
+    # by the median colour inside the footprint (as the industrial tool's `reclass`)
+    from PIL import ImageDraw
+    nre = 0
+    for f in feats:
+        if f["cls"] != "frame":
+            continue
+        mk = Image.new("L", (rgb.shape[1], rgb.shape[0]), 0)
+        ImageDraw.Draw(mk).polygon([tuple(q) for q in f["px_ring"]], fill=1)
+        mk = cv2.erode(np.asarray(mk, np.uint8), np.ones((5, 5))).astype(bool)
+        if mk.sum() < 15:
+            continue
+        if np.median(Hh[mk]) <= 23.5 and np.median(S[mk]) >= 100:
+            f["cls"] = "fireproof"
+            f["id"] = f["id"].replace(f"{key}_f", f"{key}_x", 1)
+            nre += 1
     json.dump(feats, open(INTERIM / f"{key}.json", "w"))
-    log(key, len(feats), "footprints")
+    log(key, len(feats), "footprints", f"({nre} ochre fills re-classed fire-proof)" if nre else "")
 
 
 def extract_regions(key):
@@ -828,6 +844,13 @@ def assemble(areas=None):
                     rect = rect.intersection(Polygon(G["valid_poly_px"]))
                 cv = Polygon(W.apply(np.array(G["M"]), np.asarray(rect.exterior.coords)))
             cover.append(cv)
+            # error of the neighbouring sheets this one is tied to: the fit of the block (tie_block) or sheet the tie used
+            tie_rms = 0.0
+            for e in base.get("points", []) + [c for b in base.get("blocks", []) for c in b["corners"]]:
+                if "tie" in e:
+                    Gt = json.load(open(INTERIM / f"{e['tie']}.M.json"))
+                    tb = [b for b in Gt.get("blocks", []) if b["name"] == e.get("tie_block")]
+                    tie_rms = max(tie_rms, tb[0]["rms"] if tb else Gt.get("rms", 0))
             # control extent of a sheet fit (for the extrapolation rule), in the base plate's pixels
             ctrl = [q["px"] for q in Gb.get("points", []) if q["label"] != "on street line"]
             hull = MultiPoint(ctrl).convex_hull.buffer(1) if len(ctrl) >= 3 else None
@@ -848,8 +871,8 @@ def assemble(areas=None):
                     fitq["M"] = bblocks[zone]["M"]
                 if "registered_to" in G:
                     fitq["rms"] = math.hypot(fitq.get("rms", 0), G.get("reg_rms_m", 0.3))
-                if Gb.get("tie_rms"):  # tied to a neighbouring sheet: its fit error adds
-                    fitq["rms"] = math.hypot(fitq.get("rms", 0), Gb["tie_rms"])
+                if tie_rms:  # tied to a neighbouring sheet: its fit error adds
+                    fitq["rms"] = math.hypot(fitq.get("rms", 0), tie_rms)
                 cls, a = r["cls"], r["area_m2"]
                 att = attrs.get(r["id"], {})
                 if att.get("drop"):
