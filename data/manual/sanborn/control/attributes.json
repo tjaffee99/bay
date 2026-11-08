@@ -915,5 +915,116 @@
 "stories": 4,
 "use": "warehouse",
 "name": "vacant 4-storey building with wooden posts (woolen mill block)"
+},
+"015_0001_f11": {
+"stories": 1,
+"use": "shed",
+"src": "default"
+},
+"015_0001_f53": {
+"stories": 1,
+"use": "store",
+"name": "fish market (concrete floor) and boat shop, Jefferson St wharf"
+},
+"015_0001_f98": {
+"stories": 1,
+"use": "factory",
+"name": "San Francisco Lumber Co. planing mill and lumber shed (not in operation)"
+},
+"015_0001_f135": {
+"stories": 1,
+"use": "factory",
+"name": "Pacific Gas & Electric Co. North Beach gas works - generator / lamp-black buildings"
+},
+"015_0001_f144": {
+"stories": 2,
+"use": "factory",
+"name": "City Electric Co.'s power house (fireproof reinforced concrete)"
+},
+"015_0001_f172": {
+"stories": 1,
+"use": "factory",
+"name": "Dieckmann Hardwood Co. lumber sheds and saw mill"
+},
+"015_0001_f220": {
+"stories": 2,
+"use": "factory",
+"name": "Pacific Box Factory (box nailing 2nd, office 2nd)"
+},
+"015_0001_f243": {
+"stories": 1,
+"use": "shed",
+"name": "Frank P. Doe Co. lumber shed"
+},
+"015_0051_f46": {
+"stories": 2,
+"use": "factory",
+"name": "Anderson Bros. planing mill & mfg. co."
+},
+"015_0051_f208": {
+"stories": 1,
+"use": "warehouse",
+"name": "Healy Tibbitts Construction Co. storage, shops"
+},
+"015_0051_f275": {
+"stories": 2,
+"use": "factory",
+"name": "Pacific Cereal Ass'n (fireproof reinforced concrete)",
+"src": "default"
+},
+"015_0051_f282": {
+"stories": 1,
+"use": "warehouse",
+"name": "Pacific Cereal Ass'n warehouse (iron on studding)"
+},
+"015_0051_f284": {
+"stories": 1,
+"use": "warehouse",
+"name": "Pacific Cereal Ass'n storage, wagon house, premium office"
+},
+"015_0051_b3": {
+"stories": 2,
+"use": "warehouse",
+"name": "North Point Ware Ho. (cement warehouse)"
+},
+"015_0051_b7": {
+"stories": 2,
+"use": "warehouse",
+"name": "Western Feed Co. grain warehouse (2 separators, barley roll)"
+},
+"030_0001_f99": {
+"stories": 1,
+"use": "store",
+"name": "restaurant, Jefferson St"
+},
+"030_0001_f129": {
+"stories": 2,
+"use": "store",
+"name": "restaurants, stores, night club 2nd, warehouses (Jefferson St, Taylor-Mason)"
+},
+"030_0001_f208": {
+"stories": 1,
+"use": "warehouse",
+"name": "storage (San Francisco Lumber Co. site), part vacant & damaged by fire"
+},
+"030_0051_f131": {
+"stories": 1,
+"use": "warehouse",
+"name": "Simmons Co. shipping & storage, truck loading"
+},
+"030_0051_b11": {
+"stories": 1,
+"use": "warehouse",
+"name": "Simmons Co. woodworking & lumber storage warehouse"
+},
+"030_0051_b20": {
+"stories": 2,
+"use": "warehouse",
+"name": "vegetable adhesive & can warehouse, dry mixer"
+},
+"030_0051_s3": {
+"stories": 1,
+"use": "warehouse",
+"name": "Nash Motors auto parts warehouse; contractor's warehouse (reinf. concrete)"
 }
 }
