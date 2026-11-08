@@ -1,0 +1,506 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Bryant-Brannan/03Rd-Ritch",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553200.7,
+       4181724.5
+      ],
+      "03RD ST",
+      [
+       553200.7,
+       4181724.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 03RD ST",
+     "x": 558.0,
+     "y": 249.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553337.5,
+       4181588.7
+      ],
+      "03RD ST",
+      [
+       553337.5,
+       4181588.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 03RD ST",
+     "x": 1389.0,
+     "y": 249.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553153.6,
+       4181676.7
+      ],
+      "RITCH ST",
+      [
+       553153.6,
+       4181676.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x RITCH ST",
+     "x": 558.0,
+     "y": 491.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553290.2,
+       4181541.0
+      ],
+      "RITCH ST",
+      [
+       553290.2,
+       4181541.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x RITCH ST",
+     "x": 1389.0,
+     "y": 491.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    558.0,
+    249.0,
+    1389.0,
+    491.0
+   ]
+  },
+  {
+   "name": "Bryant-Brannan/Ritch-Zoe",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553153.6,
+       4181676.7
+      ],
+      "RITCH ST",
+      [
+       553153.6,
+       4181676.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x RITCH ST",
+     "x": 558.0,
+     "y": 642.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553290.2,
+       4181541.0
+      ],
+      "RITCH ST",
+      [
+       553290.2,
+       4181541.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x RITCH ST",
+     "x": 1389.0,
+     "y": 642.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553113.0,
+       4181635.8
+      ],
+      "ZOE ST",
+      [
+       553113.0,
+       4181635.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x ZOE ST",
+     "x": 558.0,
+     "y": 869.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553249.7,
+       4181500.1
+      ],
+      "ZOE ST",
+      [
+       553249.7,
+       4181500.1
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x ZOE ST",
+     "x": 1389.0,
+     "y": 869.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    558.0,
+    642.0,
+    1389.0,
+    869.0
+   ]
+  },
+  {
+   "name": "Bryant-Welsh/Zoe-04Th #2",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553113.0,
+       4181635.8
+      ],
+      "ZOE ST",
+      [
+       553113.0,
+       4181635.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x ZOE ST",
+     "x": 263.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WELSH ST",
+      [
+       553160.8,
+       4181588.3
+      ],
+      "ZOE ST",
+      [
+       553160.8,
+       4181588.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 35,
+     "label": "corner of WELSH ST x ZOE ST",
+     "x": 503.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553006.8,
+       4181528.6
+      ],
+      "04TH ST",
+      [
+       553006.8,
+       4181528.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 04TH ST",
+     "x": 263.0,
+     "y": 1682.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WELSH ST",
+      [
+       553053.0,
+       4181480.6
+      ],
+      "04TH ST",
+      [
+       553053.0,
+       4181480.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of WELSH ST x 04TH ST",
+     "x": 503.0,
+     "y": 1682.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    263.0,
+    1020.0,
+    503.0,
+    1682.0
+   ]
+  },
+  {
+   "name": "Welsh-Freelon/Zoe-04Th #2",
+   "corners": [
+    {
+     "bcx": [
+      "WELSH ST",
+      [
+       553160.8,
+       4181588.3
+      ],
+      "ZOE ST",
+      [
+       553160.8,
+       4181588.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 35,
+     "label": "corner of WELSH ST x ZOE ST",
+     "x": 703.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FREELON ST",
+      [
+       553202.6,
+       4181546.9
+      ],
+      "ZOE ST",
+      [
+       553202.6,
+       4181546.9
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 35,
+     "label": "corner of FREELON ST x ZOE ST",
+     "x": 945.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WELSH ST",
+      [
+       553053.0,
+       4181480.6
+      ],
+      "04TH ST",
+      [
+       553053.0,
+       4181480.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of WELSH ST x 04TH ST",
+     "x": 703.0,
+     "y": 1682.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FREELON ST",
+      [
+       553095.3,
+       4181438.6
+      ],
+      "04TH ST",
+      [
+       553095.3,
+       4181438.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FREELON ST x 04TH ST",
+     "x": 945.0,
+     "y": 1682.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    703.0,
+    1020.0,
+    945.0,
+    1682.0
+   ]
+  },
+  {
+   "name": "Freelon-Brannan/Zoe-04Th #2",
+   "corners": [
+    {
+     "bcx": [
+      "FREELON ST",
+      [
+       553202.6,
+       4181546.9
+      ],
+      "ZOE ST",
+      [
+       553202.6,
+       4181546.9
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 35,
+     "label": "corner of FREELON ST x ZOE ST",
+     "x": 1149.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553249.7,
+       4181500.1
+      ],
+      "ZOE ST",
+      [
+       553249.7,
+       4181500.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x ZOE ST",
+     "x": 1389.0,
+     "y": 1020.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FREELON ST",
+      [
+       553095.3,
+       4181438.6
+      ],
+      "04TH ST",
+      [
+       553095.3,
+       4181438.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FREELON ST x 04TH ST",
+     "x": 1149.0,
+     "y": 1682.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553142.3,
+       4181391.8
+      ],
+      "04TH ST",
+      [
+       553142.3,
+       4181391.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 04TH ST",
+     "x": 1389.0,
+     "y": 1682.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1149.0,
+    1020.0,
+    1389.0,
+    1682.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

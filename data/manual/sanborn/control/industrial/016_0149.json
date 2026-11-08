@@ -1,0 +1,308 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Perry/03Rd-04Th",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553064.0,
+       4181860.3
+      ],
+      "03RD ST",
+      [
+       553064.0,
+       4181860.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 03RD ST",
+     "x": 295.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553112.3,
+       4181812.4
+      ],
+      "03RD ST",
+      [
+       553112.3,
+       4181812.4
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 03RD ST",
+     "x": 533.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552868.9,
+       4181663.5
+      ],
+      "04TH ST",
+      [
+       552868.9,
+       4181663.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 04TH ST",
+     "x": 295.0,
+     "y": 1600.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       552916.4,
+       4181616.3
+      ],
+      "04TH ST",
+      [
+       552916.4,
+       4181616.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 04TH ST",
+     "x": 533.0,
+     "y": 1600.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    295.0,
+    360.0,
+    533.0,
+    1600.0
+   ]
+  },
+  {
+   "name": "Perry-Stillman/03Rd-04Th",
+   "corners": [
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553112.3,
+       4181812.4
+      ],
+      "03RD ST",
+      [
+       553112.3,
+       4181812.4
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 03RD ST",
+     "x": 743.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553153.2,
+       4181771.8
+      ],
+      "03RD ST",
+      [
+       553153.2,
+       4181771.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 03RD ST",
+     "x": 1004.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       552916.4,
+       4181616.3
+      ],
+      "04TH ST",
+      [
+       552916.4,
+       4181616.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 04TH ST",
+     "x": 743.0,
+     "y": 1600.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       552959.0,
+       4181574.0
+      ],
+      "04TH ST",
+      [
+       552959.0,
+       4181574.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 04TH ST",
+     "x": 1004.0,
+     "y": 1600.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    743.0,
+    360.0,
+    1004.0,
+    1600.0
+   ]
+  },
+  {
+   "name": "Stillman-Bryant/03Rd-04Th",
+   "corners": [
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553153.2,
+       4181771.8
+      ],
+      "03RD ST",
+      [
+       553153.2,
+       4181771.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 03RD ST",
+     "x": 1181.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553200.7,
+       4181724.5
+      ],
+      "03RD ST",
+      [
+       553200.7,
+       4181724.5
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 03RD ST",
+     "x": 1423.0,
+     "y": 360.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       552959.0,
+       4181574.0
+      ],
+      "04TH ST",
+      [
+       552959.0,
+       4181574.0
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 04TH ST",
+     "x": 1181.0,
+     "y": 1600.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553006.8,
+       4181528.6
+      ],
+      "04TH ST",
+      [
+       553006.8,
+       4181528.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 04TH ST",
+     "x": 1423.0,
+     "y": 1600.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1181.0,
+    360.0,
+    1423.0,
+    1600.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}
