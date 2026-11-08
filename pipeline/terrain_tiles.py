@@ -111,8 +111,21 @@ def sf_building_years(g):
         frames.append(gpd.read_parquet(pred)[["start_year", "geometry"]])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), geometry="geometry", crs=4326).to_crs(3857)
     c = b.geometry.representative_point()
-    tree = cKDTree(np.column_stack([c.x.values, c.y.values]))
-    yrs = b.start_year.values.astype(np.float32)
+    px, py, yl = [c.x.values], [c.y.values], [b.start_year.values]
+    # big footprints (campuses, warehouses, stadiums) also count along their outline,
+    # so the ground under and around them is city too, not only near their middle
+    big = b[b.geometry.length > 150]
+    for geom, y in zip(big.geometry.values, big.start_year.values):
+        ring = geom.exterior if geom.geom_type == "Polygon" else max(geom.geoms, key=lambda q: q.area).exterior
+        n = int(ring.length // 40)
+        if n < 2:
+            continue
+        pts = [ring.interpolate(t, normalized=True) for t in np.linspace(0, 1, n, endpoint=False)]
+        px.append(np.array([p.x for p in pts]))
+        py.append(np.array([p.y for p in pts]))
+        yl.append(np.full(n, y))
+    tree = cKDTree(np.column_stack([np.concatenate(px), np.concatenate(py)]))
+    yrs = np.concatenate(yl).astype(np.float32)
     X = g["X0"] + np.arange(g["cols"]) * g["res"]
     Y = g["Y0"] - np.arange(g["rows"]) * g["res"]
     out = np.full((g["rows"], g["cols"]), np.nan, np.float32)

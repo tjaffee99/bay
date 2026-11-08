@@ -242,10 +242,10 @@ def side_lines(mask, bbox, trim=0.08, inset=1.5):
             # a block drawn joined to its neighbour (street never cut through) or with a lane: prefer the OUTER
             # straight line when it has real support (the inner one is then an alley / lane edge)
             sgn = -1 if name in 'LT' else 1
-            outer = sgn * (vv - (fit[0] + fit[1] * tt)) > 20
+            outer = sgn * (vv - (fit[0] + fit[1] * tt)) > 100  # bays form lines only 20-40 px out; a lane ~1000+ px
             if outer.sum() >= max(0.25 * len(tt), 20):
                 f2 = ransac_line(tt[outer], vv[outer])
-                if f2 is not None and f2[3] * outer.sum() >= max(0.12 * len(tt), 30):
+                if f2 is not None and f2[3] * outer.sum() >= max(0.12 * len(tt), 30) and abs(f2[1] - fit[1]) < 0.005:
                     fit = f2
         if fit is None:
             res[name] = (np.nan, 0.0, np.nan, 0.0); continue

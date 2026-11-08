@@ -87,11 +87,11 @@ void main(void) {
     // under construction: a frame of slabs every 3.8 m and columns every 5 m
     vec3 g = vLocal / vec3(5.0, 5.0, 3.8);
     vec3 fw = fwidth(g);
-    float detail = 1.0 - smoothstep(0.2, 0.45, max(max(fw.x, fw.y), fw.z));
+    float detail = 1.0 - smoothstep(0.07, 0.13, max(max(fw.x, fw.y), fw.z));
     vec3 f = abs(fract(g + 0.5) - 0.5);
     float beam = max(max(1.0 - smoothstep(0.05, 0.05 + fw.x, f.x), 1.0 - smoothstep(0.05, 0.05 + fw.y, f.y)), 1.0 - smoothstep(0.07, 0.07 + fw.z, f.z));
     if (beam < 0.5 && detail > 0.5) discard;
-    c = vec3(0.66, 0.64, 0.6);
+    c = vec3(0.66, 0.64, 0.6) * mix(0.72, 1.0, beam);
   }
   vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
