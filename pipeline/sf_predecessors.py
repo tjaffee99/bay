@@ -283,7 +283,7 @@ def apply_sanborn(pred, today, fire, areas):
         g["area"] = area
         g["map_year"] = float(yr)
         frames.append(g[["area", "map_year", "stories", "material", "use", "geometry"] +
-                        [c for c in ("basement", "half_storey", "confidence") if c in g]])
+                        [c for c in ("basement", "half_storey", "confidence", "stories_source") if c in g]])
     sb = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=UTM)
     sb = sb[sb.geometry.notna() & sb.geometry.is_valid & (sb.geometry.area > 6)]
     sb = sb[~sb["use"].fillna("").isin(SANBORN_SKIP)].reset_index(drop=True)
@@ -375,6 +375,11 @@ def apply_sanborn(pred, today, fire, areas):
                 r = M.iloc[i]
                 stories = float(r.stories) if pd.notna(r.stories) and r.stories > 0 else 2.0
                 use = str(r["use"] or "")
+                # storeys not read off the sheet: masonry warehouses / factories were mostly
+                # 3-5 storeys (SoMa, Produce Market), not the tracer's 1-2 storey default
+                if str(r.get("stories_source", "")).startswith("default") and str(r.material or "") in ("brick", "stone", "concrete") \
+                        and g.area > 300:
+                    stories = max(stories, 3.0)
                 storey_h = 4.5 if use in ("warehouse", "factory", "rail") else 3.6
                 height = stories * storey_h + (1.6 if bool(r.get("half_storey", False)) else 0) + (1.2 if use in ("dwelling", "flats") else 0.6)
                 mat = str(r.material or "")

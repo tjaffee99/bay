@@ -59,6 +59,7 @@ AREAS = {
                               "035_0593", "035_0594", "035_0607", "035_0608", "035_0609", "035_0610", "035_0626"],
 }
 RESIDENTIAL_SHEETS = {"0065", "0081", "0096", "0088", "0546", "0561"}
+COVER_STREETS = {"mission_bay", "potrero_point"}  # areas whose block-wise sheets cover the streets between the blocks too
 EDITION_1950 = ("028", "029", "030", "031", "032", "033", "034", "035", "036", "037", "038")
 
 
@@ -602,12 +603,14 @@ def wharves(key):
         poly = Polygon(max(cs, key=cv2.contourArea)[:, 0, :].astype(float)).buffer(1.2, join_style=2).simplify(1.5)
         if poly.geom_type != "Polygon":
             poly = max(poly.geoms, key=lambda p: p.area)
-        ext = apply(M, np.asarray(poly.exterior.coords))
-        out.append({"id": f"{key}_w{k + 1}", "cls": "wharf", "zone": "sheet", "name": w["name"], "confidence": w.get("confidence", "medium"),
+        ext = warp_px(G, np.asarray(poly.exterior.coords)) if G.get("zones_only") else apply(M, np.asarray(poly.exterior.coords))
+        cls = w.get("cls", "wharf")  # a building the colour segmentation missed (e.g. grey iron with truss lines drawn inside)
+        out.append({"id": f"{key}_{'w' if cls == 'wharf' else 'm'}{k + 1}", "cls": cls, "zone": "sheet", "name": w["name"],
+                    **({"confidence": w.get("confidence", "medium")} if cls == "wharf" or w.get("confidence") else {}),
                     "px_centroid": [round(poly.centroid.x, 1), round(poly.centroid.y, 1)], "px_ring": np.asarray(poly.exterior.coords).round(1).tolist(),
                     "area_m2": round(float(Polygon(ext).area), 1), "ring_utm": np.round(ext, 2).tolist(), "holes_utm": []})
     json.dump(out, open(INTERIM / f"{key}.manual.json", "w"))
-    log(key, len(out), "wharf decks")
+    log(key, len(out), "wharf decks / flood-filled buildings")
 
 
 # ----------------------------------------------------------------------------------------------- railway tracks
@@ -821,9 +824,12 @@ def assemble():
             blocks = {b["name"]: b for b in G.get("blocks", [])}
             W_, H_ = Image.open(G["img"]).size
             if G.get("zones_only"):
-                for b in G["blocks"]:
-                    x0, y0, x1, y1 = b["rect_px"]
-                    cover.append(Polygon(apply(np.array(b["M"]), [[x0, y0], [x1, y0], [x1, y1], [x0, y1]])))
+                bl = [Polygon(apply(np.array(b["M"]), [[b["rect_px"][0], b["rect_px"][1]], [b["rect_px"][2], b["rect_px"][1]],
+                                                       [b["rect_px"][2], b["rect_px"][3]], [b["rect_px"][0], b["rect_px"][3]]])) for b in G["blocks"]]
+                if area in COVER_STREETS:  # the streets between the fitted blocks are on the sheet too (and empty of buildings)
+                    cover.append(unary_union(bl).convex_hull.buffer(12, join_style=2))
+                else:
+                    cover += bl
             else:
                 x0, y0, x1, y1 = G.get("valid_px") or [30, 30, W_ - 30, H_ - 30]
                 x0, y0, x1, y1 = max(x0, 30), max(y0, 30), min(x1, W_ - 30), min(y1, H_ - 30)
@@ -880,8 +886,17 @@ def assemble():
         kept = []
         for i in sorted(range(len(feats)), key=lambda i: (rank[feats[i][1]["confidence"]], -feats[i][0].area)):
             g, p = feats[i]
-            if not any(feats[j][1]["sheet"] != p["sheet"] and g.intersects(feats[j][0])
-                       and g.intersection(feats[j][0]).area / min(g.area, feats[j][0].area) > 0.5 for j in kept):
+            dup = [j for j in kept if feats[j][1]["sheet"] != p["sheet"] and g.intersects(feats[j][0])
+                   and g.intersection(feats[j][0]).area / min(g.area, feats[j][0].area) > 0.5]
+            if dup and area in COVER_STREETS and all(feats[j][0].area < 0.5 * g.area for j in dup):
+                # a better-fitted sheet has only the piece of this building at its edge: keep that piece and the rest
+                rest = make_valid(g.difference(unary_union([feats[j][0] for j in dup]).buffer(0.5)))
+                rest = max([q for q in getattr(rest, "geoms", [rest]) if q.geom_type == "Polygon"] or [Polygon()], key=lambda q: q.area)
+                if rest.area >= 0.3 * g.area:
+                    feats[i] = (rest, dict(p, area_m2=round(float(rest.area), 1), modern_overlap=overlap(rest),
+                                           note="part of this building outside the better-georeferenced neighbouring sheet"))
+                    dup = []
+            if not dup:
                 kept.append(i)
         rnd = lambda gj: json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
         fc = {"type": "FeatureCollection", "name": f"{area}_{year}", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
