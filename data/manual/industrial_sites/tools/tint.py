@@ -32,13 +32,13 @@ import vt  # noqa: E402
 U = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/"
 
 
-def colour_mask(img, mode):
+def colour_mask(img, mode, rg=40):
     r, g, b = (img[:, :, i].astype(int) for i in range(3))
     if mode == "purple":
         return (r - g > 35) & (b - g > 25) & (r > 120) & (b > 110)
     if mode == "tint":
         # salmon / brick tint, not the red section lines (darker, more saturated) or contours
-        return (r > 185) & (r - g > 40) & (r - g < 110) & (r - b > 35) & (g > 110)
+        return (r > 185) & (r - g > rg) & (r - g < 110) & (r - b > 30) & (g > 110)
     if mode == "open":
         green = (g - r > 5) | ((g > 180) & (b < 150) & (r > 180) & (g - b > 50))  # green / yellow-green tint
         ink = (r + g + b) < 360
@@ -53,6 +53,7 @@ def main():
     ap.add_argument("--res", type=float, default=3.0); ap.add_argument("--quad", default="")
     ap.add_argument("--close", type=float, default=30.0); ap.add_argument("--open", type=float, default=0.0)
     ap.add_argument("--pre-open", type=float, default=0.0)
+    ap.add_argument("--rg", type=float, default=40, help="tint: min red - green (lighter prints: ~18)")
     ap.add_argument("--min-ha", type=float, default=2.0); ap.add_argument("--seed", action="append", default=[])
     ap.add_argument("--keep-largest", type=int, default=0); ap.add_argument("--preview", default="")
     ap.add_argument("--clip", default="", help="geojson: keep only inside this outline")
@@ -65,7 +66,7 @@ def main():
     from shapely.geometry import shape, mapping, Polygon
     url = o.url if o.url.startswith(("http", "/")) else U + o.url
     img = vt.render_topo(url, o.cx, o.cy, o.half, o.res)
-    m = colour_mask(img, o.mode)
+    m = colour_mask(img, o.mode, o.rg)
     n = img.shape[0]
     xs = -o.half + (np.arange(n) + 0.5) * o.res
     X, Y = np.meshgrid(xs, -xs)
