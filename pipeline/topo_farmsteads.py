@@ -247,19 +247,15 @@ def read_geopdf(pdf_path: Path):
 
 
 def crs_for(proj: dict, bbox=None):
-    """pyproj CRS of a GeoPDF's projected coordinates (NAD27 maps). The LGIDict rounds the
-    central meridian to 3 decimals (-121.813 for -121.8125, ~45 m of longitude); a
-    polyconic quadrangle is projected on its own centre, so that is taken from the
-    quadrangle's footprint when it agrees."""
+    """pyproj CRS of a GeoPDF's projected coordinates (NAD27 maps). The LGIDict gives the
+    central meridian rounded to 3 decimals, and the registration was computed with that
+    rounded value (the neat line inverts exactly onto the quadrangle corners with it), so
+    it is used as is; process_sheet checks the corners against the TNM footprint."""
     import pyproj
     t = proj.get("ProjectionType", "")
     datum = proj.get("Datum", "NAS-C")
     ell = "+datum=NAD27" if datum.startswith("NAS") else "+datum=NAD83" if datum.startswith("NAR") else "+datum=WGS84"
     lon0 = float(proj.get("CentralMeridian", 0) or 0)
-    if bbox is not None and t == "PH":
-        c = (bbox[0] + bbox[2]) / 2
-        if abs(c - lon0) < 0.0011:
-            lon0 = c
     lat0 = float(proj.get("OriginLatitude", 0) or 0)
     fe = float(proj.get("FalseEasting", 0) or 0)
     fn = float(proj.get("FalseNorthing", 0) or 0)
@@ -625,6 +621,12 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
         lon, lat = [], []
     nx, ny = g["px_to_proj"](g["neat_px"][:, 0], g["neat_px"][:, 1])
     nlon, nlat = to_wgs84(crs, nx, ny)
+    # registration check: neat line corners (NAD27) against the quadrangle footprint
+    import pyproj
+    glon, glat = pyproj.Transformer.from_crs(crs, crs.geodetic_crs, always_xy=True).transform(nx, ny)
+    bb = m["bbox"]
+    err = max(min(abs(glon[i] - bb[0]), abs(glon[i] - bb[2])) * 88000 + min(abs(glat[i] - bb[1]), abs(glat[i] - bb[3])) * 111000
+              for i in range(len(glon)) if i % 3 == 0)
     syms = [{"lon": round(float(a), 7), "lat": round(float(b), 7), "px": [round(r["x"], 1), round(r["y"], 1)],
              "area_mm2": round(r["area_mm2"], 4), "score": round(r["score"], 3)}
             for r, a, b in zip(keep, lon, lat)]
@@ -636,7 +638,7 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
            "field_check_year": meta.get("field_check_year"),
            "scan_quality": meta.get("scan_quality"), "woodland_tint": meta.get("woodland_tint"),
            "edition": m.get("edition"), "source_url": m["pdf_url"], "metadata_url": m.get("meta_url"),
-           "m_per_mm": g["m_per_px"] * g["px_per_mm"], "stats": stats,
+           "m_per_mm": g["m_per_px"] * g["px_per_mm"], "stats": stats, "corner_error_m": round(float(err), 1),
            "neatline": [[round(float(a), 7), round(float(b), 7)] for a, b in zip(nlon, nlat)],
            "symbols": syms}
     MAP_CACHE.mkdir(parents=True, exist_ok=True)
