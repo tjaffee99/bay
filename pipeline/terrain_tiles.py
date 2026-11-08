@@ -463,7 +463,11 @@ def histories(name, g, d):
     # ---- fill: c.1800 water/flat/marsh/lagoon that is land now (piers are decks, not fill)
     was_wet = np.isin(N, list(WET))
     is_pier = np.isfinite(pier_y) & was_wet
-    filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier
+    # still baylands in SFEI c.1998 (flat, marsh, pond, moist grassland) are not fill:
+    # levees, marsh plain and dried pond beds read as land in WorldCover, but nobody
+    # filled them (they were the yellow "grass" patches along the South Bay ponds)
+    still_bay = was_wet & ~water_now & ~salt & ~diked & np.isin(b98, [3, 4, 5, 8])
+    filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier & ~still_bay
     fill_y = np.where(np.isfinite(zones_fill), zones_fill, np.where(urban, urban_y - 3, np.nan))
     fill_y = np.where(filled & np.isnan(fill_y), 1950.0, fill_y)
     # In the city, made land was put to use within a few years (wharves, rail yards,
@@ -487,6 +491,9 @@ def histories(name, g, d):
     open_fill = filled & ~urban & ~is_park & np.isfinite(fill_y)
     event(filled, FILL, fill_y)
     event(open_fill, GRASS, fill_y + 6.0)
+    # open bay / flat that became marsh or flat by c.1998 (accretion behind the ponds)
+    event(still_bay & (b98 == 4) & (N != MARSH), MARSH, 1900.0 + 40 * h)
+    event(still_bay & (b98 == 3) & ~np.isin(N, [FLAT, MARSH]), FLAT, 1900.0 + 40 * h)
     event(is_pier & ~water_now, URBAN, pier_y)
     for m, y in excavated:
         event(m & water_now & ~was_wet, SHALLOW, y)

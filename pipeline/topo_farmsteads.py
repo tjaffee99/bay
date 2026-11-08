@@ -638,6 +638,23 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
         # thick strokes (letter stems, >= ~0.26 mm) joined to the blob through light ink
         dtw = cv2.distanceTransform(inkw, cv2.DIST_L2, 3)
         resid_thick = int((comp & (dtw >= thick_t) & ~symw).sum())
+        # the thick part of the blob's own dark component: a house is a compact square (with
+        # thin roads touching it); a letter stroke cut into several "squares" by the
+        # opening is curved (low solidity) or a long bar
+        od = int(np.bincount(dl[own]).argmax()) if own.any() else 0
+        t_area, t_sol, t_elong, t_len = 0, 1.0, 1.0, 0.0
+        if od > 0:
+            T_ = ((dl == od) & (dtw >= 0.6 * thick_t)).astype(np.uint8)
+            t_area = int(T_.sum())
+            if t_area > 8:
+                tc, _ = cv2.findContours(T_, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+                pts = np.concatenate(tc)
+                hull = np.zeros_like(T_)
+                cv2.fillConvexPoly(hull, cv2.convexHull(pts), 1)
+                t_sol = t_area / max(int(hull.sum()), 1)
+                (tw, th_), = [cv2.minAreaRect(pts)[1]]
+                t_elong = max(tw, th_) / max(min(tw, th_), 1)
+                t_len = max(tw, th_) / ppm
         # on a line: a straight dark line (rail, road casing at a crossing) runs through
         # the blob, with ink on both sides of it. A house beside a road has the casing at
         # >= half its width from its centre; a lane ending at a house has ink on one side.
@@ -712,6 +729,8 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
             big_text = bool(np.isfinite(dgm))
         r.update({"touches": bool(touches), "resid_dark_mm2": resid_dark / ppm ** 2,
                   "resid_thick_mm2": resid_thick / ppm ** 2, "big_text": big_text,
+                  "t_ratio": t_area / max(int(own.sum()), 1), "t_sol": float(t_sol), "t_elong": float(t_elong),
+                  "t_len": float(t_len),
                   "on_line": on_line, "holes": holes, "letters_near": letters,
                   "water": float(wwin.mean()), "own_px": int(own.sum())})
     # --- dash-dot boundaries: a candidate on the extension of a long dash. Thin dashes
@@ -742,17 +761,21 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
     dtree = cKDTree(D[:, :2]) if dashes else None
     out = recs_c + opens
     for r in out:
-        on_dash = False
+        # a dot of a dash-dot line has dashes in line with it on both sides
+        sides = set()
         if dtree is not None:
-            for q in dtree.query_ball_point([r["x"], r["y"]], 4.5 * ppm):
+            for q in dtree.query_ball_point([r["x"], r["y"]], 6 * ppm):
                 qx, qy, ux, uy, half = D[q]
                 vx, vy = r["x"] - qx, r["y"] - qy
                 along = vx * ux + vy * uy
                 across = abs(-vx * uy + vy * ux)
-                if half < abs(along) < half + 3.5 * ppm and across < 0.18 * ppm:
-                    on_dash = True
-                    break
-        r["on_dash"] = on_dash
+                if half < abs(along) < half + 3.5 * ppm and across < 0.15 * ppm:
+                    # side relative to a common direction (dash axes may be flipped)
+                    sgn = 1 if (vx * D[0, 2] + vy * D[0, 3]) >= 0 else -1
+                    sides.add(sgn)
+                    if len(sides) == 2:
+                        break
+        r["on_dash"] = len(sides) == 2
     return out
 
 
@@ -816,6 +839,8 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
             reasons.append("glyph")           # letter stems hang on it: part of a word
         if r["big_text"]:
             reasons.append("bigtext")         # next to the strokes of large lettering
+        if r["t_ratio"] > 1.6 and (r["t_sol"] < 0.55 or (r["t_elong"] > 3 and r["t_len"] > 0.9)):
+            reasons.append("stroke")          # piece of a curved / long heavy stroke
         if r["on_line"]:
             reasons.append("online")          # knot on a rail / road crossing
         if r["tri_fill"] > 0.72 and r["area_mm2"] >= 0.22:
