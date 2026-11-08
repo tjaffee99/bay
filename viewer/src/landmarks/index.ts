@@ -55,7 +55,8 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
     positions: new Float32Array(total * 3),
     colors: new Float32Array(total * 3),
     times: new Float32Array(total * 4),
-    pickingColors: new Float32Array(total * 3)
+    pickingColors: new Float32Array(total * 3),
+    builds: new Float32Array(total)
   };
   let o = 0;
   LANDMARKS.forEach((lm, idx) => {
@@ -77,6 +78,7 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
       merged.times[k * 4 + 1] = lm.built[1];
       merged.times[k * 4 + 2] = lm.end;
       merged.times[k * 4 + 3] = base;
+      merged.builds![k] = lm.kind === 'bridge' ? 1 : 0;
       merged.pickingColors[k * 3] = pc[0];
       merged.pickingColors[k * 3 + 1] = pc[1];
       merged.pickingColors[k * 3 + 2] = pc[2];

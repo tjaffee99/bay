@@ -44,6 +44,8 @@ MODE_KIND = {"freeway": K_FREEWAY, "highway": K_HIGHWAY, "cable_car": K_CABLE, "
              "bart": K_BART, "ferry": K_FERRY, "light_rail": K_LIGHTRAIL}
 # BART and today's Muni lines come from transit.py (transit.bin.gz) when it has run
 TRANSIT_TAKES_OVER = True
+# edge of the region extracts (download_overture.REGION_BBOX): freeway ends there are cuts
+REGION_BBOX_ROADS = (-123.2, 36.85, -121.2, 38.9)
 # routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
 LANDMARK_ROUTES = {"fwy_embarcadero"}
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
@@ -246,15 +248,16 @@ def _flag_ranges(rules, key=None):
     return out
 
 
-def freeway_items(ground, fw_tree):
+def freeway_items(ground, fw_routes):
     """Motorways, trunks and ramps (Overture) with a height profile per vertex.
 
     Height above ground: level 1 viaducts ~12.5 m, level 2 ~22 m, other bridges 6.5 m,
     at grade 0.7 m. Approaches climb at most ~5.5 % (the profile is dilated with that
     slope cone), junctions share one height (connectors), and ramp ends that meet a
-    surface street (a connector no other freeway segment uses) come down to the ground
-    at ~8 %. Tunnel portions are dropped. Dates: nearest researched freeway route
-    (<= 150 m), else 1960."""
+    surface street (a connector no other freeway segment uses), mainline ends and tunnel
+    portals come down to grade through the network (see below). Tunnel portions are
+    dropped. Dates: the parallel researched freeway route; ramps open with the latest
+    mainline they connect."""
     fwy = gpd.read_parquet(RAW / "overture" / RELEASE / "freeways.parquet")
     if fwy.crs is None:
         fwy = fwy.set_crs(4326)
@@ -282,6 +285,7 @@ def freeway_items(ground, fw_tree):
         for lo, hi, _ in _flag_ranges(row.road_flags, "is_tunnel"):
             tn[(f >= lo) & (f <= hi)] = True
         h = np.where(lev >= 1, 3.0 + 9.5 * lev, np.where(br, 6.5, 0.7))
+        tn_real = tn.copy()
         # the Bay Bridge and Golden Gate Bridge decks belong to their landmark models
         nm = str(row["name"] or "")
         if br.any():
@@ -296,7 +300,8 @@ def freeway_items(ground, fw_tree):
         conns = [(c["connector_id"], float(c["at"])) for c in (row.connectors if row.connectors is not None else [])]
         for cid, _ in conns:
             conn_count[cid] = conn_count.get(cid, 0) + 1
-        segs.append({"i": i, "g": g, "f": f, "s": f * L, "h": h, "tn": tn, "conns": conns, "cls": row["class"], "sub": row.subclass})
+        segs.append({"i": i, "g": g, "f": f, "s": f * L, "h": h, "tn": tn, "tn_real": tn_real, "conns": conns,
+                     "cls": row["class"], "sub": row.subclass, "bounds": row.geometry.bounds})
 
     def dilate(seg):
         h, s_ = seg["h"], seg["s"]
@@ -320,14 +325,158 @@ def freeway_items(ground, fw_tree):
                 k = idx_at(seg, at)
                 seg["h"][k] = max(seg["h"][k], node_h[cid])
             dilate(seg)
-    # ramp ends meeting surface streets come down to the ground
-    for seg in segs:
-        h, s_ = seg["h"], seg["s"]
-        for cid, at in seg["conns"]:
-            if conn_count.get(cid, 0) > 1 or at not in (0.0, 1.0) or seg["sub"] != "link":
+    # Where a freeway meets the ground: ends that no other freeway segment uses (ramp or
+    # mainline meeting a surface street) and tunnel portals are pinned at grade, and the
+    # road comes down to them through the network (graph distance across connectors):
+    #   * ramps (links) blend from the mainline height at their junction to the street
+    #     (at most 8 % where they are long enough, steeper on short ramps so they never
+    #     detach from the mainline);
+    #   * mainline ends descend at 5 % (e.g. I-280 at King St);
+    #   * tunnel approaches descend at 5.5 % to meet the hillside at the portal.
+    from scipy.sparse import csr_matrix
+    from scipy.sparse.csgraph import dijkstra
+    x0, y0_, x1, y1_ = REGION_BBOX_ROADS
+    offs = np.cumsum([0] + [len(sg["f"]) for sg in segs])
+    N = int(offs[-1])
+    is_link = np.zeros(N, bool)
+    real_tn = np.zeros(N, bool)
+    rows, cols, wts = [], [], []
+    for q, sg in enumerate(segs):
+        o = int(offs[q])
+        is_link[o:o + len(sg["f"])] = sg["sub"] == "link"
+        real_tn[o:o + len(sg["f"])] = sg["tn_real"]
+        ds = np.maximum(np.diff(sg["s"]), 1e-3)
+        a = np.arange(o, o + len(ds))
+        rows.append(a)
+        cols.append(a + 1)
+        wts.append(ds)
+    members = {}
+    for q, sg in enumerate(segs):
+        for cid, at in sg["conns"]:
+            members.setdefault(cid, []).append((int(offs[q]) + idx_at(sg, at), q))
+    jr, jc = [], []
+    for mem in members.values():
+        for (a, _), (b, _) in zip(mem[:-1], mem[1:]):
+            jr.append(a)
+            jc.append(b)
+    rows = np.concatenate(rows + [np.array(jr, int)])
+    cols = np.concatenate(cols + [np.array(jc, int)])
+    wts = np.concatenate(wts + [np.full(len(jr), 1e-3)])
+    G = csr_matrix((wts, (rows, cols)), shape=(N, N))
+    H = np.concatenate([sg["h"] for sg in segs])
+    street_link, street_main = [], []
+    for q, sg in enumerate(segs):
+        for cid, at in sg["conns"]:
+            if conn_count.get(cid, 0) > 1 or at not in (0.0, 1.0):
                 continue
-            d = np.abs(s_ - s_[idx_at(seg, at)])
-            h[:] = np.minimum(h, 0.7 + DOWN * d)
+            pt = sg["g"].interpolate(at, normalized=True)
+            ll = gpd.GeoSeries([pt], crs=UTM).to_crs(4326).iloc[0]
+            if not (x0 + 0.02 < ll.x < x1 - 0.02 and y0_ + 0.02 < ll.y < y1_ - 0.02):
+                continue  # cut by the region edge, not a real end
+            v = int(offs[q]) + idx_at(sg, at)
+            (street_link if sg["sub"] == "link" else street_main).append(v)
+    cap = np.full(N, np.inf)
+    if real_tn.any():
+        d = dijkstra(G, directed=False, indices=np.nonzero(real_tn)[0], min_only=True)
+        cap = np.minimum(cap, 0.7 + SLOPE * d)
+    if street_main:
+        d = dijkstra(G, directed=False, indices=street_main, min_only=True)
+        cap = np.minimum(cap, 0.7 + 0.05 * d)
+    if street_link:
+        # ramps only: distances inside the link network
+        lk = np.nonzero(is_link)[0]
+        pos_in = -np.ones(N, int)
+        pos_in[lk] = np.arange(len(lk))
+        sub = G[lk][:, lk]
+        d_pin = dijkstra(sub, directed=False, indices=pos_in[street_link], min_only=True)
+        # link vertices at a junction with a mainline segment
+        jn = sorted({a for mem in members.values() if any(not is_link[a2] for a2, _ in mem) for a, _ in mem if is_link[a]})
+        if jn:
+            d_main, _, src = dijkstra(sub, directed=False, indices=pos_in[jn], min_only=True, return_predecessors=True)
+            Hsrc = np.where(src >= 0, H[lk[np.maximum(src, 0)]], 0.7)
+            t = np.where(np.isfinite(d_main) & np.isfinite(d_pin), d_pin / np.maximum(d_pin + d_main, 1e-3), 1.0)
+            interp = 0.7 + (Hsrc - 0.7) * t
+        else:
+            interp = np.full(len(lk), 0.7)
+        c = np.where(np.isfinite(d_pin), np.maximum(0.7 + DOWN * d_pin, interp), np.inf)
+        cap[lk] = np.minimum(cap[lk], c)
+    H = np.minimum(H, cap)
+    # keep junctions continuous after lowering: the lowest member wins, and a road may
+    # climb away from a lowered junction at no more than 8 %
+    for _ in range(4):
+        for mem in members.values():
+            idx = [a for a, _ in mem]
+            H[idx] = H[idx].min()
+        for q, sg in enumerate(segs):
+            o, n_ = int(offs[q]), len(sg["f"])
+            hs, s_ = H[o:o + n_], sg["s"]
+            for k in range(1, n_):
+                hs[k] = min(hs[k], hs[k - 1] + DOWN * (s_[k] - s_[k - 1]))
+            for k in range(n_ - 2, -1, -1):
+                hs[k] = min(hs[k], hs[k + 1] + DOWN * (s_[k + 1] - s_[k]))
+    for q, sg in enumerate(segs):
+        sg["h"] = H[int(offs[q]):int(offs[q + 1])]
+    log(f"roads: freeway grade pins: {len(street_main)} mainline ends, {len(street_link)} ramp ends, "
+        f"{int(real_tn.sum())} tunnel vertices")
+
+    # Dates: a mainline segment takes the year of the researched route running along it
+    # (parallel, <= 150 m; a crossing freeway at an interchange doesn't count); ramps open
+    # with the latest of the mainlines they connect.
+    def vote(seg):
+        if fw_routes is None:
+            return None
+        P, T, Y = fw_routes
+        ys = []
+        for fr in (0.1, 0.3, 0.5, 0.7, 0.9):
+            g = seg["g"]
+            a = g.interpolate(max(fr - 0.02, 0), normalized=True)
+            b = g.interpolate(min(fr + 0.02, 1), normalized=True)
+            tv = np.array([b.x - a.x, b.y - a.y])
+            tv /= max(np.linalg.norm(tv), 1e-6)
+            m = g.interpolate(fr, normalized=True)
+            dd, ii = fw_routes_tree.query((m.x, m.y), k=12, distance_upper_bound=150)
+            for d_, j in zip(np.atleast_1d(dd), np.atleast_1d(ii)):
+                if np.isfinite(d_) and abs(float(T[j] @ tv)) > 0.8:
+                    ys.append(Y[j])
+                    break
+        return float(np.median(ys)) if ys else None
+    fw_routes_tree = cKDTree(fw_routes[0]) if fw_routes is not None else None
+    for sg in segs:
+        sg["year"] = vote(sg) if sg["sub"] != "link" else None
+    # mainlines without a parallel route: nearest route within 60 m, else 1960
+    for sg in segs:
+        if sg["sub"] != "link" and sg["year"] is None:
+            sg["year"] = 1960.0
+            if fw_routes_tree is not None:
+                m = sg["g"].interpolate(0.5, normalized=True)
+                dd, ii = fw_routes_tree.query((m.x, m.y))
+                if dd < 60:
+                    sg["year"] = float(fw_routes[2][ii])
+    # ramps: connected components of link segments
+    parent = list(range(len(segs)))
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+    for mem in members.values():
+        lq = [q for _, q in mem if segs[q]["sub"] == "link"]
+        for a, b in zip(lq[:-1], lq[1:]):
+            parent[find(a)] = find(b)
+    comp_year = {}
+    for mem in members.values():
+        mains = [segs[q]["year"] for _, q in mem if segs[q]["sub"] != "link"]
+        links = [q for _, q in mem if segs[q]["sub"] == "link"]
+        if mains and links:
+            for q in links:
+                r = find(q)
+                comp_year[r] = max(comp_year.get(r, -1e9), max(mains))
+    for q, sg in enumerate(segs):
+        if sg["sub"] == "link":
+            sg["year"] = comp_year.get(find(q))
+            if sg["year"] is None:
+                sg["year"] = vote(sg) or 1960.0
 
     items = []
     for seg in segs:
@@ -336,12 +485,7 @@ def freeway_items(ground, fw_tree):
         xy = gpd.GeoSeries(pts, crs=UTM).to_crs(4326)
         lon, lat = xy.x.values, xy.y.values
         z = ground(lon, lat) + seg["h"]
-        y0 = 1960.0
-        if fw_tree is not None:
-            mid = g.interpolate(0.5, normalized=True)
-            dd, ii = fw_tree[0].query((mid.x, mid.y))
-            if dd < 150:
-                y0 = float(fw_tree[1][ii])
+        y0 = float(seg["year"])
         link = seg["sub"] == "link"
         k = K_FREEWAY if seg["cls"] == "motorway" else K_HIGHWAY
         width = 6.5 if link else (13.0 if seg["cls"] == "motorway" else 11.0)
@@ -495,7 +639,22 @@ def main():
             y = float(fby[i]) if np.isfinite(fby[i]) and klass == "tertiary" else 1880.0
         items.append((g, k, WIDTH[k], y, 9999.0, 0))
     write_paths(VIEWER_DATA / "roads-region.bin.gz", items, ground, z_offset, step=60.0)
-    write_paths3d(VIEWER_DATA / "freeways.bin.gz", freeway_items(ground, fw_tree))
+    # researched freeway lines with their direction, to date Overture's real geometry
+    fw_routes = None
+    if fw:
+        P, T, Y = [], [], []
+        for g, _, _, a, _, _ in fw:
+            pts = densify(g, 40) or []
+            xy = np.array([(p.x, p.y) for p in pts])
+            if len(xy) < 2:
+                continue
+            tg = np.gradient(xy, axis=0)
+            tg /= np.maximum(np.linalg.norm(tg, axis=1, keepdims=True), 1e-6)
+            P.append(xy)
+            T.append(tg)
+            Y += [a] * len(xy)
+        fw_routes = (np.concatenate(P), np.concatenate(T), np.array(Y))
+    write_paths3d(VIEWER_DATA / "freeways.bin.gz", freeway_items(ground, fw_routes))
 
 
 if __name__ == "__main__":

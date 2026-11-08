@@ -21,9 +21,11 @@ export class BuildingLayer<DataT = any, ExtraProps extends {} = {}> extends Soli
     const shaders = super.getShaders(type);
     const inject: Record<string, string> = {...(shaders.inject || {})};
     const add = (key: string, code: string) => (inject[key] = (inject[key] || '') + code);
-    add('vs:#decl', 'out vec3 vWin;\nout float vSide;\n');
-    add('fs:#decl', 'in vec3 vWin;\nin float vSide;\n');
+    add('vs:#decl', 'out vec3 vWin;\nout float vSide;\nout float vBuild;\n');
+    add('fs:#decl', 'in vec3 vWin;\nin float vSide;\nin float vBuild;\n');
     add('vs:#main-start', 'vWin = vec3(0.0); vSide = 0.0;\n');
+    // TimeExtension('polygon'): 1 while the building is under construction
+    add('vs:#main-end', 'vBuild = time_building;\n');
     add(
       'props.elevations = elevations * positions.y;',
       `
@@ -74,6 +76,29 @@ export class BuildingLayer<DataT = any, ExtraProps extends {} = {}> extends Soli
     color.rgb = mix(color.rgb * (1.0 - avg * 0.35), mix(color.rgb, glass, 0.78), win * vis);
     // grounding: slightly darker towards the street
     color.rgb *= mix(0.82, 1.0, smoothstep(0.0, 4.0, vWin.y));
+  }
+  // under construction: the frame only — timber studs and joists for small buildings,
+  // a concrete / steel frame with floor slabs for big ones; solid when too far to see
+  if (vBuild > 0.5) {
+    float H = vWin.z;
+    float timber = 1.0 - step(14.0, H);
+    float steel = step(40.0, H) * step(0.5, fract(sin(dot(color.rgb, vec3(7.13, 3.71, 9.17))) * 4375.85));
+    vec3 frame = timber > 0.5 ? vec3(0.76, 0.64, 0.46) : steel > 0.5 ? vec3(0.5, 0.33, 0.26) : vec3(0.7, 0.68, 0.64);
+    if (vSide > 0.5) {
+      vec2 g = vec2(vWin.x / mix(4.5, 1.2, timber), vWin.y / mix(mix(3.6, 3.9, step(40.0, H)), 3.0, timber));
+      vec2 fw = fwidth(g);
+      float detail = 1.0 - smoothstep(0.2, 0.45, max(fw.x, fw.y));
+      vec2 f = abs(fract(g + 0.5) - 0.5);
+      float tx = mix(0.06, 0.07, timber);
+      float ty = mix(0.07, 0.04, timber);
+      float beam = max(1.0 - smoothstep(tx, tx + fw.x, f.x), 1.0 - smoothstep(ty, ty + fw.y, f.y));
+      beam = max(beam, step(H - 0.4, vWin.y));
+      if (beam < 0.5 && detail > 0.5 && vWin.y > 0.25) discard;
+      if (!bool(picking.isActive)) color.rgb = frame * mix(0.9, 1.0, beam);
+    } else if (!bool(picking.isActive)) {
+      // top deck: plywood / concrete slab
+      color.rgb = timber > 0.5 ? vec3(0.78, 0.68, 0.5) : vec3(0.62, 0.61, 0.58);
+    }
   }
 `
     );

@@ -5,8 +5,10 @@
  * per-layer overhead (uniforms, bindings) then dominated every frame. Here the
  * meshes are merged once into a single vertex buffer in lng/lat offsets, and
  * every vertex carries its landmark's [start, complete, end, base z] so the
- * vertex shader does what TimeExtension('mesh-z') did per layer: hide outside
- * the lifespan, rise over the construction years, darken while being removed.
+ * vertex shader hides it outside its lifespan and darkens it while being removed.
+ * Between start and completion it stands at full height under construction: a
+ * frame (floor slabs and columns, the rest see-through) — or, for bridges
+ * (`builds` = 1), the whole structure in unpainted steel — then it is finished.
  * Picking colours are per vertex (= landmark index).
  */
 import {COORDINATE_SYSTEM, Layer, picking, project32, phongMaterial} from '@deck.gl/core';
@@ -20,6 +22,8 @@ export type MergedLandmarks = {
   colors: Float32Array;
   times: Float32Array;
   pickingColors: Float32Array;
+  /** per vertex: 0 = frame while under construction, 1 = whole structure in raw steel (bridges) */
+  builds?: Float32Array;
 };
 
 type LmUniforms = {year: number; quality: number};
@@ -39,16 +43,21 @@ in vec3 positions;
 in vec3 colors;
 in vec4 times;
 in vec3 pickingColors;
+in float builds;
 out vec3 vColor;
 out vec3 vCommon;
 out vec3 vCamera;
+out vec3 vLocal;
+out float vBuild;
 void main(void) {
   float y = landmarks.year;
   bool vis = y >= times.x && y < times.z;
   float ending = smoothstep(times.z - 0.8, times.z, y);
-  float grow = smoothstep(times.x, max(times.y, times.x + 0.5), y) * (1.0 - ending);
+  float grow = 1.0 - ending;
   vec3 p = positions;
   p.z = times.w + (p.z - times.w) * grow;
+  vBuild = y < times.y ? 1.0 + builds : 0.0;
+  vLocal = vec3(positions.xy * vec2(88000.0, 111000.0), positions.z - times.w);
   picking_setPickingColor(pickingColors);
   vec4 commonPos;
   gl_Position = project_position_to_clipspace(p, vec3(0.0), vec3(0.0), commonPos);
@@ -58,6 +67,7 @@ void main(void) {
   vCommon = commonPos.xyz;
   vCamera = project.cameraPosition;
   vec3 col = landmarks.quality > 0.5 ? vec3(0.84, 0.69, 0.2) : colors;
+  if (vBuild > 1.5) col = mix(col, vec3(0.5, 0.36, 0.3), 0.75);
   vColor = mix(col, vec3(0.42, 0.3, 0.24), 0.5 * ending);
 }
 `;
@@ -68,11 +78,24 @@ precision highp float;
 in vec3 vColor;
 in vec3 vCommon;
 in vec3 vCamera;
+in vec3 vLocal;
+in float vBuild;
 out vec4 fragColor;
 void main(void) {
+  vec3 c = vColor;
+  if (vBuild > 0.5 && vBuild < 1.5) {
+    // under construction: a frame of slabs every 3.8 m and columns every 5 m
+    vec3 g = vLocal / vec3(5.0, 5.0, 3.8);
+    vec3 fw = fwidth(g);
+    float detail = 1.0 - smoothstep(0.2, 0.45, max(max(fw.x, fw.y), fw.z));
+    vec3 f = abs(fract(g + 0.5) - 0.5);
+    float beam = max(max(1.0 - smoothstep(0.05, 0.05 + fw.x, f.x), 1.0 - smoothstep(0.05, 0.05 + fw.y, f.y)), 1.0 - smoothstep(0.07, 0.07 + fw.z, f.z));
+    if (beam < 0.5 && detail > 0.5) discard;
+    c = vec3(0.66, 0.64, 0.6);
+  }
   vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
-  fragColor = vec4(lighting_getLightColor(vColor, vCamera, vCommon, n), 1.0);
+  fragColor = vec4(lighting_getLightColor(c, vCamera, vCommon, n), 1.0);
   DECKGL_FILTER_COLOR(fragColor, geometry);
 }
 `;
@@ -124,7 +147,8 @@ export class LandmarkMeshLayer extends Layer<Props> {
           positions: {size: 3, value: m.positions},
           colors: {size: 3, value: m.colors},
           times: {size: 4, value: m.times},
-          pickingColors: {size: 3, value: m.pickingColors}
+          pickingColors: {size: 3, value: m.pickingColors},
+          builds: {size: 1, value: m.builds ?? new Float32Array(m.positions.length / 3)}
         }
       }),
       isInstanced: false

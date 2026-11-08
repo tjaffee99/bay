@@ -184,7 +184,7 @@ function addDecks(set: PathSet) {
       for (const v of q) {
         out.pos.push(v[0], v[1], v[2]);
         out.col.push(c[0], c[1], c[2]);
-        out.times.push(y0, y0 + 1.5, y1, base);
+        out.times.push(y0, y0, y1, base);
       }
     };
     for (let k = 0; k < b - a - 1; k++) {
