@@ -596,3 +596,112 @@ route("peninsular", "Peninsular Railway (San Jose & Los Gatos Interurban)", "int
              "LOW CONFIDENCE.", source_url="https://saratogahistory.com/History/PIrailroad.htm",
         confidence="estimated", geometry_confidence="low"),
 ])
+
+# =====================================================================================
+# EAST BAY / CONTRA COSTA: Central Pacific Northern Railway (1878), Santa Fe (1900), Western Pacific (1909-10),
+# Oakland, Antioch & Eastern / Sacramento Northern (1910-13), SP San Ramon branch (1891)
+# =====================================================================================
+route("cp_northern", "Central Pacific 'Northern Railway': Oakland - Berkeley - Richmond - Port Costa - Martinez", "rail",
+      WIKI + "Martinez_Subdivision", [
+          seg("Oakland - Emeryville - Berkeley - Albany - Richmond - San Pablo - Pinole - Hercules - Rodeo - Crockett -"
+              " Port Costa - Martinez", 1878.1, 9999,
+              rail((-122.3021, 37.8140), (-122.2927, 37.8416), (-122.3023, 37.8715), (-122.3139, 37.9005),
+                   (-122.3378, 37.9246), (-122.3599, 37.9489), (-122.3577, 37.9807), (-122.3430, 38.0020),
+                   (-122.3131, 38.0108), (-122.2849, 38.0213), (-122.2636, 38.0407), (-122.2418, 38.0577),
+                   (-122.2078, 38.0550), (-122.1781, 38.0431), (-122.1560, 38.0238), (-122.1468, 38.0202),
+                   names=["Martinez"], snap=250),
+              note="Central Pacific's Northern Railway along the shore of San Francisco and San Pablo bays (opened "
+                   "1878, month ESTIMATED; train ferry Solano from Port Costa to Benicia from December 1879 until the "
+                   "1930 bridge); today the UP Martinez Subdivision (geometry: OSM).", confidence="estimated"),
+          seg("Martinez - Benicia bridge approach (1930)", 1930.8, 9999,
+              rail((-122.1468, 38.0202), (-122.1184, 38.0355), (-122.1237, 38.0655), (-122.1037, 38.0939),
+                   names=["Martinez"], snap=250),
+              note="SP Martinez-Benicia bridge opened 1930 (replacing the Port Costa train ferry); geometry: OSM.",
+              confidence="estimated", source_url=WIKI + "Benicia%E2%80%93Martinez_Bridge"),
+      ])
+
+SANTAFE = WIKI + "Point_Richmond,_California"
+route("atsf_richmond", "Atchison, Topeka & Santa Fe (San Francisco & San Joaquin Valley Ry) to Point Richmond", "rail",
+      SANTAFE, [
+          seg("Port Chicago - Martinez (Muir trestle) - Franklin Canyon - Hercules - Pinole - Richmond", 1900.4, 9999,
+              rail((-121.9310, 38.0310), (-121.9982, 38.0454), (-122.0579, 38.0250), (-122.0824, 38.0053),
+                   (-122.1152, 37.9997), (-122.1444, 37.9885), (-122.1728, 37.9975), (-122.2056, 38.0010),
+                   (-122.2316, 38.0158), (-122.2565, 38.0117), (-122.2897, 38.0080), (-122.3224, 38.0023),
+                   (-122.3534, 37.9915), (-122.3573, 37.9640), (-122.3711, 37.9395), names=["BNSF"], snap=250),
+              note="Santa Fe's Valley Road from Stockton reached Point Richmond in 1900 (first train May 1900, month "
+                   "ESTIMATED); today the BNSF Stockton Subdivision (geometry: OSM). The line east of Port Chicago "
+                   "(Pittsburg - Antioch - Stockton) is outside this file.", confidence="estimated"),
+          seg("Richmond yard - Ferry Point tunnel - Ferry Point slip", 1900.4, 1975.0,
+              rail((-122.3711, 37.9395), (-122.3755, 37.9318), snap=250),
+              pts((-122.3755, 37.9318), (-122.3815, 37.9290), (-122.3870, 37.9215), (-122.3905, 37.9150),
+                  (-122.3935, 37.9115)),
+              note="Santa Fe terminal and ferry slip at Ferry Point, reached through a tunnel under the Potrero hills; "
+                   "passenger ferries to San Francisco from 1900 (moved to the Oakland Pier in 1933), car floats "
+                   "until c.1975 (ESTIMATED). Tunnel and slip positions APPROXIMATE.", confidence="estimated",
+              geometry_confidence="low"),
+      ])
+
+WPRR = WIKI + "Western_Pacific_Railroad"
+route("wp_main", "Western Pacific Railroad (Feather River Route) in Alameda County", "rail", WPRR, [
+    seg("Oakland Mole - 3rd St - East Oakland (Fruitvale)", 1909.9, 1960.0,
+        pts((-122.3050, 37.7942), (-122.2990, 37.7955), (-122.2900, 37.7985), (-122.2760, 37.7965),
+            (-122.2600, 37.7910), (-122.2450, 37.7845), (-122.2330, 37.7775), (-122.2197, 37.7697)),
+        note="WP's own line from its mole along the Oakland waterfront (3rd Street) to East Oakland; freight from "
+             "December 1909, passenger trains from 1910-08-22; later merged with the SP/UP lines (end ESTIMATED). "
+             "Geometry hand-placed along the waterfront - LOW CONFIDENCE.", confidence="estimated",
+        geometry_confidence="low"),
+    seg("East Oakland - San Leandro - Hayward - Niles - Niles Canyon - Sunol - Pleasanton - Livermore - Altamont",
+        1909.9, 9999,
+        rail((-122.2197, 37.7697), (-122.1674, 37.7292), (-122.1147, 37.6886), (-122.0660, 37.6453),
+             (-122.0246, 37.5972), (-121.9681, 37.5745), (-121.9170, 37.5938), (-121.8793, 37.6187),
+             (-121.8741, 37.6664), (-121.8066, 37.6765), (-121.7411, 37.6925), (-121.6755, 37.7286),
+             (-121.6551, 37.7462), (-121.6002, 37.7239), (-121.5560, 37.7040), names=["UP Oakland"], snap=250),
+        note="Golden spike 1909-11-01, freight service December 1909, passenger 1910-08-22; today the UP Oakland "
+             "Subdivision (geometry: OSM).", confidence="estimated"),
+])
+
+SN = WIKI + "Sacramento_Northern_Railway"
+route("sn", "Oakland, Antioch & Eastern / Sacramento Northern Railway", "interurban", SN, [
+    seg("Oakland: 40th & Shafter - Shafter Ave - Rockridge - Temescal - Thornhill (Montclair)", 1913.27, 1957.17,
+        road((-122.25978, 37.82846), (-122.2575, 37.8360), names=["Shafter"], snap=120),
+        pts((-122.2575, 37.8360), (-122.2545, 37.8410), (-122.2500, 37.8435)),
+        topo("con1915", (-122.2500, 37.8435), (-122.2420, 37.8445), (-122.2330, 37.8405), (-122.2250, 37.8365),
+             (-122.2160, 37.8318), corridor=150),
+        note="Terminal yard at 40th St & Shafter Ave; north up Shafter Ave, across College Ave, then the private "
+             "right of way past Temescal to Montclair; through service Oakland - Bay Point 1913-04-07 (Key System "
+             "Mole from 1913, Bay Bridge 1939); passenger service ended 1941-07-01; freight Oakland - Lafayette "
+             "ended 1957-03-01. Geometry: today's Shafter Ave, USGS Concord 1915 sheet ('O.A. and E.').",
+        geometry_confidence="medium"),
+    seg("Shepherd Canyon - Redwood Peak tunnel - Pinehurst - Canyon - Moraga", 1913.27, 1957.17,
+        rail((-122.2150, 37.8316), (-122.2004, 37.8298), (-122.1727, 37.8358), (-122.1455, 37.8193), snap=250),
+        note="Up Shepherd Canyon and under the hills near Havens / Eastport (tunnel of ~3,500 ft, sealed after "
+             "1957). Geometry: OSM grade."),
+    seg("Moraga - Lafayette", 1913.27, 1957.17,
+        rail((-122.1455, 37.8193), (-122.1345, 37.8273), (-122.1074, 37.8521), (-122.1128, 37.8875), snap=250),
+        note="Today the Lafayette-Moraga Regional Trail (geometry: OSM)."),
+    seg("Lafayette - Saranap - Walnut Creek", 1911.5, 1957.17,
+        rail((-122.1128, 37.8875), (-122.0962, 37.8858), (-122.0930, 37.8860), snap=250),
+        topo("con1915", (-122.0930, 37.8860), (-122.0800, 37.8930), (-122.0700, 37.8990), (-122.0645, 37.9025),
+             corridor=250),
+        note="Oakland & Antioch Railway extended Walnut Creek - Lafayette 1911 (month ESTIMATED); end of freight "
+             "ESTIMATED with the Oakland - Lafayette abandonment. Geometry: OSM grade + USGS Concord 1915 sheet.",
+        confidence="estimated"),
+    seg("Walnut Creek - Concord - Clyde - Bay Point (Oakland & Antioch Ry, 1910-11)", 1910.5, 1977.0,
+        topo("con1915", (-122.0645, 37.9025), (-122.0550, 37.9150), (-122.0450, 37.9270), (-122.0350, 37.9390),
+             (-122.0310, 37.9580), (-122.0300, 37.9780), (-122.0250, 37.9990), corridor=300),
+        pts((-122.0250, 37.9990), (-121.9950, 38.0150), (-121.9600, 38.0260), (-121.9500, 38.0300)),
+        note="Oakland and Antioch Railway opened Bay Point - Walnut Creek 1910; SN freight continued for decades "
+             "after passenger service ended in 1941 (end ESTIMATED). Geometry: USGS Concord 1915 sheet south of "
+             "38 N, hand-placed to Bay Point - LOW CONFIDENCE east of Concord.", confidence="estimated",
+        geometry_confidence="low"),
+])
+
+route("sp_san_ramon", "Southern Pacific San Ramon branch (Avon - Concord - Walnut Creek)", "rail",
+      WIKI + "Iron_Horse_Regional_Trail", [
+          seg("Avon - Pacheco - Concord - Walnut Creek", 1891.5, 1978.0,
+              rail((-122.0324, 38.0283), (-122.0388, 37.9985), (-122.0481, 37.9693), (-122.0512, 37.9469),
+                   (-122.0563, 37.9169), names=["San Ramon"], snap=250),
+              note="SP branch from Avon to Walnut Creek, Danville and San Ramon (1891, month ESTIMATED; extended to "
+                   "Radum 1909); abandoned 1978, now the Iron Horse Trail. Only the Avon - Walnut Creek part "
+                   "(OSM 'San Ramon Line') is traced here.", confidence="estimated"),
+      ])
