@@ -410,6 +410,52 @@ def frontier_village():
            surface="drive-in", src=TOPO)
 
 
+# =====================================================================================
+# Naval Supply Center Oakland (1941-1998): warehouses on the Middle Harbor fill
+# =====================================================================================
+def oakland_nsc():
+    S = Site("oakland_nsc", "Naval Supply Center Oakland (Naval Supply Depot / FISC Oakland)", "military", -122.3150, 37.8040,
+             "https://en.wikipedia.org/wiki/Fleet_and_Industrial_Supply_Center,_Oakland")
+    G = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/"
+    TOPO = G + "CA_Oakland%20West_293624_1959_24000_geo.tif"     # USGS Oakland West 1:24k 1959 (1958 photos)
+    tr = J("oakland_nsc_topo.json")
+    OPEN, CLOSE = 1941.95, 2000.0        # depot opened 15 Dec 1941; closed 30 Sep 1998, to the Port 1999, cleared for the 2001-02 terminals
+    S.part(P(tr["nsc"]), "industrial", OPEN, CLOSE, "estimated",
+           "Naval Supply Center grounds (warehouse blocks, rail sidings, piers) inside its perimeter road on the 1993 sheet; "
+           "closed 30 Sep 1998 (BRAC 1995), transferred to the Port of Oakland 1999, buildings demolished for the Vision 2000 "
+           "terminals (Hanjin 2001, SSA 2002) and Middle Harbor Shoreline Park (2004) - end year estimated",
+           surface="supply depot", src=G + "CA_Oakland%20West_102315_1993_24000_geo.tif")
+    for w in tr["warehouses1959"]:
+        e = np.array(w["coords"])
+        dims = sorted([np.hypot(*(e[1] - e[0])), np.hypot(*(e[2] - e[1]))])
+        if w["ink1946"] < 0.2 and w["area"] < 1500 and dims[1] / dims[0] < 1.6:
+            continue                                   # map lettering ("OAKLAND NAVAL SUPPLY CENTER")
+        early = w["ink1946"] >= 0.2
+        S.bldg(P(w["coords"]), "Naval Supply Center warehouse", 1942.5 if early else 1952.0, CLOSE, 9.0, 1, "concrete",
+               "warehouse", "estimated",
+               f"cross-hatched building of the 1959 sheet (1958 photos), {w['w']:.0f} x {w['l']:.0f} m, split along the depot's "
+               f"street grid; {'already on the 1946-photo sheet (built 1941-45, year estimated)' if early else 'absent on the 1946-photo sheet (start = midpoint)'}; "
+               "height / material estimated", src=TOPO)
+
+
+# =====================================================================================
+# Oakland Trotting Park / California Jockey Club race track, Emeryville (1871-1915)
+# =====================================================================================
+def emeryville_track():
+    S = Site("emeryville_racetrack", "Emeryville race track (Oakland Trotting Park / New California Jockey Club)", "racetrack",
+             -122.2870, 37.8360, "https://emeryvillehistorical.org/centennial-essays/oakland-trotting-park/")
+    TOPO = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco_298895_1899_62500_geo.tif"
+    o = J("emeryville_track_topo.json")["oval_1914_imprint"]
+    u, v, a, L, R = o["u"], o["v"], o["bearing"], o["L"], o["R"]
+    st = lambda r: geom.stadium(u, v, a, L, r, step=3.0)
+    OPEN, LAST, GONE = 1871.5, 1911.12, 1915.96    # opened 4 Jul 1871; last race 15 Feb 1911; buildings burned 15 Dec 1915
+    S.part(ring(st(R + 18), st(R)), "dirt_track", OPEN, 1915.0, "estimated",
+           "one-mile track (2,000 x 900 ft) fitted to the oval of the USGS 1:62,500 San Francisco sheet (1899 edition, 1914 "
+           "imprint), the sheet shifted 220 m to today's streets; track width 18 m estimated; rebuilt Oct 1896 for the New "
+           "California Jockey Club, racing ended 1911, subdivided into factory sites 1915", surface="dirt track", src=TOPO)
+    S.part(st(R), "grass", OPEN, 1915.0, "estimated", "infield (Temescal Creek ran through the track)", surface="lawn", src=TOPO)
+
+
 def build():
     bay_meadows()
     hp_apple()
@@ -417,3 +463,5 @@ def build():
     ford_milpitas()
     marine_world()
     frontier_village()
+    oakland_nsc()
+    emeryville_track()

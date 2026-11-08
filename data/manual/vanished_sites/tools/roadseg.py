@@ -13,6 +13,8 @@ SHEETS={  # site_id: (npy, cx, cy, half, res, sheet label)
  'ford_milpitas':('cache/fm1979.npy',-121.8980,37.4158,700,1.0,'USGS Milpitas 1:24k 1980 photorevision (1979 photos)'),
  'marine_world':('cache/mw1980.npy',-122.2640,37.5300,700,1.0,'USGS San Mateo 1:24k 1980 photorevision (1978 photos)'),
  'frontier_village':('cache/fv1973.npy',-121.8240,37.2650,700,1.0,'USGS San Jose East 1:24k 1973 photorevision'),
+ 'oakland_nsc':('cache/oab1993.npy',-122.3150,37.8040,1100,1.0,'USGS Oakland West 1:24k 1993'),
+ 'emeryville_racetrack':('cache/em1914s.npy',-122.2870,37.8360,900,1.5,'USGS San Francisco 1:62,500 (1899 ed., 1914 imprint, shifted to today)'),
 }
 fc=json.load(open('sites.geojson'))['features']
 def zone_of(site_id, line):

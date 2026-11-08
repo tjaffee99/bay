@@ -14,7 +14,7 @@ appears. Anything generated or estimated says so in its `confidence` / `note`.
 |---|---|
 | `sites.geojson` | Polygon parts of each site's ground over its lifetime (one feature per part and period) |
 | `buildings.geojson` | Footprints of vanished buildings (predecessors) |
-| `road_segments.csv` | Overture road segments (`roads_local` / `roads_region`) lying on these sites, with a *not-before* year where the segment cannot have existed (see below) |
+| `road_segments.csv` | Overture road segments (`roads_local` / `roads_region`) lying on these sites (219 rows), with a *not-before* year where the segment cannot have existed (see below) |
 | `traced/*.json` | Intermediate tracings in each site's local metre frame (automatic extractions from the sheets, hand-read corners) |
 | `traced/apple_park_osm.geojson` | OSM features of Apple Park (via Overture base / transportation, © OpenStreetMap contributors, ODbL) |
 | `tools/` | The tracing tools (see *Method*); `python -I tools/trace_sites.py` rebuilds the two GeoJSONs from `traced/` |
@@ -76,6 +76,8 @@ still stands — the Great Mall, the Edenvale church — it is left out).
 | `marine_world` | Marine World / Africa USA, Redwood Shores | Jul 1968 – 1986 | San Mateo 1:24k 1980 PR (1978 photos) | built-up area exact; buildings are symbol blobs (approximate) |
 | `frontier_village` | Frontier Village, San José | 21 Oct 1961 – 28 Sep 1980 | San Jose East 1:24k 1973 PR | grounds / lake traced; buildings exact symbols |
 | `frontier_drive_in` | Frontier drive-in (Frontier Auto Movie) | Apr 1962 – c.1980 | San Jose East 1:24k 1973 PR ("Drive-in Theater" + dashed outline) | outline approximate, end year estimated |
+| `oakland_nsc` | Naval Supply Center Oakland (Naval Supply Depot / FISC) | 15 Dec 1941 – 1998 (cleared c.1999–2001) | Oakland West 1:24k 1949 (1946 photos), 1959 (1958 photos), 1993 | warehouses traced automatically (±5 m, a few merged pairs); start 1942.5 / 1952 by edition; end 2000 estimated |
+| `emeryville_racetrack` | Oakland Trotting Park / New California Jockey Club track, Emeryville | 4 Jul 1871 – last race 15 Feb 1911 (buildings burned 15 Dec 1915) | San Francisco 1:62,500 (1899 ed., 1914 imprint), shifted 220 m onto today's streets | oval ±30 m; no buildings traced |
 
 ### Bay Meadows (1934–2008)
 * Main track: 1-mile dirt oval, axis bearing −8°, fitted to the track line of the 1993 sheet (the 1946/1956 sheets
@@ -143,6 +145,26 @@ Frontier Village's lake / canoe canal is the unshaded area with blue shore lines
 site became Oracle's headquarters (from 1989); Frontier Village's became Edenvale Garden Park and Bren housing; the
 cross-plan church on the same sheet still stands and is not included.
 
+### Naval Supply Center Oakland (1941–1998)
+* Ground: the depot inside its perimeter road (1993 sheet) is `industrial` 1941.95–2000; the part over today's Middle
+  Harbor water stays water in the terrain (the depot's finger piers and their warehouses are in `buildings.geojson`).
+* Warehouses: the cross-hatched buildings of the 1959 sheet, found as areas where *both* diagonal hatch directions are
+  present (`tools/fisc3.py`: short ±45° line openings minus long straight lines → density → opening), then split along
+  the depot's street grid (grid angle 74.7°, from the clean detections) by row / column projections (`tools/fisc6.py`).
+  108 footprints, 0.7 km²; map lettering filtered by size / aspect. Present on the 1946-photo sheet → built 1941–45
+  (start 1942.5, estimated); else 1952 (midpoint). Heights 9 m, one storey, concrete — estimated.
+* Not done: the Oakland Army Base north of the rail yards (its warehouses were demolished in several waves 1999–2016;
+  some stand in today's data).
+
+### Emeryville race track (1871–1915)
+Edward Wiard's Oakland Trotting Park opened 4 Jul 1871; rebuilt and reopened 24 Oct 1896 as the New California Jockey
+Club track (pagoda-style stand for ~3,000); the last race was run 15 Feb 1911 (Walker-Young anti-gambling law); the Mee
+estate subdivided it for factories in 1915 and the remaining buildings burned on 15 Dec 1915 (Emeryville Historical
+Society). The oval is fitted to the 1:62,500 sheet after aligning the sheet's ink to today's streets by
+cross-correlation (`tools/align.py`: shift +100 m E, +194 m N; the early 15′ surveys were not on NAD27 control). Size
+from the fit: 629 × 243 m between inner-line centres (documented 2,000 × 900 ft). Track width 18 m and the infield
+grass are estimates; the grandstand / stables are not traced (no Sanborn sheet checked).
+
 ## Road segments (`road_segments.csv`)
 For every Overture road segment on a site part that ended (and every non-arterial segment inside Apple Park):
 `segment_id, file, cls, name, site_id, inside_m` (metres of it on the site), `on_last_sheet` (share of 5 m samples
@@ -157,14 +179,16 @@ it existed; `date` = it cannot predate `not_before`), `not_before`, `evidence`.
   the campus ring/perimeter road — real, but **not before 2017**; N Tantau Ave and the Pruneridge stubs existed.
   Apple Park's footways / paths / service aisles are not in `roads_local` and are drawn as `sites.geojson` parts.
 * Tanforan (not before 1965), Ford Milpitas (not before 1983: Great Mall Parkway etc.), Marine World (Oracle Parkway,
-  not before 1986), Frontier Village (Saddle Brook Drive, not before 1981).
+  not before 1986), Frontier Village (Saddle Brook Drive, not before 1981), Naval Supply Center (today's port roads,
+  not before 2000), Emeryville track (the 1915 industrial streets across the oval, not before 1916).
 * The ink test can be fooled where building symbols crowd a road (stable rows); `evidence` gives the numbers.
 
 ## Not done / next
-Neptune Beach (Alameda, 1917–39), Idora Park (Oakland, 1904–29), the Emeryville race track (1896–1911), Oakland Army
-Base / Naval Supply Center warehouses, Kaiser Richmond yard grounds, Camp Fremont (1917–19), Libby's Sunnyvale and
-Del Monte San José canneries, other drive-ins (Geneva, Burlingame, Mission, Island Auto Movie…) — see the end of this
-file for whatever was added after the first commit.
+Neptune Beach (Alameda, 1917–39) and Idora Park (Oakland, 1904–29) predate the 1:24k sheets — Sanborn maps (LOC
+Oakland / Alameda volumes) would give their buildings; Oakland Army Base warehouses; Kaiser Richmond shipyard grounds
+(1941–46); Camp Fremont (Menlo Park 1917–19); the Libby's Sunnyvale and Del Monte San José canneries; other drive-ins
+(Geneva, Burlingame, Mission, Island Auto Movie…); landmark models for the Bay Meadows / Tanforan grandstands (their
+footprints are in `buildings.geojson` with estimated heights).
 
 ## Licences
 USGS topographic maps: public domain. Esri World Imagery (Wayback): viewed for tracing only, no imagery
