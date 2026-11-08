@@ -58,7 +58,7 @@ COVER_NAMES = ["deep_water", "shallow_water", "tidal_flat", "tidal_marsh", "beac
                "diked_wetland", "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned",
                "suburban"]
 # decoration kinds
-D_BROADLEAF, D_CONIFER, D_PALM, D_ORCHARD, D_FARMHOUSE, D_SHRUB = range(6)
+D_BROADLEAF, D_CONIFER, D_PALM, D_ORCHARD, D_FARMHOUSE, D_SHRUB, D_FARMYARD = range(7)
 
 SF_BOX = (-122.5155, 37.7080, -122.3550, 37.8325)
 SANTA_CLARA_VALLEY = (-122.10, 37.15, -121.60, 37.50)
@@ -693,6 +693,8 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         return arr[np.clip(np.rint(fy / sub).astype(int), 0, g["rows"] - 1), np.clip(np.rint(fx / sub).astype(int), 0, g["cols"] - 1)]
 
     lon_all, lat_all = None, None
+    mapped = real_farmsteads(g, covers, years) if name == "region" else None
+    mapped_mask = mapped[1] if mapped is not None else np.zeros((g["rows"], g["cols"]), bool)
 
     def fn(tx, ty):
         r0 = (ty - g["ty0"]) * VERTS * sub
@@ -749,8 +751,10 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     sizes.append(rng.uniform(4, 6, fy.size)); starts.append(np.repeat(y_start, 9) + rng.uniform(0, 3, fy.size))
                     ends.append(np.repeat(y_end, 9))
                 else:
-                    # one farmstead per ~25 lattice cells, on a hash
+                    # one farmstead per ~25 lattice cells, on a hash — except where a
+                    # historical map shows where the farmsteads really were
                     pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % 25) == 0
+                    pick &= ~mapped_mask[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
                     if not pick.any():
                         continue
                     fy = (vy[pick] + max(r0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
@@ -762,6 +766,21 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     wy, wx, ws, wst, wen = windbreaks(fy, fx, fs, y_end[pick], g["res"] / sub, rng)
                     kinds.append(np.full(len(wy), D_BROADLEAF)); ys.append(wy); xs.append(wx)
                     sizes.append(ws); starts.append(wst); ends.append(wen)
+        # --- farmsteads at their mapped positions (USGS historical topographic maps)
+        if mapped is not None:
+            fm = mapped[0]
+            lr0, lc0 = (ty - g["ty0"]) * VERTS, (tx - g["tx0"]) * VERTS
+            sel = (fm.li.values >= lr0) & (fm.li.values < lr0 + VERTS) & (fm.lj.values >= lc0) & (fm.lj.values < lc0 + VERTS)
+            if sel.any():
+                f = fm[sel]
+                fy, fx = f.li.values * sub, f.lj.values * sub
+                st = f.start.values
+                en = f.end.values
+                kinds.append(f.kind.values.astype(int)); ys.append(fy); xs.append(fx)
+                sizes.append(rng.uniform(7, 10, len(f))); starts.append(st); ends.append(en)
+                wy, wx, ws, wst, wen = windbreaks(fy, fx, st, en, g["res"] / sub, rng)
+                kinds.append(np.full(len(wy), D_BROADLEAF)); ys.append(wy); xs.append(wx)
+                sizes.append(ws); starts.append(wst); ends.append(wen)
         if not kinds:
             return {}
         kinds = np.concatenate(kinds); ys = np.concatenate(ys); xs = np.concatenate(xs)
@@ -778,6 +797,120 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         }
 
     return fn
+
+
+FARM_COVERS = (FARM, ORCHARD, VINEYARD, PASTURE)
+
+
+def real_farmsteads(g, covers, years):
+    """Farmsteads mapped on USGS historical topographic maps (topo_farmsteads.py ->
+    data/manual/farmsteads/). A farmstead seen on one edition and missing from a later
+    edition covering the same ground ended between the two; one first seen on a later
+    edition was built after the earlier one; otherwise it stands from the farm era of its
+    cell (cover history) until the cell becomes city. Where a farmhouse of the map's
+    date still stands today (a region footprint at most a few years younger than the map
+    within 30 m), only its barn and tank house are drawn (the house is the real footprint).
+    Returns (frame with li, lj in lattice units, start, end, kind; bool lattice mask of
+    the ground covered by the processed map sheets), or None without the data."""
+    from scipy.spatial import cKDTree
+    base = MANUAL / "farmsteads"
+    p = base / "topo_farmsteads.geojson"
+    if not p.exists():
+        return None
+    pts = gpd.read_file(p).to_crs(3857)
+    pts = pts[pts.geometry.notna()].reset_index(drop=True)
+    cov = gpd.read_file(base / "coverage.geojson").to_crs(3857) if (base / "coverage.geojson").exists() else None
+    rows, cols = g["rows"], g["cols"]
+    x, y = pts.geometry.x.values, pts.geometry.y.values
+    lj, li = (x - g["X0"]) / g["res"], (g["Y0"] - y) / g["res"]
+    ok = (lj >= 0) & (li >= 0) & (lj < cols - 1) & (li < rows - 1)
+    pts, x, y, lj, li = pts[ok].reset_index(drop=True), x[ok], y[ok], lj[ok], li[ok]
+    if not len(pts):
+        return None
+    my = pd.to_numeric(pts["map_year"], errors="coerce").fillna(1900).values.astype(float)
+    # one farmstead across editions: points within ~60 m on the ground (~75 m Mercator)
+    xy = np.column_stack([x, y])
+    parent = np.arange(len(pts))
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+    for a, b in cKDTree(xy).query_pairs(75.0):
+        ra, rb = find(a), find(b)
+        if ra != rb and my[a] != my[b]:
+            parent[ra] = rb
+    grp = np.array([find(a) for a in range(len(pts))])
+    gdf = pd.DataFrame({"g": grp, "x": x, "y": y, "y_map": my}).groupby("g").agg(
+        x=("x", "mean"), y=("y", "mean"), first=("y_map", "min"), last=("y_map", "max"))
+    # map editions covering each farmstead
+    editions = [[] for _ in range(len(gdf))]
+    if cov is not None and len(cov):
+        gp = gpd.GeoDataFrame(geometry=gpd.points_from_xy(gdf.x, gdf.y), crs=3857)
+        j = gpd.sjoin(gp, cov[["map_year", "geometry"]], predicate="within", how="inner")
+        for i, yr in zip(j.index.values, pd.to_numeric(j.map_year, errors="coerce").values):
+            if np.isfinite(yr):
+                editions[i].append(float(yr))
+    gi = np.clip(np.rint((g["Y0"] - gdf.y.values) / g["res"]).astype(int), 0, rows - 1)
+    gj = np.clip(np.rint((gdf.x.values - g["X0"]) / g["res"]).astype(int), 0, cols - 1)
+    cv = covers[:, gi, gj]
+    yv = years[:, gi, gj]
+    rng = np.random.default_rng(1899)
+    starts, ends, cities = [], [], []
+    for k in range(len(gdf)):
+        first, last = gdf["first"].values[k], gdf["last"].values[k]
+        farm_y, city_y = np.nan, np.nan
+        for e in range(1, 5):
+            if not np.isfinite(yv[e - 1, k]) or yv[e - 1, k] <= 0:
+                continue
+            if cv[e, k] in FARM_COVERS and not np.isfinite(farm_y):
+                farm_y = yv[e - 1, k]
+            elif cv[e, k] not in FARM_COVERS and np.isfinite(farm_y) and not np.isfinite(city_y):
+                city_y = yv[e - 1, k]
+        before = [m for m in editions[k] if m < first - 0.5]
+        after = [m for m in editions[k] if m > last + 0.5]
+        if before:
+            b = max(before)
+            st = b + (first - b) * rng.uniform(0.2, 0.9)
+        elif np.isfinite(farm_y) and farm_y < first:
+            st = min(farm_y + rng.uniform(0, 8), first - 0.5)
+        else:
+            st = first - rng.uniform(4, 15)
+        if after:
+            a = min(after)
+            en = last + (a - last) * rng.uniform(0.2, 0.9)
+        else:
+            en = city_y if np.isfinite(city_y) and city_y > last else np.nan
+        starts.append(st)
+        ends.append(en)
+        cities.append(city_y)
+    out = pd.DataFrame({"li": (g["Y0"] - gdf.y.values) / g["res"], "lj": (gdf.x.values - g["X0"]) / g["res"],
+                        "start": starts, "end": ends, "kind": D_FARMHOUSE})
+    # surviving farmhouses: a footprint standing today, about as old as the map
+    bp = INTERIM / "region_building_points.parquet"
+    if bp.exists():
+        b = pd.read_parquet(bp, columns=["lon", "lat", "start_year", "end_year"])
+        b = b[(b.end_year > 9000) & (b.start_year < 1950)]
+        bx = np.radians(b.lon.values) * 6378137.0
+        by = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(b.lat.values) / 2))
+        d, idx = cKDTree(np.column_stack([bx, by])).query(np.column_stack([gdf.x.values, gdf.y.values]),
+                                                          distance_upper_bound=38.0)
+        hit = np.isfinite(d)
+        old = np.zeros(len(gdf), bool)
+        old[hit] = b.start_year.values[idx[hit]] <= gdf["first"].values[hit] + 5
+        out.loc[old, "kind"] = D_FARMYARD
+        # the house still stands (a missing later edition is a detector miss); the barns
+        # go when the cell becomes city
+        out.loc[old, "end"] = np.asarray(cities)[old]
+    mask = np.zeros((rows, cols), bool)
+    if cov is not None and len(cov):
+        t = Affine(g["res"], 0, g["X0"] - g["res"] / 2, 0, -g["res"], g["Y0"] + g["res"] / 2)
+        mask = features.rasterize([(geom, 1) for geom in cov.geometry if geom is not None], out_shape=(rows, cols),
+                                  transform=t, fill=0, dtype="uint8").astype(bool)
+    log(f"farmsteads: {len(out)} mapped ({int((out.kind == D_FARMYARD).sum())} farmhouses still standing), "
+        f"{int(mask.sum())} lattice cells covered by the maps")
+    return out, mask
 
 
 def windbreaks(fy, fx, start, end, cell_m, rng):
@@ -854,7 +987,7 @@ def main():
         np.save(INTERIM / f"grid_{name}_landyear.npy", land_year_of(covers, years))
         meta[name] = {"z": g["z"], "tx0": g["tx0"], "ty0": g["ty0"], "tx1": g["tx1"], "ty1": g["ty1"], "zooms": zooms}
     (VIEWER_DATA / "terrain.json").write_text(json.dumps({"grids": meta, "covers": COVER_NAMES,
-                                                          "deco": ["broadleaf", "conifer", "palm", "orchard", "farmhouse", "shrub"]}, indent=1))
+                                                          "deco": ["broadleaf", "conifer", "palm", "orchard", "farmhouse", "shrub", "farmyard"]}, indent=1))
 
 
 if __name__ == "__main__":

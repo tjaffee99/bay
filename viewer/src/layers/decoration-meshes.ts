@@ -2,7 +2,8 @@
  * Low-poly decoration meshes (unit size; instances scale them by
  * [crown radius, crown radius, height]) and their colour palettes.
  * Kinds — keep in sync with pipeline/terrain_tiles.py:
- *   0 broadleaf, 1 conifer, 2 palm, 3 orchard tree, 4 farmstead, 5 shrub
+ *   0 broadleaf, 1 conifer, 2 palm, 3 orchard tree, 4 farmstead, 5 shrub,
+ *   6 farmyard (barn + tank house beside a real, still standing farmhouse)
  */
 import {MeshBuilder, circle} from '../landmarks/kit';
 
@@ -48,13 +49,21 @@ function farmstead() {
   b.color('#D9D2C0').cylinder(0.25, 1.2, 0.18, 0, 1.2, 6);
   return b.build();
 }
+/** Farmyard: the farmstead without its house (the house is a real building footprint). */
+function farmyard() {
+  const b = new MeshBuilder();
+  b.color('#B0473A').box(0.75, 0.2, 0, 1.0, 1.5, 0.7);
+  b.color('#6E3B30').gable(0.75, 0.2, 1.1, 1.6, 0.7, 0.45, true);
+  b.color('#D9D2C0').cylinder(-0.3, -0.9, 0.18, 0, 1.2, 6);
+  return b.build();
+}
 function shrub() {
   const b = new MeshBuilder();
   b.color('#FFFFFF').dome(0, 0, 1, 0, 0.9, 6, 2);
   return b.build();
 }
 
-export const DECO_MESHES = [broadleaf(), conifer(), palm(), orchardTree(), farmstead(), shrub()];
+export const DECO_MESHES = [broadleaf(), conifer(), palm(), orchardTree(), farmstead(), shrub(), farmyard()];
 
 // ------------------------------------------------------------------ level of detail
 // Zoomed out, a tree is a few pixels wide: these 4–10-triangle stand-ins (vs 30–50)
@@ -94,7 +103,7 @@ function shrubLow() {
   b.pyramid(circle(0, 0, 1, 4), 0, [0, 0, 0.8]);
   return b.build();
 }
-export const DECO_MESHES_LOW = [broadleafLow(), coniferLow(), palmLow(), orchardLow(), farmstead(), shrubLow()];
+export const DECO_MESHES_LOW = [broadleafLow(), coniferLow(), palmLow(), orchardLow(), farmstead(), shrubLow(), farmyard()];
 
 /** Level of detail for all tree-like instances at a map zoom: low-poly below 15, thinned below 14. */
 export function treeLod(zoom: number): {low: boolean; keep: number} {
@@ -126,5 +135,6 @@ export const DECO_COLORS: [number, number, number][][] = [
   [
     [128, 136, 86],
     [112, 124, 80]
-  ]
+  ],
+  [[255, 255, 255]]
 ];

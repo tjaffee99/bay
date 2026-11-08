@@ -76,11 +76,11 @@ export function decoLayers(year: number, zoom: number): Layer[] {
         data: m.data,
         mesh: (lod.low ? DECO_MESHES_LOW : DECO_MESHES)[m.kind],
         // farmsteads are few and big: never thinned
-        keep: m.kind === 4 ? 1 : lod.keep,
+        keep: m.kind === 4 || m.kind === 6 ? 1 : lod.keep,
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [DECO_ORIGIN[0], DECO_ORIGIN[1], 0],
         year,
-        growYears: m.kind === 4 ? 1.5 : 6,
+        growYears: m.kind === 4 || m.kind === 6 ? 1.5 : 6,
         shrinkYears: 1
       }) as any
   );

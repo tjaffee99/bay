@@ -651,10 +651,11 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         pos[k * 3 + 2] = elevAt(gx, gy) - 0.3;
         const s = sizes[i];
         // stylised: crowns ~2x and trunks ~1.5x real size so trees read at city scale (Civ-like)
-        const crown = kind === 4 ? s : Math.max(4.5, s * 0.62);
+        const building = kind === 4 || kind === 6;
+        const crown = building ? s : Math.max(4.5, s * 0.62);
         scl[k * 3] = crown;
         scl[k * 3 + 1] = crown;
-        scl[k * 3 + 2] = kind === 4 ? s : s * 1.45;
+        scl[k * 3 + 2] = building ? s : s * 1.45;
         yr[k * 2] = dy[i * 2] ? decodeYear(dy[i * 2]) : -10000;
         yr[k * 2 + 1] = dy[i * 2 + 1] ? decodeYear(dy[i * 2 + 1]) : 10000;
         col.set(pal[((i * 2654435761) % pal.length) >>> 0] ?? pal[0], k * 4);
