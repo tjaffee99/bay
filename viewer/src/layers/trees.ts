@@ -49,16 +49,16 @@ const MESHES = [broadleaf(), conifer(), palm()];
 const MESHES_LOW = [broadleafLow(), coniferLow(), palmLow()];
 const GREENS: [number, number, number][][] = [
   [
-    [90, 118, 64],
-    [78, 106, 58],
-    [102, 126, 68],
-    [72, 98, 54]
+    [122, 158, 92],
+    [104, 144, 84],
+    [138, 166, 98],
+    [96, 134, 80]
   ],
   [
-    [52, 80, 52],
-    [46, 72, 50]
+    [74, 112, 72],
+    [64, 102, 68]
   ],
-  [[96, 120, 66]]
+  [[118, 150, 86]]
 ];
 
 export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', growYears = 6): Promise<TreeSet> {

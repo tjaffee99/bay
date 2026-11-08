@@ -20,33 +20,31 @@ import {DECO_COLORS} from './decoration-meshes';
 import {DECO_ORIGIN, decoLayers, setVisibleDeco, type DecoBatch} from './deco-layer';
 
 // cover codes — keep in sync with pipeline/terrain_tiles.py
-// Satellite-like colours (aerial imagery of the Bay Area: blue-green bay, golden dry
-// grass, dark chaparral and oak, grey city ground)
 const PALETTE: [number, number, number][] = [
-  [0.27, 0.39, 0.45], // 0 deep water
-  [0.33, 0.46, 0.49], // 1 shallow water
-  [0.47, 0.43, 0.37], // 2 tidal flat (mud)
-  [0.4, 0.45, 0.29], // 3 tidal marsh
-  [0.85, 0.81, 0.69], // 4 beach
-  [0.82, 0.77, 0.63], // 5 dunes
-  [0.71, 0.64, 0.44], // 6 grassland (golden hills)
-  [0.4, 0.43, 0.29], // 7 scrub / chaparral
-  [0.36, 0.42, 0.26], // 8 oak woodland
-  [0.23, 0.32, 0.2], // 9 forest
-  [0.64, 0.59, 0.42], // 10 farmland
-  [0.39, 0.47, 0.27], // 11 orchard
-  [0.49, 0.51, 0.33], // 12 vineyard
-  [0.54, 0.6, 0.37], // 13 pasture
-  [0.68, 0.53, 0.52], // 14 salt pond
-  [0.5, 0.51, 0.37], // 15 diked wetland
-  [0.64, 0.63, 0.6], // 16 urban ground (pavement, yards)
-  [0.42, 0.56, 0.31], // 17 park lawn
-  [0.55, 0.52, 0.47], // 18 rock
-  [0.29, 0.39, 0.23], // 19 riparian
-  [0.6, 0.57, 0.5], // 20 fill
-  [0.37, 0.45, 0.31], // 21 freshwater wetland
-  [0.24, 0.36, 0.4], // 22 reservoir / lake
-  [0.2, 0.16, 0.14] // 23 burned (1906)
+  [0.56, 0.71, 0.79], // 0 deep water
+  [0.66, 0.79, 0.84], // 1 shallow water
+  [0.6, 0.55, 0.49], // 2 tidal flat (mud)
+  [0.57, 0.6, 0.37], // 3 tidal marsh
+  [0.93, 0.88, 0.74], // 4 beach
+  [0.9, 0.84, 0.66], // 5 dunes
+  [0.8, 0.77, 0.52], // 6 grassland (golden hills)
+  [0.56, 0.58, 0.39], // 7 scrub / chaparral
+  [0.55, 0.6, 0.38], // 8 oak woodland
+  [0.36, 0.48, 0.3], // 9 forest
+  [0.82, 0.75, 0.5], // 10 farmland
+  [0.6, 0.69, 0.41], // 11 orchard
+  [0.64, 0.64, 0.42], // 12 vineyard
+  [0.69, 0.76, 0.48], // 13 pasture
+  [0.86, 0.73, 0.7], // 14 salt pond
+  [0.63, 0.61, 0.43], // 15 diked wetland
+  [0.86, 0.84, 0.79], // 16 urban
+  [0.62, 0.73, 0.47], // 17 park
+  [0.68, 0.64, 0.58], // 18 rock
+  [0.44, 0.57, 0.35], // 19 riparian
+  [0.75, 0.71, 0.63], // 20 fill
+  [0.56, 0.63, 0.47], // 21 freshwater wetland
+  [0.62, 0.76, 0.83], // 22 reservoir / lake
+  [0.32, 0.25, 0.21] // 23 burned (1906)
 ];
 
 const N = 65;
@@ -209,13 +207,6 @@ void main(void) {
   }
   vec3 color = C.rgb;
   float wet = C.a;
-  // fine ground texture (~4 m and ~16 m), as aerial imagery is never flat colour
-  {
-    vec2 m = (vLngLat - vec2(-122.0, 37.5)) * vec2(88000.0, 111000.0);
-    float t = vnoise(m / 4.0) * 0.5 + vnoise(m / 16.0 + 7.3) * 0.35 + vnoise(m / 60.0 + 3.1) * 0.15;
-    float amp = mix(0.1, 0.035, wet);
-    color *= 1.0 + amp * (t - 0.5) * 2.0;
-  }
   vec3 n = normalize(vNormal);
   if (n.z < 0.2) n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   // steep natural slopes read as rock (cliffs)

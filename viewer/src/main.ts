@@ -65,13 +65,12 @@ const map = new maplibregl.Map({
 installCameraControls(map);
 setTerrainChangeCallback(() => render());
 
-// Sun from the south-west (late afternoon) + a cool sky ambient. Close in, the sun
-// casts shadows (deck's shadow map: one extra depth pass of the shadow-casting layers),
-// which is most of what makes a satellite view read as 3D; far out they would be
-// sub-pixel, so the cheaper unshadowed effect is used there. ?noshadow turns them off.
-const SUN = {color: [255, 238, 214] as [number, number, number], intensity: 1.3, direction: [1.2, 1.6, -1.3] as [number, number, number]};
-const AMBIENT = {color: [242, 244, 250] as [number, number, number], intensity: 1.1};
-const NO_SHADOW = new URLSearchParams(location.search).has('noshadow');
+// Late-afternoon sun from the south-west and a cool skylight fill from the north-east.
+// Sun shadows are opt-in (?shadow): a deck shadow map, re-rendered only when the view
+// or a shadow caster changes, at zoom >= 13.5.
+const SUN = {color: [255, 238, 214] as [number, number, number], intensity: 1.25, direction: [1.2, 1.6, -1.3] as [number, number, number]};
+const AMBIENT = {color: [255, 250, 242] as [number, number, number], intensity: 1.0};
+const SHADOWS = new URLSearchParams(location.search).has('shadow');
 /** LightingEffect that re-renders its shadow map only when the view or the layers'
  *  data / year changed — not on the ~30 fps redraws that only move traffic and
  *  trains (which cast no shadows). */
@@ -97,11 +96,15 @@ class CachedShadowLighting extends LightingEffect {
     super.preRender(opts);
   }
 }
-const lighting = new LightingEffect({ambient: new AmbientLight(AMBIENT), sun: new DirectionalLight(SUN)});
-const shadowLighting = new CachedShadowLighting({ambient: new AmbientLight(AMBIENT), sun: new DirectionalLight({...SUN, _shadow: true})});
+const lighting = new LightingEffect({
+  ambient: new AmbientLight(AMBIENT),
+  sun: new DirectionalLight(SUN),
+  sky: new DirectionalLight({color: [200, 215, 255], intensity: 0.35, direction: [-1, -1.2, -0.6]})
+});
+const shadowLighting = new CachedShadowLighting({ambient: new AmbientLight({...AMBIENT, intensity: 1.1}), sun: new DirectionalLight({...SUN, _shadow: true})});
 shadowLighting.shadowColor = [0.07, 0.09, 0.15, 0.45];
 const SHADOW_ZOOM = 13.5;
-const wantShadow = (z: number) => !NO_SHADOW && z >= SHADOW_ZOOM;
+const wantShadow = (z: number) => SHADOWS && z >= SHADOW_ZOOM;
 
 const overlay = new MapboxOverlay({
   interleaved: false,
