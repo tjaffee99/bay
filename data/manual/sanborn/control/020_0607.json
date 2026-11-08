@@ -1,0 +1,173 @@
+{
+ "pct": 25,
+ "zones_only": false,
+ "iron_rule": "dark_grey",
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "4169",
+   "corners": [
+    {
+     "bc": [
+      "IOWA ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 265.0,
+     "y": 307.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 563.0,
+     "y": 307.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "23RD ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 575.0,
+     "y": 1599.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 276.0,
+     "y": 1600.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4170",
+   "corners": [
+    {
+     "bc": [
+      "INDIANA ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 684.0,
+     "y": 305.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 982.0,
+     "y": 304.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "23RD ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 993.0,
+     "y": 1595.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 695.0,
+     "y": 1597.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4171",
+   "corners": [
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1100.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1396.0,
+     "y": 301.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "23RD ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1411.0,
+     "y": 1590.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1113.0,
+     "y": 1594.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": true
+}

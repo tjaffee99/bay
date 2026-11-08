@@ -1,0 +1,67 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Townsend-Berry north of 2nd",
+   "corners": [
+    {
+     "bcx": [
+      "TOWNSEND ST",
+      [
+       553669.4,
+       4181648.2
+      ],
+      "02ND ST",
+      [
+       553669.4,
+       4181648.2
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of TOWNSEND ST x 02ND ST",
+     "x": 112.0,
+     "y": 1585.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "KING ST",
+      [
+       553752.4,
+       4181566.0
+      ],
+      "02ND ST",
+      [
+       553752.4,
+       4181566.0
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of KING ST x 02ND ST",
+     "x": 635.0,
+     "y": 1585.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    30,
+    30,
+    1640,
+    1660
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "confidence_cap": "low",
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

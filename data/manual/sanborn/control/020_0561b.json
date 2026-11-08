@@ -1,0 +1,127 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "residential": true,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "valid_px": [
+  0,
+  940,
+  1668,
+  1949
+ ],
+ "blocks": [
+  {
+   "name": "3995",
+   "corners": [
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "MARIPOSA ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 371.0,
+     "y": 1110.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "MARIPOSA ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 690.0,
+     "y": 1111.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "18TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 690.0,
+     "y": 1704.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "18TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 370.0,
+     "y": 1703.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3994",
+   "corners": [
+    {
+     "bc": [
+      "3RD ST",
+      "MARIPOSA ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1032.0,
+     "y": 1113.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "MARIPOSA ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1306.0,
+     "y": 1113.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "18TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1310.0,
+     "y": 1704.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "18TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1030.0,
+     "y": 1704.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "note": "lower half of sheet 561 (Mariposa - 18th St); the upper half is 020_0561 (mission_bay)",
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

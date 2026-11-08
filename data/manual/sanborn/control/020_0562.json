@@ -64,5 +64,6 @@
   0.004
  ],
  "pct": 25,
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": false
 }

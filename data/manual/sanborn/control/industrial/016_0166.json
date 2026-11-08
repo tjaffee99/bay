@@ -1,0 +1,110 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Bryant-Brannan/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552811.0,
+       4181331.1
+      ],
+      "05TH ST",
+      [
+       552811.0,
+       4181331.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 05TH ST",
+     "x": 433.0,
+     "y": 354.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552947.7,
+       4181195.5
+      ],
+      "05TH ST",
+      [
+       552947.7,
+       4181195.5
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 05TH ST",
+     "x": 1262.0,
+     "y": 354.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552616.2,
+       4181134.6
+      ],
+      "06TH ST",
+      [
+       552616.2,
+       4181134.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 06TH ST",
+     "x": 433.0,
+     "y": 1598.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552752.9,
+       4180999.0
+      ],
+      "06TH ST",
+      [
+       552752.9,
+       4180999.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 06TH ST",
+     "x": 1262.0,
+     "y": 1598.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    433.0,
+    354.0,
+    1262.0,
+    1598.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

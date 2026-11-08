@@ -1,0 +1,185 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "4172",
+   "corners": [
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 172.0,
+     "y": 311.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 474.0,
+     "y": 311.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "23RD ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 474.0,
+     "y": 1601.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 175.0,
+     "y": 1603.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4173",
+   "corners": [
+    {
+     "bc": [
+      "3RD ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 667.0,
+     "y": 310.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 966.0,
+     "y": 310.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "23RD ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 964.0,
+     "y": 1602.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 667.0,
+     "y": 1601.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4174+4185",
+   "corners": [
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "22ND ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1142.0,
+     "y": 311.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MICHIGAN ST",
+      "22ND ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1464.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "23RD ST"
+     ],
+     "q": "NE",
+     "wa": 80,
+     "wb": 66,
+     "x": 1142.0,
+     "y": 1602.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MICHIGAN ST",
+      "21ST ST"
+     ],
+     "lb": [
+      "23RD ST",
+      "ILLINOIS ST"
+     ],
+     "off": [
+      [
+       40,
+       "W"
+      ],
+      [
+       33,
+       "N"
+      ]
+     ],
+     "label": "corner NW of Michigan x 23rd (Michigan extended)",
+     "x": 1464.0,
+     "y": 1602.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": true
+}

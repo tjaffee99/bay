@@ -1,0 +1,121 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Bryant/06Th-Harriet",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552479.1,
+       4181270.6
+      ],
+      "06TH ST",
+      [
+       552479.1,
+       4181270.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 06TH ST",
+     "x": 434.0,
+     "y": 244.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552616.2,
+       4181134.6
+      ],
+      "06TH ST",
+      [
+       552616.2,
+       4181134.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 06TH ST",
+     "x": 1259.0,
+     "y": 244.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    434.0,
+    244.0,
+    1259.0,
+    491.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Harriet-07Th",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552284.4,
+       4181074.3
+      ],
+      "07TH ST",
+      [
+       552284.4,
+       4181074.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 07TH ST",
+     "x": 434.0,
+     "y": 1674.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552421.5,
+       4180938.3
+      ],
+      "07TH ST",
+      [
+       552421.5,
+       4180938.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 07TH ST",
+     "x": 1259.0,
+     "y": 1674.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    434.0,
+    732.0,
+    1259.0,
+    1674.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

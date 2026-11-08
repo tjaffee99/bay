@@ -1,0 +1,226 @@
+{
+ "pct": 25,
+ "zones_only": false,
+ "iron_rule": "dark_grey",
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "4230",
+   "corners": [
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "23RD ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 257.0,
+     "y": 318.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "23RD ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 555.0,
+     "y": 317.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "24TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 557.0,
+     "y": 912.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "24TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 260.0,
+     "y": 913.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4231",
+   "corners": [
+    {
+     "bc": [
+      "3RD ST",
+      "23RD ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 674.0,
+     "y": 315.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "23RD ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 972.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "24TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 974.0,
+     "y": 908.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "24TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 676.0,
+     "y": 910.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4246",
+   "corners": [
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "24TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 260.0,
+     "y": 1010.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "24TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 557.0,
+     "y": 1009.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "25TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 559.0,
+     "y": 1604.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "25TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 262.0,
+     "y": 1606.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4245",
+   "corners": [
+    {
+     "bc": [
+      "3RD ST",
+      "24TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 675.0,
+     "y": 1009.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "24TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 975.0,
+     "y": 1006.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "25TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 975.0,
+     "y": 1601.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "25TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 678.0,
+     "y": 1603.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": false
+}

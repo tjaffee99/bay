@@ -1,0 +1,76 @@
+{
+ "residential": false,
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "a": "MERRIMAC ST",
+   "b": "ILLINOIS ST",
+   "wv": 64,
+   "wh": 80,
+   "x": 165.0,
+   "y": 1819.0,
+   "norefine": 1,
+   "label": "Merrimac x Illinois (retired DataSF segments)"
+  },
+  {
+   "a": "ALAMEDA ST",
+   "b": "ILLINOIS ST",
+   "wv": 66,
+   "wh": 80,
+   "x": 805.0,
+   "y": 1819.0,
+   "norefine": 1,
+   "label": "Alameda x Illinois (retired DataSF segments)"
+  }
+ ],
+ "lines": [
+  {
+   "street": "ILLINOIS ST",
+   "near": [
+    "ILLINOIS ST",
+    "ALAMEDA ST"
+   ],
+   "R": 200,
+   "px": [
+    [
+     1400,
+     1819
+    ]
+   ]
+  },
+  {
+   "street": "EL DORADO ST",
+   "near": [
+    "ILLINOIS ST",
+    "EL DORADO ST"
+   ],
+   "R": 100,
+   "off": [
+    40,
+    "N"
+   ],
+   "px": [
+    [
+     1449,
+     1500
+    ],
+    [
+     1449,
+     1100
+    ]
+   ],
+   "note": "north kerb (block 3850) assuming 80 ft"
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

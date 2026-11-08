@@ -143,7 +143,7 @@
      "wa": 40,
      "wb": 82.5,
      "label": "corner of STILLMAN ST x 03RD ST",
-     "x": 1004.0,
+     "x": 970.0,
      "y": 360.0,
      "norefine": 1
     },
@@ -187,7 +187,7 @@
      "wa": 40,
      "wb": 82.5,
      "label": "corner of STILLMAN ST x 04TH ST",
-     "x": 1004.0,
+     "x": 970.0,
      "y": 1600.0,
      "norefine": 1
     }
@@ -195,7 +195,7 @@
    "zone_px": [
     743.0,
     360.0,
-    1004.0,
+    970.0,
     1600.0
    ]
   },

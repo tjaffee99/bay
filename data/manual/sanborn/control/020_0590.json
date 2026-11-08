@@ -220,5 +220,7 @@
   }
  ],
  "points": [],
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": true,
+ "iron_rule": "dark_grey"
 }

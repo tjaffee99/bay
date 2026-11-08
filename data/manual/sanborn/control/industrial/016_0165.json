@@ -1,0 +1,319 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Bryant/05Th-Madison",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552674.0,
+       4181467.1
+      ],
+      "05TH ST",
+      [
+       552674.0,
+       4181467.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 05TH ST",
+     "x": 425.0,
+     "y": 211.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552811.0,
+       4181331.1
+      ],
+      "05TH ST",
+      [
+       552811.0,
+       4181331.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 05TH ST",
+     "x": 1251.0,
+     "y": 211.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    425.0,
+    211.0,
+    1251.0,
+    452.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Madison-Oak",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552576.2,
+       4181368.5
+      ],
+      "OAK GROVE ST",
+      [
+       552576.2,
+       4181368.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x OAK GROVE ST",
+     "x": 425.0,
+     "y": 794.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552713.7,
+       4181233.0
+      ],
+      "OAK GROVE ST",
+      [
+       552713.7,
+       4181233.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of BRYANT ST x OAK GROVE ST",
+     "x": 1251.0,
+     "y": 794.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    425.0,
+    505.0,
+    1251.0,
+    794.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Oak-Morris",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552576.2,
+       4181368.5
+      ],
+      "OAK GROVE ST",
+      [
+       552576.2,
+       4181368.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x OAK GROVE ST",
+     "x": 425.0,
+     "y": 982.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552713.7,
+       4181233.0
+      ],
+      "OAK GROVE ST",
+      [
+       552713.7,
+       4181233.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of BRYANT ST x OAK GROVE ST",
+     "x": 1251.0,
+     "y": 982.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552526.4,
+       4181318.3
+      ],
+      "MORRIS ST",
+      [
+       552526.4,
+       4181318.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of HARRISON ST x MORRIS ST",
+     "x": 425.0,
+     "y": 1274.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552663.8,
+       4181182.7
+      ],
+      "MORRIS ST",
+      [
+       552663.8,
+       4181182.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x MORRIS ST",
+     "x": 1251.0,
+     "y": 1274.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    425.0,
+    982.0,
+    1251.0,
+    1274.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Morris-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552526.4,
+       4181318.3
+      ],
+      "MORRIS ST",
+      [
+       552526.4,
+       4181318.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of HARRISON ST x MORRIS ST",
+     "x": 425.0,
+     "y": 1462.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552663.8,
+       4181182.7
+      ],
+      "MORRIS ST",
+      [
+       552663.8,
+       4181182.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x MORRIS ST",
+     "x": 1251.0,
+     "y": 1462.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552479.1,
+       4181270.6
+      ],
+      "06TH ST",
+      [
+       552479.1,
+       4181270.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 06TH ST",
+     "x": 425.0,
+     "y": 1702.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552616.2,
+       4181134.6
+      ],
+      "06TH ST",
+      [
+       552616.2,
+       4181134.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 06TH ST",
+     "x": 1251.0,
+     "y": 1702.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    425.0,
+    1462.0,
+    1251.0,
+    1702.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

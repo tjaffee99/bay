@@ -1,0 +1,110 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Brannan-Townsend/06Th-07Th",
+   "corners": [
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552752.9,
+       4180999.0
+      ],
+      "06TH ST",
+      [
+       552752.9,
+       4180999.0
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 06TH ST",
+     "x": 427.0,
+     "y": 336.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "TOWNSEND ST",
+      [
+       552890.1,
+       4180862.8
+      ],
+      "06TH ST",
+      [
+       552890.1,
+       4180862.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of TOWNSEND ST x 06TH ST",
+     "x": 1258.0,
+     "y": 336.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552558.3,
+       4180802.7
+      ],
+      "07TH ST",
+      [
+       552558.3,
+       4180802.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 07TH ST",
+     "x": 427.0,
+     "y": 1585.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "TOWNSEND ST",
+      [
+       552695.5,
+       4180666.7
+      ],
+      "07TH ST",
+      [
+       552695.5,
+       4180666.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of TOWNSEND ST x 07TH ST",
+     "x": 1258.0,
+     "y": 1585.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    427.0,
+    336.0,
+    1258.0,
+    1585.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

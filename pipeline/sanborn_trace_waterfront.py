@@ -99,10 +99,13 @@ def index():
 
 def sheet_rec(key):
     vol, sheet = key.split("_")
-    return [s for s in index()[vol] if s["id"].split("-")[-1] == sheet][0]
+    return [s for s in index()[vol] if s["id"].split("-")[-1] == sheet[:4]][0]
 
 
 def image(key, pct=25) -> Path:
+    """IIIF image of a sheet; a key with a letter after the sheet number (020_0546u) is a second, separately
+    georeferenced part of the same sheet and shares its image."""
+    key = key[:8]
     s = sheet_rec(key)
     return curl(s["info"].replace("/info.json", f"/full/pct:{pct}/0/default.jpg"), RAW / f"{key}_{pct}.jpg", 10000)
 
@@ -617,7 +620,12 @@ def assemble():
         feats, cover = [], []
         for key in keys:
             vol, sheet = key.split("_")
+            sheet = sheet[:4]
             G = json.load(open(INTERIM / f"{key}.M.json"))
+            kcfg = json.load(open(CONTROL / f"{key}.json"))
+            if "registered_to" in kcfg:
+                kcfg = json.load(open(CONTROL / f"{kcfg['registered_to']}.json"))
+            residential = kcfg.get("residential", sheet in RESIDENTIAL_SHEETS)
             map_year, vlabel = VOLUMES[vol]
             rec = sheet_rec(key)
             rows = json.load(open(INTERIM / f"{key}.json"))
@@ -656,7 +664,7 @@ def assemble():
                     material = {"frame": "frame", "brick": "brick", "stone": "concrete" if map_year >= 1950 else "stone",
                                 "fireproof": "unknown" if map_year < 1900 else "concrete", "iron": "iron"}[cls]
                     if cls == "frame":
-                        st, us = ((1, "shed") if a < 30 else (2, "dwelling") if sheet in RESIDENTIAL_SHEETS and a <= 300
+                        st, us = ((1, "shed") if a < 30 else (2, "dwelling") if residential and a <= 300
                                   else (1, "warehouse") if a >= 300 else (1, "shed"))
                     else:
                         st, us = (1, "shed") if cls == "iron" else (2, "warehouse")

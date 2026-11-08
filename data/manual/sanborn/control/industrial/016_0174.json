@@ -1,0 +1,407 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Bryant-Brannan/06Th-Harriet",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552616.2,
+       4181134.6
+      ],
+      "06TH ST",
+      [
+       552616.2,
+       4181134.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 06TH ST",
+     "x": 420.0,
+     "y": 172.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552752.9,
+       4180999.0
+      ],
+      "06TH ST",
+      [
+       552752.9,
+       4180999.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 06TH ST",
+     "x": 1247.0,
+     "y": 172.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552567.8,
+       4181085.9
+      ],
+      "HARRIET ST",
+      [
+       552567.8,
+       4181085.9
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x HARRIET ST",
+     "x": 420.0,
+     "y": 412.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552705.9,
+       4180951.6
+      ],
+      "HARRIET ST",
+      [
+       552705.9,
+       4180951.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x HARRIET ST",
+     "x": 1247.0,
+     "y": 412.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    420.0,
+    172.0,
+    1247.0,
+    412.0
+   ]
+  },
+  {
+   "name": "Bryant-Brannan/Harriet-Boardman",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552567.8,
+       4181085.9
+      ],
+      "HARRIET ST",
+      [
+       552567.8,
+       4181085.9
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x HARRIET ST",
+     "x": 420.0,
+     "y": 579.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552705.9,
+       4180951.6
+      ],
+      "HARRIET ST",
+      [
+       552705.9,
+       4180951.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x HARRIET ST",
+     "x": 1247.0,
+     "y": 579.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552518.9,
+       4181036.6
+      ],
+      "BOARDMAN PL",
+      [
+       552518.9,
+       4181036.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of BRYANT ST x BOARDMAN PL",
+     "x": 420.0,
+     "y": 880.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552654.8,
+       4180900.0
+      ],
+      "BOARDMAN PL",
+      [
+       552654.8,
+       4180900.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of BRANNAN ST x BOARDMAN PL",
+     "x": 1247.0,
+     "y": 880.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    420.0,
+    579.0,
+    1247.0,
+    880.0
+   ]
+  },
+  {
+   "name": "Bryant-Brannan/Boardman-Gilbert",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552518.9,
+       4181036.6
+      ],
+      "BOARDMAN PL",
+      [
+       552518.9,
+       4181036.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of BRYANT ST x BOARDMAN PL",
+     "x": 420.0,
+     "y": 1044.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552654.8,
+       4180900.0
+      ],
+      "BOARDMAN PL",
+      [
+       552654.8,
+       4180900.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of BRANNAN ST x BOARDMAN PL",
+     "x": 1247.0,
+     "y": 1044.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552536.6,
+       4180917.7
+      ],
+      "GILBERT ST",
+      [
+       552536.6,
+       4180917.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x GILBERT ST (centrelines extended; today closest-approach 193m)",
+     "x": 420.0,
+     "y": 1351.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552605.0,
+       4180849.9
+      ],
+      "GILBERT ST",
+      [
+       552605.0,
+       4180849.9
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x GILBERT ST",
+     "x": 1247.0,
+     "y": 1351.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    420.0,
+    1044.0,
+    1247.0,
+    1351.0
+   ]
+  },
+  {
+   "name": "Bryant-Brannan/Gilbert-07Th",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552536.6,
+       4180917.7
+      ],
+      "GILBERT ST",
+      [
+       552536.6,
+       4180917.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRYANT ST x GILBERT ST (centrelines extended; today closest-approach 193m)",
+     "x": 420.0,
+     "y": 1517.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552605.0,
+       4180849.9
+      ],
+      "GILBERT ST",
+      [
+       552605.0,
+       4180849.9
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 35,
+     "label": "corner of BRANNAN ST x GILBERT ST",
+     "x": 1247.0,
+     "y": 1517.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       552421.5,
+       4180938.3
+      ],
+      "07TH ST",
+      [
+       552421.5,
+       4180938.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 07TH ST",
+     "x": 420.0,
+     "y": 1758.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552558.3,
+       4180802.7
+      ],
+      "07TH ST",
+      [
+       552558.3,
+       4180802.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 07TH ST",
+     "x": 1247.0,
+     "y": 1758.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    420.0,
+    1517.0,
+    1247.0,
+    1758.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

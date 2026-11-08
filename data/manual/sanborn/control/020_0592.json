@@ -1,0 +1,62 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "tie": "020_0591",
+   "px_other": [
+    1310.5,
+    481.3
+   ],
+   "label": "tie 591 (SIFT match on the shared drawing of slip No. 1)",
+   "x": 53.4,
+   "y": 483.5,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0591",
+   "px_other": [
+    1558.5,
+    1818.5
+   ],
+   "label": "tie 591 (SIFT match, 20th St east end)",
+   "x": 303.3,
+   "y": 1827.9,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0594",
+   "px_other": [
+    595.3,
+    80.2
+   ],
+   "label": "tie 594 (SIFT match, car shop / bar warehouse)",
+   "x": 720.3,
+   "y": 1635.9,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0594",
+   "px_other": [
+    61.7,
+    234.1
+   ],
+   "label": "tie 594 (SIFT match, office at 20th St)",
+   "x": 184.8,
+   "y": 1793.5,
+   "norefine": 1
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": false
+}

@@ -1,0 +1,319 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/06Th-Harriet",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552342.2,
+       4181406.5
+      ],
+      "06TH ST",
+      [
+       552342.2,
+       4181406.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 06TH ST",
+     "x": 415.0,
+     "y": 225.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552479.1,
+       4181270.6
+      ],
+      "06TH ST",
+      [
+       552479.1,
+       4181270.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 06TH ST",
+     "x": 1246.0,
+     "y": 225.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    415.0,
+    225.0,
+    1246.0,
+    415.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Harriet-Columbia",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552270.3,
+       4181334.1
+      ],
+      "COLUMBIA SQUARE ST",
+      [
+       552270.3,
+       4181334.1
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of FOLSOM ST x COLUMBIA SQUARE ST",
+     "x": 415.0,
+     "y": 747.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552406.9,
+       4181197.8
+      ],
+      "COLUMBIA SQUARE ST",
+      [
+       552406.9,
+       4181197.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of HARRISON ST x COLUMBIA SQUARE ST",
+     "x": 1246.0,
+     "y": 747.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    415.0,
+    566.0,
+    1246.0,
+    747.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Columbia-Sherman",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552270.3,
+       4181334.1
+      ],
+      "COLUMBIA SQUARE ST",
+      [
+       552270.3,
+       4181334.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of FOLSOM ST x COLUMBIA SQUARE ST",
+     "x": 415.0,
+     "y": 864.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552406.9,
+       4181197.8
+      ],
+      "COLUMBIA SQUARE ST",
+      [
+       552406.9,
+       4181197.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of HARRISON ST x COLUMBIA SQUARE ST",
+     "x": 1246.0,
+     "y": 864.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552219.7,
+       4181283.1
+      ],
+      "SHERMAN ST",
+      [
+       552219.7,
+       4181283.1
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of FOLSOM ST x SHERMAN ST",
+     "x": 415.0,
+     "y": 1167.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552356.1,
+       4181146.6
+      ],
+      "SHERMAN ST",
+      [
+       552356.1,
+       4181146.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of HARRISON ST x SHERMAN ST",
+     "x": 1246.0,
+     "y": 1167.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    415.0,
+    864.0,
+    1246.0,
+    1167.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Sherman-07Th",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552219.7,
+       4181283.1
+      ],
+      "SHERMAN ST",
+      [
+       552219.7,
+       4181283.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of FOLSOM ST x SHERMAN ST",
+     "x": 415.0,
+     "y": 1284.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552356.1,
+       4181146.6
+      ],
+      "SHERMAN ST",
+      [
+       552356.1,
+       4181146.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 37.5,
+     "label": "corner of HARRISON ST x SHERMAN ST",
+     "x": 1246.0,
+     "y": 1284.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552147.3,
+       4181210.1
+      ],
+      "07TH ST",
+      [
+       552147.3,
+       4181210.1
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 07TH ST",
+     "x": 415.0,
+     "y": 1699.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552284.4,
+       4181074.3
+      ],
+      "07TH ST",
+      [
+       552284.4,
+       4181074.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 07TH ST",
+     "x": 1246.0,
+     "y": 1699.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    415.0,
+    1284.0,
+    1246.0,
+    1699.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

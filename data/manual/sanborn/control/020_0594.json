@@ -21,17 +21,6 @@
    "x": 57.0,
    "y": 1571.5,
    "norefine": 1
-  },
-  {
-   "tie": "020_0593",
-   "px_other": [
-    1270.0,
-    625.0
-   ],
-   "label": "tie 593: corner of the 4-in water pipe along Louisiana St",
-   "x": 73.0,
-   "y": 622.5,
-   "norefine": 1
   }
  ],
  "lines": [
@@ -52,8 +41,24 @@
      1571.5
     ]
    ]
+  },
+  {
+   "street": "20TH ST",
+   "near": [
+    "ILLINOIS ST",
+    "20TH ST"
+   ],
+   "R": 120,
+   "px": [
+    [
+     60,
+     187.0
+    ]
+   ],
+   "note": "north kerb at y 137"
   }
  ],
  "pct": 25,
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": false
 }

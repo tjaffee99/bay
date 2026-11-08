@@ -1,0 +1,51 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "tie": "020_0609",
+   "px_other": [
+    1446.8,
+    194.3
+   ],
+   "label": "tie 609 (SIFT match on the shared PG&E plant drawing)",
+   "x": 290.3,
+   "y": 185.9,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0609",
+   "px_other": [
+    1380.5,
+    222.2
+   ],
+   "label": "tie 609 (SIFT match)",
+   "x": 226.8,
+   "y": 215.8,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0609",
+   "px_other": [
+    1428.5,
+    1884.9
+   ],
+   "label": "tie 609 (SIFT match, south edge)",
+   "x": 280.9,
+   "y": 1893.3,
+   "norefine": 1
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": false
+}

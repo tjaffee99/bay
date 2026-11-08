@@ -1,0 +1,308 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Shipley/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552537.2,
+       4181603.0
+      ],
+      "05TH ST",
+      [
+       552537.2,
+       4181603.0
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 05TH ST",
+     "x": 300.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552585.6,
+       4181554.9
+      ],
+      "05TH ST",
+      [
+       552585.6,
+       4181554.9
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 05TH ST",
+     "x": 543.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552342.2,
+       4181406.5
+      ],
+      "06TH ST",
+      [
+       552342.2,
+       4181406.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 06TH ST",
+     "x": 300.0,
+     "y": 1593.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552390.7,
+       4181358.4
+      ],
+      "06TH ST",
+      [
+       552390.7,
+       4181358.4
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 06TH ST",
+     "x": 543.0,
+     "y": 1593.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    300.0,
+    350.0,
+    543.0,
+    1593.0
+   ]
+  },
+  {
+   "name": "Shipley-Clara/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552585.6,
+       4181554.9
+      ],
+      "05TH ST",
+      [
+       552585.6,
+       4181554.9
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 05TH ST",
+     "x": 716.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552626.6,
+       4181514.1
+      ],
+      "05TH ST",
+      [
+       552626.6,
+       4181514.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 05TH ST",
+     "x": 950.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552390.7,
+       4181358.4
+      ],
+      "06TH ST",
+      [
+       552390.7,
+       4181358.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 06TH ST",
+     "x": 716.0,
+     "y": 1593.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552431.7,
+       4181317.7
+      ],
+      "06TH ST",
+      [
+       552431.7,
+       4181317.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 06TH ST",
+     "x": 950.0,
+     "y": 1593.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    716.0,
+    350.0,
+    950.0,
+    1593.0
+   ]
+  },
+  {
+   "name": "Clara-Harrison/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552626.6,
+       4181514.1
+      ],
+      "05TH ST",
+      [
+       552626.6,
+       4181514.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 05TH ST",
+     "x": 1121.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552674.0,
+       4181467.1
+      ],
+      "05TH ST",
+      [
+       552674.0,
+       4181467.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 05TH ST",
+     "x": 1361.0,
+     "y": 350.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552431.7,
+       4181317.7
+      ],
+      "06TH ST",
+      [
+       552431.7,
+       4181317.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 06TH ST",
+     "x": 1121.0,
+     "y": 1593.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552479.1,
+       4181270.6
+      ],
+      "06TH ST",
+      [
+       552479.1,
+       4181270.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 06TH ST",
+     "x": 1361.0,
+     "y": 1593.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1121.0,
+    350.0,
+    1361.0,
+    1593.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

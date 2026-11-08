@@ -1,0 +1,332 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "4040",
+   "corners": [
+    {
+     "bc": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 215.0,
+     "y": 224.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 514.0,
+     "y": 226.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "19TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 515.0,
+     "y": 820.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "PENNSYLVANIA AVE",
+      "19TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 216.0,
+     "y": 820.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4041",
+   "corners": [
+    {
+     "bc": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 709.0,
+     "y": 225.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "18TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 995.0,
+     "y": 226.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "19TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 996.0,
+     "y": 821.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "19TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 709.0,
+     "y": 820.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4042",
+   "corners": [
+    {
+     "bc": [
+      "INDIANA ST",
+      "18TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1133.0,
+     "y": 228.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "18TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1419.0,
+     "y": 236.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "19TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1420.0,
+     "y": 810.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "19TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1141.0,
+     "y": 809.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4063",
+   "corners": [
+    {
+     "bc": [
+      "PENNSYLVANIA AVE",
+      "19TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 218.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "19TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 516.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "20TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 519.0,
+     "y": 1712.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "PENNSYLVANIA AVE",
+      "20TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 221.0,
+     "y": 1713.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4062",
+   "corners": [
+    {
+     "bc": [
+      "IOWA ST",
+      "19TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 710.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "19TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 996.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "20TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 996.0,
+     "y": 1711.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "IOWA ST",
+      "20TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 711.0,
+     "y": 1711.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4061",
+   "corners": [
+    {
+     "bc": [
+      "INDIANA ST",
+      "19TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1142.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "19TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1421.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MINNESOTA ST",
+      "20TH ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1417.0,
+     "y": 1709.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "INDIANA ST",
+      "20TH ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1141.0,
+     "y": 1710.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "residential": true
+}

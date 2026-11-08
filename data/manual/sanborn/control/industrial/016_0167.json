@@ -1,0 +1,209 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Brannan-Bluxome/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552947.7,
+       4181195.5
+      ],
+      "05TH ST",
+      [
+       552947.7,
+       4181195.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 05TH ST",
+     "x": 353.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BLUXOME ST",
+      [
+       553017.3,
+       4181126.3
+      ],
+      "05TH ST",
+      [
+       553017.3,
+       4181126.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 70,
+     "wb": 82.5,
+     "label": "corner of BLUXOME ST x 05TH ST",
+     "x": 729.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       552752.9,
+       4180999.0
+      ],
+      "06TH ST",
+      [
+       552752.9,
+       4180999.0
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 06TH ST",
+     "x": 353.0,
+     "y": 1561.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BLUXOME ST",
+      [
+       552821.1,
+       4180931.3
+      ],
+      "06TH ST",
+      [
+       552821.1,
+       4180931.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 70,
+     "wb": 82.5,
+     "label": "corner of BLUXOME ST x 06TH ST",
+     "x": 729.0,
+     "y": 1561.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    353.0,
+    313.0,
+    729.0,
+    1561.0
+   ]
+  },
+  {
+   "name": "Bluxome-Townsend/05Th-06Th",
+   "corners": [
+    {
+     "bcx": [
+      "BLUXOME ST",
+      [
+       553017.3,
+       4181126.3
+      ],
+      "05TH ST",
+      [
+       553017.3,
+       4181126.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 70,
+     "wb": 82.5,
+     "label": "corner of BLUXOME ST x 05TH ST",
+     "x": 957.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "TOWNSEND ST",
+      [
+       553085.0,
+       4181059.2
+      ],
+      "05TH ST",
+      [
+       553085.0,
+       4181059.2
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of TOWNSEND ST x 05TH ST",
+     "x": 1335.0,
+     "y": 313.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BLUXOME ST",
+      [
+       552821.1,
+       4180931.3
+      ],
+      "06TH ST",
+      [
+       552821.1,
+       4180931.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 70,
+     "wb": 82.5,
+     "label": "corner of BLUXOME ST x 06TH ST",
+     "x": 957.0,
+     "y": 1561.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "TOWNSEND ST",
+      [
+       552890.1,
+       4180862.8
+      ],
+      "06TH ST",
+      [
+       552890.1,
+       4180862.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of TOWNSEND ST x 06TH ST",
+     "x": 1335.0,
+     "y": 1561.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    957.0,
+    313.0,
+    1335.0,
+    1561.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}
