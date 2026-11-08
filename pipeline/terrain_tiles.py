@@ -1060,8 +1060,9 @@ def real_farmsteads(g, covers, years):
         if ra != rb and my[a] != my[b]:
             parent[ra] = rb
     grp = np.array([find(a) for a in range(len(pts))])
-    gdf = pd.DataFrame({"g": grp, "x": x, "y": y, "y_map": my}).groupby("g").agg(
-        x=("x", "mean"), y=("y", "mean"), first=("y_map", "min"), last=("y_map", "max"))
+    dwell = pts["has_dwelling"].fillna(True).astype(bool).values if "has_dwelling" in pts else np.ones(len(pts), bool)
+    gdf = pd.DataFrame({"g": grp, "x": x, "y": y, "y_map": my, "dw": dwell}).groupby("g").agg(
+        x=("x", "mean"), y=("y", "mean"), first=("y_map", "min"), last=("y_map", "max"), dw=("dw", "max"))
     # map editions covering each farmstead
     editions = [[] for _ in range(len(gdf))]
     if cov is not None and len(cov):
@@ -1105,6 +1106,8 @@ def real_farmsteads(g, covers, years):
         cities.append(city_y)
     out = pd.DataFrame({"li": (g["Y0"] - gdf.y.values) / g["res"], "lj": (gdf.x.values - g["X0"]) / g["res"],
                         "start": starts, "end": ends, "kind": D_FARMHOUSE})
+    # mapped with barns / sheds only (open squares on the 1950s sheets): no house
+    out.loc[~gdf["dw"].values, "kind"] = D_FARMYARD
     # surviving farmhouses: a footprint standing today, about as old as the map
     bp = INTERIM / "region_building_points.parquet"
     if bp.exists():
