@@ -62,7 +62,10 @@ def main():
                 if place == "San Francisco":
                     pop["San Francisco"] = series
             else:
-                gid = str(grp["geoid"].dropna().iloc[0]) if "geoid" in grp and grp["geoid"].notna().any() else by_name.get(place)
+                gid = by_name.get(place)
+                if "geoid" in grp and grp["geoid"].notna().any():
+                    g0 = grp["geoid"].dropna().iloc[0]
+                    gid = str(int(float(g0))).zfill(7) if str(g0).replace(".", "").isdigit() else str(g0)
                 pop[gid or place] = series
         log(f"cities: populations for {len(pop)} places / counties, region {len(region)} points")
     else:
