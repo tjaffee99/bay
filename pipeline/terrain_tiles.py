@@ -294,6 +294,10 @@ def histories(name, g, d):
     near_water = ndimage.binary_dilation(water_now, iterations=6)
     N[bare & (elev < 20) & near_water] = BEACH
     N[bare & ~((elev < 20) & near_water)] = ROCK
+    # bare ground in the baylands (dried salt-pond crust, levee tops, mud) is not sand:
+    # tidal flat, wherever SFEI maps bay / flat / marsh / pond c.1800 or baylands c.1998
+    baylands = np.isin(b18, [2, 3, 4, 6]) | np.isin(b98, [3, 4, 6, 9, 10, 11])
+    N[bare & baylands] = FLAT
     tree = wc == 10
     trees_near = ndimage.binary_dilation(tree, iterations=2)
     inland = lon > -122.30

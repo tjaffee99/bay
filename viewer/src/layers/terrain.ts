@@ -281,7 +281,7 @@ vec3 shorePattern(vec3 base, int code, vec2 P, float px) {
     // tidal marsh: pickleweed and cordgrass, darker patches, sloughs and channels
     vec3 c = base * (0.92 + 0.16 * inoise(P * 1.7));
     c = mix(c, vec3(0.44, 0.5, 0.36), 0.35 * smoothstep(0.55, 0.8, inoise(P * 0.6 + 3.3)));
-    float ch = max(channels(P, 0.55, 0.018, px), channels(P + 31.0, 1.6, 0.012, px) * 0.8);
+    float ch = channels(P, 0.55, 0.016, px);
     return mix(c, vec3(0.42, 0.52, 0.54), ch);
   }
   if (code == 6) {
@@ -296,21 +296,28 @@ vec3 shorePattern(vec3 base, int code, vec2 P, float px) {
   }
   return base;
 }
-// salt ponds: a complex of evaporators (~600 x 450 m) between dikes, each its own
-// colour by salinity — mostly blue-green and olive, the saltier ones rust
+// salt ponds: a complex of evaporators — irregular polygons (~0.5-1 km) between
+// straight dikes (Voronoi cells), each a muted colour by salinity: mostly
+// blue-green and olive, a few khaki and rust
 vec3 saltPond(vec2 P, float px) {
-  vec2 sz = vec2(8.0, 6.0);
-  float row = floor(P.y / sz.y);
-  float off = ih(vec2(row, 91.0)) * sz.x;
-  vec2 cell = vec2(floor((P.x + off) / sz.x), row);
-  vec2 fp = vec2(fract((P.x + off) / sz.x), fract(P.y / sz.y));
-  float h = ih(cell * 1.37 + 5.0);
-  vec3 c = h < 0.35 ? vec3(0.42, 0.57, 0.6) : h < 0.6 ? vec3(0.5, 0.61, 0.53) : h < 0.78 ? vec3(0.58, 0.61, 0.47)
-         : h < 0.92 ? vec3(0.66, 0.53, 0.43) : vec3(0.58, 0.46, 0.45);
-  c *= 0.95 + 0.1 * inoise(P * 0.9);
-  vec2 e = min(fp, 1.0 - fp) * sz;
-  float dike = lineCover(min(e.x, e.y), 0.05, px);
-  return mix(c, vec3(0.74, 0.7, 0.6), dike);
+  vec2 q = P / 11.0;
+  vec2 iq = floor(q);
+  float d1 = 1e9, d2 = 1e9;
+  vec2 best = vec2(0.0);
+  for (int j = -1; j <= 1; j++)
+    for (int i = -1; i <= 1; i++) {
+      vec2 cc = iq + vec2(float(i), float(j));
+      vec2 fpnt = cc + vec2(0.15 + 0.7 * ih(cc * 1.31 + 2.0), 0.15 + 0.7 * ih(cc * 2.17 + 9.0));
+      float d = distance(q, fpnt);
+      if (d < d1) { d2 = d1; d1 = d; best = cc; }
+      else if (d < d2) { d2 = d; }
+    }
+  float h = ih(best * 1.37 + 5.0);
+  vec3 c = h < 0.4 ? vec3(0.45, 0.56, 0.55) : h < 0.7 ? vec3(0.52, 0.58, 0.49) : h < 0.85 ? vec3(0.58, 0.58, 0.48)
+         : h < 0.95 ? vec3(0.62, 0.53, 0.46) : vec3(0.56, 0.48, 0.46);
+  c = mix(vec3(0.5, 0.58, 0.54), c, 0.7) * (0.97 + 0.06 * inoise(P * 0.7));
+  float edge = (d2 - d1) * 0.5 * 11.0;                // lattice cells to the dike
+  return mix(c, vec3(0.7, 0.67, 0.58), lineCover(edge, 0.05, px));
 }
 void main(void) {
   vec2 size = vec2(textureSize(coverTex, 0));
