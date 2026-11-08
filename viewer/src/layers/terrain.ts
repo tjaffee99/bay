@@ -188,6 +188,18 @@ float blockHash(vec2 b) {
   h ^= h >> 16;
   return float(h & 65535u) / 65535.0;
 }
+float ih(vec2 p) {
+  uvec2 v = uvec2(ivec2(floor(p)) + ivec2(1 << 20));
+  uint h = v.x * 1664525u + v.y * 1013904223u;
+  h ^= h >> 16; h *= 2246822519u; h ^= h >> 13; h *= 3266489917u; h ^= h >> 16;
+  return float(h & 65535u) / 65535.0;
+}
+float inoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(ih(i), ih(i + vec2(1.0, 0.0)), f.x), mix(ih(i + vec2(0.0, 1.0)), ih(i + vec2(1.0, 1.0)), f.x), f.y);
+}
 // antialiased line coverage: thinner than a pixel, it fades to its area share
 float lineCover(float d, float halfW, float px) {
   px = max(px, 1e-5);
@@ -212,16 +224,26 @@ vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   float hb = blockHash(bid);
   if (code == 2 && hb < 0.2) code = 1;            // not every block of an orchard district is orchard
   if (code == 1) {
-    // farmland: grain gold, green crop, ploughed, stubble, hay
-    vec3 f = hf < 0.3 ? vec3(0.86, 0.77, 0.5) : hf < 0.5 ? vec3(0.63, 0.68, 0.43) : hf < 0.66 ? vec3(0.66, 0.56, 0.43)
-           : hf < 0.85 ? vec3(0.85, 0.8, 0.62) : vec3(0.76, 0.74, 0.5);
-    vec3 c = mix(base, f, 0.7);
+    // farmland: fields in staggered rows (each row of 4-cell fields shifted, so the
+    // boundaries don't line up into a grid), each field one crop — grain gold, green
+    // crop, ploughed, stubble, hay — with faint crop rows and soft edges
+    vec2 P = L + B;
+    float rowi = floor(P.y / 3.0);
+    float off = ih(vec2(rowi, 17.0)) * 4.0;
+    float wfield = 3.0 + 3.0 * ih(vec2(rowi, 29.0));
+    float fx = (P.x + off) / wfield;
+    vec2 fid = vec2(floor(fx), rowi);
+    float hf1 = ih(fid * 1.13 + 3.0);
+    float hr1 = ih(fid * 2.71 + 8.0);
+    vec2 fp = vec2(fract(fx) * wfield, fract(P.y / 3.0) * 3.0);
+    float dE = min(min(fp.x, wfield - fp.x), min(fp.y, 3.0 - fp.y));
+    vec3 f = hf1 < 0.3 ? vec3(0.86, 0.77, 0.5) : hf1 < 0.5 ? vec3(0.63, 0.68, 0.43) : hf1 < 0.66 ? vec3(0.66, 0.56, 0.43)
+           : hf1 < 0.85 ? vec3(0.85, 0.8, 0.62) : vec3(0.76, 0.74, 0.5);
+    vec3 c = mix(base, f, 0.6);
     float per = 0.08;                                  // crop rows, ~6 m
-    float u = (rowsAlongX > 0.5 ? L.y : L.x) / per;
-    float rows = (abs(fract(u) - 0.5) * 2.0 - 0.5) * 0.06 * smoothstep(2.0, 5.0, per / px);
-    c *= 1.0 + rows;
-    float hedge = lineCover(dEdge, 0.018, px);        // field edges: tracks, fences, ditches
-    return mix(c, vec3(0.55, 0.53, 0.38), hedge * 0.8);
+    float u = (hr1 > 0.5 ? L.y : L.x) / per;
+    c *= 1.0 + (abs(fract(u) - 0.5) * 2.0 - 0.5) * 0.05 * smoothstep(2.0, 5.0, per / px);
+    return mix(c, vec3(0.58, 0.56, 0.42), lineCover(dE, 0.015, px) * 0.45);
   }
   if (code == 2) {
     // orchard: crowns on the 8.5 m grid over a grassy floor; blocks of different ages
@@ -262,18 +284,6 @@ vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
 int coverCode(vec4 t) { return t.a < 0.25 ? int(floor(t.a * 255.0 / 8.0 + 0.5)) : 0; }
 // ---- bay shore (procedural detail on real covers): value noise on an integer hash,
 // in global lattice cells (P = tile lattice + its origin), stable at any coordinate
-float ih(vec2 p) {
-  uvec2 v = uvec2(ivec2(floor(p)) + ivec2(1 << 20));
-  uint h = v.x * 1664525u + v.y * 1013904223u;
-  h ^= h >> 16; h *= 2246822519u; h ^= h >> 13; h *= 3266489917u; h ^= h >> 16;
-  return float(h & 65535u) / 65535.0;
-}
-float inoise(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  f = f * f * (3.0 - 2.0 * f);
-  return mix(mix(ih(i), ih(i + vec2(1.0, 0.0)), f.x), mix(ih(i + vec2(0.0, 1.0)), ih(i + vec2(1.0, 1.0)), f.x), f.y);
-}
 // thin meandering lines where a two-octave noise crosses 0.5 (tidal channels)
 float channels(vec2 P, float scale, float halfW, float px) {
   float n = inoise(P * scale) * 0.65 + inoise(P * scale * 2.3 + 7.1) * 0.35;
