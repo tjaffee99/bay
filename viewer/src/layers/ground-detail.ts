@@ -83,3 +83,68 @@ export function groundDetailLayers(year: number, zoom: number): Layer[] {
     } as any) as any
   ];
 }
+
+// ------------------------------------------------------------------ airports
+// pipeline/airports.py: runways, taxiways and aprons (OSM via Overture), from each
+// airport's opening year (and not before its fill); visible from city scale.
+const AIRPORT_COLORS: [number, number, number][] = [
+  [104, 106, 110], // 0 runway (asphalt)
+  [124, 126, 128], // 1 taxiway
+  [176, 176, 172] // 2 apron (concrete)
+];
+let apData: any = null;
+let apOrigin: [number, number] = [0, 0];
+let apColors: Uint8Array | null = null;
+let apYears: Float32Array | null = null;
+
+export async function loadAirports() {
+  try {
+    const f = await loadColumnar('data/airports.bin.gz');
+    const c = f.columns;
+    const n = f.header.counts.polygons;
+    apOrigin = f.header.origin;
+    const kind = c.kind as Uint8Array;
+    apYears = c.years as Float32Array;
+    apColors = new Uint8Array(n * 4);
+    for (let i = 0; i < n; i++) apColors.set([...(AIRPORT_COLORS[kind[i]] ?? AIRPORT_COLORS[1]), 255], i * 4);
+    apData = {length: n, startIndices: c.start_indices, attributes: {getPolygon: {value: c.positions, size: 3}}};
+  } catch (e) {
+    console.warn('airports', e);
+  }
+}
+
+export function airportLayers(year: number, zoom: number): Layer[] {
+  if (!apData || zoom < 9.5) return [];
+  const col = apColors!;
+  const yrs = apYears!;
+  return [
+    new SolidPolygonLayer({
+      id: 'airports',
+      data: apData,
+      positionFormat: 'XYZ',
+      _normalize: false,
+      coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+      coordinateOrigin: [apOrigin[0], apOrigin[1], 0],
+      extruded: false,
+      getFillColor: (_: any, {index, target}: any) => {
+        target[0] = col[index * 4];
+        target[1] = col[index * 4 + 1];
+        target[2] = col[index * 4 + 2];
+        target[3] = 255;
+        return target;
+      },
+      extensions: [fade],
+      getYears: (_: any, {index, target}: any) => {
+        target[0] = yrs[index * 2];
+        target[1] = yrs[index * 2 + 1];
+        return target;
+      },
+      currentYear: year,
+      growYears: 1,
+      shrinkYears: 0.5,
+      pickable: false,
+      shadowEnabled: false,
+      parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
+    } as any) as any
+  ];
+}

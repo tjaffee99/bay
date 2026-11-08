@@ -516,6 +516,19 @@ def histories(name, g, d):
         spread = 0.5 if c in (PARK, URBAN, RESERVOIR) else 6.0
         event(m, c, ys + spread * h)
 
+    # ---- airports (airports.py): the field is airfield grass from its opening year
+    # (after any fill), not city ground or orchard; runways / aprons are drawn on top
+    ap_path = INTERIM / "airports.parquet"
+    airport = np.zeros((rows, cols), bool)
+    if ap_path.exists():
+        ap = gpd.read_parquet(ap_path).to_crs(3857)
+        ap_open = rasterize_on(g, [(geom, float(y)) for geom, y in zip(ap.geometry, ap.opened)], fill=0,
+                               dtype="float32").astype(np.float32)
+        airport = (ap_open > 0) & ~water_now
+        ay = np.where(np.isfinite(fill_y) & filled, np.maximum(ap_open, fill_y + 0.5), ap_open)
+        urban &= ~(airport & (urban_y >= ay - 1))
+        event(airport, GRASS, ay)
+
     # ---- urbanisation, parks, planted woods
     # suburban ground: houses in yards and trees (little of the ground under roofs,
     # WorldCover sees trees / grass around) reads green-grey, not as a pale city plate
@@ -728,7 +741,8 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                 y_end = yv[e][m] if e < 4 else np.full(m.sum(), np.nan)
                 if deco == D_ORCHARD:
                     # rows of trees: a 3x3 block per lattice cell (≈20 m spacing in the region grid)
-                    oy, ox = np.meshgrid(np.linspace(-0.33, 0.33, 3), np.linspace(-0.33, 0.33, 3))
+                    # exact thirds: the viewer's orchard ground pattern (8.5 m grid) lines up
+                    oy, ox = np.meshgrid(np.array([-1, 0, 1]) / 3.0, np.array([-1, 0, 1]) / 3.0)
                     fy = ((vy[:, None] + oy.ravel()[None]) + max(r0 // sub, 0)) * sub
                     fx = ((vx[:, None] + ox.ravel()[None]) + max(c0 // sub, 0)) * sub
                     kinds.append(np.full(fy.size, D_ORCHARD)); ys.append(fy.ravel()); xs.append(fx.ravel())
@@ -742,8 +756,12 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     fy = (vy[pick] + max(r0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
                     fx = (vx[pick] + max(c0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
                     kinds.append(np.full(pick.sum(), D_FARMHOUSE)); ys.append(fy); xs.append(fx)
-                    sizes.append(rng.uniform(7, 10, pick.sum())); starts.append(y_start[pick] + rng.uniform(0, 8, pick.sum()))
+                    fs = y_start[pick] + rng.uniform(0, 8, pick.sum())
+                    sizes.append(rng.uniform(7, 10, pick.sum())); starts.append(fs)
                     ends.append(y_end[pick])
+                    wy, wx, ws, wst, wen = windbreaks(fy, fx, fs, y_end[pick], g["res"] / sub, rng)
+                    kinds.append(np.full(len(wy), D_BROADLEAF)); ys.append(wy); xs.append(wx)
+                    sizes.append(ws); starts.append(wst); ends.append(wen)
         if not kinds:
             return {}
         kinds = np.concatenate(kinds); ys = np.concatenate(ys); xs = np.concatenate(xs)
@@ -760,6 +778,29 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         }
 
     return fn
+
+
+def windbreaks(fy, fx, start, end, cell_m, rng):
+    """A row of 4-6 tall trees (the eucalyptus / cypress windbreak of a California
+    farmstead) ~25 m upwind (north-west) of each farmstead, planted a few years after it.
+    fy, fx in fine-grid units of cell_m metres."""
+    out = ([], [], [], [], [])
+    for y, x, s0, e0 in zip(fy, fx, start, end):
+        n = int(rng.integers(4, 7))
+        along = rng.uniform(0, 1) < 0.5  # row runs east-west north of the house, or north-south west of it
+        t = (np.arange(n) - (n - 1) / 2) * 8.0 / cell_m
+        if along:
+            yy, xx = np.full(n, y - 26.0 / cell_m), x + t
+        else:
+            yy, xx = y + t, np.full(n, x - 26.0 / cell_m)
+        out[0].append(yy + rng.uniform(-0.6, 0.6, n) / cell_m)
+        out[1].append(xx + rng.uniform(-0.6, 0.6, n) / cell_m)
+        out[2].append(rng.uniform(14, 20, n))
+        out[3].append(np.full(n, s0 + rng.uniform(3, 8)))
+        out[4].append(np.full(n, e0))
+    if not out[0]:
+        return (np.zeros(0),) * 5
+    return tuple(np.concatenate(a) for a in out)
 
 
 def write_elevation_lookup(name, g, elev, step):

@@ -34,6 +34,7 @@ viewer/public/data/*
 !viewer/public/data/transit-lines.json
 !viewer/public/data/transit-stations.json
 !viewer/public/data/park-labels.json
+!viewer/public/data/airports.bin.gz
 # terrain tiles (~75 MB) are rebuilt by `make terrain` and shipped by `make deploy`
 viewer/public/tiles/
 

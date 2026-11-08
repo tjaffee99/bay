@@ -51,20 +51,24 @@ const PALETTE: [number, number, number][] = [
 const N = 65;
 const TILE_ZOOM_DETAIL = 14;
 
-type TerrainUniforms = {year: number; exaggeration: number};
+type TerrainUniforms = {year: number; exaggeration: number; latScale: number; latBase: [number, number]};
 const terrainModule: ShaderModule<TerrainUniforms> = {
   name: 'terrain',
   vs: `layout(std140) uniform terrainUniforms {
   float year;
   float exaggeration;
+  float latScale;
+  vec2 latBase;
 } terrain;
 `,
   fs: `layout(std140) uniform terrainUniforms {
   float year;
   float exaggeration;
+  float latScale;
+  vec2 latBase;
 } terrain;
 `,
-  uniformTypes: {year: 'f32', exaggeration: 'f32'}
+  uniformTypes: {year: 'f32', exaggeration: 'f32', latScale: 'f32', latBase: 'vec2<f32>'}
 };
 
 
@@ -163,11 +167,78 @@ vec4 bspline(vec2 st, vec2 size) {
   return g0.y * (g0.x * texture(coverTex, vec2(h0.x, h0.y)) + g1.x * texture(coverTex, vec2(h1.x, h0.y)))
        + g1.y * (g0.x * texture(coverTex, vec2(h0.x, h1.y)) + g1.x * texture(coverTex, vec2(h1.x, h1.y)));
 }
+// ---- farm patterns (procedural; cover code in the texel alpha, see coverColors)
+// L = position in z13 lattice cells (76 m) local to the tile (precise), B = the tile's
+// lattice origin (integer, a multiple of 4) for field ids. Orchard trees stand on the
+// 1/9-cell grid (8.5 m); the 3D orchard trees (terrain_tiles.py) on every 3rd of them.
+float lineCover(float d, float halfW, float px) { return clamp((halfW - d) / max(px, 1e-5) + 0.5, 0.0, 1.0); }
+vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
+  vec2 blk = floor(L / 4.0);
+  vec2 bid = B / 4.0 + blk;
+  vec2 bp = L / 4.0 - blk;                 // 0..1 inside a 4x4-cell block (306 m)
+  float h0 = hash(bid + 0.37);
+  float h1 = hash(bid + 17.3);
+  // each block is split in two fields, across x or y
+  bool splitX = h0 < 0.5;
+  float cut = 0.3 + 0.4 * h1;
+  float side = splitX ? step(cut, bp.x) : step(cut, bp.y);
+  float hf = hash(bid * 1.7 + side * 5.3 + 2.1);
+  float hr = hash(bid * 2.3 + side * 3.1 + 7.7);
+  // distance to field edges in cells
+  vec2 eb = min(bp, 1.0 - bp) * 4.0;
+  float dEdge = min(min(eb.x, eb.y), abs((splitX ? bp.x : bp.y) - cut) * 4.0);
+  float rowsAlongX = step(0.5, hr);
+  if (code == 1) {
+    // farmland: grain gold, green crop, ploughed, stubble, hay
+    vec3 f = hf < 0.3 ? vec3(0.86, 0.77, 0.5) : hf < 0.5 ? vec3(0.63, 0.68, 0.43) : hf < 0.66 ? vec3(0.66, 0.56, 0.43)
+           : hf < 0.85 ? vec3(0.85, 0.8, 0.62) : vec3(0.76, 0.74, 0.5);
+    vec3 c = mix(base, f, 0.7);
+    float per = 0.08;                                  // crop rows, ~6 m
+    float u = (rowsAlongX > 0.5 ? L.y : L.x) / per;
+    float rows = (abs(fract(u) - 0.5) * 2.0 - 0.5) * 0.06 * smoothstep(2.0, 5.0, per / px);
+    c *= 1.0 + rows;
+    float hedge = lineCover(dEdge, 0.018, px);        // field edges: tracks, fences, ditches
+    return mix(c, vec3(0.55, 0.53, 0.38), hedge * 0.8);
+  }
+  if (code == 2) {
+    // orchard: crowns on the 8.5 m grid over a grassy floor; blocks of different ages
+    vec3 crown = vec3(0.42, 0.56, 0.3) * (0.92 + 0.16 * hf);
+    vec3 soil = vec3(0.75, 0.79, 0.5) * (0.96 + 0.08 * hr);
+    float r = 0.33 + 0.08 * hf;                       // young blocks have smaller crowns
+    vec2 q = fract(L * 9.0) - 0.5;
+    float d = length(q);
+    float aa = px * 9.0 * 0.75 + 1e-4;
+    float k = 1.0 - smoothstep(r - aa, r + aa, d);
+    float avg = 3.14159 * r * r;
+    float vis = smoothstep(1.5, 4.0, 1.0 / (9.0 * px));
+    float cov = mix(avg, k, vis);
+    vec3 c = mix(soil, crown, cov);
+    c = mix(base, c, 0.85);
+    return mix(c, vec3(0.6, 0.58, 0.42), lineCover(dEdge, 0.015, px) * 0.6);
+  }
+  if (code == 3) {
+    // vineyard: rows ~2.8 m apart, across the block's long axis
+    float u = (rowsAlongX > 0.5 ? L.y : L.x) * 27.0;
+    float k = 1.0 - smoothstep(0.25, 0.45, abs(fract(u) - 0.5));
+    float vis = smoothstep(1.5, 4.0, 1.0 / (27.0 * px));
+    vec3 c = mix(vec3(0.72, 0.64, 0.46), vec3(0.47, 0.56, 0.3), mix(0.45, k, vis));
+    c = mix(base, c, 0.8);
+    return mix(c, vec3(0.6, 0.58, 0.42), lineCover(dEdge, 0.015, px) * 0.6);
+  }
+  if (code == 4) {
+    // pasture: paddocks of slightly different grass
+    vec3 c = base * (0.95 + 0.1 * hf);
+    return mix(c, base * 0.85, lineCover(dEdge, 0.01, px) * 0.5);
+  }
+  return base;
+}
+int coverCode(vec4 t) { return t.a < 0.14 ? int(floor(t.a * 255.0 / 8.0 + 0.5)) : 0; }
 void main(void) {
   vec2 size = vec2(textureSize(coverTex, 0));
   vec2 st = vUv * size - 0.5;
   vec4 smoothC = bspline(st, size);
   vec4 C = smoothC;
+  vec4 dom = texelFetch(coverTex, clamp(ivec2(floor(st + 0.5)), ivec2(0), ivec2(size) - 1), 0);
   // snap to a real cover where texels are big enough on screen to see the edge
   vec2 dst = fwidth(st);
   float texelPx = 1.0 / max(max(dst.x, dst.y), 1e-4);
@@ -203,11 +274,20 @@ void main(void) {
       float e = s + nz - 0.5;
       float aa = fwidth(s) * 0.75 + 1e-4;
       picked = mix(A, B, smoothstep(-aa, aa, e));
+      dom = e > 0.0 ? B : A;
+    } else {
+      dom = A;
     }
     C = mix(smoothC, picked, sel);
   }
   vec3 color = C.rgb;
-  float wet = C.a;
+  float wet = clamp((C.a - 0.14) / 0.86, 0.0, 1.0);
+  int code = coverCode(dom);
+  if (code > 0 && vSkirt < 0.01) {
+    vec2 L = st * terrain.latScale;
+    float px = max(length(vec2(dFdx(L.x), dFdy(L.x))), length(vec2(dFdx(L.y), dFdy(L.y))));
+    color = farmPattern(color, code, L, terrain.latBase, px);
+  }
   vec3 n = normalize(vNormal);
   if (n.z < 0.2) n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   // steep natural slopes read as rock (cliffs)
@@ -221,6 +301,8 @@ void main(void) {
 `;
 
 const WATERISH = new Set([0, 1, 14, 22]);
+// farm pattern codes in the texel alpha for land (water: alpha 255); see farmPattern()
+const FARM_CODE: Record<number, number> = {10: 1, 11: 2, 12: 3, 13: 4};
 /** Current cover colour (rgb) and wetness (a) of each grid vertex — same rules as the vertex shader. */
 function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
   const nn = m.n * m.n;
@@ -245,7 +327,8 @@ function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
     out[v * 4] = Math.round((p0[0] + (p1[0] - p0[0]) * kk) * 255);
     out[v * 4 + 1] = Math.round((p0[1] + (p1[1] - p0[1]) * kk) * 255);
     out[v * 4 + 2] = Math.round((p0[2] + (p1[2] - p0[2]) * kk) * 255);
-    out[v * 4 + 3] = Math.round(w * 255);
+    const code = FARM_CODE[kk >= 0.5 ? c : prev] ?? 0;
+    out[v * 4 + 3] = w > 0 ? Math.round(w * 255) : code * 8;
   }
 }
 
@@ -260,6 +343,9 @@ export type TerrainMesh = {
   skirt: Float32Array;
   indices: Uint32Array;
   origin: [number, number];
+  /** z13 lattice cells per vertex step, and the tile's lattice origin (farm patterns) */
+  latScale: number;
+  latBase: [number, number];
 };
 
 type TerrainMeshLayerProps = {
@@ -359,7 +445,9 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
     model.shaderInputs.setProps({
       terrain: {
         year: terrainYear,
-        exaggeration: this.props.exaggeration
+        exaggeration: this.props.exaggeration,
+        latScale: this.props.mesh.latScale,
+        latBase: this.props.mesh.latBase
       }
     });
     model.draw(this.context.renderPass);
@@ -509,7 +597,9 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     years,
     skirt,
     indices: gridIndices(n),
-    origin: [west, north]
+    origin: [west, north],
+    latScale: 2 ** (13 - sub.srcZ),
+    latBase: [(sub.srcX * 64 + sub.c0) * 2 ** (13 - sub.srcZ), (sub.srcY * 64 + sub.r0) * 2 ** (13 - sub.srcZ)]
   };
 
   // decorations

@@ -16,7 +16,7 @@ import {loadElevation} from './layers/elevation';
 import {addStationLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
 import {loadRegionIndex, regionBuildingLayers} from './layers/region-buildings';
-import {groundDetailLayers, loadGroundDetail} from './layers/ground-detail';
+import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
@@ -147,6 +147,7 @@ function render() {
   const zoom = map.getZoom();
   layers.push(...(terrainLayer(state.year, REGION, zoom) as any[]));
   layers.push(...groundDetailLayers(state.year, zoom));
+  layers.push(...airportLayers(state.year, zoom));
   const b = map.getBounds();
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
@@ -390,6 +391,7 @@ async function boot() {
     placeLabelsOnTerrain();
     render();
   });
+  loadAirports().then(render);
   const groundP = loadGroundDetail()
     .then(render)
     .catch(e => console.warn('ground detail', e));
