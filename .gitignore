@@ -43,3 +43,6 @@ viewer/public/tiles/
 
 .DS_Store
 *.log
+
+# agents' download caches next to their tools
+data/manual/*/tools/cache/
