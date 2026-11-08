@@ -84,6 +84,16 @@ def main():
     nb = np.where(np.isfinite(ny[:, 1]), ny[:, 1], np.nan)
     year = np.where(np.isnan(year), nb, year)
     year = np.where(np.isnan(year), 1950.0, year)
+    # fields and plazas of a reconstructed stadium / landmark site are no older than it
+    # (Oracle Park's diamond is not there before 2000, whatever the warehouses nearby)
+    lm = pd.read_csv(TABLES / "landmarks.csv")
+    lm = lm[lm["kind"].isin(["stadium"]) | lm["id"].isin(["yerba_buena_gardens"])]
+    lmp = gpd.GeoSeries(gpd.points_from_xy(lm.lon, lm.lat), crs=4326).to_crs(UTM)
+    for (_, r), p in zip(lm.iterrows(), lmp.values):
+        near = (pu.distance(p) < (120 if r["kind"] != "stadium" else 180)).values
+        same_site = lm[(abs(lm.lat - r.lat) < 1e-4) & (abs(lm.lon - r.lon) < 1e-4)]
+        y0 = float(same_site.start_year.min())
+        year = np.where(near, np.maximum(year, y0), year)
 
     ground = Ground()
     starts, pos, kinds, years = [0], [], [], []

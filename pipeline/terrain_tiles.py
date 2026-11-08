@@ -742,11 +742,41 @@ def write_elevation_lookup(name, g, elev, step):
     log(f"terrain {name}: elevation lookup {e.shape} -> {out}")
 
 
+def region_under_detail(g, elev):
+    """Where the 30 m detail grid exists (San Francisco), the coarse region tiles shown
+    from further out never rise above it: each region cell takes the lowest detail
+    elevation around it. Roads, rails and buildings are draped on the detail grid, so a
+    freeway in a cut (US-101 below Potrero Hill) is no longer buried under the averaged
+    hillside until the detail tiles load."""
+    from terrain_grid import grid_def
+    gd = grid_def("detail")
+    ed = np.load(INTERIM / "grid_detail_elev.npy").astype(np.float32)
+    ed = np.where(ed < -500, np.nan, ed)
+    mn = ndimage.minimum_filter(np.nan_to_num(ed, nan=1e4), size=3)
+    rows, cols = elev.shape
+    X = g["X0"] + (np.arange(cols) + 0.5) * g["res"]
+    Y = g["Y0"] - (np.arange(rows) + 0.5) * g["res"]
+    c = np.floor((X - gd["X0"]) / gd["res"]).astype(int)
+    r = np.floor((gd["Y0"] - Y) / gd["res"]).astype(int)
+    okc = (c >= 0) & (c < gd["cols"])
+    okr = (r >= 0) & (r < gd["rows"])
+    out = elev.copy()
+    sub = mn[np.ix_(r[okr], c[okc])]
+    reg = out[np.ix_(np.nonzero(okr)[0], np.nonzero(okc)[0])]
+    valid = sub < 5e3
+    reg[valid] = np.minimum(reg[valid], sub[valid])
+    out[np.ix_(np.nonzero(okr)[0], np.nonzero(okc)[0])] = reg
+    log(f"terrain region: {int(valid.sum())} cells capped by the detail grid")
+    return out
+
+
 def main():
     meta = {}
     for name, zooms, step in (("region", [8, 9, 10, 11, 12, 13], 4), ("detail", [14], 2)):
         g, d = load_grid(name)
         covers, years, elev, slope, urban_y, park_y, wood_y = histories(name, g, d)
+        if name == "region":
+            elev = region_under_detail(g, elev)
         deco = decorations(name, g, covers, years, elev, urban_y, park_y, wood_y)
         write_tiles(name, g, covers, years, elev, deco, zooms)
         write_elevation_lookup(name, g, elev, step)

@@ -100,6 +100,8 @@ def main():
 
     fire = gpd.read_file(INTERIM / "fire_1906.geojson").to_crs(UTM)
     burned = cent.within(shapely.union_all(fire.geometry.values)).values
+    industrial = industrial_lots(cent)
+    log(f"predecessors: {int(industrial.sum())} lots in historic industrial districts")
 
     # urban-renewal / freeway clearances: the old fabric ends at the clearance, and
     # lots that became plazas or parks get it too
@@ -147,6 +149,24 @@ def main():
             end = m - 0.3  # replaced by today's building
         else:
             continue  # today's building may be the original — nothing to add
+        # industrial districts: warehouses, factories and sheds covering most of the lot
+        if industrial[i] and dev >= 1860:
+            fp = geom.buffer(-1.0)
+            if fp.is_empty or fp.area < 30:
+                continue
+            fp = fp if fp.geom_type == "Polygon" else max(fp.geoms, key=lambda q: q.area)
+            st_ = 1 + int((3 if dev >= 1885 else 2) * h01(key, "i"))
+            rows.append({"geometry": fp, "start_year": dev, "end_year": end, "height": st_ * 4.5 + 0.8,
+                         "stories": st_, "kind": "building", "source": "sf_extent_procedural", "mapblklot": key,
+                         "use_sanborn": "warehouse", "year_confidence": "procedural", "year_reason": "predecessor_industrial"})
+            rb_end = min(m - 0.3, cl) if np.isfinite(cl) and np.isfinite(m) else (cl if np.isfinite(cl) else m - 0.3)
+            if burned[i] and np.isfinite(rb_end) and rb_end > BURN_REBUILD[1] + 5:
+                rb = BURN_REBUILD[0] + (BURN_REBUILD[1] - BURN_REBUILD[0]) * h01(key, "r")
+                st2 = 1 + int(3 * h01(key, "t"))
+                rows.append({"geometry": fp, "start_year": rb, "end_year": rb_end, "height": st2 * 4.5 + 0.8,
+                             "stories": st2, "kind": "building", "source": "sf_rebuild_procedural", "mapblklot": key,
+                             "use_sanborn": "warehouse", "year_confidence": "procedural", "year_reason": "post_fire_rebuild_industrial"})
+            continue
         # a big parcel (merged later, or a superblock) held rows of ordinary buildings,
         # not one giant box: put era-typical rows along its street edges instead
         if geom.area > 3500 and not downtown:
@@ -216,10 +236,29 @@ def main():
     log(f"predecessors: wrote {len(pred)} features")
 
 
+# ---------------------------------------------------------------- industrial districts
+# today's industrial zoning plus the districts that were industrial until the Eastern
+# Neighborhoods (2008), Mission Bay (1998), Pier 70 and Hunters Point rezonings
+HISTORIC_INDUSTRIAL = ("PDR", "M-1", "M-2", "UMU", "MUG", "WMUG", "MUO", "WMUO", "CMUO", "SALI", "SLI", "SPD",
+                       "MB-", "PM-", "HP-", "SSO")
+
+
+def industrial_lots(points):
+    """Lot centroids inside SF's historic industrial districts (DataSF zoning 3i4a-hu95)."""
+    path = RAW / "sf_zoning" / "zoning.geojson"
+    if not path.exists():
+        return np.zeros(len(points), bool)
+    z = gpd.read_file(path).to_crs(UTM)
+    code = z["zoning_sim"].fillna(z.get("zoning", "")).astype(str).str.upper()
+    sel = (z.get("gen", "").astype(str) == "Industrial") | code.str.startswith(HISTORIC_INDUSTRIAL)
+    zone = shapely.union_all(z[sel].geometry.values)
+    return points.within(zone).values
+
+
 # ---------------------------------------------------------------- Sanborn maps
 SANBORN_USE = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
                "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}
-SANBORN_SKIP = {"wharf", "pier"}
+SANBORN_SKIP: set = set()  # wharf decks are kept as low timber platforms
 
 
 def apply_sanborn(pred, today, fire, areas):
@@ -339,6 +378,8 @@ def apply_sanborn(pred, today, fire, areas):
                 storey_h = 4.5 if use in ("warehouse", "factory", "rail") else 3.6
                 height = stories * storey_h + (1.6 if bool(r.get("half_storey", False)) else 0) + (1.2 if use in ("dwelling", "flats") else 0.6)
                 mat = str(r.material or "")
+                if use in ("wharf", "pier"):
+                    stories, height, mat = 0.0, 1.4, "wharf"  # timber deck on piles
                 rows.append({"geometry": g, "start_year": float(start), "end_year": float(end), "height": height,
                              "stories": stories, "kind": "building", "source": f"sanborn_{area}",
                              "mapblklot": key, "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),

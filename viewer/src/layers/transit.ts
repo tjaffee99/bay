@@ -10,8 +10,8 @@
  * train's position (binary search over the knots, then over the vertices), so the
  * animation never touches the CPU. Each direction keeps right on its own track;
  * where the tracks spread round an island platform the train follows them.
- * Cars on stretches not yet open in the chosen year are hidden, and cars in a
- * tunnel are drawn by a second, translucent "x-ray" pass in the line's colour.
+ * Cars on stretches not yet open in the chosen year are hidden, and so are cars
+ * running underground.
  *
  * Stations: BART stations above ground get a platform and canopy (dimensions:
  * 700 ft platforms); names are labels (labels.ts).
@@ -346,7 +346,8 @@ export function transitLayers(year: number, zoom: number): Layer[] {
     return out;
   }
   const visible = zoom >= 11.5;
-  for (const ghost of [false, true]) {
+  // trains in tunnels are not drawn at all (the shader hides them); no x-ray pass
+  for (const ghost of [false]) {
     const l = new TrainLayer({
       id: ghost ? 'trains-xray' : 'trains',
       data: trainData(year),

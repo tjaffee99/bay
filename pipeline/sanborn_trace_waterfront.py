@@ -125,8 +125,17 @@ def xing(a, b):
     return np.array([p.x, p.y]), how
 
 
+def near_xy(near):
+    """a `near` hint: a crossing [street a, street b] or a UTM 10N position [x, y] (a hint only: the fitted line is DataSF)."""
+    if len(near) == 2 and all(isinstance(v, (int, float)) for v in near):
+        return np.array(near, float)
+    return xing(*near)[0]
+
+
 def street_line(name, near, R=350):
-    """least-squares straight line (point, unit dir) through the centreline of `name` within R m of `near`."""
+    """least-squares straight line (point, unit dir) through the centreline of `name` within R m of `near`.
+    DataSF's retired segments (active = false) are included: the old Mission Bay grid (6th St and 4th St south of the
+    channel, Channel St, Illinois / Merrimac / Alameda / El Dorado east of 3rd) survives only there."""
     from fire_1906 import street_rows
     pts = []
     for geom in street_rows(streets(), name).geometry:
@@ -185,12 +194,22 @@ def world_of(c):
         return p, f"{c['a']} x {c['b']} [{how}]"
     if "sum" in c:
         return sum((1 if sg == "+" else -1) * xing(a, b)[0] for sg, a, b in c["sum"]), c.get("label", "grid point")
-    if "la" in c:
-        L1 = street_line(c["la"][0], xing(*c["la"])[0])
-        L2 = street_line(c["lb"][0], xing(*c["lb"])[0])
+    if "la" in c:  # crossing of two fitted centrelines, extended where the street no longer reaches (optional offsets in ft)
+        def L(spec):  # [street, other street] (near their crossing) or [street, [x, y]] (near a UTM position)
+            return street_line(spec[0], near_xy(spec if isinstance(spec[1], str) else spec[1]), c.get("R", 350))
+        L1, L2 = L(c["la"]), L(c["lb"])
+        p1, p2 = L1[0], L2[0]
+        if "off" in c:  # block corner: shift each line sideways by [ft, compass direction], e.g. [[41.25, "SE"], [41.25, "NE"]]
+            comp = {"N": (0, 1), "S": (0, -1), "E": (1, 0), "W": (-1, 0), "NE": (1, 1), "NW": (-1, 1), "SE": (1, -1), "SW": (-1, -1)}
+
+            def shift(p, d, o):
+                n = np.array([-d[1], d[0]])
+                n = n if n @ np.array(comp[o[1]], float) > 0 else -n
+                return p + o[0] * FT * n
+            p1, p2 = shift(p1, L1[1], c["off"][0]), shift(p2, L2[1], c["off"][1])
         A = np.array([L1[1], -L2[1]]).T
-        t = np.linalg.solve(A, L2[0] - L1[0])
-        return L1[0] + t[0] * L1[1], f"line {c['la'][0]} x {c['lb'][0]} (extended)"
+        t = np.linalg.solve(A, p2 - p1)
+        return p1 + t[0] * L1[1], c.get("label", f"line {c['la'][0]} x {c['lb'][0]} (extended)")
     raise ValueError(c)
 
 
@@ -340,7 +359,11 @@ def georef(key):
         allpx.append(measured(c, masks)); allw.append(w); alllab.append(lab)
     lines = []
     for ln in cfg.get("lines", []):
-        p0, d = street_line(ln["street"], xing(*ln["near"])[0], ln.get("R", 300))
+        p0, d = street_line(ln["street"], near_xy(ln["near"]), ln.get("R", 300))
+        if "off" in ln:  # points on a kerb / building line parallel to the centreline: [ft, compass side]
+            n = np.array([-d[1], d[0]])
+            comp = {"N": (0, 1), "S": (0, -1), "E": (1, 0), "W": (-1, 0), "NE": (1, 1), "NW": (-1, 1), "SE": (1, -1), "SW": (-1, -1)}
+            p0 = p0 + ln["off"][0] * FT * (n if n @ np.array(comp[ln["off"][1]], float) > 0 else -n)
         lines += [(np.array(q, float), p0, np.array([-d[1], d[0]])) for q in ln["px"]]
     blocks = []
     for b in cfg.get("blocks", []):

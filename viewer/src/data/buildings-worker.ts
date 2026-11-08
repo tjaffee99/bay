@@ -10,9 +10,10 @@
 import {earcut} from '@math.gl/polygon';
 import {loadColumnar} from './columnar';
 
-self.onmessage = async (e: MessageEvent<{url: string}>) => {
+self.onmessage = async (e: MessageEvent<{url: string; id?: number}>) => {
+  const id = e.data.id;
   try {
-    const file = await loadColumnar(e.data.url, f => (self as any).postMessage({progress: f}));
+    const file = await loadColumnar(e.data.url, f => (id === undefined ? (self as any).postMessage({progress: f}) : undefined));
     const c = file.columns;
     const n = file.header.counts.features;
     const scale = file.header.meta.position_scale ?? 1e-7;
@@ -89,8 +90,8 @@ self.onmessage = async (e: MessageEvent<{url: string}>) => {
     out.positions = positions;
     out.indices = indices;
     transfer.push(positions.buffer, indices.buffer);
-    (self as any).postMessage({header: file.header, columns: out, dim}, transfer);
+    (self as any).postMessage({id, header: file.header, columns: out, dim}, transfer);
   } catch (err) {
-    (self as any).postMessage({error: String(err)});
+    (self as any).postMessage({id, error: String(err)});
   }
 };

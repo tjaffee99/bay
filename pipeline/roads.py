@@ -248,7 +248,7 @@ def _flag_ranges(rules, key=None):
     return out
 
 
-def freeway_items(ground, fw_routes):
+def freeway_items(ground, fw_routes, buildings=None, streets=None):
     """Motorways, trunks and ramps (Overture) with a height profile per vertex.
 
     Height above ground: level 1 viaducts ~12.5 m, level 2 ~22 m, other bridges 6.5 m,
@@ -478,19 +478,162 @@ def freeway_items(ground, fw_routes):
             if sg["year"] is None:
                 sg["year"] = vote(sg) or 1960.0
 
+    # Nothing drives through a building: a group of ramps (or a mainline stretch whose
+    # date is clearly off) opens only after the buildings standing where it runs are gone
+    # (e.g. the Transit Center bus ramps of 2018 inherited I-80's 1936 date and crossed
+    # 1910s warehouses). Buildings = today's + vanished ones, if taller than the road there.
+    if buildings is not None:
+        from shapely import STRtree
+        bg, bstart, bend, bh = buildings
+        btree = STRtree(bg)
+        bump = np.full(len(segs), -np.inf)
+        for q, sg in enumerate(segs):
+            b0 = sg["bounds"]
+            if not (-122.53 < b0[0] and b0[2] < -122.35 and b0[1] > 37.70):
+                continue  # buildings exist for San Francisco only (so far)
+            for x, hq in zip(sg["f"], sg["h"]):
+                pt = sg["g"].interpolate(x, normalized=True)
+                for j in btree.query(pt, predicate="within"):
+                    if bh[j] > hq - 1.0 and bstart[j] < sg["year"] + 0.5 < bend[j] < 9000:
+                        bump[q] = max(bump[q], bend[j] + 0.3)
+        comp_bump = {}
+        for q, sg in enumerate(segs):
+            if sg["sub"] == "link" and np.isfinite(bump[q]):
+                r = find(q)
+                comp_bump[r] = max(comp_bump.get(r, -np.inf), bump[q])
+        nb = 0
+        for q, sg in enumerate(segs):
+            if sg["sub"] == "link":
+                nb_ = comp_bump.get(find(q), -np.inf)
+                if nb_ > sg["year"]:
+                    sg["year"] = float(nb_)
+                    nb += 1
+            elif np.isfinite(bump[q]) and bump[q] - sg["year"] > 8:
+                sg["year"] = float(bump[q])
+                nb += 1
+        log(f"roads: {nb} freeway / ramp segments wait for the buildings in their way to go")
+
+    # sample positions once
+    for sg in segs:
+        g = sg["g"]
+        pts = [g.interpolate(x, normalized=True) for x in sg["f"]]
+        sg["xy"] = np.array([(p.x, p.y) for p in pts])
+
+    # ramp / mainline ends meeting a street: one more vertex on the street centreline,
+    # so the ramp visibly joins it instead of stopping beside it
+    if streets is not None:
+        from shapely import STRtree
+        from shapely.geometry import Point as _P
+        stree = STRtree(streets)
+        n_snap = 0
+        for sg in segs:
+            for cid, at in sg["conns"]:
+                if conn_count.get(cid, 0) > 1 or at not in (0.0, 1.0) or sg["tn"][0 if at == 0.0 else -1]:
+                    continue
+                e = sg["xy"][0] if at == 0.0 else sg["xy"][-1]
+                cand = stree.query(_P(e).buffer(30))
+                if not len(cand):
+                    continue
+                best = min(cand, key=lambda j: streets[j].distance(_P(e)))
+                line = streets[best]
+                d = line.distance(_P(e))
+                if d < 2 or d > 30:
+                    continue
+                q = line.interpolate(line.project(_P(e)))
+                extra = np.array([[q.x, q.y]])
+                hh = np.array([0.7])
+                if at == 0.0:
+                    sg["xy"] = np.vstack([extra, sg["xy"]])
+                    sg["h"] = np.concatenate([hh, sg["h"]])
+                    sg["tn"] = np.concatenate([[False], sg["tn"]])
+                    sg["f"] = np.concatenate([[0.0], sg["f"]])
+                else:
+                    sg["xy"] = np.vstack([sg["xy"], extra])
+                    sg["h"] = np.concatenate([sg["h"], hh])
+                    sg["tn"] = np.concatenate([sg["tn"], [False]])
+                    sg["f"] = np.concatenate([sg["f"], [1.0]])
+                n_snap += 1
+        log(f"roads: {n_snap} freeway / ramp ends extended onto their street")
+
+    # Draw continuous roads: chain segments end to end through connectors joining exactly
+    # two segments of the same road kind and date (Overture splits a road at every
+    # connector; drawn one by one they read as loose straight pieces with gaps).
+    end_nodes = {}
+    for q, sg in enumerate(segs):
+        for cid, at in sg["conns"]:
+            if at in (0.0, 1.0):
+                end_nodes.setdefault(cid, []).append((q, at))
+
+    def key_of(sg):
+        return (sg["cls"], sg["sub"] == "link", float(sg["year"]))
+
+    def next_seg(q, at):
+        """the segment continuing segment q beyond its end `at` (0 or 1), or None"""
+        sg = segs[q]
+        cid = next((c for c, a in sg["conns"] if a == at), None)
+        if cid is None or conn_count.get(cid, 0) != 2:
+            return None
+        mem = end_nodes.get(cid, [])
+        others = [(q2, a2) for q2, a2 in mem if q2 != q]
+        if len(others) != 1:
+            return None
+        q2, a2 = others[0]
+        if key_of(segs[q2]) != key_of(sg):
+            return None
+        return q2, a2
+
+    used = np.zeros(len(segs), bool)
+    chains = []
+    for q in range(len(segs)):
+        if used[q]:
+            continue
+        # walk back to the start of the chain
+        cur, cur_at = q, 0.0
+        seen = {q}
+        while True:
+            nx = next_seg(cur, cur_at)
+            if nx is None or nx[0] in seen or used[nx[0]]:
+                break
+            cur, cur_at = nx[0], 1.0 - nx[1]
+            seen.add(cur)
+        # now walk forward from cur, entering at cur_at
+        chain = []
+        c, enter = cur, cur_at
+        while c is not None and not used[c]:
+            used[c] = True
+            chain.append((c, enter == 1.0))  # reversed if we enter at its end
+            nx = next_seg(c, 1.0 - enter)
+            if nx is None:
+                break
+            c, enter = nx
+        chains.append(chain)
+
     items = []
-    for seg in segs:
-        g = seg["g"]
-        pts = [g.interpolate(x, normalized=True) for x in seg["f"]]
-        xy = gpd.GeoSeries(pts, crs=UTM).to_crs(4326)
-        lon, lat = xy.x.values, xy.y.values
-        z = ground(lon, lat) + seg["h"]
-        y0 = float(seg["year"])
-        link = seg["sub"] == "link"
-        k = K_FREEWAY if seg["cls"] == "motorway" else K_HIGHWAY
-        width = 6.5 if link else (13.0 if seg["cls"] == "motorway" else 11.0)
-        # split at tunnels
-        keep = ~seg["tn"]
+    for chain in chains:
+        XY, Hh, TN = [], [], []
+        for k_, (q, rev) in enumerate(chain):
+            sg = segs[q]
+            xy, hq, tq = sg["xy"], sg["h"], sg["tn"]
+            if rev:
+                xy, hq, tq = xy[::-1], hq[::-1], tq[::-1]
+            if k_ > 0:
+                xy, hq, tq = xy[1:], hq[1:], tq[1:]
+            XY.append(xy)
+            Hh.append(hq)
+            TN.append(tq)
+        XY = np.vstack(XY)
+        Hh = np.concatenate(Hh)
+        TN = np.concatenate(TN)
+        sg0 = segs[chain[0][0]]
+        ll = gpd.GeoSeries(gpd.points_from_xy(XY[:, 0], XY[:, 1]), crs=UTM).to_crs(4326)
+        lon, lat = ll.x.values, ll.y.values
+        z = ground(lon, lat) + Hh
+        y0 = float(sg0["year"])
+        link = sg0["sub"] == "link"
+        k = K_FREEWAY if sg0["cls"] == "motorway" else K_HIGHWAY
+        width = 6.5 if link else (13.0 if sg0["cls"] == "motorway" else 11.0)
+        # split at tunnels (and at the Bay Bridge / Golden Gate spans the landmarks draw)
+        keep = ~TN
         start = None
         for j in range(len(keep) + 1):
             if j < len(keep) and keep[j]:
@@ -498,7 +641,7 @@ def freeway_items(ground, fw_routes):
             elif start is not None:
                 if j - start >= 2:
                     sl = slice(start, j)
-                    hmax = float(seg["h"][sl].max())
+                    hmax = float(Hh[sl].max())
                     items.append((lon[sl], lat[sl], z[sl], k, width, y0, 9999.0, 2 if hmax > 4 else 0))
                 start = None
     log(f"roads: {len(items)} freeway / ramp paths in 3D")
@@ -654,7 +797,16 @@ def main():
             T.append(tg)
             Y += [a] * len(xy)
         fw_routes = (np.concatenate(P), np.concatenate(T), np.array(Y))
-    write_paths3d(VIEWER_DATA / "freeways.bin.gz", freeway_items(ground, fw_routes))
+    # buildings in the way (today's + vanished) and the streets ramps join
+    bl = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "end_year", "height", "geometry"]]]
+    if (INTERIM / "sf_predecessors.parquet").exists():
+        bl.append(gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "end_year", "height", "geometry"]])
+    bdf = gpd.GeoDataFrame(pd.concat(bl, ignore_index=True), crs=4326).to_crs(UTM)
+    bdf = bdf[bdf.geometry.notna() & bdf.geometry.is_valid]
+    buildings = (bdf.geometry.values, bdf.start_year.values.astype(float), bdf.end_year.values.astype(float),
+                 bdf.height.fillna(7).values.astype(float))
+    street_lines = list(st.geometry.values) + list(rr.geometry.values)
+    write_paths3d(VIEWER_DATA / "freeways.bin.gz", freeway_items(ground, fw_routes, buildings, street_lines))
 
 
 if __name__ == "__main__":

@@ -26,8 +26,9 @@ export type BuildingSet = {
   data: any;
   /** lon/lat centroid of each feature (for landmark replacement tests). */
   centroids: Float64Array;
-  /** 1 = replaced by a landmark reconstruction (hidden while landmarks are shown). */
-  replaced: Uint8Array;
+  /** construction-start year of the landmark reconstruction on this footprint (NaN = none):
+   *  while landmarks are shown the building ends then (or is hidden if it is the landmark) */
+  replaced: Float32Array;
   /** Extra per-feature info for the click popup. */
   info: (i: number) => Record<string, string | number>;
 };
@@ -53,6 +54,35 @@ export async function loadBuildings(onProgress?: (f: number) => void): Promise<B
   }
 }
 
+/** A few long-lived decode workers for the region's building tiles. */
+const pool: {w: Worker; busy: number}[] = [];
+const pending = new Map<number, {resolve: (v: any) => void; reject: (e: any) => void}>();
+let nextId = 1;
+export function loadTileInWorker(url: string): Promise<ColumnarFile & {dim: number}> {
+  if (!pool.length) {
+    for (let i = 0; i < 3; i++) {
+      const w = new Worker(new URL('../data/buildings-worker.ts', import.meta.url), {type: 'module'});
+      const slot = {w, busy: 0};
+      w.onmessage = e => {
+        const p = pending.get(e.data.id);
+        if (!p) return;
+        pending.delete(e.data.id);
+        slot.busy--;
+        if (e.data.error) p.reject(new Error(e.data.error));
+        else p.resolve(e.data);
+      };
+      pool.push(slot);
+    }
+  }
+  const slot = pool.reduce((a, b) => (b.busy < a.busy ? b : a));
+  const id = nextId++;
+  slot.busy++;
+  return new Promise((resolve, reject) => {
+    pending.set(id, {resolve, reject});
+    slot.w.postMessage({url, id});
+  });
+}
+
 /** Decode + triangulate off the main thread (see data/buildings-worker.ts). */
 function loadInWorker(url: string, onProgress?: (f: number) => void): Promise<ColumnarFile & {dim: number}> {
   return new Promise((resolve, reject) => {
@@ -71,7 +101,7 @@ function loadInWorker(url: string, onProgress?: (f: number) => void): Promise<Co
   });
 }
 
-function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
+export function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
   const c = file.columns;
   const n = file.header.counts.features;
   const start = c.start_year as Float32Array;
@@ -123,7 +153,7 @@ function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
     file,
     data,
     centroids,
-    replaced: new Uint8Array(n),
+    replaced: new Float32Array(n).fill(NaN),
     info: i => {
       const out: Record<string, string | number> = {};
       const raw = (c.raw_year as Int16Array)?.[i];
@@ -161,7 +191,7 @@ async function fromSample(): Promise<BuildingSet> {
     qualityColors,
     data: feats,
     centroids: new Float64Array(feats.flatMap(f => f.geometry.coordinates[0][0])),
-    replaced: new Uint8Array(n),
+    replaced: new Float32Array(n).fill(NaN),
     info: i => ({Built: fmtYear(start[i]), Removed: end[i] < 9000 ? fmtYear(end[i]) : '—', Height: `${height[i]} m`, Source: 'sample'})
   };
 }
@@ -170,10 +200,10 @@ function fmtYear(y: number) {
   return Math.floor(y).toString();
 }
 
-export function buildingsLayer(set: BuildingSet, year: number, quality: boolean, hideReplaced: boolean) {
+export function buildingsLayer(set: BuildingSet, year: number, quality: boolean, hideReplaced: boolean, id = 'buildings') {
   const colors = quality ? set.qualityColors : set.colors;
   const common = {
-    id: 'buildings',
+    id,
     extruded: true,
     pickable: true,
     material: BUILDING_MATERIAL,
@@ -186,9 +216,11 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean,
       return target as any;
     },
     getYears: (_: any, {index, target}: {index: number; target: number[]}) => {
-      const hidden = hideReplaced && set.replaced[index] === 1;
+      const lm = hideReplaced ? set.replaced[index] : NaN;
+      const end = Number.isNaN(lm) ? set.end[index] : Math.min(set.end[index], lm);
+      const hidden = end <= set.start[index] + 0.1;
       target[0] = hidden ? 1e5 : set.start[index];
-      target[1] = hidden ? 1e5 : set.end[index];
+      target[1] = hidden ? 1e5 : end;
       return target as any;
     },
     currentYear: year,

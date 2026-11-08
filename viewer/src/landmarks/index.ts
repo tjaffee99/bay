@@ -129,15 +129,19 @@ export function landmarkInfo(set: LandmarkSet, info: PickingInfo) {
 }
 
 /** Mark buildings whose centroid lies inside a landmark's replaced footprint. */
-export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: number): Uint8Array {
-  const mask = new Uint8Array(n);
+/** Per building: the construction-start year of the landmark standing on it (NaN if none).
+ *  Older buildings on the site stand until then; the footprint of the landmark itself
+ *  (built at or after that year) is hidden. */
+export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: number): Float32Array {
+  const mask = new Float32Array(n).fill(NaN);
   for (const r of set.replaced) {
+    const from = LANDMARKS[r.idx].built[0];
     const [x0, y0, x1, y1] = r.bbox;
     for (let i = 0; i < n; i++) {
       const x = centroids[i * 2];
       const y = centroids[i * 2 + 1];
       if (x < x0 || x > x1 || y < y0 || y > y1) continue;
-      if (pointInPolygon(x, y, r.poly)) mask[i] = 1;
+      if (pointInPolygon(x, y, r.poly)) mask[i] = Number.isNaN(mask[i]) ? from : Math.min(mask[i], from);
     }
   }
   return mask;

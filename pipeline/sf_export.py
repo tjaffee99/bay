@@ -80,6 +80,12 @@ def materials(df, h01):
     bayside_ind = (lon > -122.405) & (lat < 37.765)
     west = lon < -122.455
     marina = (lat > 37.7985) & (lon > -122.448) & (lon < -122.427)
+    # the Presidio (boundary approx.: Lyon St, W Pacific Ave / Lake St, the shore)
+    from shapely import contains_xy
+    from shapely.geometry import Polygon
+    presidio_poly = Polygon([(-122.4467, 37.8065), (-122.4467, 37.7882), (-122.4590, 37.7873), (-122.4720, 37.7861),
+                             (-122.4852, 37.7866), (-122.4885, 37.7905), (-122.4800, 37.8115), (-122.4500, 37.8095)])
+    presidio = contains_xy(presidio_poly, lon, lat)
     resid = np.isin(use, [1, 2]) | ((use == 0) & (H < 14))
     commercial = np.isin(use, [3, 4])
     industrial = (use == 5) | ((soma | bayside_ind) & ~resid & (y < 1960))
@@ -100,6 +106,12 @@ def materials(df, h01):
     put(dm == "canvas tent", M_EARLY, R_WALL)
     put(dm == "brick", M_BRICK, R_FLAT)
     put(dm == "stone", M_CIVIC, R_FLAT)
+    put(dm == "wharf", M_EARLY, R_WALL)  # weathered timber wharf decks
+    # Presidio: the 1890s Montgomery St barracks are red brick; the Army's 1909-1940s
+    # Mission / Spanish Colonial Revival buildings (Fort Scott, Main Post, Letterman,
+    # housing) are white stucco under red clay tile, like Fort Mason's
+    put(presidio & (y >= 1890) & (y < 1906) & (H > 7), M_BRICK, R_FLAT)
+    put(presidio & (y >= 1908) & (y < 1946), M_STUCCO, R_TILE)
     put(y < 1853, M_EARLY, R_SHINGLE)
     put((reason == "predecessor_brick") | ((y < 1906) & (commercial | industrial | (downtown & (H > 9)))), M_BRICK, R_FLAT)
     put(y < 1906, M_VICTORIAN, R_SHINGLE)

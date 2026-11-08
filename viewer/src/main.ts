@@ -15,6 +15,7 @@ import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/
 import {loadElevation} from './layers/elevation';
 import {addStationLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
+import {loadRegionIndex, regionBuildingLayers} from './layers/region-buildings';
 import {groundDetailLayers, loadGroundDetail} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
@@ -150,6 +151,7 @@ function render() {
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
+  layers.push(...regionBuildingLayers(state.year, zoom, state.quality));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   layers.push(...trafficLayers(state.year, zoom));
   layers.push(...transitLayers(state.year, zoom));
@@ -383,6 +385,7 @@ async function boot() {
   render();
   loadPlaces();
   const transitP = loadTransit().then(() => addStationLabels(stations));
+  loadRegionIndex().then(render);
   const elevP = Promise.all([loadElevation(), document.fonts.ready, loadParkLabels(), transitP]).then(() => {
     placeLabelsOnTerrain();
     render();
