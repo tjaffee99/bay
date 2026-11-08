@@ -686,7 +686,19 @@ def flagged_runs(xy, bbox_ll, min_tunnel=60.0, min_bridge=150.0):
             merged[-1][2] = r[2]
         else:
             merged.append(list(r))
-    return merged
+    # short ground gaps between two runs of the same structure belong to it
+    for k in range(1, len(merged) - 1):
+        r = merged[k]
+        if r[0] is None and merged[k - 1][0] and merged[k - 1][0] == merged[k + 1][0] \
+                and seglen[r[2]] - seglen[r[1]] < 60.0:
+            r[0] = merged[k - 1][0]
+    out = []
+    for r in merged:
+        if out and out[-1][0] == r[0]:
+            out[-1][2] = r[2]
+        else:
+            out.append(list(r))
+    return out
 
 
 def build(spec_mod, only=None):
@@ -722,18 +734,27 @@ def build(spec_mod, only=None):
             if props["elevated"] == "ground" and share["rail"] > 0:
                 lon, lat = to_ll(xy[:, 0], xy[:, 1])
                 runs = flagged_runs(xy, (lon.min() - 0.01, lat.min() - 0.01, lon.max() + 0.01, lat.max() + 0.01))
+            # narrow gauge converted to standard gauge: two time slices
+            sg = seg.get("standard_gauge", r.get("standard_gauge"))
+            slices = [(props["year_start"], props["year_end"], props["mode"])]
+            if props["mode"] == "narrow_gauge" and sg and props["year_start"] < sg < props["year_end"]:
+                slices = [(props["year_start"], sg, "narrow_gauge"), (sg, props["year_end"], "rail")]
             for fl, i0, i1 in runs:
                 if i1 <= i0:
                     continue
-                sub = xy[i0:i1 + 1]
+                sub = xy[i0:min(i1 + 2, len(xy))]
                 lon, lat = to_ll(sub[:, 0], sub[:, 1])
-                pr = dict(props)
-                if fl:
-                    pr["elevated"] = fl
-                    pr["name"] = f"{props['name']} ({fl})"
-                feats.append({"type": "Feature", "properties": pr,
-                              "geometry": {"type": "LineString",
-                                           "coordinates": [[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)]}})
+                for y0, y1, md in slices:
+                    pr = dict(props)
+                    pr["year_start"], pr["year_end"], pr["mode"] = y0, y1, md
+                    if fl:
+                        pr["elevated"] = fl
+                        pr["name"] = f"{props['name']} ({fl})"
+                    if len(slices) > 1:
+                        pr["name"] = pr["name"] + (" [narrow gauge]" if md == "narrow_gauge" else " [standard gauge]")
+                    feats.append({"type": "Feature", "properties": pr,
+                                  "geometry": {"type": "LineString",
+                                               "coordinates": [[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)]}})
             length = float(np.sum(np.hypot(*np.diff(xy, axis=0).T)))
             nt = sum(1 for f_, a, b in runs if f_)
             report.append(f"{r['route_id']:28s} {seg.get('year_start')}-{seg.get('year_end')} {length/1000:6.2f} km "

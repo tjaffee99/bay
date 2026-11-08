@@ -9,16 +9,18 @@ Years are decimal (1878.21 = 20 March 1878); 9999 = still in use / still standin
 ROUTES = []
 
 
-def route(route_id, name, mode, source_url, segments, note=None, confidence="exact"):
+def route(route_id, name, mode, source_url, segments, note=None, confidence="exact", standard_gauge=None):
+    """standard_gauge: year a narrow-gauge route was converted (its segments are split there into a
+    narrow_gauge and a rail time slice)."""
     ROUTES.append({"route_id": route_id, "name": name, "mode": mode, "source_url": source_url,
-                   "note": note, "confidence": confidence, "segments": segments})
+                   "note": note, "confidence": confidence, "segments": segments, "standard_gauge": standard_gauge})
 
 
 def seg(name, y0, y1, *pieces, elevated="ground", note=None, confidence=None, mode=None, source_url=None,
-        geometry_confidence=None):
+        geometry_confidence=None, standard_gauge=None):
     d = {"name": name, "year_start": y0, "year_end": y1, "elevated": elevated, "pieces": list(pieces)}
     for k, v in (("note", note), ("confidence", confidence), ("mode", mode), ("source_url", source_url),
-                 ("geometry_confidence", geometry_confidence)):
+                 ("geometry_confidence", geometry_confidence), ("standard_gauge", standard_gauge)):
         if v is not None:
             d[k] = v
     return d
@@ -84,14 +86,26 @@ route("wp_mole", "Western Pacific Mole (Oakland)", "pier", WIKI + "Oakland_Long_
 ])
 
 route("ks_mole", "Key System Mole and pier (Key Route Pier)", "pier", WIKI + "Key_System_Mole", [
-    seg("Key System Mole: causeway (trestle 1903, filled 1908-16) to the ferry pier", 1903.82, 1939.83,
-        topo("sf1915", (-122.2975, 37.8263), (-122.3080, 37.8243), (-122.3200, 37.8220), (-122.3330, 37.8193),
-             (-122.3445, 37.8167)),
+    seg("Key System Mole: wooden trestle (before the fill)", 1903.82, 1912.0,
+        topo("sf1915", (-122.2975, 37.8263), (-122.3080, 37.8243), (-122.3200, 37.8220), (-122.3330, 37.8193)),
         elevated="trestle",
         note="Transbay service from 1903-10-26 on a 17,000 ft wooden trestle; approach filled 1908, causeway "
-             "except the last 3,800 ft by 1916; pier fire 1933-05-06 (rebuilt slightly to the south); ferries to "
-             "the Bay Bridge 1939-01-15, Exposition trains/ferries until 1939-10-29. Geometry: USGS San Francisco "
-             "1915 sheet ('San Francisco-Oakland Terminal Key Route Pier')."),
+                 "except the last 3,800 ft by 1916; pier fire 1933-05-06 (rebuilt slightly to the south); ferries "
+                 "to the Bay Bridge 1939-01-15, Exposition trains/ferries until 1939-10-29. Geometry: USGS San "
+                 "Francisco 1915 sheet ('San Francisco-Oakland Terminal Key Route Pier')." + " Trestle-to-fill change dated 1912 (filled 1908-16, ESTIMATED).", confidence="estimated"),
+    seg("Key System Mole: causeway (fill)", 1912.0, 1939.83,
+        topo("sf1915", (-122.2975, 37.8263), (-122.3080, 37.8243), (-122.3200, 37.8220), (-122.3330, 37.8193)),
+        elevated="ground", mode="interurban",
+        note="Transbay service from 1903-10-26 on a 17,000 ft wooden trestle; approach filled 1908, causeway "
+                 "except the last 3,800 ft by 1916; pier fire 1933-05-06 (rebuilt slightly to the south); ferries "
+                 "to the Bay Bridge 1939-01-15, Exposition trains/ferries until 1939-10-29. Geometry: USGS San "
+                 "Francisco 1915 sheet ('San Francisco-Oakland Terminal Key Route Pier')." + " Trestle-to-fill change dated 1912 (filled 1908-16, ESTIMATED).", confidence="estimated"),
+    seg("Key Route Pier: last 3,800 ft of trestle and the ferry terminal", 1903.82, 1939.83,
+        topo("sf1915", (-122.3330, 37.8193), (-122.3445, 37.8167)),
+        elevated="pier", note="Transbay service from 1903-10-26 on a 17,000 ft wooden trestle; approach filled 1908, causeway "
+                 "except the last 3,800 ft by 1916; pier fire 1933-05-06 (rebuilt slightly to the south); ferries "
+                 "to the Bay Bridge 1939-01-15, Exposition trains/ferries until 1939-10-29. Geometry: USGS San "
+                 "Francisco 1915 sheet ('San Francisco-Oakland Terminal Key Route Pier')."),
     seg("Key System main line ashore: mole root - Emeryville (40th St) yard", 1903.82, 1958.3,
         pts((-122.2975, 37.8263), (-122.2955, 37.8267)),
         topo("sf1915", (-122.2955, 37.8267), (-122.2925, 37.8278), (-122.2890, 37.8287), (-122.2850, 37.8292),
@@ -150,11 +164,11 @@ route("sfa", "San Francisco & Alameda Railroad (Central Pacific / SP Lincoln Ave
 SPC = WIKI + "South_Pacific_Coast_Railroad"
 ALAPOST = "https://alamedapost.com/history/south-pacific-coast-narrow-gauge-railroad-once-traversed-alameda/"
 route("spc_alameda", "South Pacific Coast Railroad (narrow gauge): Alameda Mole and Alameda line", "narrow_gauge",
-      SPC, [
+      SPC, standard_gauge=1906.5, segments=[
           seg("Alameda Mole: stone mole and ferry pier (2.5 mi to deep water)", 1884.2, 1940.0,
               topo("sf1915", (-122.3365, 37.7972), (-122.3250, 37.7950), (-122.3120, 37.7928), (-122.3020, 37.7907),
                    (-122.2965, 37.7898)),
-              elevated="embankment", mode="pier", source_url=WIKI + "Alameda_Mole",
+              elevated="ground", source_url=WIKI + "Alameda_Mole",
               note="SPC extended its West End wharf ~2.5 miles NW on a stone mole, terminal opened 1884-03-15 "
                    "(Alameda Post); dual gauge 1898, standard gauge after 1906; terminal burned 1902-11-20 and was "
                    "rebuilt larger and farther out; SP electric trains 1911-1939; ferries ended 1939-01-15; the "
@@ -204,7 +218,7 @@ route("spc_alameda", "South Pacific Coast Railroad (narrow gauge): Alameda Mole 
       ])
 
 route("spc_main", "South Pacific Coast Railroad (narrow gauge): West San Leandro - Newark - San Jose", "narrow_gauge",
-      SPC, [
+      SPC, standard_gauge=1907.5, segments=[
           seg("West San Leandro - West San Lorenzo - Mt Eden - Alvarado - Newark (Bay and Coast RR)", 1878.21, 9999,
               rail((-122.1840, 37.7155), (-122.1538, 37.6741), (-122.1186, 37.6363), (-122.0793, 37.6011),
                    (-122.0572, 37.5591), (-122.0420, 37.5320), names=["Coast"]),
@@ -248,6 +262,29 @@ route("cp_main", "Central Pacific (Western Pacific of 1869) Oakland - San Leandr
         note="Western Pacific (1862) / Central Pacific line from Niles to San Leandro; first through train reached "
              "the Alameda wharf 1869-09-06 over a temporary connection to the SF&A at San Leandro. Today's UP "
              "Niles Subdivision (geometry: OSM).", source_url=WIKI + "Alameda_Terminal"),
+    seg("Niles Canyon: Niles - Brightside - Sunol", 1869.68, 9999,
+        rail((-121.9715, 37.5786), (-121.9496, 37.5972), (-121.9268, 37.5988), (-121.8952, 37.5941),
+             (-121.8805, 37.5994), names=["Niles Canyon"], snap=200),
+        note="Western Pacific of 1862-69 (Central Pacific): the first transcontinental trains came down Niles Canyon "
+             "in September 1869; SP main line until it was abandoned in 1984 (ESTIMATED); since 1987 the Niles "
+             "Canyon Railway heritage line, so still standing (geometry: OSM).", source_url=WIKI + "Niles_Canyon_Railway",
+        confidence="estimated"),
+    seg("Sunol - Verona - Pleasanton - Remillard - Livermore", 1869.68, 1984.0,
+        rail((-121.8805, 37.5994), (-121.8762, 37.6112), (-121.8814, 37.6242), (-121.8860, 37.6371),
+             names=["Niles Canyon"], snap=200),
+        topo("ple1906", (-121.8860, 37.6371), (-121.8845, 37.6500), (-121.8780, 37.6600), (-121.8700, 37.6670),
+             (-121.8600, 37.6700), corridor=150),
+        rail((-121.8600, 37.6700), (-121.8350, 37.6740), (-121.7700, 37.6850), snap=250,
+             join=200),
+        note="Central Pacific 1869 ('Niles and Sacramento Line' on the 1906 Pleasanton sheet); SP main line "
+             "until 1984 (end ESTIMATED; the WP line alongside is still in use). Geometry: OSM grade (Niles Canyon "
+             "Railway to Verona, Pleasanton - Livermore) and the USGS Pleasanton 1906 sheet.", confidence="estimated"),
+    seg("Livermore - Altamont Pass - county line", 1869.68, 1984.0,
+        rail((-121.7700, 37.6850), (-121.7417, 37.6923), (-121.6988, 37.7111), (-121.6769, 37.7233),
+             (-121.6674, 37.7415), (-121.6454, 37.7435), (-121.5940, 37.7243), (-121.5573, 37.7144), snap=250,
+             join=300),
+        note="Central Pacific over Altamont Pass (1869); SP abandoned the pass in 1984 (ESTIMATED; the west end "
+             "survives as a spur). Geometry: OSM ('Altamont', incl. the summit tunnel).", confidence="estimated"),
 ])
 
 # =====================================================================================
@@ -438,40 +475,41 @@ route("ir_40", "San Francisco & San Mateo Electric Railway / United Railroads 40
 NPC = WIKI + "North_Pacific_Coast_Railroad"
 NPS_TB = "https://www.nps.gov/pore/learn/photosmultimedia/photogallery_thenandnow_tomalesbay.htm"
 SANS = "https://sananselmohistory.org/articles/trains-in-san-anselmo/"
-route("npc", "North Pacific Coast Railroad / North Shore Railroad / Northwestern Pacific (Marin)", "narrow_gauge", NPC, [
+route("npc", "North Pacific Coast Railroad / North Shore Railroad / Northwestern Pacific (Marin)", "narrow_gauge", NPC,
+      standard_gauge=1904.0, segments=[
     seg("Sausalito ferry terminal and waterfront yard", 1875.03, 1941.16,
         topo("sf1899", (-122.4783, 37.8562), (-122.4830, 37.8585), (-122.4885, 37.8605), (-122.4945, 37.8635),
              (-122.5007, 37.8669), corridor=120),
         note="NPC ferry and train terminal at Sausalito (line built from Sausalito from March 1873, open to Tomales "
              "1875-01-11); electric suburban trains from 1903; Sausalito ferries and electric service ended "
              "1941-02-28 (freight continued; end of the Sausalito track not modelled). Geometry: USGS San "
-             "Francisco 1899 sheet.", source_url=NPS_TB, mode="rail"),
+             "Francisco 1899 sheet.", source_url=NPS_TB),
     seg("Sausalito - Waldo Point - Manzanita - Mill Valley Junction (Almonte)", 1875.03, 1971.0,
         rail((-122.5007, 37.8669), (-122.5106, 37.8763), (-122.5177, 37.8818), (-122.5243, 37.8871), snap=200),
         note="Along the Richardson Bay shore (today's Mill Valley - Sausalito Path, OSM); electrified 1903 "
              "(third rail); passenger service ended 1941-02-28; freight end ESTIMATED (1971).",
-        confidence="estimated", mode="rail"),
+        confidence="estimated"),
     seg("Mill Valley Junction - Alto", 1884.1, 1971.0,
         rail((-122.5243, 37.8871), (-122.5259, 37.8950), (-122.5270, 37.9018), (-122.5249, 37.9105), snap=200),
         note="Built with the Corte Madera (Alto) tunnel; first train through the tunnel February 1884, the old "
              "Strawberry Point / Alto Hill route abandoned April 1884 (not modelled). End ESTIMATED.",
-        confidence="estimated", mode="rail", source_url="https://legacy.sfgenealogy.org/marin/history/rrtimeline.htm"),
+        confidence="estimated", source_url="https://legacy.sfgenealogy.org/marin/history/rrtimeline.htm"),
     seg("Alto (Corte Madera) tunnel", 1884.1, 1971.0,
         rail((-122.5249, 37.9105), (-122.5262, 37.9180), snap=200),
-        elevated="tunnel", mode="rail", confidence="estimated",
+        elevated="tunnel", confidence="estimated",
         note="First train February 1884; later closed and sealed (end ESTIMATED). Geometry: OSM."),
     seg("Corte Madera - Larkspur - Kentfield (Tamalpais) - Ross - San Anselmo", 1875.03, 1971.0,
         rail((-122.5262, 37.9180), (-122.5285, 37.9229), (-122.5302, 37.9273), snap=100),
         topo("tam1897", (-122.5302, 37.9273), (-122.5330, 37.9350), (-122.5400, 37.9400), (-122.5480, 37.9480),
              (-122.5530, 37.9530), (-122.5570, 37.9620), (-122.5600, 37.9700), (-122.5615, 37.9755), corridor=200),
-        mode="rail", confidence="estimated",
+        confidence="estimated",
         note="NPC main line (1875; standard gauge and electric 1903-04, 'Northwestern Pacific' on the 1910s "
              "Tamalpais sheet); passenger service ended 1941-02-28, freight end ESTIMATED. Geometry: OSM grade "
              "(Larkspur Path) and USGS Tamalpais sheet."),
     seg("San Anselmo (Junction) - San Rafael", 1874.56, 1941.16,
         topo("tam1897", (-122.5615, 37.9755), (-122.5530, 37.9770), (-122.5440, 37.9760), (-122.5350, 37.9745),
              (-122.5290, 37.9730), corridor=130),
-        mode="rail", source_url=SANS,
+        source_url=SANS,
         note="San Anselmo - San Rafael spur opened 1874-07-25 (San Anselmo Historical Museum); electric to San "
              "Rafael 1903-10-17; electric service ended 1941-02-28. Geometry: USGS Tamalpais sheet."),
     seg("San Anselmo - Fairfax - Manor", 1875.03, 1941.16,
@@ -505,7 +543,7 @@ route("npc", "North Pacific Coast Railroad / North Shore Railroad / Northwestern
              (-122.5460, 37.9060), corridor=140),
         note="Branch to Mill Valley (opening year ESTIMATED with the 1889-90 founding of the town); electric from "
              "1903-08-20; electric service ended 1941-02-28. Geometry: USGS Tamalpais sheet.",
-        confidence="estimated", mode="rail"),
+        confidence="estimated"),
 ])
 
 route("sfnp_tiburon", "San Francisco & North Pacific Railroad (Tiburon line) / Northwestern Pacific", "rail",
@@ -526,7 +564,7 @@ route("sfnp_tiburon", "San Francisco & North Pacific Railroad (Tiburon line) / N
 # SOUTH BAY: SPC San Jose - Los Gatos - Santa Cruz, SP Mayfield Cutoff, Dumbarton, Peninsular Ry
 # =====================================================================================
 route("spc_south", "South Pacific Coast Railroad (narrow gauge): Santa Clara - San Jose - Los Gatos - Santa Cruz",
-      "narrow_gauge", SPC, [
+      "narrow_gauge", SPC, standard_gauge=1909.2, segments=[
           seg("Santa Clara - San Jose", 1876.5, 9999,
               rail((-121.9398, 37.3550), (-121.9139, 37.3421), (-121.9035, 37.3300), snap=200),
               note="SPC narrow gauge to San Jose (1876; month ESTIMATED); today's UP/Caltrain tracks (geometry: OSM; "
