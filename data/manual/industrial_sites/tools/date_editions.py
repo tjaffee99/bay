@@ -56,7 +56,7 @@ def presence(site_ll, fps, eds, max_half=4000.0, log=print):
     for sc, name, year, imp, kind, url, yrs in eds:
         if sc not in RES:
             continue
-        res = max(RES[sc], half / 1400.0)  # <= 2800 px a side (memory)
+        res = max(RES[sc], half / 1200.0)  # <= 2400 px a side (memory)
         try:
             on_face = sheet_quad(url, sc)(cen.x.values, cen.y.values)
         except Exception as e:  # noqa: BLE001
@@ -138,17 +138,20 @@ def start_years(pres, fps, founded, last_year=2024):
       * drawn on the first edition after the founding: the founding year if that edition
         is within 15 years of it, else the midpoint of founding and that edition."""
     out = []
+    pres = pres[pres.scale.isin([24000, 31680, 62500])]  # 1:125,000 symbols are too coarse to date a footprint
     for fi, t in pres.groupby("fi"):
-        t = t.assign(ky=np.where(t.present, t.pyear, t.year)).sort_values(["pyear", "year"])
+        t = t.sort_values(["pyear", "year"])
         per = t.groupby("pyear").present.max()
+        cul = t.groupby("year").present.max()  # one vote per culture year (reprints are not independent)
         yrs = per.index.values
         pr = per.values
         first = None
         for k, y in enumerate(yrs):
             if not pr[k]:
                 continue
-            later = pr[k:]
-            if later.mean() >= 0.6:
+            y_cult = t[(t.pyear == y) & t.present].year.min()
+            later = cul[cul.index >= y_cult].values
+            if later.mean() >= 0.6 and (len(later) >= 2 or y_cult == cul.index.max()):
                 first = y
                 break
         if first is None:

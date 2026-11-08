@@ -101,7 +101,7 @@ def dated_footprints(s, geom, redate=False):
     cp = CACHE / f"presence_{s['site_id']}.parquet"
     b = geom.bounds
     eds = editions((b[0] + b[2]) / 2, (b[1] + b[3]) / 2, bbox=(b[0], b[1], b[2], b[3]))
-    eds = [e for e in eds if e[2] and e[2] >= s["founded"] - 25]
+    eds = [e for e in eds if e[2] and e[2] >= s["founded"] - 25 and e[0] in (24000, 31680, 62500)]
     if cp.exists() and not redate:
         pr = pd.read_parquet(cp)
         if len(pr) and pr.fid.isin(fps.fid).mean() < 0.9:
@@ -110,7 +110,7 @@ def dated_footprints(s, geom, redate=False):
         pr = None
     if pr is None:
         print(f"  dating {len(fps)} footprints on {len(eds)} editions")
-        pr = presence(geom, fps, eds, max_half=4500.0, log=print)
+        pr = presence(geom, fps, eds, max_half=3500.0, log=print)
         pr["fid"] = fps.fid.values[pr.fi.values]
         pr["url"] = pr.sheet.map({e[1]: e[5] for e in eds})
         pr.to_parquet(cp)
