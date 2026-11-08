@@ -1173,9 +1173,13 @@ def assemble_tracks():  # adapted from sanborn_trace_waterfront.assemble_tracks 
             vol, sheet = key.split("_")
             rec = W.sheet_rec(key)
             tcfg = W.track_cfg(key)
+            H_img = Image.open(G["img"]).size[1]
             for t in json.load(open(INTERIM / f"{key}.tracks.json")):
                 ln = LineString(t["utm"])
                 px = np.asarray(t["px"])
+                d = px[-1] - px[0]
+                if px[:, 1].min() > 0.88 * H_img and abs(d[1]) < 0.03 * abs(d[0]) + 2 and ln.length < 120:
+                    continue  # the "Scale of Feet" bar at the foot of the sheet
                 if claimed is not None:
                     ln = ln.difference(claimed.buffer(-1.0))
                 for part in getattr(ln, "geoms", [ln]):

@@ -156,6 +156,7 @@ Airport outlines and runway / taxiway / apron features (OSM centrelines buffered
 
 ### Landmark reconstructions
 - `data/research/landmarks.md`: per landmark dimensions, dates, colours, and Wikimedia Commons reference photos (file page, author, licence). Photos are used as modelling references only and are not redistributed (`data/raw/reference_photos/` is gitignored).
+- `data/research/landmarks_eastbay.md` (`viewer/src/landmarks/eastbay.ts`, `data/tables/landmarks_eastbay.csv`): East Bay models. Footprints and 3D parts from `overture_region5` (ODbL); Lake Merritt shoreline from `tiger2024` AREAWATER (Alameda County); dimensions from Wikipedia articles (per row), the California Memorial Stadium National Register nomination (2006, https://npgallery.nps.gov/GetAsset/ffa8730b-60f5-430b-9898-bedc4539cfb5 — public domain, US government), the University of California Library Handbook 1918–19 (Project Gutenberg #51874, public domain; Doe Library), the Cal Performances Hearst Greek Theatre technical sheet (https://calperformances.org/wp-content/uploads/venues/tech-specs/Hearst-Greek-Theatre-2324-updated.pdf; facts only). Reference photos: Wikimedia Commons (licence per file in the research note), modelling reference only.
 
 ### Region (Phase 5) — footprints, construction years, heights (2026-11 research)
 Details, field names, coverage and licence notes: `data/research/region_buildings.md`; downloader `pipeline/download_region.py`. Raw files in `data/raw/region_years/`, `data/raw/region_heights/` (gitignored); owner names / mailing addresses never requested.
