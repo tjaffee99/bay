@@ -51,6 +51,9 @@ def idora_park():
                f"{g['name']}: {g['note']}; 1911 Sanborn sheet 293 fitted to today's block (affine, residuals "
                f"{max(d['fit_residual_m']):.1f} m); park opened 16 May 1903, closed Jan 1929, razed 1929",
                surface=surf, name=f"Idora Park: {g['name']}", src=SB)
+        if g["inner"]:      # every ring part has a filled part inside it (consumers that draw exterior rings only)
+            S.part(Polygon(g["inner"]), "park", OPEN, RAZED, "estimated", f"inside of the {g['name']} (park grounds)",
+                   surface="amusement park", name=f"Idora Park: inside of the {g['name']}", src=SB)
     for b in d["buildings"]:
         g = poly(b["coords"], b.get("holes"))
         if g.area < 10:
@@ -374,6 +377,21 @@ def russell_city():
         n += 1
 
 
+# =====================================================================================
+# Geneva Drive-In, Daly City (1950-1999, demolished 2002)
+# =====================================================================================
+def geneva_drive_in():
+    S = Site("geneva_drive_in", "Geneva Drive-In (Geneva 4)", "drive_in", -122.4236, 37.7045, "https://cinematreasures.org/theaters/4986")
+    T56 = TOPO + "CA_San%20Francisco%20South_363066_1956_24000_geo.tif"
+    lot = P([(25, 305), (120, 272), (165, 255), (180, 225), (193, 180), (190, 150), (172, 123), (145, 103), (105, 92), (60, 85),
+             (20, 90), (-15, 105), (-25, 122), (-5, 190), (15, 260)])
+    shed = shapely.affinity.rotate(Polygon([(15, 150), (75, 150), (75, 250), (15, 250)]), -20, origin=(45, 200)).buffer(4)
+    S.part(lot.difference(shed), "parking", 1950.4, 2002.2, "estimated",
+           "drive-in ramps: the dashed outline labelled 'Drive-in Theater' on the USGS San Francisco South 1:24k sheet of 1956 (1956 "
+           "photos), read by hand (+-10 m), minus the Cow Palace annex inside it; opened 1950 (Syufy; 771 cars; on a former greyhound "
+           "track), closed 1999, abandoned 2000, demolished Mar 2002 (Cinema Treasures)", surface="drive-in", src=T56)
+
+
 def build():
     idora_park()
     alameda_baths()
@@ -381,3 +399,4 @@ def build():
     oakland_trans_pacific()
     sf_racetracks()
     russell_city()
+    geneva_drive_in()

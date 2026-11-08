@@ -40,6 +40,7 @@ SITES = {  # site_id: (not_before, evidence for dated segments, keep-names, evid
                             (), "", None),
     "russell_city": (1966, "lies on Russell City (cleared 1964-66): the industrial-park streets are not on the 1947 / 1959 sheets "
                            "(the old street grid differs)", ("Hesperian Boulevard",), "", None),
+    "geneva_drive_in": (2002, "lies on the Geneva Drive-In (1950-1999, demolished 2002; 1956 sheet)", ("Geneva Avenue",), "", None),
     "oaks_park": (1958, "lies on Oaks Park (ball park 1913-1955, demolished c.1957; 1950 Sanborn sheet 317)",
                   ("Park Avenue", "San Pablo Avenue", "45th Street"), "boundary street of Oaks Park (1950 Sanborn sheet 317)", None),
 }

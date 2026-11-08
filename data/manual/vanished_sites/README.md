@@ -1,12 +1,13 @@
 # Vanished large sites (`data/manual/vanished_sites/`)
 
-Big sites that were built after the farms and are gone again — racetracks, an office campus, a car
-plant, amusement parks, a drive-in, a wartime camp — leave no trace in today's footprints, so
-without this folder the terrain shows orchard / farmland until today's buildings arrive. Each site
-is traced from **real historical maps and orthophotos** (USGS historical topographic sheets
-1946–1997, the October 2010 orthophoto in Esri's World Imagery Wayback archive, OpenStreetMap for
-today's grounds); dates come from cited histories plus the editions on which each feature first
-appears. Anything generated or estimated says so in its `confidence` / `note`.
+Big sites that were built and are gone again — racetracks, an office campus, a car plant, amusement
+parks and bath resorts, ball parks, drive-ins, a wartime camp, a town razed for an industrial park,
+cleared redevelopment blocks — leave no trace in today's footprints, so without this folder the terrain
+shows farmland or plain city ground until today's buildings arrive. Each site is traced from **real
+historical maps and orthophotos** (USGS historical topographic sheets 1894–1997, Library of Congress
+Sanborn fire-insurance maps 1897–1951, the October 2010 orthophoto in Esri's World Imagery Wayback
+archive, OpenStreetMap for today's grounds); dates come from cited histories plus the editions on which
+each feature first appears. Anything generated or estimated says so in its `confidence` / `note`.
 
 ## Files
 
@@ -14,17 +15,23 @@ appears. Anything generated or estimated says so in its `confidence` / `note`.
 |---|---|
 | `sites.geojson` | Polygon parts of each site's ground over its lifetime (one feature per part and period) |
 | `buildings.geojson` | Footprints of vanished buildings (predecessors) |
-| `road_segments.csv` | Overture road segments (`roads_local` / `roads_region`) lying on these sites (219 rows), with a *not-before* year where the segment cannot have existed (see below) |
-| `traced/*.json` | Intermediate tracings in each site's local metre frame (automatic extractions from the sheets, hand-read corners) |
+| `road_segments.csv` | Overture road segments (`roads_local` / `roads_region`) lying on these sites (318 rows), with a *not-before* year where the segment cannot have existed (see below) |
+| `traced/*.json` | Intermediate tracings in each site's local metre frame (automatic extractions from the sheets, hand-read corners); second batch: `idora_park_1911.json`, `alameda_baths_sanborn.json`, `emeryville_sanborn_1911.json`, `oaks_park_sanborn.json` (Sanborn fits), `russell_city_topo.json`, `bay_district_track_1895.json` |
 | `traced/apple_park_osm.geojson` | OSM features of Apple Park (via Overture base / transportation, © OpenStreetMap contributors, ODbL) |
-| `tools/` | The tracing tools (see *Method*); `python -I tools/trace_sites.py` rebuilds the two GeoJSONs from `traced/` |
+| `tools/` | The tracing tools (see *Method*); `python -I tools/trace_sites.py` rebuilds the two GeoJSONs from `traced/` (first batch `sites_def.py`, second batch `sites_def2.py`); `python -I tools/roadseg2.py` (run in this folder) rewrites the second batch's rows of `road_segments.csv`; Sanborn tracers `tools/sanborn_*_trace.py` (+ `sbref.py` fits, `sbseg.py` colour segmentation) and `tools/russell_city_trace.py` write `traced/` (they expect the LOC images / topo renders in a scratch folder: see each script's header) |
 
 ### `sites.geojson` properties
-`site_id, name, kind` (racetrack | office_campus | factory | amusement_park | drive_in | military | campus_grounds),
+`site_id, name, kind` (racetrack | office_campus | factory | amusement_park | drive_in | military | campus_grounds |
+resort | ballpark | town | redevelopment_lot),
 `cover` (what the ground was: `dirt_track | turf | grass | park | parking | industrial | urban | water`),
 `surface` (finer label: "dirt track", "turf course", "stable yard", "footpath", "road", "theme park"…),
 `year_start, year_end` (fractional years; 9999 = still there), `confidence` (`exact` = position and dates from the
 sources; `estimated` = traced but a date or an outline is approximate; `procedural` = generated), `source_url`, `note`.
+
+A part with cover `urban` / `industrial` that starts when another part of the same site ends (Russell City → industrial
+park, the Trans Pacific lots → today's buildings) is there so the terrain returns to city ground instead of staying
+"cleared ground" after the site's end (`terrain_tiles.py` clears a part's ground at its end unless a later part of
+the same site takes it over).
 
 Parts overlap on purpose: the larger part is the ground under the smaller ones (e.g. the racetrack grounds polygon
 → the dirt oval ring → the turf ring → the infield → the ponds). Ring parts are true polygons with holes; if a
@@ -58,6 +65,20 @@ still stands — the Great Mall, the Edenvale church — it is left out).
   26 Oct 2010, 0.3 m) — viewed only; roof outlines of the HP campus were segmented on it and orthogonalised, the
   rest read by hand on a 10 m grid. NAIP before 2010 and the USDA/USGS historical orthophoto services were not
   reachable from the build environment.
+* **Sanborn sheets (second batch):** Library of Congress IIIF images (25 %, ~5 px per metre at 1 in = 50 ft) of the
+  Oakland (sanborn00727) and Alameda (sanborn00374) atlases. A sheet is fitted to today's ground by an affine (or
+  similarity) transform of four block corners read on the sheet against the same corners of today's parcel blocks
+  (Alameda County parcels 2021, unioned per block; `tools/sbref.py`) or street-centreline crossings (Overture); the
+  residuals (0.2–2.8 m) are given per site. Buildings are the yellow (frame) / pink (brick) / blue (concrete) fills
+  (`tools/sbseg.py`: colour mask → close / open → polygons), each assigned a name and use from the sheet's lettering
+  by hand (a list of label points per sheet in the tracer); rides, tracks and open-air platforms are hand-traced.
+  Storey numbers give heights (≈ 4 m per storey, ESTIMATE).
+* **House symbols (Russell City):** at 1:24,000 a house symbol is a fixed ~14 m square, not the house; the symbol's
+  position is kept and the footprint is a 9 × 9 m house (ESTIMATE). Symbols are found by opening the dark-ink mask
+  with a 7 m square (removes the 3 m road lines) and split every ~13 m along merged rows.
+* **Early 15′ sheets** (1:62,500, 1890s–1910s) are not on NAD27 control; they are shifted onto today's streets by
+  cross-correlation (`tools/align.py`) or, where the street grid is periodic (SF Richmond District), by an affine of
+  four boundary-street corners read on the render.
 * **Today's grounds (Apple Park):** OpenStreetMap features via the Overture 2026-10-21.0 release (land, land_use,
   water, transportation segments: footway / path / cycleway / steps / pedestrian / service / unclassified),
   clipped to the campus west of Tantau Ave; path centrelines buffered to a typical width (footway 3.5 m, path 3 m,
@@ -77,7 +98,19 @@ still stands — the Great Mall, the Edenvale church — it is left out).
 | `frontier_village` | Frontier Village, San José | 21 Oct 1961 – 28 Sep 1980 | San Jose East 1:24k 1973 PR | grounds / lake traced; buildings exact symbols |
 | `frontier_drive_in` | Frontier drive-in (Frontier Auto Movie) | Apr 1962 – c.1980 | San Jose East 1:24k 1973 PR ("Drive-in Theater" + dashed outline) | outline approximate, end year estimated |
 | `oakland_nsc` | Naval Supply Center Oakland (Naval Supply Depot / FISC) | 15 Dec 1941 – 1998 (cleared c.1999–2001) | Oakland West 1:24k 1949 (1946 photos), 1959 (1958 photos), 1993 | warehouses traced automatically (±5 m, a few merged pairs); start 1942.5 / 1952 by edition; end 2000 estimated |
-| `emeryville_racetrack` | Oakland Trotting Park / New California Jockey Club track, Emeryville | 4 Jul 1871 – last race 15 Feb 1911 (buildings burned 15 Dec 1915) | San Francisco 1:62,500 (1899 ed., 1914 imprint), shifted 220 m onto today's streets | oval ±30 m; no buildings traced |
+| `emeryville_racetrack` | Oakland Trotting Park / New California Jockey Club track, Emeryville | 4 Jul 1871 – last race 15 Feb 1911 (buildings burned 15 Dec 1915) | San Francisco 1:62,500 (1899 ed., 1914 imprint), shifted 220 m onto today's streets, then 22 m onto the 1911 Sanborn; 39 buildings from the 1911 Sanborn (sheets 321–325) | oval ±15 m; buildings ±5 m (sheet 324/325), ±15 m (323) |
+| `idora_park` | Idora Park, Oakland (56th–58th St, Telegraph–Shattuck) | 16 May 1903 – Jan 1929 (razed 1929) | Sanborn Oakland 1911 vol. 3 sheet 293 (affine to today's block, residuals ≤ 1.5 m) | outline / buildings ±2 m; heights estimated |
+| `neptune_beach` | Neptune Beach, Alameda (Central Ave, Webster St – McKay Ave) | New Surf Beach 7 May 1916, Neptune Beach 31 Mar 1917 – closed 1939, auctioned 25 Mar 1940, demolished by Nov 1940 | ground = the fill on USGS Oakland West 1949 (1946 photos); pools, coasters, stadium, bathhouse **placed** from 1930s aerial photographs | **estimated** (features ±20 m) |
+| `neptune_gardens` | Neptune Gardens (Long Branch Baths site, later Croll's), Alameda | May 1880 – 1916 (pavilion 1885–1914) | Sanborn Alameda 1897 sheet 15 | estimated |
+| `terrace_baths` | The Terrace Baths, Alameda (Central Ave at Sixth St) | 1878 – 1916 (end estimated) | Sanborn Alameda 1897 sheet 15 | estimated |
+| `cottage_baths`, `sunny_cove_baths`, `green_arbor_baths`, `sandy_beach_baths`, `alameda_baths` | Alameda west-end bath houses (Fifth – Sixth St, south of Central Ave) | 1878/1895 – 1900…1953 | Sanborn Alameda 1897 and 1948, sheets 11, 12 | estimated (layout of each edition, dates by edition) |
+| `shell_mound_park` | Shell Mound Park, Emeryville | 1877 – 1924 | Sanborn Oakland 1911 vol. 3 sheets 323, 324 | estimated |
+| `oaks_park` | Oaks Park (Oakland Oaks ball park), Emeryville | 1913 – 1955 (demolished c.1957) | Sanborn Oakland 1911–Oct 1950 vol. 3 sheet 317 | stands ±3 m; demolition year estimated |
+| `bay_district_track` | Bay District race track, SF (First Ave – Fifth Ave, Fulton St – Point Lobos Ave) | Sep 1874 – 27 May 1896 (streets cut by 1898) | San Francisco 1:62,500 1895 (1894 survey) | oval ±20 m |
+| `ingleside_racetrack` | Ingleside race track, SF | 28 Nov 1895 – 1906 (sold 1910) | Urbano Drive (laid on the track 1912) | oval ±10 m; width estimated |
+| `russell_city` | Russell City, Hayward | laid out 1907 – evicted 1964, cleared 1966 | San Leandro 1:24k 1947 (houses), 1959 (town tint), 1968 PR; Hayward 1:62,500 1942 (1939 photos) for dating | positions ±5 m; footprints and start years **estimated** |
+| `geneva_drive_in` | Geneva Drive-In (Geneva 4), Daly City | 1950 – 1999 (demolished Mar 2002) | San Francisco South 1:24k 1956 | outline ±10 m |
+| `oakland_trans_pacific_lots` | Trans Pacific Centre blocks, downtown Oakland (9th–11th St, Broadway–Webster) | cleared 1978 / c.1980–82, vacant or parking until 1982 / 1990 / 2001 | Sanborn 1950 vol. 2 sheets 150–151; USGS Oakland West 1980 PR (1979 photos); 1982 EIR | estimated (see `../redevelopment_areas.csv`) |
 
 ### Bay Meadows (1934–2008)
 * Main track: 1-mile dirt oval, axis bearing −8°, fitted to the track line of the 1993 sheet (the 1946/1956 sheets
@@ -163,7 +196,120 @@ estate subdivided it for factories in 1915 and the remaining buildings burned on
 Society). The oval is fitted to the 1:62,500 sheet after aligning the sheet's ink to today's streets by
 cross-correlation (`tools/align.py`: shift +100 m E, +194 m N; the early 15′ surveys were not on NAD27 control). Size
 from the fit: 629 × 243 m between inner-line centres (documented 2,000 × 900 ft). Track width 18 m and the infield
-grass are estimates; the grandstand / stables are not traced (no Sanborn sheet checked).
+grass are estimates.
+
+**2026-11 (second batch): buildings from the 1911 Sanborn** (Oakland 1911-12 vol. 3, "including Emeryville",
+sheets 321, 323–325; the track was "closed for racing May 1911"). Sheet 325 is fitted to today's Park Ave crossings
+(Holden, Horton, Hubbard, Halleck; similarity, residuals ≤ 2.1 m), sheet 324 joined to it by the covered walk to the
+grandstand drawn on both, sheet 323 to 324 by two hydrants drawn on both. 39 buildings: the grandstand with betting
+ring and paddock (15 m, estimated), the covered walk, club house, the stall quadrangle (Holden – Horton), the
+Burns & Waterhouse and another private racing barn, 16 stable barns (A–K), stable hands' rooms, the SP race-track
+station platforms, restaurant, warehouse; all 24 Oct 1896 – 15 Dec 1915 (some stables may be older). The east curve of
+the main track on sheet 321 (circle fit r = 166 m) put the oval 14 m back along its axis and 16.5 m SW of the 1914-sheet
+fit, which is now applied (oval ±15 m). Shell Mound Park, next door, is its own site (below).
+
+### Idora Park, Oakland (1903–1929)
+Amusement park of the Realty Syndicate (Key System owners) on the block bounded by 56th St, 58th St, Telegraph Ave and
+Shattuck Ave (17.5 acres documented; today's block 16.8 acres), opened 16 May 1903, closed Jan 1929 and razed that year;
+the Idora Park tract (57th St, Aileen St, Carberry Ave cut through it) is on the Oct 1931 "new sheet" 293 of the 1950
+volume. From the 1911 Sanborn sheet 293 (Oakland vol. 3), fitted by an affine of the four block corners to today's
+parcel block (residuals 0.9–1.5 m): 36 buildings by colour (frame = yellow, concrete = blue) — the 2-storey theatre /
+opera house with stage and balcony (the Wigwam / Idora Park Opera Company; 13 m, estimated), the roller-skating rink
+(open-air floor inside), the Scenic Railway station, the restaurant, the "Shooting the Rapids" / "Tickler" building, the
+merry-go-round, the Telegraph Ave and Shattuck Ave entrances, the moving-picture theatre, the band stand, monkey house,
+concessions, the ice-cream factory and shops — plus the figure-eight coaster (hand-traced centreline, 4 m track) and the
+Scenic Railway trestle loop as structures, and as ground parts the park block, the electric-car "Auto Race Course"
+(with its inside) and the open-air amphitheatre platform. All dated opening – razing (the 1911 layout; rides changed
+often: ESTIMATE). The 1904–06 ball park (Oakland Oaks) inside the park is not traced.
+
+### Neptune Beach and the Alameda west-end baths (1878–1953)
+* **The bath houses** of the 1880s–1950s between Fifth St, Webster St and the bay, from the Sanborn maps of Alameda
+  1897 (sheets 11, 12, 15) and 1948 (same sheets), each sheet fitted by an affine to the parcel block north of Central
+  Ave (residuals ≤ 0.9 m; the bath houses south of Central lie outside the fitted block: ±5 m). Sandy Beach Baths,
+  Alameda Baths and Green Arbor Baths (dressing-room rows on piers, Green Arbor's open swimming tank) from 1897;
+  Sunny Cove Baths (1878 – 1950, Alameda Post) and the Cottage Baths (1895 – c.1953) in their 1897 layout (tub baths,
+  dressing rooms) and their 1948 layout (concrete swimming tanks, lunch room, canoe house, club house); the 1897 →
+  1948 switch is set to 1922 (midpoint, ESTIMATE); the Cottage Baths are gone on the 1959 sheet (1958 photos → end
+  1953, ESTIMATE). The Terrace Baths (Robert Haley 1878; glass-roofed swimming tank, laundry, 300 dressing rooms per
+  the Alameda Post; a planked "enclosed swimming tank" of bay water) end at Neptune Beach's opening (1916, ESTIMATE).
+* **Neptune Gardens** (Aux Bon Vivants restaurant May 1880, the Long Branch Baths, reopened by the railroad / James Fair
+  28 Jun 1885 with a $60,000 pavilion for dancing, roller skating and theatre — "formerly Neptune Garden, pavilion not
+  used" on the 1897 sheet): house, summer houses, sheds, windmill and the pavilion (1885–1914, identification and end
+  ESTIMATED from the Alameda Post's "Wigwam demolished 1914"), and the grounds between the Terrace Baths and Webster St.
+  "Croll's Gardens" was the same resort's later name (John Croll's hotel / bar across Central Ave is not traced).
+* **Neptune Beach** (Robert Strehlow, August Freese, Pete Peterson: "New Surf Beach" with the 1915 PPIE Scenic Railway,
+  barged over and rebuilt, opened 7 May 1916; Neptune Beach from 31 Mar 1917; Alameda Park Co. 1922; foreclosed 7 Apr
+  1939, sold 30 Sep 1939, auctioned 25 Mar 1940, demolished by Nov 1940; McKay Ave laid on the coaster's footprint;
+  the U.S. Maritime Service training station took the site in 1942). **No Sanborn sheet shows the park** (the 1897
+  edition predates it; the 1948 edition shows the site as government land). Its ground is the fill on the USGS
+  Oakland West 1949 sheet (1946 photos) between Central Ave, the shore west of McKay Ave and the fence line east of
+  Webster St (Neptune Court's bungalows from the 1948 Sanborn are left out). The features are **placed** from two
+  aerial photographs (1930s, Alameda Museum via the Alameda Post; c.1930, EBRPD Crab Cove tour) — the big pool
+  (~100 × 40 m) and the first pool east of the coaster, the bathhouse along Central Ave, the arcade entrance at McKay
+  Ave, the Moorish tower on Webster St, the PPIE coaster along McKay Ave, the "Whoopee" coaster along the west edge, the
+  8,000-seat stadium (oval and grandstand) and the picnic lawns — all `estimated`, ±20 m; the second pool, stadium and
+  Whoopee from 1925 (after the 1922 buy-out, ESTIMATE). Not traced: Kiddieland, dance hall, carousel, Ferris wheel,
+  the cottages.
+
+### Shell Mound Park, Emeryville (1877–1924)
+Edward Wiard's picnic and amusement park on and around the Emeryville shellmound, next to his race track: the octagonal
+dance pavilion on top of the mound (90 ft across, 1877; with its bar) and the ground-level dance pavilion with stage
+(rebuilt after the fire of 26 Feb 1901), the dining room / bars / bowling alley along the railway, the grandstand round
+its athletic track, merry-go-round, band stands, shooting gallery, photo gallery; closed 1924, land sold for factories
+(Emeryville Historical Society; Oakland Tribune 7 Aug 1949). Buildings and the mound's "bottom line" from the 1911
+Sanborn sheets 323 / 324 (fit as for the race track: ±5–15 m); grounds outline approximate (sheet fence lines).
+Today's Bay Street centre stands on it.
+
+### Oaks Park, Emeryville (1913–1957)
+"Oakland Base Ball Association grounds, from plans Feb. 1913" on the Sanborn Oakland 1911–Oct 1950 vol. 3 sheet 317
+(Park Ave, San Pablo Ave, 45th St, Watts St extended), fitted by an affine of four water-main / street crossings
+(residuals 1.3 m): the roofed wood grandstand (L-shaped, behind home plate at San Pablo Ave / 45th St), the bleachers
+along San Pablo Ave, left field, Watts St and the Park Ave corner (hand-traced), and the field. Home of the Oakland Oaks
+(PCL) 1913–1955; demolition year c.1957 ESTIMATED; site now Pixar's campus.
+
+### San Francisco race tracks
+* **Bay District** (Sep 1874 – last race 27 May 1896; streets cut across the infield by 1898; OpenSFHistory, Richmond SF
+  Blog): the oval drawn on the USGS San Francisco 1:62,500 sheet of 1895 (1894 survey) — narrow at the north end, wide at
+  the south — read on a NADCON render and placed by an affine of the four boundary-street corners on the sheet (First
+  Ave / Fifth Ave × Fulton St / Point Lobos Ave) onto today's centreline crossings (Arguello, 5th Ave, Fulton, Geary;
+  the periodic Richmond grid defeats cross-correlation). Outer perimeter 1.65 km (a mile track), width 14 m estimated,
+  infield and grounds as grass. No buildings (stands / stables not on the sheet).
+* **Ingleside** (28 Nov 1895 – 1906; refugee camp after the earthquake, never reopened; bought 1910 for Ingleside
+  Terraces): Urbano Drive "was paved along the loop of the old track" (1912) — a stadium fitted to its centreline (rms
+  0.25 m, perimeter 1.48 km) is the track's centre line, track 22 m wide (ESTIMATE), infield grass. No buildings traced.
+* Neither SF site has buildings here; `region_predecessors.py` reads `buildings.geojson` for the five counties.
+
+### Russell City, Hayward (1907–1966)
+Unincorporated Black and Latino community west of Hayward (named 1853; laid out 1907, 700 lots sold by 1908; ~1,400
+residents when Hayward declared it blighted in the 1950s; annexed 1964, residents evicted by eminent domain 1964,
+last buildings cleared 1966; industrial park, Russell City Energy Center 2013 — Wikipedia). Town = the urban tint of
+the San Leandro 1:24k sheet of 1959 (1958 photos; 0.53 km²), `urban` 1908–1965.5, then `industrial` from 1968 (the 1968
+photorevision shows the old street grid without buildings or tint). 395 houses at the building symbols of the 1947
+sheet (footprint 9 × 9 m ESTIMATE, see Method); start 1925 where the Hayward 1:62,500 sheet of 1942 (1939 photos,
+aligned by cross-correlation) has ink within 12 m, else 1943; ends spread over 1964.5–1966.5. The old street grid is
+not drawn (it differs from today's industrial streets; the roads layer has no historic streets here). Not traced: the
+church, school and the Country Club / hotel (burned 1964 / 1966).
+
+### Geneva Drive-In, Daly City (1950–2002)
+The dashed outline labelled "Drive-in Theater" south of the Cow Palace on the San Francisco South 1:24k sheet of 1956,
+read by hand (±10 m), minus the Cow Palace annex inside it; opened 1950 (Syufy, 771 cars, on a former greyhound track),
+closed 1999, demolished Mar 2002 (Cinema Treasures).
+
+### Downtown Oakland: the Trans Pacific Centre blocks (1978–2004)
+Asked: were the blocks 9th–11th St, Broadway–Franklin empty from the 1970s to the 1990s–2000s? Findings: in 1950 both
+blocks (and the Franklin–Webster double block east of them) were fully built (Sanborn vol. 2 corrected to Nov 1950,
+sheets 150/151: garages, stores, hotels, a church hall, the 1916 T & D Theatre). The T & D closed 1977 and was razed in
+1978 (PCAD, Cinema Treasures); on the USGS Oakland West photorevision of 1980 (1979 photos) the 10th–11th St block is the
+only block east of Broadway without the built-up tint. The Trans Pacific Centre was planned (SF Examiner 22 Nov 1981)
+as "a four-block square office and retail complex" across Broadway from the Hyatt / convention-centre site; phase I,
+1000 Broadway (6 storeys), was finished in 1982; phase II (a 68-storey tower and two 30-storey residential towers on
+"3 of 4-block square site", Draft EIR Feb 1982) was never built. 10th St between Broadway and Franklin was closed (it
+is not in today's street data). The rest stayed redevelopment-agency land until the EBMUD building (dedicated 1991) and
+Pacific Renaissance Plaza (1993) east of Franklin and the Courtyard by Marriott (2002) and Franklin 88 (2004; the agency
+sold the land in 2000 and bought back 135 public parking spaces) west of it. Surface use while vacant: parking
+(ESTIMATE). Rows `oak_trans_pacific_10th_11th` (cleared 1977.5–1978.9), `oak_trans_pacific_9th_10th` and
+`oak_chinatown_franklin_webster_9th_11th` (1979.5–1982.0, ESTIMATE) in `data/manual/redevelopment_areas.csv`; the
+vacant / parking parts here (`oakland_trans_pacific_lots`, then `urban` from the new buildings' start).
 
 ## Road segments (`road_segments.csv`)
 For every Overture road segment on a site part that ended (and every non-arterial segment inside Apple Park):
@@ -181,17 +327,31 @@ it existed; `date` = it cannot predate `not_before`), `not_before`, `evidence`.
 * Tanforan (not before 1965), Ford Milpitas (not before 1983: Great Mall Parkway etc.), Marine World (Oracle Parkway,
   not before 1986), Frontier Village (Saddle Brook Drive, not before 1981), Naval Supply Center (today's port roads,
   not before 2000), Emeryville track (the 1915 industrial streets across the oval, not before 1916).
+* Second batch (`tools/roadseg2.py`; no ink test — boundary streets drawn on the Sanborn / topo sheets are `keep`, the
+  rest `date`): Idora Park (57th St, Aileen St, Carberry Ave through the park: not before 1930), Neptune Beach (McKay
+  Ave on the coaster's footprint, Crolls Garden Court, Garden Way, Webster St south of Central: 1941), Shell Mound Park
+  (Bay St, Ohlone Way, Shellmound St: 1925), Bay District (2nd–4th Ave, Cabrillo, Balboa, Anza across the track: 1898;
+  the four boundary streets keep), Ingleside (the Ingleside Terraces streets: 1911), Russell City (the industrial-park
+  streets: 1966).
 * The ink test can be fooled where building symbols crowd a road (stable rows); `evidence` gives the numbers.
 
 ## Not done / next
-Neptune Beach (Alameda, 1917–39) and Idora Park (Oakland, 1904–29) predate the 1:24k sheets — Sanborn maps (LOC
-Oakland / Alameda volumes) would give their buildings; Oakland Army Base warehouses; Kaiser Richmond shipyard grounds
-(1941–46); Camp Fremont (Menlo Park 1917–19); the Libby's Sunnyvale and Del Monte San José canneries; other drive-ins
-(Geneva, Burlingame, Mission, Island Auto Movie…); landmark models for the Bay Meadows / Tanforan grandstands (their
-footprints are in `buildings.geojson` with estimated heights).
+* Neptune Beach's real layout (no Sanborn or topo sheet shows the park: a georeferenced 1930s aerial would replace
+  the placed features); the 1942–c.1956 U.S. Maritime Service training station on its site (buildings on the 1949 /
+  1959 sheets).
+* Camp Fremont (Menlo Park 1917–19, ~1,125 temporary buildings on 7,200 acres): no map of the camp was found from the
+  build environment (Wikipedia gives no boundaries); the Alameda municipal airport / Pan Am China Clipper base (1927–39)
+  under NAS Alameda: not on any available sheet (the 1:62,500 1932 / 1947 imprints are unrevised 1915 content).
+* Other drive-ins (Burlingame, Island Auto Movie, Mission, Capitol…), Agnews State Hospital's demolished wards, the
+  Libby's / Del Monte canneries, Russell City's old street grid and public buildings, Idora's 1904–06 ball park,
+  Freeman's Park (Emeryville ball park 1899–1912).
+* Industrial and military sites (Kaiser yards, Oakland Army Base, Hamilton Field, …) are in `../industrial_sites/`.
+* Landmark models for the Bay Meadows / Tanforan grandstands, Idora's theatre, Neptune Beach's tower and coasters.
 
 ## Licences
 USGS topographic maps: public domain. Esri World Imagery (Wayback): viewed for tracing only, no imagery
 redistributed. OpenStreetMap-derived parts (`apple_park*`, `traced/apple_park_*.geojson`, road segment ids): ODbL 1.0,
 © OpenStreetMap contributors (the files are derived databases: ODbL). Facts from Wikipedia (CC BY-SA), PCAD, HP
-Museum, Densho, Cinema Treasures, DRF, GlobeSt: cited per feature.
+Museum, Densho, Cinema Treasures, DRF, GlobeSt: cited per feature. Sanborn maps (Library of Congress): public
+domain. Photographs of Neptune Beach (Alameda Museum / Alameda Historical Society): viewed for placement only, not
+redistributed.
