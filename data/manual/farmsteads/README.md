@@ -12,7 +12,7 @@ sources: USGS Historical Topographic Map Collection (public domain, `SOURCES.md`
 | File | What |
 |---|---|
 | `topo_farmsteads.geojson` | one Point per farmstead (EPSG:4326): the dwelling, or the largest building, of a group of building symbols within 60 m |
-| `coverage.geojson` | per processed sheet, the part of its neat line that the farmsteads of that sheet cover (a 15' sheet minus the 7.5' sheets of the same period); "no point here" inside it means "no rural building on that map" |
+| `coverage.geojson` | per processed sheet, the part of its neat line that the farmsteads of that sheet cover (a 15' sheet minus the 7.5' sheets of the same period, minus the sheet's town areas); "no point here" inside it means "no rural building on that map" |
 | `topo_towns.geojson` | areas excluded as towns: `kind = dense_buildings` (> 8 other symbols within 150 m: villages, town blocks, 1950s tracts) and `kind = urban_tint` (the red built-up tint of the 1940s–50s maps, inside which only landmark buildings are drawn) |
 | `topo_orchards.geojson` | orchard and vineyard extents (Polygons) from the green vegetation overprint of the 1939–1956 sheets |
 

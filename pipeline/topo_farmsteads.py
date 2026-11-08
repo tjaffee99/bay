@@ -1396,6 +1396,11 @@ def export():
         feats += f
         towns += tw
         shown = polys[r["id"]].difference(drop) if drop is not None else polys[r["id"]]
+        # towns (dense symbols, red urban tint) say nothing about single farmhouses: the
+        # sheet doesn't "see" farmsteads there, so they are not part of its coverage
+        tpolys = [Polygon(t["geometry"]["coordinates"][0]).buffer(0) for t in tw]
+        if tpolys:
+            shown = shown.difference(unary_union(tpolys))
         if shown.is_empty:
             continue
         cov.append({"type": "Feature", "geometry": mapping(shown.simplify(1e-6)),
