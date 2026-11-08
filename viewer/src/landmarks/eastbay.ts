@@ -720,7 +720,8 @@ const paramountOakland: Landmark = {
       b.color('#EDE9DE').box(2.5, 41.15, 4.5, 19, 0.1, 2.4);
     });
   },
-  replaces: [rotRing(rect(2, -8, 62, 92), 282.7)],
+  // the OSM outline itself (a 2-storey neighbour lies 5 m off the south-east corner)
+  replaces: [rotRing(scaleRing([[-14.9, 35.9], [-24.2, 1.0], [-27.2, -12.2], [-24.6, -15.8], [-23.0, -47.8], [-8.5, -51.6], [-0.7, -23.4], [30.1, -21.3], [29.7, 35.7]], 1.04), 282.7)],
   facts: {
     Opened: 'Dec 16, 1931 (premiere of The False Madonna); closed Jun 1932 – 1933',
     Design: 'Timothy Pflueger, Art Deco; facade mosaic by Gerald Fitzgerald; 3,476 seats (3,040 today)',
@@ -1371,7 +1372,7 @@ const ussHornet: Landmark = {
       b.color('#6D7378').beam([15.2, 8, 31], [15.2, 8, 47], 0.8);
       b.box(15.2, 8, 42, 6, 1.2, 0.8);
     }),
-  replaces: [rotRing(rect(1, 3, 70, 275), 90.1)],
+  replaces: [rotRing(scaleRing(HORNET_DECK, 1.03), 90.1)], // the deck outline: pier kiosks alongside stay
   facts: {
     Ship: 'Essex-class carrier, laid down Aug 3, 1942, commissioned Nov 29, 1943; recovered the Apollo 11 and 12 crews (1969); decommissioned 1970',
     Museum: 'opened Oct 17, 1998 on the southernmost pier of the former Naval Air Station Alameda (closed 1997)',
@@ -1568,8 +1569,6 @@ const cathedralChristTheLight: Landmark = {
         const [x, y] = top[i];
         b.box(x, y, 36, 0.35, 0.35, 5.5);
       }
-      // the Omega window (the pointed front of the lens, toward the lake)
-      b.color('#DCE7EA').tri([0, -31.4, 6], [-5.5, -27.2, 6], [0, -31.4, 33]).tri([0, -31.4, 6], [5.5, -27.2, 6], [0, -31.4, 33]);
       // entrance plaza steps
       b.color('#A8A39A').box(-2, 34, -1.5, 20, 8, 3.5);
     });
@@ -1605,7 +1604,7 @@ const cathedralBuilding: Landmark = {
     b.color('#E6E2D8');
     for (const p of wedge) b.frustum(p[0] * 0.95, p[1] * 0.95, 0.6, 0.05, 31.2, 38.5, 6, false);
   },
-  replaces: [rect(1, -2, 18, 36)],
+  replaces: [scaleRing([[8.9, 9.5], [-0.8, 14.3], [-7.3, -17.6], [-5.1, -18.8]], 1.15)],
   facts: {
     Built: '1914 (Benjamin Geer McDougall), the Federal Realty Building — "the Wedding Cake"',
     Height: '42 m, 12 floors (OSM)',

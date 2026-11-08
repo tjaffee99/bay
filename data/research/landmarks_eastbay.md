@@ -397,7 +397,7 @@ lat/lon = model anchor, `height_m` = model top).
 
 ### Cathedral of Christ the Light (`cathedral_christ_the_light`)
 
-- Model years: construction 2005.39 → 2008.73, end standing; anchor 37.810532, -122.263122; 383 triangles; top ≈ 41.5 m.
+- Model years: construction 2005.39 → 2008.73, end standing; anchor 37.810532, -122.263122; 381 triangles; top ≈ 41.5 m.
 - Construction: groundbreaking May 21, 2005; consecrated and dedicated Sep 25, 2008
 - Design: Craig W. Hartman, Skidmore Owings & Merrill — a vesica piscis of glass and Douglas-fir louvres; Omega window with the image of Christ (from Chartres)
 - Height: 41 m (OSM)

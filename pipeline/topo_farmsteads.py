@@ -318,6 +318,39 @@ def _valley_threshold(areas_mm2, lo=0.05, hi=0.16, default=0.09):
     return float(c[i])
 
 
+def urban_tint(img, inside, ppm):
+    """Red/pink stipple of built-up areas on the 1940s-50s maps (only landmark buildings
+    are drawn inside it). -> (mask at 1/8 resolution, outer rings in full-res pixels) or None."""
+    import cv2
+    H, W, _ = img.shape
+    dots = np.zeros((H, W), np.uint8)
+    for r in range(0, H, 2048):
+        blk = img[r:r + 2048].astype(np.int16)
+        dots[r:r + 2048] = ((blk[:, :, 0] - blk[:, :, 1] > 30) & (blk[:, :, 0] > 150))
+    dots &= inside
+    n, lab, st, _ = cv2.connectedComponentsWithStats(dots, connectivity=8)
+    small = (st[:, 4] <= max(30, 0.045 * ppm ** 2)) & (np.maximum(st[:, 2], st[:, 3]) <= max(7, 0.27 * ppm))
+    small[0] = False
+    del dots
+    d = np.zeros((H // 8 + 1, W // 8 + 1), np.float32)
+    for r in range(0, H, 2048):
+        blk = small[lab[r:r + 2048]].astype(np.float32)
+        hh = blk.shape[0] // 8 * 8
+        ww = W // 8 * 8
+        d[r // 8:r // 8 + hh // 8, :ww // 8] = blk[:hh, :ww].reshape(hh // 8, 8, ww // 8, 8).mean((1, 3))
+    del lab
+    k = max(3, int(round(2.0 * ppm / 8)) | 1)
+    dens = cv2.blur(d, (k, k))
+    m = (dens > 0.08).astype(np.uint8)
+    if m.sum() < (2 * ppm / 8) ** 2:
+        return None
+    kk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k))
+    m = cv2.morphologyEx(cv2.morphologyEx(m, cv2.MORPH_CLOSE, kk), cv2.MORPH_OPEN, kk)
+    cnts, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    rings = [(c[:, 0, :] * 8 + 4).tolist() for c in cnts if cv2.contourArea(c) >= (3 * ppm / 8) ** 2]
+    return m.astype(bool), rings
+
+
 def detect_symbols(img, g, debug=None):
     """Building symbols on one sheet -> (kept symbols, stats). Each symbol: pixel centroid,
     area (mm² on paper), shape / context features, rejection reasons, score 0..1."""
@@ -341,6 +374,7 @@ def detect_symbols(img, g, debug=None):
         hue_ok[r:r + 2048] = (R - G < 40) & (B - R < 15) & (G - R < 15)
         water[r:r + 2048] = (B - R > 20) & (B > G - 10)
     hue_ok &= inside > 0
+    urban_px = urban_tint(img, inside, ppm)
     paper = float(np.percentile(mx[inside > 0][::97], 75))
     ink_t = 0.55 * paper
     ink = ((mx < ink_t) & hue_ok).astype(np.uint8)
@@ -393,12 +427,14 @@ def detect_symbols(img, g, debug=None):
         sym_ok[r["i"]] = r["shape_ok"]
     # --- open squares (barns, sheds, warehouses on the 1940s-50s maps; dwellings are
     # solid): small holes in the ink enclosed by a closed, thin square outline
-    inv = ((ink == 0) & (inside > 0)).astype(np.uint8)
+    inkc = cv2.morphologyEx(ink, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))   # bridge 1 px breaks
+    inv = ((inkc == 0) & (inside > 0)).astype(np.uint8)
     no, olab, ost, ocen = cv2.connectedComponentsWithStats(inv, connectivity=4)
     del inv
     ring_t = max(2, int(round(0.16 * ppm)))
     k_ring = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * ring_t + 1,) * 2)
-    k_out = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * int(round(0.42 * ppm)) + 1,) * 2)
+    k_in = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    k_out = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * int(round(0.45 * ppm)) + 1,) * 2)
     sq_ok = np.zeros(no, bool)
     opens = []
     for i in range(1, no):
@@ -415,17 +451,18 @@ def detect_symbols(img, g, debug=None):
         elong = max(rw, rh) / max(min(rw, rh), 1)
         if rect_fill < 0.72 or elong > 3.5:
             continue
-        inkw = ink[y0:y1, x0:x1]
-        d1 = cv2.dilate(hole, k_ring)
-        ringm = (d1 > 0) & (hole == 0)
+        inkw = inkc[y0:y1, x0:x1]
+        d0 = cv2.dilate(hole, k_in)
+        ringm = (d0 > 0) & (hole == 0)
         ring_ink = float(inkw[ringm].mean())
-        if ring_ink < 0.8:
+        if ring_ink < 0.85:
             continue                          # not closed by an outline
+        d1 = cv2.dilate(hole, k_ring)
         d2 = cv2.dilate(hole, k_out)
         outer = (d2 > 0) & (d1 == 0)
         out_ink = float(inkw[outer].mean())
-        if out_ink > 0.4:
-            continue                          # outline is part of a heavy mass, not a square
+        if out_ink > 0.3:
+            continue                          # outline is part of a heavy mass / a word
         sq_ok[i] = True
         filled = (d1 > 0) & ((inkw > 0) | (hole > 0))
         fa = int(filled.sum())
@@ -633,6 +670,9 @@ def detect_symbols(img, g, debug=None):
             reasons.append("dashline")
         if r["dark"] > 0.45 * paper:
             reasons.append("faint")
+        if urban_px is not None and urban_px[0][min(int(r["y"]) // 8, urban_px[0].shape[0] - 1),
+                                                min(int(r["x"]) // 8, urban_px[0].shape[1] - 1)]:
+            reasons.append("urban")           # red urban tint: only landmark buildings shown
         r["reject"] = reasons
         s_area = math.exp(-abs(math.log(r["area_mm2"] / (a_typ_open if r["open"] else a_typ))) / 0.8)
         s_shape = max(0.0, min(1.0, (2.6 - r["elong"]) / 1.2)) * max(0.0, min(1.0, (r["solidity"] - 0.78) / 0.12)) \
@@ -644,7 +684,8 @@ def detect_symbols(img, g, debug=None):
             keep.append(r)
     stats = {"paper": paper, "ink_t": ink_t, "a_min_mm2": a_min, "a_typ_mm2": a_typ,
              "n_cores": int(n - 1), "n_candidates": len(recs), "n_open_candidates": len(opens),
-             "n_kept": len(keep), "n_kept_open": sum(1 for r in keep if r["open"]), "n_dashes": len(dashes)}
+             "n_kept": len(keep), "n_kept_open": sum(1 for r in keep if r["open"]), "n_dashes": len(dashes),
+             "urban_rings_px": urban_px[1] if urban_px is not None else []}
     if debug is not None:
         debug["all"] = recs + opens
     return keep, stats
