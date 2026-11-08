@@ -76,7 +76,8 @@ PROJECT_DATES = {
     "CA_SanFrancisco_1_B23": 2023.30,      # 2023-04-20
 }
 
-MAX_DEPTH = 8          # EPT depth: ~0.5 m voxels in SF (cube 21.1 km / 128 / 2^8 = 0.64 m mercator)
+VOXEL = 0.7            # deepest EPT level read: voxels <= 0.7 m (mercator) -> ~5 pts/m2 on roofs
+                       # (SF: cube 21.1 km / span 128 / 2^8 = 0.64 m -> depth 8, 1.65 G points)
 RES = 1.0              # raster cell (m, UTM)
 NODATA = -32768        # int16 decimetres
 NOISE_CLASSES = (7, 18)
@@ -89,6 +90,7 @@ MIN_PART = 40.0        # smallest part / courtyard
 OPEN_HAG = 2.0         # plateau less than this above ground = open to the sky (courtyard)
 VEG_FRAC = 40          # % non-last returns -> canopy pixel, ignored
 INSET = 1.0            # footprint inset for the statistics
+THIN = 3.0             # parts narrower than this (crane booms, ledges) join their neighbour
 SIMPLIFY = 1.5         # coverage simplification of the 1 m staircase (VW, sqrt of area)
 
 
@@ -121,6 +123,10 @@ class Ept:
         d, x, y, z = map(int, key.split("-"))
         s = (self.cube[3] - self.cube[0]) / 2 ** d
         return (self.cube[0] + x * s, self.cube[1] + y * s, self.cube[0] + (x + 1) * s, self.cube[1] + (y + 1) * s)
+
+    def depth_for(self, voxel: float = VOXEL) -> int:
+        span = self.meta.get("span", 128)
+        return int(np.ceil(np.log2((self.cube[3] - self.cube[0]) / span / voxel)))
 
     def nodes(self, max_depth: int, keep) -> dict[str, int]:
         """All nodes (key -> point count) with depth <= max_depth whose 2D bounds pass `keep`
@@ -307,8 +313,7 @@ def _bin_unit(unit):
     return uid, (uidx, dsm, dsml, gz, cnt, cmr)
 
 
-def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, workers: int = 3,
-                  max_depth: int = MAX_DEPTH):
+def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, workers: int = 3):
     """Stream the EPT nodes over the grid into 1 m rasters (data/interim/lidar/<job>/)."""
     import pyproj
     from shapely import box as sbox
@@ -317,8 +322,9 @@ def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, work
         log(f"lidar: rasters for {job} exist ({out})")
         return out
     out.mkdir(parents=True, exist_ok=True)
+    depths = {p: Ept(p).depth_for() for p in projects}
     meta = {"job": job, "project": "+".join(projects), "lidar_year": min(project_year(p) for p in projects),
-            "grid": grid.to_json(), "max_depth": max_depth, "crs": UTM}
+            "grid": grid.to_json(), "max_depth": max(depths.values()), "depths": depths, "crs": UTM}
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
 
     # grid bbox in EPSG:3857 (+ margin) for node selection
@@ -329,29 +335,32 @@ def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, work
     mx, my = inv.transform(X.ravel(), Y.ravel())
     mb = (mx.min() - 20, my.min() - 20, mx.max() + 20, my.max() + 20)
 
-    def keep(b, d):
-        if b[2] < mb[0] or b[0] > mb[2] or b[3] < mb[1] or b[1] > mb[3]:
-            return False
-        if interest is not None and d >= 6:
-            return len(interest.query(sbox(*b))) > 0
-        return True
-
     ulist = []
     for project in projects:
         ept = Ept(project)
+        max_depth = depths[project]
+        ud = max_depth - 2  # work unit = one column of this depth (~260 m), its deeper nodes included
+
+        def keep(b, d):
+            if b[2] < mb[0] or b[0] > mb[2] or b[3] < mb[1] or b[1] > mb[3]:
+                return False
+            if interest is not None and d >= ud:
+                return len(interest.query(sbox(*b))) > 0
+            return True
+
         nodes = ept.nodes(max_depth, keep)
         log(f"lidar: {project}: {len(nodes)} EPT nodes (depth <= {max_depth}), {sum(nodes.values()) / 1e6:.0f} M points")
         # work units: one per depth-6 column (~260 m in SF); coarser nodes in batches
         units: dict[str, list[str]] = {}
         for k in nodes:
             d, x, y, z = map(int, k.split("-"))
-            uid = f"6-{x >> (d - 6)}-{y >> (d - 6)}" if d >= 6 else f"top-{d}-{(x * 7 + y) % 8}"
+            uid = f"{ud}-{x >> (d - ud)}-{y >> (d - ud)}" if d >= ud else f"top-{d}-{(x * 7 + y) % 8}"
             units.setdefault(uid, []).append(k)
         for uid, keys in sorted(units.items()):
             b = None
-            if uid.startswith("6-"):
+            if not uid.startswith("top"):
                 _, x, y = map(int, uid.split("-"))
-                s = (ept.cube[3] - ept.cube[0]) / 64
+                s = (ept.cube[3] - ept.cube[0]) / 2 ** ud
                 b = (ept.cube[0] + x * s, ept.cube[1] + y * s, ept.cube[0] + (x + 1) * s, ept.cube[1] + (y + 1) * s)
             ulist.append((uid if len(projects) == 1 else f"{project}:{uid}", ept.url, keys, b))
 
@@ -628,14 +637,22 @@ def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
         if p.is_empty:
             continue
         parts.append([p, info[k][0], p.area])
-    # slivers left by clipping: join the neighbour sharing the longest edge
-    parts.sort(key=lambda t: t[2])
-    while len(parts) > 1 and parts[0][2] < MIN_PART * 0.5:
-        p = parts.pop(0)
-        j = max(range(len(parts)), key=lambda i: parts[i][0].buffer(0.3).intersection(p[0]).area)
+    # slivers left by clipping and thin strips (crane booms, ledges, < ~3 m wide): join the
+    # neighbour sharing the longest edge (keeping its height)
+    def bad(p):
+        return p[2] < MIN_PART * 0.75 or p[0].buffer(-THIN / 2).area < 0.15 * p[2]
+
+    while len(parts) > 1:
+        cand = [i for i, p in enumerate(parts) if bad(p)]
+        if not cand:
+            break
+        p = parts.pop(min(cand, key=lambda i: parts[i][2]))
+        shared = [parts[i][0].buffer(0.3).intersection(p[0]).area for i in range(len(parts))]
+        j = int(np.argmax(shared))
+        if shared[j] <= 0 and p[2] < 10:
+            continue  # isolated speck: drop
         parts[j][0] = shapely.make_valid(shapely.union_all([parts[j][0], p[0]]))
         parts[j][2] = parts[j][0].area
-        parts.sort(key=lambda t: t[2])
     if len(parts) == 1 and parts[0][2] > 0.9 * geom.area:
         return "single", whole, gref, []
     return "split", whole, gref, [tuple(p) for p in parts]
@@ -752,12 +769,20 @@ def load_sf_footprints(bbox_ll=None):
 
 
 def load_region_footprints(bbox_ll):
+    """Overture footprints of the five counties (download_region.py) whose centroid lies in the bbox."""
     import geopandas as gpd
+    import pandas as pd
+    import shapely
     from download_region import OUT_OVERTURE
-    g = gpd.read_parquet(OUT_OVERTURE / "region5_building.parquet", bbox=tuple(bbox_ll))
-    g = g.cx[bbox_ll[0]:bbox_ll[2], bbox_ll[1]:bbox_ll[3]]
-    return gpd.GeoDataFrame({"key": g["id"].values, "source": "overture", "start_year": np.nan,
-                             "end_year": np.nan, "height": np.nan}, geometry=g.geometry.values, crs=g.crs)
+    d = pd.read_parquet(OUT_OVERTURE / "region5_building.parquet", columns=["id", "has_parts", "px", "py", "geometry"],
+                        filters=[("px", ">=", bbox_ll[0]), ("px", "<=", bbox_ll[2]),
+                                 ("py", ">=", bbox_ll[1]), ("py", "<=", bbox_ll[3])])
+    g = gpd.GeoDataFrame({"key": d["id"].values, "source": np.where(d.has_parts.fillna(False), "overture_has_parts",
+                                                                     "overture"),
+                          "start_year": np.nan, "end_year": np.nan, "height": np.nan, "members": None},
+                         geometry=shapely.from_wkb(d.geometry.values), crs="EPSG:4326")
+    log(f"region: {len(g)} Overture footprints in {bbox_ll}")
+    return g
 
 
 def run_parts(job: str, fp, workers: int = 3):
@@ -802,6 +827,7 @@ def run_parts(job: str, fp, workers: int = 3):
     sk = pd.DataFrame({"key": fp[skip].key.values, "status": np.where(fp[skip].start_year > year, "newer_than_survey",
                                                                     "gone_before_survey")})
     st = pd.concat([st, sk], ignore_index=True)
+    st["n_parts"] = st.n_parts.fillna(0).astype(int)
     st["lidar_year"] = year
     st["lidar_project"] = meta["project"]
     pdf = pd.DataFrame(parts, columns=["key", "part_index", "roof_m", "ground_m", "area_m2", "replaces", "prefer_lidar",
@@ -820,50 +846,82 @@ def run_parts(job: str, fp, workers: int = 3):
 
 # ----------------------------------------------------------------------------- preview / report
 def preview(job, bbox_ll, out_png, fp=None, parts=None, title=None):
-    """Top-down height map (DSM minus DTM) with footprints (white) and LiDAR parts (coloured by height)."""
+    """Top-down height maps, same colour scale: LiDAR (DSM - DTM) with the footprints | the model
+    today (one prism per footprint, OSM parts as drawn) | the model with the LiDAR parts."""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     import pyproj
     import rasterio
+    from rasterio.features import rasterize
     from rasterio.windows import from_bounds
+    from rasterio.windows import transform as wtransform
     tr = pyproj.Transformer.from_crs("EPSG:4326", UTM, always_xy=True)
     x0, y0 = tr.transform(bbox_ll[0], bbox_ll[1])
     x1, y1 = tr.transform(bbox_ll[2], bbox_ll[3])
     d = LIDAR_INT / job
     with rasterio.open(d / "dsm.tif") as f, rasterio.open(d / "dtm.tif") as g:
-        w = from_bounds(x0, y0, x1, y1, f.transform)
+        w = from_bounds(x0, y0, x1, y1, f.transform).round_offsets().round_lengths()
         dsm = f.read(1, window=w, boundless=True, fill_value=NODATA).astype(float)
         dtm = g.read(1, window=w, boundless=True, fill_value=NODATA).astype(float)
+        wt = wtransform(w, f.transform)
     ndsm = np.where((dsm == NODATA) | (dtm == NODATA), np.nan, (dsm - dtm) / 10)
-    fig, axs = plt.subplots(1, 2, figsize=(16, 8.4))
-    ext = (x0, x1, y0, y1)
-    vmax = np.nanpercentile(ndsm, 99.5) if np.isfinite(ndsm).any() else 50
-    for ax in axs:
-        ax.imshow(ndsm, extent=ext, cmap="magma", vmin=0, vmax=vmax, interpolation="nearest")
-        ax.set_xlim(x0, x1)
-        ax.set_ylim(y0, y1)
+    b = rasterio.windows.bounds(w, f.transform)
+    ext = (b[0], b[2], b[1], b[3])
+    vmax = float(np.nanpercentile(ndsm, 99.7)) if np.isfinite(ndsm).any() else 50.0
+    fpu = fp.to_crs(UTM) if fp is not None and len(fp) else None
+    pp = parts.to_crs(UTM) if parts is not None and len(parts) else None
+    used = set()
+    if pp is not None:
+        ok = pp.prefer_lidar.isna() | pp.prefer_lidar.astype(bool) if "prefer_lidar" in pp else np.ones(len(pp), bool)
+        pp = pp[np.asarray(ok, bool)]
+        used = set(pp.key)
+
+    def model(with_parts):
+        shp = []
+        if fpu is not None:
+            for r in fpu.itertuples():
+                if with_parts and r.key in used:
+                    continue
+                if getattr(r, "members", None):
+                    shp += [(mg, mh) for _, mg, mh in r.members if np.isfinite(mh)]
+                elif np.isfinite(r.height):
+                    shp.append((r.geometry, r.height))
+        if with_parts and pp is not None:
+            shp += list(zip(pp.geometry, pp.height_m))
+        shp.sort(key=lambda t: t[1])
+        if not shp:
+            return np.full(ndsm.shape, np.nan)
+        m = rasterize([(g_, float(h)) for g_, h in shp], out_shape=ndsm.shape, transform=wt, fill=np.nan,
+                      dtype="float32")
+        return m
+
+    asp = (ext[3] - ext[2]) / max(1.0, ext[1] - ext[0])
+    fig, axs = plt.subplots(1, 3, figsize=(22, 22 / 3 * asp + 1.2), layout="constrained")
+    panels = [(ndsm, "LiDAR 2023: height above ground, footprints"), (model(False), "model now: one prism per footprint"),
+              (model(True), "model with LiDAR parts")]
+    for ax, (img, ttl) in zip(axs, panels):
+        ax.set_facecolor("#202020")
+        ax.imshow(img, extent=ext, cmap="magma", vmin=0, vmax=vmax, interpolation="nearest")
+        ax.set_title(ttl)
+        ax.set_xlim(ext[0], ext[1])
+        ax.set_ylim(ext[2], ext[3])
         ax.set_xticks([])
         ax.set_yticks([])
-    axs[0].set_title("LiDAR height above ground (DSM - DTM), footprints")
-    if fp is not None and len(fp):
-        fp.to_crs(UTM).boundary.plot(ax=axs[0], color="cyan", linewidth=0.6)
-    axs[1].set_title("LiDAR parts (colour = part height)")
-    if parts is not None and len(parts):
-        pp = parts.to_crs(UTM)
-        pp.plot(ax=axs[1], column="height_m", cmap="viridis", vmin=0, vmax=vmax, edgecolor="white", linewidth=0.7,
-                alpha=0.85)
-        for _, r in pp.iterrows():
-            if r.geometry.area > 150:
+    if fpu is not None:
+        fpu.boundary.plot(ax=axs[0], color="cyan", linewidth=0.5)
+        fpu.boundary.plot(ax=axs[1], color="#66ccff", linewidth=0.3)
+    if pp is not None:
+        pp.boundary.plot(ax=axs[2], color="white", linewidth=0.5)
+        for r in pp.itertuples():
+            if r.geometry.area > 200:
                 c = r.geometry.representative_point()
-                axs[1].annotate(f"{r.height_m:.0f}", (c.x, c.y), color="white", fontsize=6, ha="center", va="center")
-    if fp is not None and len(fp):
-        fp.to_crs(UTM).boundary.plot(ax=axs[1], color="cyan", linewidth=0.4)
+                axs[2].annotate(f"{r.height_m:.0f}", (c.x, c.y), color="cyan", fontsize=6, ha="center", va="center")
     sm = plt.cm.ScalarMappable(cmap="magma", norm=plt.Normalize(0, vmax))
-    fig.colorbar(sm, ax=axs, fraction=0.02, label="m above ground")
+    fig.colorbar(sm, ax=axs, fraction=0.012, pad=0.01, label="m above ground")
     if title:
         fig.suptitle(title)
-    fig.savefig(out_png, dpi=110, bbox_inches="tight")
+    fig.savefig(out_png, dpi=100, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -878,33 +936,84 @@ EXAMPLES = {  # validation views (lon0, lat0, lon1, lat1)
 }
 
 
+STATUS_TEXT = {
+    "split": "cut into LiDAR parts",
+    "single": "one roof plateau (no step >= 3 m over >= 40 m2): stays one prism",
+    "mostly_open": "> 60 % of the footprint is ground level in 2023 (building gone / footprint over open ground)",
+    "no_data": "too few LiDAR returns inside (glass / water / outside the survey)",
+    "no_ground": "no ground around it in the DTM",
+    "newer_than_survey": "start_year after the survey: keeps its flat footprint",
+    "gone_before_survey": "end_year before the survey",
+    "osm_part": "an OSM building:part (member of an osmbld: outline), LiDAR height for comparison",
+}
+
+
 def report(job, st, pg, fp, extra_lines=()):
     REPORTS.mkdir(parents=True, exist_ok=True)
     meta = json.loads((LIDAR_INT / job / "meta.json").read_text())
     split = st[st.status == "split"]
+    outs = [INTERIM / f"{job}_lidar_parts.parquet", INTERIM / f"{job}_lidar_heights.parquet"]
     lines = [f"# LiDAR building parts ({job})", "",
-             f"* LiDAR: USGS 3DEP `{meta['project']}` (EPT, depth <= {meta['max_depth']}), survey year {meta['lidar_year']}",
-             f"* raster grid: {meta['grid']['w']} x {meta['grid']['h']} cells at {meta['grid']['res']} m ({UTM})",
-             f"* footprints: {len(st)}; status counts: " +
-             ", ".join(f"{k} {v}" for k, v in st.status.value_counts().items()),
-             f"* footprints split into parts: **{len(split)}** -> {len(pg)} parts "
-             f"(median {split.n_parts.median() if len(split) else 0:.0f}, max {split.n_parts.max() if len(split) else 0:.0f} per footprint)",
-             f"* parts area: {pg.to_crs(UTM).area.sum() / 1e6:.2f} km2; split footprints cover "
-             f"{fp[fp.key.isin(split.key)].to_crs(UTM).area.sum() / 1e6:.2f} km2", ""]
+             f"* LiDAR: USGS 3DEP `{meta['project']}` (Entwine Point Tiles, depth <= {meta['max_depth']}), "
+             f"survey {meta['lidar_year']}; built by `pipeline/lidar_parts.py`",
+             f"* rasters: {meta['grid']['w']} x {meta['grid']['h']} cells at {meta['grid']['res']} m ({UTM}), "
+             f"`data/interim/lidar/{job}/{{dsm,dsml,dtm,veg}}.tif`",
+             "* outputs: " + ", ".join(f"`{o.relative_to(INTERIM.parent.parent)}` ({o.stat().st_size / 1e6:.1f} MB)"
+                                       for o in outs if o.exists()),
+             f"* parameters: plateau edge step {EDGE_STEP} m, min step between parts {MIN_STEP} m, min part / courtyard "
+             f"{MIN_PART} m2, open to the sky below {OPEN_HAG} m above ground, canopy >= {VEG_FRAC} % split returns, "
+             f"inset {INSET} m, simplify {SIMPLIFY}",
+             "", "## Coverage", "", "| status | footprints | meaning |", "|---|---:|---|"]
+    for k, v in st.status.value_counts().items():
+        lines.append(f"| {k} | {v} | {STATUS_TEXT.get(k, '')} |")
+    lines += ["", f"* **{len(split)} footprints split into {len(pg)} parts** (median {split.n_parts.median() if len(split) else 0:.0f}, "
+              f"max {split.n_parts.max() if len(split) else 0:.0f} per footprint); split footprints cover "
+              f"{fp[fp.key.isin(split.key)].to_crs(UTM).area.sum() / 1e6:.2f} km2, their parts "
+              f"{pg.to_crs(UTM).area.sum() / 1e6:.2f} km2 (the difference = courtyards / ground-level areas)"]
+    osm = st[st.key.astype(str).str.startswith("osmbld:")]
+    if len(osm):
+        n_unif = int(osm.prefer_lidar.fillna(False).astype(bool).sum())
+        lines += [f"* OSM building:part outlines (`osmbld:` keys, `replaces` = their part keys): {len(osm)}, "
+                  f"{int((osm.status == 'split').sum())} split by LiDAR, **prefer_lidar** for {n_unif} (their OSM parts "
+                  f"all share one height, or differ from the LiDAR by > 6 m over > 25 % of the outline)"]
+        mem = st[st.status == "osm_part"].merge(fp.explode("members")[["members"]].dropna().assign(
+            key=lambda d: d.members.map(lambda m: m[0]), osm_h=lambda d: d.members.map(lambda m: m[2]))[["key", "osm_h"]],
+            on="key", how="left")
+        mem = mem[np.isfinite(mem.lidar_height_m) & np.isfinite(mem.osm_h)]
+        if len(mem):
+            dd = mem.lidar_height_m - mem.osm_h
+            lines.append(f"* OSM part heights vs LiDAR: median |diff| {dd.abs().median():.1f} m, > 6 m for "
+                         f"{(dd.abs() > 6).mean():.0%} of {len(mem)} parts")
     if "height" in fp and len(st):
-        m = st.merge(fp[["key", "height"]], on="key")
-        m = m[np.isfinite(m.lidar_height_m) & np.isfinite(m.height)]
+        m = st.merge(fp[["key", "height", "source"]], on="key")
+        m = m[np.isfinite(m.lidar_height_m.astype(float)) & np.isfinite(m.height.astype(float)) & (m.status != "osm_part")]
         if len(m):
-            dh = m.lidar_height_m - m.height
-            lines += [f"* whole-footprint LiDAR median height vs sf_buildings height: median diff {dh.median():.2f} m, "
-                      f"|diff| > 5 m for {(dh.abs() > 5).mean():.1%} ({len(m)} footprints)", ""]
-    lines += list(extra_lines)
-    big = split.copy()
-    if len(big):
+            lines += ["", "## Whole-footprint LiDAR height vs the current height", "",
+                      "| source | footprints | median diff (m) | abs diff > 5 m |", "|---|---:|---:|---:|"]
+            for src, g in m.groupby("source"):
+                dh = g.lidar_height_m - g.height
+                lines.append(f"| {src} | {len(g)} | {dh.median():+.2f} | {(dh.abs() > 5).mean():.1%} |")
+            lines.append("")
+            lines.append("`lidar_height_m` (2023 median roof minus the mean ground along the outline) is in "
+                         f"`{job}_lidar_heights.parquet` for every footprint, also the unsplit ones.")
+    lines += [""] + list(extra_lines)
+    if len(split):
+        big = split.copy()
         big["area"] = big.key.map(fp.set_index("key").to_crs(UTM).area)
         big = big.sort_values("area", ascending=False).head(15)
-        lines += ["## Largest split footprints", "", "| key | parts | whole-footprint height (m) |", "|---|---|---|"]
-        lines += [f"| {r.key} | {r.n_parts} | {r.lidar_height_m:.1f} |" for r in big.itertuples()]
+        hs = pg.groupby("key").height_m.agg(["min", "max"])
+        lines += ["## Largest split footprints", "", "| key | parts | part heights (m) | footprint m2 |", "|---|---:|---|---:|"]
+        lines += [f"| {r.key} | {r.n_parts} | {hs.loc[r.key, 'min']:.0f}-{hs.loc[r.key, 'max']:.0f} | {r.area:.0f} |"
+                  for r in big.itertuples() if r.key in hs.index]
+    lines += ["", "## Using the parts", "",
+              "* `replaces`: the sf_buildings keys a footprint's parts stand in for (`|`-separated; the footprint "
+              "itself, or all OSM parts of an `osmbld:` outline -- use those only where `prefer_lidar`).",
+              "* `height_m` = part roof (median, NAVD88 `roof_m`) minus the footprint's ground (`ground_m`, mean DTM "
+              "along the outline, the reference sf_export uses for the roof). On a slope the parts of one footprint "
+              "share that ground, so keep the roof consistent by adding (footprint ground - part ground) when each "
+              "part gets its own terrain sample.",
+              "* parts tile the footprint (minus courtyards open to the sky); every part is extruded from the ground.",
+              "* buildings newer than the survey (and footprints with status mostly_open) keep their flat footprint."]
     (REPORTS / f"{job}_lidar_parts.md").write_text("\n".join(lines) + "\n")
     log(f"report: {REPORTS / f'{job}_lidar_parts.md'}")
 

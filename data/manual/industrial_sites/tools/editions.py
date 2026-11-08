@@ -26,15 +26,17 @@ def map_year(title, yrs):
         return ty, "title"
     for k in ("Photo Revision", "Aerial Photo", "Survey", "Field Check", "Edit", "Imprint"):
         if k in yrs:
-            if k == "Photo Revision" and "Aerial Photo" in yrs:
-                return yrs["Aerial Photo"], k
+            if k == "Photo Revision" and "Aerial Photo" in yrs and yrs["Aerial Photo"] >= yrs[k] - 2:
+                return yrs["Aerial Photo"], k  # the revision's photos (else the revision year)
             return yrs[k], k
     return (ty, "title") if ty else (None, "")
 
 
-def editions(lon, lat, scales=("24000", "62500", "31680", "125000")):
+def editions(lon, lat, scales=("24000", "62500", "31680", "125000"), bbox=None):
     d = 0.002
-    items = vt.topo_list(round(lon - d, 3), round(lat - d, 3), round(lon + d, 3), round(lat + d, 3))
+    if bbox is None:
+        bbox = (lon - d, lat - d, lon + d, lat + d)
+    items = vt.topo_list(*(round(v, 3) for v in bbox))
     out = {}
     for it in items:
         sc = next((s for s in scales if f"1:{s}-scale" in it["title"]), None)

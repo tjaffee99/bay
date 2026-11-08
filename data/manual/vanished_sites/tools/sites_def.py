@@ -465,3 +465,5 @@ def build():
     frontier_village()
     oakland_nsc()
     emeryville_track()
+    import sites_def2
+    sites_def2.build()
