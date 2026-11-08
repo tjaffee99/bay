@@ -46,6 +46,12 @@ def files(paths, **ov):
     return dict(files=list(paths), **ov)
 
 
+def hull(lon, lat, radius_m, buffer_m=35, **ov):
+    """Outline of a post / cantonment without an OSM outline: the convex hull of today's
+    footprints within radius_m of (lon, lat), buffered by buffer_m."""
+    return dict(hull=dict(center=(lon, lat), radius=radius_m, buffer=buffer_m), **ov)
+
+
 # Permanente: the 1948-photo pit (white "Quarry" area of the Cupertino 1953 sheet), read on the
 # render (-122.115, 37.317), 3 m pixels: crop px -> local metres
 _P48 = [(140, 215), (150, 195), (175, 180), (205, 170), (230, 175), (245, 195), (250, 225), (240, 255), (225, 270),
@@ -172,6 +178,19 @@ SITES = [
          "opened c.1910, closed late 1950s (years estimated). Outline read on the 1946 sheet.", "Contra Costa",
          [traced((-122.355, 37.912), [(1250, 1650), (1600, 1650), (1600, 2050), (1250, 2050)],
                  T + "CA_Richmond_294667_1947_24000_geo.tif")], date=False),
+    site("point_molate", "Winehaven (California Wine Association) / Naval Fuel Depot Point Molate",
+         "Winehaven / Point Molate", "military", "industrial", 1907, 1995, "estimated", W + "Winehaven,_California",
+         "California Wine Association's Winehaven winery and company town, built 1907-08, the world's largest winery "
+         "until Prohibition closed it (1919); Navy fuel depot (tank farm on the hill) 1942-1995; the brick winery "
+         "buildings stand (NRHP district). Outlines read on the San Quentin 1:24k sheet (1947 photos).", "Contra Costa",
+         [traced((-122.418, 37.947), [(-160, 120), (-100, 880), (130, 900), (300, 700), (260, 300), (100, 120)],
+                 T + "CA_San%20Quentin_466329_1948_24000_geo.tif", end=9999,
+                 note="winery buildings and wharf (1907); industrial / depot ground until today's vacant site"),
+          traced((-122.418, 37.947), [(130, 900), (600, 950), (1000, 850), (1000, 250), (500, 0), (100, 120),
+                                      (260, 300), (300, 700)], T + "CA_San%20Quentin_466329_1948_24000_geo.tif",
+                 start=1942, end=1995, cover="open_works", conf="estimated",
+                 note="Navy fuel depot tank hill (outline estimated; tanks removed after 1995)")],
+         date=True, founded=1907),
     # ------------------------------------------------------------------ Alameda: Port of Oakland & military
     site("oakland_army_base", "Oakland Army Base (Oakland Sub-Port / Army Supply Base / Army Terminal)",
          "Oakland Army Base", "military", "military", 1941.95, 1999.75, "estimated", W + "Oakland_Army_Base",
@@ -372,9 +391,59 @@ SITES = [
     site("redwood_landfill", "Redwood Landfill, Novato", "Redwood Landfill", "other", "landfill", 1958, 9999,
          "estimated", "https://www.calrecycle.ca.gov/", "Bayside landfill on the Petaluma River marsh; opened "
          "late 1950s (estimated).", "Marin", [osm("249fd95a")], date=False),
+    site("fort_baker", "Fort Baker (Lime Point Military Reservation)", "Fort Baker", "military", "military", 1897,
+         2000, "exact", W + "Fort_Baker",
+         "Lime Point reservation from 1866; named Fort Baker 1897; the post's barracks, officers' row and parade "
+         "ground were built 1901-1910 (Colonial Revival); Army post until 2000 (to the NPS 2002; Cavallo Point "
+         "lodge 2008). Outline: hull of the post's buildings.", "Marin",
+         [hull(-122.4775, 37.8355, 380)], date=True, founded=1901),
+    site("fort_barry", "Fort Barry", "Fort Barry", "military", "military", 1904, 1974, "exact",
+         W + "Fort_Barry",
+         "Named 1904 for the Marin Headlands batteries; the cantonment (barracks, officers' quarters, hospital) was "
+         "built 1908-1912; Nike site SF-88 1954-74; to the NPS (GGNRA) 1972-74. Outline: hull of the post's "
+         "buildings.", "Marin", [hull(-122.5245, 37.8295, 420)], date=True, founded=1907),
+    site("fort_cronkhite", "Fort Cronkhite", "Fort Cronkhite", "military", "military", 1937, 1974, "exact",
+         W + "Fort_Cronkhite",
+         "Established 1937; the WWII wooden cantonment (barracks, mess halls) was built 1941; GGNRA since 1974. "
+         "Outline: hull of the post's buildings.", "Marin", [hull(-122.5375, 37.8325, 330)], date=True,
+         founded=1941),
+    site("fort_mcdowell", "Fort McDowell, Angel Island (East Garrison)", "Fort McDowell", "military", "military",
+         1900, 1946, "exact", W + "Angel_Island_(California)",
+         "Camp Reynolds (West Garrison) 1863; Fort McDowell 1900; the East Garrison's concrete barracks, hospital and "
+         "mess hall were built 1910-11 (recruit depot / Discharge Depot); closed 1946; state park since 1954-63. "
+         "Outline: hull of the East Garrison buildings.", "Marin", [hull(-122.4225, 37.8650, 300)], date=True,
+         founded=1909),
+    site("hamilton_field", "Hamilton Field / Hamilton Air Force Base, Novato", "Hamilton Field", "military",
+         "military", 1932, 1988, "exact", W + "Hamilton_Army_Airfield",
+         "Construction from 1932 (dedicated May 1935) with Spanish-revival barracks, officers' housing and hangars "
+         "(historic district); Hamilton AFB 1947-1974, Army airfield to 1988; housing (Hamilton, Novato) from the "
+         "1990s. Outline: hull of the base's buildings (the airfield itself is not drawn here).", "Marin",
+         [hull(-122.5130, 38.0580, 1000, buffer_m=50)], date=True, founded=1932),
     # ------------------------------------------------------------------ Contra Costa quarries
     site("clayton_quarries", "Mitchell Canyon / Clayton quarries (Clayton Quarry, Hanson)", "Clayton Quarries",
          "quarry", "quarry_pit", 1956, 9999, "estimated", W + "Clayton,_California",
          "Diabase rock quarries at the foot of Mount Diablo east of Clayton; start year estimated (1950s).",
          "Contra Costa", [osm("a44fd439", "d4fc409a", "7f68502b")], date=True, founded=1956),
+]
+
+
+# named buildings (known_dates_industrial.csv): point inside today's footprint
+NAMED = [
+    dict(id="ind_ford_richmond_assembly", name="Ford Richmond Assembly Plant (Craneway, Ford Point)",
+         lat=37.910835, lon=-122.358419, start_year=1931, end_year=9999,
+         source_url=W + "Ford_Assembly_Building_(Richmond,_California)",
+         note="Albert Kahn plant opened 1931 (roll 1931); live map 1941 - moved by the land-year check: the fill "
+              "zone under Ford Point is dated too late. Two identical Overture footprints (f881c874, 2f25de54).",
+         county="Contra Costa"),
+    dict(id="ind_winehaven_winery_n", name="Winehaven winery building (north)", lat=37.951636, lon=-122.417554,
+         start_year=1907, end_year=9999, source_url=W + "Winehaven,_California",
+         note="California Wine Association winery built 1907-08 (NRHP Winehaven Historic District); drawn on the "
+              "1915 1:62,500 and 1947 1:24k sheets; live map 1993 (no roll year: imputed).", county="Contra Costa"),
+    dict(id="ind_winehaven_winery_s", name="Winehaven winery building (south)", lat=37.949512, lon=-122.417635,
+         start_year=1907, end_year=9999, source_url=W + "Winehaven,_California",
+         note="As the north building; live map 1990 (imputed).", county="Contra Costa"),
+    dict(id="ind_bayshore_roundhouse", name="Bayshore Roundhouse (Southern Pacific), Brisbane", lat=37.707393,
+         lon=-122.400660, start_year=1910, end_year=9999, source_url=W + "Bayshore_Roundhouse",
+         note="Built 1910 for the Bayshore Cutoff yard (NRHP); live map 1992 (no roll year: imputed).",
+         county="San Mateo"),
 ]

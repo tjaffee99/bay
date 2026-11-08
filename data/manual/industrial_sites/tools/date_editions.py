@@ -56,7 +56,7 @@ def presence(site_ll, fps, eds, max_half=4000.0, log=print):
     for sc, name, year, imp, kind, url, yrs in eds:
         if sc not in RES:
             continue
-        res = RES[sc]
+        res = max(RES[sc], half / 1400.0)  # <= 2800 px a side (memory)
         try:
             on_face = sheet_quad(url, sc)(cen.x.values, cen.y.values)
         except Exception as e:  # noqa: BLE001

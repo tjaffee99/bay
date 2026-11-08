@@ -32,11 +32,15 @@ def _region_points():
     return r, cKDTree(np.c_[X, Y])
 
 
-@lru_cache(maxsize=1)
-def _roll():
+def _roll(ids):
+    """Roll years / sources of these footprint ids only (the full table is ~1.9 M rows)."""
     cols = ["id", "year_public", "src_public", "year_third_party", "src_third_party", "year_commercial",
             "src_commercial", "year_historic", "src_historic"]
-    return pd.read_parquet(f"{INTERIM}/region5_footprint_years.parquet", columns=cols).set_index("id")
+    con = duckdb.connect()
+    con.register("want", pd.DataFrame({"id": list(ids)}))
+    q = (f"select {', '.join('r.' + c for c in cols)} from read_parquet('{INTERIM}/region5_footprint_years.parquet') r "
+         f"join want w on r.id = w.id")
+    return con.execute(q).df().drop_duplicates("id").set_index("id")
 
 
 @lru_cache(maxsize=1)
@@ -84,8 +88,7 @@ def footprints(geom_ll, buffer_m=0.0):
             ii = np.where(ok, i, 0)
             g["live_year"] = np.where(ok, r.start_year.values[ii], np.nan)
             g["live_end"] = np.where(ok, r.end_year.values[ii], np.nan)
-            roll = _roll()
-            rr = roll.reindex(g.fid.values)
+            rr = _roll(g.fid.values).reindex(g.fid.values)
             ry, rs = [], []
             for k in ("public", "third_party", "commercial", "historic"):
                 ry.append(rr[f"year_{k}"].values)

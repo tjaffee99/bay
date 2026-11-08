@@ -31,7 +31,7 @@ import vt  # noqa: E402
 from date_editions import presence, start_years  # noqa: E402
 from editions import editions  # noqa: E402
 from footprints import footprints  # noqa: E402
-from industrial_def import SITES  # noqa: E402
+from industrial_def import NAMED, SITES  # noqa: E402
 
 ROOT = HERE.parents[3]
 OVT = ROOT / "data/raw/overture/2026-10-21.0"
@@ -77,6 +77,14 @@ def part_geoms(p, lu):
     if "traced" in p:
         t = p["traced"]
         out.append((ring_ll(t["frame"], t["ring"]), f"traced on {t['sheet'].split('/')[-1]}"))
+    if "hull" in p:
+        h = p["hull"]
+        c = gpd.GeoSeries([shapely.Point(*h["center"])], crs=4326).to_crs(UTM)
+        fp = footprints(c.buffer(h["radius"]).to_crs(4326).iloc[0])
+        if len(fp):
+            hu = gpd.GeoSeries([shapely.union_all(fp.to_crs(UTM).geometry.values).convex_hull], crs=UTM)
+            out.append((hu.buffer(h["buffer"]).to_crs(4326).iloc[0],
+                        f"convex hull of {len(fp)} footprints within {h['radius']} m, +{h['buffer']} m"))
     if "files" in p:
         gs = []
         for f in p["files"]:
@@ -102,7 +110,7 @@ def dated_footprints(s, geom, redate=False):
         pr = None
     if pr is None:
         print(f"  dating {len(fps)} footprints on {len(eds)} editions")
-        pr = presence(geom, fps, eds, max_half=5000.0, log=print)
+        pr = presence(geom, fps, eds, max_half=4500.0, log=print)
         pr["fid"] = fps.fid.values[pr.fi.values]
         pr["url"] = pr.sheet.map({e[1]: e[5] for e in eds})
         pr.to_parquet(cp)
@@ -143,8 +151,11 @@ def main():
             new = np.where(early & ~drawn, f0, new)
             fps["new_year"] = new
             rp = fps.geometry.representative_point()
+            named_pts = shapely.points([(n["lon"], n["lat"]) for n in NAMED])
             for i in np.nonzero(fix.values)[0]:
                 r = fps.iloc[i]
+                if shapely.contains(r.geometry, named_pts).any():
+                    continue  # a researched row (NAMED) dates this footprint
                 tank = r.circ > 0.85 and r.area_m2 > 40
                 kind = "tank" if tank else "building"
                 ev = r.evidence if isinstance(r.evidence, str) else ""
@@ -213,7 +224,7 @@ def main():
         return
     feats.sort(key=lambda f: (f["properties"]["site_id"], f["properties"]["part_id"]))
     (OUTD / "sites.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
-    pd.DataFrame(known).to_csv(OUTD / "known_dates_industrial.csv", index=False)
+    pd.DataFrame(NAMED + known).to_csv(OUTD / "known_dates_industrial.csv", index=False)
     pd.DataFrame(rules).to_csv(OUTD / "building_dates.csv", index=False)
     pd.DataFrame(audit).to_csv(OUTD / "traced" / "audit.csv", index=False)
     print(len(feats), "parts,", len(known), "dated footprints,", len(rules), "rules")
