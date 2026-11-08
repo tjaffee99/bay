@@ -134,6 +134,8 @@ def materials(df, h01):
     roof[(mat == M_STUCCO) & marina] = np.where(hash_[(mat == M_STUCCO) & marina] < 0.5, R_TILE, R_FLAT)
     roof[(mat == M_STUCCO) & ~marina] = np.where(hash_[(mat == M_STUCCO) & ~marina] < 0.15, R_TILE, R_FLAT)
     roof[mat == M_VICTORIAN] = np.where(hash_[mat == M_VICTORIAN] < 0.4, R_SHINGLE, R_FLAT)
+    # the Presidio's Mission / Spanish Colonial Revival Army buildings: red clay tile throughout
+    roof[presidio & (mat == M_STUCCO) & (y >= 1908) & (y < 1946)] = R_TILE
     return mat, roof
 
 

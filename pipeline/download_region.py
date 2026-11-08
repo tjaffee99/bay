@@ -17,6 +17,7 @@ Research notes, licences and coverage numbers: data/research/region_buildings.md
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -168,6 +169,10 @@ def arcgis_download(url: str, out: Path, fields: list[str] | str = "*", where: s
     meta = s.get(url, params={"f": "json"}, timeout=120).json()
     oid = meta.get("objectIdField") or next(f["name"] for f in meta["fields"] if f["type"] == "esriFieldTypeOID")
     page = min(int(meta.get("maxRecordCount") or 1000), 2000)
+    if isinstance(fields, str) and fields.startswith("re:"):
+        # every published field matching the pattern, minus personal data (owner, mailing)
+        keep, drop = re.compile(fields[3:], re.I), re.compile(PERSONAL, re.I)
+        fields = [f["name"] for f in meta["fields"] if keep.search(f["name"]) and not drop.search(f["name"])]
     count = s.get(f"{url}/query", params={"where": where, "returnCountOnly": "true", "f": "json"}, timeout=300).json()["count"]
     # returnIdsOnly is capped on some servers (400k on hosted layers): ask per object-id window
     st = s.get(f"{url}/query", params={"where": where, "f": "json", "outStatistics": json.dumps([
@@ -218,6 +223,10 @@ def arcgis_download(url: str, out: Path, fields: list[str] | str = "*", where: s
     log(f"{out.name}: {len(g)} rows -> {out}")
 
 
+PERSONAL = r"owner|mail|seller|buyer|careof|attn|^m_|^n_|grantee|grantor|phone|email|sale|^td\d|transdoc|legal"
+# assessor fields worth keeping (year, effective year, stories, units, use, area, address)
+ASSESSOR_RE = (r"^apn|parcel|year|yr|blt|built|eff|stor|floor|unit|use|class|situs|address|addr|city|zip|"
+               r"bldg|build|area|sq|const|height|wall|bldgs|lot|acre|tra$|value|imp|land")
 # Each source: id -> (url, fields, where). Field lists keep what the year table needs
 # (+ address / use for checks) and skip owner names and mailing addresses.
 YEAR_SOURCES: dict[str, dict] = {
@@ -239,6 +248,56 @@ YEAR_SOURCES: dict[str, dict] = {
         "url": "https://services2.arcgis.com/tcv2cMrq63AgvbHF/arcgis/rest/services/Parcels_Public_View/FeatureServer/0",
         "fields": ["APN", "TRA", "Year_Built", "Situs_Address_Full", "Acres_Rec", "Sq_Ft_Rec"],
     },
+    # --- Santa Clara County cities (same county roll, + stories / units / effective year)
+    "sunnyvale": {"url": "https://services.arcgis.com/IBwZaktrBtZuqQmg/arcgis/rest/services/Property_Layer/FeatureServer/0",
+                  "fields": "re:" + ASSESSOR_RE + "|heritage"},
+    "milpitas": {"url": "https://services8.arcgis.com/OPmRdssd8jj0bT5H/arcgis/rest/services/Parcel_Owner_View/FeatureServer/0",
+                 "fields": "re:" + ASSESSOR_RE},
+    "saratoga": {"url": "https://services3.arcgis.com/rExmJXzTylAKURvh/arcgis/rest/services/Parcels/FeatureServer/0",
+                 "fields": "re:" + ASSESSOR_RE + "|historic"},
+    "los_gatos": {"url": "https://services3.arcgis.com/JAU7IM34hqT9y9ew/arcgis/rest/services/Parcels/FeatureServer/0",
+                  "fields": "re:" + ASSESSOR_RE + "|historic"},
+    # --- Alameda County: whole-county 2021 copy of the assessor roll + characteristics,
+    # current city / district copies of the same county data
+    "alameda_county_2021": {"url": "https://services9.arcgis.com/l0PUGx9JqRxaCPsG/arcgis/rest/services/Alameda_Co_Pcls/FeatureServer/0",
+                            "fields": "re:" + ASSESSOR_RE + "|^situs|^centroid"},
+    "alameda_trivalley_zone7": {"url": "https://services6.arcgis.com/yGWezgaq4oIlwApY/arcgis/rest/services/Parcels_LayFH/FeatureServer/0",
+                                "fields": "re:" + ASSESSOR_RE + "|community"},
+    "alameda_south_2026": {"url": "https://services7.arcgis.com/T3LbxamSmhpjBppB/arcgis/rest/services/UC_Parcels_07_2026_view/FeatureServer/12",
+                           "fields": "re:" + ASSESSOR_RE + "|fips|countyuse|usetype|quality"},
+    "hayward": {"url": "https://services3.arcgis.com/VRO5V8PH7DzSE6AU/arcgis/rest/services/Hayward_Area_Parcels/FeatureServer/0",
+                "fields": "re:" + ASSESSOR_RE + "|remodel|condition|propertycharacter"},
+    "berkeley": {"url": "https://services1.arcgis.com/IYiCpZoSIq9lAxi8/arcgis/rest/services/TaxParcel/FeatureServer/0",
+                 "fields": "re:" + ASSESSOR_RE + "|date_updat|additions"},
+    "albany": {"url": "https://services2.arcgis.com/3X7VMY0UAVT63A6d/arcgis/rest/services/ParcelsWeb/FeatureServer/0",
+               "fields": "re:" + ASSESSOR_RE},
+    "emeryville": {"url": "https://services3.arcgis.com/ljOdqLVbHpS7dOJQ/arcgis/rest/services/Parcels_Emeryville/FeatureServer/0",
+                   "fields": "re:" + ASSESSOR_RE + "|historic"},
+    # --- San Mateo County (no county-wide public characteristics; city copies)
+    "san_mateo_county_office": {"url": "https://gis.smcgov.org/maps/rest/services/Common/ACTIVE_PARCELS_APN/FeatureServer/0",
+                                "fields": ["APN", "SITUS_ADDR", "SITUS_CITY", "PUCDESC", "OFFICEYEARBUILT", "OFFICEGRSBLDAREA"],
+                                "where": "OFFICEYEARBUILT IS NOT NULL"},
+    "san_mateo_city": {"url": "https://services2.arcgis.com/g26Y0m7OCdjU0ObA/arcgis/rest/services/EnerGov_Query_AGOL/FeatureServer/2",
+                       "fields": "re:" + ASSESSOR_RE},
+    "belmont": {"url": "https://maps.belmont.gov/arcgis/rest/services/ParcelViewer/ZoningLandUse/MapServer/4",
+                "fields": "re:" + ASSESSOR_RE},
+    "san_bruno": {"url": "https://services2.arcgis.com/iLsFVn6d1pmqKEfA/arcgis/rest/services/Parcels/FeatureServer/0",
+                  "fields": "re:" + ASSESSOR_RE + "|renovate"},
+    "portola_valley": {"url": "https://services8.arcgis.com/LRqASGpv7gPaTEUL/arcgis/rest/services/Parcels/FeatureServer/0",
+                       "fields": "re:" + ASSESSOR_RE + "|renovate"},
+    "hillsborough": {"url": "https://services5.arcgis.com/74bZbbuf05Ctvbzv/arcgis/rest/services/Town_of_Hillsborough_Parcels/FeatureServer/0",
+                     "fields": "re:" + ASSESSOR_RE + "|^hl_"},
+    "south_sf_corelogic": {"url": "https://services6.arcgis.com/SAzG4Xt2MtnnJdpJ/arcgis/rest/services/SouthSFParcelAnalysis/FeatureServer/2",
+                           "fields": "re:" + ASSESSOR_RE},
+    # --- FEMA Region 9 building points (Microsoft / USA Structures footprint centroids
+    # enriched with Lightbox SmartParcels assessor attributes) — all five counties, incl. Marin
+    **{f"fema_r9_{k}": {
+        "url": f"https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Property_Structures_Static_Points_Building_Type_R9/FeatureServer/{lid}",
+        "fields": ["BUILD_GEO_ID", "COUNTYFP", "PLACE_NAME", "PARCEL_APN", "USE_CODE_MUNI_DESC", "USE_CODE_STD_DESC_LPS",
+                   "USE_CODE_STD_CTGR_DESC_LPS", "STORIES_NUMBER", "YR_BLT", "YR_BLT_EFFECT", "STYLE_DESC",
+                   "CONSTRUCTION_CODE_DESC", "EXTERIOR_WALL_DESC", "ROOF_COVER_DESC", "SITE_ADDR"],
+        "where": "STATEFP = '06' AND COUNTYFP IN ('001','013','041','081','085')"}
+       for k, lid in (("res", 5), ("mixed", 6), ("nonres", 7))},
 }
 
 

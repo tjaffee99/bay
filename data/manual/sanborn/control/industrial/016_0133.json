@@ -1,0 +1,220 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Bryant/01St-Rincon",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553453.2,
+       4182252.7
+      ],
+      "01ST ST",
+      [
+       553453.2,
+       4182252.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 01ST ST",
+     "x": 428.0,
+     "y": 200.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553559.6,
+       4182160.3
+      ],
+      "01ST ST",
+      [
+       553559.6,
+       4182160.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 01ST ST (centrelines extended; today closest-approach 110m)",
+     "x": 1253.0,
+     "y": 200.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    428.0,
+    200.0,
+    1253.0,
+    385.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Rincon-Sterling",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553366.8,
+       4182085.1
+      ],
+      "STERLING ST",
+      [
+       553366.8,
+       4182085.1
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x STERLING ST (centrelines extended; today closest-approach 113m)",
+     "x": 428.0,
+     "y": 1126.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553463.5,
+       4181989.3
+      ],
+      "STERLING ST",
+      [
+       553463.5,
+       4181989.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of BRYANT ST x STERLING ST",
+     "x": 1253.0,
+     "y": 1126.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    428.0,
+    574.0,
+    1253.0,
+    1126.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Sterling-02Nd",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553366.8,
+       4182085.1
+      ],
+      "STERLING ST",
+      [
+       553366.8,
+       4182085.1
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x STERLING ST (centrelines extended; today closest-approach 113m)",
+     "x": 428.0,
+     "y": 1343.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553463.5,
+       4181989.3
+      ],
+      "STERLING ST",
+      [
+       553463.5,
+       4181989.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of BRYANT ST x STERLING ST",
+     "x": 1253.0,
+     "y": 1343.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553258.7,
+       4182056.6
+      ],
+      "02ND ST",
+      [
+       553258.7,
+       4182056.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 02ND ST",
+     "x": 428.0,
+     "y": 1718.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553395.4,
+       4181920.6
+      ],
+      "02ND ST",
+      [
+       553395.4,
+       4181920.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 02ND ST",
+     "x": 1253.0,
+     "y": 1718.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    428.0,
+    1343.0,
+    1253.0,
+    1718.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

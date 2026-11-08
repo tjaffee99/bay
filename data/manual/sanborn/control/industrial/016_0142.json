@@ -1,0 +1,121 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Bryant-South/02Nd-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553395.4,
+       4181920.6
+      ],
+      "02ND ST",
+      [
+       553395.4,
+       4181920.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 02ND ST",
+     "x": 343.0,
+     "y": 335.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553200.7,
+       4181724.5
+      ],
+      "03RD ST",
+      [
+       553200.7,
+       4181724.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 03RD ST",
+     "x": 343.0,
+     "y": 1577.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    343.0,
+    335.0,
+    669.0,
+    1577.0
+   ]
+  },
+  {
+   "name": "South-Brannan/02Nd-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553532.0,
+       4181784.8
+      ],
+      "02ND ST",
+      [
+       553532.0,
+       4181784.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 02ND ST",
+     "x": 1321.0,
+     "y": 335.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553337.5,
+       4181588.7
+      ],
+      "03RD ST",
+      [
+       553337.5,
+       4181588.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 03RD ST",
+     "x": 1321.0,
+     "y": 1577.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1022.0,
+    335.0,
+    1321.0,
+    1577.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

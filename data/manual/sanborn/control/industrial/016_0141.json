@@ -1,0 +1,308 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Perry/02Nd-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553258.7,
+       4182056.6
+      ],
+      "02ND ST",
+      [
+       553258.7,
+       4182056.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 02ND ST",
+     "x": 358.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553273.1,
+       4181973.4
+      ],
+      "02ND ST",
+      [
+       553273.1,
+       4181973.4
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 02ND ST (centrelines extended; today closest-approach 98m)",
+     "x": 599.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553064.0,
+       4181860.3
+      ],
+      "03RD ST",
+      [
+       553064.0,
+       4181860.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 03RD ST",
+     "x": 358.0,
+     "y": 1594.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553112.3,
+       4181812.4
+      ],
+      "03RD ST",
+      [
+       553112.3,
+       4181812.4
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 03RD ST",
+     "x": 599.0,
+     "y": 1594.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    358.0,
+    348.0,
+    599.0,
+    1594.0
+   ]
+  },
+  {
+   "name": "Perry-Stillman/02Nd-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553273.1,
+       4181973.4
+      ],
+      "02ND ST",
+      [
+       553273.1,
+       4181973.4
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 02ND ST (centrelines extended; today closest-approach 98m)",
+     "x": 657.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553348.2,
+       4181967.5
+      ],
+      "02ND ST",
+      [
+       553348.2,
+       4181967.5
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 50,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 02ND ST",
+     "x": 878.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PERRY ST",
+      [
+       553112.3,
+       4181812.4
+      ],
+      "03RD ST",
+      [
+       553112.3,
+       4181812.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of PERRY ST x 03RD ST",
+     "x": 657.0,
+     "y": 1594.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553153.2,
+       4181771.8
+      ],
+      "03RD ST",
+      [
+       553153.2,
+       4181771.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 50,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 03RD ST",
+     "x": 878.0,
+     "y": 1594.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    657.0,
+    348.0,
+    878.0,
+    1594.0
+   ]
+  },
+  {
+   "name": "Stillman-Bryant/02Nd-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553348.2,
+       4181967.5
+      ],
+      "02ND ST",
+      [
+       553348.2,
+       4181967.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 50,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 02ND ST",
+     "x": 1104.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553395.4,
+       4181920.6
+      ],
+      "02ND ST",
+      [
+       553395.4,
+       4181920.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 02ND ST",
+     "x": 1339.0,
+     "y": 348.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "STILLMAN ST",
+      [
+       553153.2,
+       4181771.8
+      ],
+      "03RD ST",
+      [
+       553153.2,
+       4181771.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 50,
+     "wb": 82.5,
+     "label": "corner of STILLMAN ST x 03RD ST",
+     "x": 1104.0,
+     "y": 1594.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553200.7,
+       4181724.5
+      ],
+      "03RD ST",
+      [
+       553200.7,
+       4181724.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 03RD ST",
+     "x": 1339.0,
+     "y": 1594.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1104.0,
+    348.0,
+    1339.0,
+    1594.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

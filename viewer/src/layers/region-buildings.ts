@@ -16,7 +16,7 @@ let have = new Set<string>();
 export async function loadRegionIndex() {
   try {
     const r = await fetch('data/region-buildings/index.json');
-    if (!r.ok) return;
+    if (!r.ok || !(r.headers.get('content-type') ?? '').includes('json')) return; // not built yet
     index = (await r.json()) as Index;
     have = new Set(index.tiles.map(t => `${t.x}/${t.y}`));
   } catch (e) {

@@ -1,0 +1,71 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "a": "MICHIGAN ST",
+   "b": "22ND ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 197.5,
+   "y": 57.0,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0593",
+   "px_other": [
+    1260.0,
+    1569.0
+   ],
+   "label": "tie 593: Louisiana x 22nd (1914 Louisiana St, not today's)",
+   "x": 1027.0,
+   "y": 57.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "23RD ST",
+   "near": [
+    "ILLINOIS ST",
+    "23RD ST"
+   ],
+   "R": 150,
+   "px": [
+    [
+     100,
+     1442
+    ],
+    [
+     1500,
+     1441
+    ]
+   ]
+  },
+  {
+   "street": "MICHIGAN ST",
+   "near": [
+    "MICHIGAN ST",
+    "21ST ST"
+   ],
+   "R": 200,
+   "px": [
+    [
+     197.5,
+     749.5
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

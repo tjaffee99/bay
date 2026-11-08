@@ -1,0 +1,68 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "points": [
+  {
+   "a": "ILLINOIS ST",
+   "b": "MARIPOSA ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 185.0,
+   "y": 965.0,
+   "norefine": 1
+  },
+  {
+   "a": "ILLINOIS ST",
+   "b": "18TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 192.0,
+   "y": 1661.5,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0591",
+   "px_other": [
+    1090.7,
+    277.3
+   ],
+   "label": "tie 591: UIW pier-head NW corner",
+   "x": 1081.7,
+   "y": 1557.3,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0591",
+   "px_other": [
+    1188.0,
+    276.0
+   ],
+   "label": "tie 591: UIW pier-head NE corner",
+   "x": 1180.0,
+   "y": 1556.0,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0591",
+   "px_other": [
+    261.0,
+    399.0
+   ],
+   "label": "tie 591: G.W. Kneass boat building SW corner",
+   "x": 250.0,
+   "y": 1684.0,
+   "norefine": 1
+  }
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

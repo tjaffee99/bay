@@ -1,0 +1,264 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Harrison-Bryant/Main-Beale",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553607.0,
+       4182407.7
+      ],
+      "BEALE ST",
+      [
+       553607.0,
+       4182407.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x BEALE ST",
+     "x": 436.0,
+     "y": 585.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553743.7,
+       4182271.9
+      ],
+      "BEALE ST",
+      [
+       553743.7,
+       4182271.9
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x BEALE ST",
+     "x": 1268.0,
+     "y": 585.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    436.0,
+    173.0,
+    1268.0,
+    585.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Beale-Fremont",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553607.0,
+       4182407.7
+      ],
+      "BEALE ST",
+      [
+       553607.0,
+       4182407.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x BEALE ST",
+     "x": 436.0,
+     "y": 754.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553743.7,
+       4182271.9
+      ],
+      "BEALE ST",
+      [
+       553743.7,
+       4182271.9
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x BEALE ST",
+     "x": 1268.0,
+     "y": 754.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553530.6,
+       4182330.7
+      ],
+      "FREMONT ST",
+      [
+       553530.6,
+       4182330.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x FREMONT ST",
+     "x": 436.0,
+     "y": 1171.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553597.6,
+       4182265.0
+      ],
+      "FREMONT ST",
+      [
+       553597.6,
+       4182265.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x FREMONT ST (centrelines extended; today closest-approach 188m)",
+     "x": 1268.0,
+     "y": 1171.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    436.0,
+    754.0,
+    1268.0,
+    1171.0
+   ]
+  },
+  {
+   "name": "Harrison-Bryant/Fremont-01St",
+   "corners": [
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553530.6,
+       4182330.7
+      ],
+      "FREMONT ST",
+      [
+       553530.6,
+       4182330.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x FREMONT ST",
+     "x": 436.0,
+     "y": 1342.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553597.6,
+       4182265.0
+      ],
+      "FREMONT ST",
+      [
+       553597.6,
+       4182265.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x FREMONT ST (centrelines extended; today closest-approach 188m)",
+     "x": 1268.0,
+     "y": 1342.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553453.2,
+       4182252.7
+      ],
+      "01ST ST",
+      [
+       553453.2,
+       4182252.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 01ST ST",
+     "x": 436.0,
+     "y": 1757.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553559.6,
+       4182160.3
+      ],
+      "01ST ST",
+      [
+       553559.6,
+       4182160.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 01ST ST (centrelines extended; today closest-approach 110m)",
+     "x": 1268.0,
+     "y": 1757.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    436.0,
+    1342.0,
+    1268.0,
+    1757.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

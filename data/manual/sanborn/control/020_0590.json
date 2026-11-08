@@ -1,0 +1,224 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "4108",
+   "corners": [
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "20TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 188.0,
+     "y": 298.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "20TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 486.0,
+     "y": 301.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "22ND ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 482.0,
+     "y": 1580.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "TENNESSEE ST",
+      "22ND ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 184.0,
+     "y": 1580.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4109",
+   "corners": [
+    {
+     "bc": [
+      "3RD ST",
+      "20TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 676.0,
+     "y": 304.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "20TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 974.0,
+     "y": 304.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "22ND ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 968.0,
+     "y": 1581.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "3RD ST",
+      "22ND ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 673.0,
+     "y": 1580.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4110",
+   "corners": [
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "20TH ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1165.0,
+     "y": 306.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MICHIGAN ST",
+      "20TH ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1459.0,
+     "y": 308.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MICHIGAN ST",
+      "21ST ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1458.0,
+     "y": 897.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "21ST ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1164.0,
+     "y": 896.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4121",
+   "corners": [
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "21ST ST"
+     ],
+     "q": "SE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1164.0,
+     "y": 993.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MICHIGAN ST",
+      "21ST ST"
+     ],
+     "q": "SW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1458.0,
+     "y": 992.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MICHIGAN ST",
+      "22ND ST"
+     ],
+     "q": "NW",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1454.0,
+     "y": 1583.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "ILLINOIS ST",
+      "22ND ST"
+     ],
+     "q": "NE",
+     "wa": 80.0,
+     "wb": 66.0,
+     "x": 1160.0,
+     "y": 1578.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

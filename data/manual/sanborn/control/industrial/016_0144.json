@@ -1,0 +1,165 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "03Rd-02Nd/Townsend-King",
+   "corners": [
+    {
+     "bcx": [
+      "03RD ST",
+      [
+       553474.9,
+       4181452.2
+      ],
+      "TOWNSEND ST",
+      [
+       553474.9,
+       4181452.2
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 03RD ST x TOWNSEND ST",
+     "x": 186.0,
+     "y": 261.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "02ND ST",
+      [
+       553669.4,
+       4181648.2
+      ],
+      "TOWNSEND ST",
+      [
+       553669.4,
+       4181648.2
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 02ND ST x TOWNSEND ST",
+     "x": 1445.0,
+     "y": 261.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "03RD ST",
+      [
+       553555.5,
+       4181372.2
+      ],
+      "KING ST",
+      [
+       553555.5,
+       4181372.2
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 03RD ST x KING ST",
+     "x": 186.0,
+     "y": 676.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "02ND ST",
+      [
+       553752.4,
+       4181566.0
+      ],
+      "KING ST",
+      [
+       553752.4,
+       4181566.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 02ND ST x KING ST",
+     "x": 1445.0,
+     "y": 676.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    186.0,
+    261.0,
+    1445.0,
+    676.0
+   ]
+  },
+  {
+   "name": "03Rd-02Nd/King-Mission",
+   "corners": [
+    {
+     "bcx": [
+      "03RD ST",
+      [
+       553555.5,
+       4181372.2
+      ],
+      "KING ST",
+      [
+       553555.5,
+       4181372.2
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 03RD ST x KING ST",
+     "x": 186.0,
+     "y": 780.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "02ND ST",
+      [
+       553752.4,
+       4181566.0
+      ],
+      "KING ST",
+      [
+       553752.4,
+       4181566.0
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of 02ND ST x KING ST",
+     "x": 1445.0,
+     "y": 780.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    186.0,
+    780.0,
+    1445.0,
+    1888.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

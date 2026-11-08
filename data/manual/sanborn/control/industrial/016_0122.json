@@ -1,0 +1,264 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/Embarcadero-Steuart",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553700.5,
+       4182775.5
+      ],
+      "STEUART ST",
+      [
+       553700.5,
+       4182775.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x STEUART ST (centrelines extended; today closest-approach 0m)",
+     "x": 414.0,
+     "y": 498.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553843.0,
+       4182644.1
+      ],
+      "STEUART ST",
+      [
+       553843.0,
+       4182644.1
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x STEUART ST (centrelines extended; today closest-approach 0m)",
+     "x": 1242.0,
+     "y": 498.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    414.0,
+    434.0,
+    1242.0,
+    498.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Steuart-Spear",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553700.5,
+       4182775.5
+      ],
+      "STEUART ST",
+      [
+       553700.5,
+       4182775.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x STEUART ST (centrelines extended; today closest-approach 0m)",
+     "x": 414.0,
+     "y": 622.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553843.0,
+       4182644.1
+      ],
+      "STEUART ST",
+      [
+       553843.0,
+       4182644.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x STEUART ST (centrelines extended; today closest-approach 0m)",
+     "x": 1242.0,
+     "y": 622.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553623.4,
+       4182697.9
+      ],
+      "SPEAR ST",
+      [
+       553623.4,
+       4182697.9
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x SPEAR ST",
+     "x": 414.0,
+     "y": 1037.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553760.1,
+       4182562.1
+      ],
+      "SPEAR ST",
+      [
+       553760.1,
+       4182562.1
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x SPEAR ST",
+     "x": 1242.0,
+     "y": 1037.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    414.0,
+    622.0,
+    1242.0,
+    1037.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Spear-Main",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553623.4,
+       4182697.9
+      ],
+      "SPEAR ST",
+      [
+       553623.4,
+       4182697.9
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x SPEAR ST",
+     "x": 414.0,
+     "y": 1306.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553760.1,
+       4182562.1
+      ],
+      "SPEAR ST",
+      [
+       553760.1,
+       4182562.1
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x SPEAR ST",
+     "x": 1242.0,
+     "y": 1306.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553545.8,
+       4182619.7
+      ],
+      "MAIN ST",
+      [
+       553545.8,
+       4182619.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x MAIN ST",
+     "x": 414.0,
+     "y": 1724.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553682.2,
+       4182483.5
+      ],
+      "MAIN ST",
+      [
+       553682.2,
+       4182483.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x MAIN ST",
+     "x": 1242.0,
+     "y": 1724.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    414.0,
+    1306.0,
+    1242.0,
+    1724.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

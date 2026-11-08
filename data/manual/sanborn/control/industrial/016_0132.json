@@ -1,0 +1,209 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/01St-Essex",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553316.4,
+       4182388.4
+      ],
+      "01ST ST",
+      [
+       553316.4,
+       4182388.4
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 01ST ST",
+     "x": 410.0,
+     "y": 263.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553453.2,
+       4182252.7
+      ],
+      "01ST ST",
+      [
+       553453.2,
+       4182252.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 01ST ST",
+     "x": 1234.0,
+     "y": 263.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553214.5,
+       4182285.7
+      ],
+      "ESSEX ST",
+      [
+       553214.5,
+       4182285.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of FOLSOM ST x ESSEX ST",
+     "x": 410.0,
+     "y": 884.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553351.5,
+       4182150.2
+      ],
+      "ESSEX ST",
+      [
+       553351.5,
+       4182150.2
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of HARRISON ST x ESSEX ST",
+     "x": 1234.0,
+     "y": 884.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    410.0,
+    263.0,
+    1234.0,
+    884.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Essex-02Nd",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553214.5,
+       4182285.7
+      ],
+      "ESSEX ST",
+      [
+       553214.5,
+       4182285.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of FOLSOM ST x ESSEX ST",
+     "x": 410.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553351.5,
+       4182150.2
+      ],
+      "ESSEX ST",
+      [
+       553351.5,
+       4182150.2
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of HARRISON ST x ESSEX ST",
+     "x": 1234.0,
+     "y": 1116.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553121.8,
+       4182192.3
+      ],
+      "02ND ST",
+      [
+       553121.8,
+       4182192.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 02ND ST",
+     "x": 410.0,
+     "y": 1660.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553258.7,
+       4182056.6
+      ],
+      "02ND ST",
+      [
+       553258.7,
+       4182056.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 02ND ST",
+     "x": 1234.0,
+     "y": 1660.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    410.0,
+    1116.0,
+    1234.0,
+    1660.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

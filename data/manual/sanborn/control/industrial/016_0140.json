@@ -1,0 +1,209 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/02Nd-Hawthorne",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553121.8,
+       4182192.3
+      ],
+      "02ND ST",
+      [
+       553121.8,
+       4182192.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 02ND ST",
+     "x": 422.0,
+     "y": 254.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553258.7,
+       4182056.6
+      ],
+      "02ND ST",
+      [
+       553258.7,
+       4182056.6
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 02ND ST",
+     "x": 1249.0,
+     "y": 254.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553025.0,
+       4182094.5
+      ],
+      "HAWTHORNE ST",
+      [
+       553025.0,
+       4182094.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of FOLSOM ST x HAWTHORNE ST",
+     "x": 422.0,
+     "y": 838.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553162.3,
+       4181959.4
+      ],
+      "HAWTHORNE ST",
+      [
+       553162.3,
+       4181959.4
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x HAWTHORNE ST",
+     "x": 1249.0,
+     "y": 838.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    422.0,
+    254.0,
+    1249.0,
+    838.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Hawthorne-03Rd",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553025.0,
+       4182094.5
+      ],
+      "HAWTHORNE ST",
+      [
+       553025.0,
+       4182094.5
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of FOLSOM ST x HAWTHORNE ST",
+     "x": 422.0,
+     "y": 1096.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553162.3,
+       4181959.4
+      ],
+      "HAWTHORNE ST",
+      [
+       553162.3,
+       4181959.4
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 50,
+     "label": "corner of HARRISON ST x HAWTHORNE ST",
+     "x": 1249.0,
+     "y": 1096.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552927.1,
+       4181996.0
+      ],
+      "03RD ST",
+      [
+       552927.1,
+       4181996.0
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 03RD ST",
+     "x": 422.0,
+     "y": 1682.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553064.0,
+       4181860.3
+      ],
+      "03RD ST",
+      [
+       553064.0,
+       4181860.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 03RD ST",
+     "x": 1249.0,
+     "y": 1682.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    422.0,
+    1096.0,
+    1249.0,
+    1682.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

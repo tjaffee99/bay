@@ -21,28 +21,6 @@
  ],
  "lines": [
   {
-   "street": "20TH ST",
-   "near": [
-    "MICHIGAN ST",
-    "20TH ST"
-   ],
-   "R": 250,
-   "off": [
-    33,
-    "N"
-   ],
-   "px": [
-    [
-     700,
-     94
-    ],
-    [
-     1500,
-     93
-    ]
-   ]
-  },
-  {
    "street": "22ND ST",
    "near": [
     "ILLINOIS ST",
@@ -62,5 +40,12 @@
   }
  ],
  "pct": 25,
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ]
 }

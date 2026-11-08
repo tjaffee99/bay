@@ -1,0 +1,308 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/Main-Beale",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553545.8,
+       4182619.7
+      ],
+      "MAIN ST",
+      [
+       553545.8,
+       4182619.7
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x MAIN ST",
+     "x": 408.0,
+     "y": 177.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553682.2,
+       4182483.5
+      ],
+      "MAIN ST",
+      [
+       553682.2,
+       4182483.5
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x MAIN ST",
+     "x": 1236.0,
+     "y": 177.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553470.2,
+       4182543.4
+      ],
+      "BEALE ST",
+      [
+       553470.2,
+       4182543.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x BEALE ST",
+     "x": 408.0,
+     "y": 589.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553607.0,
+       4182407.7
+      ],
+      "BEALE ST",
+      [
+       553607.0,
+       4182407.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x BEALE ST",
+     "x": 1236.0,
+     "y": 589.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    408.0,
+    177.0,
+    1236.0,
+    589.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Beale-Fremont",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553470.2,
+       4182543.4
+      ],
+      "BEALE ST",
+      [
+       553470.2,
+       4182543.4
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x BEALE ST",
+     "x": 408.0,
+     "y": 758.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553607.0,
+       4182407.7
+      ],
+      "BEALE ST",
+      [
+       553607.0,
+       4182407.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x BEALE ST",
+     "x": 1236.0,
+     "y": 758.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553393.7,
+       4182466.3
+      ],
+      "FREMONT ST",
+      [
+       553393.7,
+       4182466.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x FREMONT ST",
+     "x": 408.0,
+     "y": 1173.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553530.6,
+       4182330.7
+      ],
+      "FREMONT ST",
+      [
+       553530.6,
+       4182330.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x FREMONT ST",
+     "x": 1236.0,
+     "y": 1173.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    408.0,
+    758.0,
+    1236.0,
+    1173.0
+   ]
+  },
+  {
+   "name": "Folsom-Harrison/Fremont-01St",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553393.7,
+       4182466.3
+      ],
+      "FREMONT ST",
+      [
+       553393.7,
+       4182466.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x FREMONT ST",
+     "x": 408.0,
+     "y": 1340.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553530.6,
+       4182330.7
+      ],
+      "FREMONT ST",
+      [
+       553530.6,
+       4182330.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x FREMONT ST",
+     "x": 1236.0,
+     "y": 1340.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553316.4,
+       4182388.4
+      ],
+      "01ST ST",
+      [
+       553316.4,
+       4182388.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 01ST ST",
+     "x": 408.0,
+     "y": 1754.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553453.2,
+       4182252.7
+      ],
+      "01ST ST",
+      [
+       553453.2,
+       4182252.7
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 01ST ST",
+     "x": 1236.0,
+     "y": 1754.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    408.0,
+    1340.0,
+    1236.0,
+    1754.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

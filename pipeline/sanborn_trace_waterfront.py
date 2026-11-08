@@ -428,12 +428,14 @@ def extract(key):
     bgV = cv2.resize(cv2.medianBlur(np.ascontiguousarray(small[..., 2]), 31), (S.shape[1], S.shape[0])).astype(int)
     dV = V - bgV
     pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
-    pH, pS = int(np.median(Hh[pm])), int(np.median(S[pm]))
+    pH, pS, pV = int(np.median(Hh[pm])), int(np.median(S[pm])), int(np.median(V[pm]))
     if ed in EDITION_1950:  # yellowed paper and paste-over slips: hue + saturation relative to the paper
         fr = ((Hh >= max(pH, 23)) & (Hh <= 36) & (S >= pS + 42) & (V >= 70)) | ((Hh >= 19) & (Hh <= 36) & (S >= 125) & (V >= 70))
     else:
         fr = (Hh >= 18) & (Hh <= 38) & (S >= max(85, pS + 45)) & (V >= 80)
     split = ed in ("031", "035")
+    cfg = json.load(open(CONTROL / f"{key}.json"))
+
     classes = {
         "frame": fr,
         "brick": ((Hh >= 158) | (Hh <= 6)) & (S >= 45) & (V >= 60),
@@ -442,6 +444,8 @@ def extract(key):
         "iron": ((Hh >= 17) & (Hh <= 28) & (S <= 31) & (V >= 115) & (V <= 146) & (dV <= -4))
                 | ((ed in EDITION_1950) & (Hh >= 31) & (Hh <= 42) & (S >= 28) & (S <= pS - 6) & (V >= 112) & (V <= 152)),
     }
+    if cfg.get("iron_rule") == "dark_grey":  # 1914 vol. 6 iron buildings: paper hue and saturation, 14+ darker than paper
+        classes["iron"] = (Hh >= 14) & (Hh <= 32) & (S <= pS + 4) & (V <= pV - 14) & (V >= 80)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     dark = gray < 110
     part = ndi.binary_dilation(ndi.binary_opening(dark, structure=np.ones((18, 1))) | ndi.binary_opening(dark, structure=np.ones((1, 18))),

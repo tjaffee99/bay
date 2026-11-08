@@ -38,5 +38,12 @@
   }
  ],
  "pct": 25,
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ]
 }

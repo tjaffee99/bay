@@ -1,0 +1,69 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "a": "ILLINOIS ST",
+   "b": "16TH ST",
+   "wv": 80,
+   "wh": 80,
+   "x": 118.0,
+   "y": 940.0,
+   "norefine": 1
+  },
+  {
+   "sum": [
+    [
+     "+",
+     "ILLINOIS ST",
+     "16TH ST"
+    ],
+    [
+     "+",
+     "17TH ST",
+     "PENNSYLVANIA AVE"
+    ],
+    [
+     "-",
+     "16TH ST",
+     "PENNSYLVANIA AVE"
+    ]
+   ],
+   "label": "Illinois x 17th (grid: 16th St spacing from Pennsylvania Ave)",
+   "x": 119.0,
+   "y": 1648.5,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "16TH ST",
+   "near": [
+    "ILLINOIS ST",
+    "16TH ST"
+   ],
+   "R": 180,
+   "px": [
+    [
+     800,
+     939
+    ],
+    [
+     1150,
+     939
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}
