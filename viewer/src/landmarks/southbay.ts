@@ -1662,12 +1662,12 @@ const pointReyes = landmark(
     b.color('#EEEDE8').frustum(0, 0, 2.7, 2.2, 0, 6.2, 16);
     b.color('#2C2E30').cylinder(0, 0, 2.6, 6.2, 6.6, 16);
     b.color('#C9D2D4').cylinder(0, 0, 1.7, 6.6, 9.2, 16);
-    b.color('#2C2E30').dome(0, 0, 1.9, 9.2, 1.3, 16, 2);
-    b.color('#B33A2E').cylinder(0, 0, 0.12, 10.5, 11.3, 4);
+    b.color('#B73A32').dome(0, 0, 1.9, 9.2, 1.3, 16, 2);
+    b.color('#B73A32').cylinder(0, 0, 0.12, 10.5, 11.3, 4);
   },
   {
     Built: 'first lit Dec 1, 1870; sixteen-sided cast-iron tower 37 ft (11 m) with a first-order Fresnel lens, on a ledge some 300 steps below the headland',
-    Model: 'footprint and height from OpenStreetMap (© OSM contributors, ODbL; 10.7 m); lantern proportions from photographs (estimated)'
+    Model: 'footprint and height from OpenStreetMap (© OSM contributors, ODbL; 10.7 m); white tower, black gallery, red lantern roof from a photograph; proportions estimated; the adjoining red-roofed equipment building is not modelled; stands on the smoothed terrain grid, not its true ledge'
   },
   [WIKI + 'Point_Reyes_Lighthouse']
 );
@@ -1685,8 +1685,8 @@ const filoli = landmark(
   FILOLI,
   b => {
     b.frame(0, 0, 0, 52, () => {
-      const BRICK = '#A85B46';
-      const ROOF = '#7F4B3F';
+      const BRICK = '#A85B46'; // red brick, white trim (photo)
+      const ROOF = '#6F6058'; // grey-brown tiles (photo)
       const wings: [number, number, number, number][] = [
         [-28.4, 28.1, -20.4, -5.4],
         [-25.6, -12.2, -5.4, 30.1],

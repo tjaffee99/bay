@@ -194,56 +194,82 @@ def _num_list(obj: str, key: str):
     return [float(v) for v in re.findall(r"\(([-0-9.eE+]+)\)", m.group(1))] if m else None
 
 
+class GeoPDF:
+    """A scanned USGS GeoPDF: the full-resolution scan, read region by region from the
+    PDF's 1024 px JPEG tiles (a 1:24,000 sheet is ~18k x 15k px, so it is never held
+    whole), and its registration: pixel (col, row) -> projected metres, neat line in
+    pixels, projection."""
+
+    def __init__(self, pdf_path: Path):
+        import pymupdf
+        self.doc = pymupdf.open(pdf_path)
+        page = self.doc[0]
+        obj = self.doc.xref_object(page.xref)
+        ctm = _num_list(obj, "CTM")
+        neat = _num_list(obj, "Neatline")
+        proj = {}
+        pm = re.search(r"/Projection\s*<<(.*?)>>", obj, re.S)
+        if pm:
+            for k, v in re.findall(r"/(\w+)\s*\(([^)]*)\)", pm.group(1)):
+                proj[k] = v
+        if not ctm or not neat:
+            raise ValueError(f"{pdf_path.name}: no LGIDict registration")
+        info = [i for i in page.get_image_info(xrefs=True) if i["xref"] > 0]
+        big = max(info, key=lambda i: i["width"])
+        s = big["width"] / (big["bbox"][2] - big["bbox"][0])        # pixels per PDF point
+        self.W = int(round(page.rect.width * s))
+        self.H = int(round(page.rect.height * s))
+        self.tiles = []
+        for i in info:
+            x0 = int(round(i["bbox"][0] * s)); y0 = int(round(i["bbox"][1] * s))
+            self.tiles.append((x0, y0, x0 + i["width"], y0 + i["height"], i["xref"]))
+        self._cache = {}
+        page_h = page.rect.height
+        a, b, c, d, e, f = ctm
+
+        def px_to_proj(col, row):
+            x = np.asarray(col, float) / s
+            y = page_h - np.asarray(row, float) / s           # PDF user space is bottom-up
+            return a * x + c * y + e, b * x + d * y + f
+
+        nl = np.array(neat).reshape(-1, 2)
+        self.g = {"px_to_proj": px_to_proj, "neat_px": np.column_stack([nl[:, 0] * s, (page_h - nl[:, 1]) * s]),
+                  "proj": proj, "px_per_mm": s * 72 / 25.4, "m_per_px": abs(a) / s, "W": self.W, "H": self.H}
+
+    def _tile(self, xref):
+        import pymupdf
+        if xref not in self._cache:
+            if len(self._cache) > 48:
+                self._cache.clear()
+            pix = pymupdf.Pixmap(self.doc, xref)
+            if pix.n - pix.alpha < 3:
+                pix = pymupdf.Pixmap(pymupdf.csRGB, pix)
+            self._cache[xref] = np.frombuffer(pix.samples, np.uint8).reshape(pix.height, pix.width, pix.n)[:, :, :3].copy()
+        return self._cache[xref]
+
+    def read(self, y0, y1, x0, x1, step=1):
+        """RGB region [y0:y1, x0:x1] (clipped to the page; white outside), every step-th px."""
+        out = np.full(((y1 - y0 + step - 1) // step, (x1 - x0 + step - 1) // step, 3), 255, np.uint8)
+        for tx0, ty0, tx1, ty1, xref in self.tiles:
+            ix0, iy0, ix1, iy1 = max(x0, tx0), max(y0, ty0), min(x1, tx1), min(y1, ty1)
+            if ix0 >= ix1 or iy0 >= iy1:
+                continue
+            # first sampled pixel at or after the intersection start
+            sx = ix0 + (-(ix0 - x0)) % step
+            sy = iy0 + (-(iy0 - y0)) % step
+            if sx >= ix1 or sy >= iy1:
+                continue
+            t = self._tile(xref)
+            blk = t[sy - ty0:iy1 - ty0:step, sx - tx0:ix1 - tx0:step]
+            oy, ox = (sy - y0) // step, (sx - x0) // step
+            out[oy:oy + blk.shape[0], ox:ox + blk.shape[1]] = blk
+        return out
+
+
 def read_geopdf(pdf_path: Path):
-    """Full-resolution scan (H, W, 3 uint8) assembled from the PDF's image tiles, and its
-    registration: pixel (col, row) -> projected metres, neat line in pixels, projection."""
-    import pymupdf
-    doc = pymupdf.open(pdf_path)
-    page = doc[0]
-    obj = doc.xref_object(page.xref)
-    ctm = _num_list(obj, "CTM")
-    neat = _num_list(obj, "Neatline")
-    proj = {}
-    pm = re.search(r"/Projection\s*<<(.*?)>>", obj, re.S)
-    if pm:
-        for k, v in re.findall(r"/(\w+)\s*\(([^)]*)\)", pm.group(1)):
-            proj[k] = v
-        t = re.search(r"/ProjectionType\s*\(([^)]*)\)", pm.group(1))
-        proj["ProjectionType"] = t.group(1) if t else proj.get("ProjectionType")
-    if not ctm or not neat:
-        raise ValueError(f"{pdf_path.name}: no LGIDict registration")
-    info = page.get_image_info(xrefs=True)
-    big = max(info, key=lambda i: i["width"])
-    s = big["width"] / (big["bbox"][2] - big["bbox"][0])        # pixels per PDF point
-    W = int(round(page.rect.width * s))
-    H = int(round(page.rect.height * s))
-    img = np.full((H, W, 3), 255, np.uint8)
-    for i in info:
-        if i["xref"] <= 0:
-            continue
-        pix = pymupdf.Pixmap(doc, i["xref"])
-        if pix.n - pix.alpha < 3:
-            pix = pymupdf.Pixmap(pymupdf.csRGB, pix)
-        a = np.frombuffer(pix.samples, np.uint8).reshape(pix.height, pix.width, pix.n)[:, :, :3]
-        x0 = int(round(i["bbox"][0] * s))
-        y0 = int(round(i["bbox"][1] * s))
-        h = min(a.shape[0], H - y0)
-        w = min(a.shape[1], W - x0)
-        if h > 0 and w > 0:
-            img[y0:y0 + h, x0:x0 + w] = a[:h, :w]
-    page_h = page.rect.height
-    a, b, c, d, e, f = ctm
-
-    def px_to_proj(col, row):
-        x = np.asarray(col, float) / s
-        y = page_h - np.asarray(row, float) / s           # PDF user space is bottom-up
-        return a * x + c * y + e, b * x + d * y + f
-
-    nl = np.array(neat).reshape(-1, 2)
-    neat_px = np.column_stack([nl[:, 0] * s, (page_h - nl[:, 1]) * s])
-    px_per_mm = s * 72 / 25.4
-    return img, {"px_to_proj": px_to_proj, "neat_px": neat_px, "proj": proj,
-                 "px_per_mm": px_per_mm, "m_per_px": abs(a) / s}
+    """Whole scan in memory (debugging only) + registration."""
+    r = GeoPDF(pdf_path)
+    return r.read(0, r.H, 0, r.W), r.g
 
 
 def crs_for(proj: dict, bbox=None):
@@ -318,15 +344,15 @@ def _valley_threshold(areas_mm2, lo=0.05, hi=0.16, default=0.09):
     return float(c[i])
 
 
-def urban_tint(img, inside, ppm):
+def urban_tint(sm, inside_sm, ppm):
     """Red urban-area tint of the 1940s-50s maps (a pink background with red dots; only
     landmark buildings are drawn inside it). Contours are orange-brown and thin, red
-    highways narrow, so a pink majority over ~2 mm marks the tint.
-    -> (mask at 1/4 resolution, outer rings in full-res pixels) or None."""
+    highways narrow, so a pink majority over ~2 mm marks the tint. Works on the sheet at
+    1/4 resolution -> (mask at 1/4 resolution, outer rings in full-res pixels) or None."""
     import cv2
-    sm = img[::4, ::4].astype(np.int16)
+    sm = sm.astype(np.int16)
     R, G, B = sm[:, :, 0], sm[:, :, 1], sm[:, :, 2]
-    pink = ((R - G > 22) & (G - B < 18) & (R > 190) & (inside[::4, ::4] > 0)).astype(np.float32)
+    pink = ((R - G > 22) & (G - B < 18) & (R > 190) & (inside_sm > 0)).astype(np.float32)
     del sm, R, G, B
     k = max(3, int(round(2.0 * ppm / 4)) | 1)
     m = (cv2.blur(pink, (k, k)) > 0.35).astype(np.uint8)
@@ -349,35 +375,33 @@ def _colour_tests(blk):
     return mx, hue, water, b.min(2)
 
 
-def detect_symbols(img, g, debug=None):
-    """Building symbols on one sheet -> (kept symbols, stats). Each symbol: pixel centroid,
-    area (mm² on paper), shape / context features, rejection reasons, score 0..1."""
+def _inside_tile(neat_px, y0, y1, x0, x1, ppm):
+    """Inside the neat line minus 1 mm (the neat line itself and its ticks), for a tile."""
     import cv2
-    from scipy.spatial import cKDTree
-    ppm = g["px_per_mm"]
-    H, W, _ = img.shape
-    # inside the neat line (minus 1 mm: the neat line itself and its ticks)
-    inside = np.zeros((H, W), np.uint8)
-    cv2.fillPoly(inside, [np.round(g["neat_px"]).astype(np.int32)], 1)
-    inside = cv2.erode(inside, cv2.getStructuringElement(cv2.MORPH_RECT, (int(ppm * 2) | 1,) * 2))
-    # (memory: a 1:24,000 sheet is ~18k x 15k px, so only uint8 / label images are kept
-    # at full resolution; colour tests are redone inside the small windows)
-    urban_px = urban_tint(img, inside, ppm)
-    samp = img[::37, ::37].max(2)[inside[::37, ::37] > 0]
-    paper = float(np.percentile(samp, 75))
-    ink_t = 0.55 * paper
-    ink = np.empty((H, W), np.uint8)
-    for r in range(0, H, 1024):
-        mx_, hue_ = _colour_tests(img[r:r + 1024])[:2]
-        ink[r:r + 1024] = (mx_ < ink_t) & hue_
-    ink &= inside
+    m = np.zeros((y1 - y0, x1 - x0), np.uint8)
+    cv2.fillPoly(m, [np.round(neat_px - [x0, y0]).astype(np.int32)], 1)
+    return cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_RECT, (int(ppm * 2) | 1,) * 2))
+
+
+def _ink_core(img, inside, ink_t, ppm):
+    import cv2
+    mx_, hue_ = _colour_tests(img)[:2]
+    ink = ((mx_ < ink_t) & hue_ & (inside > 0)).astype(np.uint8)
     d_open = max(3, int(round(0.26 * ppm)) | 1)
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d_open, d_open))
-    core = cv2.morphologyEx(ink, cv2.MORPH_OPEN, k)
+    return ink, cv2.morphologyEx(ink, cv2.MORPH_OPEN, k), k
+
+
+def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
+    """Candidates (solid blobs and open squares) of one tile with all their features.
+    Only candidates whose centre lies in core_box (y0, y1, x0, x1 in tile pixels) are
+    returned; the margin around it gives every window its full context."""
+    import cv2
+    from scipy.spatial import cKDTree
+    H, W, _ = img.shape
+    ink, core, k = _ink_core(img, inside, ink_t, ppm)
     n, lab, st, cen = cv2.connectedComponentsWithStats(core, connectivity=8)
     area_mm2 = st[:, 4] / ppm ** 2
-    disc_mm2 = k.sum() / ppm ** 2
-    a_min = _valley_threshold(area_mm2[1:], lo=max(0.05, 1.35 * disc_mm2), hi=max(0.13, 2.6 * disc_mm2))
     a_max = 0.80
     # --- per core blob: shape
     recs, dashes = [], []
@@ -468,6 +492,11 @@ def detect_symbols(img, g, debug=None):
     for r in recs:
         r["open"] = False
 
+    cy0, cy1, cx0, cx1 = core_box
+    in_core = lambda r: cy0 <= r["y"] < cy1 and cx0 <= r["x"] < cx1
+    recs_c = [r for r in recs if in_core(r)]
+    opens = [r for r in opens if in_core(r)]
+
     # --- context in a window around each candidate. Light ink (hairlines of lettering,
     # soft edges) connects a blob to the rest of its glyph; components are only followed
     # inside the window, so roads and rails leaving it are "lines", not glyphs.
@@ -507,7 +536,7 @@ def detect_symbols(img, g, debug=None):
         sel = slice(None, None, 4)
         gm_pts.append(np.column_stack([xs_[sel] + x, ys_[sel] + y]))
     gm_tree = cKDTree(np.concatenate(gm_pts)) if gm_pts else None
-    for r in recs + opens:
+    for r in recs_c + opens:
         cx, cy = int(round(r["x"])), int(round(r["y"]))
         y0, y1, x0, x1 = max(cy - R, 0), min(cy + R + 1, H), max(cx - R, 0), min(cx + R + 1, W)
         ccx, ccy = r["x"] - x0, r["y"] - y0
@@ -626,10 +655,71 @@ def detect_symbols(img, g, debug=None):
     # --- dash-dot boundaries: a candidate on the extension of a long dash
     D = np.array(dashes) if dashes else None
     dtree = cKDTree(D[:, :2]) if dashes else None
-    a_typ = float(np.median([r["area_mm2"] for r in recs if r["shape_ok"]] or [0.15]))
-    a_typ_open = float(np.median([r["area_mm2"] for r in opens] or [a_typ]))
+    out = recs_c + opens
+    for r in out:
+        on_dash = False
+        if dtree is not None:
+            for q in dtree.query_ball_point([r["x"], r["y"]], 4.5 * ppm):
+                qx, qy, ux, uy, half = D[q]
+                vx, vy = r["x"] - qx, r["y"] - qy
+                along = vx * ux + vy * uy
+                across = abs(-vx * uy + vy * ux)
+                if half < abs(along) < half + 3.5 * ppm and across < 0.18 * ppm:
+                    on_dash = True
+                    break
+        r["on_dash"] = on_dash
+    return out
+
+
+def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
+    """Building symbols on one sheet -> (kept symbols, stats). Each symbol: pixel centroid,
+    area (mm² on paper), shape / context features, rejection reasons, score 0..1.
+    Tiled (tile x tile px plus an 8 mm margin) so memory stays ~0.5 GB per sheet."""
+    import cv2
+    g = pdf.g
+    ppm = g["px_per_mm"]
+    H, W = pdf.H, pdf.W
+    # low resolution: paper level and the urban tint
+    small = pdf.read(0, H, 0, W, step=4)
+    ins_small = np.zeros(small.shape[:2], np.uint8)
+    cv2.fillPoly(ins_small, [np.round(g["neat_px"] / 4).astype(np.int32)], 1)
+    paper = float(np.percentile(small[::4, ::4].max(2)[ins_small[::4, ::4] > 0], 75))
+    urban_px = urban_tint(small, ins_small, ppm)
+    del small, ins_small
+    ink_t = 0.55 * paper
+    margin = int(round(8 * ppm))
+    boxes = [(y, min(y + tile, H), x, min(x + tile, W)) for y in range(0, H, tile) for x in range(0, W, tile)]
+    # neat line bbox: skip tiles of the collar
+    nx0, ny0 = g["neat_px"].min(0); nx1, ny1 = g["neat_px"].max(0)
+    boxes = [b for b in boxes if b[1] > ny0 and b[0] < ny1 and b[3] > nx0 and b[2] < nx1]
+
+    def tile_arrays(b):
+        y0, y1, x0, x1 = max(b[0] - margin, 0), min(b[1] + margin, H), max(b[2] - margin, 0), min(b[3] + margin, W)
+        return (y0, y1, x0, x1), pdf.read(y0, y1, x0, x1), _inside_tile(g["neat_px"], y0, y1, x0, x1, ppm)
+    # pass 1: blob areas of the whole sheet -> threshold between dots and symbols
+    areas = []
+    for b in boxes:
+        (y0, y1, x0, x1), im, ins = tile_arrays(b)
+        _, core, k = _ink_core(im, ins, ink_t, ppm)
+        n, lab, st, cen = cv2.connectedComponentsWithStats(core, connectivity=8)
+        sel = (cen[1:, 1] + y0 >= b[0]) & (cen[1:, 1] + y0 < b[1]) & (cen[1:, 0] + x0 >= b[2]) & (cen[1:, 0] + x0 < b[3])
+        areas.append(st[1:, 4][sel] / ppm ** 2)
+        del core, lab, im, ins
+    disc_mm2 = k.sum() / ppm ** 2
+    a_min = _valley_threshold(np.concatenate(areas), lo=max(0.05, 1.35 * disc_mm2), hi=max(0.13, 2.6 * disc_mm2))
+    # pass 2: candidates with context
+    allr = []
+    for b in boxes:
+        (y0, y1, x0, x1), im, ins = tile_arrays(b)
+        out = _detect_tile(im, ins, ppm, paper, ink_t, a_min, (b[0] - y0, b[1] - y0, b[2] - x0, b[3] - x0))
+        for r in out:
+            r["x"] += x0; r["y"] += y0
+        allr += out
+        del im, ins
+    a_typ = float(np.median([r["area_mm2"] for r in allr if r["shape_ok"] and not r["open"]] or [0.15]))
+    a_typ_open = float(np.median([r["area_mm2"] for r in allr if r["open"]] or [a_typ]))
     keep = []
-    for r in recs + opens:
+    for r in allr:
         reasons = []
         if r["area_mm2"] < a_min and not r["open"]:
             reasons.append("small")
@@ -653,17 +743,7 @@ def detect_symbols(img, g, debug=None):
             reasons.append("text")
         if r["water"] > 0.06:
             reasons.append("water")
-        on_dash = False
-        if dtree is not None:
-            for q in dtree.query_ball_point([r["x"], r["y"]], 4.5 * ppm):
-                qx, qy, ux, uy, half = D[q]
-                vx, vy = r["x"] - qx, r["y"] - qy
-                along = vx * ux + vy * uy
-                across = abs(-vx * uy + vy * ux)
-                if half < abs(along) < half + 3.5 * ppm and across < 0.18 * ppm:
-                    on_dash = True
-                    break
-        if on_dash:
+        if r["on_dash"]:
             reasons.append("dashline")
         if r["dark"] > 0.45 * paper:
             reasons.append("faint")
@@ -680,11 +760,11 @@ def detect_symbols(img, g, debug=None):
         if not reasons:
             keep.append(r)
     stats = {"paper": paper, "ink_t": ink_t, "a_min_mm2": a_min, "a_typ_mm2": a_typ,
-             "n_cores": int(n - 1), "n_candidates": len(recs), "n_open_candidates": len(opens),
-             "n_kept": len(keep), "n_kept_open": sum(1 for r in keep if r["open"]), "n_dashes": len(dashes),
+             "n_candidates": len(allr), "n_open_candidates": sum(1 for r in allr if r["open"]),
+             "n_kept": len(keep), "n_kept_open": sum(1 for r in keep if r["open"]),
              "urban_rings_px": urban_px[1] if urban_px is not None else []}
     if debug is not None:
-        debug["all"] = recs + opens
+        debug["all"] = allr
     return keep, stats
 
 
@@ -704,10 +784,11 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     TOPO_RAW.mkdir(parents=True, exist_ok=True)
     pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
     download_file(m["pdf_url"], pdf)
-    img, g = read_geopdf(pdf)
-    log(f"{m['quad']} {m['edition_year']} 1:{m['scale']}: {img.shape[1]}x{img.shape[0]} px, "
+    sheet = GeoPDF(pdf)
+    g = sheet.g
+    log(f"{m['quad']} {m['edition_year']} 1:{m['scale']}: {sheet.W}x{sheet.H} px, "
         f"{g['px_per_mm'] * 25.4:.0f} ppi, {g['m_per_px']:.2f} m/px")
-    keep, stats = detect_symbols(img, g)
+    keep, stats = detect_symbols(sheet)
     crs = crs_for(g["proj"], m["bbox"])
     if keep:
         X, Y = g["px_to_proj"]([r["x"] for r in keep], [r["y"] for r in keep])
@@ -739,29 +820,28 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     MAP_CACHE.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res))
     if debug_crops:
-        write_debug(img, keep, m, debug_crops)
-    del img
+        write_debug(sheet, keep, m, debug_crops)
+    del sheet
     if not keep_raw:
         pdf.unlink(missing_ok=True)
     return res
 
 
-def write_debug(img, keep, m, n_crops):
+def write_debug(sheet, keep, m, n_crops):
     """A few overlay crops (kept symbols circled) for eyeballing."""
     import cv2
     DEBUG_DIR.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(int(m["id"]) % 1000)
-    H, W, _ = img.shape
     for k in range(n_crops):
         if not keep:
             break
         r = keep[rng.integers(len(keep))]
         y0, x0 = int(max(r["y"] - 450, 0)), int(max(r["x"] - 600, 0))
-        a = img[y0:y0 + 900, x0:x0 + 1200].copy()
+        a = sheet.read(y0, y0 + 900, x0, x0 + 1200)
         for q in keep:
             x, y = q["x"] - x0, q["y"] - y0
             if 0 <= x < a.shape[1] and 0 <= y < a.shape[0]:
-                cv2.circle(a, (int(x), int(y)), 12, (0, 200, 0), 2)
+                cv2.circle(a, (int(x), int(y)), 12, (0, 120, 255) if q.get("open") else (0, 200, 0), 2)
         cv2.imwrite(str(DEBUG_DIR / f"{m['id']}_{m['quad'].replace(' ', '_')}_{m['edition_year']}_{k}.jpg"),
                     a[:, :, ::-1], [cv2.IMWRITE_JPEG_QUALITY, 85])
 

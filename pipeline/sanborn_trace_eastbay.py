@@ -27,11 +27,16 @@ Intermediates:                      data/interim/sanborn_eastbay/
 Outputs:                            data/manual/sanborn/oakland_<area>_<year>.geojson, _coverage.geojson,
                                     oakland_<area>_<year>_tracks.geojson
 
-Usage:  python pipeline/sanborn_trace_eastbay.py all                  # fetch + georef + extract + assemble
+Usage:  python pipeline/sanborn_trace_eastbay.py all                  # fetch + georef + extract + tracks + assemble
         python pipeline/sanborn_trace_eastbay.py georef 005_0095      # one stage, some sheets
-        python pipeline/sanborn_trace_eastbay.py register 015_0095 005_0095
+        python pipeline/sanborn_trace_eastbay.py register 015_0095 005_0095   # SIFT registration of a 1950/51 plate
         python pipeline/sanborn_trace_eastbay.py fetch 005_0095       # download (25 %)
         python pipeline/sanborn_trace_eastbay.py grid 005_0095 [x0 y0 x1 y1]   # scratch view with a pixel grid
+        python pipeline/sanborn_trace_eastbay.py refine 005_0095      # new sheet: snap estimated block outlines (once)
+        python pipeline/sanborn_trace_eastbay.py mosaic|overlay 005_0095       # scratch checks of corners / footprints
+New sheet: write the control file with spec(key, {"blocks": {name: {"N", "S", "W", "E": streets, "px": [NW, NE, SE, SW]
+pixel estimates (+-15 px on the 25 % image), "skip", "w", "with"}}}), then refine + georef; the control files hold the
+refined pixels (norefine), so reruns reproduce the outputs.
 Keys are <LOC item suffix>_<sheet>, e.g. 005_0095 = sanborn00727_005 (1911-12 vol. 1) sheet 95.
 """
 from __future__ import annotations
