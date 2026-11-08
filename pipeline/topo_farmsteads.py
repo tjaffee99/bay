@@ -294,3 +294,207 @@ def to_wgs84(crs, x, y):
     inv, dat = _TO_WGS[key]
     lon, lat = inv.transform(x, y)
     return dat.transform(lon, lat)
+
+
+# ----------------------------------------------------------------------------- detection
+def _valley_threshold(areas_mm2, lo=0.05, hi=0.16, default=0.09):
+    """Blob-area threshold between the small-dot mode (boundary dots, junction knots)
+    and the building-symbol mode, from the sheet's own histogram (log bins)."""
+    a = areas_mm2[(areas_mm2 > 0.02) & (areas_mm2 < 0.6)]
+    if len(a) < 200:
+        return default
+    bins = np.exp(np.linspace(np.log(0.02), np.log(0.6), 41))
+    h, e = np.histogram(a, bins=bins)
+    h = np.convolve(h, [1, 2, 1], "same") / 4
+    c = np.sqrt(e[:-1] * e[1:])
+    seg = (c >= lo) & (c <= hi)
+    if not seg.any():
+        return default
+    i = np.argmin(np.where(seg, h, np.inf))
+    return float(c[i])
+
+
+def detect_symbols(img, g, debug=None):
+    """Building symbols on one sheet -> (kept symbols, stats). Each symbol: pixel centroid,
+    area (mm² on paper), shape / context features, rejection reasons, score 0..1."""
+    import cv2
+    from scipy.spatial import cKDTree
+    ppm = g["px_per_mm"]
+    H, W, _ = img.shape
+    # inside the neat line (minus 1 mm: the neat line itself and its ticks)
+    inside = np.zeros((H, W), np.uint8)
+    cv2.fillPoly(inside, [np.round(g["neat_px"]).astype(np.int32)], 1)
+    inside = cv2.erode(inside, cv2.getStructuringElement(cv2.MORPH_RECT, (int(ppm * 2) | 1,) * 2))
+    mx = np.empty((H, W), np.uint8)
+    mn = np.empty((H, W), np.uint8)
+    hue_ok = np.empty((H, W), bool)          # black / grey ink: not red-brown, not blue-green
+    water = np.empty((H, W), bool)           # blue water lines / tint
+    for r in range(0, H, 2048):
+        blk = img[r:r + 2048].astype(np.int16)
+        mx[r:r + 2048] = blk.max(2)
+        mn[r:r + 2048] = blk.min(2)
+        R, G, B = blk[:, :, 0], blk[:, :, 1], blk[:, :, 2]
+        hue_ok[r:r + 2048] = (R - G < 40) & (B - R < 15) & (G - R < 15)
+        water[r:r + 2048] = (B - R > 20) & (B > G - 10)
+    hue_ok &= inside > 0
+    paper = float(np.percentile(mx[inside > 0][::97], 75))
+    ink_t = 0.55 * paper
+    ink = ((mx < ink_t) & hue_ok).astype(np.uint8)
+    d_open = max(3, int(round(0.26 * ppm)) | 1)
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d_open, d_open))
+    core = cv2.morphologyEx(ink, cv2.MORPH_OPEN, k)
+    n, lab, st, cen = cv2.connectedComponentsWithStats(core, connectivity=8)
+    area_mm2 = st[:, 4] / ppm ** 2
+    disc_mm2 = k.sum() / ppm ** 2
+    a_min = _valley_threshold(area_mm2[1:], lo=max(0.05, 1.35 * disc_mm2), hi=max(0.13, 2.6 * disc_mm2))
+    a_max = 0.80
+    # --- per core blob: shape
+    recs, dashes = [], []
+    for i in range(1, n):
+        x, y, w, h, a = st[i]
+        if area_mm2[i] < 0.6 * a_min:
+            continue
+        sub = (lab[y:y + h, x:x + w] == i).astype(np.uint8)
+        mom = cv2.moments(sub, binaryImage=True)
+        mu20, mu02, mu11 = mom["mu20"] / a, mom["mu02"] / a, mom["mu11"] / a
+        tr, det = mu20 + mu02, mu20 * mu02 - mu11 ** 2
+        disc = math.sqrt(max(tr * tr / 4 - det, 0))
+        l1, l2 = tr / 2 + disc, max(tr / 2 - disc, 1e-6)
+        elong = math.sqrt(l1 / l2)
+        theta = 0.5 * math.atan2(2 * mu11, mu20 - mu02)
+        cx, cy = x + mom["m10"] / a, y + mom["m01"] / a
+        length = 4 * math.sqrt(l1)
+        if elong > 3.5 and length > 1.0 * ppm:
+            dashes.append((cx, cy, math.cos(theta), math.sin(theta), length / 2))
+            continue
+        if area_mm2[i] > a_max:
+            continue
+        cnts, _ = cv2.findContours(sub, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        c = max(cnts, key=cv2.contourArea)
+        hull = np.zeros((h + 2, w + 2), np.uint8)
+        cv2.fillConvexPoly(hull, cv2.convexHull(c) + 1, 1)
+        solidity = a / max(hull.sum(), 1)
+        (rw, rh) = cv2.minAreaRect(c)[1]
+        rect_fill = a / max((rw + 1) * (rh + 1), 1)
+        dark = float(np.median(mn[y:y + h, x:x + w][sub > 0]))
+        recs.append({"i": i, "x": cx, "y": cy, "area_mm2": float(area_mm2[i]), "elong": elong,
+                     "solidity": float(solidity), "rect_fill": float(rect_fill), "dark": dark,
+                     "w": int(w), "h": int(h), "theta": theta})
+    sym_ok = np.zeros(n, bool)
+    for r in recs:
+        r["shape_ok"] = (r["area_mm2"] >= a_min and r["elong"] <= 2.6 and r["solidity"] >= 0.82
+                         and r["rect_fill"] >= 0.62)
+        sym_ok[r["i"]] = r["shape_ok"]
+    # --- context in a window around each candidate (light ink = hairlines of lettering,
+    # soft edges; components are only followed inside the window)
+    R = int(round(1.2 * ppm))
+    thick_t = max(2.0, 0.09 * ppm)
+    small_k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    min_letter = 0.2 * ppm
+    for r in recs:
+        cx, cy = int(round(r["x"])), int(round(r["y"]))
+        y0, y1, x0, x1 = max(cy - R, 0), min(cy + R + 1, H), max(cx - R, 0), min(cx + R + 1, W)
+        mxw = mx[y0:y1, x0:x1]
+        lp = max(float(np.percentile(mxw, 80)), 0.8 * paper)
+        lightw = ((mxw < 0.80 * lp) & hue_ok[y0:y1, x0:x1]).astype(np.uint8)
+        labw = lab[y0:y1, x0:x1]
+        own = labw == r["i"]
+        lightw[own] = 1
+        symw = cv2.dilate(sym_ok[labw].astype(np.uint8) | own, small_k) > 0
+        ncl, cl, cst, _ = cv2.connectedComponentsWithStats(lightw, connectivity=8)
+        c = int(np.bincount(cl[own]).argmax())
+        comp = cl == c
+        bx, by, bw, bh, _ = cst[c]
+        touches = bx == 0 or by == 0 or bx + bw >= cl.shape[1] or by + bh >= cl.shape[0]
+        resid = comp & ~symw
+        # thick dark strokes attached to the blob (letter stems, rails), not hairlines or
+        # the thin casings of roads
+        dtc = cv2.distanceTransform(ink[y0:y1, x0:x1], cv2.DIST_L2, 3)
+        resid_thick = int(((dtc >= thick_t) & resid).sum())
+        # holes (letter counters) near the blob
+        holes = 0
+        cnts, hier = cv2.findContours(comp.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+        if hier is not None:
+            for q, hh in enumerate(hier[0]):
+                if hh[3] >= 0:
+                    ha = cv2.contourArea(cnts[q])
+                    if (3 if not touches else 0.02 * ppm ** 2) <= ha <= 0.25 * ppm ** 2:
+                        hx, hy, hw2, hh2 = cv2.boundingRect(cnts[q])
+                        if (max(hw2, hh2) < 0.8 * ppm and max(hw2, hh2) < 2.5 * max(min(hw2, hh2), 1)
+                                and math.hypot(hx + hw2 / 2 - (cx - x0), hy + hh2 / 2 - (cy - y0)) < 0.9 * ppm):
+                            holes += 1
+        # other compact non-symbol components (letters) in the window
+        letters = 0
+        for q in range(1, ncl):
+            if q == c:
+                continue
+            qx, qy, qw, qh, qa = cst[q]
+            if qx == 0 or qy == 0 or qx + qw >= cl.shape[1] or qy + qh >= cl.shape[0]:
+                continue
+            if max(qw, qh) < min_letter or qa < 0.02 * ppm ** 2:
+                continue
+            qm = cl[qy:qy + qh, qx:qx + qw] == q
+            if (qm & symw[qy:qy + qh, qx:qx + qw]).sum() > 0.5 * qa:
+                continue
+            if max(qw, qh) > 4 * min(qw, qh) and qa < 0.35 * qw * qh:
+                pass
+            if max(qw, qh) >= 4.5 * max(min(qw, qh), 1):
+                continue                      # a dash, not a letter
+            letters += 1
+        ring = np.ones(own.shape, bool)
+        ring[max(cy - y0 - R // 2, 0):cy - y0 + R // 2, max(cx - x0 - R // 2, 0):cx - x0 + R // 2] = False
+        wfrac = float(water[y0:y1, x0:x1][~ring].mean())
+        r.update({"touches": bool(touches), "resid_px": int(resid.sum()), "resid_thick_mm2": resid_thick / ppm ** 2,
+                  "holes": holes, "letters_near": letters, "water": wfrac,
+                  "own_px": int(own.sum())})
+    # --- dash-dot boundaries: a candidate on the extension of a long dash
+    D = np.array(dashes) if dashes else None
+    dtree = cKDTree(D[:, :2]) if dashes else None
+    a_typ = float(np.median([r["area_mm2"] for r in recs if r["shape_ok"]] or [0.15]))
+    keep = []
+    for r in recs:
+        reasons = []
+        if r["area_mm2"] < a_min:
+            reasons.append("small")
+        if r["elong"] > 2.6:
+            reasons.append("elongated")
+        if r["solidity"] < 0.82 or r["rect_fill"] < 0.62:
+            reasons.append("shape")
+        if r["resid_thick_mm2"] > 0.03:
+            reasons.append("glyph")           # thick strokes attached: a letter
+        if r["holes"] >= 1:
+            reasons.append("counter")         # a letter with a counter (a, e, o, R …)
+        if not r["touches"] and r["resid_px"] > 0.9 * r["own_px"] + 0.03 * ppm ** 2:
+            reasons.append("serif")           # isolated glyph with hairlines
+        if r["letters_near"] >= 2:
+            reasons.append("text")
+        if r["water"] > 0.06:
+            reasons.append("water")
+        on_dash = False
+        if dtree is not None:
+            for q in dtree.query_ball_point([r["x"], r["y"]], 4.5 * ppm):
+                qx, qy, ux, uy, half = D[q]
+                vx, vy = r["x"] - qx, r["y"] - qy
+                along = vx * ux + vy * uy
+                across = abs(-vx * uy + vy * ux)
+                if half < abs(along) < half + 3.5 * ppm and across < 0.18 * ppm:
+                    on_dash = True
+                    break
+        if on_dash:
+            reasons.append("dashline")
+        if r["dark"] > 0.45 * paper:
+            reasons.append("faint")
+        r["reject"] = reasons
+        s_area = math.exp(-abs(math.log(r["area_mm2"] / a_typ)) / 0.8)
+        s_shape = max(0.0, min(1.0, (2.6 - r["elong"]) / 1.2)) * max(0.0, min(1.0, (r["solidity"] - 0.78) / 0.12)) \
+            * max(0.0, min(1.0, (r["rect_fill"] - 0.58) / 0.15))
+        s_dark = min(1.0, max(0.0, (0.45 * paper - r["dark"]) / (0.25 * paper)))
+        s_ctx = 1.0 - 0.25 * min(r["letters_near"], 1)
+        r["score"] = float(max(0.0, min(1.0, 0.3 * s_area + 0.4 * s_shape + 0.2 * s_dark + 0.1)) * s_ctx)
+        if not reasons:
+            keep.append(r)
+    stats = {"paper": paper, "ink_t": ink_t, "a_min_mm2": a_min, "a_typ_mm2": a_typ,
+             "n_cores": int(n - 1), "n_candidates": len(recs), "n_kept": len(keep), "n_dashes": len(dashes)}
+    if debug is not None:
+        debug["all"] = recs
+    return keep, stats

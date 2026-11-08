@@ -946,6 +946,169 @@ def extract_regions(key):
     log(key, len(out), "region footprints added")
 
 
+# ----------------------------------------------------------------------------------------------- outputs
+def modern_footprints():
+    """today's Overture footprints in the Oakland box (EPSG:32610), cached."""
+    import geopandas as gpd
+    cache = INTERIM / "overture_buildings.parquet"
+    if cache.exists():
+        return gpd.read_parquet(cache)
+    g = _read_bbox(BUILDINGS, ["id"]).to_crs(32610)
+    g.to_parquet(cache)
+    return g
+
+
+def block_polys(G):
+    """world polygon of each fitted block zone (its refined outline, else its pixel rectangle)."""
+    from shapely.geometry import Polygon
+    out = []
+    for b in G.get("blocks", []):
+        q = b.get("px4") or [[b["rect_px"][0], b["rect_px"][1]], [b["rect_px"][2], b["rect_px"][1]],
+                             [b["rect_px"][2], b["rect_px"][3]], [b["rect_px"][0], b["rect_px"][3]]]
+        out.append((b["name"], Polygon(W.apply(np.array(b["M"]), q))))
+    return out
+
+
+def collinear(points):
+    """True when the control points of a fit lie on (nearly) one line: the second principal spread < 8 m."""
+    P = np.asarray(points, float)
+    if len(P) < 3:
+        return True
+    sv = np.linalg.svd(P - P.mean(axis=0), compute_uv=False)
+    return sv[1] / math.sqrt(len(P)) < 8.0
+
+
+def assemble():
+    import geopandas as gpd
+    import shapely
+    from pyproj import Transformer
+    from shapely import make_valid
+    from shapely.geometry import Point, Polygon, mapping
+    from shapely.ops import unary_union
+    from shapely.strtree import STRtree
+    to_ll = Transformer.from_crs(32610, 4326, always_xy=True)
+
+    def lonlat(g):
+        return shapely.transform(g, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))
+    attrs = json.load(open(CONTROL / "attributes.json")) if (CONTROL / "attributes.json").exists() else {}
+    fp = modern_footprints()
+    fpg = list(fp.geometry.values)
+    tree = STRtree(fpg)
+
+    def overlap(g):
+        parts = [fpg[i].intersection(g) for i in tree.query(g) if fpg[i].intersects(g)]
+        return round(float(unary_union(parts).area / g.area), 2) if parts and g.area > 0 else 0.0
+
+    rank = {"high": 0, "medium": 1, "low": 2}
+
+    def conf_of(f):
+        if f.get("n", 0) >= 4 and f.get("rms", 9) <= 1.5 and f.get("max", 9) <= 3:
+            c = "high"
+        elif f.get("n", 0) >= 3 and f.get("rms", 9) <= 3:
+            c = "medium"
+        elif f.get("n", 0) == 2 and "M" in f and abs(math.hypot(f["M"][0][0], f["M"][1][0]) - 0.2015) <= 0.003:
+            c = "medium"  # two corners: exact fit, checked only by the plate scale (50 ft = 1 in: ~0.2015 m/px)
+        else:
+            c = "low"
+        if c == "high" and f.get("collinear"):
+            c = "medium"  # control along one street only: the across-street direction is extrapolated
+        return c
+    covers = {}
+    for (area, year), keys in sorted(AREAS.items()):
+        feats, cover = [], []
+        for key in keys:
+            vol, sheet = key.split("_")
+            cfg = json.load(open(CONTROL / f"{key}.json"))
+            base = json.load(open(CONTROL / f"{cfg['registered_to']}.json")) if "registered_to" in cfg else cfg
+            G = json.load(open(INTERIM / f"{key}.M.json"))
+            Gb = json.load(open(INTERIM / f"{G['registered_to']}.M.json")) if "registered_to" in G else G
+            map_year, vlabel = VOLUMES[vol]
+            rec = W.sheet_rec(key)
+            rows = json.load(open(INTERIM / f"{key}.json"))
+            blocks = {b["name"]: b for b in G.get("blocks", [])}
+            bblocks = {b["name"]: b for b in Gb.get("blocks", [])}
+            bpolys = block_polys(G)
+            cv = unary_union([pg.buffer(12, join_style=2) for _, pg in bpolys]).buffer(15, join_style=2).buffer(-15, join_style=2)
+            cover.append(cv)
+            residential = bool(base.get("residential"))
+            for r in rows:
+                g = make_valid(Polygon(r["ring_utm"], r.get("holes_utm") or []))
+                if g.geom_type != "Polygon":
+                    polys = [q for q in getattr(g, "geoms", []) if q.geom_type == "Polygon"]
+                    if not polys:
+                        continue
+                    g = max(polys, key=lambda q: q.area)
+                if g.area < 6 or not cv.contains(g.representative_point()):
+                    continue
+                zone = r.get("zone", "sheet")
+                fitq = dict(blocks[zone] if zone in blocks else {"rms": G.get("rms", 9), "n": G.get("n", 0), "max": G.get("max", 9)})
+                if zone in bblocks:
+                    fitq["M"] = bblocks[zone]["M"]
+                    fitq["collinear"] = collinear([W.apply(np.array(bblocks[zone]["M"]), [q["px"]])[0] for q in bblocks[zone].get("points", [])])
+                if "registered_to" in G:
+                    fitq["rms"] = math.hypot(fitq.get("rms", 0), G.get("reg_rms_m", 0.3))
+                cls, a = r["cls"], r["area_m2"]
+                att = attrs.get(r["id"], {})
+                if att.get("drop"):
+                    continue
+                material = {"frame": "frame", "brick": "brick", "stone": "concrete" if map_year >= 1950 else "stone",
+                            "fireproof": "unknown" if map_year < 1900 else "concrete", "iron": "iron"}[cls]
+                if cls == "frame":
+                    st, us = ((1, "shed") if a < 30 else (2, "dwelling") if residential and a <= 300
+                              else (1, "warehouse") if a >= 300 else (2, "dwelling") if residential else (2, "store"))
+                elif cls == "iron":
+                    st, us = 1, "shed"
+                else:
+                    st, us = (2, "warehouse") if residential else (2, "store")
+                rule = "default (rule: material, size, district)"
+                if att and "stories" in att:
+                    stories, ssrc = att["stories"], "map (read from the sheet)"
+                else:
+                    stories, ssrc = st, rule
+                use, usrc = (att["use"], "map (label)") if att.get("use") else (us, "default")
+                conf = conf_of(fitq)
+                if base.get("confidence_cap") and rank[conf] < rank[base["confidence_cap"]]:
+                    conf = base["confidence_cap"]
+                if G.get("zones_only") and zone == "sheet":
+                    conf = "low"
+                feats.append((g, {"id": r["id"], "map_year": map_year, "volume": f"sanborn{CITY}_{vol}", "volume_label": vlabel,
+                                  "sheet": rec["id"], "sheet_no": int(sheet[:4].lstrip("0") or 0), "loc_url": f"https://www.loc.gov/item/sanborn{CITY}_{vol}/",
+                                  "iiif": rec["info"].replace("/info.json", ""), "stories": stories, "stories_source": ssrc, "material": material,
+                                  "use": use, "use_source": usrc, "name": att.get("name"), "sanborn_colour": cls,
+                                  "confidence": conf, "georef": f"block {zone}" if zone in blocks else "sheet",
+                                  "georef_rms_m": round(float(fitq.get("rms", 0)), 2), "extraction": r.get("method", "colour class"),
+                                  "area_m2": round(float(g.area), 1), "modern_overlap": overlap(g)}))
+        kept = []
+        for i in sorted(range(len(feats)), key=lambda i: (rank[feats[i][1]["confidence"]], -feats[i][0].area)):
+            g, p = feats[i]
+            if not any(feats[j][1]["sheet"] != p["sheet"] and g.intersects(feats[j][0])
+                       and g.intersection(feats[j][0]).area / min(g.area, feats[j][0].area) > 0.5 for j in kept):
+                kept.append(i)
+
+        def rnd(gj):
+            from shapely.geometry import shape
+            out = json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
+            g2 = shape(out)
+            if g2.geom_type in ("Polygon", "MultiPolygon") and not g2.is_valid:  # rounding can pinch a ring
+                g2 = shapely.set_precision(shape(gj), 1e-7)
+                if out["type"] == "Polygon" and g2.geom_type == "MultiPolygon":
+                    g2 = max(g2.geoms, key=lambda q: q.area)
+                out = json.loads(json.dumps(mapping(g2)), parse_float=lambda s: round(float(s), 7))
+            return out
+        crs = {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}
+        fc = {"type": "FeatureCollection", "name": f"{area}_{year}", "crs": crs,
+              "features": [{"type": "Feature", "properties": feats[i][1], "geometry": rnd(mapping(lonlat(feats[i][0])))}
+                           for i in sorted(kept, key=lambda i: feats[i][1]["id"])]}
+        json.dump(fc, open(OUT / f"{area}_{year}.geojson", "w"))
+        cu = unary_union(cover)
+        covers.setdefault(area, []).append({"type": "Feature", "properties": {"area": area, "map_year": year, "sheets": keys, "features": len(kept)},
+                                            "geometry": rnd(mapping(lonlat(cu)))})
+        log(area, year, len(kept), "features")
+    for area, fs in covers.items():
+        json.dump({"type": "FeatureCollection", "name": f"{area}_coverage", "features": sorted(fs, key=lambda f: f["properties"]["map_year"])},
+                  open(OUT / f"{area}_coverage.geojson", "w"))
+
+
 # ----------------------------------------------------------------------------------------------- driver
 def all_keys():
     return list(dict.fromkeys(k for ks in AREAS.values() for k in ks))

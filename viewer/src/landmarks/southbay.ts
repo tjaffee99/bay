@@ -254,4 +254,755 @@ const appleVisitorCenter = landmark(
   [roundedRect(0, 0, 30, 75, 6, 2)]
 );
 
-export const SOUTHBAY: Landmark[] = [appleRing, steveJobsTheater, appleVisitorCenter];
+
+// =================================================================== STANFORD UNIVERSITY
+
+/** Main Quad grid: the campus axis Palm Drive → Oval → Quad → Memorial Church runs at 195°/15°. */
+const QUAD: V2 = [-122.170217, 37.427648];
+const STANFORD_BRG = 15;
+const SANDSTONE = '#D5BB8E';
+const SANDSTONE_SH = '#C6A97A';
+const TILE = '#B96A50';
+const TILE_DARK = '#A65D46';
+const QUAD_PITCH = Math.tan((27 * Math.PI) / 180);
+
+// ---- generated from the OSM "Main Quad" outline (quad frame, metres; scratch tool rects.py):
+// wings = greedy maximal rectangles covering the plan (minus the inner courtyard arcade and the church),
+// [u0, u1, v0, v1, zone] with zone 1 = Inner Quad ring (one tall storey), 2 = Outer Quad (two storeys)
+const QUAD_WINGS: [number, number, number, number, number][] = [[-134.3,-19.3,82.3,107.3,2],[32.2,134.7,84.3,107.8,2],[-94.3,-68.3,56.3,107.3,2],[71.2,93.7,58.3,107.8,2],[-53.3,-28.8,63.8,107.3,2],[-141.3,-119.8,51.8,100.3,2],[30.2,54.7,64.8,107.3,2],[-140.8,-119.8,-128.2,-80.2,2],[121.7,142.7,53.3,99.8,2],[-140.8,-117.8,-62.2,-25.2,2],[103.7,135.7,-135.2,-108.7,2],[-134.8,-101.8,-134.2,-108.7,2],[134.7,142.2,-10.2,101.8,2],[119.2,142.2,-10.2,26.3,2],[-141.3,-133.8,-10.2,100.3,2],[-141.3,-118.3,-10.2,25.8,2],[120.2,142.2,-60.7,-24.7,2],[122.2,142.7,-129.2,-91.7,2],[-59.8,-24.3,-77.7,-58.2,1],[135.2,141.7,-130.7,-24.7,2],[93.7,112.2,-60.7,-24.7,1],[93.7,111.7,-10.2,26.3,1],[26.2,60.7,-77.2,-58.2,1],[-59.3,-18.8,25.3,41.3,1],[20.2,60.7,25.3,41.3,1],[20.2,27.7,25.3,107.3,2],[-110.3,-93.8,-9.7,26.3,1],[-109.8,-93.8,-62.2,-25.2,1],[-26.3,-19.3,25.3,107.3,2],[-89.8,-66.8,-134.2,-111.2,2],[68.7,135.7,-135.2,-127.7,2],[69.2,91.2,-135.2,-112.7,2],[-90.3,-65.8,-77.7,-58.2,1],[68.7,91.2,-76.2,-58.2,1],[-89.8,-66.8,25.3,41.3,1],[68.2,91.2,25.3,41.3,1],[121.2,142.2,-94.2,-86.7,2],[6.7,14.7,98.3,108.8,2],[-13.3,-5.3,98.3,108.8,2]];
+const QUAD_PLAN: {o: V2[]; h: V2[][]}[] = [{"o":[[20.2,25.4],[20.4,99.6],[14.6,99.6],[14.6,98.1],[6.6,98.2],[6.7,108.7],[14.7,108.7],[14.7,107.3],[133.9,107.7],[137.4,106.8],[141.6,102.8],[142.6,99.3],[142.2,-10.5],[97.1,-10.4],[97.0,-24.6],[142.3,-24.6],[142.5,-128.9],[138.7,-134.0],[134.8,-135.2],[68.7,-135.2],[69.2,-112.6],[91.0,-112.8],[91.2,-127.6],[103.2,-127.8],[103.4,-108.9],[122.0,-108.7],[121.6,-94.3],[118.9,-92.1],[118.4,-90.1],[119.1,-88.1],[121.6,-86.9],[121.7,-81.0],[134.9,-81.0],[134.9,-60.8],[91.2,-60.9],[91.2,-76.3],[68.5,-76.3],[68.6,-61.2],[60.8,-61.2],[60.8,-77.0],[26.1,-77.0],[26.1,-61.4],[14.6,-61.4],[14.7,-58.4],[93.8,-58.4],[93.8,25.4]],"h":[[[30.3,64.8],[30.2,80.6],[27.9,80.6],[27.9,41.1],[60.6,41.3],[61.0,26.1],[68.3,26.2],[68.3,41.2],[91.1,41.3],[91.3,26.0],[134.6,26.2],[134.6,53.3],[121.8,53.2],[121.8,58.5],[118.3,60.9],[118.7,64.7],[121.2,66.5],[121.1,80.7],[97.5,80.6],[96.7,78.1],[93.5,75.8],[93.7,58.4],[71.0,58.5],[71.2,75.8],[68.2,78.3],[67.4,80.6],[57.4,80.7],[57.4,84.1],[54.5,84.1],[54.6,64.9]],[[112.4,-53.5],[119.9,-53.5],[120.0,-32.4],[112.4,-32.3]],[[119.3,-2.8],[119.4,18.2],[111.9,18.2],[111.7,-2.7]]]},{"o":[[-24.1,-77.7],[-59.8,-77.6],[-59.8,-62.1],[-65.8,-62.1],[-65.9,-77.8],[-90.3,-77.8],[-90.3,-62.2],[-133.1,-62.1],[-133.2,-80.2],[-119.9,-80.2],[-119.9,-86.8],[-116.6,-90.4],[-117.6,-92.8],[-120.1,-94.4],[-120.1,-108.6],[-101.6,-108.6],[-101.6,-126.6],[-89.6,-126.6],[-89.6,-111.3],[-66.9,-111.3],[-66.9,-134.2],[-133.8,-134.4],[-139.9,-130.4],[-140.8,-127.5],[-141.0,-25.2],[-96.3,-25.0],[-96.3,-10.0],[-141.1,-10.2],[-141.3,99.6],[-140.2,103.1],[-137.3,106.0],[-134.1,107.0],[-13.5,107.3],[-13.4,108.7],[-5.5,108.7],[-5.5,98.1],[-13.5,98.1],[-13.6,99.6],[-19.1,99.5],[-19.0,25.4],[-93.7,25.4],[-93.7,-58.4],[-12.1,-58.4],[-12.1,-61.4],[-24.1,-61.4]],"h":[[[-106.6,78.9],[-106.6,82.0],[-120.1,82.2],[-120.0,65.2],[-118.3,63.8],[-117.6,60.5],[-120.0,57.7],[-120.0,51.7],[-133.8,51.8],[-133.3,26.0],[-89.8,26.4],[-89.8,41.3],[-66.8,41.4],[-66.9,26.4],[-59.4,26.3],[-59.2,41.4],[-26.8,41.5],[-26.5,79.9],[-28.9,79.9],[-28.8,64.0],[-53.5,63.8],[-53.5,81.3],[-55.5,81.3],[-55.5,79.5],[-68.5,79.5],[-68.5,56.4],[-94.1,56.3],[-94.1,79.0]],[[-110.1,-32.8],[-117.8,-32.8],[-117.9,-54.1],[-110.3,-54.0]],[[-110.5,18.5],[-118.2,18.5],[-118.0,-2.5],[-110.4,-2.4]]]}];
+
+/** Inner Quad courtyard (OSM hole) and its arcade band. */
+const QUAD_COURT: [number, number, number, number] = [-88.5, 88.6, -53.2, 20.2];
+
+function quadWings(b: MeshBuilder, zone: number, eave: number) {
+  for (const w of QUAD_WINGS) {
+    if (w[4] !== zone) continue;
+    const r: [number, number, number, number] = [w[0], w[1], w[2], w[3]];
+    b.color(SANDSTONE);
+    boxR(b, r, 0, eave, false);
+    b.color(TILE);
+    hipR(b, [r[0] - 0.6, r[1] + 0.6, r[2] - 0.6, r[3] + 0.6], eave, (Math.min(r[1] - r[0], r[3] - r[2]) / 2 + 0.6) * QUAD_PITCH);
+  }
+}
+
+const innerQuad = landmark(
+  'stanford_inner_quad',
+  'Stanford Main Quad — Inner Quad',
+  'building',
+  [1887.37, 1891.75],
+  9999,
+  QUAD,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      quadWings(b, 1, 7.5);
+      // arcade round the courtyard: sandstone piers carrying a tiled lean-to
+      const [u0, u1, v0, v1] = QUAD_COURT;
+      const W = 5.2;
+      b.color(TILE_DARK);
+      const lean = (a: V3, c: V3, d: V3, e: V3) => b.quad(a, c, d, e);
+      lean([u0, v1, 5.2], [u1, v1, 5.2], [u1 + W, v1 + W, 6.6], [u0 - W, v1 + W, 6.6]);
+      lean([u0, v0, 5.2], [u1, v0, 5.2], [u1 + W, v0 - W, 6.6], [u0 - W, v0 - W, 6.6]);
+      lean([u0, v0, 5.2], [u0, v1, 5.2], [u0 - W, v1 + W, 6.6], [u0 - W, v0 - W, 6.6]);
+      lean([u1, v0, 5.2], [u1, v1, 5.2], [u1 + W, v1 + W, 6.6], [u1 + W, v0 - W, 6.6]);
+      b.color(SANDSTONE_SH);
+      b.wallProfile([[u0, v0], [u1, v0], [u1, v1], [u0, v1]], 3.9, 5.2, true);
+      b.color(SANDSTONE);
+      const pier = (x: number, y: number) => b.box(x, y, 0, 1.0, 1.0, 3.9);
+      for (let u = u0; u <= u1 + 0.1; u += (u1 - u0) / 44) {
+        pier(u, v0);
+        pier(u, v1);
+      }
+      for (let v = v0 + (v1 - v0) / 18; v < v1 - 0.1; v += (v1 - v0) / 18) {
+        pier(u0, v);
+        pier(u1, v);
+      }
+    });
+  },
+  {
+    Built: 'cornerstone May 14, 1887; the twelve one-storey buildings round the Inner Quad were ready for the university\'s opening on Oct 1, 1891',
+    Architects: 'Shepley, Rutan & Coolidge (successors of H. H. Richardson), plan by Frederick Law Olmsted',
+    Material: 'buff sandstone from the Greystone quarry (Almaden, San José), red clay tile roofs, arcades round the courtyard',
+    Model:
+      'plan from the OpenStreetMap outline of the Main Quad (© OSM contributors, ODbL), split into wings by maximal rectangles; courtyard 177 × 73 m (OSM); eave height (7.5 m), roof pitch (27°) and the arcade (5.2 m deep, 45 bays) estimated from photographs and the orthophoto'
+  },
+  [WIKI + 'Main_Quad_(Stanford_University)', WIKI + 'Stanford_University'],
+  [rotPoly(rect(0, -14, 286, 246), STANFORD_BRG, 0, 0)]
+);
+
+const outerQuad = landmark(
+  'stanford_outer_quad',
+  'Stanford Main Quad — Outer Quad',
+  'building',
+  [1898.5, 1903.0],
+  9999,
+  QUAD,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      // whole plan (incl. the rounded outer corners) as a low base; wings rise above it
+      b.color(SANDSTONE);
+      for (const p of QUAD_PLAN) b.prism(p.o, 0, 6.8, {holes: p.h, top: false});
+      b.color(TILE_DARK);
+      for (const p of QUAD_PLAN) b.cap(p.o, 6.8, p.h);
+      quadWings(b, 2, 11.5);
+    });
+  },
+  {
+    Built: 'the fourteen buildings of the Outer Quad and Memorial Court were completed about 1903 under Charles Coolidge, for Jane Stanford',
+    '1906': 'damaged in the earthquake of Apr 18, 1906; restored by 1909',
+    Model:
+      'plan from the OpenStreetMap outline (© OSM contributors, ODbL), wings by maximal rectangles; two-storey eave (11.5 m) and roof pitch estimated; construction start (1898) estimated'
+  },
+  [WIKI + 'Main_Quad_(Stanford_University)']
+);
+
+/** Memorial Arch over the entrance of Memorial Court: its two piers stand on as the 8 × 10.6 m pavilions (OSM). */
+const memorialArch = landmark(
+  'stanford_memorial_arch',
+  'Stanford Memorial Arch',
+  'monument',
+  [1899.2, 1902.5],
+  1906.3,
+  QUAD,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      const v0 = 98.1;
+      const v1 = 108.7;
+      b.color(SANDSTONE);
+      for (const s of [-1, 1]) boxR(b, [s > 0 ? 5.5 : -13.5, s > 0 ? 13.5 : -5.5, v0, v1], 0, 30.5);
+      // semicircular arch (span 11 m, springing at 12.5 m) and the attic above it
+      const pts: V3[] = [];
+      for (let i = 0; i <= 10; i++) {
+        const a = Math.PI * (1 - i / 10);
+        pts.push([Math.cos(a) * 5.5, 0, 12.5 + Math.sin(a) * 5.5]);
+      }
+      for (const v of [v0, v1]) {
+        for (let i = 0; i < 10; i++) {
+          b.quad([pts[i][0], v, pts[i][2]], [pts[i + 1][0], v, pts[i + 1][2]], [pts[i + 1][0], v, 24.4], [pts[i][0], v, 24.4]);
+        }
+      }
+      for (let i = 0; i < 10; i++) b.quad([pts[i][0], v0, pts[i][2]], [pts[i + 1][0], v0, pts[i + 1][2]], [pts[i + 1][0], v1, pts[i + 1][2]], [pts[i][0], v1, pts[i][2]]);
+      boxR(b, [-5.5, 5.5, v0, v1], 24.4, 30.5);
+      // frieze "The Progress of Civilization in America", 12 ft high round all four sides
+      b.color('#C4A574');
+      boxR(b, [-13.7, 13.7, v0 - 0.2, v1 + 0.2], 24.4, 28.1);
+      b.color('#B79A6E');
+      boxR(b, [-14.2, 14.2, v0 - 0.6, v1 + 0.6], 30.5, 31.3);
+    });
+  },
+  {
+    Built: 'mostly in 1899; the frieze "The Progress of Civilization in America" (12 ft high, 232 ft round the four sides) finished in 1902',
+    Height: 'about 100 ft (30.5 m)',
+    Fate: 'destroyed in the earthquake of Apr 18, 1906 and never rebuilt; its two pier stubs remain as the pavilions at the entrance of Memorial Court',
+    Model:
+      'piers on the two 8 × 10.6 m pavilions of the OSM outline (their perimeter matches the 232 ft frieze); arch span and springing height estimated from photographs (LOW CONFIDENCE)'
+  },
+  ['https://pcad.lib.washington.edu/building/5117', 'https://quake06.stanford.edu/3-earthquake-impacts-prestige', WIKI + 'Main_Quad_(Stanford_University)']
+);
+
+// ---- Memorial Church: frame 15°, anchor = OSM part centroid; facade (north) at v = 31.5
+const MEMCHU: V2 = [-122.170471, 37.426893];
+
+function semi(cx: number, cy: number, r: number, a0: number, n = 10): V2[] {
+  return arcPts(cx, cy, r, a0, a0 + 180, n);
+}
+
+function memChuBody(b: MeshBuilder, crossingTop: number) {
+  // nave (21 m wide), gable roof along the axis
+  b.color(SANDSTONE);
+  boxR(b, [-10.2, 10.8, 3.5, 31.5], 0, 15);
+  b.color(TILE).gable(0.3, 17.5, 22, 28.4, 15, 8, true);
+  // facade gable (mosaic: 84 ft wide at the base, 30 ft high)
+  b.color(SANDSTONE);
+  b.quad([-11.2, 31.6, 15], [11.8, 31.6, 15], [11.8, 32.6, 15], [-11.2, 32.6, 15]);
+  boxR(b, [-11.2, 11.8, 31.5, 32.6], 0, 15);
+  b.tri([-11.2, 32.6, 15], [11.8, 32.6, 15], [0.3, 32.6, 24.5]).tri([-11.2, 31.5, 15], [11.8, 31.5, 15], [0.3, 31.5, 24.5]);
+  b.quad([-11.2, 31.5, 15], [0.3, 31.5, 24.5], [0.3, 32.6, 24.5], [-11.2, 32.6, 15]);
+  b.quad([11.8, 31.5, 15], [0.3, 31.5, 24.5], [0.3, 32.6, 24.5], [11.8, 32.6, 15]);
+  b.color('#C9A24E'); // gold-ground mosaic
+  b.quad([-8.5, 32.7, 8.5], [9.1, 32.7, 8.5], [9.1, 32.7, 15.5], [-8.5, 32.7, 15.5]);
+  b.tri([-6, 32.7, 15.5], [6.6, 32.7, 15.5], [0.3, 32.7, 21]);
+  // turrets flanking the nave
+  for (const x of [-10.1, 10.9]) {
+    b.color(SANDSTONE).cylinder(x, 23.2, 2.3, 0, 17, 10);
+    b.color(TILE).pyramid(circle(x, 23.2, 2.6, 10), 17, [x, 23.2, 21.5]);
+  }
+  // transepts and apse: walls with half-cone roofs
+  b.color(SANDSTONE);
+  boxR(b, [-15, -9.4, -15, 3.5], 0, 13);
+  boxR(b, [9.9, 16, -15, 3.5], 0, 13);
+  b.prism(semi(-15, -5.75, 9.25, 180), 0, 13, {top: false});
+  b.prism(semi(16, -5.75, 9.25, 0), 0, 13, {top: false});
+  boxR(b, [-8.3, 9.3, -19.5, -15], 0, 13);
+  b.prism(semi(0.5, -19.5, 8.3, 90), 0, 13, {top: false});
+  b.color(TILE);
+  b.pyramid(semi(-15, -5.75, 9.6, 180), 13, [-15, -5.75, 19.5]);
+  b.pyramid(semi(16, -5.75, 9.6, 0), 13, [16, -5.75, 19.5]);
+  b.pyramid(semi(0.5, -19.5, 8.7, 90), 13, [0.5, -19.5, 19]);
+  b.gable(-12.2, -5.75, 6.4, 19.1, 13, 6.5, false);
+  b.gable(12.9, -5.75, 6.4, 19.1, 13, 6.5, false);
+  b.gable(0.5, -17.2, 17.6, 4.8, 13, 6, true);
+  // round chapel (south-west) and the low sacristies beside the crossing
+  b.color(SANDSTONE).cylinder(-21.4, -21.6, 4.8, 0, 8, 12);
+  b.color(TILE).pyramid(circle(-21.4, -21.6, 5.1, 12), 8, [-21.4, -21.6, 11.5]);
+  b.color(SANDSTONE);
+  boxR(b, [-12.6, -10.2, 2, 7.2], 0, 7);
+  boxR(b, [10.8, 15.2, 2, 7.3], 0, 7);
+  // crossing tower walls
+  boxR(b, [-9.4, 10, -15, 3.5], 0, crossingTop);
+}
+
+const memChu1903 = landmark(
+  'stanford_memorial_church_1903',
+  'Stanford Memorial Church (1903)',
+  'building',
+  [1900.0, 1903.07],
+  1906.3,
+  MEMCHU,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      memChuBody(b, 34);
+      // clock and bell tower over the crossing with corner pinnacles and a twelve-sided 80 ft spire
+      b.color(SANDSTONE);
+      for (const [x, y] of [[-9.4, -15], [10, -15], [10, 3.5], [-9.4, 3.5]] as V2[]) {
+        b.cylinder(x, y, 1.4, 34, 37, 8);
+        b.color(TILE).pyramid(circle(x, y, 1.5, 8), 37, [x, y, 40]).color(SANDSTONE);
+      }
+      b.color('#EDE6D4');
+      b.quad([-2, 3.6, 28], [2.6, 3.6, 28], [2.6, 3.6, 32], [-2, 3.6, 32]); // clock face toward the court
+      b.color(TILE).pyramid(circle(0.3, -5.75, 7.6, 12), 34, [0.3, -5.75, 34 + 80 * FT]);
+    });
+  },
+  {
+    Built: 'groundbreaking May 1899, construction from Jan 1900; dedicated Jan 25, 1903 — Jane Stanford\'s memorial to Leland Stanford',
+    Design: 'Charles A. Coolidge and Clinton Day after H. H. Richardson; buff sandstone, red tile',
+    Tower: 'clock and bell tower over the crossing with a twelve-sided spire about 80 ft (24 m) tall',
+    Fate: 'Apr 18, 1906: the spire and clock tower fell onto the chancel roof, the facade fell into the Inner Quad; most of the church was taken down stone by stone and rebuilt',
+    Model:
+      'plan from the OpenStreetMap outline (© OSM contributors, ODbL); spire height documented; crossing tower height (34 m), pinnacles and wall heights estimated from photographs (LOW CONFIDENCE)'
+  },
+  [WIKI + 'Stanford_Memorial_Church', 'https://orsl.stanford.edu/memorial-church-history']
+);
+
+const memChu1913 = landmark(
+  'stanford_memorial_church',
+  'Stanford Memorial Church',
+  'building',
+  [1908.0, 1913.5],
+  9999,
+  MEMCHU,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      memChuBody(b, 22);
+      // low crossing roof with the domed skylight that replaced the tower
+      b.color(TILE).pyramid(rect(0.3, -5.75, 20.2, 19.3), 22, [0.3, -5.75, 29]);
+      b.color('#9FB1B8').pyramid(rect(0.3, -5.75, 7.4, 7.4), 26.5, [0.3, -5.75, 30.5]);
+    });
+  },
+  {
+    Rebuilt: 'repairs from 1908; reopened 1913 without the tower (a domed skylight over the crossing); facade mosaic remade; interior mosaics finished 1917',
+    '1989': 'Loma Prieta earthquake damage; closed until the rededication of Nov 1, 1992 (30,000 new red clay tiles)',
+    Size: 'about 190 × 150 ft (58 × 46 m); facade mosaic 84 ft wide, 30 ft high',
+    Model:
+      'plan from the OpenStreetMap outline (© OSM contributors, ODbL); roof shapes from the orthophoto; wall, ridge and crossing heights estimated from photographs'
+  },
+  [WIKI + 'Stanford_Memorial_Church', 'https://orsl.stanford.edu/memorial-church-history']
+);
+
+// ---- Hoover Tower (OSM 3D parts, frame 15°)
+const HOOVER: V2 = [-122.166993, 37.427622];
+const hooverTower = landmark(
+  'hoover_tower',
+  'Hoover Tower',
+  'tower',
+  [1939.6, 1941.47],
+  9999,
+  HOOVER,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      const TAN = '#D9C7A4';
+      b.color(TAN);
+      boxR(b, [-18.7, 18.7, -19.2, 17.6], 0, 11);
+      boxR(b, [-12.2, 13, -12.7, 12.1], 11, 14.3);
+      boxR(b, [-8.8, 10, -9.8, 8.8], 14.3, 65);
+      // entrance pavilion (north-east face) with its pyramidal lantern
+      boxR(b, [-6.7, 7.1, 8.6, 22.5], 0, 18.5);
+      b.color('#B65E40').pyramid(octagon(0.3, 13.8, 4.9), 18.5, [0.3, 13.8, 21.9]);
+      // belfry (carillon, observation deck at 250 ft) — octagon with arched openings
+      b.color(TAN).prism(octagon(0.5, -0.2, 7.6), 65, 75);
+      b.color('#4A4640');
+      for (const [x, y, w, d] of [[0.5, 6.85, 6, 0.3], [0.5, -7.25, 6, 0.3], [7.55, -0.2, 0.3, 6], [-6.55, -0.2, 0.3, 6]] as [number, number, number, number][]) {
+        b.box(x, y, 67, w, d, 5.5);
+      }
+      b.color(TAN).prism(octagon(0.5, -0.2, 7.9), 74.2, 75);
+      // red-tiled dome and lantern
+      b.color('#BD6142').dome(0.6, -0.1, 6.8, 75, 6.5, 16, 4);
+      b.color(TAN).cylinder(0.4, -0.2, 2.2, 81.3, 84.5, 10);
+      b.color('#BD6142').dome(0.4, -0.2, 2.4, 84.5, 2.5, 10, 2);
+    });
+  },
+  {
+    Built: 'groundbreaking Aug 1939; carillon first played Mar 1941; dedicated Jun 20, 1941 for the university\'s 50th anniversary',
+    Architect: 'Arthur Brown Jr. (after the tower of the New Cathedral of Salamanca)',
+    Height: '285 ft (87 m); observation deck at 250 ft (76 m); 48-bell carillon',
+    Model: 'massing from the OpenStreetMap 3D parts (© OSM contributors, ODbL: 11 / 14.3 / 65 / 75 / 81.5 / 87 m); openings and colours from photographs'
+  },
+  [WIKI + 'Hoover_Tower', 'https://www.hoover.org/research/i-ring-only-peace'],
+  [rotPoly(rect(0, -0.8, 39, 41), STANFORD_BRG)]
+);
+
+// ---- Green Library, Bing Wing (the 1919 Main Library), OSM outline in frame 15°
+const GREEN: V2 = [-122.167615, 37.42692];
+const greenLibrary = landmark(
+  'stanford_green_library',
+  'Stanford Main Library (Green Library, Bing Wing)',
+  'building',
+  [1916.8, 1919.5],
+  9999,
+  GREEN,
+  b => {
+    b.frame(0, 0, 0, STANFORD_BRG, () => {
+      const wings: [number, number, number, number][] = [
+        [-35.7, 34.9, 15.5, 29.5],
+        [-36, 34.4, -28.6, -16.3],
+        [-39.1, -24, -16.3, 15.5],
+        [24.5, 42.9, -12.6, 13.4]
+      ];
+      b.color(SANDSTONE);
+      for (const w of wings) boxR(b, w, 0, 17, false);
+      boxR(b, [-24, 24.5, -16.3, 15.5], 0, 14);
+      b.color(TILE);
+      for (const w of wings) hipR(b, [w[0] - 0.5, w[1] + 0.5, w[2] - 0.5, w[3] + 0.5], 17, (Math.min(w[1] - w[0], w[3] - w[2]) / 2 + 0.5) * QUAD_PITCH);
+      b.color(SANDSTONE_SH).box(3, 2.8, 14, 14, 14, 4);
+      b.color(TILE).pyramid(rect(3, 2.8, 15, 15), 18, [3, 2.8, 24.9]);
+      // arched entrance loggia on the east front
+      b.color(SANDSTONE).box(44.5, 0.4, 0, 3.2, 18, 12);
+    });
+  },
+  {
+    Built: 'approved 1913, completed 1919 as the university\'s Main Library; repaired after the 1989 Loma Prieta earthquake (gift of Peter Bing) and renamed the Bing Wing; the large East Wing (1980) is not modelled',
+    Architect: 'Arthur Brown Jr. (Bakewell & Brown)',
+    Model:
+      'outline from OpenStreetMap (© OSM contributors, ODbL; height 24.9 m); wings, the flat central block and the central pyramid from the orthophoto; eave height and the entrance loggia estimated'
+  },
+  [WIKI + 'Cecil_H._Green_Library'],
+  [rotPoly(rect(1.9, -3.5, 82, 66), STANFORD_BRG)]
+);
+
+// ---- Stanford Stadium (frame 137.8°: +v = south-east end, field runs NW–SE)
+const STANFORD_STADIUM: V2 = [-122.16109, 37.43452];
+const STAD_BRG = 137.8;
+
+/** Earcut cap whose vertices take their height from zf (sloped seating decks). */
+function slopedCap(b: MeshBuilder, ring: V2[], zf: (u: number, v: number) => number) {
+  const tmp = new MeshBuilder();
+  tmp.cap(ring, 0);
+  const pos = tmp.build().positions.value;
+  for (let i = 0; i < pos.length; i += 9) {
+    const P = (k: number): V3 => [pos[i + k], pos[i + k + 1], zf(pos[i + k], pos[i + k + 1])];
+    b.tri(P(0), P(3), P(6));
+  }
+}
+
+// OSM 3D parts of the 2006 stadium (frame metres): lower bowl (to 10 m), upper decks (12 m → top), press box
+const SS_LOWER: V2[][] = [
+  [[-33.5, 62.4], [-63.7, 75.1], [-63.8, -73.1], [-33.5, -60.7]],
+  [[35.5, -61.0], [65.2, -73.7], [65.6, 73.9], [35.5, 61.4]],
+  [[-43.0, -94.4], [43.7, -94.9], [31.7, -64.7], [-30.0, -64.3]],
+  [[32.1, 64.8], [44.6, 95.3], [-42.5, 96.1], [-36.0, 79.6], [-27.7, 79.5], [-27.7, 65.2]],
+  [[-43.0, -94.4], [-30.0, -64.3], [-33.5, -60.7], [-63.8, -73.1]],
+  [[43.7, -94.9], [65.2, -73.7], [35.5, -61.0], [31.7, -64.7]],
+  [[-63.7, 75.1], [-52.3, 70.0], [-36.0, 62.6], [-36.0, 79.6], [-42.5, 96.1]],
+  [[35.5, 61.4], [65.6, 73.9], [44.6, 95.3], [32.1, 64.8]]
+];
+const SS_UPPER: {ring: V2[]; top: number}[] = [
+  {ring: [[-85.5, -67.9], [-78.7, -67.9], [-78.7, -73.3], [-69.2, -73.3], [-69.2, -75.3], [-52.3, -68.4], [-52.3, 70.0], [-68.1, 77.2], [-68.5, 75.0], [-78.4, 75.1], [-78.4, 69.6], [-85.5, 69.7]], top: 30},
+  {ring: [[54.3, -69.0], [70.5, -76.0], [70.5, -74.3], [81.6, -74.4], [81.5, -33.1], [77.3, -33.1], [77.5, 33.0], [81.5, 33.0], [81.6, 68.5], [70.5, 68.6], [70.5, 75.9], [54.2, 69.1]], top: 27},
+  {ring: [[45.9, -100.4], [39.2, -83.5], [-38.0, -82.8], [-45.2, -99.4]], top: 20},
+  {ring: [[-52.3, -68.4], [-69.2, -75.3], [-45.2, -99.4], [-38.0, -82.8]], top: 20},
+  {ring: [[39.2, -83.5], [45.9, -100.4], [70.5, -76.0], [54.3, -69.0]], top: 20},
+  {ring: [[-37.8, 84.2], [39.7, 83.6], [46.5, 100.0], [-44.4, 100.7]], top: 20},
+  {ring: [[-68.1, 77.2], [-52.3, 70.0], [-37.8, 84.2], [-44.4, 100.7]], top: 20},
+  {ring: [[39.7, 83.6], [54.2, 69.1], [70.5, 75.9], [46.5, 100.0]], top: 20}
+];
+const SS_OUTLINE: V2[] = [
+  [45.9, -100.4], [70.5, -76.0], [70.5, -74.3], [81.6, -74.4], [81.6, -26.6], [77.4, -26.6], [77.4, 26.6], [81.4, 26.5], [81.6, 68.5], [70.5, 68.6],
+  [70.5, 75.9], [46.5, 100.0], [-44.4, 100.7], [-68.1, 77.2], [-68.5, 75.0], [-78.4, 75.1], [-78.4, 69.6], [-85.5, 69.7], [-85.5, -67.9], [-78.7, -67.9],
+  [-78.7, -73.3], [-69.2, -73.3], [-69.2, -75.3], [-45.2, -99.4]
+];
+
+/** 0 at the field's edge → 1 at the stadium's outer edge (chamfered-rectangle distance). */
+function ssDepth(u: number, v: number, inU: number, inV: number, outU: number, outV: number) {
+  const su = (Math.abs(u) - inU) / (outU - inU);
+  const sv = (Math.abs(v) - inV) / (outV - inV);
+  return Math.min(1, Math.max(0, su, sv, (Math.abs(u) + Math.abs(v) - inU - inV - 30) / (outU + outV - inU - inV - 30)));
+}
+
+const stanfordStadium2006 = landmark(
+  'stanford_stadium_2006',
+  'Stanford Stadium',
+  'stadium',
+  [2005.9, 2006.71],
+  9999,
+  STANFORD_STADIUM,
+  b => {
+    b.frame(0, 0, 0, STAD_BRG, () => {
+      b.color('#4C8A3C').cap(rect(1, -2, 70, 128), 0.3);
+      b.color('#F2F2EE').box(1, -2, 0.32, 0.6, 1, 0.02);
+      // concourse ring (OSM: 12 m) under the decks
+      b.color('#B7B2A8').prism(SS_OUTLINE, 0, 12, {top: false});
+      // lower bowl rising from the field to 10 m
+      b.color('#8E7365');
+      for (const r of SS_LOWER) slopedCap(b, r, (u, v) => 0.6 + 9.4 * ssDepth(u, v, 33.5, 61, 64, 95));
+      // upper decks from 12 m to their OSM top heights
+      b.color('#C3BEB5');
+      for (const d of SS_UPPER) {
+        slopedCap(b, d.ring, (u, v) => 12 + (d.top - 12) * ssDepth(u, v, 52.3, 82.8, Math.abs(u) > 60 ? 84 : 81, 100.5));
+        b.color('#A9A49B').walls(d.ring, 10, 12).color('#C3BEB5');
+      }
+      // press box and suites on the west (home) side
+      b.color('#C9CBCB');
+      boxR(b, [77.4, 92.6, -26.7, 26.6], 0, 17);
+      b.color('#6E8A98');
+      boxR(b, [77.4, 92.6, -26.7, 26.6], 17, 37);
+      b.color('#D4D6D6');
+      boxR(b, [76.9, 93, -27.2, 27.1], 37, 38);
+      for (const v of [-29.8, 29.8]) boxR(b, [77.4, 81.5, v - 3.2, v + 3.2], 0, 25);
+      // video boards behind both end zones
+      b.color('#2E3236');
+      for (const v of [-116.8, 117]) {
+        boxR(b, [-9, 11.3, v - 0.8, v + 0.8], 30, 38);
+        boxR(b, [-4, -2.8, v - 0.5, v + 0.5], 0, 30);
+        boxR(b, [5, 6.2, v - 0.5, v + 0.5], 0, 30);
+      }
+    });
+  },
+  {
+    Built: 'demolition and construction began minutes after the last home game of Nov 26, 2005; opened Sep 16, 2006 (Stanford v Navy)',
+    Capacity: '≈ 50,400; no running track; field 29 ft (8.8 m) below the surrounding ground',
+    Architect: 'Hoover and Associates; Vance Brown Builders',
+    Model:
+      'stands, decks, press box and video boards from the OpenStreetMap 3D parts (© OSM contributors, ODbL) and the orthophoto; field drawn at ground level (the terrain grid does not resolve the sunken bowl)'
+  },
+  [WIKI + 'Stanford_Stadium'],
+  [rotPoly(rect(-2, 0, 180, 205), STAD_BRG)]
+);
+
+/** Earthen bowl of the 1921 stadium round a running track (track oval: half-width 40 m, straights ±36 m). */
+function oldStanfordBowl(b: MeshBuilder, rows: number, openS: number) {
+  const D = rows * 0.79; // horizontal depth of the seating slope
+  const H = rows * 0.27; // rim height above the field
+  const R = 40;
+  const S = 36;
+  const pts: {p: V2; n: V2; t: number}[] = [];
+  const N = 40;
+  for (let i = 0; i <= N; i++) {
+    // angle clockwise from the +v (south-east) axis; two semicircles joined by the straights
+    const a = (Math.PI * 2 * i) / N;
+    const sx = Math.sin(a);
+    const cy = Math.cos(a);
+    pts.push({p: [R * sx, (cy >= 0 ? S : -S) + R * cy], n: [sx, cy], t: Math.abs((((a * 180) / Math.PI + 180) % 360) - 180)});
+  }
+  const inner: V3[] = [];
+  const outer: V3[] = [];
+  const flush = () => {
+    if (inner.length > 1) {
+      b.color('#9C8F7A').ribbon(inner, outer);
+      b.color('#7F8C5A').wallProfile(outer.map(p => [p[0], p[1]] as V2), 0, H);
+      for (const k of [0, inner.length - 1]) b.quad([inner[k][0], inner[k][1], 0.4], [outer[k][0], outer[k][1], 0.4], outer[k], inner[k]);
+    }
+    inner.length = 0;
+    outer.length = 0;
+  };
+  for (const q of pts) {
+    // t = angular distance from the +v (south-east) axis; the open end has no seats
+    if (q.t < openS) {
+      flush();
+      continue;
+    }
+    inner.push([q.p[0], q.p[1], 0.8]);
+    outer.push([q.p[0] + q.n[0] * D, q.p[1] + q.n[1] * D, H]);
+  }
+  flush();
+  // field and cinder track
+  b.color('#B98B67').cap(roundedRect(0, 0, 2 * R - 0.5, 2 * (S + R) - 0.5, R - 0.3, 8), 0.25);
+  b.color('#5F8F45').cap(rect(0, 0, 49, 110), 0.35);
+}
+
+function oldStanford(id: string, built: [number, number], end: number, rows: number, openS: number, facts: Record<string, string>) {
+  return landmark(
+    id,
+    'Stanford Stadium (1921)',
+    'stadium',
+    built,
+    end,
+    STANFORD_STADIUM,
+    b => b.frame(0, 0, 0, STAD_BRG, () => oldStanfordBowl(b, rows, openS)),
+    {
+      ...facts,
+      Construction: 'earthen horseshoe with wooden bleachers on a steel frame, dug into the ground (the earth from the bowl built the embankments); cinder track',
+      Model:
+        'centred on today\'s stadium (same site); track oval, row depth (0.79 m) and rise estimated; open end at the south-east (one source) — LOW CONFIDENCE geometry, no plan or historic aerial was reachable'
+    },
+    [WIKI + 'Stanford_Stadium', 'https://stanfordmag.org/contents/a-short-history-of-stanford-stadium']
+  );
+}
+const stanfordStadium1921 = oldStanford('stanford_stadium_1921', [1921.42, 1921.88], 1925.6, 66, 50, {
+  Built: 'groundbreaking Jun 1, 1921, about five months; first game Nov 19, 1921 (Big Game, Cal 42–7)',
+  Capacity: '60,000 in 66 rows (U-shape; second in size only to the Yale Bowl)'
+});
+const stanfordStadium1925 = oldStanford('stanford_stadium_1925', [1925.6, 1925.72], 1927.6, 66, 22, {
+  '1925': '10,200 seats added, nearly enclosing the horseshoe (70,200)'
+});
+const stanfordStadium1927 = oldStanford('stanford_stadium_1927', [1927.6, 1927.72], 2005.9, 80, 22, {
+  '1927': 'fourteen more rows (80 rows; 85,500–89,000 seats)',
+  End: 'demolished from Nov 26, 2005 and rebuilt within the old bowl'
+});
+
+// =================================================================== STADIUMS AND ARENAS (Santa Clara County)
+
+/** Chamfered rectangle (8 vertices: top edge, right, bottom, left) around (cx, cy). */
+function oct8(cx: number, cy: number, L: number, R: number, B: number, T: number, c: number): V2[] {
+  return [
+    [cx - L + c, cy + T],
+    [cx + R - c, cy + T],
+    [cx + R, cy + T - c],
+    [cx + R, cy - B + c],
+    [cx + R - c, cy - B],
+    [cx - L + c, cy - B],
+    [cx - L, cy - B + c],
+    [cx - L, cy + T - c]
+  ];
+}
+
+/** Seating tier between two matching rings with per-vertex heights. */
+function tier(b: MeshBuilder, inner: V2[], outer: V2[], zIn: number[] | number, zOut: number[] | number, seats: string, wall?: string) {
+  const zi = (i: number) => (Array.isArray(zIn) ? zIn[i] : zIn);
+  const zo = (i: number) => (Array.isArray(zOut) ? zOut[i] : zOut);
+  b.color(seats).ribbon(
+    inner.map((p, i) => [p[0], p[1], zi(i)] as V3),
+    outer.map((p, i) => [p[0], p[1], zo(i)] as V3),
+    true
+  );
+  if (wall) b.color(wall).wallProfile(outer, 0, outer.map((_, i) => zo(i)), true);
+}
+
+/** Polygon with its own per-vertex heights (sloped decks given by inner/outer edges). */
+function zPoly(b: MeshBuilder, ring: V3[]) {
+  const tmp = new MeshBuilder();
+  tmp.cap(ring.map(p => [p[0], p[1]] as V2), 0);
+  const pos = tmp.build().positions.value;
+  const zAt = (x: number, y: number) => {
+    let best = ring[0][2];
+    let bd = Infinity;
+    for (const p of ring) {
+      const d = (p[0] - x) ** 2 + (p[1] - y) ** 2;
+      if (d < bd) {
+        bd = d;
+        best = p[2];
+      }
+    }
+    return best;
+  };
+  for (let i = 0; i < pos.length; i += 9) {
+    b.tri([pos[i], pos[i + 1], zAt(pos[i], pos[i + 1])], [pos[i + 3], pos[i + 4], zAt(pos[i + 3], pos[i + 4])], [pos[i + 6], pos[i + 7], zAt(pos[i + 6], pos[i + 7])]);
+  }
+}
+
+// ---- Levi's Stadium (frame 151.8°: +v = south-south-east end, +u = west side with the suite tower)
+const LEVIS: V2 = [-121.96973, 37.403165];
+const LEVIS_OUTLINE: V2[] = [
+  [99.6, -129.6], [108.9, -120.4], [90.8, -102.3], [97.1, -96.1], [114.7, -96.2], [114.8, 88.1], [97.2, 88.2], [90.9, 94.5], [109.0, 112.5], [99.8, 121.7],
+  [93.6, 115.5], [85.3, 123.8], [91.5, 130.0], [82.3, 139.2], [64.2, 121.3], [57.9, 127.6], [57.9, 141.9], [52.5, 141.9], [52.5, 157.2], [-45.0, 157.9],
+  [-45.0, 141.5], [-48.6, 141.5], [-65.7, 128.3], [-71.9, 135.9], [-88.1, 123.0], [-82.1, 115.6], [-99.7, 100.6], [-116.3, 46.8], [-116.6, -51.7],
+  [-99.3, -109.3], [-94.9, -112.8], [-101.5, -121.2], [-86.5, -133.0], [-79.9, -124.5], [-65.6, -135.8], [-72.2, -144.2], [-57.2, -156.0], [-50.6, -147.5],
+  [-47.1, -150.3], [57.7, -150.9], [57.7, -135.1], [64.0, -128.9], [82.0, -147.0], [91.3, -137.8], [85.2, -131.6], [93.4, -123.4]
+];
+const LEVIS_EAST_DECK: V3[][] = [
+  [[-35.7, -120.2, 34.5], [-72.0, -91.7, 34.5], [-94.0, -105.8, 51], [-44.7, -144.6, 51]],
+  [[-94.0, -105.8, 51], [-72.0, -91.7, 34.5], [-85.5, -47.6, 34.5], [-110.5, -51.8, 51]],
+  [[-110.5, -51.8, 51], [-85.5, -47.6, 34.5], [-85.5, 40.4, 34.5], [-110.5, 45.0, 51]],
+  [[-110.5, 45.0, 51], [-85.5, 40.4, 34.5], [-71.9, 84.4, 34.5], [-93.9, 98.8, 51]],
+  [[-44.9, 136.7, 51], [-93.9, 98.8, 51], [-71.9, 84.4, 34.5], [-36.0, 112.1, 34.5]]
+];
+const LEVIS_TOWER: V2[] = [[94.1, 79.4], [92.7, 79.3], [91.4, 83.4], [71.6, 77.4], [85.2, 34.2], [84.4, -46.6], [71.9, -85.7], [92.7, -92.1], [94.5, -86.0], [95.7, -85.9]];
+
+const levisStadium = landmark(
+  'levis_stadium',
+  "Levi's Stadium",
+  'stadium',
+  [2012.3, 2014.54],
+  9999,
+  LEVIS,
+  b => {
+    b.frame(0, 0, 0, 151.8, () => {
+      const RED = '#A9383B';
+      const CONC = '#BCB7AE';
+      // podium / concourses (OSM: 11 m) and the field
+      b.color(CONC).prism(LEVIS_OUTLINE, 0, 11, {top: false});
+      b.color('#4D8B3B').cap(rect(5.5, -4.5, 79, 129), 0.3);
+      // lower bowl, field edge → 11 m
+      const lowIn = oct8(5.5, -4.5, 39.5, 39.5, 64.5, 64.5, 6);
+      const lowOut = oct8(5.5, -4.5, 70.5, 70, 96.2, 96.7, 30);
+      tier(b, lowIn, lowOut, 0.8, 11, RED);
+      // club / mid tier: 16 → 28 m round the bowl, 14 → 20 m on the suite-tower (west) side
+      const midIn = oct8(5.5, -4.5, 59.5, 59.5, 75.7, 77.5, 22);
+      const midOut = oct8(5.5, -4.5, 86, 79.7, 111.3, 111.8, 32);
+      const west = (z: number, zw: number) => lowIn.map((_, i) => (i === 2 || i === 3 ? zw : z));
+      b.color(CONC).wallProfile(midIn, 11, west(16, 14), true);
+      tier(b, midIn, midOut, west(16, 14), west(28, 20), RED);
+      b.color(CONC).wallProfile(midOut, west(28, 20), west(33, 22), true);
+      // the great east upper deck (34.5 → 51 m), open to the sky
+      b.color(RED);
+      for (const d of LEVIS_EAST_DECK) zPoly(b, d);
+      b.color(CONC);
+      b.wallProfile([[-44.7, -144.6], [-94.0, -105.8], [-110.5, -51.8], [-110.5, 45.0], [-93.9, 98.8], [-44.9, 136.7]], 0, 51);
+      b.wallProfile([[-35.7, -120.2], [-72.0, -91.7], [-85.5, -47.6], [-85.5, 40.4], [-71.9, 84.4], [-36.0, 112.1]], 29, 34.5);
+      b.color('#8E9398').wallProfile([[-44.7, -144.6], [-94.0, -105.8], [-110.5, -51.8], [-110.5, 45.0], [-93.9, 98.8], [-44.9, 136.7]], 51, 52.5);
+      // end-zone buildings and the two 200-ft video boards (OSM: 37 → 54 m)
+      b.color(CONC);
+      boxR(b, [-44.7, 55.6, -145.2, -120.2], 0, 33);
+      boxR(b, [-35.6, 46.7, 112, 136.7], 0, 33);
+      b.color('#9EA3A8');
+      boxR(b, [-35.9, 44.4, -145.1, -130.6], 33, 37);
+      boxR(b, [-35.6, 44.7, 120.2, 136.7], 33, 37);
+      b.color('#25292D');
+      boxR(b, [-6.8, 52.2, -141.9, -138.3], 37, 54);
+      boxR(b, [-6.5, 52.5, 128.1, 131.8], 37, 54);
+      // SAP suite tower on the west side (OSM: 44 m, 7 floors) with its green roof; solar canopy beyond it
+      b.color('#C6CACD').prism(LEVIS_TOWER, 0, 44, {top: false});
+      b.color('#6F8D50').cap(LEVIS_TOWER, 44);
+      b.color('#7D8C96');
+      for (const z of [17, 23.5, 30, 36.5]) b.wallProfile(LEVIS_TOWER.slice(3, 8), z, z + 3.2);
+      b.color('#9EA3A8');
+      for (let v = -84; v <= 79; v += 20.4) boxR(b, [100, 101.2, v - 0.6, v + 0.6], 0, 50.5);
+      b.color('#3E4651');
+      boxR(b, [94.1, 107.8, -85.7, 79.7], 50.5, 52);
+    });
+  },
+  {
+    Built: 'groundbreaking Apr 19, 2012; opened Jul 17, 2014 (San Francisco 49ers)',
+    Capacity: '68,500, expandable to about 75,000; 174 suites',
+    Architect: 'HNTB',
+    Features: 'seven-storey SAP suite tower on the west side with a 27,000 sq ft green roof; solar canopies; two 200-ft video boards',
+    Model:
+      'outline, bowl tiers, east upper deck, suite tower and video boards from the OpenStreetMap 3D parts (© OSM contributors, ODbL) and the orthophoto; tier edges simplified to chamfered rectangles'
+  },
+  [WIKI + "Levi's_Stadium"],
+  [rotPoly(rect(-1, 3, 235, 316), 151.8)]
+);
+
+// ---- SAP Center (San José Arena): square roof on a round drum, frame 176.5°
+const SAP: V2 = [-121.901274, 37.332798];
+const sapCenter = landmark(
+  'sap_center',
+  'SAP Center (San Jose Arena)',
+  'stadium',
+  [1990.49, 1993.68],
+  9999,
+  SAP,
+  b => {
+    b.frame(0, 0, 0, 176.5, () => {
+      // elliptical bowl enclosure: glass and stainless steel (orthophoto: 142.6 × 135 m)
+      const drum = ellipse(-0.5, 2, 71.3, 67.5, 40);
+      b.color('#B7C2CA').prism(drum, 0, 21, {top: false});
+      b.color('#8EA2B0');
+      for (const z of [5.5, 12.5]) b.prism(drum.map(([x, y]) => [x * 1.003, (y - 2) * 1.003 + 2] as V2), z, z + 2.2, {top: false});
+      // square space-frame roof, 132 × 131 m, white trusses round its edge (OSM height 28.7 m)
+      const sq = rect(-0.5, 5, 132, 131);
+      b.color('#E9ECEC').prism(sq, 22, 28.7);
+      b.color('#D3D7D8').walls(sq, 21, 22);
+      // raised diagonal skylight band, north-west corner → south-east corner
+      b.color('#C8D2D6');
+      b.frame(-0.5, 5, 0, 135, () => b.box(0, 0, 28.7, 13, 175, 1.4));
+      // glass corner atria (north-west and south-east), ≈ 17 m legs
+      b.color('#A9C4CF');
+      for (const [cx, cy, sx, sy] of [[-66.5, 70.5, 1, -1], [65.5, -60.5, -1, 1]] as [number, number, number, number][]) {
+        const a: V2 = [cx, cy];
+        const c1: V2 = [cx + 17 * sx, cy];
+        const c2: V2 = [cx, cy + 17 * sy];
+        b.prism([a, c1, c2], 0, 28.7);
+      }
+    });
+  },
+  {
+    Built: 'groundbreaking Jun 28, 1990; opened Sep 7, 1993 (San Jose Sharks)',
+    Architect: 'Sink Combs Dethlefs (Charles Sink); Prodis Associates',
+    Capacity: '17,435 (hockey) – 19,190 (concerts)',
+    Model:
+      'square roof (132 × 131 m), drum, diagonal skylight and corner glass atria measured on the orthophoto; height from OpenStreetMap (28.7 m, © OSM contributors, ODbL); facade bands estimated'
+  },
+  [WIKI + 'SAP_Center'],
+  [rotPoly(rect(1.8, -6, 152, 162), 176.5)]
+);
+
+// ---- PayPal Park (Earthquakes Stadium): stands and canopies on three sides, bar behind the north-east goal
+const PAYPAL: V2 = [-121.924806, 37.350928];
+const paypalPark = landmark(
+  'paypal_park',
+  'PayPal Park',
+  'stadium',
+  [2012.8, 2015.16],
+  9999,
+  PAYPAL,
+  b => {
+    b.frame(0, 0, 0, 32.6, () => {
+      const SEAT = '#2F4A68';
+      const CONC = '#B9B5AD';
+      b.color('#4C8A3B').cap(rect(0, 25, 74, 110), 0.3);
+      // steep stands: west and east sides, south end (orthophoto: canopies 20 m deep)
+      const side = (s: number) => {
+        const x0 = 40 * s;
+        const x1 = 68 * s;
+        b.color(SEAT).quad([x0, -36, 1], [x0, 81, 1], [x1, 81, 17], [x1, -36, 17]);
+        b.color(CONC).quad([x1, -36, 0], [x1, 81, 0], [x1, 81, 17], [x1, -36, 17]);
+        b.quad([x0, 81, 0], [x1, 81, 0], [x1, 81, 17], [x0, 81, 1]);
+        boxR(b, s > 0 ? [68, 72, -68, 81] : [-72, -68, -68, 81], 0, 23.8);
+      };
+      side(-1);
+      side(1);
+      b.color(SEAT).quad([-40, -33, 1], [40, -33, 1], [68, -64, 17], [-68, -64, 17]);
+      b.quad([-40, -33, 1], [-68, -64, 17], [-68, -36, 17], [-40, -36, 1]);
+      b.quad([40, -33, 1], [68, -64, 17], [68, -36, 17], [40, -36, 1]);
+      b.color(CONC);
+      boxR(b, [-72, 72, -68, -64], 0, 23.8);
+      // white canopy roofs (OSM height 23.8 m)
+      b.color('#EEF0EF');
+      boxR(b, [-72, -50, -68, 81], 22.6, 23.8);
+      boxR(b, [50, 72, -68, 81], 22.6, 23.8);
+      boxR(b, [-50, 50, -68, -48], 22.6, 23.8);
+      b.color('#9EA3A8');
+      for (let v = -60; v <= 80; v += 20) for (const u of [-51, 51]) b.box(u, v, 17, 0.6, 0.6, 5.6);
+    });
+  },
+  {
+    Built: 'groundbreaking Oct 21, 2012; opened Feb 27, 2015 (San Jose Earthquakes) as Avaya Stadium; renamed PayPal Park in 2021',
+    Capacity: '18,000; some of the steepest stands in Major League Soccer; field 105 × 68 m',
+    Architect: 'HOK (360 Architecture)',
+    Features: 'the largest outdoor bar in North America behind the north-east goal; canopy roofs over three sides',
+    Model:
+      'canopies and stands measured on the orthophoto (open north-east end); outline and height from OpenStreetMap (23.8 m, © OSM contributors, ODbL); rake estimated'
+  },
+  [WIKI + 'PayPal_Park'],
+  [rotPoly(rect(0, 5, 152, 152), 32.6)]
+);
+
+export const SOUTHBAY: Landmark[] = [
+  appleRing,
+  steveJobsTheater,
+  appleVisitorCenter,
+  innerQuad,
+  outerQuad,
+  memorialArch,
+  memChu1903,
+  memChu1913,
+  hooverTower,
+  greenLibrary,
+  stanfordStadium1921,
+  stanfordStadium1925,
+  stanfordStadium1927,
+  stanfordStadium2006,
+  levisStadium,
+  sapCenter,
+  paypalPark
+];
