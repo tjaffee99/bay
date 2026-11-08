@@ -324,7 +324,8 @@ route("osr", "Ocean Shore Railway", "rail", OSR, [
              "the beach terraces of Salada (Sharp Park) and Rockaway. Geometry: USGS San Mateo 1915 sheet "
              "('Ocean Shore')."),
     seg("Rockaway - Pedro Valley (Tobin)", 1907.75, OSR_END,
-        pts((-122.4982, 37.6090), (-122.5010, 37.6040), (-122.5050, 37.5985), (-122.5095, 37.5966)),
+        pts((-122.4982, 37.6090), (-122.4998, 37.6045), (-122.5015, 37.6005), (-122.5040, 37.5978),
+            (-122.5070, 37.5964), (-122.5095, 37.5966)),
         note="Tobin station at San Pedro Point (Danmann Ave / Shelter Cove Rd), reached 1907-10-02. Geometry "
              "hand-placed along the valley floor (LOW CONFIDENCE).", geometry_confidence="low"),
     seg("Tobin - Shelter Cove (San Pedro Point)", 1908.45, OSR_END,
@@ -352,11 +353,13 @@ route("osr", "Ocean Shore Railway", "rail", OSR, [
              "Highway in Montara (OSM abandoned:railway, old operator Ocean Shore Railway); Moss Beach "
              "approximate.", geometry_confidence="medium"),
     seg("Moss Beach - Princeton - North Granada - Granada", 1908.45, OSR_END,
-        pts((-122.5130, 37.5270), (-122.5085, 37.5205), (-122.5010, 37.5135), (-122.4945, 37.5070),
-            (-122.4890, 37.5035), (-122.4820, 37.5025), (-122.4735, 37.5012), (-122.4685, 37.4985),
-            (-122.4617, 37.4966)),
-        note="Granada reached June 1908; North Granada depot (1900 building) at 10151 Cabrillo Hwy. Geometry "
-             "hand-placed along the shore of Half Moon Bay (LOW CONFIDENCE).", geometry_confidence="low"),
+        pts((-122.5130, 37.5270), (-122.5085, 37.5205), (-122.5010, 37.5135), (-122.4945, 37.5075),
+            (-122.4890, 37.5045), (-122.4850, 37.5050), (-122.4812, 37.5052)),
+        rail((-122.4812, 37.5052), (-122.4746, 37.5025), (-122.4682, 37.5001), (-122.4618, 37.4966), snap=60,
+             join=40),
+        note="Granada reached June 1908; North Granada depot (1900 building) at 10151 Cabrillo Hwy. Geometry: "
+             "OSM grade under Cabrillo Highway from Princeton to Miramar; Moss Beach - Princeton hand-placed (LOW "
+             "CONFIDENCE).", geometry_confidence="medium"),
     seg("Granada - Miramar - Half Moon Bay", 1908.78, OSR_END,
         rail((-122.4617, 37.4966), (-122.4565, 37.4904), snap=80),
         pts((-122.4565, 37.4904), (-122.4510, 37.4820), (-122.4465, 37.4735), (-122.4442, 37.4668)),
