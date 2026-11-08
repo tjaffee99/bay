@@ -878,6 +878,10 @@ def main():
     # old county roads — primary / secondary — no later than their towns' first
     # buildings, and before 1880 in open country, when no buildings date them)
     by_bld, n_bld = date_by_buildings(rr.geometry.values, mid_ll, np.where(rr["class"].isin(["primary", "secondary"]).values, 1870.0, 1900.0))
+    dated, dropped = segment_overrides()
+    rids_ = rr["id"].astype(str).values
+    by_bld = np.array([max(y, dated[i]) if i in dated else y for y, i in zip(by_bld, rids_)])
+    by_bld = np.where(np.isin(rids_, list(dropped)), np.nan, by_bld)
     log(f"region roads: {len(rr)} segments, {n_bld} dated by the buildings along them")
     items = []
     for i, (g, klass) in enumerate(zip(rr.geometry.values, rr["class"].values)):
@@ -891,6 +895,8 @@ def main():
         else:
             k = K_MAJOR if klass in ("primary", "secondary") else K_STREET
             y = float(by_bld[i])
+            if not np.isfinite(y):
+                continue  # researched: not a road
         items.append((g, k, WIDTH[k], y, 9999.0, 0))
     write_paths(VIEWER_DATA / "roads-region.bin.gz", items, ground, z_offset, step=60.0)
     # researched freeway lines with their direction, to date Overture's real geometry
@@ -922,6 +928,20 @@ def main():
 
 LOCAL_Z = 12  # tiles of the suburban street grid (~9.8 km), loaded from zoom 12.5
 LOCAL_LOW_Z = 10  # simplified street grid for city scale (zoom 9-12.5)
+
+
+def segment_overrides():
+    """Overture road segments researched on vanished large sites
+    (data/manual/vanished_sites/road_segments.csv): `date` = not before `not_before`
+    (Bay Meadows II streets didn't exist while the racetrack did), `drop` = not a road."""
+    p = MANUAL / "vanished_sites" / "road_segments.csv"
+    if not p.exists():
+        return {}, set()
+    t = pd.read_csv(p)
+    nb = pd.to_numeric(t.not_before, errors="coerce")
+    dated = {str(i): float(y) for i, a, y in zip(t.segment_id, t.action, nb) if str(a) == "date" and np.isfinite(y)}
+    dropped = {str(i) for i, a in zip(t.segment_id, t.action) if str(a) == "drop"}
+    return dated, dropped
 
 
 def date_by_buildings(lines_utm, mid_ll, default):
@@ -990,7 +1010,13 @@ def local_streets():
     ru = rr.to_crs(UTM)
     mid = rr.geometry.interpolate(0.5, normalized=True)
     year, n_bld = date_by_buildings(ru.geometry.values, mid, 1925.0)
-    log(f"local streets: {len(rr)} segments, {n_bld} dated by the buildings along them")
+    dated, dropped = segment_overrides()
+    ids = rr["id"].astype(str).values
+    year = np.array([max(y, dated[i]) if i in dated else y for y, i in zip(year, ids)])
+    keep = ~np.isin(ids, list(dropped))
+    rr, ru, mid, year = rr[keep].reset_index(drop=True), ru[keep].reset_index(drop=True), mid[keep].reset_index(drop=True), year[keep]
+    log(f"local streets: {len(rr)} segments, {n_bld} dated by the buildings along them, "
+        f"{int(np.isin(ids, list(dated)).sum())} researched dates, {int((~keep).sum())} dropped")
     # tiles
     n = 2 ** LOCAL_Z
     tx = np.floor((mid.x.values + 180) / 360 * n).astype(int)
