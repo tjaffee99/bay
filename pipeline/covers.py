@@ -2,11 +2,11 @@
 (viewer/src/layers/terrain.ts PALETTE — keep in sync)."""
 
 DEEP, SHALLOW, FLAT, MARSH, BEACH, DUNES, GRASS, SCRUB, OAK, FOREST, FARM, ORCHARD, VINEYARD, PASTURE, \
-    SALTPOND, DIKED, URBAN, PARK, ROCK, RIPARIAN, FILL, WETLAND, RESERVOIR, BURNED = range(24)
+    SALTPOND, DIKED, URBAN, PARK, ROCK, RIPARIAN, FILL, WETLAND, RESERVOIR, BURNED, SUBURB = range(25)
 
 NAMES = ["deep_water", "shallow_water", "tidal_flat", "tidal_marsh", "beach", "dunes", "grassland", "scrub",
          "oak_woodland", "forest", "farmland", "orchard", "vineyard", "pasture", "salt_pond", "diked_wetland",
-         "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned"]
+         "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned", "suburban"]
 
 WET = {DEEP, SHALLOW, FLAT, MARSH, RESERVOIR}
 

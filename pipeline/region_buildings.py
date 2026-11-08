@@ -34,7 +34,7 @@ from building_binary import write_buildings
 from common import INTERIM, RAW, VIEWER_DATA, log
 from download_overture import RELEASE
 from sf_buildings import CONF, USE_CATEGORIES
-from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_GLASS, M_INDUSTRIAL, M_MASONRY, M_MIDCENTURY,
+from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_EARLY, M_GLASS, M_INDUSTRIAL, M_MASONRY, M_MIDCENTURY,
                        M_STUCCO, M_TOWER70, M_VICTORIAN, R_FLAT, R_SHINGLE, R_TILE)
 
 UTM = "EPSG:32610"
@@ -276,11 +276,42 @@ def main():
     g = g.assign(start_year=start, end_year=9999.0, height=H + (gmean - gmin) + 1.0, base=gmin - 1.0,
                  year_confidence=conf, use=use, raw_year=raw, stories=stories, mat=mat, roof=roof)
     g["fid_key"] = g["id"].astype(str) if "id" in g else g.index.astype(str)
+    cols = ["start_year", "end_year", "height", "base", "year_confidence", "use", "raw_year", "stories", "mat",
+            "roof", "fid_key", "geometry"]
+    g = g[cols]
+    # vanished buildings: traced (Sanborn) + generated where the neighbourhood says so
+    from region_predecessors import region_predecessors
+    pred = region_predecessors(g)
+    if len(pred):
+        pred = pred.explode(index_parts=False)
+        pred = pred[pred.geometry.geom_type == "Polygon"].reset_index(drop=True)
+        parea = pred.to_crs(UTM).geometry.area.values
+        pmat, proof = materials(pred.start_year.values.astype(float), pred.height.values.astype(float), parea,
+                                pred.use.values.astype(int))
+        dm = pred.get("material", pd.Series("", index=pred.index)).fillna("").astype(str).values
+        pmat = np.where(dm == "brick", M_BRICK, np.where(dm == "stone", M_CIVIC, np.where(dm == "wharf", M_EARLY, pmat)))
+        pext = [np.asarray(gm.exterior.coords)[:, :2] for gm in pred.geometry.values]
+        pc = np.array([len(e) for e in pext])
+        pz = ground(*np.concatenate(pext).T)
+        psplit = np.cumsum(pc)[:-1]
+        pmin = np.array([a.min() for a in np.split(pz, psplit)])
+        pmean = np.array([a.mean() for a in np.split(pz, psplit)])
+        pred = pred.assign(height=pred.height.values + (pmean - pmin) + 1.0, base=pmin - 1.0, raw_year=0,
+                           mat=pmat.astype(np.uint8), roof=proof, fid_key=pred.mapblklot.astype(str),
+                           stories=pred.stories.fillna(2).values)
+        pc_ = pred[cols].set_crs(4326, allow_override=True)
+        g = gpd.GeoDataFrame(pd.concat([g.set_crs(4326, allow_override=True), pc_], ignore_index=True), geometry="geometry", crs=4326)
+        log(f"region: + {len(pred)} vanished buildings ({pred.year_confidence.value_counts().to_dict()})")
     g["geometry"] = g.geometry.to_crs(UTM).simplify(0.3, preserve_topology=True).to_crs(4326)
     g = g[~g.geometry.is_empty & g.geometry.is_valid & (g.geometry.geom_type == "Polygon")]
     rp = g.geometry.representative_point()
     tx, ty = tile_of(rp.x.values, rp.y.values)
     g = g.assign(tx=tx, ty=ty)
+    # building points for the terrain stage (city ground follows the buildings; suburban
+    # vs urban ground from how much of it buildings cover)
+    pd.DataFrame({"lon": rp.x.values, "lat": rp.y.values, "start_year": g.start_year.values,
+                  "end_year": g.end_year.values,
+                  "area_m2": g.to_crs(UTM).geometry.area.values}).to_parquet(INTERIM / "region_building_points.parquet")
     OUT.mkdir(parents=True, exist_ok=True)
     index = []
     for (x, y), t in g.groupby(["tx", "ty"]):

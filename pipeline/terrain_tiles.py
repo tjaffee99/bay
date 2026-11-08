@@ -52,10 +52,11 @@ TILES = VIEWER_DATA.parent / "tiles" / "terrain"
 # ---- cover codes (shared with viewer/src/layers/terrain.ts) -------------------
 from covers import (BEACH, BURNED, DEEP, DIKED, DUNES, FARM, FILL, FLAT, FOREST, GRASS, LANDCOVER_TABLE,  # noqa: E402
                     MARSH, OAK, ORCHARD, PARK, PASTURE, RESERVOIR, RIPARIAN, ROCK, SALTPOND, SCRUB, SHALLOW,
-                    URBAN, VINEYARD, WET, WETLAND)
+                    SUBURB, URBAN, VINEYARD, WET, WETLAND)
 COVER_NAMES = ["deep_water", "shallow_water", "tidal_flat", "tidal_marsh", "beach", "dunes", "grassland",
                "scrub", "oak_woodland", "forest", "farmland", "orchard", "vineyard", "pasture", "salt_pond",
-               "diked_wetland", "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned"]
+               "diked_wetland", "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned",
+               "suburban"]
 # decoration kinds
 D_BROADLEAF, D_CONIFER, D_PALM, D_ORCHARD, D_FARMHOUSE, D_SHRUB = range(6)
 
@@ -100,18 +101,21 @@ def nearest_fill(a, valid):
 
 
 def sf_building_years(g):
-    """Year each SF cell becomes city ground: when the 2nd building within ~45 m of it
-    stands (today's buildings and the vanished ones: pre-1906 city, replaced houses,
-    documented early structures). A neighbourhood's ground fills in with its houses
-    instead of appearing as a bare street grid years ahead of them."""
+    """Year each cell becomes city ground: when the 2nd building within ~45 m of it stands
+    (San Francisco's buildings incl. vanished ones, and the five counties' footprints from
+    region_buildings.py). A neighbourhood's ground fills in with its houses instead of
+    appearing as a bare street grid years ahead of them. Also returns the share of each
+    cell covered by today's buildings (urban vs suburban ground)."""
     from scipy.spatial import cKDTree
-    frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "geometry"]]]
+    frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "end_year", "geometry"]]]
     pred = INTERIM / "sf_predecessors.parquet"
     if pred.exists():
-        frames.append(gpd.read_parquet(pred)[["start_year", "geometry"]])
+        frames.append(gpd.read_parquet(pred)[["start_year", "end_year", "geometry"]])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), geometry="geometry", crs=4326).to_crs(3857)
     c = b.geometry.representative_point()
     px, py, yl = [c.x.values], [c.y.values], [b.start_year.values]
+    today_x, today_y, today_a = [c.x.values[b.end_year.values > 2025]], [c.y.values[b.end_year.values > 2025]], \
+        [b.to_crs(32610).geometry.area.values[b.end_year.values > 2025]]
     # big footprints (campuses, warehouses, stadiums) also count along their outline,
     # so the ground under and around them is city too, not only near their middle
     big = b[b.geometry.length > 150]
@@ -124,12 +128,24 @@ def sf_building_years(g):
         px.append(np.array([p.x for p in pts]))
         py.append(np.array([p.y for p in pts]))
         yl.append(np.full(n, y))
+    rpath = INTERIM / "region_building_points.parquet"
+    if rpath.exists():
+        r = pd.read_parquet(rpath)
+        X = np.radians(r.lon.values) * 6378137.0
+        Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(r.lat.values) / 2))
+        px.append(X)
+        py.append(Y)
+        yl.append(r.start_year.values)
+        now = r.end_year.values > 2025
+        today_x.append(X[now])
+        today_y.append(Y[now])
+        today_a.append(r.area_m2.values[now])
     tree = cKDTree(np.column_stack([np.concatenate(px), np.concatenate(py)]))
     yrs = np.concatenate(yl).astype(np.float32)
     X = g["X0"] + np.arange(g["cols"]) * g["res"]
     Y = g["Y0"] - np.arange(g["rows"]) * g["res"]
     out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
-    # ground metres per mercator metre at SF's latitude ~0.79: 45 m ground ~ 57 merc
+    # ground metres per mercator metre at the Bay's latitude ~0.79: 45 m ground ~ 57 merc
     for r0 in range(0, g["rows"], 256):
         rr = np.arange(r0, min(r0 + 256, g["rows"]))
         xx, yy = np.meshgrid(X, Y[rr])
@@ -138,7 +154,16 @@ def sf_building_years(g):
         ny.sort(axis=1)
         second = np.where(np.isfinite(ny[:, 1]), ny[:, 1], np.nan)
         out[rr, :] = second.reshape(len(rr), -1)
-    return out
+    # building coverage of each cell today (footprint area binned by centre / ground area)
+    tx, ty, ta = np.concatenate(today_x), np.concatenate(today_y), np.concatenate(today_a)
+    col = np.floor((tx - g["X0"]) / g["res"]).astype(int)
+    row = np.floor((g["Y0"] - ty) / g["res"]).astype(int)
+    ok = (col >= 0) & (col < g["cols"]) & (row >= 0) & (row < g["rows"])
+    cov = np.zeros((g["rows"], g["cols"]), np.float32)
+    np.add.at(cov, (row[ok], col[ok]), ta[ok])
+    cell_ground = (g["res"] * 0.79) ** 2
+    cov = ndimage.uniform_filter(cov / cell_ground, 3)
+    return out, cov
 
 
 def golf_years(g):
@@ -324,9 +349,8 @@ def histories(name, g, d):
 
     # ---- urban year
     urban_y = np.full((rows, cols), np.nan, np.float32)
-    if in_sf.any():
-        sfy = sf_building_years(g)
-        urban_y = np.where(np.isfinite(sfy), sfy, urban_y)
+    sfy, bcov = sf_building_years(g)
+    urban_y = np.where(np.isfinite(sfy), sfy, urban_y)
     fbv = (fb >= 1810) & (fb <= 2026)
     fb_filled = nearest_fill(np.where(fbv, fb, np.nan), fbv) if fbv.any() else np.full_like(fb, np.nan)
     built_now = (wc == 50)
@@ -342,7 +366,6 @@ def histories(name, g, d):
         urban_y = np.where(has_ext & ~green_now & np.isnan(urban_y), ext_y, urban_y)
     else:
         ext_green_y = np.full((rows, cols), np.nan, np.float32)
-        sfy = np.full((rows, cols), np.nan, np.float32)
     # Outside SF, HISDAC's 250 m "first built-up year" comes from the oldest *surviving*
     # building in the cell, so a lone 1890s farmhouse paints a 250 m city block in the
     # middle of the orchards. Use the neighbourhood median instead (undeveloped cells
@@ -351,6 +374,9 @@ def histories(name, g, d):
     fb_med = ndimage.median_filter(np.where(fbv, fb, 2100.0).astype(np.float32), size=7)
     dense = fb_med <= 2026
     out_sf_urban = np.where(dense, np.maximum(fb_med, np.where(fbv, fb, fb_med)), np.where(built_frac > 0.5, fb_filled, np.nan))
+    # outside SF the buildings themselves (region_buildings.py) date the ground where they
+    # exist; HISDAC only fills cells without footprints (e.g. counties not yet built)
+    urban_y = np.where(np.isfinite(sfy) & ~in_sf & ~built_now & ~dense & (bcov < 0.04), np.nan, urban_y)
     urban_y = np.where(np.isnan(urban_y) & (built_now | dense) & ~in_sf, out_sf_urban, urban_y)
     urban_y = np.where(np.isnan(urban_y) & built_now & in_sf, np.where(fbv, fb, fb_filled), urban_y)
     urban = np.isfinite(urban_y) & ~water_now & ~open_override
@@ -491,7 +517,11 @@ def histories(name, g, d):
         event(m, c, ys + spread * h)
 
     # ---- urbanisation, parks, planted woods
-    event(urban, URBAN, urban_y)
+    # suburban ground: houses in yards and trees (little of the ground under roofs,
+    # WorldCover sees trees / grass around) reads green-grey, not as a pale city plate
+    treeish = ndimage.uniform_filter(np.isin(wc, [10, 30]).astype(np.float32), 3)
+    suburb = (bcov < 0.30) & (treeish > 0.12) & ~((bcov > 0.18) & in_sf)
+    event(urban, np.where(suburb, SUBURB, URBAN).astype(np.uint8), urban_y)
     # 1906: the burned district goes dark for about a year and a half, then the city rebuilds
     fire_path = INTERIM / "fire_1906.geojson"
     if fire_path.exists():
@@ -522,14 +552,14 @@ def histories(name, g, d):
             ce, ye = C[e], Y[e]
             ok = np.isfinite(ye) & (ce != last) & (n < 4)
             # agriculture can't come after urbanisation / fill
-            ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, FILL, PARK]))
+            ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, SUBURB, FILL, PARK]))
             # natural "fill" after the place is already urban is meaningless
-            ok &= ~((ce == FILL) & (last == URBAN))
+            ok &= ~((ce == FILL) & np.isin(last, [URBAN, SUBURB]))
             # bare fill that is built on within 4 years: go straight to the city (saves a slot)
             if (ce == FILL).any():
                 nxt_urban = np.zeros_like(ok)
                 for e2 in range(e + 1, C.shape[0]):
-                    nxt_urban |= (C[e2] == URBAN) & (Y[e2] - ye < 4)
+                    nxt_urban |= np.isin(C[e2], [URBAN, SUBURB]) & (Y[e2] - ye < 4)
                 ok &= ~((ce == FILL) & nxt_urban)
             idx = n[ok]
             rr, cc = np.nonzero(ok)

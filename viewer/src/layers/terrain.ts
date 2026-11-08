@@ -37,14 +37,15 @@ const PALETTE: [number, number, number][] = [
   [0.69, 0.76, 0.48], // 13 pasture
   [0.86, 0.73, 0.7], // 14 salt pond
   [0.63, 0.61, 0.43], // 15 diked wetland
-  [0.86, 0.84, 0.79], // 16 urban
+  [0.8, 0.78, 0.73], // 16 urban (city ground: streets, pavement, small yards)
   [0.62, 0.73, 0.47], // 17 park
   [0.68, 0.64, 0.58], // 18 rock
   [0.44, 0.57, 0.35], // 19 riparian
   [0.75, 0.71, 0.63], // 20 fill
   [0.56, 0.63, 0.47], // 21 freshwater wetland
   [0.62, 0.76, 0.83], // 22 reservoir / lake
-  [0.32, 0.25, 0.21] // 23 burned (1906)
+  [0.32, 0.25, 0.21], // 23 burned (1906)
+  [0.66, 0.69, 0.56] // 24 suburban (houses in yards and trees)
 ];
 
 const N = 65;

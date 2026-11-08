@@ -261,7 +261,7 @@ SANBORN_USE = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 
 SANBORN_SKIP: set = set()  # wharf decks are kept as low timber platforms
 
 
-def apply_sanborn(pred, today, fire, areas):
+def apply_sanborn(pred, today, fire, areas, include=None):
     """Traced Sanborn footprints (data/manual/sanborn/<area>_<map year>.geojson) replace
     the generated fabric in the blocks the sheets cover. The same building on
     consecutive maps (IoU >= 0.5) is one building; it starts at the block's development
@@ -272,10 +272,15 @@ def apply_sanborn(pred, today, fire, areas):
     files = sorted(glob.glob(str(MANUAL / "sanborn" / "*_[12][0-9][0-9][0-9].geojson")))
     if not files:
         return pred
+    if include is None:  # San Francisco: every traced area except the other cities'
+        from region_predecessors import REGION_SANBORN
+        include = lambda a: not a.startswith(REGION_SANBORN)  # noqa: E731
     frames = []
     for f in files:
         stem = f.split("/")[-1][:-8]
         area, yr = stem.rsplit("_", 1)
+        if not include(area):
+            continue
         g = gpd.read_file(f)
         if not len(g):
             continue
@@ -284,6 +289,8 @@ def apply_sanborn(pred, today, fire, areas):
         g["map_year"] = float(yr)
         frames.append(g[["area", "map_year", "stories", "material", "use", "geometry"] +
                         [c for c in ("basement", "half_storey", "confidence", "stories_source") if c in g]])
+    if not frames:
+        return pred
     sb = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=UTM)
     sb = sb[sb.geometry.notna() & sb.geometry.is_valid & (sb.geometry.area > 6)]
     sb = sb[~sb["use"].fillna("").isin(SANBORN_SKIP)].reset_index(drop=True)
