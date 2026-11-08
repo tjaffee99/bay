@@ -22,7 +22,7 @@ import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type Landmark
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
 import {treeLod} from './layers/decoration-meshes';
 import {loadLocalStreetIndex, loadRoads, localStreetLayers, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
-import {events, eventTime, populationLabelAt} from './data/tables';
+import {events, eventTime, loadCities, localPopulationAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
@@ -185,7 +185,8 @@ function updateOverlays() {
   const y = Math.floor(state.year);
   yearLabel.textContent = String(y);
   if (document.activeElement !== slider || state.playing) slider.value = String(state.year);
-  const pop = populationLabelAt(state.year);
+  const c = map.getCenter();
+  const pop = localPopulationAt(state.year, c.lng, c.lat, map.getZoom());
   popValue.textContent = pop == null ? '—' : Math.round(pop.value).toLocaleString('en-US');
   popArea.textContent = pop == null ? '' : pop.label;
 }
@@ -393,6 +394,9 @@ async function boot() {
   loadPlaces();
   const transitP = loadTransit().then(() => addStationLabels(stations));
   loadRegionIndex().then(render);
+  loadCities().then(updateOverlays);
+  // the counter follows the place under the centre of the map
+  map.on('moveend', updateOverlays);
   extentReady.then(() => {
     const b = extentBounds();
     if (b) map.setMaxBounds([[b[0], b[1]], [b[2], b[3]]]);

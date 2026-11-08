@@ -142,3 +142,69 @@ export function populationAt(year: number, pts: PopPoint[] = sfPopulation): numb
   }
   return last.pop;
 }
+
+// ------------------------------------------------------------------ city populations
+// pipeline/cities.py -> data/cities.json: city / town / CDP and county outlines with their
+// census series (data/tables/population_places.csv). Zoomed in, the counter shows the
+// place under the centre of the map; zoomed out, the whole mapped area.
+type Ring = [number, number][];
+type Place = {name: string; geoid: string; kind: string; rings: Ring[]; bbox?: [number, number, number, number]};
+let cities: {places: Place[]; counties: Place[]; pop: Record<string, [number, number][]>; region: [number, number][]; region_label: string} | null =
+  null;
+
+export async function loadCities() {
+  try {
+    const r = await fetch('data/cities.json');
+    if (!r.ok || !(r.headers.get('content-type') ?? '').includes('json')) return;
+    cities = await r.json();
+    for (const p of [...cities!.places, ...cities!.counties]) {
+      const xs = p.rings.flat().map(q => q[0]);
+      const ys = p.rings.flat().map(q => q[1]);
+      p.bbox = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+    }
+  } catch (e) {
+    console.warn('cities', e);
+  }
+}
+
+function inRings(x: number, y: number, rings: Ring[]) {
+  let inside = false;
+  for (const ring of rings)
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i];
+      const [xj, yj] = ring[j];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+  return inside;
+}
+
+function placeAt(list: Place[], x: number, y: number) {
+  return list.find(p => p.bbox && x >= p.bbox[0] && x <= p.bbox[2] && y >= p.bbox[1] && y <= p.bbox[3] && inRings(x, y, p.rings));
+}
+
+function seriesAt(year: number, s: [number, number][] | undefined) {
+  if (!s || !s.length || year < s[0][0]) return null;
+  return populationAt(year, s.map(([y, v]) => ({year: y, pop: v, estimate: false})));
+}
+
+/** The population to show for the year at this map centre and zoom. */
+export function localPopulationAt(year: number, lon: number, lat: number, zoom: number): {value: number; label: string} | null {
+  if (!cities) return populationLabelAt(year);
+  if (zoom >= 11.5) {
+    const city = placeAt(cities.places, lon, lat);
+    if (city) {
+      const v = seriesAt(year, cities.pop[city.geoid] ?? cities.pop[city.name]);
+      if (v != null) return {value: v, label: city.name};
+      if (city.name === 'San Francisco') return populationLabelAt(year);
+    }
+    const county = placeAt(cities.counties, lon, lat);
+    if (county) {
+      const v = seriesAt(year, cities.pop[`county:${county.name.replace(/ County$/, '')}`] ?? cities.pop[`county:${county.name}`]);
+      if (v != null) return {value: v, label: county.name};
+      if (county.name === 'San Francisco') return populationLabelAt(year);
+    }
+  }
+  const v = seriesAt(year, cities.region);
+  if (v != null) return {value: v, label: cities.region_label};
+  return populationLabelAt(year);
+}

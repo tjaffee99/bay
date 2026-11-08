@@ -73,7 +73,7 @@ Landmarks stand on the terrain (`elevationAt(anchor)`); bridges keep z = 0 (sea 
 5. **Geometry precedence (real before generic):** OSM hand-modelled `building_part`s (via Overture) > DataSF 2016 footprints > Overture/OSM footprints for buildings newer than the 2016 snapshot. Hand-reconstructed landmark meshes replace all of those for named landmarks.
 6. **Heights:** 2010 LiDAR median height from the DataSF footprints for buildings that existed in 2010; stories × 3.3 m + 1.5 m for newer ones; then OSM/Overture height; then 7 m.
 7. **Missing SF years are imputed from neighbours** (median of nearest exact-year buildings within 150 m, respecting bounds), not ACS — ACS returns for Phase 5 (Census API now requires a key).
-8. **Population counter:** San Francisco city/county until Phase 5, then 9-county total.
+8. **Population counter:** zoomed in (≥ 11.5), the city / town / CDP under the centre of the map (TIGER 2024 outlines, `pipeline/cities.py` → `cities.json`, census series in `data/tables/population_places.csv`), else its county; zoomed out, the 6-county total of the mapped area; before 1850 the early San Francisco estimates.
 9. **Trees:** street trees are real (DataSF positions; planting year recorded or estimated from trunk diameter). Park woods use real OSM wood extents with procedural positions inside (no per-tree survey exists) — confidence `procedural`. Woods are dated by park year, Golden Gate Park's documented east→west reclamation, the 1886 Presidio planting, and Lands End's 1930s planting.
 10. **Built data in git:** `viewer/public/data/sf-buildings.bin.gz` and friends are committed at milestones so a fresh clone runs with `npm install && npm run dev`; otherwise regenerate with `make sf`.
 
