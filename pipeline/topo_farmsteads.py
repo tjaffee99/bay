@@ -45,7 +45,8 @@ from pathlib import Path
 
 import numpy as np
 
-from common import INTERIM, MANUAL, RAW, download_file, get_with_retry, log, session
+sys.path.insert(0, str(Path(__file__).resolve().parent))   # also when run with python -I
+from common import INTERIM, MANUAL, RAW, download_file, get_with_retry, log, session  # noqa: E402
 
 TOPO_RAW = RAW / "topo"
 API_CACHE = TOPO_RAW / "api"
@@ -63,8 +64,8 @@ DETECTOR_VERSION = 1
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
 # selected when their footprint overlaps one of these boxes.
 AREAS = {
-    "santa_clara_valley": (-122.10, 36.95, -121.55, 37.50),   # Palo Alto / Milpitas .. Morgan Hill
-    "south_valley": (-121.75, 36.90, -121.45, 37.15),         # Morgan Hill .. Gilroy
+    "santa_clara_valley": (-122.15, 37.10, -121.70, 37.47),   # Palo Alto / Milpitas .. Coyote
+    "south_valley": (-121.75, 36.98, -121.45, 37.20),         # Morgan Hill .. Gilroy
     "peninsula_coast": (-122.52, 37.30, -122.30, 37.55),      # Half Moon Bay, Pescadero side
     "peninsula_baylands": (-122.30, 37.40, -122.05, 37.55),   # Redwood City .. Mountain View
     "tri_valley": (-122.00, 37.55, -121.55, 37.80),           # Livermore, Pleasanton, Sunol, Dublin
@@ -139,8 +140,8 @@ def fetch_meta(m: dict) -> dict:
     for st in steps:
         desc = (st.findtext("procdesc") or "").strip().lower()
         date = (st.findtext("procdate") or "").strip()
-        if desc in ("survey year", "date on map", "edit year", "photo year", "print year",
-                    "photo inspection year", "field check year", "aerial photo year"):
+        if desc in ("survey year", "date on map", "edit year", "photo year", "print year", "imprint year",
+                    "photo inspection year", "field check year", "aerial photo year", "photo revision year"):
             if re.fullmatch(r"\d{4}", date):
                 out[desc.replace(" ", "_")] = int(date)
     sup = root.findtext(".//supplinf") or ""
@@ -151,40 +152,93 @@ def fetch_meta(m: dict) -> dict:
     return out
 
 
+def _overlap(b1, b2):
+    w = max(0.0, min(b1[2], b2[2]) - max(b1[0], b2[0]))
+    h = max(0.0, min(b1[3], b2[3]) - max(b1[1], b2[1]))
+    return w * h
+
+
 def select_maps(area_names) -> list[dict]:
-    """Per quadrangle: the earliest 15' edition in EARLY and one edition in LATE
-    (1:24,000 preferred, else 1:62,500). Of duplicate scans of the same edition the one
-    with the better scan quality / larger file wins."""
+    """Sheets to process for the given farming districts:
+      early: every distinct survey of the first-generation 1:62,500 / 1:48,000 sheets
+             (EARLY years; reprints of the same survey are skipped);
+      late:  the first edition in LATE, 1:24,000 preferred; a 15' sheet only where the
+             7.5' sheets of the period do not already cover it; reprints of surveys
+             before 1930 are skipped (they show the old state).
+    A quadrangle is used when at least 30 % of it lies in one of the districts. Of
+    duplicate scans of one edition the better scan quality / larger file wins."""
     cand = {}
     for name in area_names:
-        for it in query_tnm(AREAS[name]):
+        box = AREAS[name]
+        for it in query_tnm(box):
             m = parse_item(it)
-            if m and m["scale"] in (24000, 62500, 31680, 48000):
-                cand[m["id"]] = m
-    by_quad = {}
-    for m in cand.values():
-        by_quad.setdefault((m["quad"], tuple(round(v, 3) for v in m["bbox"])), []).append(m)
-    chosen = []
-    for (quad, _), ms in sorted(by_quad.items()):
-        early = [m for m in ms if m["scale"] in (62500, 48000) and EARLY[0] <= m["edition_year"] <= EARLY[1]]
-        late = [m for m in ms if LATE[0] <= m["edition_year"] <= LATE[1]]
-        for group, kind in ((early, "early"), (late, "late")):
-            if not group:
+            if not m or m["scale"] not in (24000, 62500, 48000, 31680):
                 continue
-            if kind == "early":
-                y0 = min(m["edition_year"] for m in group)
-                group = [m for m in group if m["edition_year"] == y0]
-            else:
-                s24 = [m for m in group if m["scale"] == 24000]
-                group = s24 or group
-                y0 = min(m["edition_year"] for m in group)
-                group = [m for m in group if m["edition_year"] == y0]
-            for m in group:
+            bb = m["bbox"]
+            if _overlap(bb, box) < 0.3 * (bb[2] - bb[0]) * (bb[3] - bb[1]):
+                continue
+            cand[m["id"]] = m
+    by_cell = {}
+    for m in cand.values():
+        by_cell.setdefault((m["scale"], tuple(round(v, 3) for v in m["bbox"])), []).append(m)
+
+    def best(group):
+        """The original printing: photorevised reprints (purple overprints of a later
+        state) are skipped, then the earliest imprint, better scan, larger file."""
+        for m in group:
+            m["meta"] = fetch_meta(m)
+        orig = [m for m in group if not m["meta"].get("photo_revision_year") and not m["meta"].get("edit_year")]
+        group = orig or group
+        bad = lambda m: (m["meta"].get("scan_quality") or "").lower().startswith("not")
+        return sorted(group, key=lambda m: (m["meta"].get("imprint_year") or m["edition_year"], bad(m), -m["size"]))[0]
+
+    chosen, late = [], []
+    # early: one sheet per survey of each 15' cell (a 1:48,000 and a 1:62,500 printing of
+    # the same survey are the same map; the larger scale wins)
+    early_by_cell = {}
+    for (scale, bbox), ms in by_cell.items():
+        if scale in (62500, 48000):
+            early_by_cell.setdefault(bbox, []).extend(m for m in ms if EARLY[0] <= m["edition_year"] <= EARLY[1])
+    for bbox, early in sorted(early_by_cell.items()):
+        for m in early:
+            m["meta"] = fetch_meta(m)
+        known = {m["edition_year"] for m in early if m["meta"].get("survey_year")}
+        surveys = {}
+        for m in early:
+            sy = m["meta"].get("survey_year")
+            if sy is None and m["edition_year"] in known:
+                continue                          # same edition, survey year not recorded
+            surveys.setdefault(sy or m["edition_year"], []).append(m)
+        for sy, group in sorted(surveys.items()):
+            top = min(m["scale"] for m in group)
+            mm = best([m for m in group if m["scale"] == top])
+            mm["edition"] = "early"
+            chosen.append(mm)
+    for (scale, bbox), ms in sorted(by_cell.items()):
+        lt = []
+        for m in ms:
+            if LATE[0] <= m["edition_year"] <= LATE[1]:
                 m["meta"] = fetch_meta(m)
-            good = lambda m: (m["meta"].get("scan_quality") or "").lower().startswith("optimal")
-            best = sorted(group, key=lambda m: (not good(m), -m["size"]))[0]
-            best["edition"] = kind
-            chosen.append(best)
+                sy = m["meta"].get("survey_year")
+                if sy and sy < 1930:
+                    continue                      # a reprint of an old survey
+                if m["meta"].get("photo_revision_year") or m["meta"].get("edit_year"):
+                    continue                      # photorevised later state
+                lt.append(m)
+        if lt:
+            y0 = min(m["edition_year"] for m in lt)
+            mm = best([m for m in lt if m["edition_year"] == y0])
+            mm["edition"] = "late"
+            late.append(mm)
+    l24 = [m for m in late if m["scale"] == 24000]
+    for m in late:
+        if m["scale"] != 24000:
+            bb = m["bbox"]
+            cov = sum(_overlap(bb, q["bbox"]) for q in l24) / ((bb[2] - bb[0]) * (bb[3] - bb[1]))
+            if cov >= 0.9:
+                continue
+            m["covered_by_24k"] = round(cov, 2)
+        chosen.append(m)
     return chosen
 
 
@@ -478,9 +532,14 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
         d2 = cv2.dilate(hole, k_out)
         outer = (d2 > 0) & (d1 == 0)
         out_ink = float(inkw[outer].mean())
-        if out_ink > 0.3:
+        if out_ink > 0.2:
             continue                          # outline is part of a heavy mass / a word
         filled = (d1 > 0) & ((inkw > 0) | (hole > 0))
+        # a square has 4 corners; the counters of 0, 6, 8, O are ovals (5+ vertices)
+        fc, _ = cv2.findContours(filled.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        fc = max(fc, key=cv2.contourArea)
+        if len(cv2.approxPolyDP(fc, 0.06 * cv2.arcLength(fc, True), True)) != 4:
+            continue
         sqfill[y0:y1, x0:x1] |= filled.astype(np.uint8)
         fa = int(filled.sum())
         opens.append({"oi": i, "x": float(ocen[i][0]), "y": float(ocen[i][1]), "area_mm2": fa / ppm ** 2,
@@ -739,7 +798,7 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
             reasons.append("glyph2")          # isolated glyph: other dark strokes around it
         if r["holes"] >= 1:
             reasons.append("counter")         # a letter with a counter (a, e, o, R …)
-        if r["letters_near"] >= 2:
+        if r["letters_near"] >= 2 or (r["open"] and r["letters_near"] >= 1 and r["elong"] > 1.25):
             reasons.append("text")
         if r["water"] > 0.06:
             reasons.append("water")
@@ -804,19 +863,27 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     err = max(min(abs(glon[i] - bb[0]), abs(glon[i] - bb[2])) * 88000 + min(abs(glat[i] - bb[1]), abs(glat[i] - bb[3])) * 111000
               for i in range(len(glon)) if i % 3 == 0)
     syms = [{"lon": round(float(a), 7), "lat": round(float(b), 7), "px": [round(r["x"], 1), round(r["y"], 1)],
-             "area_mm2": round(r["area_mm2"], 4), "score": round(r["score"], 3)}
+             "area_mm2": round(r["area_mm2"], 4), "score": round(r["score"], 3), "open": bool(r["open"])}
             for r, a, b in zip(keep, lon, lat)]
+    # urban tint outlines (towns on the 1940s-50s maps) in lon/lat
+    urban = []
+    for ring in stats.pop("urban_rings_px", []):
+        ring = np.asarray(ring, float)
+        ux, uy = g["px_to_proj"](ring[:, 0], ring[:, 1])
+        ulon, ulat = to_wgs84(crs, ux, uy)
+        urban.append([[round(float(a), 6), round(float(b), 6)] for a, b in zip(ulon, ulat)])
     meta = m.get("meta") or fetch_meta(m)
     res = {"detector_version": DETECTOR_VERSION, "id": m["id"], "quad": m["quad"], "scale": m["scale"],
            "edition_year": m["edition_year"], "survey_year": meta.get("survey_year"),
            "date_on_map": meta.get("date_on_map"), "edit_year": meta.get("edit_year"),
-           "photo_year": meta.get("photo_year") or meta.get("aerial_photo_year"),
+           "imprint_year": meta.get("imprint_year"),
+           "photo_year": meta.get("aerial_photo_year") or meta.get("photo_year"),
            "field_check_year": meta.get("field_check_year"),
            "scan_quality": meta.get("scan_quality"), "woodland_tint": meta.get("woodland_tint"),
            "edition": m.get("edition"), "source_url": m["pdf_url"], "metadata_url": m.get("meta_url"),
            "m_per_mm": g["m_per_px"] * g["px_per_mm"], "stats": stats, "corner_error_m": round(float(err), 1),
            "neatline": [[round(float(a), 7), round(float(b), 7)] for a, b in zip(nlon, nlat)],
-           "symbols": syms}
+           "urban_tint": urban, "symbols": syms}
     MAP_CACHE.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res))
     if debug_crops:
@@ -857,17 +924,28 @@ def local_xy(lon, lat, lat0):
     return np.column_stack([np.asarray(lon) * k * math.cos(math.radians(lat0)), np.asarray(lat) * k])
 
 
-def farmsteads_of_sheet(res: dict):
-    """Town filter + grouping of one sheet's symbols -> (farmstead features, town polygons)."""
+def farmsteads_of_sheet(res: dict, drop=None):
+    """Town filter + grouping of one sheet's symbols -> (farmstead features, town features).
+    drop: optional shapely geometry (lon/lat) where a better sheet of the same period
+    supersedes this one."""
     from scipy.spatial import cKDTree
-    from shapely.geometry import MultiPoint, mapping
+    from shapely.geometry import Point, Polygon
     from shapely.ops import unary_union
     syms = res["symbols"]
+    props0 = {"map_year": map_year(res), "edition_year": res["edition_year"], "survey_year": res.get("survey_year"),
+              "photo_year": res.get("photo_year"), "quad": res["quad"], "scale": res["scale"]}
+    towns = []
+    for ring in res.get("urban_tint", []):
+        if len(ring) >= 4:
+            towns.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [ring + [ring[0]]]},
+                          "properties": {**props0, "kind": "urban_tint"}})
     if not syms:
-        return [], []
-    lon = np.array([s["lon"] for s in syms]); lat = np.array([s["lat"] for s in syms])
-    area = np.array([s["area_mm2"] for s in syms]); score = np.array([s["score"] for s in syms])
+        return [], towns
+    lon = np.array([s_["lon"] for s_ in syms]); lat = np.array([s_["lat"] for s_ in syms])
+    area = np.array([s_["area_mm2"] for s_ in syms]); score = np.array([s_["score"] for s_ in syms])
+    is_open = np.array([s_.get("open", False) for s_ in syms])
     lat0 = float(lat.mean())
+    kx = 111320.0 * math.cos(math.radians(lat0))
     P = local_xy(lon, lat, lat0)
     t = cKDTree(P)
     cnt = np.array([len(v) - 1 for v in t.query_ball_point(P, TOWN_RADIUS_M)])
@@ -875,51 +953,116 @@ def farmsteads_of_sheet(res: dict):
     # town = town cores and every symbol within TOWN_RADIUS_M of one
     town = core.copy()
     if core.any():
-        tc = cKDTree(P[core])
-        d, _ = tc.query(P, distance_upper_bound=TOWN_RADIUS_M)
+        d, _ = cKDTree(P[core]).query(P, distance_upper_bound=TOWN_RADIUS_M)
         town |= np.isfinite(d)
-    towns = []
-    if core.any():
-        from shapely.geometry import Point
-        k = 111320.0 * math.cos(math.radians(lat0))
-        polys = [Point(x, y).buffer(TOWN_RADIUS_M, 8) for x, y in P[town]]
-        u = unary_union(polys)
-        geoms = getattr(u, "geoms", [u])
-        for gm in geoms:
+        u = unary_union([Point(x, y).buffer(TOWN_RADIUS_M, 8) for x, y in P[town]])
+        for gm in getattr(u, "geoms", [u]):
             n_in = int(sum(1 for x, y in P[town] if gm.contains(Point(x, y))))
             if n_in < TOWN_MAX + 1:
                 continue
-            ring = [(x / k, y / 111320.0) for x, y in gm.simplify(20).exterior.coords]
-            towns.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[round(a, 6), round(b, 6)] for a, b in ring]]},
-                          "properties": {"map_year": map_year(res), "quad": res["quad"], "scale": res["scale"], "n_symbols": n_in}})
-    # farmsteads: largest symbol first; symbols within FARMSTEAD_M of it are its outbuildings
-    rural = np.nonzero(~town)[0]
-    order = rural[np.argsort(-area[rural])]
-    assigned = np.zeros(len(syms), bool)
-    assigned[town] = True
+            ring = [[round(x / kx, 6), round(y / 111320.0, 6)] for x, y in gm.simplify(20).exterior.coords]
+            towns.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [ring]},
+                          "properties": {**props0, "kind": "dense_buildings", "n_symbols": n_in}})
+    # farmsteads: dwellings (solid symbols) largest first, each taking the unassigned
+    # buildings within FARMSTEAD_M; then barns / sheds (open squares) without a dwelling
+    assigned = town.copy()
     feats = []
-    for i in order:
-        if assigned[i]:
-            continue
-        nb = [j for j in t.query_ball_point(P[i], FARMSTEAD_M) if not assigned[j]]
-        for j in nb:
-            assigned[j] = True
-        assigned[i] = True
-        members = sorted(set(nb) | {i})
-        sc = float(np.clip(0.7 * score[i] + 0.3 * score[members].mean() + 0.05 * min(len(members) - 1, 2), 0, 1))
-        feats.append({"type": "Feature",
-                      "geometry": {"type": "Point", "coordinates": [round(float(lon[i]), 6), round(float(lat[i]), 6)]},
-                      "properties": {"map_year": map_year(res), "edition_year": res["edition_year"],
-                                     "survey_year": res.get("survey_year"), "quad": res["quad"], "scale": res["scale"],
-                                     "n_buildings": len(members), "score": round(sc, 3),
-                                     "source_url": res["source_url"]}})
+    for want_open in (False, True):
+        idx = np.nonzero(~town & (is_open == want_open))[0]
+        for i in idx[np.argsort(-area[idx])]:
+            if assigned[i]:
+                continue
+            members = sorted({j for j in t.query_ball_point(P[i], FARMSTEAD_M) if not assigned[j]} | {i})
+            assigned[members] = True
+            if drop is not None and drop.contains(Point(lon[i], lat[i])):
+                continue
+            n_open = int(is_open[members].sum())
+            sc = float(np.clip(0.7 * score[i] + 0.3 * score[members].mean() + 0.05 * min(len(members) - 1, 2), 0, 1))
+            if want_open:
+                sc *= 0.8
+            feats.append({"type": "Feature",
+                          "geometry": {"type": "Point", "coordinates": [round(float(lon[i]), 6), round(float(lat[i]), 6)]},
+                          "properties": {**props0, "n_buildings": len(members), "n_open": n_open,
+                                         "has_dwelling": not want_open, "score": round(sc, 3),
+                                         "source_url": res["source_url"]}})
     return feats, towns
 
 
 def map_year(res: dict) -> int:
-    """The year the map shows: survey year if recorded, else the field-check / photo year
-    of a revised map, else the edition year printed on it."""
-    for k in ("survey_year", "field_check_year", "photo_year"):
-        if res.get(k):
-            return int(res[k])
+    """The year the map shows: the survey year from the USGS metadata, else the edition
+    year printed on it (aerial photo year, where recorded, is kept as its own property)."""
+    if res.get("survey_year"):
+        return int(res["survey_year"])
     return int(res["edition_year"])
+
+
+# ----------------------------------------------------------------------------- export
+def export():
+    """All processed sheets -> data/manual/farmsteads/*.geojson."""
+    from shapely.geometry import Polygon, mapping
+    from shapely.ops import unary_union
+    sheets = [json.loads(p.read_text()) for p in sorted(MAP_CACHE.glob("*.json"))]
+    sheets = [r for r in sheets if r.get("detector_version") == DETECTOR_VERSION]
+    polys = {r["id"]: Polygon(r["neatline"]) for r in sheets}
+    feats, towns, cov = [], [], []
+    for r in sheets:
+        # a 15' sheet of the same period is superseded where 7.5' sheets cover it
+        better = [polys[q["id"]] for q in sheets if q["id"] != r["id"] and q.get("edition") == r.get("edition")
+                  and q["scale"] < r["scale"] and polys[q["id"]].intersects(polys[r["id"]])]
+        drop = unary_union(better) if better else None
+        f, tw = farmsteads_of_sheet(r, drop)
+        feats += f
+        towns += tw
+        shown = polys[r["id"]].difference(drop) if drop is not None else polys[r["id"]]
+        if shown.is_empty:
+            continue
+        cov.append({"type": "Feature", "geometry": mapping(shown.simplify(1e-6)),
+                    "properties": {"quad": r["quad"], "map_year": map_year(r), "edition_year": r["edition_year"],
+                                   "survey_year": r.get("survey_year"), "photo_year": r.get("photo_year"),
+                                   "scale": r["scale"], "period": r.get("edition"),
+                                   "n_symbols": len(r["symbols"]), "n_farmsteads": len(f),
+                                   "corner_error_m": r.get("corner_error_m"), "source_url": r["source_url"],
+                                   "metadata_url": r.get("metadata_url")}})
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    feats.sort(key=lambda f: (f["properties"]["map_year"], f["properties"]["quad"], f["geometry"]["coordinates"]))
+
+    def dump(name, fs):
+        (OUT_DIR / name).write_text(json.dumps({"type": "FeatureCollection", "features": fs}, separators=(",", ":")) + "\n")
+    dump("topo_farmsteads.geojson", feats)
+    dump("coverage.geojson", cov)
+    dump("topo_towns.geojson", towns)
+    log(f"export: {len(feats)} farmsteads from {len(sheets)} sheets, {len(towns)} town areas -> {OUT_DIR}")
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("cmd", nargs="?", default="all", choices=["all", "list", "process", "export"])
+    ap.add_argument("--area", action="append", help=f"farming district(s): {', '.join(AREAS)} (default: all)")
+    ap.add_argument("--keep", action="store_true", help="keep the downloaded PDFs")
+    ap.add_argument("--debug", type=int, default=0, help="overlay crops per sheet in data/interim/topo/debug")
+    ap.add_argument("--only", help="comma-separated sheet ids")
+    a = ap.parse_args()
+    areas = a.area or list(AREAS)
+    if a.cmd in ("all", "list", "process"):
+        maps = select_maps(areas)
+        if a.only:
+            maps = [m for m in maps if m["id"] in a.only.split(",")]
+        for m in maps:
+            done = sheet_path(m).exists()
+            log(f"{m['id']} {m['edition']:5s} {m['quad']} 1:{m['scale']} {m['edition_year']} "
+                f"(survey {m['meta'].get('survey_year')}){' [done]' if done else ''}")
+        if a.cmd == "list":
+            return
+        for k, m in enumerate(maps):
+            try:
+                res = process_sheet(m, keep_raw=a.keep, debug_crops=a.debug)
+                log(f"[{k + 1}/{len(maps)}] {m['quad']} {m['edition_year']}: {len(res['symbols'])} symbols "
+                    f"(corner error {res.get('corner_error_m')} m)")
+            except Exception as e:          # one bad scan must not stop the batch
+                log(f"[{k + 1}/{len(maps)}] {m['quad']} {m['edition_year']} FAILED: {e!r}")
+    if a.cmd in ("all", "export"):
+        export()
+
+
+if __name__ == "__main__":
+    main()

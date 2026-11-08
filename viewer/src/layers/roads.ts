@@ -10,6 +10,7 @@ import type {LayerContext, UpdateParameters, DefaultProps} from '@deck.gl/core';
 import {Geometry, Model} from '@luma.gl/engine';
 import type {ShaderModule} from '@luma.gl/shadertools';
 import {PathLayer} from '@deck.gl/layers';
+import {TileLayer} from '@deck.gl/geo-layers';
 import {loadColumnar} from '../data/columnar';
 import {TimeExtension} from './time-extension';
 import {MeshBuilder} from '../landmarks/kit';
@@ -61,7 +62,13 @@ const fade = new TimeExtension({mode: 'fade'});
 const DEG = 111320;
 
 async function loadSet(id: string, url: string) {
-  const f = await loadColumnar(url);
+  const set = decodeSet(id, await loadColumnar(url));
+  sets.push(set);
+  if (id === 'roads-region' || id === 'freeways') for (const ch of splitSet(set, 8, 8)) drawSets.push(addDecks(withColumns(ch)));
+  else drawSets.push(addDecks(withColumns(set)));
+}
+
+function decodeSet(id: string, f: any): PathSet {
   const c = f.columns;
   const n = f.header.counts.paths;
   const starts = c.start_indices as Uint32Array;
@@ -101,9 +108,48 @@ async function loadSet(id: string, url: string) {
     }
   }
   set.cum = cum;
-  sets.push(set);
-  if (id === 'roads-region' || id === 'freeways') for (const ch of splitSet(set, 8, 8)) drawSets.push(addDecks(withColumns(ch)));
-  else drawSets.push(addDecks(withColumns(set)));
+  return set;
+}
+
+// ------------------------------------------------------------------ suburban streets
+// Residential streets, lanes and alleys outside SF (roads.py local_streets): z12 tiles
+// loaded on demand from zoom 12.5, like the region buildings.
+let localIndex: Set<string> | null = null;
+let localZ = 12;
+export async function loadLocalStreetIndex() {
+  try {
+    const r = await fetch('data/region-streets/index.json');
+    if (!r.ok || !(r.headers.get('content-type') ?? '').includes('json')) return;
+    const j = await r.json();
+    localZ = j.z;
+    localIndex = new Set((j.tiles as {x: number; y: number}[]).map(t => `${t.x}/${t.y}`));
+  } catch (e) {
+    console.warn('region streets index', e);
+  }
+}
+
+export function localStreetLayers(year: number, zoom: number): Layer[] {
+  if (!localIndex || zoom < 12.5) return [];
+  const have = localIndex;
+  return [
+    new TileLayer<PathSet | null>({
+      id: 'region-streets',
+      minZoom: localZ,
+      maxZoom: localZ,
+      tileSize: 256,
+      maxCacheSize: 60,
+      extent: [-123.2, 36.85, -121.2, 38.9],
+      getTileData: async ({index: t}: any) => {
+        if (!have.has(`${t.x}/${t.y}`)) return null;
+        return decodeSet(`region-streets-${t.x}-${t.y}`, await loadColumnar(`data/region-streets/${localZ}/${t.x}/${t.y}.bin.gz`));
+      },
+      renderSubLayers: (props: any) => {
+        const s = props.data as PathSet | null;
+        return s ? pathLayer(s, year, `${props.id}-p`) : null;
+      },
+      updateTriggers: {renderSubLayers: [year]}
+    } as any) as any
+  ];
 }
 
 /** Bents under elevated paths: a wall-like pier across the roadway every ~60 m,
@@ -329,36 +375,7 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
   for (const s of drawSets) {
     if (s.id.startsWith('roads-region') && zoom > 15.5) continue;
     if (view && s.bbox && (s.bbox[2] < view[0] || s.bbox[0] > view[2] || s.bbox[3] < view[1] || s.bbox[1] > view[3])) continue;
-    out.push(
-      new PathLayer({
-        id: `paths-${s.id}`,
-        data: s.data,
-        positionFormat: 'XYZ',
-        _pathType: 'open',
-        coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
-        coordinateOrigin: [s.origin[0], s.origin[1], 0],
-        getWidth: (_: any, {index}: any) => s.width[index] * (s.kind[index] === K.FERRY ? 0.6 : s.id === 'transit' && s.elevated[index] === 4 ? 0.5 : 1),
-        getColor: (_: any, {index}: any) => (s.id === 'transit' ? trackColor(s.kind[index], s.elevated[index]) : (COLORS[s.kind[index]] ?? COLORS[0])),
-        widthUnits: 'meters',
-        widthMinPixels: s.id === 'routes' ? 1.5 : 0.8,
-        shadowEnabled: false,
-        billboard: false,
-        jointRounded: true,
-        capRounded: false,
-        pickable: false,
-        extensions: [fade],
-        getYears: (_: any, {index, target}: any) => {
-          target[0] = s.years[index * 2];
-          target[1] = s.years[index * 2 + 1];
-          return target;
-        },
-        currentYear: year,
-        growYears: 1.5,
-        shrinkYears: 0.5,
-        // pull roads toward the camera in the depth test so they win over the terrain
-        parameters: {depthBias: -4, depthBiasSlopeScale: -2} as any
-      } as any) as any
-    );
+    out.push(pathLayer(s, year, `paths-${s.id}`));
     if (s.decks)
       out.push(
         new LandmarkMeshLayer({
@@ -390,6 +407,37 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
     }
   }
   return out;
+}
+
+function pathLayer(s: PathSet, year: number, id: string): Layer {
+  return new PathLayer({
+    id,
+    data: s.data,
+    positionFormat: 'XYZ',
+    _pathType: 'open',
+    coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+    coordinateOrigin: [s.origin[0], s.origin[1], 0],
+    getWidth: (_: any, {index}: any) => s.width[index] * (s.kind[index] === K.FERRY ? 0.6 : s.id === 'transit' && s.elevated[index] === 4 ? 0.5 : 1),
+    getColor: (_: any, {index}: any) => (s.id === 'transit' ? trackColor(s.kind[index], s.elevated[index]) : (COLORS[s.kind[index]] ?? COLORS[0])),
+    widthUnits: 'meters',
+    widthMinPixels: s.id === 'routes' ? 1.5 : 0.8,
+    shadowEnabled: false,
+    billboard: false,
+    jointRounded: true,
+    capRounded: false,
+    pickable: false,
+    extensions: [fade],
+    getYears: (_: any, {index, target}: any) => {
+      target[0] = s.years[index * 2];
+      target[1] = s.years[index * 2 + 1];
+      return target;
+    },
+    currentYear: year,
+    growYears: 1.5,
+    shrinkYears: 0.5,
+    // pull roads toward the camera in the depth test so they win over the terrain
+    parameters: {depthBias: -4, depthBiasSlopeScale: -2} as any
+  } as any) as any;
 }
 
 /** Track beds as seen from the air: ballast / concrete for BART, rails set in the

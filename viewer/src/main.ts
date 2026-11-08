@@ -21,7 +21,7 @@ import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/building
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
 import {treeLod} from './layers/decoration-meshes';
-import {loadRoads, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
+import {loadLocalStreetIndex, loadRoads, localStreetLayers, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
 import {events, eventTime, populationLabelAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
@@ -149,6 +149,7 @@ function render() {
   layers.push(...groundDetailLayers(state.year, zoom));
   layers.push(...airportLayers(state.year, zoom));
   const b = map.getBounds();
+  layers.push(...localStreetLayers(state.year, zoom));
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
@@ -387,6 +388,7 @@ async function boot() {
   loadPlaces();
   const transitP = loadTransit().then(() => addStationLabels(stations));
   loadRegionIndex().then(render);
+  loadLocalStreetIndex().then(render);
   const elevP = Promise.all([loadElevation(), document.fonts.ready, loadParkLabels(), transitP]).then(() => {
     placeLabelsOnTerrain();
     render();

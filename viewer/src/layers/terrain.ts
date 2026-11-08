@@ -23,8 +23,8 @@ import {DECO_ORIGIN, decoLayers, setVisibleDeco, type DecoBatch} from './deco-la
 const PALETTE: [number, number, number][] = [
   [0.56, 0.71, 0.79], // 0 deep water
   [0.66, 0.79, 0.84], // 1 shallow water
-  [0.6, 0.55, 0.49], // 2 tidal flat (mud)
-  [0.57, 0.6, 0.37], // 3 tidal marsh
+  [0.56, 0.56, 0.5], // 2 tidal flat (wet mud)
+  [0.52, 0.58, 0.38], // 3 tidal marsh
   [0.93, 0.88, 0.74], // 4 beach
   [0.9, 0.84, 0.66], // 5 dunes
   [0.8, 0.77, 0.52], // 6 grassland (golden hills)
@@ -35,8 +35,8 @@ const PALETTE: [number, number, number][] = [
   [0.6, 0.69, 0.41], // 11 orchard
   [0.64, 0.64, 0.42], // 12 vineyard
   [0.69, 0.76, 0.48], // 13 pasture
-  [0.86, 0.73, 0.7], // 14 salt pond
-  [0.63, 0.61, 0.43], // 15 diked wetland
+  [0.52, 0.6, 0.55], // 14 salt pond (evaporator colours in the shader)
+  [0.6, 0.61, 0.45], // 15 diked wetland
   [0.8, 0.78, 0.73], // 16 urban (city ground: streets, pavement, small yards)
   [0.62, 0.73, 0.47], // 17 park
   [0.68, 0.64, 0.58], // 18 rock
@@ -183,7 +183,11 @@ float blockHash(vec2 b) {
   h ^= h >> 16;
   return float(h & 65535u) / 65535.0;
 }
-float lineCover(float d, float halfW, float px) { return clamp((halfW - d) / max(px, 1e-5) + 0.5, 0.0, 1.0); }
+// antialiased line coverage: thinner than a pixel, it fades to its area share
+float lineCover(float d, float halfW, float px) {
+  px = max(px, 1e-5);
+  return clamp((halfW - d) / px + 0.5, 0.0, 1.0) * min(1.0, 2.0 * halfW / px);
+}
 vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   vec2 blk = floor(L / 4.0);
   vec2 bid = B / 4.0 + blk;
@@ -250,7 +254,64 @@ vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   }
   return base;
 }
-int coverCode(vec4 t) { return t.a < 0.14 ? int(floor(t.a * 255.0 / 8.0 + 0.5)) : 0; }
+int coverCode(vec4 t) { return t.a < 0.25 ? int(floor(t.a * 255.0 / 8.0 + 0.5)) : 0; }
+// ---- bay shore (procedural detail on real covers): value noise on an integer hash,
+// in global lattice cells (P = tile lattice + its origin), stable at any coordinate
+float ih(vec2 p) {
+  uvec2 v = uvec2(ivec2(floor(p)) + ivec2(1 << 20));
+  uint h = v.x * 1664525u + v.y * 1013904223u;
+  h ^= h >> 16; h *= 2246822519u; h ^= h >> 13; h *= 3266489917u; h ^= h >> 16;
+  return float(h & 65535u) / 65535.0;
+}
+float inoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(ih(i), ih(i + vec2(1.0, 0.0)), f.x), mix(ih(i + vec2(0.0, 1.0)), ih(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+// thin meandering lines where a two-octave noise crosses 0.5 (tidal channels)
+float channels(vec2 P, float scale, float halfW, float px) {
+  float n = inoise(P * scale) * 0.65 + inoise(P * scale * 2.3 + 7.1) * 0.35;
+  float d = abs(n - 0.5);
+  float w = fwidth(n) + 1e-5;
+  return (1.0 - smoothstep(halfW - w, halfW + w, d)) * smoothstep(0.004, 0.02, halfW / max(px * scale, 1e-5));
+}
+vec3 shorePattern(vec3 base, int code, vec2 P, float px) {
+  if (code == 5) {
+    // tidal marsh: pickleweed and cordgrass, darker patches, sloughs and channels
+    vec3 c = base * (0.92 + 0.16 * inoise(P * 1.7));
+    c = mix(c, vec3(0.44, 0.5, 0.36), 0.35 * smoothstep(0.55, 0.8, inoise(P * 0.6 + 3.3)));
+    float ch = max(channels(P, 0.55, 0.018, px), channels(P + 31.0, 1.6, 0.012, px) * 0.8);
+    return mix(c, vec3(0.42, 0.52, 0.54), ch);
+  }
+  if (code == 6) {
+    // tidal flat: wet grey mud, mottled, with water-filled rills
+    vec3 c = mix(vec3(0.5, 0.51, 0.47), vec3(0.62, 0.6, 0.54), inoise(P * 1.3) * 0.7 + inoise(P * 4.1) * 0.3);
+    float ch = channels(P + 11.0, 1.1, 0.02, px);
+    return mix(c, vec3(0.5, 0.62, 0.66), ch * 0.85);
+  }
+  if (code == 7) {
+    // diked baylands: seasonal wetland / pasture, fields along the levees
+    return base * (0.94 + 0.12 * inoise(P * 0.9));
+  }
+  return base;
+}
+// salt ponds: a complex of evaporators (~600 x 450 m) between dikes, each its own
+// colour by salinity — mostly blue-green and olive, the saltier ones rust
+vec3 saltPond(vec2 P, float px) {
+  vec2 sz = vec2(8.0, 6.0);
+  float row = floor(P.y / sz.y);
+  float off = ih(vec2(row, 91.0)) * sz.x;
+  vec2 cell = vec2(floor((P.x + off) / sz.x), row);
+  vec2 fp = vec2(fract((P.x + off) / sz.x), fract(P.y / sz.y));
+  float h = ih(cell * 1.37 + 5.0);
+  vec3 c = h < 0.35 ? vec3(0.42, 0.57, 0.6) : h < 0.6 ? vec3(0.5, 0.61, 0.53) : h < 0.78 ? vec3(0.58, 0.61, 0.47)
+         : h < 0.92 ? vec3(0.66, 0.53, 0.43) : vec3(0.58, 0.46, 0.45);
+  c *= 0.95 + 0.1 * inoise(P * 0.9);
+  vec2 e = min(fp, 1.0 - fp) * sz;
+  float dike = lineCover(min(e.x, e.y), 0.05, px);
+  return mix(c, vec3(0.74, 0.7, 0.6), dike);
+}
 void main(void) {
   vec2 size = vec2(textureSize(coverTex, 0));
   vec2 st = vUv * size - 0.5;
@@ -299,12 +360,17 @@ void main(void) {
     C = mix(smoothC, picked, sel);
   }
   vec3 color = C.rgb;
-  float wet = clamp((C.a - 0.14) / 0.86, 0.0, 1.0);
+  float wet = clamp((C.a - 0.3) / 0.7, 0.0, 1.0);
   int code = coverCode(dom);
-  if (code > 0 && vSkirt < 0.01) {
+  bool salt = abs(dom.a * 255.0 - 250.0) < 2.5;
+  if ((code > 0 || salt) && vSkirt < 0.01) {
     vec2 L = st * terrain.latScale;
+    vec2 P = L + terrain.latBase;
     float px = max(length(vec2(dFdx(L.x), dFdy(L.x))), length(vec2(dFdx(L.y), dFdy(L.y))));
-    color = farmPattern(color, code, L, terrain.latBase, px);
+    if (salt) color = mix(color, saltPond(P, px), smoothstep(0.6, 0.95, C.a));
+    else if (code <= 4) color = farmPattern(color, code, L, terrain.latBase, px);
+    else color = shorePattern(color, code, P, px);
+    if (code == 6) wet = max(wet, 0.3);                // wet mud: flat, with a sheen
   }
   vec3 n = normalize(vNormal);
   if (n.z < 0.2) n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
@@ -320,7 +386,7 @@ void main(void) {
 
 const WATERISH = new Set([0, 1, 14, 22]);
 // farm pattern codes in the texel alpha for land (water: alpha 255); see farmPattern()
-const FARM_CODE: Record<number, number> = {10: 1, 11: 2, 12: 3, 13: 4};
+const FARM_CODE: Record<number, number> = {10: 1, 11: 2, 12: 3, 13: 4, 3: 5, 21: 5, 2: 6, 15: 7};
 /** Current cover colour (rgb) and wetness (a) of each grid vertex — same rules as the vertex shader. */
 function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
   const nn = m.n * m.n;
@@ -345,8 +411,10 @@ function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
     out[v * 4] = Math.round((p0[0] + (p1[0] - p0[0]) * kk) * 255);
     out[v * 4 + 1] = Math.round((p0[1] + (p1[1] - p0[1]) * kk) * 255);
     out[v * 4 + 2] = Math.round((p0[2] + (p1[2] - p0[2]) * kk) * 255);
-    const code = FARM_CODE[kk >= 0.5 ? c : prev] ?? 0;
-    out[v * 4 + 3] = w > 0 ? Math.round(w * 255) : code * 8;
+    const cur = kk >= 0.5 ? c : prev;
+    const code = FARM_CODE[cur] ?? 0;
+    // salt ponds: alpha 250 (still water to the shader), patterned as evaporators
+    out[v * 4 + 3] = w > 0 ? (cur === 14 && w > 0.99 ? 250 : Math.round(w * 255)) : code * 8;
   }
 }
 

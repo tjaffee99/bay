@@ -127,8 +127,38 @@ def rail():
     log(f"overture rail: {n} segments -> {out}")
 
 
+def local_roads():
+    """Residential streets, living streets, unclassified lanes and alleys for the whole
+    region (the region road file only has tertiary and up): the street grid of the
+    suburbs, dated in roads.py by the buildings along each street."""
+    out = RAW / "overture" / RELEASE / "roads_local.parquet"
+    if out.exists():
+        log("overture local roads: cached")
+        return
+    con = duckdb.connect()
+    con.execute("INSTALL httpfs; LOAD httpfs; INSTALL spatial; LOAD spatial;")
+    con.execute("CREATE OR REPLACE SECRET overture (TYPE s3, PROVIDER config, KEY_ID '', SECRET '', REGION 'us-west-2');")
+    xmin, ymin, xmax, ymax = REGION_BBOX
+    src = f"s3://overturemaps-us-west-2/release/{RELEASE}/theme=transportation/type=segment/*"
+    con.execute(f"""
+    COPY (
+      SELECT id, class, subclass, names.primary AS name, road_flags, geometry
+      FROM read_parquet('{src}', hive_partitioning=1)
+      WHERE bbox.xmin < {xmax} AND bbox.xmax > {xmin} AND bbox.ymin < {ymax} AND bbox.ymax > {ymin}
+        AND subtype = 'road'
+        AND (class IN ('residential', 'living_street', 'unclassified') OR (class = 'service' AND subclass = 'alley'))
+    ) TO '{out}' (FORMAT parquet);""")
+    n = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
+    log(f"overture local roads: {n} segments -> {out}")
+
+
 if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "local_roads":
+        local_roads()
+        sys.exit(0)
     main()
     base_theme()
     freeways()
     rail()
+    local_roads()

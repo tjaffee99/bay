@@ -180,7 +180,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Architect: Arthur Brown Jr. (Bakewell & Brown)
 - Model: outline from OpenStreetMap (© OSM contributors, ODbL; height 24.9 m); wings, the flat central block and the central pyramid from the orthophoto; eave height and the entrance loggia estimated
 - Sources: https://en.wikipedia.org/wiki/Cecil_H._Green_Library
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/stanford_green_library/Stanford_University_Green_Library_Bing_Wing.jpg` — [File:Stanford_University_Green_Library_Bing_Wing.jpg](https://commons.wikimedia.org/wiki/File%3AStanford_University_Green_Library_Bing_Wing.jpg) — author on file page; public domain
 
 ### Stanford Stadium (1921) (`stanford_stadium_1921`)
 
@@ -323,7 +323,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Domes: great dome 75 ft (22.9 m) across for the 36-inch refractor (then the largest in the world); 12-inch refractor dome at the north end
 - Model: outline and dome positions from OpenStreetMap (© OSM contributors, ODbL) and the orthophoto; wall and drum heights estimated from photographs
 - Sources: https://en.wikipedia.org/wiki/Lick_Observatory
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/lick_observatory/Lick_Observatory_Refractor.jpg` — [File:Lick_Observatory_Refractor.jpg](https://commons.wikimedia.org/wiki/File%3ALick_Observatory_Refractor.jpg) — author on file page; CC-BY-2.0
 
 ### Lick Observatory — Shane 120-inch telescope dome (`lick_shane_dome`)
 
@@ -331,7 +331,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Built: funded by the California legislature in 1950; the 120-inch (3 m) C. Donald Shane reflector was completed in 1959 — then the second-largest telescope in the world
 - Model: outline and height (32.2 m) from OpenStreetMap (© OSM contributors, ODbL); drum height estimated
 - Sources: https://en.wikipedia.org/wiki/Lick_Observatory
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/lick_observatory/Lick_Observatory_Refractor.jpg` — [File:Lick_Observatory_Refractor.jpg](https://commons.wikimedia.org/wiki/File%3ALick_Observatory_Refractor.jpg) — author on file page; CC-BY-2.0
 
 ### San Jose Electric Light Tower (`san_jose_electric_light_tower`)
 
@@ -409,7 +409,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Bridge: suspension footbridge of 1954, replaced in 2012 (not modelled)
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); octagonal tower and lantern proportions from photographs (estimated)
 - Sources: https://en.wikipedia.org/wiki/Point_Bonita_Lighthouse
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/point_bonita_lighthouse/USCGpointbonitaNew.JPG` — [File:USCGpointbonitaNew.JPG](https://commons.wikimedia.org/wiki/File%3AUSCGpointbonitaNew.JPG) — author on file page; public domain
 
 ### Point Reyes Lighthouse (`point_reyes_lighthouse`)
 
@@ -453,7 +453,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Gallery: 3,073.7 m long; the klystrons feed the accelerator in a 10 × 11 ft tunnel under 25 ft of compacted earth
 - Model: outline from OpenStreetMap (© OSM contributors, ODbL); section 17 ft × 30 ft (SLAC); drawn in ~100 m steps following the ground
 - Sources: https://en.wikipedia.org/wiki/SLAC_National_Accelerator_Laboratory, https://ahro.slac.stanford.edu/resources/slac-history/history-bits
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/slac_klystron_gallery/SLAC_aerial.jpg` — [File:SLAC_aerial.jpg](https://commons.wikimedia.org/wiki/File%3ASLAC_aerial.jpg) — author on file page; CC-BY-SA-4.0
 
 ### NASA Ames 40 × 80 ft wind tunnel (`nasa_ames_40x80_wind_tunnel`)
 
@@ -461,7 +461,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Built: built 1941–44 at the NACA Ames Aeronautical Laboratory; the largest wind tunnel in the world, 40 × 80 ft test section, six 40 ft fans; upgraded 1982–87 into the National Full-Scale Aerodynamics Complex
 - Model: outline from OpenStreetMap (© OSM contributors, ODbL); the circuit's heights (30–36 m; OSM gives 54.9 m for the complex) and fan housings estimated (LOW CONFIDENCE)
 - Sources: https://en.wikipedia.org/wiki/Ames_Research_Center
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/nasa_ames_40x80_wind_tunnel/Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg` — [File:Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg](https://commons.wikimedia.org/wiki/File%3AAerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg) — author on file page; Public domain
 
 ### NASA Ames 80 × 120 ft wind tunnel (`nasa_ames_80x120_wind_tunnel`)
 
@@ -469,4 +469,4 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Built: 1982–87: an open-circuit 80 × 120 ft test section added to the 40 × 80 ft tunnel — the largest wind tunnel in the world (National Full-Scale Aerodynamics Complex)
 - Model: outline and height (54.9 m) from OpenStreetMap (© OSM contributors, ODbL); the sloping screened inlet face from the orthophoto; diffuser height estimated (LOW CONFIDENCE)
 - Sources: https://en.wikipedia.org/wiki/Ames_Research_Center
-- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+- Photo: `data/raw/reference_photos/nasa_ames_40x80_wind_tunnel/Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg` — [File:Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg](https://commons.wikimedia.org/wiki/File%3AAerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg) — author on file page; Public domain
