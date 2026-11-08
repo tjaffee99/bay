@@ -31,7 +31,14 @@ SITES = {  # site_id: (not_before, evidence for dated segments, keep-names, evid
                               "the 1897 Sanborn", ("Central Avenue",), "Central Ave (1897 Sanborn)", None),
     "terrace_baths": (1941, "lies on the Terrace Baths site (1878-1916) and then Neptune Beach / Neptune Court", ("Central Avenue",),
                       "Central Ave (1897 Sanborn)", None),
+    "shell_mound_park": (1925, "lies on Shell Mound Park (1877-1924; land sold for factories after the 1924 closing); not on the 1911 "
+                               "Sanborn sheets 323/324", ("Park Avenue",), "Park Ave (1911 Sanborn)", None),
+    "oaks_park": (1958, "lies on Oaks Park (ball park 1913-1955, demolished c.1957; 1950 Sanborn sheet 317)",
+                  ("Park Avenue", "San Pablo Avenue", "45th Street"), "boundary street of Oaks Park (1950 Sanborn sheet 317)", None),
 }
+# sites whose existing rows stay; only segments not yet listed are added (the oval was moved 22 m in 2026-11)
+ADD_ONLY = {"emeryville_racetrack": (1916, "lies on the Emeryville race track (1871-1915; oval moved onto the 1911 Sanborn "
+                                           "sheets): the 1915 industrial subdivision streets, not before 1916")}
 
 
 def main():
@@ -58,6 +65,15 @@ def main():
             else:
                 rows.append(dict(segment_id=x.id, file=x.file, cls=cls, name=name, site_id=sid, inside_m=int(x.inside_m),
                                  on_last_sheet="", action="date", not_before=nb, evidence=ev))
+    for sid, (nb, ev) in ADD_ONLY.items():
+        gs = [shape(f["geometry"]) for f in fc if f["properties"]["site_id"] == sid and f["properties"]["year_end"] < 9999]
+        r = roads_in(shapely.union_all(gs).buffer(0))
+        r = r[r.inside_m >= 15]
+        for x in r.itertuples():
+            if x._2 in ("motorway", "trunk", "motorway_link", "trunk_link"):
+                continue
+            rows.append(dict(segment_id=x.id, file=x.file, cls=x._2, name=x.name if isinstance(x.name, str) else "", site_id=sid,
+                             inside_m=int(x.inside_m), on_last_sheet="", action="date", not_before=nb, evidence=ev))
     # a segment on two sites: keep the latest not-before
     best = {}
     for row in rows:

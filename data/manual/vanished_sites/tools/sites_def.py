@@ -447,11 +447,16 @@ def emeryville_track():
     TOPO = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco_298895_1899_62500_geo.tif"
     o = J("emeryville_track_topo.json")["oval_1914_imprint"]
     u, v, a, L, R = o["u"], o["v"], o["bearing"], o["L"], o["R"]
+    # 2026-11 correction from the 1911 Sanborn sheets (sites_def2.emeryville): the east end of the oval on sheet 321
+    # (fitted to today's Park Ave crossings) lies 14 m back along the axis and 16.5 m to the SW of this fit, and the
+    # grandstand on sheet 324 stood on the SW straight -> the oval is moved by that offset (still +-15 m)
+    t_ = np.radians(a)
+    u, v = u - 14.0 * np.sin(t_) + 16.5 * np.cos(t_), v - 14.0 * np.cos(t_) - 16.5 * np.sin(t_)
     st = lambda r: geom.stadium(u, v, a, L, r, step=3.0)
     OPEN, LAST, GONE = 1871.5, 1911.12, 1915.96    # opened 4 Jul 1871; last race 15 Feb 1911; buildings burned 15 Dec 1915
     S.part(ring(st(R + 18), st(R)), "dirt_track", OPEN, 1915.0, "estimated",
            "one-mile track (2,000 x 900 ft) fitted to the oval of the USGS 1:62,500 San Francisco sheet (1899 edition, 1914 "
-           "imprint), the sheet shifted 220 m to today's streets; track width 18 m estimated; rebuilt Oct 1896 for the New "
+           "imprint), the sheet shifted 220 m to today's streets, then moved 22 m SW onto the 1911 Sanborn sheets 321/324; track width 18 m estimated; rebuilt Oct 1896 for the New "
            "California Jockey Club, racing ended 1911, subdivided into factory sites 1915", surface="dirt track", src=TOPO)
     S.part(st(R), "grass", OPEN, 1915.0, "estimated", "infield (Temescal Creek ran through the track)", surface="lawn", src=TOPO)
 

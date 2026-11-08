@@ -221,6 +221,60 @@ def neptune_beach():
            "PLACED, ESTIMATE", src=PH)
 
 
+# =====================================================================================
+# Emeryville: New California Jockey Club track buildings (1896-1915), Shell Mound Park (1877-1924),
+# Oaks Park (1913-1957)
+# =====================================================================================
+SB11_3 = LOC + "sanborn00727_007/"     # Oakland 1911-12 vol. 3 (1911), 'including Emeryville', sheets 323-325
+SB50_3 = LOC + "sanborn00727_017/"     # Oakland 1911-Oct 1950 vol. 3, sheet 317
+EHS_SMP = "https://emeryvillehistorical.org/centennial-essays/shell-mound-park/"
+EHS_TRK = "https://emeryvillehistorical.org/centennial-essays/oakland-trotting-park/"
+
+
+def emeryville():
+    d = J("emeryville_sanborn_1911.json")
+    R = Site("emeryville_racetrack", "Emeryville race track (Oakland Trotting Park / New California Jockey Club)", "racetrack",
+             d["cx"], d["cy"], EHS_TRK)
+    M = Site("shell_mound_park", "Shell Mound Park", "amusement_park", d["cx"], d["cy"], EHS_SMP)
+    fit = (f"1911 Sanborn sheets 323-325 (sheet 325 fitted to today's Park Ave crossings, residuals <= 2.1 m; 324 joined to 325 by "
+           f"the covered walk drawn on both, 323 to 324 by two hydrants: +-5 m on 324, +-15 m on 323)")
+    for b in d["buildings"]:
+        g = poly(b["coords"], b.get("holes"))
+        if g.area < 8:
+            continue
+        if b["site"] == "ncjc":
+            R.bldg(g, b["name"], 1896.81, 1915.96, b["height_m"], b["storeys"], "wood frame", b["use"], "estimated",
+                   f"{fit}, sheet {int(b['sheet'])}; track rebuilt and reopened by the New California Jockey Club 24 Oct 1896 (start; "
+                   "some stables may be older), 'closed for racing May 1911', remaining buildings burned 15 Dec 1915 (Emeryville "
+                   "Historical Society); height ESTIMATED from the storey marks", src=SB11_3)
+        else:
+            y0 = 1901.3 if "dance pavilion (with stage)" in b["name"] else 1877.2
+            M.bldg(g, b["name"], y0, 1924.5, b["height_m"], b["storeys"], "wood frame", b["use"], "estimated",
+                   f"{fit}, sheet {int(b['sheet'])}; Shell Mound Park: Edward Wiard's octagonal dance pavilion on the mound (90 ft "
+                   "across, 40 ft to the roof peak) opened for the 1877 picnic season; the ground-level pavilion burned 26 Feb "
+                   "1901 and was rebuilt (start 1901 for it); park closed 1924, land sold for factories (EHS; Oakland Tribune 7 Aug "
+                   "1949); other start years = 1877 (ESTIMATE); height ESTIMATED", src=SB11_3)
+    for g in d["ground"]:
+        M.part(poly(g["coords"]), "park", 1877.2, 1924.5, "estimated",
+               f"{g['name']}: {fit}; outline approximate (fence lines of the sheets)", surface="pleasure ground",
+               name=f"Shell Mound Park: {g['name']}", src=SB11_3)
+    o = J("oaks_park_sanborn.json")
+    O = Site("oaks_park", "Oaks Park (Emeryville ball park)", "ballpark", o["cx"], o["cy"],
+             "https://en.wikipedia.org/wiki/List_of_baseball_parks_in_Oakland,_California")
+    OPEN, LAST, GONE = 1913.3, 1955.75, 1957.5     # opened 1913 ('from plans Feb. 1913'); Oaks left after 1955; demolished 1957 (ESTIMATE)
+    note = (f"Sanborn Oakland 1911-Oct 1950 vol. 3 sheet 317, 'Oakland Base Ball Association grounds, from plans Feb. 1913', "
+            f"fitted to four street crossings (affine, residual {max(o['fit_residual_m']):.1f} m); home of the Oakland Oaks (PCL) "
+            "1913-1955; demolished c.1957 (year ESTIMATE); site now Pixar")
+    for p in o["parts"]:
+        g = poly(p["coords"])
+        if p["kind"] == "grounds":
+            O.part(g, "grass", OPEN, GONE, "estimated", f"{p['name']}: playing field; {note}", surface="ball field", name=p["name"], src=SB50_3)
+        else:
+            O.bldg(g, p["name"], OPEN, GONE, p["height_m"], 1 if p["kind"] == "bleachers" else 2, "wood frame", "grandstand", "estimated",
+                   f"{note}; outline hand-traced, height ESTIMATE", src=SB50_3)
+
+
 def build():
     idora_park()
     alameda_baths()
+    emeryville()
