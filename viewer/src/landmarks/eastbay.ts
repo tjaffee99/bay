@@ -272,7 +272,7 @@ const greekTheatre: Landmark = {
       b.color('#8E8B84').box(19.5, -0.9, 5.0, 7.2, 49.4, 0.4);
     });
   },
-  replaces: [rotRect(15, -3, 60, 60, 141.5)],
+  replaces: [rotRing(rect(15, -3, 60, 60), 141.5)],
   facts: {
     Opened: 'Sep 24, 1903 (first used for Theodore Roosevelt’s commencement address, May 16, 1903)',
     Capacity: '8,500',
@@ -562,7 +562,7 @@ const cityHallOakland: Landmark = {
       b.color('#BFB9AA').cylinder(-0.1, 0, 0.5, 96.2, 98.0, 6);
     });
   },
-  replaces: [rotRect(-4.6, -0.7, 53, 61, 26.3)],
+  replaces: [rotRing(rect(-4.6, -0.7, 53, 61), 26.3)],
   facts: {
     Construction: '1910 – 1914 (Palmer & Hornbostel, competition of 1910)',
     Height: '320 ft (98 m) — the first high-rise city hall in the United States',
@@ -721,7 +721,7 @@ const paramountOakland: Landmark = {
       b.color('#EDE9DE').box(2.5, 41.15, 4.5, 19, 0.1, 2.4);
     });
   },
-  replaces: [rotRect(2, -8, 62, 92, 282.7)],
+  replaces: [rotRing(rect(2, -8, 62, 92), 282.7)],
   facts: {
     Opened: 'Dec 16, 1931 (premiere of The False Madonna); closed Jun 1932 – 1933',
     Design: 'Timothy Pflueger, Art Deco; facade mosaic by Gerald Fitzgerald; 3,476 seats (3,040 today)',
@@ -1016,7 +1016,7 @@ const coliseum1996: Landmark = {
   end: 9999,
   anchor: COLISEUM,
   build: b => b.frame(0, 0, 0, COL_BRG, () => coliseumBowl(b, true)),
-  replaces: [rotRect(15, 0, 250, 250, COL_BRG)],
+  replaces: [rotRing(rect(15, 0, 250, 250), COL_BRG)],
   facts: {
     Renovation: 'Nov 1995 – Aug 1996 (HNTB) for the Raiders’ return: “Mount Davis”, a 10,000+-seat, 90-suite outfield grandstand, closes the bowl',
     Tenants: 'A’s until 2024, Raiders until 2019; cricket and soccer since 2025',
@@ -1066,7 +1066,7 @@ const temple: Landmark = {
       }
     });
   },
-  replaces: [rotRect(0, 21, 66, 96, 5)],
+  replaces: [rotRing(rect(0, 21, 66, 96), 5)],
   facts: {
     Construction: 'groundbreaking May 26, 1962 (David O. McKay); dedicated Nov 17, 1964',
     Height: '170 ft (52 m) central spire; five spires; Sierra white granite over reinforced concrete',
@@ -1108,7 +1108,7 @@ const station16th: Landmark = {
       b.color('#6E6A62').hip(-31.4, 96.4, 7.4, 12.2, 11, 2);
     });
   },
-  replaces: [rotRect(1.5, 5, 28, 90, 43.7), rotRing(rect(-31.4, 96.4, 9, 14), 43.7)],
+  replaces: [rotRing(rect(1.5, 5, 28, 90), 43.7), rotRing(rect(-31.4, 96.4, 9, 14), 43.7)],
   facts: {
     Opened: 'Aug 3, 1912 (Jarvis Hunt), replacing an 1870s wooden depot on the then shoreline',
     Served: 'Southern Pacific mainline trains and the SP Red Trains’ interurban platforms; Amtrak until Aug 21, 1994',
@@ -1159,7 +1159,7 @@ const pergola: Landmark = {
       }
     });
   },
-  replaces: [rotRect(3.5, 0, 45, 84, 133.4)],
+  replaces: [rotRing(rect(3.5, 0, 45, 84), 133.4)],
   facts: {
     Built: '1913, City Beautiful improvements of Lake Merritt (Lakeside Park); restored 2007 (Measure DD)',
     Style: 'Mission Revival: a semicircle of columns carrying a timber trellis, with tiled pavilions',
@@ -1211,7 +1211,7 @@ const millsHall: Landmark = {
       b.color('#5E676B').box(17.6, -7.3, 4.2, 3.4, 8.6, 0.4);
     });
   },
-  replaces: [rotRect(-7.4, -5.8, 49, 72, 123.8)],
+  replaces: [rotRing(rect(-7.4, -5.8, 49, 72), 123.8)],
   facts: {
     Built: '1871 (S. C. Bugbee & Son) — Mills Seminary moved here from Benicia in 1871; Mills College from 1885',
     Style: 'Second Empire, painted wood, mansard roofs; National Register of Historic Places',
@@ -1328,7 +1328,7 @@ const missionSanJoseWing: Landmark = {
       b.color('#E5DFD0');
       for (let x = -80; x <= -33; x += 3.6) b.box(x, 21.2, 0, 0.6, 0.6, 3.6);
     }),
-  replaces: [rotRect(-56.45, 12.35, 52, 21, 261)],
+  replaces: [rotRing(rect(-56.45, 12.35, 52, 21), 261)],
   facts: {
     Built: 'part of the mission quadrangle (c. 1810, LOW CONFIDENCE date); the only surviving original adobe, saved by the Native Sons of the Golden West (1915, 1950) as the museum',
     Model: OSM_NOTE + '; roof, corridor and heights estimated'
@@ -1370,7 +1370,7 @@ const ussHornet: Landmark = {
       b.color('#6D7378').beam([15.2, 8, 31], [15.2, 8, 47], 0.8);
       b.box(15.2, 8, 42, 6, 1.2, 0.8);
     }),
-  replaces: [rotRect(1, 3, 70, 275, 90.1)],
+  replaces: [rotRing(rect(1, 3, 70, 275), 90.1)],
   facts: {
     Ship: 'Essex-class carrier, laid down Aug 3, 1942, commissioned Nov 29, 1943; recovered the Apollo 11 and 12 crews (1969); decommissioned 1970',
     Museum: 'opened Oct 17, 1998 on the southernmost pier of the former Naval Air Station Alameda (closed 1997)',
@@ -1410,7 +1410,7 @@ const diabloSummit: Landmark = {
       b.color('#565656').dome(0.5, 6.8, 1.0, 13.8, 0.6, 8, 2);
     });
   },
-  replaces: [rotRect(0, -1.5, 15, 28, 145.6)],
+  replaces: [rotRing(rect(0, -1.5, 15, 28), 145.6)],
   facts: {
     Built: '1939 – 1942 by the Civilian Conservation Corps, of sandstone quarried on the mountain; museum and visitor centre',
     Beacon: 'the "Eye of Diablo" (Standard Oil aviation beacon, 1928) on the tower; relit every Pearl Harbor Day since 1964',
@@ -1441,14 +1441,14 @@ const goldenGateFields: Landmark = {
     b.frame(0, 0, 0, brg, () => {
       // track oval: dirt main track, turf course, infield
       const stadiumShape = (r: number, n = 18): V2[] => [
-        ...ellArc(-183, 201, r, r, 0, Math.PI, n),
-        ...ellArc(-183, -201, r, r, Math.PI, 2 * Math.PI, n)
+        ...ellArc(-183, 186, r, r, 0, Math.PI, n),
+        ...ellArc(-183, -216, r, r, Math.PI, 2 * Math.PI, n)
       ];
       b.color('#9C7A58').cap(stadiumShape(140), dzT, [stadiumShape(118)]);
       b.color('#5F9A4B').cap(stadiumShape(113), dzT + 0.05, [stadiumShape(92)]);
       b.color('#7FB061').cap(stadiumShape(92), dzT + 0.02);
-      b.color('#6F9EAE').cap(ellipse(-215, -70, 28, 60, 16), dzT + 0.1).cap(ellipse(-215, 80, 26, 55, 16), dzT + 0.1); // infield lakes
-      b.color('#2F5E3E').box(-100, 0, dzT, 2, 72, 5.2); // tote board
+      b.color('#6F9EAE').cap(ellipse(-215, -85, 28, 60, 16), dzT + 0.1).cap(ellipse(-215, 65, 26, 55, 16), dzT + 0.1); // infield lakes
+      b.color('#2F5E3E').box(-100, -15, dzT, 2, 72, 5.2); // tote board
       b.color('#E8E8E2').polyline(stadiumShape(140.5, 24).map(p => [p[0], p[1], dzT + 1.1] as V3), 0.15); // outer rail
       // grandstand: building mass on the slope, raked seats facing the track, cantilever roof
       const ring: V2[] = [[-33.3, -15.7], [-46.6, -126.0], [14.4, -133.1], [26.6, -30.5], [29.2, -24.9], [34.9, -7.7], [44.8, -5.4], [55.7, 2.9], [61.0, 12.3], [62.2, 24.7], [59.1, 34.1], [55.3, 39.8], [45.3, 47.1], [47.6, 64.4], [28.3, 67.8], [25.2, 95.7], [20.2, 114.3], [11.4, 134.3], [5.6, 138.4], [-9.6, 131.2], [-22.2, 136.7], [-29.6, 133.2], [-28.3, 120.5], [-19.0, 101.8], [-29.6, 98.1], [-25.0, 79.1], [-42.1, 80.6], [-46.6, 44.1], [-36.2, 76.1], [-24.6, 75.1], [-28.4, 25.1], [-35.4, 23.3], [-32.8, -8.8]];
@@ -1464,7 +1464,7 @@ const goldenGateFields: Landmark = {
       b.color('#E2DCCB').prism([[26.6, -30.5], [34.9, -7.7], [55.7, 2.9], [62.2, 24.7], [55.3, 39.8], [45.3, 47.1], [26, 50]], dzT, 12);
     });
   },
-  replaces: [rotRect(8, 2, 115, 280, 162.4)],
+  replaces: [rotRing(rect(8, 2, 115, 280), 162.4)],
   facts: {
     Opened: 'Feb 1, 1941 (grandstand against Fleming Point, track on filled marsh); turf course Feb 22, 1972',
     Facilities: 'one-mile main track, 9/10-mile turf course, grandstand ≈8,000 and clubhouse ≈5,200 seats',
@@ -1517,7 +1517,7 @@ const claremontHotel: Landmark = {
       b.color('#8A8C8E').beam([16, 0, 49], [16, 0, 54], 0.2);
     });
   },
-  replaces: [rotRect(5, -10, 92, 190, 155.3)],
+  replaces: [rotRing(rect(5, -10, 92, 190), 155.3)],
   facts: {
     Construction: 'begun 1906 after the Claremont Hotel Company bought the site (Nov 1905); halted by the 1906 earthquake, resumed 1910; opened 1915',
     Design: 'Charles W. Dickey and Walter D. Reed; wood frame — the 160 ft (49 m) tower is among the tallest wooden structures',
@@ -1573,7 +1573,7 @@ const cathedralChristTheLight: Landmark = {
       b.color('#A8A39A').box(-2, 34, -1.5, 20, 8, 3.5);
     });
   },
-  replaces: [rotRect(18, 37, 140, 160, 162.7)],
+  replaces: [rotRing(rect(18, 37, 140, 160), 162.7)],
   facts: {
     Construction: 'groundbreaking May 21, 2005; consecrated and dedicated Sep 25, 2008',
     Design: 'Craig W. Hartman, Skidmore Owings & Merrill — a vesica piscis of glass and Douglas-fir louvres; Omega window with the image of Christ (from Chartres)',
