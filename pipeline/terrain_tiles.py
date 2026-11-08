@@ -366,12 +366,15 @@ def histories(name, g, d):
     ev_cover, ev_year = [], []
 
     def event(mask, cover, year):
-        c = np.full((rows, cols), 255, np.uint8)
-        y = np.full((rows, cols), np.nan, np.float32)
-        c[mask] = cover if np.isscalar(cover) else cover[mask]
-        y[mask] = year if np.isscalar(year) else year[mask]
-        ev_cover.append(c)
-        ev_year.append(y)
+        # sparse: only the cells the change touches (dozens of dated layers as full grids
+        # exhausted the memory)
+        idx = np.flatnonzero(mask)
+        if not len(idx):
+            return
+        cv = np.full(len(idx), cover, np.uint8) if np.isscalar(cover) else np.asarray(cover).ravel()[idx].astype(np.uint8)
+        yv = np.full(len(idx), year, np.float32) if np.isscalar(year) else np.asarray(year, np.float32).ravel()[idx]
+        ev_cover.append((idx, cv))
+        ev_year.append(yv)
 
     # ---- urban year
     urban_y = np.full((rows, cols), np.nan, np.float32)
@@ -545,6 +548,9 @@ def histories(name, g, d):
     broad = ndimage.binary_opening(became, iterations=2)
     N[became & ~broad] = SHALLOW
     researched_water = np.zeros((rows, cols), bool)
+    # one event per kind (an event is a full grid: one per area would exhaust memory)
+    lake_y = np.full((rows, cols), np.nan, np.float32)
+    shal_y = np.full((rows, cols), np.nan, np.float32)
     for m, cov, ys in water_rows:
         mm = m & water_now
         if not mm.any():
@@ -554,9 +560,13 @@ def histories(name, g, d):
             # dammed lakes / reservoirs: the land (or marsh) it flooded before the dam year
             dry = mm & np.isin(N, [DEEP, SHALLOW, RESERVOIR])
             N[dry & (elev > 2)] = GRASS
-            event(mm, RESERVOIR, ys + 0.5 * h)
+            lake_y[mm] = np.fmin(lake_y[mm], ys + 0.5 * h[mm])
         else:
-            event(mm & ~np.isin(N, [DEEP, SHALLOW]), SHALLOW, ys + 2.0 * h)
+            sel = mm & ~np.isin(N, [DEEP, SHALLOW])
+            shal_y[sel] = np.fmin(shal_y[sel], ys + 2.0 * h[sel])
+    event(np.isfinite(lake_y), RESERVOIR, lake_y)
+    event(np.isfinite(shal_y), SHALLOW, shal_y)
+    del lake_y, shal_y
     event(broad & ~researched_water, SHALLOW, 1870.0 + 20.0 * h)
 
     # ---- agriculture (outside SF)
@@ -734,8 +744,14 @@ def histories(name, g, d):
     n_all = np.zeros((rows, cols), np.int8)
     for r0 in range(0, rows, 384):
         r1 = min(rows, r0 + 384)
-        C = np.stack([c[r0:r1] for c in ev_cover])
-        Y = np.stack([y[r0:r1] for y in ev_year])
+        a0, a1 = r0 * cols, r1 * cols
+        C = np.full((len(ev_cover), r1 - r0, cols), 255, np.uint8)
+        Y = np.full((len(ev_cover), r1 - r0, cols), np.nan, np.float32)
+        for k, ((idx, cv), yv) in enumerate(zip(ev_cover, ev_year)):
+            lo, hi = np.searchsorted(idx, [a0, a1])
+            if hi > lo:
+                C[k].ravel()[idx[lo:hi] - a0] = cv[lo:hi]
+                Y[k].ravel()[idx[lo:hi] - a0] = yv[lo:hi]
         Y = np.where(C == 255, np.nan, Y)
         order = np.argsort(np.where(np.isnan(Y), np.inf, Y), axis=0, kind="stable")
         C = np.take_along_axis(C, order, 0)
