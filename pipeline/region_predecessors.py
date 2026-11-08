@@ -204,6 +204,19 @@ def region_predecessors(today):
     lots = load_lots()
     lots["mapblklot"] = [f"rl{i}" for i in range(len(lots))]
     doc = table_buildings(TABLES / "notable_demolished_region.csv", lots, "notable_demolished_region")
+    # the region before the gold rush (data/tables/early_region.csv): missions, the San José
+    # pueblo, rancho adobes, Ohlone / Miwok villages — adobes that still stand are today's
+    # footprints (dated in region_buildings), not drawn twice
+    ep = TABLES / "early_region.csv"
+    if ep.exists():
+        e = pd.read_csv(ep)
+        keep = ~e.shape_note.fillna("").astype(str).str.upper().str.startswith("SURVIVES")
+        tmp = INTERIM / "early_region_drawn.csv"
+        e[keep].to_csv(tmp, index=False)
+        early = table_buildings(tmp, lots, "early_region")
+        if early:
+            doc = list(doc) + early
+            log(f"region predecessors: {len(early)} structures before 1850 ({int((~keep).sum())} surviving adobes left to their footprints)")
     if doc:
         d = gpd.GeoDataFrame(doc, geometry="geometry", crs=UTM)
         d["use_sanborn"] = "dwelling"

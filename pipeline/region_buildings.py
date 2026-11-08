@@ -198,6 +198,22 @@ def known_dates(g, year, conf, src):
             end[fi] = float(e)
     log(f"region: {len(j)} footprints dated from known_building_dates_region.csv ({len(k)} rows, "
         f"{len(k) - j.id.nunique()} without a footprint)")
+    # adobes that still stand (early_region.csv rows marked SURVIVES): the footprint nearest
+    # the documented point (within 25 m) takes the adobe's year
+    ep = TABLES / "early_region.csv"
+    if ep.exists():
+        e = pd.read_csv(ep)
+        e = e[e.shape_note.fillna("").astype(str).str.upper().str.startswith("SURVIVES")]
+        if len(e):
+            ep_u = gpd.GeoSeries(gpd.points_from_xy(e.lon.astype(float), e.lat.astype(float)), crs=4326).to_crs(UTM)
+            gu = g.set_crs(4326, allow_override=True).to_crs(UTM)
+            near = gpd.sjoin_nearest(gpd.GeoDataFrame({"y": e.start_year.astype(float).values, "id": e.id.values}, geometry=ep_u.values, crs=UTM),
+                                     gu[["geometry"]], how="inner", max_distance=25)
+            for fi, yy, kid in zip(near.index_right.values, near.y.values, near.id.values):
+                year[fi] = yy
+                conf[fi] = "exact"
+                src[fi] = f"early:{kid}"
+            log(f"region: {len(near)} surviving adobes dated (of {len(e)})")
     return year, conf, src, end
 
 
@@ -385,6 +401,8 @@ def main():
                                 pred.use.values.astype(int))
         dm = pred.get("material", pd.Series("", index=pred.index)).fillna("").astype(str).values
         pmat = np.where(dm == "brick", M_BRICK, np.where(dm == "stone", M_CIVIC, np.where(dm == "wharf", M_EARLY, pmat)))
+        # adobe, tule and canvas of the early settlements: the early-town palette
+        pmat = np.where(np.isin(dm, ["adobe", "tule", "canvas tent"]), M_EARLY, pmat)
         pext = [np.asarray(gm.exterior.coords)[:, :2] for gm in pred.geometry.values]
         pc = np.array([len(e) for e in pext])
         pz = ground(*np.concatenate(pext).T)

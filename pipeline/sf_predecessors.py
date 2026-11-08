@@ -620,7 +620,7 @@ def table_buildings(path, lots, source, embarcadero=None):
                 a_ = rot + rng.uniform(-12, 12)
             else:
                 cx, cy, a_ = p.x, p.y, rot
-            if dims is None and lot is not None and n == 1 and source != "early_sf":
+            if dims is None and lot is not None and n == 1 and source not in ("early_sf", "early_region"):
                 fp = lot.buffer(-0.3)
             else:
                 a, b = dims or EARLY_DEFAULT_FP[mat_key]

@@ -340,6 +340,9 @@ def histories(name, g, d):
     hist = d["hist"]
     N = np.where(hist > 0, hist.astype(np.int16) - 1, N).astype(np.uint8)
     N[water_now & (hist == 0) & (elev <= 2)] = DEEP
+    # mapped marsh / flat well above the tides is a registration error of the historical
+    # layers (e.g. downtown San Rafael at 15 m): dry ground
+    N[np.isin(N, [MARSH, FLAT]) & (elev > 6) & ~water_now] = GRASS
     # SFEI c.1998 "bay fill" is made land by definition: it was bay before (e.g. the
     # Yerba Buena Shoals under Treasure Island), whatever the coarser c.1800 layers say
     made_land = np.isin(b98, [12, 13]) & ~np.isin(N, list(WET))
