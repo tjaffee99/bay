@@ -89,7 +89,7 @@ MIN_PART = 40.0        # smallest part / courtyard
 OPEN_HAG = 2.0         # plateau less than this above ground = open to the sky (courtyard)
 VEG_FRAC = 40          # % non-last returns -> canopy pixel, ignored
 INSET = 1.0            # footprint inset for the statistics
-SIMPLIFY = 1.2         # coverage simplification of the 1 m staircase
+SIMPLIFY = 1.5         # coverage simplification of the 1 m staircase (VW, sqrt of area)
 
 
 # ----------------------------------------------------------------------------- EPT
@@ -112,7 +112,9 @@ class Ept:
         if not p.exists():
             r = get_with_retry(session(), f"{self.url}/{rel}")
             p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_bytes(r.content)
+            tmp = p.with_name(p.name + f".{os.getpid()}.{id(r)}.tmp")
+            tmp.write_bytes(r.content)
+            os.replace(tmp, p)
         return json.loads(p.read_text())
 
     def node_bounds(self, key: str):
@@ -121,19 +123,23 @@ class Ept:
         return (self.cube[0] + x * s, self.cube[1] + y * s, self.cube[0] + (x + 1) * s, self.cube[1] + (y + 1) * s)
 
     def nodes(self, max_depth: int, keep) -> dict[str, int]:
-        """All nodes (key -> point count) with depth <= max_depth whose 2D bounds pass `keep`."""
+        """All nodes (key -> point count) with depth <= max_depth whose 2D bounds pass `keep`
+        (hierarchy pages fetched 16 at a time and cached)."""
         out: dict[str, int] = {}
         todo = ["0-0-0-0"]
-        while todo:
-            page = self._json(f"ept-hierarchy/{todo.pop()}.json")
-            for k, v in page.items():
-                d = int(k.split("-")[0])
-                if d > max_depth or not keep(self.node_bounds(k), d):
-                    continue
-                if v == -1:
-                    todo.append(k)
-                elif v > 0:
-                    out[k] = v
+        with ThreadPoolExecutor(16) as ex:
+            while todo:
+                pages = list(ex.map(lambda k: self._json(f"ept-hierarchy/{k}.json"), todo))
+                todo = []
+                for page in pages:
+                    for k, v in page.items():
+                        d = int(k.split("-")[0])
+                        if d > max_depth or not keep(self.node_bounds(k), d):
+                            continue
+                        if v == -1:
+                            todo.append(k)
+                        elif v > 0:
+                            out[k] = v
         return out
 
 
@@ -147,26 +153,34 @@ def project_year(name: str) -> float:
     return float(m.group(0)) if m else float("nan")
 
 
-def pick_project(bbox_ll) -> str:
-    """Most recent EPT project covering >= 95 % of the bbox (else the best-covering recent one)."""
+def pick_projects(bbox_ll) -> list[str]:
+    """EPT projects for a bbox: the newest survey year whose projects together cover >= 95 % of
+    it (neighbouring work units of one survey are merged), else the best-covering recent one."""
+    from shapely import union_all
     from shapely.geometry import box, shape
     p = LIDAR_RAW / "resources.geojson"
     if not p.exists():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(get_with_retry(session(), BOUNDARIES_URL).content)
     b = box(*bbox_ll)
-    cands = []
+    by_year: dict[float, list] = {}
     for f in json.loads(p.read_text())["features"]:
         g = shape(f["geometry"])
         if g.intersects(b):
-            cov = g.intersection(b).area / b.area
-            cands.append((cov >= 0.95, project_year(f["properties"]["name"]), cov, f["properties"]["name"]))
-    if not cands:
+            name = f["properties"]["name"]
+            by_year.setdefault(project_year(name), []).append((g.intersection(b).area / b.area, name, g))
+    if not by_year:
         raise SystemExit(f"no 3DEP EPT project covers {bbox_ll}")
-    cands.sort(reverse=True)
-    for c in cands:
-        log(f"  candidate {c[3]}: year {c[1]}, coverage {c[2]:.0%}")
-    return cands[0][3]
+    best = None
+    for year in sorted(by_year, reverse=True):
+        ps = sorted(by_year[year], reverse=True)
+        cov = union_all([q[2] for q in ps]).intersection(b).area / b.area
+        log(f"  {year:.0f}: {', '.join(q[1] for q in ps)} -> coverage {cov:.0%}")
+        if cov >= 0.95:
+            return [q[1] for q in ps if q[0] > 0.001]
+        if best is None or cov > best[0] + 0.1:
+            best = (cov, [q[1] for q in ps])
+    return best[1]
 
 
 # ----------------------------------------------------------------------------- grid
@@ -200,9 +214,8 @@ LAYERS = {"dsm": np.int16, "dsml": np.int16, "gnd": np.int16, "cnt": np.uint16, 
 _W = {}
 
 
-def _worker_init(ept_url, grid_json):
+def _worker_init(grid_json):
     import pyproj
-    _W["url"] = ept_url
     _W["grid"] = Grid.from_json(grid_json)
     _W["tr"] = pyproj.Transformer.from_crs("EPSG:3857", UTM, always_xy=True)
     _W["s"] = session()
@@ -211,25 +224,25 @@ def _worker_init(ept_url, grid_json):
     _W["pool"] = ThreadPoolExecutor(8)
 
 
-def _fetch(key):
+def _fetch(url):
     s = _W["s"]
     for attempt in range(6):
         try:
-            r = s.get(f"{_W['url']}/ept-data/{key}.laz", timeout=120)
+            r = s.get(url, timeout=120)
             if r.status_code == 200:
-                return key, r.content
+                return url, r.content
             if r.status_code == 404:
-                return key, None
+                return url, None
         except Exception as e:  # noqa: BLE001 - network hiccup, retry
             err = e
         time.sleep(1.5 * 2 ** attempt)
-    raise RuntimeError(f"failed to fetch node {key}")
+    raise RuntimeError(f"failed to fetch {url}")
 
 
 def _bin_unit(unit):
     """Download + decode the nodes of one work unit, bin on the grid, reduce per cell."""
     import laspy
-    uid, keys, bounds = unit
+    uid, url, keys, bounds = unit
     g = _W["grid"]
     tr = _W["tr"]
     sel = laspy.DecompressionSelection.base()
@@ -245,7 +258,7 @@ def _bin_unit(unit):
         cu, *_ = np.linalg.lstsq(A, u, rcond=None)
         cv, *_ = np.linalg.lstsq(A, v, rcond=None)
         affine = (cu, cv)
-    for key, data in _W["pool"].map(_fetch, keys):
+    for _, data in _W["pool"].map(_fetch, [f"{url}/ept-data/{k}.laz" for k in keys]):
         if data is None:
             continue
         las = laspy.read(io.BytesIO(data), decompression_selection=sel)
@@ -294,19 +307,19 @@ def _bin_unit(unit):
     return uid, (uidx, dsm, dsml, gz, cnt, cmr)
 
 
-def build_rasters(job: str, project: str, grid: Grid, interest=None, workers: int = 3, max_depth: int = MAX_DEPTH):
+def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, workers: int = 3,
+                  max_depth: int = MAX_DEPTH):
     """Stream the EPT nodes over the grid into 1 m rasters (data/interim/lidar/<job>/)."""
     import pyproj
+    from shapely import box as sbox
     out = LIDAR_INT / job
-    done_tif = out / "dtm.tif"
-    if done_tif.exists():
+    if (out / "dtm.tif").exists():
         log(f"lidar: rasters for {job} exist ({out})")
         return out
     out.mkdir(parents=True, exist_ok=True)
-    meta = {"job": job, "project": project, "lidar_year": project_year(project), "grid": grid.to_json(),
-            "max_depth": max_depth, "crs": UTM}
+    meta = {"job": job, "project": "+".join(projects), "lidar_year": min(project_year(p) for p in projects),
+            "grid": grid.to_json(), "max_depth": max_depth, "crs": UTM}
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
-    ept = Ept(project)
 
     # grid bbox in EPSG:3857 (+ margin) for node selection
     inv = pyproj.Transformer.from_crs(UTM, "EPSG:3857", always_xy=True)
@@ -315,7 +328,6 @@ def build_rasters(job: str, project: str, grid: Grid, interest=None, workers: in
     X, Y = np.meshgrid(np.linspace(gx[0], gx[1], 9), np.linspace(gy[0], gy[1], 9))
     mx, my = inv.transform(X.ravel(), Y.ravel())
     mb = (mx.min() - 20, my.min() - 20, mx.max() + 20, my.max() + 20)
-    from shapely import box as sbox
 
     def keep(b, d):
         if b[2] < mb[0] or b[0] > mb[2] or b[3] < mb[1] or b[1] > mb[3]:
@@ -324,29 +336,24 @@ def build_rasters(job: str, project: str, grid: Grid, interest=None, workers: in
             return len(interest.query(sbox(*b))) > 0
         return True
 
-    nodes = ept.nodes(max_depth, keep)
-    npts = sum(nodes.values())
-    log(f"lidar: {project}: {len(nodes)} EPT nodes (depth <= {max_depth}), {npts / 1e6:.0f} M points")
-
-    # work units: one per depth-6 ancestor (~260 m cube); coarser nodes in batches
-    units: dict[str, list[str]] = {}
-    for k in nodes:
-        d, x, y, z = map(int, k.split("-"))
-        if d >= 6:
-            s = d - 6
-            uid = f"6-{x >> s}-{y >> s}"
-        else:
-            uid = f"top-{d}-{(x * 7 + y) % 8}"
-        units.setdefault(uid, []).append(k)
     ulist = []
-    for uid, keys in sorted(units.items()):
-        if uid.startswith("6-"):
-            _, x, y = map(int, uid.split("-"))
-            s = (ept.cube[3] - ept.cube[0]) / 64
-            b = (ept.cube[0] + x * s, ept.cube[1] + y * s, ept.cube[0] + (x + 1) * s, ept.cube[1] + (y + 1) * s)
-        else:
+    for project in projects:
+        ept = Ept(project)
+        nodes = ept.nodes(max_depth, keep)
+        log(f"lidar: {project}: {len(nodes)} EPT nodes (depth <= {max_depth}), {sum(nodes.values()) / 1e6:.0f} M points")
+        # work units: one per depth-6 column (~260 m in SF); coarser nodes in batches
+        units: dict[str, list[str]] = {}
+        for k in nodes:
+            d, x, y, z = map(int, k.split("-"))
+            uid = f"6-{x >> (d - 6)}-{y >> (d - 6)}" if d >= 6 else f"top-{d}-{(x * 7 + y) % 8}"
+            units.setdefault(uid, []).append(k)
+        for uid, keys in sorted(units.items()):
             b = None
-        ulist.append((uid, keys, b))
+            if uid.startswith("6-"):
+                _, x, y = map(int, uid.split("-"))
+                s = (ept.cube[3] - ept.cube[0]) / 64
+                b = (ept.cube[0] + x * s, ept.cube[1] + y * s, ept.cube[0] + (x + 1) * s, ept.cube[1] + (y + 1) * s)
+            ulist.append((uid if len(projects) == 1 else f"{project}:{uid}", ept.url, keys, b))
 
     # accumulators (memory-mapped, resumable)
     acc = out / "acc"
@@ -364,7 +371,7 @@ def build_rasters(job: str, project: str, grid: Grid, interest=None, workers: in
     log(f"lidar: {len(ulist)} work units, {len(todo)} to do ({workers} processes x 8 downloads)")
     t0 = time.time()
     pts_done = 0
-    with open(done_p, "a") as df, get_context("spawn").Pool(workers, _worker_init, (ept.url, grid.to_json())) as pool:
+    with open(done_p, "a") as df, get_context("spawn").Pool(workers, _worker_init, (grid.to_json(),)) as pool:
         for i, (uid, res) in enumerate(pool.imap_unordered(_bin_unit, todo, chunksize=1)):
             if res is not None:
                 uidx, dsm, dsml, gz, cnt, cmr = res
@@ -458,69 +465,87 @@ def _components(z, S, step):
     return out
 
 
-def _adjacency(lab):
-    """Pairs of different labels (>= 0) touching 4-connected."""
-    pairs = set()
-    for a, b in ((lab[:, :-1], lab[:, 1:]), (lab[:-1, :], lab[1:, :])):
-        m = (a >= 0) & (b >= 0) & (a != b)
-        if m.any():
-            p = np.unique(np.c_[np.minimum(a[m], b[m]), np.maximum(a[m], b[m])], axis=0)
-            pairs.update(map(tuple, p))
-    return pairs
-
-
 def segment(z, hag, S, px_area=1.0):
-    """Plateau labels (>= 0), -1 elsewhere, plus per-label info {label: (median z, median hag, area, open)}.
-    z: roof elevation (nan = no data / canopy), hag: height above local ground, S: footprint pixels."""
+    """Plateau labels (>= 0, -1 elsewhere) and {label: (median z, median hag, area px, open)}.
+    z: roof elevation (nan = no data / canopy), hag: height above local ground, S: pixels to use.
+    1. pixels join where 4-neighbours differ by < EDGE_STEP (a pitched roof is one surface,
+       a storey step cuts); 2. plateaus under MIN_PART join the neighbour closest in height,
+    smallest first; 3. neighbours closer than MIN_STEP (median roof) merge, closest first."""
+    import heapq
+    from scipy.ndimage import median_filter
     S = S & np.isfinite(z)
-    if S.sum() == 0:
+    if not S.any():
         return np.full(z.shape, -1), {}
-    lab = _components(z, S, EDGE_STEP)
+    # 3x3 median against speckle (rooftop clutter, single noisy returns)
+    zz = _fill_nearest(np.where(np.isfinite(z), z, 0.0), np.isfinite(z))
+    z = np.where(S, median_filter(zz, size=3), np.nan)
+    lab0 = _components(z, S, EDGE_STEP)
+    n = int(lab0.max()) + 1
+    flat = lab0.ravel()
+    sel = np.flatnonzero(flat >= 0)
+    order = sel[np.argsort(flat[sel], kind="stable")]
+    pix = dict(enumerate(np.split(order, np.cumsum(np.bincount(flat[sel], minlength=n))[:-1])))
+    zf, hf = z.ravel(), hag.ravel()
+    med = {i: float(np.median(zf[p])) for i, p in pix.items()}
+    area = {i: len(p) for i, p in pix.items()}
+    nb: dict[int, set] = {i: set() for i in range(n)}
+    for a, b in ((lab0[:, :-1], lab0[:, 1:]), (lab0[:-1, :], lab0[1:, :])):
+        m = (a >= 0) & (b >= 0) & (a != b)
+        for u, v in set(zip(a[m].tolist(), b[m].tolist())):
+            nb[u].add(v)
+            nb[v].add(u)
+
+    def merge(i, j, exact=True):  # i into j
+        pix[j] = np.concatenate([pix[j], pix.pop(i)])
+        area[j] += area.pop(i)
+        if exact:
+            med[j] = float(np.median(zf[pix[j]]))
+        med.pop(i)
+        for k in nb.pop(i):
+            if k != j:
+                nb[k].discard(i)
+                nb[k].add(j)
+                nb[j].add(k)
+        nb[j].discard(i)
+
     min_px = MIN_PART / px_area
-
-    def stats(lab):
-        ids = np.unique(lab[lab >= 0])
-        info = {}
-        for i in ids:
-            m = lab == i
-            info[int(i)] = [float(np.median(z[m])), float(np.median(hag[m])), int(m.sum())]
-        return info
-
-    info = stats(lab)
-    for _ in range(400):
-        if len(info) <= 1:
+    heap = [(area[i], i) for i in pix if area[i] < min_px]
+    heapq.heapify(heap)
+    dropped = []
+    while heap:
+        a_i, i = heapq.heappop(heap)
+        if i not in pix or area[i] != a_i or len(pix) <= 1:
+            continue
+        if not nb[i]:
+            dropped.append(pix.pop(i))  # isolated speck (surrounded by canopy / no data)
+            area.pop(i), med.pop(i), nb.pop(i)
+            continue
+        j = min(nb[i], key=lambda k: abs(med[k] - med[i]))
+        merge(i, j, exact=area[i] > 0.05 * area[j])
+        if area[j] < min_px:
+            heapq.heappush(heap, (area[j], j))
+    hmed = {i: float(np.median(hf[p])) for i, p in pix.items()}
+    while len(pix) > 1:
+        best = None
+        for a in pix:
+            for b in nb[a]:
+                if a < b:
+                    d = abs(med[a] - med[b])
+                    if (d < MIN_STEP or (hmed[a] < OPEN_HAG and hmed[b] < OPEN_HAG)) and (best is None or d < best[0]):
+                        best = (d, a, b)
+        if best is None:
             break
-        adj = _adjacency(lab)
-        # 1) the smallest plateau under the minimum area joins its closest-height neighbour
-        small = [i for i, v in info.items() if v[2] < min_px]
-        merged = False
-        if small:
-            i = min(small, key=lambda k: info[k][2])
-            nb = [b if a == i else a for a, b in adj if i in (a, b)]
-            if nb:
-                j = min(nb, key=lambda k: abs(info[k][0] - info[i][0]))
-                lab[lab == i] = j
-            else:
-                lab[lab == i] = -1  # isolated speck (surrounded by canopy / no data)
-            merged = True
-        else:
-            # 2) adjacent plateaus closer than the minimum step merge (closest pair first)
-            best = None
-            for a, b in adj:
-                d = abs(info[a][0] - info[b][0])
-                both_open = info[a][1] < OPEN_HAG and info[b][1] < OPEN_HAG
-                if (d < MIN_STEP or both_open) and (best is None or d < best[0]):
-                    best = (d, a, b)
-            if best:
-                _, a, b = best
-                keepi, drop = (a, b) if info[a][2] >= info[b][2] else (b, a)
-                lab[lab == drop] = keepi
-                merged = True
-        if not merged:
-            break
-        info = stats(lab)
-    out = {k: (v[0], v[1], v[2], v[1] < OPEN_HAG) for k, v in info.items()}
-    return lab, out
+        _, a, b = best
+        i, j = (a, b) if area[a] < area[b] else (b, a)
+        merge(i, j)
+        hmed.pop(i)
+        hmed[j] = float(np.median(hf[pix[j]]))
+    lab = np.full(z.size, -1, np.int64)
+    info = {}
+    for k, (i, p) in enumerate(pix.items()):
+        lab[p] = k
+        info[k] = (med[i], hmed[i], area[i], hmed[i] < OPEN_HAG)
+    return lab.reshape(z.shape), info
 
 
 def _fill_nearest(lab, valid):
@@ -529,6 +554,17 @@ def _fill_nearest(lab, valid):
         return lab
     _, (ri, ci) = distance_transform_edt(~valid, return_indices=True)
     return lab[ri, ci]
+
+
+def _smooth_labels(lab, sigma=1.2):
+    """Majority-like smoothing of a label raster (Gaussian-weighted vote): straightens the 1 m
+    staircase and removes 1-2 m protrusions before polygonising."""
+    from scipy.ndimage import gaussian_filter
+    ids = np.unique(lab)
+    if len(ids) < 2:
+        return lab
+    votes = np.stack([gaussian_filter((lab == i).astype(np.float32), sigma, mode="nearest") for i in ids])
+    return ids[np.argmax(votes, axis=0)]
 
 
 def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
@@ -561,8 +597,8 @@ def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
     open_frac = float((hin < OPEN_HAG).mean())
     if open_frac > 0.6:
         return "mostly_open", whole, gref, []          # building gone / not built yet / mis-registered
-    p5, p95 = np.percentile(zin, [5, 95])
-    if area < 2 * MIN_PART or (p95 - p5 < MIN_STEP and open_frac * area < MIN_PART):
+    p1, p99 = np.percentile(zin, [1, 99])
+    if area < 2 * MIN_PART or (p99 - p1 < MIN_STEP and open_frac * area < MIN_PART):
         return "single", whole, gref, []
     # plateaus on the inset (edge pixels are mixed with walls / eaves), then extended to the footprint
     lab, info = segment(np.where(Si, z, np.nan), hag, Si, px_area)
@@ -573,7 +609,7 @@ def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
         return "mostly_open", whole, gref, []
     if nparts == 1 and all(v[2] * px_area < MIN_PART for v in info.values() if v[3]):
         return "single", whole, gref, []
-    full = _fill_nearest(lab, lab >= 0)
+    full = _smooth_labels(_fill_nearest(lab, lab >= 0))
     polys = {}
     for g, v in shapes(full.astype(np.int32), transform=wt):
         polys.setdefault(int(v), []).append(sshape(g))
@@ -630,13 +666,13 @@ def _read(win):
 
 
 def _seg_chunk(chunk):
-    """Process the footprints of one ~1 km tile (window read once)."""
+    """Process the footprints of one ~500 m tile (raster window read once)."""
+    from rasterio.features import rasterize
     from rasterio.windows import Window
     from rasterio.windows import transform as wtransform
-    ids, geoms = chunk
     f = _S["f"]["dsm"]
     inv = ~f.transform
-    xs = np.array([g.bounds for g in geoms])
+    xs = np.array([it[1].bounds for it in chunk])
     c0, r1 = inv * (xs[:, 0].min() - 6, xs[:, 1].min() - 6)
     c1, r0 = inv * (xs[:, 2].max() + 6, xs[:, 3].max() + 6)
     W = Window(int(c0), int(r0), int(c1 - c0) + 2, int(r1 - r0) + 2)
@@ -644,7 +680,7 @@ def _seg_chunk(chunk):
     WT = wtransform(W, f.transform)
     hag_all = Z - DTM
     out_parts, out_rows = [], []
-    for key, geom in zip(ids, geoms):
+    for key, geom, members in chunk:
         b = geom.bounds
         cc0, rr1 = ~WT * (b[0] - 4, b[1] - 4)
         cc1, rr0 = ~WT * (b[2] + 4, b[3] + 4)
@@ -656,20 +692,63 @@ def _seg_chunk(chunk):
             status, whole, gref, parts = split_footprint(geom, wt, z, hag_all[sl], dtm)
         except Exception as e:  # noqa: BLE001 - one bad footprint must not stop the run
             status, whole, gref, parts = f"error:{type(e).__name__}", np.nan, np.nan, []
-        out_rows.append((key, status, whole, gref, len(parts)))
+        extra = None
+        if members:  # OSM parts: LiDAR roof per part vs its OSM height
+            diffs, areas, hs = [], [], []
+            for pkey, pg, ph in members:
+                m = rasterize([(pg.buffer(-0.5) if pg.buffer(-0.5).area > 4 else pg, 1)], out_shape=z.shape,
+                              transform=wt, dtype=np.uint8).astype(bool) & np.isfinite(z)
+                lh = float(np.median(z[m]) - gref) if m.sum() >= 3 and np.isfinite(gref) else np.nan
+                out_rows.append((pkey, "osm_part", lh + gref if np.isfinite(lh) else np.nan, gref, 0, key, None))
+                if np.isfinite(lh) and np.isfinite(ph):
+                    diffs.append(lh - ph)
+                    areas.append(pg.area)
+                hs.append(round(float(ph), 1) if np.isfinite(ph) else None)
+            uniform = len(set(hs)) <= 1
+            bad = float(np.sum(np.array(areas)[np.abs(diffs) > 6]) / max(1e-9, np.sum(areas))) if diffs else 1.0
+            # LiDAR replaces the OSM parts where they carry no height variation (one height for
+            # every part) or disagree with the LiDAR by > 6 m over more than a quarter of the outline
+            extra = bool(status == "split" and (uniform or bad > 0.25))
+        out_rows.append((key, status, whole, gref, len(parts), None, extra))
+        repl = "|".join(m[0] for m in members) if members else key
         for i, (p, rz, a) in enumerate(sorted(parts, key=lambda t: -t[1])):
-            out_parts.append((key, i, rz, gref, a, p.wkb))
+            out_parts.append((key, i, rz, gref, a, repl, extra, p.wkb))
     return out_rows, out_parts
 
 
 def load_sf_footprints(bbox_ll=None):
+    """sf_buildings footprints (key = sf16_bldgid). Buildings drawn as OSM building:parts are
+    grouped back into one outline (key "osmbld:<Overture building id>", members = the part rows
+    as (key, UTM polygon, roof height above ground)):
+    most of them carry no height per part (one height for every part = a flat slab), so their
+    outline is segmented too and each OSM part gets its LiDAR height for comparison."""
     import geopandas as gpd
+    import pandas as pd
+    import shapely
+    from download_overture import RELEASE
     df = gpd.read_parquet(INTERIM / "sf_buildings.parquet",
-                          columns=["sf16_bldgid", "source", "start_year", "end_year", "height", "geometry"])
+                          columns=["sf16_bldgid", "source", "start_year", "end_year", "height", "base", "geometry"])
     if bbox_ll is not None:
         df = df.cx[bbox_ll[0]:bbox_ll[2], bbox_ll[1]:bbox_ll[3]]
-    df = df[~df.source.str.contains("parts|lidar", regex=True)]
-    return df.rename(columns={"sf16_bldgid": "key"})
+    df = df[~df.source.str.contains("lidar")].rename(columns={"sf16_bldgid": "key"})
+    isp = df.source.str.contains("parts")
+    plain = df[~isp].copy()
+    plain["members"] = None
+    prt = df[isp].copy()
+    if len(prt):
+        bp = pd.read_parquet(RAW / "overture" / RELEASE / "building_part.parquet", columns=["id", "building_id"])
+        prt["bid"] = prt.key.str.replace("part:", "", regex=False).map(bp.set_index("id").building_id)
+        prt["bid"] = prt.bid.fillna(prt.key)
+        u = prt.to_crs(UTM)
+        rows = []
+        for bid, g in u.groupby("bid"):
+            outline = shapely.make_valid(shapely.union_all(g.geometry.buffer(0.05).values).buffer(-0.05))
+            rows.append({"key": f"osmbld:{bid}", "source": "osm_parts_outline", "start_year": g.start_year.min(),
+                         "end_year": g.end_year.max(), "height": g.height.max(), "base": 0.0,
+                         "members": list(zip(g.key, g.geometry, g.height + g.base)), "geometry": outline})
+        grp = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM).to_crs(df.crs)
+        plain = pd.concat([plain, grp], ignore_index=True)
+    return gpd.GeoDataFrame(plain, geometry="geometry", crs=df.crs)
 
 
 def load_region_footprints(bbox_ll):
@@ -698,14 +777,16 @@ def run_parts(job: str, fp, workers: int = 3):
     tile = (np.floor(cx / 500).astype(np.int64) * 100000 + np.floor(cy / 500).astype(np.int64))
     chunks = []
     keys = todo.key.values
+    mem = todo.members.values if "members" in todo else [None] * len(todo)
+    items = [(keys[i], geoms[i], [(k, shapely.make_valid(g), h) for k, g, h in mem[i]] if mem[i] else None)
+             for i in range(len(todo))]
     for t in np.unique(tile):
         ii = np.flatnonzero(tile == t)
-        big = [i for i in ii if max(geoms[i].bounds[2] - geoms[i].bounds[0], geoms[i].bounds[3] - geoms[i].bounds[1]) > 400]
-        rest = [i for i in ii if i not in set(big)]
+        size = [max(geoms[i].bounds[2] - geoms[i].bounds[0], geoms[i].bounds[3] - geoms[i].bounds[1]) for i in ii]
+        rest = [items[i] for i, sz in zip(ii, size) if sz <= 400]
         if rest:
-            chunks.append(([keys[i] for i in rest], [geoms[i] for i in rest]))
-        for i in big:
-            chunks.append(([keys[i]], [geoms[i]]))
+            chunks.append(rest)
+        chunks += [[items[i]] for i, sz in zip(ii, size) if sz > 400]
     log(f"parts: {len(todo)} footprints in {len(chunks)} chunks")
     rows, parts = [], []
     t0 = time.time()
@@ -716,14 +797,15 @@ def run_parts(job: str, fp, workers: int = 3):
             if i % 100 == 0:
                 log(f"parts: {i + 1}/{len(chunks)} chunks, {len(rows)} footprints, {len(parts)} parts, "
                     f"{(time.time() - t0) / 60:.1f} min")
-    st = pd.DataFrame(rows, columns=["key", "status", "roof_m", "ground_m", "n_parts"])
+    st = pd.DataFrame(rows, columns=["key", "status", "roof_m", "ground_m", "n_parts", "group", "prefer_lidar"])
     st["lidar_height_m"] = (st.roof_m - st.ground_m).round(2)
     sk = pd.DataFrame({"key": fp[skip].key.values, "status": np.where(fp[skip].start_year > year, "newer_than_survey",
                                                                     "gone_before_survey")})
     st = pd.concat([st, sk], ignore_index=True)
     st["lidar_year"] = year
     st["lidar_project"] = meta["project"]
-    pdf = pd.DataFrame(parts, columns=["key", "part_index", "roof_m", "ground_m", "area_m2", "wkb"])
+    pdf = pd.DataFrame(parts, columns=["key", "part_index", "roof_m", "ground_m", "area_m2", "replaces", "prefer_lidar",
+                                       "wkb"])
     pg = gpd.GeoDataFrame(pdf.drop(columns="wkb"), geometry=shapely.from_wkb(pdf.wkb.values), crs=UTM)
     pg["height_m"] = (pg.roof_m - pg.ground_m).clip(lower=1.0).round(2)
     pg["roof_m"] = pg.roof_m.round(2)
@@ -731,7 +813,8 @@ def run_parts(job: str, fp, workers: int = 3):
     pg["area_m2"] = pg.area_m2.round(1)
     pg["lidar_year"] = year
     pg["lidar_project"] = meta["project"]
-    pg = pg[["key", "part_index", "height_m", "roof_m", "ground_m", "area_m2", "lidar_year", "lidar_project", "geometry"]]
+    pg = pg[["key", "part_index", "height_m", "roof_m", "ground_m", "area_m2", "replaces", "prefer_lidar", "lidar_year",
+             "lidar_project", "geometry"]]
     return st, pg.to_crs("EPSG:4326")
 
 
@@ -785,11 +868,13 @@ def preview(job, bbox_ll, out_png, fp=None, parts=None, title=None):
 
 
 EXAMPLES = {  # validation views (lon0, lat0, lon1, lat1)
-    "mission_bay_3rd": (-122.3935, 37.7690, -122.3870, 37.7735),
-    "transbay_salesforce": (-122.3990, 37.7880, -122.3925, 37.7920),
+    "mission_bay_3rd": (-122.3925, 37.7695, -122.3870, 37.7730),      # One Mission Bay / 420 Mission Bay Blvd N
+    "transbay_salesforce": (-122.3990, 37.7880, -122.3925, 37.7920),  # Salesforce Tower, Transit Center, 181 Fremont
     "rincon_hill": (-122.3945, 37.7845, -122.3880, 37.7885),
-    "painted_ladies": (-122.4345, 37.7752, -122.4315, 37.7770),
-    "financial_district": (-122.4030, 37.7905, -122.3970, 37.7945),
+    "financial_district": (-122.4040, 37.7905, -122.3975, 37.7945),
+    "painted_ladies": (-122.4345, 37.7752, -122.4315, 37.7770),       # Victorian rows at Alamo Square
+    "outer_sunset_row": (-122.4985, 37.7590, -122.4955, 37.7608),     # stucco tract houses
+    "russian_hill_slope": (-122.4200, 37.7995, -122.4160, 37.8020),   # hillside buildings
 }
 
 
@@ -835,11 +920,11 @@ def interest_tree(fp_ll):
     return shapely.STRtree(g)
 
 
-def run(job, project, fp, workers, bbox_ll=None, examples=None):
+def run(job, projects, fp, workers, bbox_ll=None, examples=None):
     import pandas as pd
     grid = job_grid(fp)
-    log(f"job {job}: {len(fp)} footprints, grid {grid.w} x {grid.h} m, project {project}")
-    build_rasters(job, project, grid, interest=interest_tree(fp), workers=workers)
+    log(f"job {job}: {len(fp)} footprints, grid {grid.w} x {grid.h} m, LiDAR {', '.join(projects)}")
+    build_rasters(job, projects, grid, interest=interest_tree(fp), workers=workers)
     out_parts = INTERIM / f"{job}_lidar_parts.parquet"
     out_st = INTERIM / f"{job}_lidar_heights.parquet"
     if out_parts.exists() and out_st.exists():
@@ -881,7 +966,7 @@ def main():
     a = sub.add_parser("region")
     a.add_argument("--bbox", type=parse_bbox, required=True)
     a.add_argument("--name", required=True)
-    a.add_argument("--project")
+    a.add_argument("--project", help="EPT project name(s), comma-separated (default: newest covering the bbox)")
     a.add_argument("--workers", type=int, default=3)
     a = sub.add_parser("preview")
     a.add_argument("--job", default="sf")
@@ -892,11 +977,11 @@ def main():
     if args.cmd == "sf":
         fp = load_sf_footprints(args.bbox)
         job = "sf" if args.bbox is None else "sf_" + hashlib.md5(str(args.bbox).encode()).hexdigest()[:6]
-        run(job, SF_PROJECT, fp, args.workers, args.bbox, EXAMPLES)
+        run(job, [SF_PROJECT], fp, args.workers, args.bbox, EXAMPLES)
     elif args.cmd == "region":
-        project = args.project or pick_project(args.bbox)
+        projects = args.project.split(",") if args.project else pick_projects(args.bbox)
         fp = load_region_footprints(args.bbox)
-        run(args.name, project, fp, args.workers, args.bbox, {})
+        run(args.name, projects, fp, args.workers, args.bbox, {})
     elif args.cmd == "preview":
         import geopandas as gpd
         fp = load_sf_footprints(args.bbox) if args.job.startswith("sf") else None

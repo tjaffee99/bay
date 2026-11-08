@@ -99,9 +99,13 @@ def presence(site_ll, fps, eds, max_half=4000.0, log=print):
                 rim = cv2.dilate(pm, ker) - cv2.erode(pm, ker)
                 rimv = m[j0:j1, i0:i1][rim > 0].mean() if rim.any() else 0
                 score = float(max(filled, rimv * 0.85))
-            rows.append((fi, year, sc, name, bool(covered), round(score, 3), score >= THR[sc]))
-        log(f"   {name} {year}: {sum(1 for r in rows if r[1] == year and r[3] == name and r[6])} present")
-    return pd.DataFrame(rows, columns=["fi", "year", "scale", "sheet", "covered", "score", "present"])
+            # reprints of the older scales were often updated: a feature drawn on a reprint
+            # stood by its imprint year (absence still only says something about the
+            # edition's own culture year)
+            pyear = imp if (sc != 24000 and imp and imp > year) else year
+            rows.append((fi, year, pyear, sc, name, bool(covered), round(score, 3), score >= THR[sc]))
+        log(f"   {name} {year}: {sum(1 for r in rows if r[1] == year and r[2] == (imp if (sc != 24000 and imp and imp > year) else year) and r[4] == name and r[7])} present")
+    return pd.DataFrame(rows, columns=["fi", "year", "pyear", "scale", "sheet", "covered", "score", "present"])
 
 
 QUAD = {24000: 0.125, 31680: 0.125, 62500: 0.25, 125000: 0.5}
@@ -135,8 +139,8 @@ def start_years(pres, fps, founded, last_year=2024):
         is within 15 years of it, else the midpoint of founding and that edition."""
     out = []
     for fi, t in pres.groupby("fi"):
-        t = t.sort_values("year")
-        per = t.groupby("year").present.max()
+        t = t.assign(ky=np.where(t.present, t.pyear, t.year)).sort_values(["pyear", "year"])
+        per = t.groupby("pyear").present.max()
         yrs = per.index.values
         pr = per.values
         first = None
@@ -150,7 +154,7 @@ def start_years(pres, fps, founded, last_year=2024):
         if first is None:
             out.append((fi, np.nan, np.nan, np.nan, "never drawn"))
             continue
-        absent = [y for y, p in zip(yrs, pr) if y < first and not p and y >= founded - 1]
+        absent = [y for y, p in zip(t.year.values, t.present.values) if y < first and not p and y >= founded - 1]
         la = max(absent) if absent else None
         if la is not None:
             est = max(founded, (la + first) / 2.0)
