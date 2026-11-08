@@ -686,12 +686,11 @@ def view(key, w, s_, e, n, px=1400, out=None, overlay=True):
         except Exception:  # noqa: BLE001
             pass
         rl = rail_lines(bb, kinds=("all",))
-        ab = rl[[("is_abandoned" in f) for f in rl["flags"]]]
-        du = rl[[("is_disused" in f) and ("is_abandoned" not in f) for f in rl["flags"]]]
-        act = rl[[not (f & {"is_abandoned", "is_disused"}) for f in rl["flags"]]]
-        draw(act.geometry.values, (90, 90, 90), 1)
-        draw(du.geometry.values, (255, 140, 0), 2)
-        draw(ab.geometry.values, (230, 0, 0), 2)
+        fl = list(rl["flags"])
+        geo = list(rl.geometry.values)
+        draw([g for g, f in zip(geo, fl) if not (f & {"is_abandoned", "is_disused"})], (90, 90, 90), 1)
+        draw([g for g, f in zip(geo, fl) if "is_disused" in f and "is_abandoned" not in f], (255, 140, 0), 2)
+        draw([g for g, f in zip(geo, fl) if "is_abandoned" in f], (230, 0, 0), 2)
         gj = MANUAL / "historic_rail.geojson"
         if gj.exists():
             from shapely.geometry import shape

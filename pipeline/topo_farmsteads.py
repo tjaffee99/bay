@@ -805,9 +805,10 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
                 along = vx * ux + vy * uy
                 across = abs(-vx * uy + vy * ux)
                 if half < abs(along) < half + 3.5 * ppm and across < 0.15 * ppm:
-                    # side relative to a common direction (dash axes may be flipped)
-                    sgn = 1 if (vx * D[0, 2] + vy * D[0, 3]) >= 0 else -1
-                    sides.add(sgn)
+                    # side along the line's own axis, oriented canonically (dash axes
+                    # come out of atan2 as either direction)
+                    flip = -1 if (ux < 0 or (ux == 0 and uy < 0)) else 1
+                    sides.add(1 if along * flip < 0 else -1)
                     if len(sides) == 2:
                         break
         r["on_dash"] = len(sides) == 2

@@ -162,7 +162,7 @@ ESTUARY = [
          source_url=EST),
     dict(area_id="alameda_tidal_canal", name="Tidal Canal (Alameda becomes an island)", cover="shallow_water",
          year_start=1902, year_end=9999, confidence="high",
-         ring=P(-122.245, 37.752, -122.214, 37.752, -122.214, 37.772, -122.245, 37.776),
+         ring=P(-122.2440, 37.7760, -122.2370, 37.7800, -122.2185, 37.7605, -122.2250, 37.7560),  # canal corridor
          note="1.5-mile canal through the neck of the Alameda peninsula from Brooklyn Basin to San Leandro Bay: planned "
               "1873-76, dug 1889-92 and 1901-02; opened Aug-Sept 1902 ('Alameda Now an Island'). Same dates as "
               "fill_zones.csv al_tidal_canal (kind excavated).",
@@ -192,33 +192,33 @@ SALT_AREAS = [
          source_url=SALT),
     dict(area_id="salt_eden_landing_inner", name="Eden Landing / Alvarado salt ponds (inner, 19th-century works)",
          cover="salt_pond", year_start=1868, year_end=9999, confidence="low", src=("b1998", ["salt_pond"], "near_upland", 2500),
-         ring=P(-122.175, 37.570, -122.060, 37.570, -122.060, 37.630, -122.175, 37.630),
+         ring=P(-122.175, 37.578, -122.060, 37.578, -122.060, 37.630, -122.175, 37.630),
          note="Small family works on the marsh by Eden Landing and Alvarado (Quigley's Alvarado works 1862; 18 companies on "
               "the Bay by 1868; 17 works exporting by 1880). Today's ponds within ~2.5 km of the upland edge (ESTIMATED "
               "split - the 1950s reconstruction erased the old pond pattern).",
          source_url=SALT),
     dict(area_id="salt_eden_landing_outer", name="Eden Landing / Union City salt ponds (outer, 1924-31 and 1950s)",
          cover="salt_pond", year_start=1928, year_end=9999, confidence="medium", src=("b1998", ["salt_pond"], "far_upland", 2500),
-         ring=P(-122.175, 37.570, -122.060, 37.570, -122.060, 37.630, -122.175, 37.630),
+         ring=P(-122.175, 37.578, -122.060, 37.578, -122.060, 37.630, -122.175, 37.630),
          note="Large evaporators built by Oliver / Leslie-California Salt: the Union City Alvarado ponds date from 1924-31 "
               "(Shoup & Baker 2007), flood-control levees 1955-59; current layout mostly post-1953. Several ponds "
               "restored to marsh 2006-2011 (fill_zones sb_eden_landing_restored).",
          source_url=SALT),
     dict(area_id="salt_newark_north", name="Newark salt ponds north of the Dumbarton (Alameda Creek - Coyote Hills)",
          cover="salt_pond", year_start=1905, year_end=9999, confidence="low", src=("b1998", ["salt_pond"]),
-         ring=P(-122.140, 37.505, -122.040, 37.540, -122.040, 37.590, -122.140, 37.590),
+         ring=P(-122.140, 37.505, -122.040, 37.540, -122.040, 37.578, -122.140, 37.578),
          note="Pioneer Salt Works at the mouth of Alameda Creek in operation by 1885 (bought by Oliver 1927); Morton Salt "
               "refinery at Newark 1926, Leslie's Newark plant 1941. Year = ESTIMATED midpoint of 1885-1930 expansion.",
          source_url=SALT),
     dict(area_id="salt_newark_south", name="Newark / Mowry salt ponds south of the Dumbarton", cover="salt_pond",
          year_start=1935, year_end=9999, confidence="low", src=("b1998", ["salt_pond"]),
-         ring=P(-122.120, 37.455, -121.950, 37.455, -121.950, 37.505, -122.040, 37.540, -122.120, 37.505),
+         ring=P(-122.120, 37.487, -121.950, 37.487, -121.950, 37.505, -122.040, 37.540, -122.120, 37.505),
          note="Leslie Salt expansion of the 1930s-40s (12,500 acres of ponds Bay-wide in 1936, 25,000 in 1946, 30,000 in "
               "the South Bay by 1959). Year ESTIMATED.",
          source_url=BCDC),
     dict(area_id="salt_alviso_east", name="Alviso salt ponds (Coyote Creek to Guadalupe Slough)", cover="salt_pond",
          year_start=1925, year_end=9999, confidence="medium", src=("b1998", ["salt_pond"]),
-         ring=P(-122.025, 37.400, -121.920, 37.400, -121.920, 37.470, -122.025, 37.470),
+         ring=P(-122.025, 37.400, -121.920, 37.400, -121.920, 37.487, -122.025, 37.487),
          note="Attempts in the 1890s-1910s washed away; Arden Salt (Schilling, 1919) and Alviso Salt built levees and "
               "ponds in the 1920s; Arden bought Alviso Salt 1929; Leslie from 1936; Cargill 1978; state / federal 2003; "
               "Island Ponds breached 2006 (fill_zones sb_island_ponds_restored).",
