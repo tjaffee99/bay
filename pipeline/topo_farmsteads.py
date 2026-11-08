@@ -907,7 +907,7 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
     # lettering leaves a trail of rejected letter pieces: a kept blob with two or more of
     # them within 1.5 mm is part of a word too (road knots / hachures don't count)
     from scipy.spatial import cKDTree
-    LETTERY = {"glyph", "glyph2", "counter", "text", "bigtext", "stroke", "triangle", "shape", "elongated"}
+    LETTERY = {"glyph", "glyph2", "counter", "text", "bigtext"}
     lp_ = [r for r in allr if LETTERY & set(r["reject"])]
     ltree = cKDTree([[r["x"], r["y"]] for r in lp_]) if lp_ else None
     for r in allr:

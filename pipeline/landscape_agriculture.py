@@ -30,7 +30,7 @@ import pandas as pd
 import shapely
 from shapely.geometry import MultiPoint, Point, Polygon
 
-from common import MANUAL, log
+from common import INTERIM, MANUAL, log
 from landscape import M, OUT, explode_polys, knudsen2000, witter2006, write_geojson
 from landscape_broek import broek_1931
 
@@ -69,6 +69,12 @@ def valley_floor() -> gpd.GeoDataFrame:
     g = pd.concat([w.to_crs(M)[["soil", "geometry"]], k[["soil", "geometry"]]], ignore_index=True)
     g["geometry"] = g.geometry.simplify(25)
     g = g.dissolve("soil", as_index=False)
+    # not on the c.1800 baylands (marsh, flats, bay, natural salt ponds): diked baylands are in
+    # water_history.csv; causeway / bridge fills over the bay are not farmland
+    b18 = gpd.read_file(INTERIM / "baylands_1800.geojson").to_crs(M)
+    wet = shapely.union_all(list(b18[b18["class"].isin(["deep_bay", "shallow_bay", "tidal_flat", "tidal_marsh",
+                                                         "tidal_marsh_pan", "salt_pond", "lagoon"])].geometry.simplify(10)))
+    g["geometry"] = g.geometry.difference(wet)
     g = g.explode(index_parts=False)
     g = g[g.area > 5e4].reset_index(drop=True)   # >= 5 ha
     log("valley floor (km2): " + str(g.assign(a=g.area / 1e6).groupby("soil").a.sum().round(0).to_dict()))
@@ -220,7 +226,7 @@ D = {
                                    "(estimated)."),
     "cc_brentwood_byron": dict(seed=(-121.66, 37.91), county="Contra Costa", grain=(1870, 1880), basin=("pasture_dairy", 1870),
                                irrigated=(1916, "alfalfa and dairies (East Contra Costa Irrigation District, 1914-16)"),
-                               orchard=(1916, 1930), fallback_orchard=0.4,
+                               orchard=(1916, 1930), fallback_orchard=0.3,
                                src="https://eastcontracostahistory.org/our-communities/brentwood/",
                                note="Dry-land grain until Balfour-Guthrie's irrigation system (planned 1913; ECCID ~20,000 "
                                     "acres): alfalfa and dairies, Balfour-Guthrie orchards 1922 (apricots, walnuts, "

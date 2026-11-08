@@ -349,10 +349,8 @@ route("sfsj", "San Francisco & San Jose Railroad / Southern Pacific (Peninsula l
         source_url=OVB, note="Extension to a Market St depot c.1866 (year ESTIMATED).", confidence="estimated"),
     seg("Mission diagonal (Valencia near 25th - Juri Commons - Dolores St viaduct) and the Bernal Cut to Glen Park",
         1863.8, 1942.0,
-        topo("sf1899", (-122.4205, 37.7508), (-122.4220, 37.7496), (-122.4246, 37.7462), (-122.4236, 37.7430),
-             (-122.4238, 37.7405), corridor=70),
-        topo("sm1899", (-122.4238, 37.7405), (-122.4260, 37.7378), (-122.4304, 37.7339), (-122.4339, 37.7330),
-             corridor=90),
+        topo("sm1899", (-122.4205, 37.7508), (-122.4220, 37.7496), (-122.4246, 37.7462), (-122.4236, 37.7430),
+             (-122.4238, 37.7405), (-122.4260, 37.7378), (-122.4304, 37.7339), (-122.4339, 37.7330), corridor=80),
         source_url=OVB,
         note="Private right of way across the Mission (Juri Commons; steel viaduct over Dolores St) into the "
              "Bernal Cut (dug 1862-63, 43 ft deep; now San Jose Ave); main line until the Bayshore Cutoff "
@@ -406,14 +404,14 @@ route("ir_40", "San Francisco & San Mateo Electric Railway / United Railroads 40
       WIKI + "List_of_defunct_San_Francisco_Municipal_Railway_lines", [
           seg("San Francisco: 5th St and Mission St to Onondaga Ave", 1903.0, 1949.1,
               road((-122.40807, 37.78401), (-122.40649, 37.78274), names=["5th Street"]),
-              road((-122.40649, 37.78274), (-122.41984, 37.76668), (-122.41831, 37.75065), (-122.4300, 37.7330),
-                   (-122.4425, 37.7186), names=["Mission Street"]),
+              road((-122.40649, 37.78274), (-122.41984, 37.76668), (-122.4186, 37.7537), (-122.4249, 37.7352),
+                   (-122.4348, 37.7247), (-122.4391, 37.7191), (-122.4436, 37.7136), names=["Mission Street"]),
               note="Northern terminus 5th & Market by 1906; along Mission St (street running) to San Jose Ave and the "
                    "private right of way; service from 1902-12-31, through to San Mateo 1903; discontinued 1949 "
                    "(track and cars worn out). Geometry: today's street centrelines (OSM)."),
           seg("Daly City - Colma - Baden - San Bruno - Millbrae - Burlingame - San Mateo (private right of way)",
               1903.0, 1949.1,
-              topo("sm1915", (-122.4425, 37.7186), (-122.4500, 37.7130), (-122.4560, 37.7080), (-122.4600, 37.6990),
+              topo("sm1915", (-122.4436, 37.7136), (-122.4500, 37.7100), (-122.4560, 37.7080), (-122.4600, 37.6990),
                    (-122.4615, 37.6860), (-122.4570, 37.6770), (-122.4520, 37.6700), (-122.4400, 37.6620),
                    (-122.4290, 37.6560), (-122.4220, 37.6460), (-122.4140, 37.6330), (-122.4040, 37.6200),
                    (-122.3940, 37.6080), (-122.3820, 37.5960), (-122.3700, 37.5860), (-122.3580, 37.5790),

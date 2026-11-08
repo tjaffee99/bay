@@ -127,6 +127,21 @@ def main():
             continue
         no_build_until[cent.within(poly).values] = float(r.year_end)
 
+    # city parks (RPD outlines, dated in parks.csv): no generated building stands on a park
+    # that already existed (South Park 1852, Union Square, Portsmouth Square…); one that
+    # came later ends when the park opens
+    park_from = np.full(len(lots), np.inf)
+    try:
+        pk = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in glob.glob(str(RAW / "sf_rpd_parks" / "*.geojson"))]), crs=4326)
+        pt = pd.read_csv(TABLES / "parks.csv")
+        py_ = dict(zip(pt.name.str.strip(), pd.to_numeric(pt.start_year, errors="coerce")))
+        pk = pk[pk.geometry.notna()].assign(year=pk.map_park_n.fillna("").str.strip().map(py_)).dropna(subset=["year"]).to_crs(UTM)
+        jp = gpd.sjoin(gpd.GeoDataFrame(geometry=cent.values, crs=UTM), pk[["year", "geometry"]], predicate="within", how="inner")
+        jp = jp.groupby(level=0).year.min()
+        park_from[jp.index.values] = jp.values
+        log(f"predecessors: {np.isfinite(park_from).sum()} lots are dated city parks")
+    except Exception as ex:  # noqa: BLE001
+        log(f"predecessors: no park outlines ({ex})")
     lots_sidx = lots.sindex
     rows = []
     for i in np.nonzero(built)[0]:
@@ -136,6 +151,9 @@ def main():
         dev = float(np.clip(dev, dev_lo[i], dev_hi[i]))
         if dev < no_build_until[i]:
             continue  # a cemetery until then; today's buildings came after
+        if dev >= park_from[i] - 0.5:
+            continue  # a park already
+        park_end = park_from[i]
         m = mod[i]
         geom = lots.geometry.iloc[i]
         c = cent.iloc[i]
@@ -149,6 +167,10 @@ def main():
             end = m - 0.3  # replaced by today's building
         else:
             continue  # today's building may be the original — nothing to add
+        if np.isfinite(park_end):
+            end = min(end, park_end - 0.2)
+            if end <= dev + 1:
+                continue
         # industrial districts: warehouses, factories and sheds covering most of the lot
         if industrial[i] and dev >= 1860:
             fp = geom.buffer(-1.0)

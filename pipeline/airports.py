@@ -18,7 +18,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 
-from common import INTERIM, RAW, TABLES, VIEWER_DATA, log
+from common import INTERIM, MANUAL, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from export_columnar import write_columnar
 from extent import in_extent
@@ -52,6 +52,17 @@ def main():
     d = pd.read_parquet(RAW / "overture" / RELEASE / "region_airports.parquet")
     g = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
     g = g[in_extent(g.geometry.representative_point())]
+    # airfields gone from today's map (NAS Alameda 1940-97): researched pavement polygons
+    # (data/manual/airports_extra.geojson, already at their real width) + airfield outline
+    extra_f = MANUAL / "airports_extra.geojson"
+    extra_o = MANUAL / "airports_extra_outlines.geojson"
+    if extra_f.exists() and extra_o.exists():
+        ef = gpd.read_file(extra_f).to_crs(4326).rename(columns={"airport": "name"})
+        ef["class"] = ef["kind"]
+        eo = gpd.read_file(extra_o).to_crs(4326)
+        g = gpd.GeoDataFrame(pd.concat([g, ef[["name", "class", "geometry"]], eo[["name", "class", "geometry"]]],
+                                       ignore_index=True), geometry="geometry", crs=4326)
+        log(f"airports: + {len(ef)} researched pavement polygons, {len(eo)} outlines of vanished airfields")
     ports = g[g["class"].isin(AIRPORT_CLASSES) & (g.geom_type == "Polygon")].copy()
     t = pd.read_csv(TABLES / "airports.csv")
     ports = ports.merge(t[["name", "opened", "closed"]], on="name", how="left")
