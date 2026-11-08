@@ -54,6 +54,12 @@ def soil_of(p):
     return None
 
 
+def wet_1800():
+    b18 = gpd.read_file(INTERIM / "baylands_1800.geojson").to_crs(M)
+    return shapely.union_all(list(b18[b18["class"].isin(["deep_bay", "shallow_bay", "tidal_flat", "tidal_marsh",
+                                                         "tidal_marsh_pan", "salt_pond", "lagoon"])].geometry.simplify(10)))
+
+
 def valley_floor() -> gpd.GeoDataFrame:
     w = witter2006()
     k = knudsen2000()
@@ -71,10 +77,7 @@ def valley_floor() -> gpd.GeoDataFrame:
     g = g.dissolve("soil", as_index=False)
     # not on the c.1800 baylands (marsh, flats, bay, natural salt ponds): diked baylands are in
     # water_history.csv; causeway / bridge fills over the bay are not farmland
-    b18 = gpd.read_file(INTERIM / "baylands_1800.geojson").to_crs(M)
-    wet = shapely.union_all(list(b18[b18["class"].isin(["deep_bay", "shallow_bay", "tidal_flat", "tidal_marsh",
-                                                         "tidal_marsh_pan", "salt_pond", "lagoon"])].geometry.simplify(10)))
-    g["geometry"] = g.geometry.difference(wet)
+    g["geometry"] = g.geometry.difference(wet_1800())
     g = g.explode(index_parts=False)
     g = g[g.area > 5e4].reset_index(drop=True)   # >= 5 ha
     log("valley floor (km2): " + str(g.assign(a=g.area / 1e6).groupby("soil").a.sum().round(0).to_dict()))
@@ -438,7 +441,10 @@ def agriculture():
         if c not in g:
             g[c] = None
     g["source"] = g["source"].fillna("landscape_district_history")
-    g["geometry"] = g.geometry.simplify(15)
+    # Broek's schematic units (georeference +-0.7 km) and the special rings must not spill onto the
+    # c.1800 bay / marsh
+    g["geometry"] = g.geometry.difference(wet_1800()).simplify(15)
+    g = g[~g.geometry.is_empty]
     g["area_ha"] = (g.area / 1e4).round(1)
     g = g[g.area_ha >= 2].reset_index(drop=True)
     cols = ["layer", "kind", "crop", "year_start", "year_full", "year_end", "share", "orchard_share", "district", "county",
