@@ -127,7 +127,7 @@ def overture_report():
                  avg((source_dataset = 'Microsoft ML Buildings')::int) share_ms,
                  avg((source_dataset = 'Google Open Buildings')::int) share_google,
                  avg((source_dataset LIKE 'Esri%')::int) share_esri,
-                 avg((height_source = 'OpenStreetMap')::int) share_height_osm,
+                 avg((height IS NOT NULL AND height_source IS NULL AND source_dataset = 'OpenStreetMap')::int) share_height_osm,
                  avg((height_source = 'Microsoft ML Buildings')::int) share_height_ms
           FROM '{f}' GROUP BY county ORDER BY n DESC""").fetchdf()
         rep[typ] = rows.round(4).to_dict(orient="records")
@@ -814,6 +814,138 @@ def plot_histograms(hist: dict, stats: dict):
     plt.close(fig)
 
 
+# ---------------------------------------------------------------------------
+# 4. Coverage: which Overture footprints get a real year
+# ---------------------------------------------------------------------------
+
+def _fbuy_at(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    import rasterio
+    from pyproj import Transformer
+    path = RAW / "hisdac" / "FBUY" / "data" / "FBUY.tif"
+    with rasterio.open(path) as src:
+        tx, ty = Transformer.from_crs(4326, src.crs, always_xy=True).transform(x, y)
+        r, c = rasterio.transform.rowcol(src.transform, tx, ty)
+        r, c = np.asarray(r), np.asarray(c)
+        r0, r1, c0, c1 = r.min(), r.max() + 1, c.min(), c.max() + 1
+        a = src.read(1, window=rasterio.windows.Window(c0, r0, c1 - c0, r1 - r0)).astype(float)
+    v = a[r - r0, c - c0]
+    v[(v < 1810) | (v > CURRENT_YEAR)] = np.nan
+    return v
+
+
+def coverage():
+    """Join region_years to the Overture footprints (footprint point-on-surface in parcel
+    polygons; building / historic points inside footprints) and report, per county and
+    per city, the share of footprints that get a year from each class of source.
+    Also writes data/interim/region5_footprint_years.parquet (one row per footprint)."""
+    import geopandas as gpd
+    import pandas as pd
+
+    fp = gpd.read_parquet(OUT_OVERTURE / "region5_building.parquet",
+                          columns=["id", "county", "countyfp", "px", "py", "height", "source_dataset", "geometry"])
+    fp = fp.reset_index(drop=True)
+    fp["area_m2"] = fp.geometry.to_crs(32610).area.round(1)
+    pts = gpd.GeoDataFrame({"fid": fp.index}, geometry=gpd.points_from_xy(fp.px, fp.py), crs=4326)
+    ry = gpd.read_parquet(INTERIM / "region_years.parquet")
+    ry = ry[ry.year_built.notna()].reset_index(drop=True)
+    ry["yb"] = ry.year_built.astype(float)
+    ry["is_spike"] = ry.year_flag == "spike"
+
+    # city / CDP of each footprint
+    places = place_polygons()
+    hit = gpd.sjoin(pts, places, how="left", predicate="within")
+    hit = hit[~hit.index.duplicated(keep="first")]
+    fp["place"] = hit["NAME"].reindex(fp.index).fillna("(unincorporated)")
+
+    out = pd.DataFrame({"id": fp.id, "county": fp.county, "place": fp.place, "area_m2": fp.area_m2})
+    classes = {
+        # class -> sources in priority order
+        "public": [s for s, sp in NORM.items() if sp["licence"] == "public" and sp["kind"] == "parcel"],
+        "third_party": ["alameda_county_2021", "hillsborough"],
+        "commercial": ["fema_r9_res", "fema_r9_mixed", "fema_r9_nonres", "south_sf_corelogic"],
+        "historic": ["san_jose_hri", "ca_ohp_berd", "osm_start_date"],
+    }
+    # public sources ordered: newest / most specific first (city layers with stories, then county roll)
+    order = ["alameda_south_2026", "alameda_trivalley_zone7", "sunnyvale", "milpitas", "saratoga", "los_gatos",
+             "san_mateo_city", "belmont", "san_bruno", "portola_valley", "emeryville", "albany",
+             "san_mateo_county_office", "contra_costa_ccmap", "santa_clara_county", "berkeley"]
+    classes["public"] = [s for s in order if s in classes["public"]] + [s for s in classes["public"] if s not in order]
+    per_src = {}
+    for cls, srcs in classes.items():
+        year = np.full(len(fp), np.nan)
+        src = np.full(len(fp), None, dtype=object)
+        spike = np.zeros(len(fp), bool)
+        for s in srcs:
+            r = ry[ry.src == s]
+            if r.empty:
+                continue
+            if r.kind.iloc[0] == "parcel":
+                j = gpd.sjoin(pts, r[["yb", "is_spike", "geometry"]], how="inner", predicate="within")
+                # stacked condo parcels: the most common year on the footprint point
+                g = j.groupby("fid").agg(yb=("yb", lambda v: v.mode().iloc[0]), sp=("is_spike", "max"))
+            else:
+                j = gpd.sjoin(r[["yb", "is_spike", "geometry"]], fp[["geometry"]], how="inner", predicate="within")
+                # several points in one footprint (outbuildings, row houses on one roof): earliest
+                g = j.groupby("index_right").agg(yb=("yb", "min"), sp=("is_spike", "max"))
+            idx = g.index.to_numpy()
+            per_src[s] = idx
+            take = idx[~np.isfinite(year[idx])]
+            year[take] = g.yb.reindex(take).to_numpy()
+            spike[take] = g.sp.reindex(take).to_numpy()
+            src[take] = s
+            log(f"coverage {cls}/{s}: {len(idx)} footprints")
+        out[f"year_{cls}"] = pd.array(np.where(np.isfinite(year), np.round(year), np.nan), dtype="Int16")
+        out[f"src_{cls}"] = pd.array(src, dtype="string")
+        out[f"spike_{cls}"] = spike
+    out["fbuy"] = pd.array(np.round(_fbuy_at(fp.px.to_numpy(), fp.py.to_numpy())), dtype="Int16")
+    out["has_height"] = fp.height.notna().to_numpy()
+    out.to_parquet(INTERIM / "region5_footprint_years.parquet", compression="zstd")
+
+    def shares(g):
+        n = len(g)
+        pub = g.year_public.notna()
+        pub_tp = pub | g.year_third_party.notna()
+        anyy = pub_tp | g.year_commercial.notna() | g.year_historic.notna()
+        big = g.area_m2 >= 40
+        return {
+            "footprints": n,
+            "share_public": round(pub.mean(), 4),
+            "share_public_or_copy": round(pub_tp.mean(), 4),
+            "share_any_incl_commercial": round(anyy.mean(), 4),
+            "share_any_ge40m2": round(anyy[big].mean(), 4) if big.any() else None,
+            "share_public_or_copy_ge40m2": round(pub_tp[big].mean(), 4) if big.any() else None,
+            "share_historic_record": round(g.year_historic.notna().mean(), 4),
+            "share_spike_flagged": round((g.spike_public | g.spike_third_party).mean(), 4),
+            "share_fbuy": round(g.fbuy.notna().mean(), 4),
+            "share_no_year_but_fbuy": round((~anyy & g.fbuy.notna()).mean(), 4),
+            "share_height": round(g.has_height.mean(), 4),
+        }
+    rep = {"by_county": {c: shares(g) for c, g in out.groupby("county")}}
+    big_places = out.place.value_counts()
+    rep["by_place"] = {f"{c} | {p}": shares(g) for (c, p), g in out.groupby(["county", "place"])
+                       if big_places.get(p, 0) >= 5000}
+    rep["total"] = shares(out)
+    # agreement between public roll and FEMA/Lightbox where both exist
+    both = out.year_public.notna() & out.year_commercial.notna()
+    dlt = (out.year_public[both].astype(float) - out.year_commercial[both].astype(float)).abs()
+    rep["agreement_public_vs_commercial"] = {
+        "n": int(both.sum()), "same_year": round(float((dlt == 0).mean()), 4),
+        "within_2": round(float((dlt <= 2).mean()), 4), "within_10": round(float((dlt <= 10).mean()), 4)}
+    both = out.year_third_party.notna() & out.year_commercial.notna()
+    dlt = (out.year_third_party[both].astype(float) - out.year_commercial[both].astype(float)).abs()
+    rep["agreement_alameda2021_vs_commercial"] = {
+        "n": int(both.sum()), "same_year": round(float((dlt == 0).mean()), 4),
+        "within_2": round(float((dlt <= 2).mean()), 4), "within_10": round(float((dlt <= 10).mean()), 4)}
+    both = out.year_public.notna() & out.year_third_party.notna()
+    dlt = (out.year_public[both].astype(float) - out.year_third_party[both].astype(float)).abs()
+    rep["agreement_public2026_vs_alameda2021"] = {
+        "n": int(both.sum()), "same_year": round(float((dlt == 0).mean()), 4),
+        "within_2": round(float((dlt <= 2).mean()), 4)}
+    rep["footprints_per_source"] = {s: int(len(v)) for s, v in per_src.items()}
+    (REPORTS / "region_years_coverage.json").write_text(json.dumps(rep, indent=1, default=str))
+    log(json.dumps({"total": rep["total"], "by_county": rep["by_county"]}, indent=1, default=str))
+
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "all"
     if what in ("overture", "all"):
@@ -825,5 +957,7 @@ if __name__ == "__main__":
         osm_start_date()
     if what in ("normalise", "all"):
         normalise()
+    if what in ("coverage", "all"):
+        coverage()
     if what in ("heights", "all"):
         heights()
