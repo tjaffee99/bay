@@ -306,7 +306,7 @@ def parcel_blocks():
     return _blocks
 
 
-def property_corner(a, b, q, near=None, reach=(18, 75), R=150, wa=None, wb=None):
+def property_corner(a, b, q, near=None, reach=(18, 75), R=150, wa=None, wb=None, ma=None, mb=None):
     """block corner (property-line crossing) in quadrant q (NE/NW/SE/SW: N = along the more north-south street of the
     two, E = along the more east-west one) of the a x b street crossing, from today's parcel block in that quadrant:
     along each street the property line is the street's direction at the median normal offset of the block boundary
@@ -320,6 +320,7 @@ def property_corner(a, b, q, near=None, reach=(18, 75), R=150, wa=None, wb=None)
         ds.append(d)
     k = int(np.argmax([abs(d[1]) / (abs(d[0]) + 1e-9) for d in ds]))  # the more north-south one
     widths = [wa, wb] if k == 0 else [wb, wa]  # ft, per (NS street, EW street): centreline + half width instead of parcels
+    mirrors = [ma, mb] if k == 0 else [mb, ma]  # ft: the property line across the street (opposite block) + this width
     eN, eE = ds[k], ds[1 - k]
     eN = eN if eN[1] > 0 else -eN
     eE = eE if eE[0] > 0 else -eE
@@ -341,17 +342,35 @@ def property_corner(a, b, q, near=None, reach=(18, 75), R=150, wa=None, wb=None)
     rel = np.array(pts) - X
     nN = np.array([eN[1], -eN[0]]); nN = nN if nN @ eE > 0 else -nN  # normal of the NS street, toward +E
     nE = np.array([-eE[1], eE[0]]); nE = nE if nE @ eN > 0 else -nE  # normal of the EW street, toward +N
-    offs = []
-    for (e_al, n_ac, s_al, s_ac), w in zip(((eN, nN, sN, sE), (eE, nE, sE, sN)), widths):
-        if w:  # street whose today's property line is not the old one: centreline + half the mapped width
-            offs.append(w * FT / 2)
-            continue
-        al, ac = rel @ e_al * s_al, rel @ n_ac * s_ac
+    def ring_rel(bk):
+        ring = np.asarray(bk.exterior.coords)[:, :2]
+        pp = []
+        for p0, p1 in zip(ring[:-1], ring[1:]):
+            n = max(2, int(np.hypot(*(p1 - p0)) / 0.5))
+            pp += [p0 + t * (p1 - p0) for t in np.linspace(0, 1, n, endpoint=False)]
+        return np.array(pp) - X
+
+    def frontage(rr, e_al, n_ac, s_al, s_ac):
+        al, ac = rr @ e_al * s_al, rr @ n_ac * s_ac
         sel = (al > reach[0]) & (al < reach[1]) & (ac > 0)
         if sel.sum() < 5:
             raise ValueError(f"property line not found at {a} x {b} {q}")
         acs = ac[sel]
-        offs.append(float(np.median(acs[acs <= acs.min() + 2.0])))
+        return float(np.median(acs[acs <= acs.min() + 2.0]))
+    offs = []
+    for i, ((e_al, n_ac, s_al, s_ac), w, mw) in enumerate(zip(((eN, nN, sN, sE), (eE, nE, sE, sN)), widths, mirrors)):
+        if w:  # street whose today's property line is not the old one: centreline + half the mapped width
+            offs.append(w * FT / 2)
+            continue
+        if mw:  # today's block on this side changed: the opposite block's frontage + the mapped street width
+            pr = X + (-sE * 30 * eE + sN * 30 * eN if i == 0 else sE * 30 * eE - sN * 30 * eN)
+            cand2 = [geoms[j] for j in tree.query(Point(*pr).buffer(25))]
+            if not cand2:
+                raise ValueError(f"no opposite block at {a} x {b} {q}")
+            ob = min(cand2, key=lambda g: g.distance(Point(*pr)))
+            offs.append(mw * FT - frontage(ring_rel(ob), e_al, n_ac, s_al, -s_ac))
+            continue
+        offs.append(frontage(rel, e_al, n_ac, s_al, s_ac))
     p = X + np.linalg.solve(np.array([nN, nE]), np.array([sE * offs[0], sN * offs[1]]))
     return p, f"property corner {q} of {a} x {b}", offs
 
@@ -384,9 +403,11 @@ def world_of(c):
     xl:  crossing of two straight centreline fits (centre of the corridor)."""
     if "pc" in c:
         p, lab, offs = property_corner(c["pc"][0], c["pc"][1], c["q"], c.get("near"), tuple(c.get("reach", (18, 75))), c.get("R", 150),
-                                       c.get("wa"), c.get("wb"))
+                                       c.get("wa"), c.get("wb"), c.get("ma"), c.get("mb"))
         if c.get("wa") or c.get("wb"):
             lab += " (" + ", ".join(f"{n} centreline + {w} ft / 2" for n, w in zip(c["pc"], (c.get("wa"), c.get("wb"))) if w) + ")"
+        if c.get("ma") or c.get("mb"):
+            lab += " (" + ", ".join(f"{n}: opposite property line + {w} ft" for n, w in zip(c["pc"], (c.get("ma"), c.get("mb"))) if w) + ")"
         return p, c.get("label", lab)
     if "bcx" in c:
         a, na, b, nb = c["bcx"]

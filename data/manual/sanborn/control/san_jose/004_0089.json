@@ -10,8 +10,8 @@
     "San Fernando Street"
    ],
    "q": "SW",
-   "x": 420.0,
-   "y": 184.0
+   "x": 424.0,
+   "y": 185.0
   },
   {
    "pc": [
@@ -26,22 +26,21 @@
   {
    "pc": [
     "Market Street",
-    "Paseo de San Antonio"
+    "San Fernando Street"
    ],
-   "q": "NE",
-   "x": 1260.0,
-   "y": 630.0,
-   "R": 50,
-   "wb": 60
+   "q": "SE",
+   "x": 420.0,
+   "y": 800.0
   },
   {
    "pc": [
     "Market Street",
     "San Fernando Street"
    ],
-   "q": "SE",
+   "q": "SW",
    "x": 420.0,
-   "y": 810.0
+   "y": 952.0,
+   "mb": 80
   }
  ],
  "pct": 25
