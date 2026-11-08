@@ -252,24 +252,24 @@ const greekTheatre: Landmark = {
     b.frame(0, 0, 0, 141.5, () => {
       // seating bowl: semicircle opening toward +x (the stage), centre = orchestra centre
       const arc = (r: number) => ellArc(0, 0, r, r, Math.PI / 2, (3 * Math.PI) / 2, 24);
-      b.color('#D8D3C6').cap(arc(11.5), -0.4); // orchestra floor
+      b.color('#D8D3C6').cap(arc(11.5), -0.4).cap(rect(2.2, -0.9, 4.4, 38), -0.4); // orchestra floor and pit
       bowl(b, arc(11.5), arc(23), 0.6, 3.6, seat, conc, -1.5);
       b.color(conc).ribbon(arc(23).map(p => [p[0], p[1], 3.6] as V3), arc(24.5).map(p => [p[0], p[1], 3.8] as V3)); // diazoma walk
       bowl(b, arc(24.5), arc(33), 3.8, 6.8, seat, conc, 2);
       b.color('#7FA05E').ribbon(arc(33).map(p => [p[0], p[1], 6.8] as V3), arc(44).map(p => [p[0], p[1], 10.0] as V3)); // grassy mound
       // stage: 38.7 × 8.5 m platform 2 m above the orchestra, front at x = 4.3
-      b.color(conc).box(8.6, -3.5, -2.5, 8.6, 40.4, 4.3);
+      b.color(conc).box(8.6, -0.9, -2.5, 8.6, 40.4, 4.3);
       // scaenae frons: wall with 16 engaged Doric columns, 10.7 m above the stage
-      b.color('#D3CEC1').box(14.4, -3.5, -2.5, 3.0, 40.4, 15.2);
+      b.color('#D3CEC1').box(14.4, -0.9, -2.5, 3.0, 40.4, 15.2);
       b.color('#DCD7CA');
-      rowOf(b, [12.8, -22.5], [12.8, 15.5], 16, 0.9, 0.6, 1.8, 11.4);
-      b.color('#CFCABD').box(14.2, -3.5, 11.4, 3.6, 41.4, 1.4); // entablature
-      b.color('#4A4E50').box(12.85, -3.5, 1.8, 0.2, 2.6, 4.2); // central doorway
+      rowOf(b, [12.8, -19.9], [12.8, 18.1], 16, 0.9, 0.6, 1.8, 11.4);
+      b.color('#CFCABD').box(14.2, -0.9, 11.4, 3.6, 41.4, 1.4); // entablature
+      b.color('#4A4E50').box(12.85, -0.9, 1.8, 0.2, 2.6, 4.2); // central doorway
       // end pylons projecting toward the audience
-      for (const y of [-25.6, 18.6]) b.color('#D3CEC1').box(10.5, y, -2.5, 9.0, 4.2, 15.6);
+      for (const y of [-23.0, 21.2]) b.color('#D3CEC1').box(10.5, y, -2.5, 9.0, 4.2, 15.6);
       // backstage block (1957, Ernest Born) behind the wall
-      b.color('#BDB8AC').box(21.5, -3.5, -3.5, 11.0, 49.4, 8.5);
-      b.color('#8E8B84').box(21.5, -3.5, 5.0, 11.0, 49.4, 0.4);
+      b.color('#BDB8AC').box(19.5, -0.9, -3.5, 7.2, 49.4, 8.5);
+      b.color('#8E8B84').box(19.5, -0.9, 5.0, 7.2, 49.4, 0.4);
     });
   },
   replaces: [rotRect(15, -3, 60, 60, 141.5)],
@@ -457,9 +457,9 @@ const doeNorth: Landmark = {
       b.color('#D3CEC2').box(-44.5, 0, -1.5, 9, 30, 2.3);
       b.color('#5B5F5E').box(-39.45, 0, 0.5, 0.3, 3.5, 4.2); // bronze doors
       // the first unit continues south to just past the middle of the plan
-      b.color(GRANITE).box(-6, -16, -2, 25.4, 30, 19.5).box(-6, 16, -2, 25.4, 30, 19.5);
-      doeRoofs(b, -18.7, 6.7, -31, -1);
-      doeRoofs(b, -18.7, 6.7, 1, 31);
+      b.color(GRANITE).box(-6, -15.5, -2, 25.4, 31, 19.5).box(-6, 15.5, -2, 25.4, 31, 19.5);
+      doeRoofs(b, -18.7, 6.7, -31, 0);
+      doeRoofs(b, -18.7, 6.7, 0, 31);
     }),
   replaces: [rotRect(0, 0, 84, 73, 73.6), rotRing(rect(-40, 57, 40, 48), 73.6)],
   facts: {
@@ -871,8 +871,8 @@ function necklace(b: MeshBuilder) {
     const z2 = z[(i + 1) % NECKLACE.length];
     if (Math.hypot(x2 - x, y2 - y) > 70) continue; // no string across the Glen Echo inlet gap
     const pts: V3[] = [];
-    for (let k = 0; k <= 6; k++) {
-      const t = k / 6;
+    for (let k = 0; k <= 3; k++) {
+      const t = k / 3;
       pts.push([x + (x2 - x) * t, y + (y2 - y) * t, z[i] + (z2 - z[i]) * t + H - 0.3 - 1.6 * 4 * t * (1 - t)]);
     }
     b.color('#FFF2C4').polyline(pts, 0.28);
@@ -940,7 +940,8 @@ function coliseumBowl(b: MeshBuilder, davis: boolean) {
     b.quad([A[n][0], A[n][1], z0 - 2.5], [B[n][0], B[n][1], z1 - 4], [B[n][0], B[n][1], z1 + 1.2], [A[n][0], A[n][1], z0 + 0.6]);
   };
   // field (raised onto the terrain mesh) with the infield dirt
-  b.color('#5D9A47').cap(ellipse(8, 0, 96, 92, 40), 1.6);
+  b.color('#5D9A47').cap(circle(8, 0, 76, 40), 1.6);
+  b.color('#A9845E').cap(circle(8, 0, 76, 40), 1.62, [circle(8, 0, 70, 40)]); // warning track
   const home: V2 = [66, 0];
   b.frame(home[0], home[1], 0, 270, () => {
     const d = 27.43 * Math.SQRT1_2;

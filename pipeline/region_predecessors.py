@@ -25,8 +25,8 @@ import pandas as pd
 import shapely
 from scipy.spatial import cKDTree
 
-from common import INTERIM, log
-from sf_predecessors import apply_sanborn, footprint, h01, massing, strips_for_lot
+from common import INTERIM, TABLES, log
+from sf_predecessors import apply_sanborn, footprint, h01, massing, strips_for_lot, table_buildings
 
 UTM = "EPSG:32610"
 REGION_SANBORN = ("oakland", "san_jose", "berkeley", "alameda", "richmond", "san_rafael", "palo_alto",
@@ -116,6 +116,16 @@ def region_predecessors(today):
     from sf_buildings import redevelopment_areas
     areas = redevelopment_areas()
     pred = generated(today, areas)
+    # documented demolished buildings (data/tables/notable_demolished_region.csv): on their
+    # parcel, or their traced Sanborn outline when the row points at one (apply_sanborn)
+    lots = load_lots()
+    lots["mapblklot"] = [f"rl{i}" for i in range(len(lots))]
+    doc = table_buildings(TABLES / "notable_demolished_region.csv", lots, "notable_demolished_region")
+    if doc:
+        d = gpd.GeoDataFrame(doc, geometry="geometry", crs=UTM)
+        d["use_sanborn"] = "dwelling"
+        pred = gpd.GeoDataFrame(pd.concat([pred, d], ignore_index=True), geometry="geometry", crs=UTM)
+        log(f"region predecessors: {len(d)} documented demolished buildings")
     tu = today.to_crs(UTM).reset_index(drop=True)
     no_fire = gpd.GeoDataFrame(geometry=[], crs=UTM)
     pred = apply_sanborn(pred, tu, no_fire, areas, include=lambda area: area.startswith(REGION_SANBORN))
