@@ -61,7 +61,7 @@ OUT_DIR = MANUAL / "farmsteads"
 
 TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
 LINE_BAND = 0.10        # mm: a line passing this close to a blob's centre runs through it
-DETECTOR_VERSION = 2
+DETECTOR_VERSION = 3
 
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
 # selected when their footprint overlaps one of these boxes.
@@ -71,6 +71,7 @@ AREAS = {
     "peninsula_coast": (-122.52, 37.30, -122.30, 37.55),      # Half Moon Bay, Pescadero side
     "peninsula_baylands": (-122.30, 37.40, -122.05, 37.55),   # Redwood City .. Mountain View
     "tri_valley": (-122.00, 37.55, -121.55, 37.80),           # Livermore, Pleasanton, Sunol, Dublin
+    "east_bay_plain": (-122.20, 37.45, -121.90, 37.70),       # Hayward, Alvarado, Niles, Newark, Irvington
     "contra_costa": (-122.15, 37.85, -121.55, 38.05),         # Walnut Creek, Concord, Antioch, Brentwood, Byron
     "north_bay": (-122.75, 38.00, -122.45, 38.30),            # Novato, Petaluma
 }
@@ -1366,6 +1367,25 @@ def export():
                                         "photo_year": r.get("photo_year"), "quad": r["quad"], "scale": r["scale"],
                                         "source_url": r["source_url"]}})
     dump("topo_orchards.geojson", orch)
+    # the list of sheets in the README
+    readme = OUT_DIR / "README.md"
+    if readme.exists():
+        txt = readme.read_text()
+        mark = "<!-- maps-table -->"
+        if mark in txt:
+            nf = {}
+            for f in feats:
+                nf[f["properties"]["source_url"]] = nf.get(f["properties"]["source_url"], 0) + 1
+            rows = ["| Quadrangle | Scale | Edition | Survey | Photos | Period | Symbols | Farmsteads | Shift to today's roads | GeoPDF |",
+                    "|---|---|---|---|---|---|---|---|---|---|"]
+            for r in sorted(sheets, key=lambda r: (r.get("edition") or "", r["quad"], r["edition_year"])):
+                al = r.get("align") or {}
+                sh = (f"{al['median_shift_m']:.0f} m ({al['model']}, RMS {al['rms_m']:.0f} m)" if al.get("aligned")
+                      else "not aligned")
+                rows.append(f"| {r['quad']} | 1:{r['scale']:,} | {r['edition_year']} | {r.get('survey_year') or ''} | "
+                            f"{r.get('photo_year') or ''} | {r.get('edition')} | {len(r['symbols'])} | "
+                            f"{nf.get(r['source_url'], 0)} | {sh} | [{r['id']}]({r['source_url']}) |")
+            readme.write_text(txt[:txt.index(mark) + len(mark)] + "\n\n" + "\n".join(rows) + "\n")
     log(f"export: {len(feats)} farmsteads from {len(sheets)} sheets, {len(towns)} town areas, "
         f"{len(orch)} orchard / vineyard polygons -> {OUT_DIR}")
 
@@ -1377,12 +1397,16 @@ def main():
     ap.add_argument("--keep", action="store_true", help="keep the downloaded PDFs")
     ap.add_argument("--debug", type=int, default=0, help="overlay crops per sheet in data/interim/topo/debug")
     ap.add_argument("--only", help="comma-separated sheet ids")
+    ap.add_argument("--shard", help="i/n: process every n-th sheet starting at i (parallel runs)")
     a = ap.parse_args()
     areas = a.area or list(AREAS)
     if a.cmd in ("all", "list", "process"):
         maps = select_maps(areas)
         if a.only:
             maps = [m for m in maps if m["id"] in a.only.split(",")]
+        if a.shard:
+            i, n = map(int, a.shard.split("/"))
+            maps = maps[i::n]
         for m in maps:
             done = sheet_path(m).exists()
             log(f"{m['id']} {m['edition']:5s} {m['quad']} 1:{m['scale']} {m['edition_year']} "
