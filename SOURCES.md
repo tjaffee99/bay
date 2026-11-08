@@ -198,6 +198,37 @@ Details, field names, coverage and licence notes: `data/research/region_building
 - Use: building symbols of the first 1:62,500 surveys (1885–1916) and of the 1939–1956 sheets → `data/manual/farmsteads/topo_farmsteads.geojson` (farmstead positions), `topo_towns.geojson`, `coverage.geojson`; green orchard / vineyard overprint of the 1939–1956 sheets → `topo_orchards.geojson`. Sheets used (quad, years, URL) are listed in `data/manual/farmsteads/README.md` / `coverage.geojson`. Built by `pipeline/topo_farmsteads.py`; raw PDFs in `data/raw/topo/` are deleted after extraction.
 - Also used there: NOAA NADCON grid `us_noaa_conus.tif` (PROJ CDN https://cdn.proj.org/, open licence) for NAD27 → WGS84, and Overture/OSM road centrelines (`overture_transportation`, ODbL) only to measure the local offset of the early surveys; no OSM geometry is copied, but the early-sheet positions carry that correction (an affine shift per sheet), so treat the outputs as OSM-influenced (ODbL attribution) if in doubt.
 
+### Landscape history (`data/manual/landscape/`, 2026-11): dunes, water, agriculture
+Built by `pipeline/landscape.py`, `landscape_water.py`, `landscape_broek.py`, `landscape_agriculture.py`; raw inputs in `data/raw/landscape/`. See `data/manual/landscape/README.md`.
+
+#### `broek_1932` — J.O.M. Broek, *The Santa Clara Valley, California: a study in landscape changes* (Utrecht: Oosthoek, 1932)
+- Utrecht University Repository, open access: https://dspace.library.uu.nl/handle/1874/302720 (PDF https://objects.library.uu.nl/download/1874-302720/pdf). Published 1932 (Netherlands); facts and a traced generalisation of its map are used, the scan is not redistributed.
+- Use: Plate II Map III "Schematic map of landscape types of the Santa Clara Valley 1931" traced (hatch-texture classification, affine georeference on 15 towns, RMS ~0.7 km) → `broek_1931_landscape_types.geojson` and the `broek_1931` layer of `agriculture.geojson`; text (wheat / orchard / vineyard / dairy history, county grain production 1859–1929, orchard acreage 1890 / 1930) → district eras and the README findings.
+
+#### `usgs_of98_354` — Bonilla, M.G., 1998, *Preliminary geologic map of the San Francisco South 7.5′ quadrangle and part of the Hunters Point 7.5′ quadrangle*, USGS Open-File Report 98-354
+- https://pubs.usgs.gov/of/1998/of98-354/ (`sfs_data.tar.gz`, ARC export; compressed E00 decompressed with `e00conv` from the Debian `e00compr` package). Public domain (USGS).
+- Use: unit Qd (dune sand) and Qc (Colma Formation) → dunes of southern San Francisco, Lake Merced, Fort Funston and Daly City (`dunes.geojson`).
+
+#### `usgs_of2006_1037` — Witter, R.C., Knudsen, K.L., Sowers, J.M., Wentworth, C.M., Koehler, R.D., Randolph, C.E., 2006, *Maps of Quaternary deposits and liquefaction susceptibility in the central San Francisco Bay region*, USGS Open-File Report 2006-1037
+- https://pubs.usgs.gov/of/2006/1037/ (`of06-1037_4b.shp.zip`, NAD27 geographic → WGS84 via NADCON). Public domain (USGS).
+- Use: dune sand (Qds/Qhds; Merritt Sand of Alameda / Oakland / Bay Farm Island, coast dunes) → `dunes.geojson`; Holocene fan / levee / terrace, basin and Pleistocene fan units → the valley-floor soil classes ("fan", "basin", "upper_fan") on which `agriculture.geojson` paints the district eras.
+
+#### `usgs_of00_444` — Knudsen, K.L., Sowers, J.M., Witter, R.C., Wentworth, C.M., Helley, E.J., 2000, *Preliminary maps of Quaternary deposits and liquefaction susceptibility, nine-county San Francisco Bay region*, USGS Open-File Report 00-444
+- https://pubs.usgs.gov/of/2000/of00-444/ (`of00-444_4c.tar.gz`, shapefiles, NAD27). Public domain (USGS).
+- Use: same as OFR 2006-1037 where that map does not reach (Delta / Antioch–Oakley–Brentwood sand sheet, Livermore east, south Santa Clara Valley, West Marin).
+
+#### `overture_water` — Overture Maps base theme, water (OpenStreetMap)
+- `s3://overturemaps-us-west-2/release/2026-10-21.0/theme=base/type=water` (region bbox, polygons) — ODbL 1.0, © OpenStreetMap contributors, Overture Maps Foundation.
+- Use: lake / reservoir outlines (named) and today's water for the dredged-estuary rows of `water_history.csv` (so that file is OSM-derived: ODbL attribution).
+
+#### `sbsprp_salt_history`, `bcdc_salt_ponds_2005` — salt-pond histories
+- USFWS / South Bay Salt Pond Restoration Project, *Appendix E: Identification and Evaluation of the South San Francisco Bay Solar Salt Ponds* (https://www.southbayrestoration.org/documents/permit-related/Historic%20Salt%20AppendixE.pdf), citing Ver Planck (1958) *Salt in California* (CDMG Bulletin 175), Sandoval (1988), Shoup & Baker (2007).
+- BCDC, *Staff Report: Salt Ponds*, October 2005 (http://www.bcdc.ca.gov/wp-content/uploads/sites/354/2023/09/Salt-Ponds-PDF.pdf).
+- Use: dates of the salt-pond complexes in `water_history.csv` (facts only).
+
+#### Other dated facts (per row / feature in the files)
+- Lake Merritt, Oakland estuary, Tidal Canal: Wikipedia "Lake Merritt", "Oakland Estuary"; oaklandgeology.com (tidal canal history); HMdb Tidal Canal marker; Alameda Post. Reservoir / lake dam years: Wikipedia articles per reservoir (URL per row). Farm-district eras: Broek 1932; Hayward Area Historical Society (agricultural history); Contra Costa County Historical Society; East Contra Costa Historical Society (Brentwood); NPS Point Reyes ranching history; Pleasanton Weekly (hops); Wikipedia articles cited per feature.
+
 ## Sources checked but not yet usable from the build environment
 - SFEI EcoAtlas web services (https://www.sfei.org/) — behind a bot check; the poster PDF was supplied by hand and the GIS compilation downloads directly.
 - OpenHistoricalMap (https://www.openhistoricalmap.org/) — API behind a bot check.
