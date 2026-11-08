@@ -1,0 +1,5 @@
+[
+ {"name":"Wharf J7/J8 (Embarcadero deck, west of the lagoon)","seeds":[[520,665],[300,700],[150,640]],"clip":[[25,560],[600,600],[600,780],[25,720]]},
+ {"name":"Fishermen's Wharf J2/J4 (Fish Alley deck)","seed_grid":1,"clip":[[893,655],[1050,665],[1450,725],[1560,745],[1560,860],[1440,835],[893,770]],"confidence":"low"},
+ {"name":"Wharf J5 (diagonal, south side of the lagoon)","seed_grid":1,"clip":[[700,880],[1430,1010],[1430,1050],[700,920]],"confidence":"low"}
+]

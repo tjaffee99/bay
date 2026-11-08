@@ -1,0 +1,831 @@
+{
+"015_0064_f195": {
+"stories": 1,
+"use": "shed",
+"note": "fish/boat sheds at the Taylor St wharf (no label legible)",
+"src": "default"
+},
+"015_0064_f239": {
+"stories": 1,
+"use": "store",
+"name": "boat building, kitchen, restaurant, saloon (Jefferson St row)"
+},
+"015_0065_f95": {
+"stories": 1,
+"use": "shed",
+"name": "boarding & wagon shed (J. Musto Sons-Keenan Co.)"
+},
+"015_0065_f137": {
+"stories": 1,
+"use": "factory",
+"name": "tile works, electric power (J. Musto Sons-Keenan Co.)"
+},
+"015_0065_f266": {
+"stories": 3,
+"use": "dwelling",
+"name": "flats with stores, Columbus Ave"
+},
+"015_0065_f286": {
+"stories": 3,
+"use": "dwelling",
+"name": "tenements"
+},
+"015_0065_f287": {
+"stories": 3,
+"use": "dwelling",
+"name": "tenements"
+},
+"015_0065_b6": {
+"stories": 2,
+"use": "factory",
+"name": "Joseph Musto Sons-Keenan Co. marble works (stone cutting, grinding, polishing)"
+},
+"015_0079_f235": {
+"stories": 2,
+"use": "other",
+"name": "Dolphin Swimming & Boating Club"
+},
+"015_0079_f247": {
+"stories": 1,
+"use": "other",
+"name": "U.S. Government stables"
+},
+"015_0079_f259": {
+"stories": 1,
+"use": "other",
+"name": "Black Point pumping station, Spring Valley Water Co. (2 pumping engines)"
+},
+"015_0080_f213": {
+"stories": 2,
+"use": "cannery",
+"name": "California Fruit Canners Ass'n North Point Cannery - box printing / box nailing (frame, between warehouse and cannery)"
+},
+"015_0080_b1": {
+"stories": 3,
+"use": "cannery",
+"name": "California Fruit Canners Ass'n North Point Cannery (Del Monte Plant No. 1, 1907; now The Cannery)"
+},
+"015_0080_b2": {
+"stories": 4,
+"use": "warehouse",
+"name": "California Fruit Canners Ass'n Ware Houses No. 1-3 (canned goods; now the Haslett Warehouse, 1909)"
+},
+"015_0081_f59": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings along Columbus Ave",
+"src": "default"
+},
+"015_0081_f65": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings and 2 flats"
+},
+"015_0081_f121": {
+"stories": 3,
+"use": "dwelling",
+"name": "3 flats"
+},
+"015_0081_f124": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings and 2 flats"
+},
+"015_0081_f141": {
+"stories": 2,
+"use": "dwelling",
+"name": "row of 2 flats"
+},
+"015_0081_f207": {
+"stories": 3,
+"use": "dwelling",
+"name": "3 flats (Bergin Alley)"
+},
+"015_0081_f252": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwelling, 2 flats, 3 flats"
+},
+"015_0081_f258": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats, 4 flats"
+},
+"015_0081_f268": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats, 3 flats"
+},
+"015_0081_f286": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats"
+},
+"015_0081_f302": {
+"stories": 1,
+"use": "shed",
+"name": "wagon shed (with 2 flats)"
+},
+"015_0081_b12": {
+"stories": 2,
+"use": "factory",
+"name": "Piemont Winery (wine storage 1st & 2nd)"
+},
+"015_0096_f51": {
+"stories": 1,
+"use": "shed",
+"src": "default"
+},
+"015_0096_f73": {
+"stories": 2,
+"use": "factory",
+"name": "D. Ghirardelli Co. box making, nailing, printing; lunch room"
+},
+"015_0096_f113": {
+"stories": 2,
+"use": "store",
+"name": "stores and saloon"
+},
+"015_0096_f117": {
+"stories": 2,
+"use": "dwelling",
+"name": "storage, shed, 2 flats, dwellings"
+},
+"015_0096_b2": {
+"stories": 3,
+"use": "factory",
+"name": "D. Ghirardelli Co. Mustard Factory (Mustard Bldg)"
+},
+"015_0096_b4": {
+"stories": 3,
+"use": "factory",
+"name": "D. Ghirardelli Co. warehouse / can factory / mill room"
+},
+"015_0096_b6": {
+"stories": 3,
+"use": "factory",
+"name": "D. Ghirardelli Co. Chocolate Factory"
+},
+"015_0096_b17": {
+"stories": 3,
+"use": "warehouse",
+"name": "J. P. Holland Co. contractors / United States Army Supply Depot"
+},
+"030_0064_f119": {
+"stories": 1,
+"use": "factory",
+"name": "fish packing, boiler, storage (Fishermen's Wharf J3)"
+},
+"030_0064_f155": {
+"stories": 1,
+"use": "factory",
+"name": "machine shop, union hall, electric power (Jones St driveway)"
+},
+"030_0064_f203": {
+"stories": 1,
+"use": "store",
+"name": "stores and restaurants, Jefferson/Taylor (merged outlines)"
+},
+"030_0064_f204": {
+"stories": 1,
+"use": "store",
+"name": "row of 4 stores, Jefferson & Jones"
+},
+"030_0064_f216": {
+"stories": 1,
+"use": "factory",
+"name": "machine shop (concrete floor, truss roof)"
+},
+"030_0064_f222": {
+"stories": 1,
+"use": "factory",
+"name": "sheet metal works & machine shop"
+},
+"030_0064_s30": {
+"stories": 1,
+"use": "warehouse",
+"name": "Standard Oil Co. of Calif. distributing plant - oil warehouse (reinf. concrete)"
+},
+"030_0064_s34": {
+"stories": 1,
+"use": "warehouse",
+"name": "Standard Oil Co. of Calif. distributing plant - repair / storage (reinf. concrete)"
+},
+"030_0064_i321": {
+"stories": 1,
+"use": "warehouse",
+"name": "sheet metal on steel frame & trusses warehouse"
+},
+"030_0064_i336": {
+"stories": 1,
+"use": "factory",
+"name": "engine repair (concrete floor)"
+},
+"030_0065_f5": {
+"stories": 1,
+"use": "warehouse",
+"name": "warehouse"
+},
+"030_0065_f33": {
+"stories": 1,
+"use": "factory",
+"name": "stone polishing and restaurant (J. Musto Sons-Keenan Co. site)"
+},
+"030_0065_f54": {
+"stories": 1,
+"use": "factory",
+"name": "paper products manufacturing (corr. iron on studding)"
+},
+"030_0065_f62": {
+"stories": 1,
+"use": "shed",
+"name": "rail-served storage sheds, Beach St / Columbus Ave"
+},
+"030_0065_f69": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats"
+},
+"030_0065_f75": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats, Leavenworth St"
+},
+"030_0065_b12": {
+"stories": 2,
+"use": "factory",
+"name": "J. Musto Sons-Keenan Co. marble works (stone cutting & grinding, polishing 2nd)"
+},
+"030_0065_s5": {
+"stories": 2,
+"use": "warehouse",
+"name": "canned goods warehouse (reinf. concrete), block 22",
+"src": "default"
+},
+"030_0065_s19": {
+"stories": 2,
+"use": "warehouse",
+"name": "grocery warehouse, offices 2nd (reinf. concrete)"
+},
+"030_0065_s20": {
+"stories": 2,
+"use": "warehouse",
+"name": "salt warehouse and offices (reinf. concrete)"
+},
+"030_0080_f117": {
+"stories": 1,
+"use": "factory",
+"name": "net storage & fish packing, Jefferson St"
+},
+"030_0080_f138": {
+"stories": 2,
+"use": "other",
+"name": "Ariel Rowing Club, Dolphin Swimming & Boating Club, South End Rowing Club, hand ball courts"
+},
+"030_0080_f146": {
+"stories": 1,
+"use": "factory",
+"name": "warehouses and fish smoking, Jefferson St"
+},
+"030_0080_f180": {
+"stories": 1,
+"use": "warehouse",
+"name": "storage / platform between the warehouses (frame)"
+},
+"030_0080_b9": {
+"stories": 4,
+"use": "warehouse",
+"name": "Haslett Warehouse Co. warehouses No. 1-3 (standing; Haslett Warehouse)"
+},
+"030_0080_b10": {
+"stories": 3,
+"use": "warehouse",
+"name": "Warehouse Service Co. (former CFCA North Point Cannery; now The Cannery)"
+},
+"030_0080_b20": {
+"stories": 3,
+"use": "warehouse",
+"name": "Warehouse Service Co. general storage warehouse (former cannery; now The Cannery)"
+},
+"030_0081_f3": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats, Leavenworth St"
+},
+"030_0081_f8": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings and flats along Columbus Ave"
+},
+"030_0081_f57": {
+"stories": 1,
+"use": "other",
+"name": "Little Theatre (not in operation)"
+},
+"030_0081_f63": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats, 3 flats"
+},
+"030_0081_f65": {
+"stories": 3,
+"use": "dwelling",
+"name": "2 flats, 3 flats, Hyde St"
+},
+"030_0081_f69": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats and store, Hyde & Bay"
+},
+"030_0081_f82": {
+"stories": 3,
+"use": "dwelling",
+"name": "3 flats (Bergin Alley)"
+},
+"030_0081_f84": {
+"stories": 2,
+"use": "dwelling",
+"name": "restaurant, flats and stores, Hyde St"
+},
+"030_0081_f86": {
+"stories": 2,
+"use": "dwelling",
+"name": "stores and 2 flats"
+},
+"030_0081_f114": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats"
+},
+"030_0081_f116": {
+"stories": 1,
+"use": "warehouse",
+"name": "Davis Hardwood Co. lumber storage"
+},
+"030_0081_f117": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwelling, 2 flats, 4 flats"
+},
+"030_0081_f140": {
+"stories": 3,
+"use": "dwelling",
+"name": "store, 3 flats, shed"
+},
+"030_0081_f143": {
+"stories": 2,
+"use": "dwelling",
+"name": "2 flats row"
+},
+"030_0081_b40": {
+"stories": 2,
+"use": "warehouse",
+"name": "Italian Swiss Colony bonded store No. 3685 (wine storage)"
+},
+"030_0081_b42": {
+"stories": 1,
+"use": "factory",
+"name": "bottling works (steel frame) with 11-apartment building"
+},
+"030_0081_s3": {
+"stories": 1,
+"use": "other",
+"name": "garage for 65 cars (reinf. concrete)"
+},
+"030_0096_f31": {
+"stories": 3,
+"use": "dwelling",
+"name": "apartment houses (12, 12, 9, 9, 18 apts)"
+},
+"030_0096_f112": {
+"stories": 2,
+"use": "factory",
+"name": "Ghirardelli box making, nailing, lunch room, shook storage"
+},
+"030_0096_f221": {
+"stories": 3,
+"use": "dwelling",
+"name": "3 flats and stores, Polk St"
+},
+"030_0096_b11": {
+"stories": 3,
+"use": "factory",
+"name": "Ghirardelli Mustard Factory (standing)"
+},
+"030_0096_b25": {
+"stories": 3,
+"use": "factory",
+"name": "Ghirardelli warehouse (standing)"
+},
+"030_0096_b29": {
+"stories": 3,
+"use": "factory",
+"name": "Ghirardelli Chocolate Factory, machine shop, boiler room"
+},
+"030_0096_b59": {
+"stories": 3,
+"use": "warehouse",
+"name": "warehouse, Van Ness / North Point block 451 (former US Army supply depot)"
+},
+"030_0096_s11": {
+"stories": 2,
+"use": "other",
+"name": "Galileo High School gymnasium (boys' and girls' gyms, reinf. concrete)"
+},
+"016_0152_f63": {
+"stories": 1,
+"use": "rail",
+"name": "3rd & Townsend passenger depot of the Southern Pacific R.R. (pre-1914 depot) with train sheds and platforms (merged outline)"
+},
+"016_0152_f107": {
+"stories": 1,
+"use": "warehouse",
+"name": "Roche Harbor Lime warehouse (iron on studding)"
+},
+"016_0152_f113": {
+"stories": 1,
+"use": "shed",
+"name": "McDonald Lumber Co. lumber shed"
+},
+"016_0152_f159": {
+"stories": 1,
+"use": "shed",
+"name": "lumber shed"
+},
+"016_0152_f162": {
+"stories": 1,
+"use": "shed",
+"name": "lumber shed"
+},
+"016_0152_f192": {
+"stories": 1,
+"use": "factory",
+"name": "Geo. Windeler mill & cooperage (planing mill)"
+},
+"016_0152_f208": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific commissary"
+},
+"016_0152_f212": {
+"stories": 1,
+"use": "other",
+"name": "gravel bunkers (20 ft high)"
+},
+"016_0152_f239": {
+"stories": 2,
+"use": "warehouse",
+"name": "warehouse"
+},
+"016_0152_b3": {
+"stories": 2,
+"use": "warehouse",
+"name": "Occidental warehouse (brick)",
+"src": "default"
+},
+"016_0160_f82": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight receiving / delivery sheds"
+},
+"016_0160_f86": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight delivery shed E"
+},
+"016_0160_f122": {
+"stories": 2,
+"use": "factory",
+"name": "Pacific Tank Co. and Mercantile Box Co. (planing mill 1st, box factory 2nd)"
+},
+"016_0160_f140": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight receiving shed D"
+},
+"016_0168_f55": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed K"
+},
+"016_0168_f56": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"016_0168_f58": {
+"stories": 1,
+"use": "warehouse",
+"name": "Union Feed Co. Ltd. hay warehouse"
+},
+"016_0168_f82": {
+"stories": 1,
+"use": "shed",
+"name": "lumber sheds"
+},
+"016_0168_f133": {
+"stories": 1,
+"use": "warehouse",
+"name": "Scott Magner & Miller Inc. hay warehouses No. 3-4, lumber shed, wood sawing"
+},
+"016_0168_f175": {
+"stories": 1,
+"use": "warehouse",
+"name": "Scott Magner & Miller Inc. hay warehouse No. 3 (iron clad)"
+},
+"016_0168_f184": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"016_0168_f189": {
+"stories": 1,
+"use": "warehouse",
+"name": "Somers & Co. hay warehouse (iron on studding)"
+},
+"016_0168_f199": {
+"stories": 1,
+"use": "shed",
+"name": "Western Planing Mills shed, office, lumber shed"
+},
+"016_0168_f222": {
+"stories": 1,
+"use": "factory",
+"name": "Western Planing Mills planing mill"
+},
+"016_0168_f251": {
+"stories": 1,
+"use": "warehouse",
+"name": "Scott Magner & Miller Inc. hay warehouse No. 2"
+},
+"016_0176_f279": {
+"stories": 1,
+"use": "warehouse",
+"name": "Scott Magner & Miller Inc. hay warehouse"
+},
+"016_0217_f68": {
+"stories": 1,
+"use": "warehouse",
+"name": "Mission Bay warehouses No. 1"
+},
+"016_0217_f109": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific car shop (truss roof)"
+},
+"016_0217_f128": {
+"stories": 1,
+"use": "warehouse",
+"name": "warehouse (continues on sheet 220)",
+"src": "default"
+},
+"016_0217_f153": {
+"stories": 1,
+"use": "warehouse",
+"name": "Mission (Bay) warehouse No. 2, general storage"
+},
+"020_0546_f84": {
+"stories": 2,
+"use": "store",
+"name": "restaurant, rooms, saloon, store (16th & Kentucky)"
+},
+"020_0560_f64": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific shops - boiler shop"
+},
+"020_0560_f76": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific shops - machine shop"
+},
+"020_0560_b1": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific roundhouse (brick)"
+},
+"020_0561_f56": {
+"stories": 1,
+"use": "shed",
+"name": "Christenson Lumber Co. lumber sheds"
+},
+"020_0561_f77": {
+"stories": 1,
+"use": "factory",
+"name": "W. W. Montague & Co. well casing manufacturing"
+},
+"020_0561_f90": {
+"stories": 1,
+"use": "shed",
+"name": "lumber shed"
+},
+"031_0152_f85": {
+"stories": 2,
+"use": "warehouse",
+"name": "Pacific Terminal Buildings - grocers, Haas Bros. wholesale",
+"src": "default"
+},
+"031_0152_f109": {
+"stories": 2,
+"use": "rail",
+"name": "Southern Pacific first aid station and office"
+},
+"031_0152_f128": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"031_0152_f202": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific depot baggage building"
+},
+"031_0152_f265": {
+"stories": 2,
+"use": "warehouse",
+"name": "Pacific Terminal Buildings along Mission Creek (Sperry Flour Co., Norvell Holmgren..)",
+"src": "default"
+},
+"031_0152_f16": {
+"stories": 2,
+"use": "rail",
+"name": "Southern Pacific Co. passenger depot (Third & Townsend, 1914-15), general waiting room"
+},
+"031_0152_i35": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific depot train shed (platform canopy)"
+},
+"031_0152_i36": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific depot train shed (platform canopy)"
+},
+"031_0152_i81": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific depot train shed (platform canopy)"
+},
+"031_0160_f204": {
+"stories": 2,
+"use": "rail",
+"name": "S.P.R.R. Co.'s freight offices"
+},
+"031_0160_f397": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"031_0160_f402": {
+"stories": 1,
+"use": "factory",
+"name": "planing mill (electric power)"
+},
+"031_0160_f405": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight receiving shed"
+},
+"031_0160_f406": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"031_0160_f521": {
+"stories": 1,
+"use": "rail",
+"name": "The Pullman Co."
+},
+"031_0168_f206": {
+"stories": 1,
+"use": "shed",
+"name": "lumber company office and shed"
+},
+"031_0168_f215": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"031_0168_f216": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific freight shed"
+},
+"031_0168_f312": {
+"stories": 1,
+"use": "shed",
+"name": "Rolando Lumber Co. lumber shed"
+},
+"031_0176_f211": {
+"stories": 1,
+"use": "other",
+"src": "default"
+},
+"031_0176_f220": {
+"stories": 1,
+"use": "warehouse",
+"name": "warehouse"
+},
+"031_0176_f446": {
+"stories": 1,
+"use": "rail",
+"name": "S.P.R.R. commissary department"
+},
+"031_0176_f462": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific car repair shop, electric store room, coal & coke, battery room"
+},
+"031_0217_f61": {
+"stories": 2,
+"use": "warehouse",
+"name": "warehouse 1st, offices 2nd"
+},
+"031_0217_f67": {
+"stories": 1,
+"use": "warehouse",
+"name": "Mission Bay Ware House No. 1"
+},
+"031_0217_f73": {
+"stories": 2,
+"use": "warehouse",
+"name": "Fruit Dispatch Co. banana terminal (warehouse 1st, offices 2nd)"
+},
+"031_0217_f74": {
+"stories": 1,
+"use": "warehouse",
+"name": "general warehouse"
+},
+"031_0217_f199": {
+"stories": 1,
+"use": "warehouse",
+"name": "warehouse (continues on sheet 220)",
+"src": "default"
+},
+"035_0546_f91": {
+"stories": 1,
+"use": "warehouse",
+"name": "oil depot - oil warehouse"
+},
+"035_0546_f94": {
+"stories": 1,
+"use": "store",
+"name": "restaurant"
+},
+"035_0546_f105": {
+"stories": 1,
+"use": "warehouse",
+"name": "cold storage plant"
+},
+"035_0560_f69": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific change house and repair shop"
+},
+"035_0561_f2": {
+"stories": 1,
+"use": "warehouse",
+"src": "default"
+},
+"016_0220_f139": {
+"stories": 1,
+"use": "rail",
+"name": "Kentucky St. warehouse of the S.P.R.R."
+},
+"016_0220_f162": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific R.R. planing mill / shop"
+},
+"016_0220_f277": {
+"stories": 1,
+"use": "warehouse",
+"name": "Somers & Co. grain warehouses and Indian Refining Co. oil warehouse (block 3840)"
+},
+"016_0220_s1": {
+"stories": 2,
+"use": "factory",
+"name": "Westinghouse Electric & Mfg. Co. (warehouse, machine shop)",
+"src": "default"
+},
+"031_0220_f195": {
+"stories": 1,
+"use": "rail",
+"name": "Kentucky St. warehouse of the S.P.R.R."
+},
+"031_0220_f220": {
+"stories": 1,
+"use": "factory",
+"name": "machinery sales / magnesite mill"
+},
+"031_0220_f474": {
+"stories": 1,
+"use": "warehouse",
+"name": "warehouse, industrial chemicals"
+},
+"035_0560_b2": {
+"stories": 1,
+"use": "rail",
+"name": "Southern Pacific roundhouse (brick; closed 1960)"
+}
+}

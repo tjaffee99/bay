@@ -1,0 +1,178 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "22",
+   "corners": [
+    {
+     "bc": [
+      "BEACH ST",
+      "TAYLOR ST"
+     ],
+     "q": "SW",
+     "x": 284.0,
+     "y": 190.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "TAYLOR ST"
+     ],
+     "q": "NW",
+     "x": 695.0,
+     "y": 191.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "JONES ST"
+     ],
+     "q": "SE",
+     "x": 280.0,
+     "y": 812.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "JONES ST"
+     ],
+     "q": "NE",
+     "x": 693.0,
+     "y": 814.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "29",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "TAYLOR ST"
+     ],
+     "q": "SW",
+     "x": 995.0,
+     "y": 190.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "TAYLOR ST"
+     ],
+     "q": "NW",
+     "x": 1399.0,
+     "y": 193.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "JONES ST"
+     ],
+     "q": "SE",
+     "x": 993.0,
+     "y": 813.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "JONES ST"
+     ],
+     "q": "NE",
+     "x": 1408.0,
+     "y": 816.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "23",
+   "corners": [
+    {
+     "bc": [
+      "BEACH ST",
+      "JONES ST"
+     ],
+     "q": "SW",
+     "x": 277.0,
+     "y": 1122.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "JONES ST"
+     ],
+     "q": "NW",
+     "x": 692.0,
+     "y": 1124.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "SE",
+     "x": 262.0,
+     "y": 1744.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "NE",
+     "x": 690.0,
+     "y": 1744.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "28",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "JONES ST"
+     ],
+     "q": "SW",
+     "x": 991.0,
+     "y": 1123.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "SE",
+     "x": 988.0,
+     "y": 1749.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "NE",
+     "x": 1394.0,
+     "y": 1748.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "zones_only": true,
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

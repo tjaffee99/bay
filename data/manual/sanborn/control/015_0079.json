@@ -1,0 +1,91 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "sum": [
+    [
+     "+",
+     "NORTH POINT ST",
+     "VAN NESS AVE"
+    ],
+    [
+     "+",
+     "BEACH ST",
+     "POLK ST"
+    ],
+    [
+     "-",
+     "NORTH POINT ST",
+     "POLK ST"
+    ]
+   ],
+   "label": "BEACH x VAN NESS (grid)",
+   "x": 174.0,
+   "y": 1771.0,
+   "wv": 125,
+   "norefine": 1
+  },
+  {
+   "a": "BEACH ST",
+   "b": "POLK ST",
+   "x": 899.5,
+   "y": 1771.5,
+   "norefine": 1
+  },
+  {
+   "a": "BEACH ST",
+   "b": "LARKIN ST",
+   "x": 1618.9,
+   "y": 1768.5,
+   "norefine": 1
+  },
+  {
+   "sum": [
+    [
+     "+",
+     "BEACH ST",
+     "POLK ST"
+    ],
+    [
+     "+",
+     "JEFFERSON ST",
+     "HYDE ST"
+    ],
+    [
+     "-",
+     "BEACH ST",
+     "HYDE ST"
+    ]
+   ],
+   "label": "JEFFERSON x POLK (grid)",
+   "x": 899.5,
+   "y": 1253.5,
+   "norefine": 1
+  },
+  {
+   "sum": [
+    [
+     "+",
+     "NORTH POINT ST",
+     "VAN NESS AVE"
+    ],
+    [
+     "+",
+     "JEFFERSON ST",
+     "HYDE ST"
+    ],
+    [
+     "-",
+     "NORTH POINT ST",
+     "HYDE ST"
+    ]
+   ],
+   "label": "JEFFERSON x VAN NESS (grid)",
+   "x": 166.5,
+   "y": 1254.0,
+   "wv": 125,
+   "norefine": 1
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

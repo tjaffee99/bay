@@ -1,0 +1,31 @@
+{
+ "pct": 25,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "points": [
+  {
+   "bc": [
+    "ILLINOIS ST",
+    "MERRIMAC ST"
+   ],
+   "q": "SE",
+   "x": 1042.0,
+   "y": 1200.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "ILLINOIS ST",
+    "ALAMEDA ST"
+   ],
+   "q": "NE",
+   "x": 700.0,
+   "y": 1592.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

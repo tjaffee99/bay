@@ -1,0 +1,89 @@
+{
+ "pct": 25,
+ "zones_only": false,
+ "blocks": [
+  {
+   "name": "810",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "POLK ST"
+     ],
+     "q": "NW",
+     "x": 246.0,
+     "y": 956.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "POLK ST"
+     ],
+     "q": "SW",
+     "x": 655.0,
+     "y": 956.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "VAN NESS AVE"
+     ],
+     "q": "NE",
+     "wb": 125,
+     "x": 246.0,
+     "y": 372.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "809",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "POLK ST"
+     ],
+     "q": "NE",
+     "x": 246.0,
+     "y": 1061.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "POLK ST"
+     ],
+     "q": "SE",
+     "x": 655.0,
+     "y": 1061.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LARKIN ST"
+     ],
+     "q": "NW",
+     "x": 246.0,
+     "y": 1688.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "LARKIN ST"
+     ],
+     "q": "SW",
+     "x": 655.0,
+     "y": 1688.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

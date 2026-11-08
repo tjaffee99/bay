@@ -1,0 +1,76 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "bc": [
+    "BEACH ST",
+    "LARKIN ST"
+   ],
+   "q": "NE",
+   "x": 188.0,
+   "y": 351.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BEACH ST",
+    "HYDE ST"
+   ],
+   "q": "NW",
+   "x": 188.0,
+   "y": 977.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "JEFFERSON ST",
+    "HYDE ST"
+   ],
+   "q": "SW",
+   "x": 609.0,
+   "y": 977.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BEACH ST",
+    "HYDE ST"
+   ],
+   "q": "NE",
+   "x": 188.0,
+   "y": 1084.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "JEFFERSON ST",
+    "HYDE ST"
+   ],
+   "q": "SE",
+   "x": 609.0,
+   "y": 1084.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BEACH ST",
+    "LEAVENWORTH ST"
+   ],
+   "q": "NW",
+   "x": 188.0,
+   "y": 1710.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "JEFFERSON ST",
+    "LEAVENWORTH ST"
+   ],
+   "q": "SW",
+   "x": 609.0,
+   "y": 1710.0,
+   "norefine": 1
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

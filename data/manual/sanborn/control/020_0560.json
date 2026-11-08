@@ -1,0 +1,66 @@
+{
+ "pct": 25,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "points": [
+  {
+   "bc": [
+    "MARIPOSA ST",
+    "TENNESSEE ST"
+   ],
+   "q": "NW",
+   "wa": 66,
+   "wb": 80,
+   "x": 1382.0,
+   "y": 822.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "MARIPOSA ST",
+   "near": [
+    "MARIPOSA ST",
+    "TENNESSEE ST"
+   ],
+   "px": [
+    [
+     300,
+     872
+    ],
+    [
+     1200,
+     872
+    ]
+   ],
+   "R": 350
+  },
+  {
+   "street": "TENNESSEE ST",
+   "near": [
+    "MARIPOSA ST",
+    "TENNESSEE ST"
+   ],
+   "px": [
+    [
+     1441,
+     300
+    ],
+    [
+     1441,
+     700
+    ]
+   ],
+   "R": 300
+  }
+ ],
+ "valid_px": [
+  0,
+  0,
+  1668,
+  940
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

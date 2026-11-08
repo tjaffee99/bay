@@ -1,0 +1,42 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "4TH ST",
+   "b": "BERRY ST",
+   "x": 1077.0,
+   "y": 252.5,
+   "wh": 82.5,
+   "wv": 82.5,
+   "norefine": 1
+  },
+  {
+   "a": "5TH ST",
+   "b": "BERRY ST",
+   "x": 1082.0,
+   "y": 1619.5,
+   "wh": 82.5,
+   "wv": 82.5,
+   "norefine": 1
+  },
+  {
+   "a": "4TH ST",
+   "b": "TOWNSEND ST",
+   "x": 69.0,
+   "y": 256.0,
+   "wh": 82.5,
+   "wv": 82.5,
+   "norefine": 1
+  },
+  {
+   "a": "5TH ST",
+   "b": "TOWNSEND ST",
+   "x": 77.0,
+   "y": 1632.0,
+   "wh": 82.5,
+   "wv": 82.5,
+   "norefine": 1
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

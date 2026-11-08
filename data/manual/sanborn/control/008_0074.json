@@ -1,0 +1,66 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "bc": [
+    "BAY ST",
+    "LEAVENWORTH ST"
+   ],
+   "q": "NE",
+   "x": 267.0,
+   "y": 318.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BAY ST",
+    "JONES ST"
+   ],
+   "q": "NE",
+   "x": 267.0,
+   "y": 1048.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "NORTH POINT ST",
+    "JONES ST"
+   ],
+   "q": "SE",
+   "x": 681.0,
+   "y": 1048.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BAY ST",
+    "TAYLOR ST"
+   ],
+   "q": "NW",
+   "x": 267.0,
+   "y": 1674.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "NORTH POINT ST",
+    "TAYLOR ST"
+   ],
+   "q": "SW",
+   "x": 681.0,
+   "y": 1674.0,
+   "norefine": 1
+  },
+  {
+   "bc": [
+    "BAY ST",
+    "JONES ST"
+   ],
+   "q": "NW",
+   "x": 267.0,
+   "y": 942.0,
+   "norefine": 1
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

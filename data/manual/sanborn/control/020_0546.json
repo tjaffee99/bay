@@ -1,0 +1,150 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "valid_px": [
+  0,
+  1000,
+  1668,
+  1949
+ ],
+ "blocks": [
+  {
+   "name": "3942",
+   "corners": [
+    {
+     "bc": [
+      "16TH ST",
+      "3RD ST"
+     ],
+     "q": "SE",
+     "wa": 82.5,
+     "wb": 100,
+     "x": 1000.0,
+     "y": 1136.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "16TH ST",
+      "ILLINOIS ST"
+     ],
+     "q": "SW",
+     "wa": 82.5,
+     "wb": 66,
+     "x": 1255.0,
+     "y": 1136.0,
+     "norefine": 1
+    },
+    {
+     "bcs": [
+      [
+       "+",
+       "16TH ST",
+       "3RD ST"
+      ],
+      [
+       "+",
+       "17TH ST",
+       "PENNSYLVANIA AVE"
+      ],
+      [
+       "-",
+       "16TH ST",
+       "PENNSYLVANIA AVE"
+      ]
+     ],
+     "ns": "3RD ST",
+     "ew": "16TH ST",
+     "q": "NE",
+     "wns": 100,
+     "wew": 66,
+     "label": "17th x 3rd (grid) NE corner",
+     "x": 1000.0,
+     "y": 1733.0,
+     "norefine": 1
+    },
+    {
+     "bcs": [
+      [
+       "+",
+       "16TH ST",
+       "ILLINOIS ST"
+      ],
+      [
+       "+",
+       "17TH ST",
+       "PENNSYLVANIA AVE"
+      ],
+      [
+       "-",
+       "16TH ST",
+       "PENNSYLVANIA AVE"
+      ]
+     ],
+     "ns": "ILLINOIS ST",
+     "ew": "16TH ST",
+     "q": "NW",
+     "wns": 66,
+     "wew": 66,
+     "label": "17th x Illinois (grid) NW corner",
+     "x": 1255.0,
+     "y": 1733.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3943",
+   "corners": [
+    {
+     "bc": [
+      "16TH ST",
+      "3RD ST"
+     ],
+     "q": "SW",
+     "wa": 82.5,
+     "wb": 100,
+     "x": 678.0,
+     "y": 1136.0,
+     "norefine": 1
+    },
+    {
+     "bcs": [
+      [
+       "+",
+       "16TH ST",
+       "3RD ST"
+      ],
+      [
+       "+",
+       "17TH ST",
+       "PENNSYLVANIA AVE"
+      ],
+      [
+       "-",
+       "16TH ST",
+       "PENNSYLVANIA AVE"
+      ]
+     ],
+     "ns": "3RD ST",
+     "ew": "16TH ST",
+     "q": "NW",
+     "wns": 100,
+     "wew": 66,
+     "label": "17th x 3rd (grid) NW corner",
+     "x": 678.0,
+     "y": 1733.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    40,
+    1136,
+    678,
+    1733
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

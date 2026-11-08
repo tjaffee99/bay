@@ -1,0 +1,122 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "valid_px": [
+  0,
+  0,
+  1668,
+  940
+ ],
+ "blocks": [
+  {
+   "name": "3992",
+   "corners": [
+    {
+     "bc": [
+      "MARIPOSA ST",
+      "3RD ST"
+     ],
+     "q": "NW",
+     "wa": 66,
+     "wb": 100,
+     "x": 673.0,
+     "y": 814.0,
+     "norefine": 1
+    },
+    {
+     "bcs": [
+      [
+       "+",
+       "MARIPOSA ST",
+       "3RD ST"
+      ],
+      [
+       "+",
+       "17TH ST",
+       "PENNSYLVANIA AVE"
+      ],
+      [
+       "-",
+       "MARIPOSA ST",
+       "PENNSYLVANIA AVE"
+      ]
+     ],
+     "ns": "3RD ST",
+     "ew": "MARIPOSA ST",
+     "q": "SW",
+     "wns": 100,
+     "wew": 66,
+     "label": "17th x 3rd (grid) SW corner",
+     "x": 673.0,
+     "y": 221.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    372,
+    221,
+    673,
+    814
+   ]
+  },
+  {
+   "name": "3993",
+   "corners": [
+    {
+     "bc": [
+      "MARIPOSA ST",
+      "3RD ST"
+     ],
+     "q": "NE",
+     "wa": 66,
+     "wb": 100,
+     "x": 1035.0,
+     "y": 817.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "MARIPOSA ST",
+      "ILLINOIS ST"
+     ],
+     "q": "NW",
+     "wa": 66,
+     "wb": 80,
+     "x": 1332.0,
+     "y": 817.0,
+     "norefine": 1
+    },
+    {
+     "bcs": [
+      [
+       "+",
+       "MARIPOSA ST",
+       "3RD ST"
+      ],
+      [
+       "+",
+       "17TH ST",
+       "PENNSYLVANIA AVE"
+      ],
+      [
+       "-",
+       "MARIPOSA ST",
+       "PENNSYLVANIA AVE"
+      ]
+     ],
+     "ns": "3RD ST",
+     "ew": "MARIPOSA ST",
+     "q": "SE",
+     "wns": 100,
+     "wew": 66,
+     "label": "17th x 3rd (grid) SE corner",
+     "x": 1035.0,
+     "y": 224.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

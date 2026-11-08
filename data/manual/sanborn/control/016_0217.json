@@ -1,0 +1,65 @@
+{
+ "pct": 25,
+ "scale_prior": [
+  0.202,
+  0.003
+ ],
+ "lines": [
+  {
+   "street": "3RD ST",
+   "near": [
+    "3RD ST",
+    "16TH ST"
+   ],
+   "px": [
+    [
+     1161,
+     500
+    ],
+    [
+     1161,
+     1500
+    ]
+   ],
+   "R": 400
+  },
+  {
+   "street": "16TH ST",
+   "near": [
+    "3RD ST",
+    "16TH ST"
+   ],
+   "px": [
+    [
+     600,
+     1868
+    ],
+    [
+     1300,
+     1868
+    ]
+   ],
+   "R": 350
+  },
+  {
+   "street": "ILLINOIS ST",
+   "near": [
+    "ILLINOIS ST",
+    "16TH ST"
+   ],
+   "px": [
+    [
+     1575,
+     700
+    ],
+    [
+     1575,
+     1500
+    ]
+   ],
+   "R": 400
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

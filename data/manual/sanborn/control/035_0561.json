@@ -1,0 +1,19 @@
+{
+ "registered_to": "020_0561",
+ "T": [
+  [
+   0.9855730845563341,
+   -0.006038858149465707,
+   2.638774804219405
+  ],
+  [
+   0.006038858149465707,
+   0.9855730845563341,
+   9.454515385494119
+  ]
+ ],
+ "reg_inliers": 842,
+ "reg_rms_px": 1.48,
+ "note": "similarity (SIFT + RANSAC) mapping this sheet image (25 % IIIF size) onto the base sheet image; the base sheet control applies",
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

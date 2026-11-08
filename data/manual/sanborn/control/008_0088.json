@@ -1,0 +1,178 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "blocks": [
+  {
+   "name": "799",
+   "corners": [
+    {
+     "bc": [
+      "BAY ST",
+      "LARKIN ST"
+     ],
+     "q": "NE",
+     "x": 194.0,
+     "y": 227.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LARKIN ST"
+     ],
+     "q": "SE",
+     "x": 608.0,
+     "y": 227.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "HYDE ST"
+     ],
+     "q": "NW",
+     "x": 194.0,
+     "y": 852.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "HYDE ST"
+     ],
+     "q": "SW",
+     "x": 608.0,
+     "y": 852.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "798",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LARKIN ST"
+     ],
+     "q": "NE",
+     "x": 835.0,
+     "y": 227.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "LARKIN ST"
+     ],
+     "q": "SE",
+     "x": 1248.0,
+     "y": 227.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "HYDE ST"
+     ],
+     "q": "NW",
+     "x": 835.0,
+     "y": 852.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "HYDE ST"
+     ],
+     "q": "SW",
+     "x": 1248.0,
+     "y": 852.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "789",
+   "corners": [
+    {
+     "bc": [
+      "BAY ST",
+      "HYDE ST"
+     ],
+     "q": "NE",
+     "x": 195.0,
+     "y": 1193.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "HYDE ST"
+     ],
+     "q": "SE",
+     "x": 608.0,
+     "y": 1193.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "NW",
+     "x": 195.0,
+     "y": 1819.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "SW",
+     "x": 608.0,
+     "y": 1819.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "790",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "HYDE ST"
+     ],
+     "q": "NE",
+     "x": 835.0,
+     "y": 1193.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BEACH ST",
+      "HYDE ST"
+     ],
+     "q": "SE",
+     "x": 1248.0,
+     "y": 1193.0,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "LEAVENWORTH ST"
+     ],
+     "q": "NW",
+     "x": 835.0,
+     "y": 1819.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}
