@@ -224,7 +224,10 @@ class Network:
         for a, b in zip(idx[:-1], idx[1:]):
             dist, pred = dijkstra(self.G, indices=a, return_predecessors=True, limit=np.inf)
             if not np.isfinite(dist[b]):
-                raise ValueError(f"no network path {to_ll(*self.pts[a])} -> {to_ll(*self.pts[b])}")
+                log(f"   (no network path {np.round(to_ll(*self.pts[a]), 5)} -> {np.round(to_ll(*self.pts[b]), 5)}: straight link)")
+                self.gaps = getattr(self, "gaps", 0) + 1
+                out += [a, b] if not out else [b]
+                continue
             seq = [b]
             while seq[-1] != a:
                 seq.append(pred[seq[-1]])
