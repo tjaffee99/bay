@@ -31,7 +31,9 @@ import pandas as pd
 import shapely
 from shapely.geometry import box
 
-from common import INTERIM, MANUAL, TABLES, log
+from shapely.geometry import Point
+
+from common import INTERIM, MANUAL, RAW, TABLES, log
 from geocode import intersection_rings
 
 UTM = "EPSG:32610"
@@ -55,7 +57,9 @@ def main():
     files = sorted(glob.glob(str(MANUAL / "sf_extent_*.csv")))
     dev_hi = np.full(len(lots), np.nan)
     dev_lo = np.full(len(lots), np.nan)
-    prev = 1846.0
+    # documented structures (data/tables/early_sf.csv) cover the town before the gold
+    # rush; generated fabric starts with the 1849 boom
+    prev = 1849.0
     for f in files:
         year = float(f.split("_")[-1].split(".")[0])
         rings = intersection_rings(f, crs=UTM)
@@ -79,21 +83,64 @@ def main():
     fire = gpd.read_file(INTERIM / "fire_1906.geojson").to_crs(UTM)
     burned = cent.within(shapely.union_all(fire.geometry.values)).values
 
+    # urban-renewal / freeway clearances: the old fabric ends at the clearance, and
+    # lots that became plazas or parks get it too
+    from sf_buildings import redevelopment_areas
+    areas = redevelopment_areas()
+    clear = np.full(len(lots), np.nan)
+    fabric = np.array([""] * len(lots), dtype=object)
+    for poly, cs, ce, fab, _aid in reversed(areas):  # smallest last -> wins
+        inside = cent.within(poly).values
+        hh = np.array([h01(str(k), "c") for k in lots.mapblklot.values])
+        clear[inside] = cs + (ce - cs) * hh[inside]
+        fabric[inside] = fab
+    log(f"predecessors: {np.isfinite(clear).sum()} lots inside clearance areas")
+    # 19th-century cemeteries (landcover_history rows "cem_*"): nothing built until the graves were moved
+    no_build_until = np.full(len(lots), -np.inf)
+    lc = pd.read_csv(TABLES / "landcover_history.csv")
+    from geocode import ring_polygon
+    for _, r in lc[lc.area_id.astype(str).str.startswith("cem_") & ~lc.area_id.astype(str).str.endswith("_cleared")].iterrows():
+        try:
+            poly = ring_polygon(r.ring, r.ring_type, crs=UTM)
+        except Exception as e:  # noqa: BLE001
+            log(f"predecessors: cemetery {r.area_id}: {e}")
+            continue
+        no_build_until[cent.within(poly).values] = float(r.year_end)
+
+    lots_sidx = lots.sindex
     rows = []
     for i in np.nonzero(built)[0]:
         key = str(lots.mapblklot.iloc[i])
         h = h01(key)
         dev = dev_lo[i] + (dev_hi[i] - dev_lo[i]) * h
+        if dev < no_build_until[i]:
+            continue  # a cemetery until then; today's buildings came after
         m = mod[i]
         geom = lots.geometry.iloc[i]
         c = cent.iloc[i]
         downtown = DOWNTOWN.contains(gpd.GeoSeries([c], crs=UTM).to_crs(4326).iloc[0])
+        cl = clear[i]
         if burned[i]:
             end = 1906.29
+        elif np.isfinite(cl) and (np.isnan(m) or m > dev + 3) and fabric[i] != "vacant" and fabric[i] != "rail_yards":
+            end = min(cl, m - 0.3) if np.isfinite(m) else cl  # cleared for redevelopment
         elif np.isfinite(m) and m > dev + 3:
             end = m - 0.3  # replaced by today's building
         else:
             continue  # today's building may be the original — nothing to add
+        # a big parcel (merged later, or a superblock) held rows of ordinary buildings,
+        # not one giant box: put era-typical rows along its street edges instead
+        if geom.area > 3500 and not downtown:
+            fab = fabric[i] if fabric[i] in STRIP_STYLE else "victorian_rows"
+            rows += strips_for_lot(geom, key, fab, lambda hk, dev=dev: dev + 3 * hk, end, lots_sidx,
+                                   "sf_extent_procedural", "predecessor_rows")
+            if burned[i]:
+                rb_end_big = min(m - 0.3, cl) if np.isfinite(cl) and np.isfinite(m) else (cl if np.isfinite(cl) else m - 0.3)
+                if np.isfinite(rb_end_big) and rb_end_big > BURN_REBUILD[1] + 5:
+                    fab2 = fab if fab in ("residential_hotels", "warehouses") else "mixed"
+                    rows += strips_for_lot(geom, key + "r", fab2, lambda hk: BURN_REBUILD[0] + (BURN_REBUILD[1] - BURN_REBUILD[0]) * hk,
+                                           rb_end_big, lots_sidx, "sf_rebuild_procedural", "post_fire_rebuild")
+            continue
         early = dev < 1853  # gold rush: tents and 1-2 storey wood frame, not built out to the lot lines
         fp = footprint(geom, downtown and not early)
         if fp is None:
@@ -114,21 +161,30 @@ def main():
                              "stories": st2, "kind": "building", "source": "sf_extent_procedural", "mapblklot": key,
                              "year_confidence": "procedural", "year_reason": "predecessor_brick"})
         # burned-zone rebuild that stood until today's (later) building
-        if burned[i] and np.isfinite(m) and m > BURN_REBUILD[1] + 5:
+        rb_end = min(m - 0.3, cl) if np.isfinite(cl) and np.isfinite(m) else (cl if np.isfinite(cl) else m - 0.3)
+        if burned[i] and np.isfinite(rb_end) and rb_end > BURN_REBUILD[1] + 5:
             rb = BURN_REBUILD[0] + (BURN_REBUILD[1] - BURN_REBUILD[0]) * h01(key, "r")
             st = 3 + int(3 * h01(key, "t")) if downtown else 2 + int(2 * h01(key, "t"))
-            rows.append({"geometry": fp, "start_year": rb, "end_year": m - 0.3, "height": st * (4.5 if downtown else 3.6),
+            rows.append({"geometry": fp, "start_year": rb, "end_year": rb_end, "height": st * (4.5 if downtown else 3.6),
                          "stories": st, "kind": "building", "source": "sf_rebuild_procedural", "mapblklot": key,
                          "year_confidence": "procedural", "year_reason": "post_fire_rebuild"})
+    rows += superblock_rows(areas, files)
     pred = gpd.GeoDataFrame(rows, crs=UTM)
     log(f"predecessors: {len(pred)} generated buildings ({(pred.source == 'sf_rebuild_procedural').sum()} post-fire rebuilds)")
 
     notable = notable_buildings(lots)
     if len(notable):
         # the documented building replaces any generated one on its lot for its lifetime
-        pred = pred[~pred.mapblklot.isin(set(notable.mapblklot))]
+        # a documented building on a lot holds it for its lifetime: generated buildings
+        # there start only after it is gone (and none overlap it)
+        on_lot = notable[~notable.mapblklot.str.startswith("n:")]
+        span = on_lot.groupby("mapblklot").agg(s0=("start_year", "min"), s1=("end_year", "max"))
+        pred = pred.join(span, on="mapblklot")
+        hit = pred.s0.notna() & (pred.end_year > pred.s0)
+        pred.loc[hit, "start_year"] = np.maximum(pred.loc[hit, "start_year"], pred.loc[hit, "s1"])
+        pred = pred[~(hit & (pred.start_year >= pred.end_year - 0.5))].drop(columns=["s0", "s1"])
         pred = pd.concat([pred, notable], ignore_index=True)
-        log(f"predecessors: {len(notable)} documented pre-1906 buildings")
+        log(f"predecessors: {len(notable)} documented buildings (pre-1906, early SF, demolished)")
     pred = gpd.GeoDataFrame(pred, geometry="geometry", crs=UTM).to_crs(4326)
     pred["base"] = 0.0
     pred["use"] = 0
@@ -185,7 +241,180 @@ def footprint(lot, downtown):
     return g
 
 
+STRIP_STYLE = {"victorian_rows": (7.6, 17.0), "residential_hotels": (12.0, 22.0), "warehouses": (18.0, 30.0), "mixed": (9.0, 20.0)}
+
+
+def strips_for_lot(lot, key, fab, start_fn, end, sidx, source, reason):
+    """Rows of era-typical buildings along the street-facing edges of a large lot."""
+    width, depth = STRIP_STYLE[fab]
+    lot = lot if lot.geom_type == "Polygon" else max(lot.geoms, key=lambda g: g.area)
+    ring = lot.exterior
+    L = ring.length
+    placed, out = [], []
+    for k in range(int(L // width)):
+        d = (k + 0.5) * width
+        p = ring.interpolate(d)
+        a = np.array(ring.interpolate(max(d - 1.0, 0)).coords[0])
+        b = np.array(ring.interpolate(min(d + 1.0, L)).coords[0])
+        t = (b - a) / (np.linalg.norm(b - a) or 1)
+        nrm = np.array([-t[1], t[0]])
+        pt = np.array(p.coords[0])
+        if not lot.contains(Point(*(pt + nrm * 2.0))):
+            nrm = -nrm
+        # faces a street: just outside this edge there is no other parcel
+        if len(sidx.query(Point(*(pt - nrm * 4.0)), predicate="intersects")):
+            continue
+        c0 = pt + nrm * 0.8
+        hw = t * width * 0.46
+        rect = shapely.geometry.Polygon([c0 - hw, c0 + hw, c0 + hw + nrm * depth, c0 - hw + nrm * depth])
+        if not rect.within(lot.buffer(0.5)) or any(rect.intersection(q).area > 3 for q in placed[-4:]):
+            continue
+        placed.append(rect)
+        hk = h01(key, f"s{k}")
+        y0 = start_fn(hk)
+        if fab == "victorian_rows":
+            st, sh, base = 2 + int(hk < 0.35), 3.6, 1.5
+        elif fab == "residential_hotels":
+            st, sh, base = 3 + int(2 * hk), 3.6, 0.0
+        elif fab == "warehouses":
+            st, sh, base = 2 + int(2 * hk), 4.5, 0.0
+        else:
+            st, sh, base = 2 + int(2 * hk), 3.6, 1.0
+        e = end(k) if callable(end) else end
+        if e <= y0 + 2:
+            continue
+        out.append({"geometry": rect, "start_year": y0, "end_year": e, "height": st * sh + base,
+                    "stories": st, "kind": "building", "source": source, "mapblklot": f"{key}:{k}",
+                    "year_confidence": "procedural", "year_reason": reason})
+    return out
+
+
+def superblock_rows(areas, extent_files):
+    """Urban renewal merged whole blocks into superblock parcels, so today's lots don't
+    show the old 25-ft lots. Along every street-facing edge of a large parcel inside a
+    clearance area, stand a row of era-typical buildings (Victorian rows, residential
+    hotels, warehouses) from the block's built-up snapshot until the clearance. Procedural."""
+    allp = gpd.read_parquet(INTERIM / "sf_parcels_active.parquet").to_crs(UTM).drop_duplicates("mapblklot")
+    allp = allp[allp.geometry.notna()].reset_index(drop=True)
+    sidx = allp.sindex
+    out = []
+    cent = allp.geometry.representative_point()
+    for poly, cs, ce, fab, aid in areas:
+        if fab not in ("victorian_rows", "residential_hotels", "warehouses", "mixed"):
+            continue
+        big = allp[(allp.geometry.area > 20000) & cent.within(poly).values]  # smaller ones: main loop
+        for j, lot in zip(big.index, big.geometry.values):
+            key = str(allp.mapblklot.iloc[j])
+            dev = 1880.0 + 20.0 * h01(key, "d")
+            start_fn = {"victorian_rows": lambda hk, dev=dev: dev + 6 * hk - 3, "residential_hotels": lambda hk: 1907.0 + 5 * hk,
+                        "warehouses": lambda hk: 1907.0 + 20 * hk}.get(fab, lambda hk, dev=dev: dev + 6 * hk)
+            out += strips_for_lot(lot, key, fab, start_fn, lambda k, key=key: cs + (ce - cs) * h01(key, f"c{k}"), sidx,
+                                  "sf_redevelopment_procedural", f"cleared_{aid}")
+    log(f"predecessors: {len(out)} buildings on superblocks of cleared areas")
+    return out
+
+
+def _rect(cx, cy, a, b, ang_deg):
+    r = box(cx - a / 2, cy - b / 2, cx + a / 2, cy + b / 2)
+    return shapely.affinity.rotate(r, ang_deg, origin=(cx, cy))
+
+
+# early_sf.csv rows modelled as landmarks (viewer/src/landmarks/batch4.ts: Mission Dolores compound)
+EARLY_AS_LANDMARKS = {"mis_convento", "mis_quadrangle_north", "mis_quadrangle_west", "mis_guardhouse",
+                      *(f"mis_rancheria_row_{i}" for i in range(1, 9))}
+
+EARLY_DEFAULT_FP = {"tule": (4.0, 4.0), "canvas tent": (4.0, 5.5), "adobe": (12.0, 6.0), "wood frame": (8.0, 6.0),
+                    "brick": (12.0, 10.0), "stone": (10.0, 8.0)}
+
+
+def table_buildings(path, lots, source, embarcadero=None):
+    """Documented buildings from a researched table (notable_pre1906 / notable_demolished /
+    early_sf columns). Rows with count > 1 are groups scattered over spread_m."""
+    if not path.exists():
+        return []
+    t = pd.read_csv(path)
+    t = t[pd.to_numeric(t.start_year, errors="coerce").notna() & t.lat.notna() & t.lon.notna()].reset_index(drop=True)
+    if source == "early_sf":
+        t = t[~t.id.isin(EARLY_AS_LANDMARKS)].reset_index(drop=True)
+    pts = gpd.GeoSeries(gpd.points_from_xy(t.lon, t.lat), crs=4326).to_crs(UTM)
+    hits = gpd.sjoin(gpd.GeoDataFrame(geometry=pts), lots[["mapblklot", "geometry"]], predicate="within", how="left")
+    hits = hits[~hits.index.duplicated()]
+    rows = []
+    for i, r in t.iterrows():
+        p = pts.iloc[i]
+        mat = str(r.get("material", "") or "").strip().lower()
+        mat_key = next((k for k in EARLY_DEFAULT_FP if k in mat), "wood frame")
+        n = int(pd.to_numeric(r.get("count", 1), errors="coerce") or 1) if "count" in t else 1
+        spread = float(pd.to_numeric(r.get("spread_m", 0), errors="coerce") or 0) if "spread_m" in t else 0.0
+        fpm = str(r.get("footprint_m", "") or "")
+        dims = None
+        if "x" in fpm.lower():
+            try:
+                dims = tuple(float(v) for v in fpm.lower().split("x")[:2])
+            except ValueError:
+                dims = None
+        rot = pd.to_numeric(r.get("rotation_deg", np.nan), errors="coerce")
+        lot_i = hits.index_right.iloc[i] if "index_right" in hits else np.nan
+        lot = lots.geometry.iloc[int(lot_i)] if pd.notna(lot_i) else None
+        if not np.isfinite(rot):
+            if "pier" in str(r.id) and embarcadero is not None:
+                q = embarcadero.interpolate(embarcadero.project(p))
+                rot = 90.0 - np.degrees(np.arctan2(p.y - q.y, p.x - q.x))  # long axis away from the seawall
+            elif lot is not None:
+                mrr = np.asarray(lot.minimum_rotated_rectangle.exterior.coords)[:4]
+                e = mrr[1] - mrr[0]
+                rot = 90.0 - np.degrees(np.arctan2(e[1], e[0]))
+            else:
+                rot = 0.0
+        storeys = pd.to_numeric(r.get("storeys"), errors="coerce")
+        height = pd.to_numeric(r.get("height_m"), errors="coerce")
+        if not np.isfinite(height):
+            height = (storeys * (4.5 if mat_key in ("brick", "stone") else 3.6) + 0.6) if np.isfinite(storeys) else (
+                {"tule": 2.5, "canvas tent": 2.8, "adobe": 4.5}.get(mat_key, 7.0))
+        end = float(r.end_year) if pd.notna(r.end_year) else 9999.0
+        rng = np.random.default_rng(zlib.crc32(str(r.id).encode()))
+        for k in range(min(n, 1500)):
+            if n > 1:
+                ang = rng.uniform(0, 2 * np.pi)
+                rad = spread * np.sqrt(rng.uniform(0, 1))
+                cx, cy = p.x + rad * np.cos(ang), p.y + rad * np.sin(ang)
+                a_ = rot + rng.uniform(-12, 12)
+            else:
+                cx, cy, a_ = p.x, p.y, rot
+            if dims is None and lot is not None and n == 1 and source != "early_sf":
+                fp = lot.buffer(-0.3)
+            else:
+                a, b = dims or EARLY_DEFAULT_FP[mat_key]
+                # shapely rotates counter-clockwise; our bearing is clockwise from north for the long side
+                fp = _rect(cx, cy, b, a, -a_) if mat_key != "tule" else Point(cx, cy).buffer(a / 2, 4)
+            if fp is None or fp.is_empty:
+                continue
+            rows.append({"geometry": fp, "start_year": float(r.start_year) + (rng.uniform(0, 0.8) if n > 1 else 0.0), "end_year": end,
+                         "height": float(height), "stories": float(storeys) if np.isfinite(storeys) else np.nan, "kind": "building",
+                         "source": source, "material": mat_key,
+                         "mapblklot": str(lots.mapblklot.iloc[int(lot_i)]) if (pd.notna(lot_i) and n == 1) else f"n:{r.id}:{k}",
+                         "year_confidence": "procedural" if n > 1 else "estimated", "year_reason": "documented"})
+    return rows
+
+
 def notable_buildings(lots):
+    """Documented buildings: pre-1906 notables, demolished post-1906 buildings, and the
+    structures of the town before the gold rush (data/tables/early_sf.csv)."""
+    emb = None
+    try:
+        st = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in glob.glob(str(RAW / "sf_streets_classes" / "page-*.geojson"))]), crs=4326)
+        e = st[st.street.fillna("").str.upper().str.contains("EMBARCADERO")].to_crs(UTM)
+        emb = shapely.ops.linemerge(shapely.union_all(e.geometry.values))
+    except Exception as ex:  # noqa: BLE001
+        log(f"predecessors: no Embarcadero line ({ex})")
+    rows = []
+    rows += table_buildings(TABLES / "notable_pre1906.csv", lots, "notable_pre1906", emb)
+    rows += table_buildings(TABLES / "notable_demolished.csv", lots, "notable_demolished", emb)
+    rows += table_buildings(TABLES / "early_sf.csv", lots, "early_sf", emb)
+    return gpd.GeoDataFrame(rows, crs=UTM) if rows else gpd.GeoDataFrame()
+
+
+def _old_notable_buildings(lots):
     path = TABLES / "notable_pre1906.csv"
     if not path.exists():
         return gpd.GeoDataFrame()

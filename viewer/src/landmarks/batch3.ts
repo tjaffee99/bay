@@ -1555,25 +1555,27 @@ const cliffHouse2004: Landmark = {
 // "Main tower breaking southern wall, facing South Gardens … 433 feet high …
 // seven stages; arch 110 feet high, 60 feet broad; 1,200 feet from the Tower of
 // Jewels to the Column of Progress" (J. D. Barry, The City of Domes, 1915).
-// Placed on the Scott St axis 1,200 ft south of the bay-front Column of Progress
-// (≈ Scott & Bay St), centred between Baker and Fillmore St, the ends of the
-// walled palace group: position ±50 m (LOW CONFIDENCE).
+// Position (batch 4): traced from the 1915 Sanborn map of the Exposition
+// (georeferenced on DataSF street centrelines, ±3 m): tower base 39 m square on
+// the Court of the Universe axis, with 60-ft double colonnades either side to
+// the walls of the Palaces of Liberal Arts and Manufactures; frame = Marina grid.
 const towerOfJewels: Landmark = {
   id: 'ppie_tower_of_jewels',
   name: 'Tower of Jewels (Panama-Pacific Exposition)',
   kind: 'tower',
   built: [1914.0, 1915.13],
   end: 1916.2,
-  anchor: [-122.44156, 37.80205],
+  anchor: [-122.441599, 37.802394],
   build: b => {
     const ivory = '#E6D9B8';
     const shade = '#D6C7A2';
-    b.frame(0, 0, 0, -8.4, () => {
-      // colonnaded southern wall of the palace group either side
-      for (const sx of [-1, 1]) {
-        b.color(ivory).box(sx * 46, 6, 0, 52, 14, 17);
-        b.color(shade).box(sx * 46, -2, 0, 52, 2.5, 13);
-      }
+    b.frame(0, 0, 0, -9.11, () => {
+      // double colonnades 60 ft high either side, to the palace walls (Sanborn)
+      for (const sx of [-1, 1])
+        for (const y of [-12.9, 12.9]) {
+          b.color(ivory).box(sx * 30.5, y, 0, 22, 4, 18.3);
+          b.color(shade).box(sx * 30.5, y, 15.5, 22.4, 4.4, 1.2);
+        }
       // base: arch 110 ft × 60 ft through a 38 m block
       b.color(ivory).box(-14, 0, 0, 10, 38, 33.5).box(14, 0, 0, 10, 38, 33.5);
       b.color(ivory).box(0, 0, 33.5, 38, 38, 8);
@@ -1606,9 +1608,9 @@ const towerOfJewels: Landmark = {
     Built: '1914 (Thomas Hastings of Carrère & Hastings) — staff over wood and steel',
     Height: '435 ft (132.6 m); 102,000+ cut-glass "Novagems" hung to shimmer',
     Exposition: 'Feb 20 – Dec 4, 1915; demolished 1916',
-    Model: 'height, seven stages and arch size documented (Barry 1915); stage proportions from period photographs; POSITION ESTIMATED (Scott & Bay St, ±50 m)'
+    Model: 'height, seven stages and arch size documented (Barry 1915); stage proportions from period photographs; position, base and colonnades from the 1915 Sanborn map (±3 m)'
   },
-  sources: [WIKI + 'Tower_of_Jewels_(Panama%E2%80%93Pacific_International_Exposition)', 'https://www.gutenberg.org/ebooks/3151']
+  sources: [WIKI + 'Tower_of_Jewels_(Panama%E2%80%93Pacific_International_Exposition)', 'https://www.gutenberg.org/ebooks/3151', 'https://www.loc.gov/item/sanborn00813_025/']
 };
 
 // =========================================================== California Midwinter International Exposition (1894)

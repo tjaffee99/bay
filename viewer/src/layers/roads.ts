@@ -14,6 +14,8 @@ import {loadColumnar} from '../data/columnar';
 import {TimeExtension} from './time-extension';
 import {MeshBuilder} from '../landmarks/kit';
 import {DecoLayer} from './deco-layer';
+import {elevationAt} from './elevation';
+import {LandmarkMeshLayer, type MergedLandmarks} from '../landmarks/merged-layer';
 
 // kinds — keep in sync with pipeline/roads.py
 const K = {STREET: 0, MAJOR: 1, FREEWAY: 2, HIGHWAY: 3, CABLE: 4, STREETCAR: 5, RAIL: 6, KEY: 7, BART: 8, FERRY: 9, LIGHTRAIL: 10};
@@ -43,6 +45,7 @@ type PathSet = {
   years: Float32Array;
   elevated: Uint8Array;
   columns?: {data: any};
+  decks?: MergedLandmarks;
   /** cumulative metres along each path (per vertex) for traffic */
   cum?: Float32Array;
   /** lon/lat bounds (absolute) of the set — for culling chunks out of view */
@@ -99,36 +102,120 @@ async function loadSet(id: string, url: string) {
   }
   set.cum = cum;
   sets.push(set);
-  if (id === 'roads-region') for (const ch of splitSet(set, 8, 8)) drawSets.push(withColumns(ch));
-  else drawSets.push(withColumns(set));
+  if (id === 'roads-region' || id === 'freeways') for (const ch of splitSet(set, 8, 8)) drawSets.push(addDecks(withColumns(ch)));
+  else drawSets.push(addDecks(withColumns(set)));
 }
 
-/** Columns under elevated (viaduct) paths, every ~50 m. */
+/** Bents under elevated paths: a wall-like pier across the roadway every ~60 m,
+ *  as tall as the deck is above the ground there (terrain lookup). */
 function withColumns(set: PathSet) {
-  const {n, starts, pos} = set;
+  const {n, starts, pos, origin} = set;
+  const kx = DEG * Math.cos((origin[1] * Math.PI) / 180);
   const cols: number[] = [];
+  const scl: number[] = [];
+  const ang: number[] = [];
   const cyears: number[] = [];
   for (let p = 0; p < n; p++) {
     if (set.elevated[p] !== 2) continue;
-    for (let v = starts[p]; v < starts[p + 1]; v += 2) {
-      cols.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2] - 14);
+    const step = set.width[p] > 8 ? 3 : 4;
+    for (let v = starts[p] + 1; v < starts[p + 1] - 1; v += step) {
+      const lon = pos[v * 3] + origin[0];
+      const lat = pos[v * 3 + 1] + origin[1];
+      const g = elevationAt(lon, lat);
+      const h = pos[v * 3 + 2] - g;
+      if (h < 4.5) continue;
+      const dx = (pos[(v + 1) * 3] - pos[(v - 1) * 3]) * kx;
+      const dy = (pos[(v + 1) * 3 + 1] - pos[(v - 1) * 3 + 1]) * DEG;
+      cols.push(pos[v * 3], pos[v * 3 + 1], g - 0.5);
+      scl.push(1.8, Math.max(2.5, set.width[p] * 0.55), h - 1.2);
+      ang.push(Math.atan2(dy, dx));
       cyears.push(set.years[p * 2], set.years[p * 2 + 1]);
     }
   }
   if (cols.length) {
     const m = cols.length / 3;
-    const scale = new Float32Array(m * 3);
-    for (let i = 0; i < m; i++) scale.set([2.2, 2.2, 14], i * 3);
     set.columns = {
       data: {
         length: m,
         attributes: {
           getPosition: {value: new Float32Array(cols), size: 3},
-          getScale: {value: scale, size: 3},
-          getAngle: {value: new Float32Array(m), size: 1},
+          getScale: {value: new Float32Array(scl), size: 3},
+          getAngle: {value: new Float32Array(ang), size: 1},
           getYears: {value: new Float32Array(cyears), size: 2}
         }
       }
+    };
+  }
+  return set;
+}
+
+/** Concrete deck slabs (with parapets) under every elevated stretch of a set (chunk). */
+function addDecks(set: PathSet) {
+  const {n, starts, pos, origin} = set;
+  const kx = DEG * Math.cos((origin[1] * Math.PI) / 180);
+  const out = {origin, pos: [] as number[], col: [] as number[], times: [] as number[]};
+  const SIDE = [0.74, 0.73, 0.7];
+  const UNDER = [0.55, 0.55, 0.54];
+  const TOP = [0.5, 0.5, 0.5];
+  for (let p = 0; p < n; p++) {
+    if (set.elevated[p] !== 2) continue;
+    const w = set.width[p] / 2 + 0.6;
+    const y0 = set.years[p * 2];
+    const y1 = set.years[p * 2 + 1];
+    const a = starts[p];
+    const b = starts[p + 1];
+    // per-vertex left offset (averaged normals) and height above ground
+    const L: [number, number][] = [];
+    const H: number[] = [];
+    const G: number[] = [];
+    for (let v = a; v < b; v++) {
+      const v0 = Math.max(a, v - 1);
+      const v1 = Math.min(b - 1, v + 1);
+      const dx = (pos[v1 * 3] - pos[v0 * 3]) * kx;
+      const dy = (pos[v1 * 3 + 1] - pos[v0 * 3 + 1]) * DEG;
+      const len = Math.hypot(dx, dy) || 1;
+      L.push([(-dy / len) * w / kx, (dx / len) * w / DEG]);
+      const g = elevationAt(pos[v * 3] + origin[0], pos[v * 3 + 1] + origin[1]);
+      G.push(g);
+      H.push(pos[v * 3 + 2] - g);
+    }
+    const tri = (q: number[][], c: number[], base: number) => {
+      for (const v of q) {
+        out.pos.push(v[0], v[1], v[2]);
+        out.col.push(c[0], c[1], c[2]);
+        out.times.push(y0, y0 + 1.5, y1, base);
+      }
+    };
+    for (let k = 0; k < b - a - 1; k++) {
+      if (H[k] < 3 || H[k + 1] < 3) continue;
+      const i0 = (a + k) * 3;
+      const i1 = (a + k + 1) * 3;
+      const top0 = pos[i0 + 2] - 0.15;
+      const top1 = pos[i1 + 2] - 0.15;
+      const P = (i: number, side: number, kk: number, z: number) => [pos[i] + side * L[kk][0], pos[i + 1] + side * L[kk][1], z];
+      const lt0 = P(i0, 1, k, top0), rt0 = P(i0, -1, k, top0), lt1 = P(i1, 1, k + 1, top1), rt1 = P(i1, -1, k + 1, top1);
+      const lb0 = P(i0, 1, k, top0 - 1.7), rb0 = P(i0, -1, k, top0 - 1.7), lb1 = P(i1, 1, k + 1, top1 - 1.7), rb1 = P(i1, -1, k + 1, top1 - 1.7);
+      const lp0 = P(i0, 1, k, top0 + 1.0), rp0 = P(i0, -1, k, top0 + 1.0), lp1 = P(i1, 1, k + 1, top1 + 1.0), rp1 = P(i1, -1, k + 1, top1 + 1.0);
+      const base = Math.min(G[k], G[k + 1]);
+      tri([lt0, rt0, rt1], TOP, base);
+      tri([lt0, rt1, lt1], TOP, base);
+      tri([lb0, rb1, rb0], UNDER, base);
+      tri([lb0, lb1, rb1], UNDER, base);
+      // outer faces: slab edge + parapet
+      tri([lb0, lb1, lp1], SIDE, base);
+      tri([lb0, lp1, lp0], SIDE, base);
+      tri([rb0, rp1, rb1], SIDE, base);
+      tri([rb0, rp0, rp1], SIDE, base);
+    }
+  }
+  if (out.pos.length) {
+    const nv = out.pos.length / 3;
+    set.decks = {
+      origin,
+      positions: new Float32Array(out.pos),
+      colors: new Float32Array(out.col),
+      times: new Float32Array(out.times),
+      pickingColors: new Float32Array(nv * 3)
     };
   }
   return set;
@@ -215,7 +302,8 @@ export async function loadRoads() {
   await Promise.all([
     loadSet('roads-region', 'data/roads-region.bin.gz').catch(e => console.warn('roads-region', e)),
     loadSet('roads-sf', 'data/roads-sf.bin.gz').catch(e => console.warn('roads-sf', e)),
-    loadSet('routes', 'data/routes.bin.gz').catch(e => console.warn('routes', e))
+    loadSet('routes', 'data/routes.bin.gz').catch(e => console.warn('routes', e)),
+    loadSet('freeways', 'data/freeways.bin.gz').catch(e => console.warn('freeways', e))
   ]);
   setupTraffic();
 }
@@ -268,6 +356,20 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
         parameters: {depthBias: -4, depthBiasSlopeScale: -2} as any
       } as any) as any
     );
+    if (s.decks)
+      out.push(
+        new LandmarkMeshLayer({
+          id: `decks-${s.id}`,
+          data: [],
+          merged: s.decks,
+          coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+          coordinateOrigin: [s.origin[0], s.origin[1], 0],
+          year,
+          quality: false,
+          material: {ambient: 0.62, diffuse: 0.55, shininess: 6, specularColor: [24, 24, 24]},
+          pickable: false
+        }) as any
+      );
     if (s.columns) {
       out.push(
         new DecoLayer({

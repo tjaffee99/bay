@@ -2,7 +2,12 @@
  * Small committed tables from data/tables/*.csv (eras, events, population).
  * Imported at build time; missing files simply yield empty tables.
  */
-const files = import.meta.glob('../../../data/tables/*.csv', {query: '?raw', import: 'default', eager: true}) as Record<string, string>;
+// only the tables the viewer shows (the research tables are pipeline inputs: don't bundle them)
+const files = import.meta.glob(['../../../data/tables/eras.csv', '../../../data/tables/events.csv', '../../../data/tables/population.csv'], {
+  query: '?raw',
+  import: 'default',
+  eager: true
+}) as Record<string, string>;
 
 function table(name: string): Record<string, string>[] {
   const key = Object.keys(files).find(k => k.endsWith(`/${name}.csv`));

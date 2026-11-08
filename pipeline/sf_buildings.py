@@ -129,6 +129,44 @@ def main():
             lower[inside] = np.maximum(lower[inside], r.year)
             log(f"years: {inside.sum()} buildings on {r['name']} (land from {r.year}); {bad.sum()} predate it")
 
+    # 19th-century cemeteries (landcover_history "cem_*" rows): nothing was built there
+    # until the graves were moved, so earlier years there are placeholders
+    for cpoly, cend, cname in cemeteries(UTM):
+        inside = cent.within(cpoly.buffer(-15)).values
+        bad = inside & (raw.values > 0) & (raw.values < cend) & (reason == "ok")
+        reason[bad] = "cemetery"
+        lower[inside] = np.maximum(lower[inside], cend + 0.5)
+        upper[inside & (reason == "spike")] = np.inf
+        log(f"years: {inside.sum()} buildings on the former {cname} (cleared {cend:.0f}); {bad.sum()} predate it")
+
+    # urban renewal / freeway clearances: a building there whose year we have to
+    # impute can't predate the clearance (the old fabric was demolished first);
+    # dated survivors (rehabilitated Victorians, Westside Courts, ...) keep their years
+    lower_redev = np.full(len(df), -np.inf)
+    for area_poly, cs, ce, _fabric, _aid in redevelopment_areas():
+        inside = cent.within(area_poly).values
+        lower_redev[inside] = np.where(np.isfinite(lower_redev[inside]), np.minimum(lower_redev[inside], cs + 2), cs + 2)
+    # an assessor placeholder (spike) year doesn't cap a big building inside a clearance:
+    # the Victorians there were small; a 1,000 m2 store is post-clearance
+    big_spike = np.isfinite(lower_redev) & (reason == "spike") & (df.geometry.area.values > 600)
+    upper[big_spike] = np.inf
+    log(f"years: {np.isfinite(lower_redev).sum()} buildings inside urban-renewal / freeway clearances "
+        f"({big_spike.sum()} large ones with placeholder years treated as post-clearance)")
+
+    # tall buildings: imputing from (small) neighbours drops towers into the Victorian
+    # era. Without a usable year, a 50 m+ building is post-war and a 35 m+ one at least
+    # interwar (the pre-war towers — Russ, Shell, PT&T — have real assessor years);
+    # a tall footprint missing from the 2016 DataSF snapshot is a post-2014 tower.
+    hgt = np.fmax(df.hgt_median_m.astype(float).values, pd.to_numeric(df.get("overture_height"), errors="coerce").values)
+    imp_tall = reason != "ok"
+    lower_redev[imp_tall & (hgt >= 35)] = np.fmax(lower_redev[imp_tall & (hgt >= 35)], 1920)
+    lower_redev[imp_tall & (hgt >= 50)] = np.fmax(lower_redev[imp_tall & (hgt >= 50)], 1950)
+    new_tower = imp_tall & (hgt >= 30) & (df.source != "datasf_footprints_2016").values
+    lower_redev[new_tower] = np.fmax(lower_redev[new_tower], 2014)
+    upper[imp_tall & (hgt >= 35) & (reason == "spike")] = np.inf
+    log(f"years: height floors for {int((imp_tall & (hgt >= 35)).sum())} tall buildings without usable years "
+        f"({int(new_tower.sum())} post-2016-snapshot towers)")
+
     # ---------------------------------------------------------------- other evidence
     # LiDAR (2010) saw a building here -> it existed by 2010; every DataSF footprint existed by 2016
     lidar = df.hgt_median_m.astype(float).values
@@ -153,6 +191,7 @@ def main():
         log(f"years: {use.sum()} buildings dated from completed new-construction permits")
 
     # researched dates (federal / exempt land, public buildings) — point in footprint
+    known_end = np.full(len(df), np.nan)
     kd = known_dates()
     if kd is not None:
         hit = gpd.sjoin(kd, gpd.GeoDataFrame(geometry=df.geometry, crs=UTM), predicate="within", how="inner")
@@ -162,6 +201,8 @@ def main():
             reason[i] = "ok_research"
             conf[i] = "exact"
             src_year[i] = "research"
+            if np.isfinite(r.end_year) and r.end_year < 9000:
+                known_end[i] = r.end_year
         log(f"years: {hit.index_right.nunique()} buildings dated from data/tables/known_building_dates.csv")
 
     # ---------------------------------------------------------------- imputation
@@ -178,14 +219,15 @@ def main():
     for j, i in enumerate(need):
         ok = np.isfinite(dist[j])
         cands = good_years[idx[j][ok]]
-        cands = cands[(cands >= lower[i]) & (cands <= upper[i])]
+        lo_i = max(lower[i], lower_redev[i])
+        cands = cands[(cands >= lo_i) & (cands <= upper[i])]
         key = df.mapblklot.iloc[i]
         if isinstance(key, str) and key in parcel_year:
             # all footprints of one parcel share the parcel's imputed year
             year[i] = parcel_year[key]
         elif len(cands):
             year[i] = float(np.median(cands))
-        elif np.isfinite(fbuy[i]) and lower[i] <= fbuy[i] <= upper[i]:
+        elif np.isfinite(fbuy[i]) and lo_i <= fbuy[i] <= upper[i]:
             # HISDAC-US first built-up year of the 250 m cell
             year[i] = fbuy[i]
             src_year[i] = "hisdac_fbuy"
@@ -200,11 +242,11 @@ def main():
                 year[i] = np.quantile(pool, h) if len(pool) > 20 else raw.values[i] - 12 * h
             elif reason[i] == "burned" or lower[i] == 1906.5:
                 year[i] = 1906.5 + 7 * h                  # post-fire rebuild 1906-1913
-            elif np.isfinite(lower[i]):
-                year[i] = lower[i] + 3 * h
+            elif np.isfinite(lo_i):
+                year[i] = lo_i + 3 * h
             else:
                 year[i] = 1925 + 20 * h
-        year[i] = min(max(year[i], lower[i]), upper[i], CURRENT_YEAR)
+        year[i] = min(max(year[i], lo_i), upper[i], CURRENT_YEAR)
         if isinstance(key, str) and key not in parcel_year:
             parcel_year[key] = year[i]
         if not src_year[i]:
@@ -215,7 +257,7 @@ def main():
     jit = np.array([stable_hash01(f"j{k}") for k in range(len(df))])
     df["start_year"] = np.floor(year) + 0.9 * jit
     df.loc[df.start_year < lower, "start_year"] = lower[df.start_year < lower]
-    df["end_year"] = float(STILL_EXISTS)
+    df["end_year"] = np.where(np.isfinite(known_end), known_end, float(STILL_EXISTS))
     df["year_confidence"] = conf
     df["year_reason"] = reason
     df["year_source"] = src_year
@@ -316,6 +358,41 @@ def parcel_map():
     return _PARCEL_MAP
 
 
+def cemeteries(crs):
+    """[(polygon, cleared year, name)] from data/tables/landcover_history.csv cem_* rows."""
+    from geocode import ring_polygon
+    lc = pd.read_csv(TABLES / "landcover_history.csv")
+    out = []
+    for _, r in lc[lc.area_id.astype(str).str.startswith("cem_") & ~lc.area_id.astype(str).str.endswith("_cleared")].iterrows():
+        try:
+            out.append((ring_polygon(r.ring, r.ring_type, crs=crs), float(r.year_end), str(r["name"])))
+        except Exception as e:  # noqa: BLE001
+            log(f"cemetery {r.area_id}: {e}")
+    return out
+
+
+def redevelopment_areas():
+    """data/manual/redevelopment_areas.csv -> [(polygon UTM, clear_start, clear_end, prior_fabric, id)],
+    smallest areas first (A-1 inside A-2 must win)."""
+    path = MANUAL / "redevelopment_areas.csv"
+    if not path.exists():
+        return []
+    from geocode import ring_polygon
+    t = pd.read_csv(path)
+    out = []
+    for _, r in t.iterrows():
+        try:
+            poly = ring_polygon(r.ring, r.ring_type, crs=UTM)
+        except Exception as e:  # noqa: BLE001
+            log(f"redevelopment: {r.area_id}: {e}")
+            continue
+        if poly is None or poly.is_empty:
+            continue
+        out.append((poly, float(r.clear_start), float(r.clear_end), str(r.prior_fabric), str(r.area_id)))
+    out.sort(key=lambda a: a[0].area)
+    return out
+
+
 def known_dates():
     path = TABLES / "known_building_dates.csv"
     if not path.exists():
@@ -327,7 +404,8 @@ def known_dates():
     # before the 2016 snapshot (e.g. the 1939 Transbay Terminal) can't date its successor
     end = pd.to_numeric(k.get("end_year"), errors="coerce")
     k = k[end.isna() | (end >= 2016)]
-    return gpd.GeoDataFrame(k[["name", "start_year"]], geometry=gpd.points_from_xy(k.lon, k.lat), crs=4326).to_crs(UTM)
+    k = k.assign(end_year=pd.to_numeric(k.get("end_year"), errors="coerce").fillna(9999.0))
+    return gpd.GeoDataFrame(k[["name", "start_year", "end_year"]], geometry=gpd.points_from_xy(k.lon, k.lat), crs=4326).to_crs(UTM)
 
 
 def fbuy_years(points: gpd.GeoSeries) -> np.ndarray:

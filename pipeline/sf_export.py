@@ -53,7 +53,8 @@ def ground_sampler():
 ORIGIN = (-122.44, 37.76)
 
 # facade material classes (viewer/src/palette.ts MATERIALS has the colours)
-M_GENERIC, M_EARLY, M_VICTORIAN, M_BRICK, M_MASONRY, M_STUCCO, M_MIDCENTURY, M_TOWER70, M_GLASS, M_CONTEMP, M_CIVIC, M_INDUSTRIAL = range(12)
+M_GENERIC, M_EARLY, M_VICTORIAN, M_BRICK, M_MASONRY, M_STUCCO, M_MIDCENTURY, M_TOWER70, M_GLASS, M_CONTEMP, M_CIVIC, M_INDUSTRIAL, \
+    M_ADOBE, M_TULE = range(14)
 # roof codes: 0 flat (tar / gravel / membrane), 1 clay tile, 2 shingle / slate (pitched), 3 same as walls
 R_FLAT, R_TILE, R_SHINGLE, R_WALL = range(4)
 
@@ -92,11 +93,20 @@ def materials(df, h01):
         if r is not None:
             roof[sel] = r
 
+    # documented materials first (early_sf / notable tables)
+    dm = df["material"].fillna("").values if "material" in df else np.array([""] * len(df))
+    put(dm == "adobe", M_ADOBE, R_TILE)
+    put(dm == "tule", M_TULE, R_WALL)
+    put(dm == "canvas tent", M_EARLY, R_WALL)
+    put(dm == "brick", M_BRICK, R_FLAT)
+    put(dm == "stone", M_CIVIC, R_FLAT)
     put(y < 1853, M_EARLY, R_SHINGLE)
     put((reason == "predecessor_brick") | ((y < 1906) & (commercial | industrial | (downtown & (H > 9)))), M_BRICK, R_FLAT)
     put(y < 1906, M_VICTORIAN, R_SHINGLE)
     put((use == 6) & (y < 1960) & (H > 12), M_CIVIC, R_FLAT)
-    put((y < 1946) & industrial, M_BRICK, R_FLAT)
+    # SoMa / bayside warehouses: brick and (painted) reinforced concrete in about equal shares
+    put((y < 1946) & industrial & (hash_ < 0.55), M_BRICK, R_FLAT)
+    put((y < 1946) & industrial, M_INDUSTRIAL, R_FLAT)
     put((y < 1935) & (downtown | (commercial & (H > 20))), M_MASONRY, R_FLAT)
     put((y < 1920) & resid & ~west & ~marina, M_VICTORIAN, R_SHINGLE)  # Edwardian wood flats
     put((y < 1960) & resid & marina, M_STUCCO, R_TILE)
@@ -118,6 +128,7 @@ def materials(df, h01):
 def main():
     df = gpd.read_parquet(INTERIM / "sf_buildings.parquet")
     pred_path = INTERIM / "sf_predecessors.parquet"
+    df["material"] = None
     if pred_path.exists():
         pred = gpd.read_parquet(pred_path)
         pred["sf16_bldgid"] = "pred:" + pred.mapblklot.astype(str) + ":" + pred.start_year.round(1).astype(str)
@@ -129,6 +140,28 @@ def main():
     df["geometry"] = df.geometry.to_crs(32610).simplify(0.25, preserve_topology=True).to_crs(4326)
     df = df[~df.geometry.is_empty & df.geometry.is_valid & (df.geometry.geom_type == "Polygon")]
     df = df.reset_index(drop=True)
+    # nothing stands before its ground exists (bay fill): push generated / imputed
+    # buildings onto dry land; report documented ones that conflict
+    ly_path = _I / "grid_detail_landyear.npy"
+    if ly_path.exists():
+        g = grid_def("detail")
+        ly = np.load(ly_path)
+        rp = df.geometry.representative_point()
+        X = np.radians(rp.x.values) * 6378137.0
+        Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(rp.y.values) / 2))
+        c = np.clip(np.rint((X - g["X0"]) / g["res"]).astype(int), 0, g["cols"] - 1)
+        r = np.clip(np.rint((g["Y0"] - Y) / g["res"]).astype(int), 0, g["rows"] - 1)
+        land = ly[r, c]
+        early = np.isfinite(land) & (df.start_year.values < land - 0.5)
+        soft = early & (df.year_confidence.values != "exact")
+        documented = df.source.fillna("").isin(["early_sf", "notable_pre1906"]).values  # wharves, piers, beached ships
+        fix = soft & ~documented
+        df.loc[fix, "start_year"] = land[fix] + 0.5 + (df.index.values[fix] % 7) * 0.3
+        drop = fix & (df.start_year.values >= df.end_year.values - 0.5)
+        log(f"export: land check: {early.sum()} buildings predate their ground; moved {fix.sum()} generated/imputed "
+            f"(dropped {drop.sum()} that no longer fit), kept {(early & ~fix).sum()} exact/documented (piers, wharves)")
+        df = df[~drop].reset_index(drop=True)
+
     n = len(df)
     log(f"export: {n} polygons")
 
@@ -170,7 +203,7 @@ def main():
 
     import zlib as _z
     mat, roof = materials(df, lambda k: (_z.crc32(k.encode()) % 100003) / 100003.0)
-    log(f"export: materials {np.bincount(mat, minlength=12).tolist()}")
+    log(f"export: materials {np.bincount(mat, minlength=14).tolist()}")
     fid = np.array([zlib.crc32(str(k).encode()) for k in df.sf16_bldgid.fillna("").astype(str) + df.index.astype(str)],
                    dtype=np.uint32)
     stories = np.nan_to_num(df.stories.astype(float).values, nan=0).clip(0, 255).astype(np.uint8)

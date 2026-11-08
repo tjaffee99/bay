@@ -17,7 +17,7 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 | `viewer/public/data/fire-1906.json` | hand-researched boundary (`data/manual/`) + DataSF streets | see `data/manual/fire_1906_README.md` |
 | `viewer/public/tiles/terrain/**`, `elevation-*.bin.gz` | USGS 3DEP (public domain), ESA WorldCover 2021 (**CC BY 4.0**), HISDAC-US (CC0), SFEI baylands / historical ecology (cite SFEI; GIS compilation GPL v3), hand-researched fill / extents / land-cover tables | **CC BY 4.0** — "contains modified ESA WorldCover 2021 data; SFEI-ASC historical ecology" |
 | `viewer/public/data/roads-sf.bin.gz` | DataSF street centerlines (PDDL), dated from `data/manual/sf_extent_*.csv` and building years | PDDL |
-| `viewer/public/data/roads-region.bin.gz` | OpenStreetMap via Overture transportation theme (ODbL) | **ODbL 1.0** |
+| `viewer/public/data/roads-region.bin.gz`, `freeways.bin.gz` | OpenStreetMap via Overture transportation theme (ODbL) | **ODbL 1.0** |
 | `viewer/public/data/routes.bin.gz` | `data/manual/routes.csv` (researched historic routes; geometry along DataSF centerlines) | as `data/manual/` (sources per row) |
 
 ## Datasets
@@ -106,6 +106,17 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 - `data/tables/landcover_history.csv`: dated land-cover eras (orchards, vineyards, ranches, parks, dunes reclaimed) — source per row.
 - `data/tables/known_building_dates.csv`, `notable_pre1906.csv`: documented construction / demolition years and pre-1906 buildings (source per row).
 - `data/tables/transbay_terminal.md`: Transbay Terminal 1939 research (HAER CA-2296 drawings and photos).
+
+### Researched tables (2026-11 pass)
+- `data/tables/known_building_dates.csv` (now 1,076 rows): adds institutional / exempt buildings — UCSF Parnassus (2003 historic-resources survey), VA Fort Miley (2009 National Register nomination), Port of SF piers (2006 Embarcadero Historic District nomination), USF, City College, SFUSD high schools, SFHA housing (Sunnydale…), towers (Wikipedia list of tallest buildings). Source URL per row.
+- `data/tables/notable_demolished.csv`: demolished post-1906 buildings with footprints and heights (source per row).
+- `data/manual/redevelopment_areas.csv`: urban-renewal project areas and freeway takings with clearance years (SF Redevelopment Agency histories, Wikipedia, FoundSF; confidence per row).
+- `data/tables/early_sf.csv` + `data/research/early_sf.md`: 160 structures 1700–1849 (Bancroft's lot notes, the *Annals of San Francisco*, Milliken / NPS for Mission Dolores, SF Planning Early Settlement context statement).
+- `data/research/landmarks_batch4.md`: 1915 PPIE traced from the Library of Congress Sanborn map of the Exposition (https://www.loc.gov/item/sanborn00813_025/, Nov 1914, public domain); GGIE 1939 from the Official Guide plan; Presidio, Castillo, Mission compound, Playland, Woodward's Gardens, Mechanics' Pavilion, Sutro Heights.
+- `data/tables/golf_courses.csv` (opening years) with Overture `land_use` golf-course outlines; cemeteries and the Presidio Main Parade in `landcover_history.csv` (Presidio Trust; FoundSF / Wikipedia "Lone Mountain Cemetery").
+
+### `overture_freeways` — Overture transportation segments (motorway, trunk, links)
+- `theme=transportation/type=segment`, class motorway/trunk incl. `subclass = link`, with `road_flags` (is_bridge / is_tunnel), `level_rules` and `connectors` — ODbL 1.0, © OpenStreetMap contributors, Overture Maps Foundation. Use: freeway and ramp geometry and heights (`freeways.bin.gz`).
 
 ### `land_not_before` (manual)
 - File: `data/manual/land_not_before.geojson`

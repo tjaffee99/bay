@@ -414,7 +414,11 @@ def histories(name, g, d):
         if len(gl):
             stadium = rasterize_on(g, [(geom, 1) for geom in gl.geometry], fill=0, dtype="uint8").astype(bool)
     city_fill = filled & in_sf & (built_now | stadium | np.isfinite(sfy) | np.isfinite(urban_y)) & ~is_park & np.isfinite(fill_y)
-    urban_y = np.where(city_fill, np.fmin(urban_y, fill_y + 3.0), urban_y)
+    urban_y = np.where(city_fill, np.fmin(urban_y, fill_y + 0.5), urban_y)
+    # fill that is built on within a few years goes straight to the city (one history
+    # slot saved) — from the day it was filled, not from the build date: the ground was there
+    quick = filled & np.isfinite(fill_y) & np.isfinite(urban_y) & (urban_y > fill_y) & (urban_y - fill_y < 4)
+    urban_y = np.where(quick, fill_y + 0.2, urban_y)
     urban |= city_fill
     open_fill = filled & ~urban & ~is_park & np.isfinite(fill_y)
     event(filled, FILL, fill_y)
@@ -550,6 +554,16 @@ def write_tiles(name, g, covers, years, elev, deco_fn=None, zooms=None):
     log(f"terrain {name}: wrote {count} tiles for zooms {zooms}")
 
 
+def land_year_of(covers, years):
+    """Year each vertex became dry land (NaN: always land, or still water)."""
+    wet0 = np.isin(covers[0], list(WET))
+    out = np.full(covers.shape[1:], np.nan, np.float32)
+    for e in range(4):
+        became = wet0 & np.isnan(out) & ~np.isin(covers[e + 1], list(WET)) & np.isfinite(years[e])
+        out[became] = years[e][became]
+    return out
+
+
 def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
     """Return a function (tx, ty) -> decoration columns for that native tile."""
     import rasterio
@@ -576,6 +590,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             log(f"deco {name}: skip {url.split('/')[-1]} {e}")
     tree_fine = fine == 10
     shrub_fine = fine == 20
+    land_year = land_year_of(covers, years)
     # no trees on sports fields, in stadiums (Oracle Park's grass reads as canopy) or
     # inside building footprints
     blockers = []
@@ -626,6 +641,9 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             start = np.where(np.isnan(start) & np.isfinite(uy), uy + rng.uniform(5, 25, len(fy)), start)
             planted_sf = np.isnan(start) & np.isin(nat, [DUNES, SCRUB]) & (name == "detail")
             start = np.where(planted_sf, 1890 + rng.uniform(0, 40, len(fy)), start)
+            # trees on made land (bay, flats, marsh until filled) can't predate the land
+            ly = at_vertex(land_year, fy, fx)
+            start = np.where(np.isfinite(ly), np.fmax(start, ly + rng.uniform(4, 15, len(fy))), start)
             # natural forest: always there (no start)
             conifer_p = np.where(at_vertex(elev, fy, fx) > 150, 0.65, 0.45)
             kind = np.where(rng.random(len(fy)) < conifer_p, D_CONIFER, D_BROADLEAF)
@@ -698,6 +716,7 @@ def main():
         deco = decorations(name, g, covers, years, elev, urban_y, park_y, wood_y)
         write_tiles(name, g, covers, years, elev, deco, zooms)
         write_elevation_lookup(name, g, elev, step)
+        np.save(INTERIM / f"grid_{name}_landyear.npy", land_year_of(covers, years))
         meta[name] = {"z": g["z"], "tx0": g["tx0"], "ty0": g["ty0"], "tx1": g["tx1"], "ty1": g["ty1"], "zooms": zooms}
     (VIEWER_DATA / "terrain.json").write_text(json.dumps({"grids": meta, "covers": COVER_NAMES,
                                                           "deco": ["broadleaf", "conifer", "palm", "orchard", "farmhouse", "shrub"]}, indent=1))

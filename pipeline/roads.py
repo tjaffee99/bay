@@ -42,6 +42,8 @@ K_STREET, K_MAJOR, K_FREEWAY, K_HIGHWAY, K_CABLE, K_STREETCAR, K_RAIL, K_KEY, K_
 MODE_KIND = {"freeway": K_FREEWAY, "highway": K_HIGHWAY, "cable_car": K_CABLE, "streetcar": K_STREETCAR,
              "horsecar": K_STREETCAR, "steam_railroad": K_RAIL, "interurban": K_RAIL, "key_system": K_KEY,
              "bart": K_BART, "ferry": K_FERRY, "light_rail": K_LIGHTRAIL}
+# routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
+LANDMARK_ROUTES = {"fwy_embarcadero"}
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
 WIDTH = {K_STREET: 9, K_MAJOR: 14, K_FREEWAY: 24, K_HIGHWAY: 16, K_CABLE: 3, K_STREETCAR: 3, K_RAIL: 4,
          K_KEY: 4, K_BART: 5, K_FERRY: 6, K_LIGHTRAIL: 3}
@@ -224,6 +226,162 @@ def z_offset(kind, el):
     return {K_FREEWAY: 0.7, K_HIGHWAY: 0.6, K_MAJOR: 0.5}.get(kind, 0.45) + (0.15 if kind in (K_CABLE, K_STREETCAR, K_RAIL, K_KEY, K_BART, K_LIGHTRAIL) else 0)
 
 
+# ---------------------------------------------------------------- freeways in 3D
+def _flag_ranges(rules, key=None):
+    """Overture road_flags / level_rules -> list of (lo, hi, value)."""
+    out = []
+    if rules is None:
+        return out
+    for r in rules:
+        b = r.get("between")
+        lo, hi = (0.0, 1.0) if b is None else (float(b[0]), float(b[1]))
+        if key is None:
+            out.append((lo, hi, float(r.get("value", 0) or 0)))
+        else:
+            vals = r.get("values")
+            if vals is not None and key in list(vals):
+                out.append((lo, hi, 1.0))
+    return out
+
+
+def freeway_items(ground, fw_tree):
+    """Motorways, trunks and ramps (Overture) with a height profile per vertex.
+
+    Height above ground: level 1 viaducts ~12.5 m, level 2 ~22 m, other bridges 6.5 m,
+    at grade 0.7 m. Approaches climb at most ~5.5 % (the profile is dilated with that
+    slope cone), junctions share one height (connectors), and ramp ends that meet a
+    surface street (a connector no other freeway segment uses) come down to the ground
+    at ~8 %. Tunnel portions are dropped. Dates: nearest researched freeway route
+    (<= 150 m), else 1960."""
+    fwy = gpd.read_parquet(RAW / "overture" / RELEASE / "freeways.parquet")
+    if fwy.crs is None:
+        fwy = fwy.set_crs(4326)
+    fwy = fwy[fwy.geometry.geom_type == "LineString"].reset_index(drop=True)
+    fwu = fwy.to_crs(UTM)
+    SLOPE, DOWN = 0.055, 0.08
+    segs = []
+    conn_count = {}
+    for i, row in fwy.iterrows():
+        g = fwu.geometry.iloc[i]
+        L = g.length
+        if L < 1:
+            continue
+        sf = row.geometry.bounds[0] > -122.53 and row.geometry.bounds[2] < -122.35 and row.geometry.bounds[1] > 37.70
+        step = 20.0 if sf else 40.0
+        n = max(2, int(math.ceil(L / step)) + 1)
+        f = np.linspace(0, 1, n)
+        lev = np.zeros(n)
+        for lo, hi, v in _flag_ranges(row.level_rules):
+            lev[(f >= lo) & (f <= hi)] = v
+        br = np.zeros(n, bool)
+        for lo, hi, _ in _flag_ranges(row.road_flags, "is_bridge"):
+            br[(f >= lo) & (f <= hi)] = True
+        tn = np.zeros(n, bool)
+        for lo, hi, _ in _flag_ranges(row.road_flags, "is_tunnel"):
+            tn[(f >= lo) & (f <= hi)] = True
+        h = np.where(lev >= 1, 3.0 + 9.5 * lev, np.where(br, 6.5, 0.7))
+        # the Bay Bridge and Golden Gate Bridge decks belong to their landmark models
+        nm = str(row["name"] or "")
+        if br.any():
+            ll = [row.geometry.interpolate(x, normalized=True) for x in f]
+            lo_ = np.array([p.x for p in ll])
+            la_ = np.array([p.y for p in ll])
+            over_water = ground(lo_, la_) < 2.0
+            bay_bridge = (lo_ > -122.392) & (lo_ < -122.298) & (la_ > 37.783) & (la_ < 37.832)
+            if "Golden Gate Bridge" in nm:
+                tn = tn | br
+            tn = tn | (br & bay_bridge & over_water)
+        conns = [(c["connector_id"], float(c["at"])) for c in (row.connectors if row.connectors is not None else [])]
+        for cid, _ in conns:
+            conn_count[cid] = conn_count.get(cid, 0) + 1
+        segs.append({"i": i, "g": g, "f": f, "s": f * L, "h": h, "tn": tn, "conns": conns, "cls": row["class"], "sub": row.subclass})
+
+    def dilate(seg):
+        h, s_ = seg["h"], seg["s"]
+        for k in range(1, len(h)):
+            h[k] = max(h[k], h[k - 1] - SLOPE * (s_[k] - s_[k - 1]))
+        for k in range(len(h) - 2, -1, -1):
+            h[k] = max(h[k], h[k + 1] - SLOPE * (s_[k + 1] - s_[k]))
+
+    def idx_at(seg, at):
+        return int(np.argmin(np.abs(seg["f"] - at)))
+
+    for seg in segs:
+        dilate(seg)
+    for _ in range(2):  # junction heights: highest wins, then re-dilate
+        node_h = {}
+        for seg in segs:
+            for cid, at in seg["conns"]:
+                node_h[cid] = max(node_h.get(cid, 0.0), seg["h"][idx_at(seg, at)])
+        for seg in segs:
+            for cid, at in seg["conns"]:
+                k = idx_at(seg, at)
+                seg["h"][k] = max(seg["h"][k], node_h[cid])
+            dilate(seg)
+    # ramp ends meeting surface streets come down to the ground
+    for seg in segs:
+        h, s_ = seg["h"], seg["s"]
+        for cid, at in seg["conns"]:
+            if conn_count.get(cid, 0) > 1 or at not in (0.0, 1.0) or seg["sub"] != "link":
+                continue
+            d = np.abs(s_ - s_[idx_at(seg, at)])
+            h[:] = np.minimum(h, 0.7 + DOWN * d)
+
+    items = []
+    for seg in segs:
+        g = seg["g"]
+        pts = [g.interpolate(x, normalized=True) for x in seg["f"]]
+        xy = gpd.GeoSeries(pts, crs=UTM).to_crs(4326)
+        lon, lat = xy.x.values, xy.y.values
+        z = ground(lon, lat) + seg["h"]
+        y0 = 1960.0
+        if fw_tree is not None:
+            mid = g.interpolate(0.5, normalized=True)
+            dd, ii = fw_tree[0].query((mid.x, mid.y))
+            if dd < 150:
+                y0 = float(fw_tree[1][ii])
+        link = seg["sub"] == "link"
+        k = K_FREEWAY if seg["cls"] == "motorway" else K_HIGHWAY
+        width = 6.5 if link else (13.0 if seg["cls"] == "motorway" else 11.0)
+        # split at tunnels
+        keep = ~seg["tn"]
+        start = None
+        for j in range(len(keep) + 1):
+            if j < len(keep) and keep[j]:
+                start = j if start is None else start
+            elif start is not None:
+                if j - start >= 2:
+                    sl = slice(start, j)
+                    hmax = float(seg["h"][sl].max())
+                    items.append((lon[sl], lat[sl], z[sl], k, width, y0, 9999.0, 2 if hmax > 4 else 0))
+                start = None
+    log(f"roads: {len(items)} freeway / ramp paths in 3D")
+    return items
+
+
+def write_paths3d(path, items):
+    """items: (lon array, lat array, z array, kind, width, start, end, elevated)."""
+    starts = [0]
+    pos = []
+    kinds, widths, years, elev = [], [], [], []
+    for lon, lat, z, kind, width, y0, y1, el in items:
+        pos.append(np.column_stack([lon - ORIGIN[0], lat - ORIGIN[1], z]).ravel())
+        starts.append(starts[-1] + len(lon))
+        kinds.append(kind)
+        widths.append(width)
+        years.extend((y0, y1))
+        elev.append(el)
+    write_columnar(path, {
+        "start_indices|shuffle": np.asarray(starts, np.uint32),
+        "positions|shuffle": np.concatenate(pos).astype(np.float32),
+        "kind": np.asarray(kinds, np.uint8),
+        "width": np.clip(np.rint(widths), 1, 255).astype(np.uint8),
+        "years": np.asarray(years, np.float32),
+        "elevated": np.asarray(elev, np.uint8),
+    }, origin=ORIGIN, counts={"paths": len(kinds), "vertices": starts[-1]})
+    log(f"roads: wrote {path.name}: {len(kinds)} paths, {starts[-1]} vertices")
+
+
 def main():
     ground = Ground()
 
@@ -237,6 +395,11 @@ def main():
     first_b = np.nanmin(np.where(np.isfinite(near), near, np.inf), axis=1)
     first_b[~np.isfinite(first_b)] = np.nan
     y0 = np.where(np.isfinite(ext), ext, np.where(np.isfinite(first_b), first_b - 1, 1950.0))
+    # streets across the 19th-century cemeteries were cut through after the graves were moved
+    from sf_buildings import cemeteries
+    for cpoly, cend, _ in cemeteries(UTM):
+        inside = gpd.GeoSeries(mids.values, crs=UTM).within(cpoly.buffer(-10)).values
+        y0 = np.where(inside, np.maximum(y0, cend + 1), y0)
     cls = pd.to_numeric(st.classcode, errors="coerce").fillna(5).values
     kind = np.where(cls <= 3, K_MAJOR, K_STREET)
     items = [(g, int(k), WIDTH[int(k)], float(a), 9999.0, 0) for g, k, a in zip(st.geometry.values, kind, y0)]
@@ -245,7 +408,7 @@ def main():
     # ---- researched routes (whole region)
     routes = pd.read_csv(MANUAL / "routes.csv")
     st_names = streets_by_name(st)
-    ritems = []
+    ritems, rids = [], []
     for _, r in routes.iterrows():
         k = MODE_KIND.get(str(r["mode"]).strip())
         if k is None:
@@ -263,7 +426,12 @@ def main():
         y0r = pd.to_numeric(r.year_start, errors="coerce")
         y1r = pd.to_numeric(r.year_end, errors="coerce")
         ritems.append((geom, k, WIDTH[k], float(y0r) if np.isfinite(y0r) else 1900.0, float(y1r) if np.isfinite(y1r) else 9999.0, el))
-    write_paths(VIEWER_DATA / "routes.bin.gz", ritems, ground, z_offset)
+        rids.append(str(r.route_id))
+    # freeways / highways still standing are drawn from Overture's real geometry
+    # (freeways.bin.gz); the researched lines only date them. Demolished ones stay here.
+    draw_routes = [it for it, rid in zip(ritems, rids) if not (it[1] in (K_FREEWAY, K_HIGHWAY) and it[4] >= 9999)
+                   and rid not in LANDMARK_ROUTES]
+    write_paths(VIEWER_DATA / "routes.bin.gz", draw_routes, ground, z_offset)
 
     # ---- region roads (outside SF)
     rr = gpd.read_parquet(RAW / "overture" / RELEASE / "roads_region.parquet")
@@ -274,6 +442,7 @@ def main():
     rr = rr[~rr.geometry.representative_point().within(sf_poly)]
     rr = rr.to_crs(UTM)
     rr = rr[rr.geometry.geom_type == "LineString"]
+    rr = rr[~rr["class"].isin(["motorway", "trunk"])]  # drawn in 3D from freeways.bin.gz
     fw = [it for it in ritems if it[1] in (K_FREEWAY, K_HIGHWAY)]
     fw_tree = None
     if fw:
@@ -308,6 +477,7 @@ def main():
             y = float(fby[i]) if np.isfinite(fby[i]) and klass == "tertiary" else 1880.0
         items.append((g, k, WIDTH[k], y, 9999.0, 0))
     write_paths(VIEWER_DATA / "roads-region.bin.gz", items, ground, z_offset, step=60.0)
+    write_paths3d(VIEWER_DATA / "freeways.bin.gz", freeway_items(ground, fw_tree))
 
 
 if __name__ == "__main__":

@@ -76,6 +76,34 @@ def base_theme():
         log(f"overture base {typ}: {n} polygons -> {out}")
 
 
+REGION_BBOX = (-123.2, 36.85, -121.2, 38.9)
+
+
+def freeways():
+    """Motorways, trunks and their ramps for the whole region, with the attributes that
+    place them in 3D: subclass (link = ramp), road_flags (is_bridge / is_tunnel over a
+    fraction of the segment), level_rules (stacking level) and connectors (graph)."""
+    out = RAW / "overture" / RELEASE / "freeways.parquet"
+    if out.exists():
+        log("overture freeways: cached")
+        return
+    con = duckdb.connect()
+    con.execute("INSTALL httpfs; LOAD httpfs; INSTALL spatial; LOAD spatial;")
+    con.execute("CREATE OR REPLACE SECRET overture (TYPE s3, PROVIDER config, KEY_ID '', SECRET '', REGION 'us-west-2');")
+    xmin, ymin, xmax, ymax = REGION_BBOX
+    src = f"s3://overturemaps-us-west-2/release/{RELEASE}/theme=transportation/type=segment/*"
+    con.execute(f"""
+    COPY (
+      SELECT id, class, subclass, names.primary AS name, road_flags, level_rules, connectors, geometry
+      FROM read_parquet('{src}', hive_partitioning=1)
+      WHERE bbox.xmin < {xmax} AND bbox.xmax > {xmin} AND bbox.ymin < {ymax} AND bbox.ymax > {ymin}
+        AND subtype = 'road' AND class IN ('motorway', 'trunk')
+    ) TO '{out}' (FORMAT parquet);""")
+    n = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
+    log(f"overture freeways: {n} segments -> {out}")
+
+
 if __name__ == "__main__":
     main()
     base_theme()
+    freeways()
