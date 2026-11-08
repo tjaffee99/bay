@@ -1,0 +1,215 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "20 SantaClara-Post/1st-Lightston",
+   "corners": [
+    {
+     "pc": [
+      "1st Street",
+      "Santa Clara Street"
+     ],
+     "q": "SW",
+     "x": 190.0,
+     "y": 280.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "Post Street"
+     ],
+     "q": "NW",
+     "x": 636.0,
+     "y": 280.0
+    },
+    {
+     "pc": [
+      "Lightson Street",
+      "Santa Clara Street"
+     ],
+     "q": "SE",
+     "x": 190.0,
+     "y": 712.0
+    },
+    {
+     "pc": [
+      "Lightson Street",
+      "Post Street"
+     ],
+     "q": "NE",
+     "x": 636.0,
+     "y": 712.0
+    }
+   ]
+  },
+  {
+   "name": "21 SantaClara-Post/Lightston-Market",
+   "corners": [
+    {
+     "pc": [
+      "Lightson Street",
+      "Santa Clara Street"
+     ],
+     "q": "SW",
+     "x": 190.0,
+     "y": 754.0
+    },
+    {
+     "pc": [
+      "Lightson Street",
+      "Post Street"
+     ],
+     "q": "NW",
+     "x": 636.0,
+     "y": 754.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Santa Clara Street"
+     ],
+     "q": "SE",
+     "x": 190.0,
+     "y": 914.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Post Street"
+     ],
+     "q": "NE",
+     "x": 636.0,
+     "y": 914.0
+    }
+   ]
+  },
+  {
+   "name": "22 Post-SanFernando/1st-Market",
+   "corners": [
+    {
+     "pc": [
+      "1st Street",
+      "Post Street"
+     ],
+     "q": "SW",
+     "x": 966.0,
+     "y": 280.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "San Fernando Street"
+     ],
+     "q": "NW",
+     "x": 1496.0,
+     "y": 280.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Post Street"
+     ],
+     "q": "SE",
+     "x": 966.0,
+     "y": 914.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "San Fernando Street"
+     ],
+     "q": "NE",
+     "x": 1496.0,
+     "y": 914.0
+    }
+   ]
+  },
+  {
+   "name": "23 SantaClara-Post/Market-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Market Street",
+      "Santa Clara Street"
+     ],
+     "q": "SW",
+     "x": 190.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Post Street"
+     ],
+     "q": "NW",
+     "x": 636.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Santa Clara Street"
+     ],
+     "q": "SE",
+     "x": 190.0,
+     "y": 1690.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Post Street"
+     ],
+     "q": "NE",
+     "x": 636.0,
+     "y": 1690.0
+    }
+   ]
+  },
+  {
+   "name": "24 Post-SanFernando/Market-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Market Street",
+      "Post Street"
+     ],
+     "q": "SW",
+     "x": 966.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "San Fernando Street"
+     ],
+     "q": "NW",
+     "x": 1496.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Post Street"
+     ],
+     "q": "SE",
+     "x": 966.0,
+     "y": 1690.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "San Fernando Street"
+     ],
+     "q": "NE",
+     "x": 1496.0,
+     "y": 1690.0
+    }
+   ]
+  }
+ ],
+ "pct": 25
+}
