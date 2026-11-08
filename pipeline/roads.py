@@ -898,6 +898,15 @@ def main():
             if not np.isfinite(y):
                 continue  # researched: not a road
         items.append((g, k, WIDTH[k], y, 9999.0, 0))
+    # the old streets of cleared corridors (region_predecessors.clearance_fill): I-980,
+    # Cypress, SR-87, I-280, Acorn… stood until the clearance
+    cpath = INTERIM / "clearance_streets.parquet"
+    if cpath.exists():
+        cst = gpd.read_parquet(cpath).to_crs(UTM)
+        for g, y0, y1 in zip(cst.geometry, cst.start_year, cst.end_year):
+            if g is not None and g.geom_type == "LineString":
+                items.append((g, K_STREET, WIDTH[K_STREET], float(y0), float(y1), 0))
+        log(f"region roads: + {len(cst)} old streets of cleared corridors")
     write_paths(VIEWER_DATA / "roads-region.bin.gz", items, ground, z_offset, step=60.0)
     # researched freeway lines with their direction, to date Overture's real geometry
     fw_routes = None

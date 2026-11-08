@@ -138,7 +138,7 @@ def clearance_fill(areas, today_utm, pred_utm):
     ty = today_utm.start_year.values.astype(float)
     tc = np.column_stack([today_utm.geometry.representative_point().x.values, today_utm.geometry.representative_point().y.values])
     ttree = cKDTree(tc)
-    rows = []
+    rows, streets = [], []
     for poly, cs, ce, fab, aid in region_areas:
         # dominant street direction around the area (bearings mod 90 deg, length-weighted)
         near = roads[roads.intersects(poly.buffer(400))]
@@ -162,23 +162,40 @@ def clearance_fill(areas, today_utm, pred_utm):
         x0, y0, x1, y1 = poly.bounds
         R = np.hypot(x1 - x0, y1 - y0) / 2 + 100
         cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        def to_xy(u, v):
+            return cx + u * cu - v * su, cy + u * su + v * cu
+        # the old street grid of the corridor: streets along the blocks (v = vb) and cross
+        # streets every 140 m, from the neighbourhood's development until the clearance
+        for vb in np.arange(-R, R, 80.0):
+            line = shapely.LineString([to_xy(-R, vb), to_xy(R, vb)]).intersection(poly)
+            for seg in getattr(line, "geoms", [line]):
+                if seg.length > 30:
+                    streets.append({"geometry": seg, "start_year": dev - 1.0, "end_year": cs + 0.2, "area": aid})
+        for ub in np.arange(-R, R, 140.0):
+            line = shapely.LineString([to_xy(ub - 6.0, -R), to_xy(ub - 6.0, R)]).intersection(poly)
+            for seg in getattr(line, "geoms", [line]):
+                if seg.length > 30:
+                    streets.append({"geometry": seg, "start_year": dev - 1.0, "end_year": cs + 0.2, "area": aid})
         for vb in np.arange(-R, R, 80.0):                 # block bands across (v)
             for front, sgn in ((vb + 10.0, 1), (vb + 70.0, -1)):
                 for ub in np.arange(-R, R, 140.0):        # blocks along (u), 20 m cross streets
-                    for k in range(15):
-                        u = ub + 4.0 + 8.0 * k
-                        v = front + sgn * 7.0
-                        px, py = cx + u * cu - v * su, cy + u * su + v * cu
+                    for k in range(12):                   # 10 m lots, houses ~6.5 m wide with side yards
+                        key = f"cf_{aid}_{int(vb)}_{int(front)}_{int(ub)}_{k}"
+                        depth = 11.0 + 5.0 * h01(key, "d")
+                        width = 6.0 + 1.6 * h01(key, "w")
+                        setback = 2.5 + 3.0 * h01(key, "b")
+                        u = ub + 9.0 + 10.0 * k
+                        v = front + sgn * (setback + depth / 2)
+                        px, py = to_xy(u, v)
                         pt = shapely.Point(px, py)
                         if not poly.contains(pt):
                             continue
-                        rect = shapely.affinity.rotate(shapely.box(px - 3.5, py - 7.0, px + 3.5, py + 7.0),
-                                                       np.degrees(theta) - 90.0, origin=(px, py))
+                        rect = shapely.affinity.rotate(shapely.box(px - width / 2, py - depth / 2, px + width / 2, py + depth / 2),
+                                                       np.degrees(theta), origin=(px, py))
                         if len(tsidx.query(rect.buffer(4.0), predicate="intersects")):
                             continue
                         if psidx is not None and len(psidx.query(rect.buffer(3.0), predicate="intersects")):
                             continue
-                        key = f"cf_{aid}_{int(px)}_{int(py)}"
                         h = h01(key)
                         start = dev + 10.0 * h
                         end = cs + (ce - cs) * h01(key, "c")
@@ -191,6 +208,9 @@ def clearance_fill(areas, today_utm, pred_utm):
                                      "year_reason": f"cleared_{aid}"})
     out = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else gpd.GeoDataFrame(geometry=[], crs=UTM)
     log(f"region predecessors: {len(out)} houses stood where clearances left no parcels")
+    if streets:
+        gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM).to_parquet(INTERIM / "clearance_streets.parquet")
+        log(f"region predecessors: {len(streets)} old streets of cleared corridors")
     return out
 
 
