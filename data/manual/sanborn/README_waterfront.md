@@ -192,7 +192,7 @@ Merrimac and Alameda St) plus the scale prior: `low`.
 
 ## Not done / next steps
 
-* **Mission Bay south of the channel between 4th and 7th St** (1913 vol. 2 sheets 215, 216, 219) and the Santa Fe /
+* (DONE, see *Extension 2026-11* at the end; the Counts table above is superseded for Mission Bay there.) **Mission Bay south of the channel between 4th and 7th St** (1913 vol. 2 sheets 215, 216, 219) and the Santa Fe /
   China Basin terminal east of 3rd (221, 222, 223): too few surviving streets for control (only the channel, the
   diagonal 4th St extension and Kentucky St). They can be done with street-line constraints (4th St between Berry
   and Channel St continues the 1913 line) and ties to sheets 217/220, or from the 1938 Harrison Ryker aerial mosaic.
@@ -232,3 +232,143 @@ centre between the two kerb lines (`refine_crossing`, optional `wv`/`wh` street 
 streets) and block corners to the nearest block lines (`refine_corner`). Check the residuals it logs: a 15 m sheet
 residual with sub-metre block residuals means the sheet draws its streets wider than scale (use `blocks` +
 `zones_only`).
+
+## Extension 2026-11: Mission Bay south of the channel, Potrero Point, rail-yard tracks
+
+New area `potrero_point` (Potrero Point, Central Basin, Dogpatch), the rest of `mission_bay`, and railway track
+centrelines for both. Same tool, same schema; everything traced before is kept (exceptions below).
+
+### Files
+
+| file | features | confidence high / medium / low | storeys read | named | area (1000 m²) | modern_overlap ≥ 0.5 | materials |
+|---|---|---|---|---|---|---|---|
+| mission_bay_1913 (1913 vol. 2 + 1914 vol. 6) | 363 | 314/24/25 | 38 | 50 | 158.4 | 129 | frame 327, brick 21, iron 10, stone 5 |
+| mission_bay_1950 | 427 | 330/64/33 | 28 | 33 | 133.3 | 144 | frame 354, concrete 40, brick 18, iron 15 |
+| potrero_point_1914 (1914 vol. 6) | 635 | 351/284/0 | 1 | 49 | 204.2 | 333 | frame 533, iron 50, brick 44, stone 8 |
+| potrero_point_1950 (1914-Dec 1950 vol. 6) | 660 | 359/301/0 | 1 | 32 | 160.8 | 373 | frame 526, brick 68, concrete 49, iron 17 |
+
+| track file | lines | km | km by confidence high / medium / low | km yard / spur / main | km by railroad (map label) |
+|---|---|---|---|---|---|
+| mission_bay_1913_tracks | 1256 | 57.9 | 42.4 / 10.5 / 5.0 | 43.7 / 14.1 / 0 | SP 24.1, AT&SF 3.3, not labelled 30.4 |
+| mission_bay_1950_tracks | 1468 | 62.4 | 48.0 / 10.6 / 3.8 | 47.8 / 14.7 / 0 | SP 21.8, AT&SF 3.4, not labelled 37.3 |
+| potrero_point_1914_tracks | 378 | 13.3 | 8.6 / 2.7 / 1.9 | 4.2 / 9.1 / 0 | not labelled 13.3 |
+| potrero_point_1950_tracks | 404 | 12.7 | 8.1 / 2.7 / 1.9 | 4.1 / 8.5 / 0 | not labelled 12.7 |
+
+`<area>_coverage.geojson` has one polygon per map year (mission_bay 1913 / 1950: 21 sheet parts each; potrero_point
+1914 / 1950: 16). For these two areas the coverage of a block-wise sheet is the hull of its blocks **including the
+streets between them** (also empty of buildings on the map; the tracks laid in those streets are traced). Inside the
+coverage an empty area is empty on that map, for buildings and for tracks.
+
+Track properties: `id`, `map_year`, `volume`, `volume_label`, `sheet`, `sheet_no`, `loc_url`, `iiif`, `railroad`
+(only where the sheet names it: "Southern Pacific R.R. Freight Tracks / Freight Yard / Car Repairing Tracks" on
+sheets 216, 217, 219, 220, the SP roundhouse sheet 560, "Atchison, Topeka & Santa Fe Railway Yards" on 221 / 222;
+`null` elsewhere), `railroad_source`, `kind` (`yard` = at least two parallel tracks 3-15 m to either side along most
+of the line, else `spur`; `main` only from a hand polygon `main_px` in `control/<key>.tracks.json`, none drawn yet),
+`kind_source`, `confidence` (the sheet / block fit, one level lower on a block-wise sheet when > 40 % of the line runs
+in the streets between the fitted blocks), `georef` (`sheet` or `blocks (rubber sheet)`), `georef_rms_m`, `length_m`.
+
+### Sheets (Library of Congress, public domain)
+
+| edition | LOC item | sheets added |
+|---|---|---|
+| 1913 vol. 2 | https://www.loc.gov/item/sanborn00813_016/ | 215, 216, 217 (rotated part, key `016_0217r`), 219, 221, 222, 223 |
+| 1914 vol. 6 | https://www.loc.gov/item/sanborn00813_020/ | 545 (upper `020_0545`, lower `020_0545b`), 546 upper (`020_0546u`), 547, 559 (mission_bay); 560 lower (`020_0560b`), 561 lower (`020_0561b`), 562, 574, 575, 589, 590, 591, 592, 593, 594, 607, 608, 609, 610, 626 (potrero_point) |
+| 1913-Sep 1950 vol. 2 | https://www.loc.gov/item/sanborn00813_031/ | same sheets as 1913 vol. 2 |
+| 1914-Dec 1950 vol. 6 | https://www.loc.gov/item/sanborn00813_035/ | same sheets as 1914 vol. 6 |
+
+A key with a letter after the sheet number (`020_0545b`) is another part of the same scan with its own fit
+(`valid_px` / `valid_poly_px` say which part). 1899: Potrero Point was not looked for in the 1899-1900 volumes
+(items 009-013) - open.
+
+### Georeferencing (new control types in `pipeline/sanborn_trace_waterfront.py`)
+
+* **Retired DataSF centrelines** (`active = false`) are used: the 1860s Mission Bay grid survives only there (old
+  diagonal 4th St cnn 272000-274000, 6th St 345000-348000, Illinois / Merrimac / Alameda / El Dorado east of 3rd St).
+  `cnn` in a line constraint restricts the fit to given segments (old diagonal 4th St, not today's 4th St beside it).
+* **Line crossings** (`la` / `lb`): crossing of two fitted centrelines, each extended across vanished blocks
+  (Hooper / Irwin / Hubbell St survive only south-west of 7th St; their 1913 crossings with 6th St are their lines
+  extended), with an optional kerb offset (`off: [[ft, side], [ft, side]]`) for block corners on the straight grid.
+* **Kerb lines**: `off: [ft, side]` on a street-line constraint (points on a drawn kerb, not the centre).
+* **Sheet ties** (`tie`): a drawn feature shared with an already fitted neighbour sheet (hydrant corner, pier-head
+  corner, building corner, match-line); SIFT matches between neighbouring sheets were used only after checking them
+  by eye (identical lettering, compass roses, scale bars and the scan rulers match falsely and were rejected).
+  The neighbour's RMS is added to the sheet's (`tie_rms`).
+* **Finding: sheet 217 is drawn in two orientations.** North-west of the heavy line (Kentucky St east kerb) the sheet
+  is rotated 45 deg with its own compass rose. The earlier pass fitted the whole sheet north-up, so the Mission Bay
+  warehouses No. 1 / No. 2 and three small features (`016_0217_f68/f79/f87/f153/f164` and `031_0217_*` north-west of
+  the line) were misplaced; they now come from `016_0217r` / `031_0217r` (`016_0217r_f68`, `_f153`; attributes copied).
+* **Finding: the street on the left of sheets 215 / 219 is 6th St** (labelled), not 7th St.
+* Iron (grey) fills of the 1914 vol. 6 sheets: paper hue and saturation, 14+ darker than the paper
+  (`iron_rule: dark_grey`); paler blue on 1950 paste-over slips: `stone_low_sat`. Both opt-in per control file.
+* Missed rectangles (grey U.S. Steel Products warehouses with truss lines drawn inside, 1914 sheet 594; the 1950
+  shipyard buildings on paste-over slips, sheet 592): `trace: rect` in `<key>.wharves.json`, a hand rectangle whose
+  corners are snapped to the drawn outline; confidence at most `medium`.
+
+| key | method | control | RMS / max (m) | scale, rotation |
+|---|---|---|---|---|
+| 016_0215 | sheet | 6th St x Hooper / Irwin / Hubbell (extended), 6th St NE kerb | 0.21 / 0.33 | 0.2032, 45.07 |
+| 016_0216 | sheet, **capped medium** | old 4th St centreline, Kentucky St kerbs (scale from the prior) | 0.23 / 0.47 | 0.2025, 45.27 |
+| 016_0217r | sheet | 4th St NE kerb, Kentucky St E kerb, tie 216 | 0.33 / 0.60 (+0.23 tie) | 0.2025, 45.09 |
+| 016_0219 | sheet | 6th St kerbs, 2 ties 215 (a 3rd at 7.7 m dropped) | 0.20 / 0.38 (+0.21) | 0.2031, 44.85 |
+| 016_0221 | sheet | Kentucky St centreline, 3 ties 217 | 0.41 / 0.51 (+0.30) | 0.2024, 4.94 |
+| 016_0222 | sheet, **capped medium** | 2 hydrant-corner ties 223, Merrimac kerbs, 4th St label | 1.30 / 2.94 (+0.23) | 0.2037, 19.54 |
+| 016_0223 | sheet | Merrimac / Alameda x Illinois, Illinois, El Dorado N kerb | 0.23 / 0.43 | 0.2019, -85.17 |
+| 020_0545 | 2 blocks | corners on the straight 16th / 17th / Texas / Mississippi / Pennsylvania lines | 0.48, 0.67 / 0.86 | |
+| 020_0545b | sheet | 4 Pennsylvania Ave corners | 0.22 / 0.31 | 0.2060, 4.47 |
+| 020_0546u | sheet | 3 ties 560 (17th St), 16th St S kerb | 1.03 / 1.32 | 0.2058, 4.67 |
+| 020_0547 | sheet | Illinois x 16th, Illinois x 17th (grid), 16th St | 0.14 / 0.22 | 0.2048, 4.54 |
+| 020_0559 | 6 blocks | straight-grid corners | 0.19-0.67 / 0.78 | |
+| 020_0560b, 020_0561b | 3 + 2 blocks | corners | 0.09-0.80 / 1.16 | |
+| 020_0562 | sheet | Illinois x Mariposa / 18th, 3 ties 591 | 0.69 / 1.20 (+0.45) | 0.2051, 3.89 |
+| 020_0574, 020_0575 | 6 + 6 blocks | corners (streets drawn wide) | 0.59-2.80 / 3.38 | |
+| 020_0589, 020_0590 | 3 + 4 blocks | corners | 0.60-2.13 / 3.12 | |
+| 020_0591 | sheet | Illinois x 18th / 19th / 20th, Michigan x 20th | 0.45 / 0.72 | 0.2062, 4.38 |
+| 020_0592 | sheet | 4 SIFT ties 591 / 594 (checked) | 0.97 / 1.44 (+0.45) | 0.2047, 4.09 |
+| 020_0593 | sheet | Michigan x 20th / 22nd, 22nd St | 0.14 / 0.19 | 0.1988, 4.65 |
+| 020_0594 | sheet | tie 593 (Louisiana x 22nd), 20th / 22nd St | 0.07 / 0.10 (+0.14) | 0.2048, 4.58 |
+| 020_0607 | sheet | 12 block corners (3 blocks, to scale) | 1.16 / 2.22 | 0.2044, 4.14 |
+| 020_0608 | 3 blocks | corners (Michigan x 23rd extended) | 1.37-2.57 / 2.69 | |
+| 020_0609 | sheet | Michigan x 22nd, tie 593, 23rd St, Michigan St | 1.67 / 2.78 (+0.14) | 0.2039, 4.83 |
+| 020_0610 | sheet | 3 SIFT ties 609 | 0.30 / 0.36 (+1.67) | 0.2020, 4.58 |
+| 020_0626 | sheet | 16 block corners (4 blocks, to scale) | 1.41 / 1.69 | 0.2052, 4.53 |
+
+The 1950 scans are registered onto these (SIFT + RANSAC, 418-3,321 inliers, 1.1-2.0 px). Note: on sheets 593 / 594 the drawn
+20th St kerb does not follow DataSF's 20th St east of Illinois (which bends ~3 deg), so 20th St was not used on 593
+and the Louisiana x 22nd corner of 593 is carried to 594 / 609 as a tie rather than taken from DataSF.
+
+### Tracks (`tracks()`, `assemble_tracks()`)
+
+A track is drawn as two rails 6-8 px apart on the 25 % scans (1.2-1.6 m; standard gauge 1.435 m). Dark pixels on
+straight 15-px line segments (24 orientations; drops lettering and the dashed pipe / fence lines) are paired across the
+gap, the paper pixels between the rails are skeletonised and vectorised; pieces inside building fills, in the scan
+margins, shorter than 8 m, in small isolated groups, or the "Scale of Feet" bar are dropped. Block-wise sheets use a
+rubber sheet (each block's fit inside the block, inverse-distance blend in the streets) so a track crossing a
+too-wide street stays continuous. Overlaps between sheets are kept once (best fit first, the rest clipped to what the
+better sheets do not cover). `control/<key>.tracks.json`: `railroad`, `railroads` (polygons), `main_px`, `exclude_px`.
+Checked on overlays of sheets 591, 216, 217, 219-222: the yard fans, the Illinois St lead, the Union Iron Works loop,
+the Santa Fe yard and the roundhouse turntable are found. Known false or doubtful lines: double lines along the edges
+of shipbuilding slips and wharf bulkheads (crane rails or ways, not railway tracks), occasional pairs of parallel
+building outlines 1.2-1.6 m apart; tracks inside train sheds and iron-clad buildings are missed.
+
+### Rows added to `data/tables/notable_demolished.csv`
+
+`tubbs_cordage_mill`, `tubbs_cordage_rope_walk` (traced ids `020_0607_b3/b4/b5/b9/f56`, 1950 `035_0607_*`; start and
+end ESTIMATE: works 1856/57, closed 1961-63, demolished in the 1970s, last buildings 1978). Most of the Union Iron Works
+/ Bethlehem buildings traced here still stand at Pier 70 (`modern_overlap`), so no rows.
+
+### Open items
+
+* **1950 shipyard (sheet 592)**: a paste-over slip says the Bethlehem Ship Building Corp. / Union Iron Works plant was
+  "not surveyed since 1919 on account of government work": the 1950 sheet shows c. 1919, not 1950. Its slip
+  buildings are only partly traced (3 hand rectangles).
+* 1950 paste-over slips in general: grey / pale buildings on slips are often missed (1950 building area is 16 % (Mission Bay) and
+  21 % (Potrero Point) lower than 1914, partly real demolition, partly this).
+* `main` track kind: not drawn (SP Bayshore Cutoff main line through 545 / 559 / 574 not identified by label);
+  railroad names only where the sheet labels the yard. Potrero Point spurs: no railroad label read.
+* Sheet 220 (earlier pass) still has only two block corners (`low`); 222 / 216 are capped at `medium`.
+* Storeys were read only for a few buildings; most of the 1914 vol. 6 features use the size / material rule.
+* Not traced: 1914 vol. 6 sheets 576, 588, 606, 625 (south and west edges), the 1899-1900 editions of the area, 1950
+  sheets beyond these.
+* Probable ruler artefacts on the old sheets 152-176 / 220 (thin fills in the scan margin) are now dropped by a margin
+  filter in the two rail-yard areas (`mission_bay`, `potrero_point`); the Fisherman's Wharf files are unchanged.
+

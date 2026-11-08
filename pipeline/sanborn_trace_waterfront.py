@@ -847,6 +847,9 @@ def assemble():
                     rect = rect.intersection(Polygon(G["valid_poly_px"]))
                 cover.append(Polygon(apply(np.array(G["M"]), np.asarray(rect.exterior.coords))))
             for r in rows:
+                cx_, cy_ = r["px_centroid"]
+                if area in COVER_STREETS and not (30 <= cx_ <= W_ - 30 and 30 <= cy_ <= H_ - 30):
+                    continue  # in the scan margin (ruler, binding): outside the sheet's coverage
                 g = make_valid(Polygon(r["ring_utm"], r.get("holes_utm") or []))
                 if g.geom_type != "Polygon":
                     polys = [p for p in getattr(g, "geoms", []) if p.geom_type == "Polygon"]
