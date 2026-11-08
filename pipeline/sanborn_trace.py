@@ -264,13 +264,17 @@ def split_groups(vals, n):
     return np.searchsorted(sorted(v[g] + (v[g + 1] - v[g]) / 2 for g in gaps), vals)
 
 
-def assign_quads(comps, spec):
+def assign_quads(comps, spec, F=None):
     """(r0, r1, c0, c1) per component: rows/cols it spans (a block drawn across a street that was never cut through
     spans two). Cuts between rows/cols = the largest gaps between centroids of normal-sized components."""
     nr, nc = len(spec['rows']) - 1, len(spec['cols']) - 1
     pc = spec.get('present_cols', list(range(nc))); pr = list(range(nr))
     W_ = np.array([c['bbox'][2] for c in comps], float); H_ = np.array([c['bbox'][3] for c in comps], float)
-    big_h = H_ > 1.6 * np.median(H_); big_w = W_ > 1.6 * np.median(W_)
+    # expected size (px at ~0.1003 m/px) of a block between two consecutive row / column streets
+    blk = lambda a, b: (abs(F.d['centre'][a] - F.d['centre'][b]) - 21.0) / 0.1003
+    exp_h = min(blk(spec['rows'][i], spec['rows'][i + 1]) for i in range(nr))
+    exp_w = min(blk(spec['cols'][i], spec['cols'][i + 1]) for i in range(nc))
+    big_h = H_ > 1.5 * exp_h; big_w = W_ > 1.5 * exp_w
 
     def cuts(vals, n):
         v = np.sort(vals)
@@ -288,7 +292,7 @@ def assign_quads(comps, spec):
 
 def fit_sheet(F, comps, blab, spec, kind='similarity', ext_tol=25, min_frac=0.2):
     P = ORIENT[spec['orient']]
-    assign_quads(comps, spec)
+    assign_quads(comps, spec, F)
     quads = [c['quad'] for c in comps]
     for c in comps:
         c['sides'] = s = side_lines(blab == c['id'], c['bbox'])
