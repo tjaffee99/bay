@@ -15,6 +15,7 @@
  */
 import {MeshBuilder, circle, ellipse, lngLatToLocal, localToLngLat, rect, roundedRect, type V2, type V3} from './kit';
 import type {Landmark} from './types';
+import {elevationAt} from '../layers/elevation';
 
 const WIKI = 'https://en.wikipedia.org/wiki/';
 const OSM = 'https://www.openstreetmap.org/';
@@ -86,9 +87,14 @@ function grow(ring: V2[], d: number): V2[] {
   });
 }
 
-/** Local metres (in the frame of `anchor`) of another lon/lat point. */
-function at(anchor: V2, p: V2): V2 {
-  return lngLatToLocal(anchor, p);
+/**
+ * Ground height at a point of a landmark's local frame (bearing `brg`) relative to the
+ * anchor's ground — for long buildings over uneven ground (as in batch4.ts).
+ */
+function groundDz(anchor: V2, brg: number, u: number, v: number) {
+  const a = (brg * Math.PI) / 180;
+  const p = localToLngLat(anchor, [u * Math.cos(a) + v * Math.sin(a), -u * Math.sin(a) + v * Math.cos(a)]);
+  return elevationAt(p[0], p[1]) - elevationAt(anchor[0], anchor[1]);
 }
 
 /** Polygon in a rotated frame → anchor-local metres (for `replaces`). */
@@ -1243,6 +1249,584 @@ const hangarOne2025 = landmark(
   [rotPoly(rect(0, 0, 95, 349), 157.8)]
 );
 
+// ---- Lick Observatory, Mount Hamilton (frame 14.5°, anchor = OSM "Main Building")
+const LICK: V2 = [-121.642845, 37.341418];
+const lickObservatory = landmark(
+  'lick_observatory',
+  'Lick Observatory',
+  'building',
+  [1880.0, 1888.0],
+  9999,
+  LICK,
+  b => {
+    // the summit was levelled for the observatory; the terrain grid rounds it off, so the
+    // buildings stand on a pad at the highest ground under them
+    let lo = 0;
+    let hi = 0;
+    for (const [u, v] of [[-16, -50], [6, -50], [-14, 0], [1, 0], [-17, 37], [34, 34], [34, 22]] as V2[]) {
+      const dz = groundDz(LICK, 14.5, u, v);
+      lo = Math.min(lo, dz);
+      hi = Math.max(hi, dz);
+    }
+    b.color('#B9AD94').frame(0, 0, 0, 14.5, () => b.prism(rect(8.5, -7.5, 56, 90), lo - 1, hi));
+    b.frame(0, 0, hi, 14.5, () => {
+      const WALL = '#E8E3D6';
+      const DOME = '#E3E7E9';
+      // long hall joining the two domes, with the central entrance block (OSM outline)
+      b.color(WALL);
+      boxR(b, [-11.4, 0.8, -29, 27.6], 0, 7.9);
+      boxR(b, [-14, 3.5, -3.7, 4.9], 0, 9.5);
+      b.color('#B7AFA2').gable(-5.3, -0.7, 12.4, 56.6, 7.9, 2.2, true);
+      // north wing (brick, red roof) and the 12-inch refractor dome (r ≈ 5 m)
+      b.color('#D9CFC0');
+      boxR(b, [0.9, 34.4, 22.3, 34.6], 0, 6.5);
+      b.color('#9E4C38').gable(17.6, 28.4, 34, 12.8, 6.5, 2.4, false);
+      b.color(WALL).cylinder(-12.7, 32.5, 4.8, 0, 9, 16);
+      b.color(DOME).dome(-12.7, 32.5, 5.0, 9, 5, 16, 4);
+      // great dome of the 36-inch refractor: 75 ft (22.9 m) across
+      b.color(WALL).cylinder(-5.2, -39, 11.3, 0, 12, 24);
+      b.color(DOME).dome(-5.2, -39, 11.5, 12, 11.2, 24, 6);
+      b.color('#9DA4A8').box(-5.2, -39, 18, 2.6, 22.6, 5.6);
+    });
+  },
+  {
+    Built: '1876–1887 with the $700,000 bequest of James Lick (buried under the great telescope in 1887); 36-inch refractor first light Jan 3, 1888; given to the University of California in May 1888',
+    Site: 'summit of Mount Hamilton, 4,209 ft (1,283 m)',
+    Domes: 'great dome 75 ft (22.9 m) across for the 36-inch refractor (then the largest in the world); 12-inch refractor dome at the north end',
+    Model:
+      'outline and dome positions from OpenStreetMap (© OSM contributors, ODbL) and the orthophoto; wall and drum heights estimated from photographs'
+  },
+  [WIKI + 'Lick_Observatory'],
+  [rotPoly(rect(8.5, -7.5, 55, 88), 14.5)]
+);
+
+const SHANE: V2 = [-121.637167, 37.342971];
+const shaneDome = landmark(
+  'lick_shane_dome',
+  'Lick Observatory — Shane 120-inch telescope dome',
+  'building',
+  [1950.5, 1959.3],
+  9999,
+  SHANE,
+  b => {
+    b.frame(0, 0, 0, 24.1, () => {
+      b.color('#E6E8E8').cylinder(-1.3, 3, 15.2, 0, 17, 24);
+      b.color('#E1E5E7').dome(-1.3, 3, 15.4, 17, 15.2, 24, 6);
+      b.color('#9DA4A8').box(-1.3, 3, 24, 4, 30.6, 8.2);
+      b.color('#DCD8CF').prism([[3.4, -22], [7.2, -20.2], [9.6, -25.5], [14.1, -23.5], [11.6, -18.2], [12.9, -17.6], [8.9, -8.5], [-0.7, -12.3]], 0, 7);
+    });
+  },
+  {
+    Built: 'funded by the California legislature in 1950; the 120-inch (3 m) C. Donald Shane reflector was completed in 1959 — then the second-largest telescope in the world',
+    Model: 'outline and height (32.2 m) from OpenStreetMap (© OSM contributors, ODbL); drum height estimated'
+  },
+  [WIKI + 'Lick_Observatory'],
+  [rotPoly(circle(-1.3, 3, 17, 12), 24.1)]
+);
+
+// =================================================================== DOWNTOWN SAN JOSÉ (street grid ≈ 149°/59°)
+
+// ---- Electric light tower over Market & Santa Clara Sts (1881–1915)
+const SJ_LIGHT_TOWER: V2 = [-121.892074, 37.335488];
+const sjLightTower = landmark(
+  'san_jose_electric_light_tower',
+  'San Jose Electric Light Tower',
+  'tower',
+  [1881.61, 1881.95],
+  1915.92,
+  SJ_LIGHT_TOWER,
+  b => {
+    b.frame(0, 0, 0, 149, () => {
+      const IRON = '#5F6164';
+      const H = 207 * FT;
+      // four legs of iron pipe from a 75 ft square base, braced by hoops (flared like a tapering truss)
+      const half = (z: number) => 11.43 * Math.pow(1 - z / (H + 6), 1.6) + 0.9;
+      const levels = [0, 6, 13, 21, 30, 40, 51, H];
+      b.color(IRON);
+      for (const [sx, sy] of [[1, 1], [1, -1], [-1, -1], [-1, 1]] as V2[]) {
+        for (let i = 0; i < levels.length - 1; i++) {
+          const z0 = levels[i];
+          const z1 = levels[i + 1];
+          b.beam([sx * half(z0), sy * half(z0), z0], [sx * half(z1), sy * half(z1), z1], 0.45);
+        }
+      }
+      for (const z of levels.slice(1)) {
+        const h = half(z);
+        const ring: V3[] = [[h, h, z], [h, -h, z], [-h, -h, z], [-h, h, z], [h, h, z]];
+        b.polyline(ring, 0.25);
+      }
+      // diagonal stays in the lower stages
+      for (let i = 0; i < 4; i++) {
+        const z0 = levels[i];
+        const z1 = levels[i + 1];
+        const a = half(z0);
+        const c = half(z1);
+        b.beam([a, a, z0], [-c, c, z1], 0.18).beam([a, -a, z0], [c, c, z1], 0.18).beam([-a, -a, z0], [c, -c, z1], 0.18).beam([-a, a, z0], [-c, -c, z1], 0.18);
+      }
+      // lamp platform with six arc lamps, and the 30 ft flagpole
+      b.box(0, 0, H, 4.2, 4.2, 0.4);
+      b.color('#E9E1C2');
+      for (let k = 0; k < 6; k++) {
+        const a = (k * Math.PI) / 3;
+        b.box(Math.cos(a) * 1.8, Math.sin(a) * 1.8, H + 0.4, 0.5, 0.5, 0.9);
+      }
+      b.color(IRON).beam([0, 0, H], [0, 0, H + 30 * FT], 0.2);
+    });
+  },
+  {
+    Built: 'groundbreaking Aug 11, 1881; dedicated Dec 13, 1881 — J. J. Owen\'s tower to light downtown San José',
+    Height: '207 ft (63 m) to the lamp platform, 237 ft (72 m) with the flagpole; base 75 ft (23 m) square over the intersection',
+    Fate: 'brought down by 56 mph winds on Dec 3, 1915 (a half-size replica stands in History Park)',
+    Model: 'hollow-iron-pipe legs and hoops after photographs; bracing stage heights estimated; aligned with the street grid'
+  },
+  [WIKI + 'San_Jose_Electric_Light_Tower']
+);
+
+// ---- Hotel De Anza (OSM 3D parts, frame 149°)
+const DE_ANZA: V2 = [-121.895071, 37.334402];
+const hotelDeAnza = landmark(
+  'hotel_de_anza',
+  'Hotel De Anza',
+  'building',
+  [1931.16, 1931.9],
+  9999,
+  DE_ANZA,
+  b => {
+    b.frame(0, 0, 0, 149, () => {
+      const WALL = '#E2BFA6';
+      b.color(WALL);
+      b.prism([[16.1, 3.5], [16.1, 18.8], [6.6, 18.9], [6.6, 8.5], [2.7, 8.5], [2.7, 3.6]], 0, 30.9);
+      b.prism([[-8.5, 3.7], [2.7, 3.6], [2.7, 8.5], [6.6, 8.5], [6.6, 18.9], [-5.6, 19.0], [-5.6, 14.3], [-8.5, 14.3]], 0, 36.3);
+      b.prism([[-8.5, 3.7], [-8.5, 14.3], [-5.6, 14.3], [-5.6, 19.0], [-15.3, 19.0], [-15.3, 3.7]], 0, 31.2);
+      b.prism([[5.2, -14.4], [18.5, -14.5], [18.5, 3.5], [-6.6, 3.7], [-6.6, -6.8], [5.2, -6.9]], 0, 9);
+      b.prism([[-6.6, -9.7], [-6.6, 3.7], [-15.3, 3.7], [-15.3, -9.6]], 0, 15.1);
+      b.prism([[-6.6, -6.8], [-6.6, -9.7], [-15.6, -9.6], [-15.6, -22.4], [5.2, -22.5], [5.2, -6.9]], 0, 8.3);
+      boxR(b, [-5.6, 6.6, 18.9, 22.2], 0, 4.5);
+      // Zig Zag Moderne crown: stepped piers and the rooftop sign
+      b.color('#C98C6E');
+      boxR(b, [-8.9, 7, 3.3, 19.3], 35.5, 37.6);
+      boxR(b, [-5, 3, 8, 15], 37.6, 39.2);
+      b.color('#2D5C7A');
+      boxR(b, [-4.5, 2.5, 18.6, 19.2], 39.2, 42.5);
+    });
+  },
+  {
+    Built: 'groundbreaking Feb 27, 1931 (W. H. Weeks, architect; Carl Swenson, contractor); restored and reopened 1990',
+    Style: 'Zig Zag Moderne (Art Deco) with Mission Revival touches: a ten-storey centre between nine-storey wings',
+    Model: 'massing from the OpenStreetMap 3D parts (© OSM contributors, ODbL; 36.3 / 30.9 / 31.2 m); crown, sign and colours estimated from photographs'
+  },
+  [WIKI + 'Hotel_De_Anza'],
+  [rotPoly(rect(-0.5, 0, 38, 45), 149)]
+);
+
+// ---- San José City Hall (2005) — Richard Meier; OSM 3D parts, frame 149.3°
+const SJ_CITY_HALL: V2 = [-121.885877, 37.337635];
+const sjCityHall = landmark(
+  'san_jose_city_hall',
+  'San José City Hall',
+  'building',
+  [2002.3, 2005.79],
+  9999,
+  SJ_CITY_HALL,
+  b => {
+    b.frame(0, 0, 0, 149.3, () => {
+      const WHITE_M = '#E6E8E7';
+      const GL = '#9DB5C0';
+      // 18-storey tower, 285 ft (87 m), 21 × 78 m
+      b.color(GL);
+      boxR(b, [-70.9, -49.5, -58, 19], 0, 76);
+      b.color(WHITE_M);
+      for (let z = 4; z < 76; z += 4.2) boxR(b, [-71.6, -48.8, -58.7, 19.7], z, z + 0.5, false);
+      boxR(b, [-71.6, -48.8, -58.7, 19.7], 75.5, 76.2);
+      boxR(b, [-67.7, -54.3, -12.3, 8.7], 76, 80.2);
+      boxR(b, [-77.4, -52.2, 17.3, 27.8], 0, 82.5, false);
+      boxR(b, [-46.8, -34.8, -52.3, -40], 0, 85.7);
+      boxR(b, [-58.9, -46.7, -56.9, -54.9], 0, 86.9);
+      // low wing west of the tower and the council wing round the plaza
+      boxR(b, [-88.9, -70.9, -40.3, 19.1], 0, 14.2);
+      b.prism([[70.9, -2.8], [78.6, -11.0], [85.6, -11.1], [85.6, -18.9], [101.8, -18.9], [101.7, 36.3], [47.9, 36.0], [47.9, 39.1], [7.0, 39.3], [7.0, 36.7], [4.0, 36.6], [4.1, 7.8], [6.9, 7.2], [6.7, 22.0], [21.4, 20.8], [36.4, 17.2], [48.7, 12.2], [61.4, 4.8]], 0, 14.4);
+      b.color(GL);
+      b.prism([[6.7, 17.3], [28.1, 14.8], [51.4, 5.9], [59.6, 0.7], [68.4, -7.1], [77.4, -17.7], [81.9, -27.0], [83.7, -26.6], [80.6, -19.5], [75.6, -12.4], [78.6, -11.0], [77.5, -9.3], [66.1, 1.2], [53.9, 9.4], [39.2, 16.2], [21.4, 20.8], [6.7, 22.0]], 0, 12.3);
+      b.color(WHITE_M);
+      boxR(b, [52.6, 85.9, 25.5, 34.4], 0, 19.3);
+      // Janet Gray Hayes Rotunda: glass, 100 ft across, 110 ft high
+      b.color(GL).cylinder(5.7, -8.6, 15.2, 0, 22, 24, {top: false});
+      b.color('#B7CAD2').dome(5.7, -8.6, 15.4, 22, 11.5, 24, 5);
+      b.color(WHITE_M).cylinder(5.7, -8.6, 15.6, 21.4, 22.2, 24, {top: false});
+    });
+  },
+  {
+    Built: 'groundbreaking 2002; staff moved in Aug 2005; opened Oct 15, 2005',
+    Architect: 'Richard Meier & Partners with Steinberg Architects',
+    Height: 'tower 18 storeys, 285 ft (87 m), 68 × 255 ft; rotunda 100 ft (30 m) across and 110 ft (34 m) high',
+    Previously: 'City Hall stood in Market Plaza 1889–1958 and on N. First St 1958–2005',
+    Model: 'tower, wings and council chamber from the OpenStreetMap 3D parts (© OSM contributors, ODbL); rotunda position from the orthophoto, dimensions from Wikipedia; facade banding estimated'
+  },
+  [WIKI + 'San_Jose_City_Hall'],
+  [rotPoly(rect(6, -10, 196, 104), 149.3)]
+);
+
+// ---- The Tech Interactive (1998) — Ricardo Legorreta: mango walls, blue IMAX dome
+const TECH: V2 = [-121.890197, 37.331447];
+const techInteractive = landmark(
+  'tech_interactive',
+  'The Tech Interactive',
+  'building',
+  [1996.6, 1998.83],
+  9999,
+  TECH,
+  b => {
+    b.frame(0, 0, 0, 147.2, () => {
+      b.color('#E3823F');
+      b.prism(
+        [[-28.2, 28.9], [-30.2, -34.7], [30.2, -37.0], [31.2, -18.3], [27.3, -18.1], [27.7, 2.6], [16.8, 3.0], [17.7, 30.4], [10.3, 30.7], [10.4, 35.1], [-21.7, 36.4], [-21.8, 34.3], [-30.0, 34.0], [-30.2, 29.0]],
+        0,
+        13.7
+      );
+      b.color('#7D4C8E');
+      b.prism([[28.3, 20.2], [23.5, 25.1], [24.1, 38.5], [18.2, 38.7], [19.0, 30.3], [17.7, 30.4], [16.8, 3.0], [27.7, 2.6]], 0, 17);
+      b.color('#E3823F');
+      boxR(b, [10.3, 19.2, 30.3, 35.1], 0, 21.8);
+      // Hackworth IMAX Dome theater
+      b.color('#2F6DB5').dome(-12.4, -17.8, 16.4, 13.7, 8.6, 24, 5);
+    });
+  },
+  {
+    Opened: 'Oct 31, 1998 as The Tech Museum of Innovation (132,000 sq ft)',
+    Architect: 'Ricardo Legorreta',
+    Model: 'outline and parts from OpenStreetMap (© OSM contributors, ODbL; walls 13.7 m, overall 22.3 m); dome rise and colours from photographs'
+  },
+  [WIKI + 'The_Tech_Interactive'],
+  [rotPoly(rect(0, 3.5, 63, 83), 147.2)]
+);
+
+// =================================================================== MARIN COUNTY
+
+// ---- Marin County Civic Center (Frank Lloyd Wright): two long wings meeting at 120° under a dome; frame 164.8°
+const MARIN_CC: V2 = [-122.530834, 37.997966];
+const MCC_BRG = 164.8;
+const MCC_WALL = '#E6CDAE'; // "Big Pink": sand / golden-tan stucco
+const MCC_ROOF = '#4E8FCB'; // bright blue roof (Olgivanna Lloyd Wright)
+
+/**
+ * One wing in the frame: centre line from (x0, y0) along `brg` (deg, frame-relative) for `len` m, `w` wide.
+ * Barrel-vaulted roof over two office ranges and the skylit mall between them; the roof stays level
+ * while the wing bridges the valley, its walls reach down to the lowest ground under it.
+ */
+function mccWing(b: MeshBuilder, x0: number, y0: number, brg: number, len: number, w: number, minEave: number) {
+  let lo = 0;
+  let hi = 0;
+  for (let t = 0; t <= len; t += len / 8) {
+    const a = (brg * Math.PI) / 180;
+    const dz = groundDz(MARIN_CC, MCC_BRG, x0 + Math.sin(a) * t, y0 + Math.cos(a) * t);
+    lo = Math.min(lo, dz);
+    hi = Math.max(hi, dz);
+  }
+  // level roof three storeys above the highest ground the wing crosses
+  const eave = Math.max(minEave, hi + 12);
+  b.frame(x0, y0, 0, brg, () => {
+    const hw = w / 2;
+    b.color(MCC_WALL);
+    boxR(b, [-hw, hw, 0, len], lo, eave, false);
+    // tiers of arches along both long fronts (wide at the bottom, smaller above)
+    b.color('#A68E74');
+    for (const [z, h] of [[eave - 13, 4], [eave - 8, 3], [eave - 4.2, 2]] as [number, number][]) {
+      if (z < lo + 1) continue;
+      for (const s of [-1, 1]) b.box(s * (hw + 0.05), len / 2, z, 0.12, len - 2, h);
+    }
+    // two blue barrel vaults and the glazed mall between them, rounded end
+    const vault = (cx: number, vw: number) => {
+      const n = 6;
+      for (let i = 0; i < n; i++) {
+        const a0 = (Math.PI * i) / n;
+        const a1 = (Math.PI * (i + 1)) / n;
+        const P = (a: number, y: number): V3 => [cx - Math.cos(a) * (vw / 2), y, eave + Math.sin(a) * 2.8];
+        b.quad(P(a0, 0), P(a1, 0), P(a1, len), P(a0, len));
+      }
+    };
+    b.color(MCC_ROOF);
+    const vw = (w - 5) / 2;
+    vault(-hw + vw / 2, vw);
+    vault(hw - vw / 2, vw);
+    b.color('#B8C9CF').box(0, len / 2, eave, 5.2, len, 1.4);
+    b.color(MCC_ROOF).cap(arcPts(0, len, hw, 270, 450, 10), eave + 0.1);
+    b.color(MCC_WALL).prism(arcPts(0, len, hw, 270, 450, 10), lo, eave, {top: false});
+  });
+}
+
+const marinAdmin = landmark(
+  'marin_civic_center_admin',
+  'Marin County Civic Center — Administration Building',
+  'building',
+  [1960.12, 1962.78],
+  9999,
+  MARIN_CC,
+  b => {
+    b.frame(0, 0, 0, MCC_BRG, () => {
+      mccWing(b, -40, 52, 26.9, 155, 34.4, 15);
+      // library dome over the junction, and the 172 ft gold-anodised spire beside it
+      b.color(MCC_WALL).cylinder(-29.5, 58, 19, 0, 15, 20);
+      b.color(MCC_ROOF).dome(-29.5, 58, 19.5, 15, 7, 20, 4);
+      b.color('#D7B24A');
+      b.pyramid([[-58.4, 57], [-53.7, 52], [-55.4, 58]], 0, [-55.8, 55.7, 172 * FT]);
+    });
+  },
+  {
+    Built: 'groundbreaking Feb 15, 1960; dedicated Oct 13, 1962 — Frank Lloyd Wright\'s last major commission (completed by Aaron Green and William Wesley Peters)',
+    Size: '580 ft (177 m) long; a barrel-vaulted roof bridging between hills; dome over the library rotunda (80 ft)',
+    Spire: '172 ft (52 m), gold-anodised aluminium',
+    Colours: 'sand / pink stucco ("Big Pink") under a bright blue roof',
+    Model:
+      'wing positions and widths from the OpenStreetMap outlines (© OSM contributors, ODbL) and the orthophoto; storey heights, vault rise and arcade bands estimated; roof kept level across the valley'
+  },
+  [WIKI + 'Marin_County_Civic_Center'],
+  [rotPoly([[-58, 30], [-8, 50], [55, 205], [10, 210], [-45, 95]], MCC_BRG)]
+);
+
+const marinHallOfJustice = landmark(
+  'marin_civic_center_hall_of_justice',
+  'Marin County Civic Center — Hall of Justice',
+  'building',
+  [1966.4, 1969.95],
+  9999,
+  MARIN_CC,
+  b => b.frame(0, 0, 0, MCC_BRG, () => mccWing(b, -27.6, 38, 165, 246, 40.8, 15)),
+  {
+    Built: 'cornerstone May 25, 1966; structurally complete Mar 1969; dedicated Dec 13, 1969',
+    Size: '880 ft (268 m) long; courts, jail and county offices; meets the Administration Building at 120°',
+    Model: 'as the Administration Building (outline from OpenStreetMap, © OSM contributors, ODbL; heights estimated)'
+  },
+  [WIKI + 'Marin_County_Civic_Center'],
+  [rotPoly([[-47, 40], [18, -212], [52, -170], [-8, 52]], MCC_BRG)]
+);
+
+// ---- Mission San Rafael Arcángel (replica chapel, 1949), frame 7°
+const MISSION_SR: V2 = [-122.527917, 37.974333];
+const missionSanRafael = landmark(
+  'mission_san_rafael',
+  'Mission San Rafael Arcángel (replica chapel)',
+  'building',
+  [1948.6, 1949.5],
+  9999,
+  MISSION_SR,
+  b => {
+    b.frame(0, 0, 0, 7, () => {
+      b.color(ADOBE);
+      boxR(b, [1.9, 13.7, 3.9, 22.6], 0, 6.8);
+      boxR(b, [-5.7, 16.4, -6.9, 3.9], 0, 5);
+      b.color(TILE).gable(7.8, 13.25, 12.6, 19.5, 6.8, 3, true);
+      b.gable(5.35, -1.5, 22.9, 11.6, 5, 2.4, false);
+      // stepped front gable with the star window, and the bell wall
+      b.color(ADOBE);
+      b.quad([1.9, 3.85, 6.8], [13.7, 3.85, 6.8], [11, 3.85, 9.6], [4.6, 3.85, 9.6]);
+      b.color('#5A4A3E').cap(circle(7.8, 3.8, 0.9, 8).map(([x, y]) => [x, y] as V2), 0).box(7.8, 3.8, 7.6, 1.6, 0.1, 1.6);
+      b.color(ADOBE).box(-3.6, -6.9, 5, 4, 0.8, 3.2);
+      b.color('#5A4A3E');
+      for (const x of [-4.6, -2.6]) b.box(x, -7, 6, 0.9, 0.2, 1.4);
+    });
+  },
+  {
+    Founded: 'Dec 14, 1817 as an asistencia (hospital) of Mission San Francisco de Asís; full mission 1822; ruins removed 1870',
+    Built: 'the replica chapel was built in 1949 on the site of the mission hospital, beside St. Raphael\'s Church',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); wall and roof heights, star window and bell openings estimated from photographs'
+  },
+  [WIKI + 'Mission_San_Rafael_Arc%C3%A1ngel'],
+  [rotPoly(rect(5.35, 7.8, 23, 30.5), 7)]
+);
+
+// ---- Point Bonita Lighthouse (lens of 1855, tower on the present ledge since 1877)
+const POINT_BONITA: V2 = [-122.529538, 37.815595];
+const pointBonita = landmark(
+  'point_bonita_lighthouse',
+  'Point Bonita Lighthouse',
+  'tower',
+  [1877.0, 1877.5],
+  9999,
+  POINT_BONITA,
+  b => {
+    b.frame(0, 0, 0, 59.9, () => {
+      // 33 ft tower with the second-order Fresnel lens, attached to the fog-signal / workroom building (OSM 12 × 4 m)
+      b.color('#F1F0EA').box(0, -2.5, 0, 4, 7, 3.6);
+      b.color('#B33A2E').gable(0, -2.5, 4.2, 7.2, 3.6, 1.2, true);
+      b.color('#F1F0EA').prism(octagon(0, 3.2, 2.1), 0, 7.4);
+      b.color('#2B2D2F').prism(octagon(0, 3.2, 2.5), 7.4, 7.8).cylinder(0, 3.2, 1.6, 7.8, 9.2, 10);
+      b.dome(0, 3.2, 1.7, 9.2, 0.9, 10, 2);
+    });
+  },
+  {
+    Built: 'first lit 1855 on higher ground (306 ft), often hidden by fog; moved in 1877 to its ledge at 124 ft, reached through a 118 ft tunnel hand-carved through the rock',
+    Tower: '33 ft (10 m), white with a black lantern; second-order Fresnel lens; focal height 124 ft',
+    Bridge: 'suspension footbridge of 1954, replaced in 2012 (not modelled)',
+    Model: 'footprint from OpenStreetMap (© OSM contributors, ODbL); octagonal tower and lantern proportions from photographs (estimated)'
+  },
+  [WIKI + 'Point_Bonita_Lighthouse']
+);
+
+// ---- Point Reyes Lighthouse (1870): sixteen-sided cast-iron tower, 37 ft
+const POINT_REYES: V2 = [-123.023151, 37.995618];
+const pointReyes = landmark(
+  'point_reyes_lighthouse',
+  'Point Reyes Lighthouse',
+  'tower',
+  [1870.3, 1870.92],
+  9999,
+  POINT_REYES,
+  b => {
+    b.color('#EEEDE8').frustum(0, 0, 2.7, 2.2, 0, 6.2, 16);
+    b.color('#2C2E30').cylinder(0, 0, 2.6, 6.2, 6.6, 16);
+    b.color('#C9D2D4').cylinder(0, 0, 1.7, 6.6, 9.2, 16);
+    b.color('#2C2E30').dome(0, 0, 1.9, 9.2, 1.3, 16, 2);
+    b.color('#B33A2E').cylinder(0, 0, 0.12, 10.5, 11.3, 4);
+  },
+  {
+    Built: 'first lit Dec 1, 1870; sixteen-sided cast-iron tower 37 ft (11 m) with a first-order Fresnel lens, on a ledge some 300 steps below the headland',
+    Model: 'footprint and height from OpenStreetMap (© OSM contributors, ODbL; 10.7 m); lantern proportions from photographs (estimated)'
+  },
+  [WIKI + 'Point_Reyes_Lighthouse']
+);
+
+// =================================================================== PENINSULA (San Mateo County) AND THE STANFORD HILLS
+
+// ---- Filoli (Woodside), frame 52°: Georgian Revival brick house round a forecourt (OSM outline)
+const FILOLI: V2 = [-122.310847, 37.470369];
+const filoli = landmark(
+  'filoli',
+  'Filoli',
+  'building',
+  [1915.3, 1917.5],
+  9999,
+  FILOLI,
+  b => {
+    b.frame(0, 0, 0, 52, () => {
+      const BRICK = '#A85B46';
+      const ROOF = '#7F4B3F';
+      const wings: [number, number, number, number][] = [
+        [-28.4, 28.1, -20.4, -5.4],
+        [-25.6, -12.2, -5.4, 30.1],
+        [13.2, 26.3, -5.4, 29.6],
+        [-15, 15, -5.4, 2.6]
+      ];
+      b.color(BRICK);
+      for (const w of wings) boxR(b, w, 0, 9.5, false);
+      b.color(ROOF);
+      for (const w of wings.slice(0, 3)) hipR(b, [w[0] - 0.5, w[1] + 0.5, w[2] - 0.5, w[3] + 0.5], 9.5, (Math.min(w[1] - w[0], w[3] - w[2]) / 2 + 0.5) * Math.tan((32 * Math.PI) / 180));
+      b.cap(rect(0, -1.4, 30, 8), 9.5);
+      // tall chimneys and the white entrance portico
+      b.color('#9A5240');
+      for (const [x, y] of [[-20, -12.9], [-6, -12.9], [8, -12.9], [21, -12.9], [-19, 14], [19.7, 14]] as V2[]) b.box(x, y, 9.5, 1.4, 2.6, 5.6);
+      b.color('#EDEAE2').box(0, -21.6, 0, 7, 2.4, 6.5);
+    });
+  },
+  {
+    Built: '1915–1917 for William Bowers Bourn II (Empire Mine, Spring Valley Water Co.) and Agnes Bourn; architect Willis Polk; gardens by Bruce Porter and Isabella Worn',
+    Size: '54,256 sq ft, 56 rooms; 16 acres of formal gardens in a 654-acre estate; National Trust since 1975',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); wall height (9.5 m), roof pitch, chimneys and portico estimated from photographs'
+  },
+  [WIKI + 'Filoli'],
+  [rotPoly(rect(0, 4.8, 58, 52), 52)]
+);
+
+// ---- Pigeon Point Lighthouse (1872): tower base located on the orthophoto (its shadow)
+const PIGEON_POINT: V2 = [-122.393858, 37.181692];
+const pigeonPoint = landmark(
+  'pigeon_point_lighthouse',
+  'Pigeon Point Lighthouse',
+  'tower',
+  [1871.3, 1872.87],
+  9999,
+  PIGEON_POINT,
+  b => {
+    const H = 115 * FT;
+    b.color('#F2F1EC').frustum(0, 0, 4.3, 2.9, 0, H - 4.4, 16);
+    b.color('#2C2E30').cylinder(0, 0, 3.7, H - 4.4, H - 4.0, 16);
+    b.color('#C9D2D4').cylinder(0, 0, 2.0, H - 4.0, H - 1.4, 12);
+    b.color('#2C2E30').dome(0, 0, 2.2, H - 1.4, 1.4, 12, 2);
+    b.color('#F2F1EC').box(0, -6, 0, 6, 5, 4.5);
+  },
+  {
+    Built: 'built 1871; first lit at sunset on Nov 15, 1872 — at 115 ft (35 m) one of the tallest lighthouses in the United States',
+    Tower: 'tapered brick cylinder, white with black trim; first-order Fresnel lens (1,008 prisms), focal height 148 ft',
+    Status: 'closed to visitors since Dec 2001 after the brickwork carrying the iron walkways failed; $16 million rehabilitation announced Dec 2023',
+    Model: 'base position from the tower\'s shadow on the orthophoto; diameters estimated from photographs'
+  },
+  [WIKI + 'Pigeon_Point_Lighthouse']
+);
+
+// ---- Stanford Dish (1961): 150 ft radio telescope, shown stowed at zenith
+const STANFORD_DISH: V2 = [-122.179577, 37.408572];
+const stanfordDish = landmark(
+  'stanford_dish',
+  'Stanford Dish',
+  'tower',
+  [1960.6, 1961.8],
+  9999,
+  STANFORD_DISH,
+  b => {
+    const R = 150 * FT * 0.5; // 22.9 m
+    const f = 0.4 * 2 * R;
+    const z0 = 26;
+    // concrete base and the steel alt-azimuth yoke
+    b.color('#BDB9B1').cylinder(0, 0, 8, 0, 6, 16);
+    b.color('#9EA3A6');
+    for (const s of [-1, 1]) {
+      b.beam([s * 9, -4, 6], [s * 9, 0, z0], 1.2).beam([s * 9, 4, 6], [s * 9, 0, z0], 1.2);
+    }
+    b.box(0, 0, 6, 20, 3, 2);
+    // paraboloid reflector (mesh surface over a radial truss)
+    const prof: [number, number][] = [];
+    for (let i = 0; i <= 5; i++) {
+      const r = (R * i) / 5;
+      prof.push([r, z0 + (r * r) / (4 * f)]);
+    }
+    b.color('#D8DBDB');
+    revolve(b, 0, 0, prof, 0, 360, 15);
+    // feed legs to the focus
+    b.color('#9EA3A6');
+    for (let k = 0; k < 4; k++) {
+      const a = (k * Math.PI) / 2 + Math.PI / 4;
+      b.beam([Math.cos(a) * R * 0.8, Math.sin(a) * R * 0.8, z0 + (R * R * 0.64) / (4 * f)], [0, 0, z0 + f], 0.35);
+    }
+    b.box(0, 0, z0 + f - 1, 1.8, 1.8, 2);
+  },
+  {
+    Built: '1961 by the Stanford Research Institute (SRI) for the US Air Force, $4.5 million; steerable 150 ft (46 m) dish',
+    Model: 'position from the orthophoto; mount, yoke height and focal ratio estimated from photographs; shown pointing at the zenith'
+  },
+  [WIKI + 'Stanford_Dish'],
+  [circle(0, 0, 10, 8)]
+);
+
+// ---- SLAC: the two-mile klystron gallery over the linear accelerator (frame 81.4°, +v = east)
+const SLAC: V2 = [-122.222146, 37.414389];
+const slacGallery = landmark(
+  'slac_klystron_gallery',
+  'SLAC — two-mile linear accelerator (klystron gallery)',
+  'building',
+  [1962.5, 1966.4],
+  9999,
+  SLAC,
+  b => {
+    b.frame(0, 0, 0, 81.4, () => {
+      // 3,074 m long sheet-steel shed (17 × 30 ft) above the buried accelerator; stepped with the ground
+      for (let v = -1527; v < 1542; v += 96) {
+        const v1 = Math.min(v + 96, 1542.3);
+        const dz = groundDz(SLAC, 81.4, -1.2, (v + v1) / 2);
+        b.color('#C9CCCB');
+        boxR(b, [-5.75, 3.35, v, v1], dz - 2, dz + 5.2);
+        b.color('#9FA6A9');
+        boxR(b, [-5.9, 3.5, v, v1], dz + 5.2, dz + 5.5);
+      }
+    });
+  },
+  {
+    Built: 'laboratory founded 1962; the 2-mile (3.2 km) linac first ran in 1966; from 1966 to 1999 the longest building in the world',
+    Gallery: '3,073.7 m long; 240 klystrons feed the accelerator in a 10 × 11 ft tunnel under 25 ft of compacted earth',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); section 17 ft × 30 ft (SLAC); drawn in ~100 m steps following the ground'
+  },
+  [WIKI + 'SLAC_National_Accelerator_Laboratory', 'https://ahro.slac.stanford.edu/resources/slac-history/history-bits'],
+  [rotPoly(rect(-1.2, 7.7, 16, 3070), 81.4)]
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -1267,5 +1851,20 @@ export const SOUTHBAY: Landmark[] = [
   winchester,
   winchesterTower,
   hangarOne1933,
-  hangarOne2025
+  hangarOne2025,
+  lickObservatory,
+  shaneDome,
+  sjLightTower,
+  hotelDeAnza,
+  sjCityHall,
+  techInteractive,
+  marinAdmin,
+  marinHallOfJustice,
+  missionSanRafael,
+  pointBonita,
+  pointReyes,
+  filoli,
+  pigeonPoint,
+  stanfordDish,
+  slacGallery
 ];

@@ -1,0 +1,472 @@
+[
+ {
+  "key": "004_0089",
+  "px": [
+   510,
+   720
+  ],
+  "name": "U.S. Post Office (1892-1933; now San Jose Museum of Art)",
+  "use": "other",
+  "carry": true
+ },
+ {
+  "key": "004_0089",
+  "px": [
+   476,
+   230
+  ],
+  "name": "Garden City Bank Building",
+  "use": "store",
+  "carry": false
+ },
+ {
+  "key": "004_0089",
+  "px": [
+   1056,
+   336
+  ],
+  "name": "Imperial Hotel",
+  "use": "hotel",
+  "carry": false
+ },
+ {
+  "key": "004_0089",
+  "px": [
+   570,
+   1380
+  ],
+  "name": "Olympic Theatre",
+  "use": "theatre",
+  "carry": false
+ },
+ {
+  "key": "004_0089",
+  "px": [
+   750,
+   1180
+  ],
+  "name": "Peninsula Railway Co. offices / freight",
+  "use": "rail",
+  "carry": false
+ },
+ {
+  "key": "004_0089",
+  "px": [
+   930,
+   1380
+  ],
+  "name": "Dexter Stables (livery)",
+  "use": "stable",
+  "carry": false
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   540,
+   280
+  ],
+  "name": "Hotel Montgomery (1911; moved 186 ft in 2000)",
+  "use": "hotel",
+  "carry": true
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   900,
+   500
+  ],
+  "name": "Auditorium skating rink",
+  "use": "other",
+  "carry": false
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   790,
+   280
+  ],
+  "name": "Russ House",
+  "use": "hotel",
+  "carry": false
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   1090,
+   280
+  ],
+  "name": "Douglas Apartments",
+  "use": "dwelling",
+  "carry": false
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   390,
+   860
+  ],
+  "name": "San Jose City Hall (1889-1958)",
+  "use": "other",
+  "carry": true
+ },
+ {
+  "key": "004_0090",
+  "px": [
+   940,
+   1180
+  ],
+  "name": "Park Hotel",
+  "use": "hotel",
+  "carry": false
+ },
+ {
+  "key": "004_0084",
+  "px": [
+   240,
+   330
+  ],
+  "name": "First National Bank Building",
+  "use": "store",
+  "carry": true
+ },
+ {
+  "key": "004_0084",
+  "px": [
+   1380,
+   710
+  ],
+  "name": "St. Joseph's R.C. Church (now Cathedral Basilica)",
+  "use": "church",
+  "carry": true
+ },
+ {
+  "key": "004_0084",
+  "px": [
+   1130,
+   1500
+  ],
+  "name": "Liberty Theatre",
+  "use": "theatre",
+  "carry": false
+ },
+ {
+  "key": "004_0082",
+  "px": [
+   690,
+   430
+  ],
+  "name": "Santa Clara County Court House (1868)",
+  "use": "other",
+  "carry": true
+ },
+ {
+  "key": "004_0082",
+  "px": [
+   490,
+   410
+  ],
+  "name": "Hall of Records (1892)",
+  "use": "other",
+  "carry": true
+ },
+ {
+  "key": "004_0082",
+  "px": [
+   960,
+   320
+  ],
+  "name": "Hotel St. James",
+  "use": "hotel",
+  "carry": false
+ },
+ {
+  "key": "004_0082",
+  "px": [
+   850,
+   1400
+  ],
+  "name": "Costa Hotel",
+  "use": "hotel",
+  "carry": false
+ },
+ {
+  "key": "004_0083",
+  "px": [
+   880,
+   600
+  ],
+  "name": "Victory Theatre",
+  "use": "theatre",
+  "carry": false
+ },
+ {
+  "key": "004_0063",
+  "px": [
+   460,
+   1280
+  ],
+  "name": "Trinity Episcopal Church (1863)",
+  "use": "church",
+  "carry": true
+ },
+ {
+  "key": "004_0063",
+  "px": [
+   1150,
+   1580
+  ],
+  "name": "Bank of San Jose Building (1892)",
+  "use": "store",
+  "carry": true
+ },
+ {
+  "key": "004_0063",
+  "px": [
+   620,
+   580
+  ],
+  "name": "Labor Temple",
+  "use": "other",
+  "carry": false
+ },
+ {
+  "key": "004_0063",
+  "px": [
+   800,
+   350
+  ],
+  "name": "Knights of Columbus / Public Hall",
+  "use": "other",
+  "carry": false
+ },
+ {
+  "key": "004_0064",
+  "px": [
+   1000,
+   1580
+  ],
+  "name": "Letitia Building (1890)",
+  "use": "store",
+  "carry": true
+ },
+ {
+  "key": "004_0064",
+  "px": [
+   1180,
+   1580
+  ],
+  "name": "Ryland Block",
+  "use": "store",
+  "carry": false
+ },
+ {
+  "key": "004_0064",
+  "px": [
+   1010,
+   570
+  ],
+  "name": "Theatre Jose (1904)",
+  "use": "theatre",
+  "carry": true
+ },
+ {
+  "key": "004_0064",
+  "px": [
+   1280,
+   1280
+  ],
+  "name": "L. Lion & Sons Co. furniture",
+  "use": "store",
+  "carry": false
+ },
+ {
+  "key": "004_0064",
+  "px": [
+   380,
+   1580
+  ],
+  "name": "Safe Deposit Block",
+  "use": "store",
+  "carry": false
+ },
+ {
+  "key": "004_0065",
+  "px": [
+   480,
+   1400
+  ],
+  "name": "O. A. Hale & Co. department store",
+  "use": "store",
+  "carry": false
+ },
+ {
+  "key": "004_0065",
+  "px": [
+   1170,
+   1050
+  ],
+  "name": "First Baptist Church",
+  "use": "church",
+  "carry": false
+ },
+ {
+  "key": "004_0085",
+  "px": [
+   1040,
+   1040
+  ],
+  "name": "College of Notre Dame",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0085",
+  "px": [
+   1070,
+   740
+  ],
+  "name": "Notre Dame Hall",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0085",
+  "px": [
+   1280,
+   1280
+  ],
+  "name": "Notre Dame High School",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0085",
+  "px": [
+   680,
+   840
+  ],
+  "name": "Notre Dame Science Hall",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0091",
+  "px": [
+   440,
+   620
+  ],
+  "name": "Eagle Brewery",
+  "use": "factory",
+  "carry": false
+ },
+ {
+  "key": "004_0091",
+  "px": [
+   840,
+   800
+  ],
+  "name": "Columbia Hospital",
+  "use": "other",
+  "carry": false
+ },
+ {
+  "key": "004_0091",
+  "px": [
+   1150,
+   1640
+  ],
+  "name": "Lincoln School",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0091",
+  "px": [
+   600,
+   880
+  ],
+  "name": "Swedish Evangelical Lutheran Church",
+  "use": "church",
+  "carry": false
+ },
+ {
+  "key": "004_0091",
+  "px": [
+   320,
+   1140
+  ],
+  "name": "Swedish Mission Church",
+  "use": "church",
+  "carry": false
+ },
+ {
+  "key": "005_0156",
+  "px": [
+   320,
+   840
+  ],
+  "name": "St. Joseph's Primary, Grammar & High Schools",
+  "use": "school",
+  "carry": false
+ },
+ {
+  "key": "004_0086",
+  "px": [
+   420,
+   1120
+  ],
+  "name": "San Jose Foundry",
+  "use": "factory",
+  "carry": false
+ },
+ {
+  "key": "004_0086",
+  "px": [
+   1060,
+   580
+  ],
+  "name": "Planing mill",
+  "use": "factory",
+  "carry": false
+ },
+ {
+  "key": "004_0086",
+  "px": [
+   320,
+   1320
+  ],
+  "name": "Marble works",
+  "use": "factory",
+  "carry": false
+ },
+ {
+  "key": "004_0088",
+  "px": [
+   580,
+   1200
+  ],
+  "name": "San Jose Water Co.",
+  "use": "other",
+  "carry": false
+ },
+ {
+  "key": "004_0088",
+  "px": [
+   1300,
+   880
+  ],
+  "name": "Holy Trinity Church",
+  "use": "church",
+  "carry": false
+ },
+ {
+  "key": "004_0088",
+  "px": [
+   400,
+   1380
+  ],
+  "name": "Hubbard & Carmichael Bros. planing mill and lumber yard",
+  "use": "factory",
+  "carry": false
+ }
+]

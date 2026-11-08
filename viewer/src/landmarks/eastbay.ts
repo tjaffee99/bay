@@ -907,3 +907,569 @@ const necklace1987: Landmark = {
   },
   sources: [WIKI + 'Lake_Merritt']
 };
+
+// ------------------------------------------------------------ Oakland Coliseum (1966, and with Mount Davis 1996)
+// OSM 3D parts in a 145° frame (+x = 235°, toward home plate; −x = 55°, centre field):
+// "Field Level", "Plaza Level" and "Upper Deck" crescents, "Mount Davis" (172 × 44 m) and
+// the two outfield "Bleachers". Home plate ≈ (66, 0): backstop 60 ft from the field-level
+// front row, CF fence 400 ft out at the Mount Davis front (x ≈ −57). The field lies 21 ft
+// (6.4 m) below sea level inside an earth berm (only the third deck shows from outside);
+// the terrain mesh never drops below +0.9 m, so the field and the lower bowl are raised to
+// sit on it (the decks keep their height above the outside concourse, ≈ +6.5 m).
+// Mount Davis (1995–96) was specified not to exceed the existing stadium's height.
+const COLISEUM: V2 = [-122.200474, 37.751665];
+const COL_FIELD: V2[] = [[-30.6, 80.4], [-22.2, 66.3], [-2.1, 74.0], [12.5, 62.5], [29.9, 59.7], [49.2, 66.0], [61.7, 58.1], [61.8, 41.4], [69.9, 28.9], [73.0, 21.1], [83.2, 14.4], [84.3, 2.8], [84.3, -1.7], [83.1, -12.2], [72.7, -18.6], [69.9, -26.2], [60.4, -40.1], [61.6, -55.2], [49.3, -63.2], [31.1, -56.4], [25.6, -58.5], [13.3, -59.2], [-2.0, -71.4], [-19.8, -65.0], [-27.8, -79.2]];
+const COL_FIELD_OUT: V2[] = [[-14.4, 87.6], [9.3, 91.9], [32.8, 89.8], [43.8, 86.5], [64.8, 75.9], [74.3, 68.1], [89.0, 51.6], [95.2, 41.4], [103.0, 18.9], [104.2, 5.7], [102.1, -17.8], [98.9, -29.0], [88.3, -50.1], [80.7, -59.4], [72.5, -67.9], [52.5, -80.9], [29.9, -87.9], [18.2, -89.3], [-5.7, -87.2]];
+const COL_PLAZA_IN: V2[] = [[-37.8, 70.7], [-23.1, 79.3], [-12.8, 83.3], [9.7, 87.3], [32.0, 85.3], [53.1, 77.7], [71.5, 64.5], [85.1, 48.8], [95.2, 28.6], [98.0, 18.0], [99.7, -2.9], [95.8, -24.8], [86.1, -45.4], [71.5, -62.6], [52.7, -75.3], [31.7, -82.8], [9.4, -84.9], [-12.8, -80.8], [-23.4, -76.7], [-37.9, -67.7]];
+const COL_PLAZA_OUT: V2[] = [[-47.9, 83.4], [-29.8, 94.5], [-4.4, 102.2], [9.1, 104.0], [22.7, 103.4], [48.6, 98.0], [72.4, 85.6], [83.0, 77.1], [100.4, 56.3], [112.0, 31.6], [115.1, 18.5], [116.3, -3.6], [114.7, -16.9], [111.4, -30.0], [100.0, -54.0], [92.0, -64.8], [72.1, -83.0], [60.6, -89.9], [35.4, -99.2], [9.0, -101.3], [-17.5, -96.4], [-30.1, -91.5], [-47.9, -80.8]];
+const COL_UPPER_IN: V2[] = [[-43.0, 78.6], [-27.2, 87.5], [-15.2, 92.3], [9.1, 96.8], [34.0, 94.6], [57.1, 86.2], [77.7, 71.8], [94.0, 52.6], [104.6, 29.6], [109.1, 5.9], [107.7, -15.9], [104.8, -27.9], [94.0, -50.6], [78.0, -69.6], [57.1, -83.9], [33.8, -92.3], [8.9, -94.2], [-15.9, -90.0], [-27.6, -85.8], [-43.4, -75.4]];
+const COL_UPPER_OUT: V2[] = [[-52.8, 90.9], [-33.0, 102.2], [-19.1, 107.2], [-5.3, 111.1], [9.1, 112.4], [37.8, 109.6], [52.3, 105.2], [73.4, 94.9], [88.9, 82.8], [107.6, 60.5], [119.6, 33.7], [123.2, 19.1], [124.7, -3.7], [122.9, -17.9], [114.6, -45.3], [106.9, -58.5], [88.4, -80.6], [73.2, -92.9], [51.8, -103.1], [23.2, -109.0], [8.9, -109.5], [-5.5, -108.0], [-19.8, -104.6], [-33.1, -99.2], [-51.9, -88.3]];
+const COL_BRG = 145;
+const COL_CONCOURSE = 6.8;
+function coliseumBowl(b: MeshBuilder, davis: boolean) {
+  const n = 48;
+  const seats = '#2F5A4A';
+  const conc = '#C9C4B8';
+  const deck = (inn: V2[], out: V2[], z0: number, z1: number, col: string) => {
+    const A = resample(inn, n);
+    const B = resample(out, n);
+    b.color(col).ribbon(A.map(p => [p[0], p[1], z0] as V3), B.map(p => [p[0], p[1], z1] as V3));
+    b.color(conc).wallProfile(B, z1 - 4, z1 + 1.2); // back wall / fascia
+    b.color('#D6D1C6').wallProfile(A, z0 - 2.5, z0 + 0.6); // front fascia
+    b.color(conc).quad([A[0][0], A[0][1], z0 - 2.5], [B[0][0], B[0][1], z1 - 4], [B[0][0], B[0][1], z1 + 1.2], [A[0][0], A[0][1], z0 + 0.6]);
+    b.quad([A[n][0], A[n][1], z0 - 2.5], [B[n][0], B[n][1], z1 - 4], [B[n][0], B[n][1], z1 + 1.2], [A[n][0], A[n][1], z0 + 0.6]);
+  };
+  // field (raised onto the terrain mesh) with the infield dirt
+  b.color('#5D9A47').cap(ellipse(8, 0, 96, 92, 40), 1.6);
+  const home: V2 = [66, 0];
+  b.frame(home[0], home[1], 0, 270, () => {
+    const d = 27.43 * Math.SQRT1_2;
+    b.color('#B98E66').cap([[0, -4], [d + 5, d - 2], [0, 2 * d + 7], [-d - 5, d - 2]], 1.75);
+    b.color('#5D9A47').cap([[0, 3], [d - 4, d], [0, 2 * d - 3], [-d + 4, d]], 1.85);
+  });
+  // lower bowl (field level) up to the main concourse, then the plaza and upper decks
+  const fieldIn = COL_FIELD.slice().reverse();
+  const fieldOut = COL_FIELD_OUT.slice().reverse();
+  deck(fieldIn, fieldOut, 2.6, COL_CONCOURSE, seats);
+  b.color('#B7B2A6').ribbon(
+    resample(fieldOut, n).map(p => [p[0], p[1], COL_CONCOURSE] as V3),
+    resample(COL_PLAZA_OUT.slice().reverse(), n).map(p => [p[0] * 0.97 + 0.3, p[1] * 0.97, COL_CONCOURSE] as V3)
+  ); // concourse walk
+  deck(COL_PLAZA_IN, COL_PLAZA_OUT, COL_CONCOURSE + 4.5, COL_CONCOURSE + 13, seats);
+  deck(COL_UPPER_IN, COL_UPPER_OUT, COL_CONCOURSE + 16.5, COL_CONCOURSE + 27, seats);
+  // rim, light standards (six round the upper deck)
+  const top = resample(COL_UPPER_OUT.slice().reverse(), 10);
+  for (const i of [1, 3, 5, 7, 9]) {
+    const [x, y] = top[i];
+    b.color('#7B7F82').beam([x, y, COL_CONCOURSE + 28], [x, y, COL_CONCOURSE + 47], 1.0);
+    b.color('#5E6266').box(x, y, COL_CONCOURSE + 45, 7, 2, 3.5);
+  }
+  if (!davis) {
+    // 1966–95: open outfield with bleachers, the scoreboards and the view of the hills
+    for (const sy of [-1, 1]) {
+      const ring: V2[] = [[-57.3, sy * 24.6], [-50.1, sy * 24.7], [-38.6, sy * 44.9], [-29.5, sy * 67.1], [-46.5, sy * 74.2], [-57.3, sy * 48.2]];
+      b.color(seats).prism(ring, 1.6, 6.5);
+      b.color('#33373A').box(-62, sy * 45, 1.6, 2.0, 30, 14);
+      b.color('#5A5E62').box(-62, sy * 45, 1.6, 1.0, 2.0, 7);
+    }
+    b.color(conc).wallProfile(ellArc(8, 0, 75, 86, (2 * Math.PI) / 3, (4 * Math.PI) / 3, 12), 1.6, 3.4); // outfield wall
+  } else {
+    // Mount Davis (1995–96): a steep outfield grandstand with suites, as high as the stadium
+    const md: V2[] = [[-48.0, 70.1], [-73.0, 87.3], [-92.0, 55.8], [-91.9, -52.1], [-74.0, -84.7], [-47.9, -67.3], [-57.2, -45.0], [-57.3, 48.2]];
+    const front = resample([[-47.9, -67.3], [-57.2, -45.0], [-57.3, 48.2], [-48.0, 70.1]], 16);
+    const back = resample([[-74.0, -84.7], [-91.9, -52.1], [-92.0, 55.8], [-73.0, 87.3]], 16);
+    const mid = front.map((p, i) => [(p[0] + back[i][0]) / 2, (p[1] + back[i][1]) / 2] as V2);
+    b.color(seats).ribbon(front.map(p => [p[0], p[1], 3.5] as V3), mid.map(p => [p[0], p[1], 14] as V3));
+    b.color('#3B4A50').ribbon(mid.map(p => [p[0], p[1], 14] as V3), mid.map(p => [p[0] - 2.5, p[1], 19.5] as V3)); // suites
+    b.color(seats).ribbon(mid.map(p => [p[0] - 2.5, p[1], 19.5] as V3), back.map(p => [p[0], p[1], COL_CONCOURSE + 27.5] as V3));
+    b.color(conc).prism(md, -1, 3.5, {top: false}).wallProfile(back, -1, COL_CONCOURSE + 29);
+    b.color('#2B2F33').box(-93.5, 0, COL_CONCOURSE + 12, 1.5, 44, 11); // video board on the back
+    // lower outfield bleachers under Mount Davis
+    for (const sy of [-1, 1]) {
+      const ring: V2[] = [[-57.3, sy * 24.6], [-50.1, sy * 24.7], [-38.6, sy * 44.9], [-29.5, sy * 67.1], [-46.5, sy * 74.2], [-57.3, sy * 48.2]];
+      b.color(seats).prism(ring, 1.6, 4.5);
+    }
+  }
+}
+const coliseum1966: Landmark = {
+  id: 'oakland_coliseum_1966',
+  name: 'Oakland–Alameda County Coliseum (1966)',
+  kind: 'stadium',
+  built: [1964.29, 1966.71],
+  end: 1995.85,
+  anchor: COLISEUM,
+  build: b => b.frame(0, 0, 0, COL_BRG, () => coliseumBowl(b, false)),
+  facts: {
+    Construction: 'groundbreaking Apr 15, 1964; opened Sep 18, 1966 (Raiders 1966–81, A’s from 1968)',
+    Design: 'Skidmore, Owings & Merrill (Myron Goldsmith); field 21 ft below sea level inside an earth berm',
+    Outfield: 'open to the Oakland hills, with bleachers and scoreboards',
+    Model: 'deck outlines from the OSM 3D parts; deck heights estimated; field raised to the terrain surface (see eastbay.ts)'
+  },
+  sources: [WIKI + 'Oakland_Coliseum', 'https://pcad.lib.washington.edu/building/7178']
+};
+const coliseum1996: Landmark = {
+  id: 'oakland_coliseum',
+  name: 'Oakland Coliseum',
+  kind: 'stadium',
+  built: [1995.85, 1996.62],
+  end: 9999,
+  anchor: COLISEUM,
+  build: b => b.frame(0, 0, 0, COL_BRG, () => coliseumBowl(b, true)),
+  replaces: [rotRect(15, 0, 250, 250, COL_BRG)],
+  facts: {
+    Renovation: 'Nov 1995 – Aug 1996 (HNTB) for the Raiders’ return: “Mount Davis”, a 10,000+-seat, 90-suite outfield grandstand, closes the bowl',
+    Tenants: 'A’s until 2024, Raiders until 2019; cricket and soccer since 2025',
+    Fences: 'LF 330 ft · LC 388 · CF 400 · RC 388 · RF 330',
+    Model: 'Mount Davis outline from OSM; its height set to the existing upper deck (as specified in 1995); deck heights estimated'
+  },
+  sources: [WIKI + 'Oakland_Coliseum', WIKI + 'Mount_Davis_(Oakland)']
+};
+
+// =================================================================== OAKLAND HILLS AND WEST OAKLAND
+
+// ------------------------------------------------------------ Oakland California Temple
+// OSM in a 5° frame: the temple's cross-shaped plan 56 × 33 m on a terrace building
+// (91 × 63.5 m, rooftop garden and reflecting pool), the central spire part 15.8 m to 52 m
+// (170 ft, Wikipedia). Five spires: a stepped central tower with a pierced spire and four
+// corner spires at the re-entrant corners; Sierra white granite over concrete. Stage
+// heights from the photo; the terrace follows the hillside (foundations sunk 3 m).
+const temple: Landmark = {
+  id: 'oakland_california_temple',
+  name: 'Oakland California Temple',
+  kind: 'building',
+  built: [1962.4, 1964.88],
+  end: 9999,
+  anchor: [-122.1991, 37.807818],
+  build: b => {
+    const granite = '#ECEAE3';
+    const shade = '#DAD7CE';
+    const spire = '#E3DCC5';
+    b.frame(0, 0, 0, 5, () => {
+      const terrace: V2[] = [[31.4, -18.0], [31.1, 23.6], [21.9, 23.6], [21.7, 67.1], [10.6, 67.0], [11.7, 29.5], [-12.6, 29.4], [-12.8, 66.7], [-22.2, 66.6], [-22.2, 55.7], [-32.1, 55.7], [-32.1, 48.4], [-21.7, 48.5], [-21.5, 22.9], [-32.4, 22.9], [-32.2, -18.1], [-30.7, -18.1], [-30.7, -24.3], [28.7, -23.9], [28.7, -18.0]];
+      b.color(shade).prism(terrace, -3, 4.5);
+      b.color('#6C8D9C').box(0, -20.5, 4.5, 30, 4, 0.2); // reflecting pool
+      const cross: V2[] = [[-14.2, 7.7], [-28.1, 7.7], [-28.1, -8.0], [-14.3, -8.0], [-15.1, -15.1], [-8.0, -14.3], [-8.0, -16.7], [8.2, -16.7], [8.2, -14.2], [14.8, -15.0], [13.8, -7.7], [28.1, -7.7], [28.1, 8.0], [14.3, 8.0], [15.2, 15.3], [7.9, 14.6], [7.9, 16.5], [-8.3, 16.5], [-8.3, 14.2], [-15.0, 15.1]];
+      b.color(granite).prism(cross, 4.5, 15.8);
+      b.color(shade).prism(scaleRing(cross, 1.01), 15.8, 16.6);
+      // stepped central tower (OSM part 15.8 m) and pierced spire to 52 m
+      b.color(granite).box(-1, 3.7, 16.6, 19, 19, 3.4);
+      b.color(granite).box(-1, 3.7, 20, 15.8, 15.8, 10.5);
+      b.color(shade).box(-1, 3.7, 30.5, 11.4, 11.4, 4.0);
+      b.color(granite).box(-1, 3.7, 34.5, 8.6, 8.6, 3.2);
+      b.color(spire).pyramid(rect(-1, 3.7, 7.2, 7.2), 37.7, [-1, 3.7, 51.2]);
+      b.color('#D4AF52').frustum(-1, 3.7, 0.4, 0.05, 51.2, 52.2, 6, false);
+      // four corner spires
+      for (const [x, y] of [[-14.7, -15.1], [14.8, -15.0], [-15.0, 15.2], [15.2, 15.3]] as V2[]) {
+        b.color(granite).box(x, y, 4.5, 3.6, 3.6, 17.5);
+        b.color(spire).pyramid(rect(x, y, 3.0, 3.0), 22, [x, y, 30.5]);
+      }
+    });
+  },
+  replaces: [rotRect(0, 21, 66, 96, 5)],
+  facts: {
+    Construction: 'groundbreaking May 26, 1962 (David O. McKay); dedicated Nov 17, 1964',
+    Height: '170 ft (52 m) central spire; five spires; Sierra white granite over reinforced concrete',
+    Design: 'Harold W. Burton — Mid-century Modern, Asian and Art Deco; terrace garden and reflecting pool',
+    Model: 'plan and spire footprint from OSM; stage and corner-spire heights estimated from photos'
+  },
+  sources: [WIKI + 'Oakland_California_Temple']
+};
+
+// ------------------------------------------------------------ Southern Pacific 16th Street Station
+// Jarvis Hunt, Beaux-Arts; opened Aug 3, 1912, last train Aug 21, 1994 (Wikipedia). OSM
+// footprint in a 43.7° frame: the main hall's three-arch front (37.8 m) faces SE (+x),
+// one-storey wings either side and along the tracks; the 16th Street signal tower 100 m
+// north. Heights scaled from the 2007 photo (door ≈4 m): cornice ≈17 m, attic ≈19.5 m.
+const station16th: Landmark = {
+  id: 'sp_16th_street_station',
+  name: '16th Street Station (Southern Pacific)',
+  kind: 'building',
+  built: [1910.6, 1912.59],
+  end: 9999,
+  anchor: [-122.297166, 37.81547],
+  build: b => {
+    const stone = '#D7D2C6';
+    b.frame(0, 0, 0, 43.7, () => {
+      // one-storey wings
+      b.color(stone).box(0.55, -33.05, -1, 22.5, 8.7, 9.5).box(0.55, 13.5, -1, 22.5, 8.8, 9.5).box(-4, 32.6, -1, 13.4, 29.4, 8.5);
+      b.color('#C5BFB2').box(0.55, -33.05, 8.5, 23, 9.2, 0.8).box(0.55, 13.5, 8.5, 23, 9.3, 0.8).box(-4, 32.6, 7.5, 13.9, 29.9, 0.8);
+      // main hall
+      b.color(stone).box(1.45, -9.8, -1, 24.3, 37.8, 18);
+      b.color('#C5BFB2').box(1.45, -9.8, 17, 25, 38.5, 1.2);
+      b.color(stone).box(1.45, -9.8, 18.2, 23.5, 37, 1.8); // balustraded attic
+      b.color('#7E9C7A').hip(1.45, -9.8, 21, 34, 18.2 + 1.8, 3.2); // green roof (1918 postcard)
+      // three great arched windows on the front, and the canopy
+      b.color('#4D6670');
+      for (const y of [-21.5, -9.8, 1.9]) b.box(13.65, y, 4.5, 0.2, 7.6, 10.5);
+      b.color('#3F5048').box(15.2, -9.8, 4.2, 3.0, 9, 0.5);
+      // 16th Street signal tower
+      b.color('#B9A58A').box(-31.4, 96.4, -1, 6.8, 11.6, 12);
+      b.color('#6E6A62').hip(-31.4, 96.4, 7.4, 12.2, 11, 2);
+    });
+  },
+  replaces: [rotRect(1.5, 5, 28, 90, 43.7), rotRing(rect(-31.4, 96.4, 9, 14), 43.7)],
+  facts: {
+    Opened: 'Aug 3, 1912 (Jarvis Hunt), replacing an 1870s wooden depot on the then shoreline',
+    Served: 'Southern Pacific mainline trains and the SP Red Trains’ interurban platforms; Amtrak until Aug 21, 1994',
+    Since: 'damaged in 1989, closed 1994; restored as an event venue',
+    Model: OSM_NOTE + '; heights scaled from the 2007 photo; signal tower date assumed with the station'
+  },
+  sources: [WIKI + 'Oakland_16th_Street_station']
+};
+
+// ------------------------------------------------------------ El Embarcadero Pergola and Colonnade
+// 1913 (Wikipedia: "an elaborate Mission Revival pergola … at the northeastern tip of the
+// lake"), restored 2007. OSM outline: a semicircular colonnade 4.5 m deep opening SW to the
+// lake (133.4° frame, +x toward the water), a hipped central pavilion and pyramid-roofed
+// end pavilions. Column spacing and heights estimated (no measured drawing found).
+const PERG_OUT: V2[] = [[15.6, -39.7], [12.5, -39.5], [6.6, -37.9], [0.5, -34.7], [-3.1, -32.1], [-6.6, -28.4], [-10.1, -22.9], [-12.4, -17.0], [-13.8, -9.9], [-14.4, 7.9], [-13.1, 17.5], [-5.3, 28.1], [-0.6, 32.2], [4.3, 35.4], [10.9, 38.5], [15.6, 38.7]];
+const PERG_IN: V2[] = [[15.6, -35.2], [12.7, -35.1], [6.8, -33.8], [3.3, -32.3], [-0.7, -29.1], [-5.1, -24.1], [-6.5, -21.8], [-8.1, -18.1], [-9.7, -10.0], [-9.4, 7.6], [-9.1, 11.7], [-7.2, 18.6], [-2.7, 24.9], [-0.3, 27.4], [2.1, 29.0], [11.4, 33.3], [15.7, 33.6]];
+const pergola: Landmark = {
+  id: 'lake_merritt_pergola',
+  name: 'El Embarcadero Pergola, Lake Merritt',
+  kind: 'monument',
+  built: [1912.6, 1913.5],
+  end: 9999,
+  anchor: [-122.249804, 37.80846],
+  build: b => {
+    const col = '#EDE6D2';
+    b.frame(0, 0, 0, 133.4, () => {
+      const n = 24;
+      const A = resample(PERG_IN, n);
+      const B = resample(PERG_OUT, n);
+      b.color('#D9D2BE').ribbon(A.map(p => [p[0], p[1], 0.4] as V3), B.map(p => [p[0], p[1], 0.4] as V3));
+      b.color(col);
+      for (let i = 0; i <= n; i++) {
+        b.box(A[i][0], A[i][1], 0.4, 0.7, 0.7, 4.0).box(B[i][0], B[i][1], 0.4, 0.7, 0.7, 4.0);
+      }
+      b.polyline(A.map(p => [p[0], p[1], 4.6] as V3), 0.5).polyline(B.map(p => [p[0], p[1], 4.6] as V3), 0.5);
+      b.color('#8C6E4E');
+      for (let i = 0; i <= n; i++) {
+        const dx = B[i][0] - A[i][0];
+        const dy = B[i][1] - A[i][1];
+        b.beam([A[i][0] - dx * 0.15, A[i][1] - dy * 0.15, 5.0], [B[i][0] + dx * 0.15, B[i][1] + dy * 0.15, 5.0], 0.25, 0.35);
+      }
+      // central pavilion (hipped tile roof) and the end pavilions (pyramid roofs)
+      b.color(col).box(-11.5, -1.1, 0.4, 11, 17.9, 5.2);
+      b.color('#B5654A').hip(-11.5, -1.1, 12, 18.9, 5.6, 2.6);
+      for (const y of [-37.65, 35.25]) {
+        b.color(col).box(19.85, y, 0.4, 8.3, 8.2, 5.0);
+        b.color('#B5654A').pyramid(rect(19.85, y, 9.1, 9.0), 5.4, [19.85, y, 8.2]);
+      }
+    });
+  },
+  replaces: [rotRect(3.5, 0, 45, 84, 133.4)],
+  facts: {
+    Built: '1913, City Beautiful improvements of Lake Merritt (Lakeside Park); restored 2007 (Measure DD)',
+    Style: 'Mission Revival: a semicircle of columns carrying a timber trellis, with tiled pavilions',
+    Model: 'outline from OSM; column spacing, heights and roof colours estimated (no photo or drawing downloaded); construction months estimated'
+  },
+  sources: [WIKI + 'Lake_Merritt']
+};
+
+// =================================================================== MILLS COLLEGE, MISSION SAN JOSÉ
+
+// ------------------------------------------------------------ Mills Hall
+// 1871, S. C. Bugbee & Son (NRHP): the Second Empire seminary building Cyrus and Susan Mills
+// moved their school into. OSM outline in a 123.8° frame (65 m main block with three
+// pavilions, a rear wing). From the photo: painted wood (grey-green, white trim), three
+// tall storeys under a slate mansard with dormers, pavilions with higher mansard roofs.
+const millsHall: Landmark = {
+  id: 'mills_hall',
+  name: 'Mills Hall, Mills College',
+  kind: 'building',
+  built: [1870.0, 1871.6],
+  end: 9999,
+  anchor: [-122.182039, 37.779656],
+  build: b => {
+    const wall = '#A9B3AC';
+    const trim = '#F1F0EA';
+    const slate = '#6F767A';
+    b.frame(0, 0, 0, 123.8, () => {
+      const blocks: [number, number, number, number][] = [
+        [6.4, -7.4, 18.0, 65.0], // main block
+        [-16.3, 19.4, 27.8, 13.2] // rear wing
+      ];
+      for (const [cx, cy, sx, sy] of blocks) {
+        b.color(wall).box(cx, cy, -1.5, sx, sy, 15);
+        b.color(trim).box(cx, cy, 13.5, sx + 0.8, sy + 0.8, 0.6);
+        b.color(slate).loft([rect(cx, cy, sx + 0.4, sy + 0.4), rect(cx, cy, sx - 3.5, sy - 3.5)], [14.1, 18.6], {top: true});
+      }
+      // end and centre pavilions with taller mansards
+      for (const [cx, cy, sx, sy, h] of [
+        [6.4, -33.9, 19.5, 12, 21],
+        [6.9, 18.9, 19.5, 12.4, 21],
+        [5, -7.3, 21.5, 15.5, 23]
+      ] as [number, number, number, number, number][]) {
+        b.color(wall).box(cx, cy, -1.5, sx, sy, 15.5);
+        b.color(trim).box(cx, cy, 14, sx + 0.8, sy + 0.8, 0.6);
+        b.color(slate).loft([rect(cx, cy, sx + 0.4, sy + 0.4), rect(cx, cy, sx - 1.6, sy - 1.6), rect(cx, cy, sx - 5, sy - 5)], [14.6, h - 1.5, h], {top: true});
+      }
+      // front porch at the centre pavilion
+      b.color(trim).box(17.6, -7.3, 0, 3, 8, 4.2);
+      b.color('#5E676B').box(17.6, -7.3, 4.2, 3.4, 8.6, 0.4);
+    });
+  },
+  replaces: [rotRect(-7.4, -5.8, 49, 72, 123.8)],
+  facts: {
+    Built: '1871 (S. C. Bugbee & Son) — Mills Seminary moved here from Benicia in 1871; Mills College from 1885',
+    Style: 'Second Empire, painted wood, mansard roofs; National Register of Historic Places',
+    Model: OSM_NOTE + '; storey and mansard heights estimated from the photo; construction start estimated'
+  },
+  sources: [WIKI + 'Mills_College', 'https://npgallery.nps.gov/AssetDetail/NRIS/71000135']
+};
+
+// ------------------------------------------------------------ Mission San José
+// The adobe church (dedicated Apr 22, 1809) was shattered by the Hayward Fault earthquake of
+// Oct 21, 1868; a wooden Gothic church was built over its tiled floor (moved away 1982); the
+// adobe church was reconstructed on the original site and completed in 1985 (Wikipedia).
+// OSM outline in a 261° frame (+y west, the facade on Mission Blvd; +x north): nave
+// 14.6 × 50.4 m, bell tower at the north-west corner (4 × 7.4 m), low north-side rooms. The
+// surviving padres' wing (museum) stands 23 m south. Heights from the 2011 photo (door
+// ≈2.6 m): walls ≈9.5 m, ridge ≈13 m, tower ≈13 m + tiled cap.
+const MSJ: V2 = [-121.919663, 37.533894];
+function adobeChurch(b: MeshBuilder) {
+  const white = '#F1EEE6';
+  const tile = '#A85A3C';
+  b.frame(0, 0, 0, 261, () => {
+    b.color('#8F8576').box(-1.2, 0, -3, 15.6, 51.4, 4); // fieldstone base / floor platform
+    b.color(white).box(-1.2, -0.6, 1, 14.6, 50.4, 8.5);
+    b.color(white).prism([[-8.5, 24.6], [6.1, 24.6], [-1.2, 24.6]], 9.5, 9.5);
+    b.color(tile).gable(-1.2, -0.6, 16.0, 51.8, 9.3, 3.6, true);
+    b.color(white).tri([-8.5, 24.65, 9.5], [6.1, 24.65, 9.5], [-1.2, 24.65, 13.1]); // front gable
+    // bell tower (two bell openings, tiled cap, cross)
+    b.color(white).box(8.2, 20.3, -1, 4.0, 7.4, 13.8);
+    b.color('#5A4A3A').box(8.2, 24.05, 9, 1.4, 0.1, 1.8).box(8.2, 24.05, 5.3, 1.4, 0.1, 1.8);
+    b.color(tile).hip(8.2, 20.3, 4.8, 8.2, 12.8, 1.4);
+    b.color('#3E3A36').beam([8.2, 20.3, 14.2], [8.2, 20.3, 16.2], 0.15);
+    // low rooms on the north side
+    for (const [cy, sy] of [[-9.9, 4.6], [1.3, 12.0], [12.35, 4.1], [-23.2, 4.0]] as V2[]) {
+      b.color(white).box(7.8, cy, 0, 3.4, sy, 5);
+      b.color(tile).hip(7.8, cy, 3.8, sy + 0.4, 5, 1.2);
+    }
+    // buttresses on the south wall
+    b.color('#E7E2D6');
+    for (const y of [-14, -2, 9]) b.loft([rect(-9.6, y, 2.2, 2.6), rect(-8.8, y, 0.6, 2.6)], [0, 8], {top: true});
+    // front steps and door
+    b.color('#A35A44').box(-1.2, 27.5, -2.5, 16, 5, 3.6);
+    b.color('#5B4632').box(-1.2, 24.66, 1.1, 2.0, 0.1, 2.7);
+  });
+}
+const missionSanJose1809: Landmark = {
+  id: 'mission_san_jose_1809',
+  name: 'Mission San José — adobe church (1809)',
+  kind: 'building',
+  built: [1806.5, 1809.31],
+  end: 1868.81,
+  anchor: MSJ,
+  build: adobeChurch,
+  facts: {
+    Mission: 'founded Jun 11, 1797 (Fermín Lasuén), the 14th California mission',
+    Church: 'first permanent adobe church dedicated Apr 22, 1809',
+    Destroyed: 'Oct 21, 1868 Hayward Fault earthquake shattered the walls and roof',
+    Model: 'same massing as the 1985 reconstruction (a near-perfect replica on the original site); construction start estimated'
+  },
+  sources: [WIKI + 'Mission_San_Jos%C3%A9_(California)']
+};
+const missionSanJoseGothic: Landmark = {
+  id: 'mission_san_jose_1869',
+  name: 'St. Joseph’s Church, Mission San José (1869)',
+  kind: 'building',
+  built: [1868.9, 1869.8],
+  end: 1982.3,
+  anchor: MSJ,
+  build: b =>
+    b.frame(0, 0, 0, 261, () => {
+      const white = '#EEECE5';
+      const roof = '#4F5254';
+      b.color(white).box(-1.2, -2, -1, 12, 42, 9);
+      b.color(roof).gable(-1.2, -2, 12.6, 42.6, 8, 6.5, true);
+      // front steeple (square tower, belfry, octagonal spire)
+      b.color(white).box(-1.2, 20.5, -1, 4.6, 4.6, 16);
+      b.color('#D9D6CE').box(-1.2, 20.5, 15, 4.0, 4.0, 4);
+      b.color(roof).pyramid(ngon(-1.2, 20.5, 2.4, 8), 19, [-1.2, 20.5, 31]);
+    }),
+  facts: {
+    Built: 'after the 1868 earthquake: a wood-framed Gothic church over the original red-tiled floor',
+    Moved: '1982, to make way for the reconstruction of the adobe church',
+    Model: 'LOW CONFIDENCE — size and steeple height estimated from a c. 1900 stereo photograph; built and removal dates approximate'
+  },
+  sources: [WIKI + 'Mission_San_Jos%C3%A9_(California)']
+};
+const missionSanJose1985: Landmark = {
+  id: 'mission_san_jose',
+  name: 'Mission San José — reconstructed church',
+  kind: 'building',
+  built: [1982.4, 1985.5],
+  end: 9999,
+  anchor: MSJ,
+  build: adobeChurch,
+  replaces: [rotRect(0, 0, 22, 54, 261)],
+  facts: {
+    Reconstruction: 'completed 1985 by the Committee for the Restoration of Mission San Jose and the Diocese of Oakland — a near-perfect replica with a concealed steel frame',
+    Interior: 'reredos, chandeliers and side altars after the 1830s inventories',
+    Model: OSM_NOTE + '; wall, ridge and tower heights scaled from the 2011 photo'
+  },
+  sources: [WIKI + 'Mission_San_Jos%C3%A9_(California)']
+};
+const missionSanJoseWing: Landmark = {
+  id: 'mission_san_jose_padres_wing',
+  name: 'Mission San José — padres’ quarters (museum)',
+  kind: 'building',
+  built: [1808.5, 1810.0],
+  end: 9999,
+  anchor: MSJ,
+  build: b =>
+    b.frame(0, 0, 0, 261, () => {
+      b.color('#F1EEE6').box(-56.45, 14.6, -1.5, 49.5, 12.5, 6);
+      b.color('#A85A3C').gable(-56.45, 14.6, 50.3, 13.3, 4.5, 2.6, false);
+      // corridor (arcade) on the street side
+      b.color('#A85A3C').box(-56.45, 20.6, 3.6, 49.5, 2.2, 0.35);
+      b.color('#E5DFD0');
+      for (let x = -80; x <= -33; x += 3.6) b.box(x, 21.2, 0, 0.6, 0.6, 3.6);
+    }),
+  replaces: [rotRect(-56.45, 12.35, 52, 21, 261)],
+  facts: {
+    Built: 'part of the mission quadrangle (c. 1810, LOW CONFIDENCE date); the only surviving original adobe, saved by the Native Sons of the Golden West (1915, 1950) as the museum',
+    Model: OSM_NOTE + '; roof, corridor and heights estimated'
+  },
+  sources: [WIKI + 'Mission_San_Jos%C3%A9_(California)']
+};
+
+// =================================================================== ALAMEDA, RICHMOND, ALBANY, MOUNT DIABLO
+
+// ------------------------------------------------------------ USS Hornet (CV-12)
+// Museum ship at Pier 3 of the former NAS Alameda, opened Oct 17, 1998. Essex class:
+// 872 ft overall, 820 ft at the waterline, beam 93 ft (Wikipedia). OSM flight-deck outline
+// (270 × 65 m with the SCB-125 angled deck, 90.1° frame: bow east, island to starboard =
+// south) and the island parts. Hangar deck ≈9 m, flight deck ≈16 m above the waterline
+// (estimated from the photo); island, funnel and lattice mast heights estimated.
+const HORNET_DECK: V2[] = [[27.7, 134.5], [26.2, 136.2], [-1.8, 138.2], [-3.2, 136.9], [-6.0, 103.3], [-9.4, 100.5], [-8.7, 92.4], [-10.2, 88.3], [-9.3, 82.0], [-8.8, 72.6], [-11.7, 66.3], [-14.6, 30.9], [-24.6, 30.0], [-27.6, -6.2], [-27.4, -12.2], [-33.0, -13.1], [-34.7, -14.3], [-34.6, -15.6], [-27.3, -16.0], [-26.4, -49.8], [-25.1, -61.8], [-27.2, -66.5], [-25.3, -81.6], [-24.4, -110.7], [-25.9, -115.0], [-24.2, -128.9], [-23.3, -131.9], [6.3, -129.3], [7.7, -127.2], [11.9, -72.5], [14.8, -67.8], [12.8, -62.1], [20.2, -57.3], [22.1, -51.9], [28.8, -52.4], [30.0, -33.8], [20.3, -33.1], [15.7, -24.7], [17.9, -8.5], [21.4, 11.8], [22.2, 22.2], [21.0, 36.7], [23.8, 36.7], [24.4, 43.7], [21.8, 44.9], [24.0, 79.1], [26.5, 79.0], [28.5, 88.3], [27.1, 92.7], [30.0, 95.3], [30.1, 98.0], [25.4, 99.1]];
+const ussHornet: Landmark = {
+  id: 'uss_hornet_museum',
+  name: 'USS Hornet (CV-12) museum ship',
+  kind: 'monument',
+  built: [1998.77, 1998.79],
+  end: 9999,
+  anchor: [-122.30292, 37.77272],
+  build: b =>
+    b.frame(0, 0, 0, 90.1, () => {
+      const cx = 3.7;
+      const hull: V2[] = [[cx - 9.5, -122], [cx + 9.5, -122], [cx + 14.15, -105], [cx + 14.15, 70], [cx + 9, 110], [cx, 128], [cx - 9, 110], [cx - 14.15, 70], [cx - 14.15, -105]];
+      b.color('#61676D').prism(hull, -1, 9);
+      const upper: V2[] = [[cx - 13, -126], [cx + 14, -126], [cx + 17.5, -105], [cx + 17.5, 72], [cx + 12, 118], [cx, 136], [cx - 12, 118], [cx - 17.5, 72], [cx - 17.5, -105]];
+      b.color('#787E85').prism(upper, 9, 15.5);
+      b.color('#4D5257').prism(HORNET_DECK, 15.5, 16.4);
+      b.color('#E9E9E2').box(cx, 0, 16.45, 0.6, 240, 0.05); // centreline
+      // island, bridge, funnel and mast
+      const island: V2[] = [[12.7, 27.7], [11.2, -3.4], [12.4, -5.1], [16.1, -5.2], [17.7, -3.8], [20.4, 13.8], [20.7, 23.8], [19.4, 32.1], [18.5, 33.4], [16.8, 33.8], [13.5, 32.0]];
+      b.color('#8A9096').prism(island, 16.4, 26.5);
+      b.color('#9AA0A6').prism([[13.2, 4.5], [13.8, 2.8], [14.8, 2.2], [16.0, 2.7], [17.6, 12.0], [18.2, 27.5], [17.9, 28.4], [15.6, 29.1], [13.9, 26.7], [13.3, 23.5]], 26.5, 31);
+      b.color('#5E6369').box(16.3, 17, 31, 3.8, 7, 3.5);
+      b.color('#2E3236').box(16.3, 17, 34.5, 3.6, 6.8, 0.4);
+      b.color('#6D7378').beam([15.2, 8, 31], [15.2, 8, 47], 0.8);
+      b.box(15.2, 8, 42, 6, 1.2, 0.8);
+    }),
+  replaces: [rotRect(1, 3, 70, 275, 90.1)],
+  facts: {
+    Ship: 'Essex-class carrier, laid down Aug 3, 1942, commissioned Nov 29, 1943; recovered the Apollo 11 and 12 crews (1969); decommissioned 1970',
+    Museum: 'opened Oct 17, 1998 on the southernmost pier of the former Naval Air Station Alameda (closed 1997)',
+    Size: '872 ft (266 m) overall, beam 93 ft at the waterline; angled flight deck since the SCB-27A/125 refits',
+    Model: 'flight deck and island outline from OSM; deck heights and mast estimated from the photo; shown from the museum opening'
+  },
+  sources: [WIKI + 'USS_Hornet_(CV-12)', WIKI + 'USS_Hornet_Museum']
+};
+
+// ------------------------------------------------------------ Mount Diablo Summit Building
+// Sandstone summit building and beacon tower built by the Civilian Conservation Corps,
+// 1939–42 (Wikipedia caption); the "Eye of Diablo" aviation beacon (1928, Standard Oil) sits
+// on the tower and is relit every Dec 7. OSM outline in a 145.6° frame (26 × 12 m) with the
+// tower part. The terrain mesh rounds the 1,173 m peak to ≈1,152 m and the viewer's height
+// lookup (240 m) to ≈1,127 m, so the model is lifted onto the mesh surface.
+const DIABLO: V2 = [-121.914189, 37.881754];
+const DIABLO_MESH_TOP = 1152.4;
+const diabloSummit: Landmark = {
+  id: 'mount_diablo_summit_building',
+  name: 'Mount Diablo Summit Building and beacon',
+  kind: 'building',
+  built: [1939.3, 1942.0],
+  end: 9999,
+  anchor: DIABLO,
+  build: b => {
+    const dz = Math.max(0, DIABLO_MESH_TOP - elevationAt(DIABLO[0], DIABLO[1]));
+    const stone = '#B39A78';
+    b.frame(0, 0, dz, 145.6, () => {
+      const main: V2[] = [[5.1, -7.0], [2.4, 4.2], [3.7, 6.2], [3.2, 8.6], [1.1, 10.0], [-5.7, 8.1], [-2.5, -8.7], [-5.8, -9.2], [-5.1, -13.7], [4.0, -12.2], [3.0, -7.4]];
+      b.color(stone).prism(main, -8, 5.5);
+      b.color('#A08867').prism(scaleRing(main, 1.02), 5.5, 6.4); // parapet of the roof promenade
+      // beacon tower
+      const tower = ngon(0.5, 6.8, 3.4, 8);
+      b.color(stone).prism(tower, -8, 11.5);
+      b.color('#A08867').prism(ngon(0.5, 6.8, 3.7, 8), 11.5, 12.3);
+      b.color('#C9442F').cylinder(0.5, 6.8, 0.9, 12.3, 13.8, 8);
+      b.color('#565656').dome(0.5, 6.8, 1.0, 13.8, 0.6, 8, 2);
+    });
+  },
+  replaces: [rotRect(0, -1.5, 15, 28, 145.6)],
+  facts: {
+    Built: '1939 – 1942 by the Civilian Conservation Corps, of sandstone quarried on the mountain; museum and visitor centre',
+    Beacon: 'the "Eye of Diablo" (Standard Oil aviation beacon, 1928) on the tower; relit every Pearl Harbor Day since 1964',
+    Summit: '3,849 ft (1,173 m)',
+    Model: OSM_NOTE + '; heights estimated (no measured drawing); placed on the terrain mesh’s rounded summit (≈1,152 m)'
+  },
+  sources: [WIKI + 'Mount_Diablo']
+};
+
+// ------------------------------------------------------------ Golden Gate Fields
+// Opened Feb 1, 1941 with its grandstand built against the eastern slope of Fleming Point on
+// filled marsh; one-mile main track, 7 f 132 ft turf course (1972); last race Jun 9, 2024
+// (Wikipedia). OSM grandstand outline in a 162.4° frame (+x up the hill to the WSW); the
+// track oval (402 m straights, 128 m turns) runs along the grandstand front at track level
+// (terrain ≈3.5 m). Grandstand section, roof height and the infield layout estimated from
+// the infield photo.
+const GGF: V2 = [-122.313132, 37.884133];
+const goldenGateFields: Landmark = {
+  id: 'golden_gate_fields',
+  name: 'Golden Gate Fields',
+  kind: 'stadium',
+  built: [1940.0, 1941.08],
+  end: 9999,
+  anchor: GGF,
+  build: b => {
+    const brg = 162.4;
+    const dzT = groundDz(GGF, brg, -183, 0) + 0.35;
+    b.frame(0, 0, 0, brg, () => {
+      // track oval: dirt main track, turf course, infield
+      const stadiumShape = (r: number, n = 18): V2[] => [
+        ...ellArc(-183, 201, r, r, 0, Math.PI, n),
+        ...ellArc(-183, -201, r, r, Math.PI, 2 * Math.PI, n)
+      ];
+      b.color('#9C7A58').cap(stadiumShape(140), dzT, [stadiumShape(118)]);
+      b.color('#5F9A4B').cap(stadiumShape(113), dzT + 0.05, [stadiumShape(92)]);
+      b.color('#7FB061').cap(stadiumShape(92), dzT + 0.02);
+      b.color('#6F9EAE').cap(ellipse(-215, -70, 28, 60, 16), dzT + 0.1).cap(ellipse(-215, 80, 26, 55, 16), dzT + 0.1); // infield lakes
+      b.color('#2F5E3E').box(-100, 0, dzT, 2, 72, 5.2); // tote board
+      b.color('#E8E8E2').polyline(stadiumShape(140.5, 24).map(p => [p[0], p[1], dzT + 1.1] as V3), 0.15); // outer rail
+      // grandstand: building mass on the slope, raked seats facing the track, cantilever roof
+      const ring: V2[] = [[-33.3, -15.7], [-46.6, -126.0], [14.4, -133.1], [26.6, -30.5], [29.2, -24.9], [34.9, -7.7], [44.8, -5.4], [55.7, 2.9], [61.0, 12.3], [62.2, 24.7], [59.1, 34.1], [55.3, 39.8], [45.3, 47.1], [47.6, 64.4], [28.3, 67.8], [25.2, 95.7], [20.2, 114.3], [11.4, 134.3], [5.6, 138.4], [-9.6, 131.2], [-22.2, 136.7], [-29.6, 133.2], [-28.3, 120.5], [-19.0, 101.8], [-29.6, 98.1], [-25.0, 79.1], [-42.1, 80.6], [-46.6, 44.1], [-36.2, 76.1], [-24.6, 75.1], [-28.4, 25.1], [-35.4, 23.3], [-32.8, -8.8]];
+      b.color('#D8D3C4').prism(ring, dzT - 0.5, 4.0);
+      const front = resample([[-44, -122], [-36, -8], [-30, 68], [-24, 128]], 12);
+      const back = front.map(([x, y]) => [x + 40, y] as V2);
+      b.color('#3F6E55').ribbon(front.map(p => [p[0], p[1], 2.0] as V3), back.map(p => [p[0], p[1], 15.0] as V3));
+      b.color('#D8D3C4').wallProfile(back, dzT, 19.5).wallProfile(front, dzT, 2.0);
+      b.color('#EDEBE4').ribbon(front.map(p => [p[0] - 3, p[1], 19.5] as V3), back.map(p => [p[0] + 2, p[1], 19.5] as V3));
+      b.color('#9C9A92');
+      for (let i = 0; i <= 12; i += 2) b.beam([front[i][0] + 2, front[i][1], 2], [front[i][0] + 2, front[i][1], 19.5], 0.6);
+      // clubhouse on the hill side
+      b.color('#E2DCCB').prism([[26.6, -30.5], [34.9, -7.7], [55.7, 2.9], [62.2, 24.7], [55.3, 39.8], [45.3, 47.1], [26, 50]], dzT, 12);
+    });
+  },
+  replaces: [rotRect(8, 2, 115, 280, 162.4)],
+  facts: {
+    Opened: 'Feb 1, 1941 (grandstand against Fleming Point, track on filled marsh); turf course Feb 22, 1972',
+    Facilities: 'one-mile main track, 9/10-mile turf course, grandstand ≈8,000 and clubhouse ≈5,200 seats',
+    Closed: 'final race card Jun 9, 2024, after 83 years',
+    Model: 'grandstand outline from OSM; seating section, roof and clubhouse heights, and the oval geometry (one mile: 402 m straights, 128 m turns) estimated'
+  },
+  sources: [WIKI + 'Golden_Gate_Fields']
+};

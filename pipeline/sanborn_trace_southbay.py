@@ -794,6 +794,32 @@ def conf_of(f):
     return "medium" if n >= 3 and rms <= 3 else "low"
 
 
+def attributes_by_pixel(key, cfg, rows):
+    """names / uses / storeys read off the sheets (control/san_jose/attributes_px.json: [{key, px, name, use, stories,
+    note}] on the 1915 scan) attached to the footprint containing that pixel; on the 1950 scan the pixel is moved by
+    the registration and the entry applies only where `carry` is true (the building is still drawn there)."""
+    from shapely.geometry import Point, Polygon
+    f = CONTROL / "attributes_px.json"
+    if not f.exists():
+        return {}
+    out = {}
+    base = cfg.get("registered_to", key)
+    for e in json.load(open(f)):
+        if e["key"] != base or (base != key and not e.get("carry")):
+            continue
+        px = np.asarray(e["px"], float)
+        if base != key:
+            T = np.vstack([np.array(cfg["T"]), [0, 0, 1]])
+            px = (np.linalg.inv(T) @ np.array([px[0], px[1], 1.0]))[:2]
+        hit = [r for r in rows if Polygon(r["px_ring"]).buffer(0).contains(Point(*px))]
+        if hit:
+            r = min(hit, key=lambda r: Polygon(r["px_ring"]).area)
+            out[r["id"]] = {k: v for k, v in e.items() if k in ("name", "use", "stories", "material") and v is not None}
+        else:
+            log(key, "attribute not matched:", e.get("name"), e["px"])
+    return out
+
+
 def assemble(areas=None):
     import geopandas as gpd
     import shapely
@@ -829,6 +855,7 @@ def assemble(areas=None):
             map_year, vlabel = VOLUMES[vol]
             rec = W.sheet_rec(key)
             rows = json.load(open(INTERIM / f"{key}.json"))
+            by_px = attributes_by_pixel(key, cfg, rows)
             blocks = {b["name"]: b for b in G.get("blocks", [])}
             bblocks = {b["name"]: b for b in Gb.get("blocks", [])}
             W_, H_ = Image.open(G["img"]).size
@@ -874,19 +901,23 @@ def assemble(areas=None):
                 if tie_rms:  # tied to a neighbouring sheet: its fit error adds
                     fitq["rms"] = math.hypot(fitq.get("rms", 0), tie_rms)
                 cls, a = r["cls"], r["area_m2"]
-                att = attrs.get(r["id"], {})
+                att = attrs.get(r["id"], {}) or by_px.get(r["id"], {})
                 if att.get("drop"):
                     continue
                 material = {"frame": "frame", "brick": "brick", "stone": "concrete" if map_year >= 1950 else "stone",
                             "fireproof": "unknown" if map_year < 1900 else "concrete", "iron": "iron"}[cls]
                 residential = bool(base.get("residential"))
-                if cls == "frame":
-                    st, us = ((1, "shed") if a < 30 else (1, "dwelling") if residential and a <= 300
-                              else (1, "warehouse") if a >= 400 else (2, "store") if not residential else (1, "dwelling"))
+                if cls == "frame":  # San José 1915: one-storey cottages in the residential blocks, 1-2 storey stores downtown
+                    if a < 30:
+                        st, us = 1, "shed"
+                    elif residential:
+                        st, us = (1, "dwelling") if a <= 300 else (2, "other")
+                    else:
+                        st, us = (1, "store") if a < 400 else (1, "warehouse")
                 elif cls == "iron":
                     st, us = 1, "shed"
                 else:
-                    st, us = 2, "store" if not residential else "store"
+                    st, us = 2, "store"
                 rule = "default (rule: material, size, district)"
                 if att and "stories" in att:
                     stories, ssrc = att["stories"], "map (read from the sheet)"

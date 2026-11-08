@@ -204,7 +204,9 @@ def main():
 
     # 1 institutional land / class without any recorded year
     inst_imp = g.institutional & ~g.recorded & (g.area_m2 >= 40)
-    flag(inst_imp, "institutional_imputed", "no recorded year on " + g.inst_kind.fillna("").astype(str) + " land")
+    why = np.where(g.campus_id.notna(), "no recorded year on " + g.inst_kind.fillna("").astype(str) + " land",
+                   "no recorded year (Overture class " + cls + ")")
+    flag(inst_imp, "institutional_imputed", why)
 
     # 2 campus-wide shared year (parcel or vendor year on every building)
     rec = g[g.recorded & g.campus_id.notna()]
@@ -251,11 +253,16 @@ def main():
     cnt = cdf.groupby("c").size()
     top = cdf.groupby("c").y.agg(lambda s: s.value_counts().index[0])
     topn = cdf.groupby("c").y.agg(lambda s: s.value_counts().iloc[0])
-    sus = (cnt >= 12) & (topn / cnt >= 0.6) & (top % 5 == 0)
+    # placeholders are pre-war round years (1900, 1910, 1920, 1925 ...); a post-war tract often really was
+    # finished in one (round or not) year, so those cells are only counted for context
+    rnd = ((top % 10 == 0) & (top <= 1950)) | ((top % 5 == 0) & (top <= 1930))
+    sus = (cnt >= 12) & (topn / cnt >= 0.6) & rnd
+    late_round = int(((cnt >= 12) & (topn / cnt >= 0.6) & (top % 5 == 0) & ~rnd).sum())
     sus_cells = set(sus[sus].index)
     m = np.isin(cell, list(sus_cells)) & (cdf.y.values == top.reindex(cell).values)
     flag(m, "round_year_cluster", [f"cell shares {y:.0f}" for y in np.floor(yr)])
     round_cells = pd.DataFrame({"cell": list(sus_cells)})
+    round_cells.attrs["late"] = late_round
 
     # 6 survey points vs built year
     sv = survey_points()
@@ -286,7 +293,7 @@ def main():
     flag((yr < 1850) & (g.conf == "exact").values, "pre1850_recorded", [f"{y:.0f}" for y in yr])
 
     F = pd.concat(flags, ignore_index=True)
-    F = F.merge(g[["id", "name", "county", "campus", "campus_class", "area_m2", "year", "raw", "conf", "px", "py",
+    F = F.merge(g[["id", "name", "county", "campus", "campus_class", "inst_kind", "area_m2", "year", "raw", "conf", "px", "py",
                    "research_year", "fixed"]].assign(height=h), left_on="i", right_index=True)
     F.drop(columns=["i"]).to_parquet(REPORTS / "region_year_audit_flags.parquet")
     write_report(g, F, shared, round_cells, both, dis, rp, h)
@@ -297,6 +304,7 @@ def fmt_row(r):
     nm = r["name"] if isinstance(r["name"], str) else "(unnamed)"
     camp = r["campus"] if isinstance(r.get("campus"), str) else ""
     fx = f" → **{r.research_year:.0f}** (research)" if r.fixed else ""
+    camp = camp or (f"({r.inst_kind})" if isinstance(r.get("inst_kind"), str) and r.inst_kind else "")
     return (f"| {nm[:44]} | {camp[:34]} | {r.county} | {r.area_m2:,.0f} | {r.height:.0f} | {r.year:.0f}{fx} | "
             f"{r.why} | {r.py:.5f}, {r.px:.5f} |")
 
@@ -352,22 +360,24 @@ def write_report(g, F, shared, round_cells, both, dis, rp, h):
     L += ["", "## institutional_imputed — no recorded year on institutional land", "",
           "Exempt parcels (universities, schools, hospitals, churches, government, military, airports) have no "
           "roll year; the pipeline borrows the median of nearby recorded buildings (often a 1950s–80s tract or a "
-          "placeholder), so historic campuses appear decades late. Worst campuses by unrecorded floor area "
-          "(≥ 1,000 m² buildings, not yet fixed):", "",
+          "placeholder), so historic campuses appear decades late. Campuses by floor area without a recorded year "
+          "(*fixed* = footprints that now have a researched row):", "",
           "| campus / land use | kind | county | buildings | m² | fixed |", "|---|---|---|--:|--:|--:|"]
     s = F[(F.flag == "institutional_imputed")]
-    agg = s.assign(big=s.area_m2 >= 1000).groupby(["campus", "campus_class", "county"], dropna=False).agg(
-        n=("id", "size"), m2=("area_m2", "sum"), fixed=("fixed", "sum"), big=("big", "sum"))
+    s = s.assign(campus=s.campus.fillna("(no land-use polygon; Overture class)"),
+                 campus_class=s.campus_class.fillna(s.inst_kind.fillna("")))
+    agg = s.groupby(["campus", "campus_class", "county"], dropna=False).agg(
+        n=("id", "size"), m2=("area_m2", "sum"), fixed=("fixed", "sum"))
     for (c, k, cty), r in agg.sort_values("m2", ascending=False).head(40).iterrows():
-        L.append(f"| {c if isinstance(c, str) else '(institutional class, no campus polygon)'} | {k} | {cty} | "
-                 f"{r.n} | {r.m2:,.0f} | {r.fixed} |")
+        L.append(f"| {c} | {k} | {cty} | {int(r.n)} | {r.m2:,.0f} | {int(r.fixed)} |")
     L += ["", "Largest open examples:", "", table(s[~s.fixed], 30)]
     L += ["", "## campus_shared_year — one year on a whole campus", "",
           "A parcel / vendor year copied onto every building of a campus (pitfall 3); 1920 at UC Berkeley is "
           "FEMA/Lightbox's placeholder, which `assign_years` treats as a spike (upper bound) and then imputes.", "",
           "| campus | kind | county | year | same / dated |", "|---|---|---|--:|--:|"]
     for _, r in shared.sort_values("n_same", ascending=False).head(40).iterrows():
-        L.append(f"| {r.campus} | {r.kind} | {r.county} | {r.year:.0f} | {r.n_same} / {r.n_dated} |")
+        L.append(f"| {r.campus if isinstance(r.campus, str) else '(unnamed)'} | {r.kind} | {r.county} | {r.year:.0f} | "
+                 f"{r.n_same} / {r.n_dated} |")
     L += [f"", f"{len(shared)} campuses in total."]
     for c, title, txt in [
         ("campus_outlier", "campus_outlier — ≥ 40 years off the campus neighbours",
@@ -377,8 +387,10 @@ def write_report(g, F, shared, round_cells, both, dis, rp, h):
          "SF's height floors applied to the region: ≥ 35 m before 1920, ≥ 50 m before 1950, ≥ 25 m before 1900. "
          "Most are real (Oakland City Hall, Tribune Tower, Cathedral Building) or a newer tower on an old parcel."),
         ("round_year_cluster", "round_year_cluster — placeholder years",
-         f"{len(round_cells)} 250 m cells where ≥ 12 buildings and ≥ 60 % share one round year (x0/x5): "
-         "parcel or vendor placeholders not caught by the per-source spike test."),
+         f"{len(round_cells)} 250 m cells where ≥ 12 buildings and ≥ 60 % share one pre-war round year "
+         "(x0 up to 1950, x5 up to 1930): parcel or vendor placeholders not caught by the per-source spike test. "
+         f"(Another {round_cells.attrs.get('late', 0)} cells share a post-war round year; those are mostly real "
+         "one-year tracts and are not flagged.)"),
         ("survey_disagrees", "survey_disagrees — historic survey year vs built year",
          f"OHP BERD / San José HRI single-building points ({len(both):,} matched to a footprint, inside or "
          f"≤ 10 m) whose year differs from the built year by > 15 y ({len(dis):,}). 'within 10 m' cases are "

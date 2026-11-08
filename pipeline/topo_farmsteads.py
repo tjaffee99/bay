@@ -57,6 +57,7 @@ DEBUG_DIR = TOPO_INTERIM / "debug"
 OUT_DIR = MANUAL / "farmsteads"
 
 TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
+LINE_BAND = 0.10        # mm: a line passing this close to a blob's centre runs through it
 DETECTOR_VERSION = 1
 
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
@@ -376,9 +377,11 @@ def detect_symbols(img, g, debug=None):
         solidity = a / max(hull.sum(), 1)
         (rw, rh) = cv2.minAreaRect(c)[1]
         rect_fill = a / max((rw + 1) * (rh + 1), 1)
+        tri_area, _ = cv2.minEnclosingTriangle(c.astype(np.float32))
+        tri_fill = cv2.contourArea(c) / max(tri_area, 1)
         dark = float(np.median(mn[y:y + h, x:x + w][sub > 0]))
         recs.append({"i": i, "x": cx, "y": cy, "area_mm2": float(area_mm2[i]), "elong": elong,
-                     "solidity": float(solidity), "rect_fill": float(rect_fill), "dark": dark,
+                     "solidity": float(solidity), "rect_fill": float(rect_fill), "tri_fill": float(tri_fill), "dark": dark,
                      "w": int(w), "h": int(h), "theta": theta})
     sym_ok = np.zeros(n, bool)
     for r in recs:
@@ -393,6 +396,10 @@ def detect_symbols(img, g, debug=None):
     min_letter = 0.2 * ppm
     ann_in, ann_out = 0.45 * ppm, 1.2 * ppm
     thick_t = max(2.5, 0.13 * ppm)
+    thetas = np.deg2rad(np.arange(0, 180, 3))
+    line_band = LINE_BAND * ppm
+    corridor = 0.32 * ppm
+    side_min = int(0.35 * ppm * 2)          # ~0.35 mm of a 2 px line on each side
     # big lettering: thick (>= 0.34 mm) ink masses that are not symbols (stems, bowls of
     # large serif capitals); their hairlines are often too faint to connect the serifs
     dtc = cv2.distanceTransform(core, cv2.DIST_L2, 3)
@@ -448,24 +455,43 @@ def detect_symbols(img, g, debug=None):
         # thick strokes (letter stems, >= ~0.26 mm) joined to the blob through light ink
         dtw = cv2.distanceTransform(inkw, cv2.DIST_L2, 3)
         resid_thick = int((comp & (dtw >= thick_t) & ~symw).sum())
-        # on a line: the blob's own dark component runs straight through its centre (rails)
+        # on a line: a straight dark line (rail, road casing at a crossing) runs through
+        # the blob, with ink on both sides of it. A house beside a road has the casing at
+        # >= half its width from its centre; a lane ending at a house has ink on one side.
         on_line = False
-        od = int(np.bincount(dl[own]).argmax())
-        if od > 0 and leaving[od]:
-            ys_, xs_ = np.nonzero((dl == od) & ~symw)
-            if len(xs_) > 20:
-                dx, dy = xs_ - ccx, ys_ - ccy
-                rr = np.hypot(dx, dy)
-                sel = (rr > ann_in) & (rr < ann_out)
-                if sel.sum() > 20:
-                    P = np.column_stack([dx[sel], dy[sel]])
-                    cov = P.T @ P / len(P)
-                    wv, vv = np.linalg.eigh(cov)
-                    u = vv[:, 1]
-                    along = P @ u
-                    perp = np.abs(P @ np.array([-u[1], u[0]]))
-                    if (np.median(perp) < 0.12 * ppm and (along > 0).mean() > 0.25 and (along < 0).mean() > 0.25):
-                        on_line = True
+        if touches:
+            ys_, xs_ = np.nonzero((inkw > 0) & ~symw)
+            dx, dy = xs_ - ccx, ys_ - ccy
+            rr = np.hypot(dx, dy)
+            sel = (rr > ann_in) & (rr < ann_out)
+            if sel.sum() > 2 * side_min:
+                dx, dy = dx[sel], dy[sel]
+                for th in thetas:
+                    ux, uy = math.cos(th), math.sin(th)
+                    dd = -dx * uy + dy * ux
+                    al = dx * ux + dy * uy
+                    near = np.abs(dd) < corridor
+                    if near.sum() < 2 * side_min:
+                        continue
+                    # lines at offset d (1 px bins) with ink on both sides along them
+                    bins = np.round(dd[near]).astype(int)
+                    alp = al[near] > 0
+                    off = int(corridor) + 1
+                    pos = np.bincount(bins[alp] + off, minlength=2 * off + 1)
+                    neg = np.bincount(bins[~alp] + off, minlength=2 * off + 1)
+                    # 3 px wide bands
+                    pos3 = np.convolve(pos, [1, 1, 1], "same")
+                    neg3 = np.convolve(neg, [1, 1, 1], "same")
+                    both = (pos3 >= side_min) & (neg3 >= side_min)
+                    if not both.any():
+                        continue
+                    offs = np.nonzero(both)[0] - off
+                    if np.abs(offs).min() < line_band:
+                        on_line = True          # a line straight through the blob
+                        break
+                    if (offs < -1.5).any() and (offs > 1.5).any():
+                        on_line = True          # between two parallel lines: inside a road
+                        break
         # holes (letter counters) near the blob, for glyphs not attached to lines
         holes = 0
         if not touches:
@@ -522,7 +548,11 @@ def detect_symbols(img, g, debug=None):
         if r["big_text"]:
             reasons.append("bigtext")         # next to the strokes of large lettering
         if r["on_line"]:
-            reasons.append("online")          # knot on a rail / heavy line
+            reasons.append("online")          # knot on a rail / road crossing
+        if r["tri_fill"] > 0.8 and r["area_mm2"] >= 0.22:
+            reasons.append("triangle")        # triangulation station, letter wedge
+        if not r["touches"] and r["resid_dark_mm2"] > 0.04:
+            reasons.append("glyph2")          # isolated glyph: other dark strokes around it
         if r["holes"] >= 1:
             reasons.append("counter")         # a letter with a counter (a, e, o, R …)
         if r["letters_near"] >= 2:
@@ -557,3 +587,154 @@ def detect_symbols(img, g, debug=None):
     if debug is not None:
         debug["all"] = recs
     return keep, stats
+
+
+# ----------------------------------------------------------------------------- per sheet
+def sheet_path(m) -> Path:
+    return MAP_CACHE / f"{m['id']}.json"
+
+
+def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
+    """Download, detect, georeference one sheet; cache the result as JSON."""
+    out = sheet_path(m)
+    if out.exists():
+        res = json.loads(out.read_text())
+        if res.get("detector_version") == DETECTOR_VERSION:
+            return res
+    import pyproj
+    TOPO_RAW.mkdir(parents=True, exist_ok=True)
+    pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
+    download_file(m["pdf_url"], pdf)
+    img, g = read_geopdf(pdf)
+    log(f"{m['quad']} {m['edition_year']} 1:{m['scale']}: {img.shape[1]}x{img.shape[0]} px, "
+        f"{g['px_per_mm'] * 25.4:.0f} ppi, {g['m_per_px']:.2f} m/px")
+    keep, stats = detect_symbols(img, g)
+    crs = crs_for(g["proj"])
+    if keep:
+        X, Y = g["px_to_proj"]([r["x"] for r in keep], [r["y"] for r in keep])
+        lon, lat = to_wgs84(crs, X, Y)
+    else:
+        lon, lat = [], []
+    nx, ny = g["px_to_proj"](g["neat_px"][:, 0], g["neat_px"][:, 1])
+    nlon, nlat = to_wgs84(crs, nx, ny)
+    syms = [{"lon": round(float(a), 7), "lat": round(float(b), 7), "px": [round(r["x"], 1), round(r["y"], 1)],
+             "area_mm2": round(r["area_mm2"], 4), "score": round(r["score"], 3)}
+            for r, a, b in zip(keep, lon, lat)]
+    meta = m.get("meta") or fetch_meta(m)
+    res = {"detector_version": DETECTOR_VERSION, "id": m["id"], "quad": m["quad"], "scale": m["scale"],
+           "edition_year": m["edition_year"], "survey_year": meta.get("survey_year"),
+           "date_on_map": meta.get("date_on_map"), "edit_year": meta.get("edit_year"),
+           "photo_year": meta.get("photo_year") or meta.get("aerial_photo_year"),
+           "field_check_year": meta.get("field_check_year"),
+           "scan_quality": meta.get("scan_quality"), "woodland_tint": meta.get("woodland_tint"),
+           "edition": m.get("edition"), "source_url": m["pdf_url"], "metadata_url": m.get("meta_url"),
+           "m_per_mm": g["m_per_px"] * g["px_per_mm"], "stats": stats,
+           "neatline": [[round(float(a), 7), round(float(b), 7)] for a, b in zip(nlon, nlat)],
+           "symbols": syms}
+    MAP_CACHE.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(res))
+    if debug_crops:
+        write_debug(img, keep, m, debug_crops)
+    del img
+    if not keep_raw:
+        pdf.unlink(missing_ok=True)
+    return res
+
+
+def write_debug(img, keep, m, n_crops):
+    """A few overlay crops (kept symbols circled) for eyeballing."""
+    import cv2
+    DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+    rng = np.random.default_rng(int(m["id"]) % 1000)
+    H, W, _ = img.shape
+    for k in range(n_crops):
+        if not keep:
+            break
+        r = keep[rng.integers(len(keep))]
+        y0, x0 = int(max(r["y"] - 450, 0)), int(max(r["x"] - 600, 0))
+        a = img[y0:y0 + 900, x0:x0 + 1200].copy()
+        for q in keep:
+            x, y = q["x"] - x0, q["y"] - y0
+            if 0 <= x < a.shape[1] and 0 <= y < a.shape[0]:
+                cv2.circle(a, (int(x), int(y)), 12, (0, 200, 0), 2)
+        cv2.imwrite(str(DEBUG_DIR / f"{m['id']}_{m['quad'].replace(' ', '_')}_{m['edition_year']}_{k}.jpg"),
+                    a[:, :, ::-1], [cv2.IMWRITE_JPEG_QUALITY, 85])
+
+
+# ----------------------------------------------------------------------------- farmsteads
+TOWN_RADIUS_M = 150
+TOWN_MAX = 8            # more than this many other symbols within TOWN_RADIUS_M: a town
+FARMSTEAD_M = 60
+
+
+def local_xy(lon, lat, lat0):
+    k = 111320.0
+    return np.column_stack([np.asarray(lon) * k * math.cos(math.radians(lat0)), np.asarray(lat) * k])
+
+
+def farmsteads_of_sheet(res: dict):
+    """Town filter + grouping of one sheet's symbols -> (farmstead features, town polygons)."""
+    from scipy.spatial import cKDTree
+    from shapely.geometry import MultiPoint, mapping
+    from shapely.ops import unary_union
+    syms = res["symbols"]
+    if not syms:
+        return [], []
+    lon = np.array([s["lon"] for s in syms]); lat = np.array([s["lat"] for s in syms])
+    area = np.array([s["area_mm2"] for s in syms]); score = np.array([s["score"] for s in syms])
+    lat0 = float(lat.mean())
+    P = local_xy(lon, lat, lat0)
+    t = cKDTree(P)
+    cnt = np.array([len(v) - 1 for v in t.query_ball_point(P, TOWN_RADIUS_M)])
+    core = cnt > TOWN_MAX
+    # town = town cores and every symbol within TOWN_RADIUS_M of one
+    town = core.copy()
+    if core.any():
+        tc = cKDTree(P[core])
+        d, _ = tc.query(P, distance_upper_bound=TOWN_RADIUS_M)
+        town |= np.isfinite(d)
+    towns = []
+    if core.any():
+        from shapely.geometry import Point
+        k = 111320.0 * math.cos(math.radians(lat0))
+        polys = [Point(x, y).buffer(TOWN_RADIUS_M, 8) for x, y in P[town]]
+        u = unary_union(polys)
+        geoms = getattr(u, "geoms", [u])
+        for gm in geoms:
+            n_in = int(sum(1 for x, y in P[town] if gm.contains(Point(x, y))))
+            if n_in < TOWN_MAX + 1:
+                continue
+            ring = [(x / k, y / 111320.0) for x, y in gm.simplify(20).exterior.coords]
+            towns.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[round(a, 6), round(b, 6)] for a, b in ring]]},
+                          "properties": {"map_year": map_year(res), "quad": res["quad"], "scale": res["scale"], "n_symbols": n_in}})
+    # farmsteads: largest symbol first; symbols within FARMSTEAD_M of it are its outbuildings
+    rural = np.nonzero(~town)[0]
+    order = rural[np.argsort(-area[rural])]
+    assigned = np.zeros(len(syms), bool)
+    assigned[town] = True
+    feats = []
+    for i in order:
+        if assigned[i]:
+            continue
+        nb = [j for j in t.query_ball_point(P[i], FARMSTEAD_M) if not assigned[j]]
+        for j in nb:
+            assigned[j] = True
+        assigned[i] = True
+        members = sorted(set(nb) | {i})
+        sc = float(np.clip(0.7 * score[i] + 0.3 * score[members].mean() + 0.05 * min(len(members) - 1, 2), 0, 1))
+        feats.append({"type": "Feature",
+                      "geometry": {"type": "Point", "coordinates": [round(float(lon[i]), 6), round(float(lat[i]), 6)]},
+                      "properties": {"map_year": map_year(res), "edition_year": res["edition_year"],
+                                     "survey_year": res.get("survey_year"), "quad": res["quad"], "scale": res["scale"],
+                                     "n_buildings": len(members), "score": round(sc, 3),
+                                     "source_url": res["source_url"]}})
+    return feats, towns
+
+
+def map_year(res: dict) -> int:
+    """The year the map shows: survey year if recorded, else the field-check / photo year
+    of a revised map, else the edition year printed on it."""
+    for k in ("survey_year", "field_check_year", "photo_year"):
+        if res.get(k):
+            return int(res[k])
+    return int(res["edition_year"])
