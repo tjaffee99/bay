@@ -386,10 +386,13 @@ def georef(key):
         allpx += bpx; allw += bw; alllab += [b["name"] + " " + l for l in bl]
         log(key, f"block {b['name']}", describe(Mb), f"RMS {np.sqrt((d ** 2).mean()):.2f} m")
     M, d = fit(allpx, allw, lines, cfg.get("scale_prior"))
+    tied = {c["tie"] for c in cfg.get("points", []) + [x for b in cfg.get("blocks", []) for x in b["corners"]] if "tie" in c}
+    tie_rms = max([json.load(open(INTERIM / f"{t}.M.json")).get("rms", 0) for t in tied], default=0.0)
     labs = alllab + ["on street line"] * len(lines)
     pxs = allpx + [tuple(q) for q, _, _ in lines]
     json.dump({"M": M.tolist(), "pct": 25, "img": str(img), "rms": float(np.sqrt((d ** 2).mean())), "max": float(d.max()), "n": len(d),
                "scale": describe(M), "blocks": blocks, "zones_only": cfg.get("zones_only", False), "valid_px": cfg.get("valid_px"),
+               "tied_to": sorted(tied), "tie_rms": tie_rms,
                "points": [{"label": l, "px": list(map(float, p)), "res_m": round(float(r), 2)} for l, p, r in zip(labs, pxs, d)]},
               open(INTERIM / f"{key}.M.json", "w"), indent=1)
     log(key, "sheet", describe(M), f"n={len(d)} RMS {np.sqrt((d ** 2).mean()):.2f} max {d.max():.2f} m")
@@ -643,6 +646,8 @@ def assemble():
                 fitq = dict(blocks[zone] if zone in blocks else {"rms": G.get("rms", 9), "n": G.get("n", 0), "max": G.get("max", 9)})
                 if "registered_to" in G:
                     fitq["rms"] = math.hypot(fitq.get("rms", 0), G.get("reg_rms_m", 0.3))
+                if G.get("tie_rms"):  # tied to a neighbouring sheet: its fit error adds
+                    fitq["rms"] = math.hypot(fitq.get("rms", 0), G["tie_rms"])
                 cls, a = r["cls"], r["area_m2"]
                 att = attrs.get(r["id"], {})
                 if cls == "wharf":

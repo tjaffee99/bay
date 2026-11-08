@@ -1,0 +1,59 @@
+{
+ "iron_rule": "dark_grey",
+ "valid_px": [
+  30,
+  30,
+  1608,
+  1890
+ ],
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "points": [
+  {
+   "tie": "020_0593",
+   "px_other": [
+    1260.0,
+    1569.0
+   ],
+   "label": "tie 593: Louisiana x 22nd (1914 Louisiana St)",
+   "x": 57.0,
+   "y": 1571.5,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0593",
+   "px_other": [
+    1270.0,
+    625.0
+   ],
+   "label": "tie 593: corner of the 4-in water pipe along Louisiana St",
+   "x": 73.0,
+   "y": 622.5,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "22ND ST",
+   "near": [
+    "ILLINOIS ST",
+    "22ND ST"
+   ],
+   "R": 120,
+   "px": [
+    [
+     250,
+     1571.5
+    ],
+    [
+     480,
+     1571.5
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

@@ -184,6 +184,65 @@ def streets_by_name(st):
 
 
 # ---------------------------------------------------------------- writer
+def sanborn_tracks():
+    """Railway tracks traced from the Sanborn maps (data/manual/sanborn/<area>_<year>_tracks.geojson:
+    rail yards, spurs, the State Belt). A track drawn on consecutive maps (>= 60 % of it
+    within 4 m of the next map's tracks) is one track; it is laid between the previous map
+    and its first map (well before, if that is the area's first map), and taken up between
+    its last map and the next one that covers the area — or, if still on the last map, at
+    the clearance of a redevelopment area it lies in (Mission Bay 1998-2008), else 15 years on."""
+    files = sorted(glob.glob(str(MANUAL / "sanborn" / "*_[12][0-9][0-9][0-9]_tracks.geojson")))
+    if not files:
+        return []
+    from sf_buildings import redevelopment_areas
+    areas = redevelopment_areas()
+    frames = []
+    for f in files:
+        stem = f.split("/")[-1][: -len("_tracks.geojson")]
+        area, yr = stem.rsplit("_", 1)
+        t = gpd.read_file(f)
+        if not len(t):
+            continue
+        t = t.to_crs(UTM)
+        t["area"], t["map_year"] = area, float(yr)
+        frames.append(t[["area", "map_year", "geometry"]])
+    T = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=UTM)
+    T = T[T.geometry.notna() & T.geometry.geom_type.isin(["LineString", "MultiLineString"])].explode(index_parts=False)
+    T = T[T.geometry.length > 10].reset_index(drop=True)
+    items = []
+    for area, A in T.groupby("area"):
+        years = sorted(A.map_year.unique())
+        cov = {}
+        cf = MANUAL / "sanborn" / f"{area}_coverage.geojson"
+        if cf.exists():
+            c = gpd.read_file(cf).to_crs(UTM)
+            if "map_year" in c:
+                cov = {float(y): shapely.union_all(g.geometry.values) for y, g in c.groupby("map_year")}
+        maps = {y: shapely.union_all(A[A.map_year == y].geometry.values).buffer(4.0) for y in years}
+        for k, y in enumerate(years):
+            for g in A[A.map_year == y].geometry.values:
+                if k + 1 < len(years) and g.intersection(maps[years[k + 1]]).length >= 0.6 * g.length:
+                    continue  # still there on the next map
+                first = y
+                for kk in range(k - 1, -1, -1):
+                    if g.intersection(maps[years[kk]]).length >= 0.6 * g.length:
+                        first = years[kk]
+                    else:
+                        break
+                kf = years.index(first)
+                start = (years[kf - 1] + first) / 2 if kf > 0 else first - 10
+                mid = g.interpolate(0.5, normalized=True)
+                if k + 1 < len(years) and (not cov or mid.within(cov.get(years[k + 1], mid.buffer(1)))):
+                    end = (y + years[k + 1]) / 2
+                else:
+                    ends = [cs + (ce - cs) * 0.5 for poly, cs, ce, _f, _a in areas if mid.within(poly) and cs > y]
+                    end = min(ends) if ends else y + 15
+                if end > start + 1:
+                    items.append((g, K_RAIL, 3, float(start), float(end), 0))
+    log(f"roads: {len(items)} railway tracks traced from Sanborn maps")
+    return items
+
+
 def write_paths(path, items, ground, z_offset_fn, step=25.0):
     """items: list of (utm LineString, kind, width, start, end, elevated).
     step: vertex spacing (m) so paths follow the terrain grid they drape on."""
@@ -736,6 +795,7 @@ def main():
     # (freeways.bin.gz); the researched lines only date them. Demolished ones stay here.
     draw_routes = [it for it, rid in zip(ritems, rids) if not (it[1] in (K_FREEWAY, K_HIGHWAY) and it[4] >= 9999)
                    and rid not in LANDMARK_ROUTES]
+    draw_routes += sanborn_tracks()
     write_paths(VIEWER_DATA / "routes.bin.gz", draw_routes, ground, z_offset)
 
     # ---- region roads (outside SF)

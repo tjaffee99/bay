@@ -1,0 +1,275 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Folsom-Harrison/03Rd-Ritch",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552927.1,
+       4181996.0
+      ],
+      "03RD ST",
+      [
+       552927.1,
+       4181996.0
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 03RD ST",
+     "x": 344.0,
+     "y": 260.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553064.0,
+       4181860.3
+      ],
+      "03RD ST",
+      [
+       553064.0,
+       4181860.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 03RD ST",
+     "x": 1170.0,
+     "y": 260.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       553016.7,
+       4181812.5
+      ],
+      "RITCH ST",
+      [
+       553016.7,
+       4181812.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of FOLSOM ST x RITCH ST (centrelines extended; today closest-approach 386m)",
+     "x": 344.0,
+     "y": 501.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       553085.1,
+       4181744.6
+      ],
+      "RITCH ST",
+      [
+       553085.1,
+       4181744.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 40,
+     "label": "corner of HARRISON ST x RITCH ST (centrelines extended; today closest-approach 193m)",
+     "x": 1170.0,
+     "y": 501.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    344.0,
+    260.0,
+    1170.0,
+    501.0
+   ]
+  },
+  {
+   "name": "3751 Folsom-Shipley",
+   "corners": [
+    {
+     "bcx": [
+      "FOLSOM ST",
+      [
+       552732.1,
+       4181799.4
+      ],
+      "04TH ST",
+      [
+       552732.1,
+       4181799.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of FOLSOM ST x 04TH ST",
+     "x": 245.0,
+     "y": 1675.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552780.5,
+       4181751.3
+      ],
+      "04TH ST",
+      [
+       552780.5,
+       4181751.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 47,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 04TH ST",
+     "x": 488.0,
+     "y": 1675.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    242,
+    840,
+    490,
+    1670
+   ]
+  },
+  {
+   "name": "3751 Shipley-Clara",
+   "corners": [
+    {
+     "bcx": [
+      "SHIPLEY ST",
+      [
+       552780.5,
+       4181751.3
+      ],
+      "04TH ST",
+      [
+       552780.5,
+       4181751.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 47,
+     "wb": 82.5,
+     "label": "corner of SHIPLEY ST x 04TH ST",
+     "x": 653.0,
+     "y": 1674.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552821.6,
+       4181710.5
+      ],
+      "04TH ST",
+      [
+       552821.6,
+       4181710.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 04TH ST",
+     "x": 867.0,
+     "y": 1674.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    640,
+    725,
+    870,
+    1670
+   ]
+  },
+  {
+   "name": "3751 Clara-Harrison",
+   "corners": [
+    {
+     "bcx": [
+      "CLARA ST",
+      [
+       552821.6,
+       4181710.5
+      ],
+      "04TH ST",
+      [
+       552821.6,
+       4181710.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 40,
+     "wb": 82.5,
+     "label": "corner of CLARA ST x 04TH ST",
+     "x": 1060.0,
+     "y": 1673.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "HARRISON ST",
+      [
+       552868.9,
+       4181663.5
+      ],
+      "04TH ST",
+      [
+       552868.9,
+       4181663.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of HARRISON ST x 04TH ST",
+     "x": 1308.0,
+     "y": 1673.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1060,
+    725,
+    1322,
+    1670
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}
