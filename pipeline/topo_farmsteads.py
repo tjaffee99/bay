@@ -212,7 +212,8 @@ def select_maps(area_names) -> list[dict]:
                 continue                          # same edition, survey year not recorded
             surveys.setdefault(sy or m["edition_year"], []).append(m)
         for sy, group in sorted(surveys.items()):
-            top = min(m["scale"] for m in group)
+            # the regular 1:62,500 sheet over a special 1:48,000 printing of the same survey
+            top = 62500 if any(m["scale"] == 62500 for m in group) else min(m["scale"] for m in group)
             mm = best([m for m in group if m["scale"] == top])
             mm["edition"] = "early"
             chosen.append(mm)
@@ -512,7 +513,7 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
     opens = []
     for i in range(1, no):
         x, y, w, h, a = ost[i]
-        if not (0.07 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.2 * ppm:
+        if not (0.07 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.25 * ppm:
             continue
         pad = int(0.5 * ppm) + 2
         y0, y1, x0, x1 = max(y - pad, 0), min(y + h + pad, H), max(x - pad, 0), min(x + w + pad, W)
@@ -829,6 +830,96 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
     return keep, stats
 
 
+# ----------------------------------------------------------------------------- orchards
+ORCHARD_VERSION = 2
+
+
+def extract_orchards(sheet: "GeoPDF", step=3):
+    """Orchard and vineyard extents on a 1940s-50s sheet (green vegetation overprint):
+      orchard  = regular pattern of round green dots ~1 mm across on white;
+      vineyard = green tint carrying a screen of white lines ~0.9 mm apart (a periodic
+                 texture; solid woodland tint and woodland cut by contours have none).
+    -> list of {"kind", "rings": [outer, holes...] in full-res pixels, "area_mm2"}."""
+    import cv2
+    g = sheet.g
+    sm = sheet.read(0, sheet.H, 0, sheet.W, step=step)
+    sheet._cache.clear()
+    ppm = g["px_per_mm"] / step
+    green = np.zeros(sm.shape[:2], np.uint8)
+    for r in range(0, sm.shape[0], 1024):
+        b = sm[r:r + 1024].astype(np.int16)
+        green[r:r + 1024] = (b[:, :, 1] - b[:, :, 2] > 45) & (b[:, :, 1] > 150) & (b[:, :, 1] >= b[:, :, 0] - 10)
+    del sm
+    ins = np.zeros(green.shape, np.uint8)
+    cv2.fillPoly(ins, [np.round(g["neat_px"] / step).astype(np.int32)], 1)
+    ins = cv2.erode(ins, np.ones((int(ppm) | 1,) * 2, np.uint8))
+    green &= ins
+    if green.mean() < 0.002:
+        return []
+    n, lab, st, _ = cv2.connectedComponentsWithStats(green, connectivity=8)
+    w, h = st[:, 2], st[:, 3]
+    fill = st[:, 4] / np.maximum(w * h, 1)
+    dot = (np.maximum(w, h) > 0.7 * ppm) & (np.maximum(w, h) < 1.6 * ppm) & (fill > 0.66) & (fill < 0.88) \
+        & (np.maximum(w, h) < 1.35 * np.minimum(w, h))
+    dot[0] = False
+    dens = cv2.blur(dot[lab].astype(np.float32), (int(3 * ppm) | 1,) * 2)
+    del lab
+    orchard = (dens > 0.15).astype(np.uint8)
+    del dens
+    kw = int(2.0 * ppm) | 1
+    vine = np.zeros(green.shape, np.uint8)
+    band, mg = 1200, 3 * kw
+    for r0 in range(0, green.shape[0], band):                  # in bands: bounded memory
+        a0, a1 = max(r0 - mg, 0), min(r0 + band + mg, green.shape[0])
+        gfl = green[a0:a1].astype(np.float32)
+        gf = cv2.blur(gfl, (int(1.2 * ppm) | 1,) * 2)
+        A = gfl - cv2.blur(gfl, (kw, kw))
+        del gfl
+        den = cv2.blur(A * A, (kw, kw)) + 1e-3
+
+        def corr(l):
+            B = np.zeros_like(A)
+            B[:, l:] = A[:, :-l]
+            B *= A
+            return cv2.blur(B, (kw, kw)) / den
+        best = None
+        for lmm in (0.8, 0.85, 0.9, 0.95, 1.0):
+            l = max(2, int(round(lmm * ppm)))
+            c = corr(l) - np.maximum(corr(max(1, l // 2)), 0)
+            best = c if best is None else np.maximum(best, c)
+        v = (gf > 0.40) & (gf < 0.92) & (cv2.blur(best, (kw, kw)) > 0.22)
+        vine[r0:min(r0 + band, green.shape[0])] = v[r0 - a0:r0 - a0 + min(band, green.shape[0] - r0)]
+        del A, den, best, gf, v
+
+    def clean(m, close_mm, open_mm):
+        kc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(close_mm * ppm) | 1,) * 2)
+        ko = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(open_mm * ppm) | 1,) * 2)
+        return cv2.morphologyEx(cv2.morphologyEx(m, cv2.MORPH_CLOSE, kc), cv2.MORPH_OPEN, ko)
+    orchard = clean(orchard, 2.0, 2.0) & ins
+    vine = clean(vine, 1.5, 2.5) & ins & (1 - orchard)
+    min_mm2 = max(4.0, 10000 / (g["m_per_px"] * g["px_per_mm"]) ** 2)     # >= 1 ha and >= 4 mm²
+    out = []
+    for kind, m in (("orchard", orchard), ("vineyard", vine)):
+        cnts, hier = cv2.findContours(m, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+        if hier is None:
+            continue
+        for i, hh in enumerate(hier[0]):
+            if hh[3] >= 0:
+                continue
+            a = cv2.contourArea(cnts[i]) / ppm ** 2
+            if a < min_mm2:
+                continue
+            rings = [cv2.approxPolyDP(cnts[i], 0.25 * ppm, True)]
+            j = hh[2]
+            while j >= 0:
+                if cv2.contourArea(cnts[j]) / ppm ** 2 >= min_mm2 / 2:
+                    rings.append(cv2.approxPolyDP(cnts[j], 0.25 * ppm, True))
+                j = hier[0][j][0]
+            out.append({"kind": kind, "area_mm2": round(a, 1),
+                        "rings": [(r_[:, 0, :] * step + step / 2).round(1).tolist() for r_ in rings if len(r_) >= 3]})
+    return out
+
+
 # ----------------------------------------------------------------------------- alignment
 def px_to_proj_fn(georef):
     a, b, c, d, e, f = georef["ctm"]
@@ -977,6 +1068,15 @@ def georeference(res):
         c, r = apply_alignment(res, ring[:, 0], ring[:, 1])
         lon, lat = to_wgs84(crs, *p2p(c, r))
         res["urban_tint"].append([[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)])
+    res["orchards"] = []
+    for o in res.get("orchard_px", []):
+        rings = []
+        for ring in o["rings"]:
+            ring = np.asarray(ring, float)
+            c, r = apply_alignment(res, ring[:, 0], ring[:, 1])
+            lon, lat = to_wgs84(crs, *p2p(c, r))
+            rings.append([[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)])
+        res["orchards"].append({"kind": o["kind"], "rings": rings})
     # the neat line stays where the sheet was registered (coverage); shift it with the map
     nl = np.asarray(res["neat_px"], float)
     c, r = apply_alignment(res, nl[:, 0], nl[:, 1])
@@ -997,12 +1097,21 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     import cv2
     import pyproj
     out = sheet_path(m)
+    want_orchards = m.get("edition") == "late"
+    TOPO_RAW.mkdir(parents=True, exist_ok=True)
+    pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
     if out.exists():
         res = json.loads(out.read_text())
         if res.get("detector_version") == DETECTOR_VERSION:
+            if want_orchards and res.get("orchard_version") != ORCHARD_VERSION:
+                download_file(m["pdf_url"], pdf)
+                res["orchard_px"] = extract_orchards(GeoPDF(pdf))
+                res["orchard_version"] = ORCHARD_VERSION
+                georeference(res)
+                out.write_text(json.dumps(res))
+                if not keep_raw:
+                    pdf.unlink(missing_ok=True)
             return res
-    TOPO_RAW.mkdir(parents=True, exist_ok=True)
-    pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
     download_file(m["pdf_url"], pdf)
     sheet = GeoPDF(pdf)
     g = sheet.g
@@ -1023,8 +1132,8 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     nx, ny = g["px_to_proj"](g["neat_px"][:, 0], g["neat_px"][:, 1])
     glon, glat = pyproj.Transformer.from_crs(crs, crs.geodetic_crs, always_xy=True).transform(nx, ny)
     bb = m["bbox"]
-    err = max(min(abs(glon[i] - bb[0]), abs(glon[i] - bb[2])) * 88000 + min(abs(glat[i] - bb[1]), abs(glat[i] - bb[3])) * 111000
-              for i in range(len(glon)) if i % 3 == 0)
+    err = max(min(abs(glon[i] - bb[0]) * 88000, abs(glon[i] - bb[2]) * 88000,
+                  abs(glat[i] - bb[1]) * 111000, abs(glat[i] - bb[3]) * 111000) for i in range(len(glon)))
     syms = [{"px": [round(r["x"], 1), round(r["y"], 1)], "area_mm2": round(r["area_mm2"], 4),
              "score": round(r["score"], 3), "open": bool(r["open"])} for r in keep]
     meta = m.get("meta") or fetch_meta(m)
@@ -1040,6 +1149,9 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
            "georef": g["georef"], "proj": g["proj"],
            "neat_px": np.round(g["neat_px"], 2).tolist(), "urban_px": stats.pop("urban_rings_px", []),
            "stats": stats, "corner_error_m": round(float(err), 1), "symbols": syms}
+    if want_orchards:
+        res["orchard_px"] = extract_orchards(sheet)
+        res["orchard_version"] = ORCHARD_VERSION
     georeference(res)
     MAP_CACHE.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res))
@@ -1188,7 +1300,26 @@ def export():
     dump("topo_farmsteads.geojson", feats)
     dump("coverage.geojson", cov)
     dump("topo_towns.geojson", towns)
-    log(f"export: {len(feats)} farmsteads from {len(sheets)} sheets, {len(towns)} town areas -> {OUT_DIR}")
+    orch = []
+    for r in sheets:
+        better = [polys[q["id"]] for q in sheets if q["id"] != r["id"] and q.get("edition") == r.get("edition")
+                  and q["scale"] < r["scale"] and polys[q["id"]].intersects(polys[r["id"]])]
+        drop = unary_union(better) if better else None
+        for o in r.get("orchards", []):
+            if len(o["rings"][0]) < 4:
+                continue
+            pg = Polygon(o["rings"][0], [h for h in o["rings"][1:] if len(h) >= 4]).buffer(0)
+            if drop is not None:
+                pg = pg.difference(drop)
+            if pg.is_empty or pg.area < 1e-6:
+                continue
+            orch.append({"type": "Feature", "geometry": mapping(pg),
+                         "properties": {"kind": o["kind"], "map_year": map_year(r), "edition_year": r["edition_year"],
+                                        "photo_year": r.get("photo_year"), "quad": r["quad"], "scale": r["scale"],
+                                        "source_url": r["source_url"]}})
+    dump("topo_orchards.geojson", orch)
+    log(f"export: {len(feats)} farmsteads from {len(sheets)} sheets, {len(towns)} town areas, "
+        f"{len(orch)} orchard / vineyard polygons -> {OUT_DIR}")
 
 
 def main():
