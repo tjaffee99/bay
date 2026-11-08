@@ -731,3 +731,179 @@ const paramountOakland: Landmark = {
   },
   sources: [WIKI + 'Paramount_Theatre_(Oakland,_California)']
 };
+
+// ------------------------------------------------------------ Tribune Tower
+// 13th & Franklin. OSM 3D parts in a 26.5° frame: the six-storey 1906 base (D. Franklin
+// Oliver, Breuner furniture store; the Tribune moved in 1918) fills the 28 × 31 m lot; the
+// 1923 tower (Edward T. Foulkes) rises on the west corner (11.8 × 16.6 m) to a 305 ft
+// (93 m) roof (Wikipedia, OSM); an 8-storey annex beside it. From the photo: buff brick
+// with cream terra cotta, the corbelled 20th-floor gallery carrying TRIBUNE on every face,
+// clock faces in the attic, a green copper mansard with oculus dormers and an 86 ft mast.
+const TRIB: V2 = [-122.270827, 37.803054];
+const tribuneBase: Landmark = {
+  id: 'tribune_building_1906',
+  name: 'Tribune Tower base (Breuner Building, 1906)',
+  kind: 'building',
+  built: [1905.3, 1906.3],
+  end: 9999,
+  anchor: TRIB,
+  build: b =>
+    b.frame(0, 0, 0, 26.5, () => {
+      const ring: V2[] = [
+        [-2.3, -10.8],
+        [-14.0, -10.8],
+        [-14.0, -15.7],
+        [14.1, -15.5],
+        [14.0, 15.6],
+        [-2.2, 15.6],
+        [-2.3, -1.0]
+      ];
+      b.color('#C9A27E').prism(ring, -1, 22.5);
+      b.color('#E6DCC6').prism(scaleRing(ring, 1.012), 22.5, 24.0);
+      b.color('#E6DCC6').prism(scaleRing(ring, 1.006), 3.5, 4.6);
+    }),
+  replaces: [rotRect(0, 0, 31, 34, 26.5)],
+  facts: {
+    Completed: '1906 (D. Franklin Oliver) as the Breuner furniture store; the Oakland Tribune moved here in 1918',
+    Height: 'six storeys',
+    Model: OSM_NOTE + '; storey height estimated'
+  },
+  sources: [WIKI + 'Tribune_Tower_(Oakland)']
+};
+const tribuneTower: Landmark = {
+  id: 'tribune_tower_oakland',
+  name: 'Tribune Tower',
+  kind: 'tower',
+  built: [1922.4, 1923.99],
+  end: 9999,
+  anchor: TRIB,
+  build: b =>
+    b.frame(0, 0, 0, 26.5, () => {
+      const brick = '#C79A76';
+      const tc = '#EFE8D8';
+      // 8-storey annex beside the tower
+      b.color(brick).box(-8.15, -5.9, -1, 11.7, 9.8, 30.5);
+      b.color(tc).box(-8.15, -5.9, 29.5, 12.1, 10.2, 1.0);
+      // tower shaft 11.8 × 16.6 m
+      const cx = -8.1;
+      const cy = 7.3;
+      b.color(brick).box(cx, cy, -1, 11.8, 16.6, 73);
+      b.color(tc).box(cx, cy, 72, 13.8, 18.6, 1.4); // corbelled gallery
+      b.color('#F4EFE2').box(cx, cy, 73.4, 13.6, 18.4, 2.6); // TRIBUNE letters band
+      b.color('#B0362C').box(cx, cy, 74.1, 13.7, 18.5, 1.2);
+      b.color(brick).box(cx, cy, 76, 11.8, 16.6, 7.5);
+      b.color(tc).box(cx, cy, 83.5, 12.6, 17.4, 1.4);
+      b.color(tc).box(cx, cy, 84.9, 11.2, 16.0, 2.4);
+      b.color('#2E3335');
+      for (const [nx, ny, h] of [[1, 0, 5.6], [-1, 0, 5.6], [0, 1, 8.0], [0, -1, 8.0]] as [number, number, number][]) vdisc(b, cx + nx * (h + 0.06), cy + ny * (h + 0.06), 86.6, 1.5, nx, ny, 12);
+      // green copper mansard with oculus dormers
+      b.color('#5FA38A').loft([rect(cx, cy, 10.8, 15.6), rect(cx, cy, 5.6, 10.2)], [87.3, 93.0], {top: true});
+      b.color('#B9C0BC').beam([cx, cy, 93], [cx, cy, 119.2], 0.35); // 86 ft flagpole
+    }),
+  facts: {
+    Tower: '1923 (Edward T. Foulkes), added to the 1906 base; opened by Joseph R. Knowland Jan 1, 1924',
+    Height: '305 ft (93 m), 22 storeys; 86 ft flagpole; clock faces and TRIBUNE neon on all four sides',
+    Later: 'damaged 1989, empty until 1995, renovated; the Tribune returned 1999–2007',
+    Model: 'tower and annex outlines from the OSM 3D parts; gallery, clock and mansard heights scaled from the photo; construction start estimated'
+  },
+  sources: [WIKI + 'Tribune_Tower_(Oakland)']
+};
+
+// =================================================================== OAKLAND–ALAMEDA COUNTY COLISEUM COMPLEX
+// Skidmore, Owings & Merrill (Myron Goldsmith); groundbreaking Apr 15, 1964.
+
+// ------------------------------------------------------------ Oakland Arena
+// OSM: a circle of radius 65.2 m. The 1996–97 renovation gutted the interior and built a new
+// bowl but kept the original walls, roof and foundation (Wikipedia) — the exterior is
+// unchanged, so one model covers both. Exterior from the photos: concourse podium, glass
+// drum crossed by giant concrete X-braces (16 bays), thick roof ring, shallow roof.
+const oaklandArena: Landmark = {
+  id: 'oakland_arena',
+  name: 'Oakland Arena',
+  kind: 'stadium',
+  built: [1964.29, 1966.86],
+  end: 9999,
+  anchor: [-122.202932, 37.750279],
+  build: b => {
+    const R = 65.2;
+    b.color('#B9B4AA').cylinder(0, 0, R - 0.5, -1.5, 5, 48); // concourse podium
+    b.color('#4E5A60').cylinder(0, 0, R - 3.5, 5, 21.5, 48, {top: false}); // glass drum
+    b.color('#CFCBC2');
+    const n = 16;
+    for (let i = 0; i < n; i++) {
+      const a0 = (i / n) * Math.PI * 2;
+      const a1 = ((i + 1) / n) * Math.PI * 2;
+      const r = R - 2.4;
+      const P = (a: number, z: number): V3 => [Math.cos(a) * r, Math.sin(a) * r, z];
+      b.beam(P(a0, 5), P(a1, 21.5), 1.1, 1.4);
+      b.beam(P(a1, 5), P(a0, 21.5), 1.1, 1.4);
+    }
+    b.color('#A8A39A').cylinder(0, 0, R + 0.3, 21.5, 25.0, 48); // compression ring / fascia
+    b.color('#C7C3BA').dome(0, 0, R - 1, 25.0, 4.5, 32, 3);
+  },
+  replaces: [circle(0, 0, 68, 24)],
+  facts: {
+    Opened: 'Nov 9, 1966 (Oakland–Alameda County Coliseum Arena); Golden State Warriors 1971–2019',
+    Renovated: '1996–97 (HNTB): interior gutted and a new bowl built inside the original walls and roof; reopened Nov 1997 with ≈19,600 seats',
+    Design: 'Skidmore, Owings & Merrill (Myron Goldsmith) — glass drum under a concrete roof ring, X-braced',
+    Model: 'outline from OSM (Ø 130 m); bay count and heights (≈29 m) estimated from photos'
+  },
+  sources: [WIKI + 'Oakland_Arena', 'https://pcad.lib.washington.edu/building/7178']
+};
+
+// =================================================================== LAKE MERRITT
+
+// ------------------------------------------------------------ Necklace of Lights
+// 126 lampposts and 3,400 "pearly bulbs" round the lake, first lit 1925, removed 1941 for
+// the wartime blackout, relit 1987 (Wikipedia). Posts spaced evenly along the TIGER 2024
+// shoreline offset 4.5 m onto the shore path (≈39 m apart); bulb strings hang between them.
+const MERRITT: V2 = [-122.256979, 37.804073];
+const NECKLACE: V2[] = [[-521, 426], [-511, 464], [-498, 502], [-489, 540], [-483, 579], [-475, 618], [-464, 656], [-449, 692], [-418, 715], [-381, 709], [-369, 673], [-372, 633], [-375, 594], [-381, 554], [-388, 516], [-393, 476], [-396, 437], [-394, 398], [-390, 358], [-373, 323], [-337, 314], [-299, 307], [-283, 272], [-273, 234], [-250, 203], [-221, 177], [-201, 143], [-186, 106], [-161, 77], [-124, 72], [-88, 88], [-53, 105], [-20, 128], [6, 127], [15, 131], [45, 156], [56, 192], [48, 230], [61, 266], [82, 299], [107, 328], [143, 343], [182, 347], [221, 344], [261, 342], [301, 340], [340, 339], [376, 353], [406, 379], [435, 405], [464, 432], [497, 454], [536, 458], [571, 474], [599, 502], [634, 492], [655, 460], [650, 421], [637, 384], [623, 348], [608, 311], [597, 273], [585, 235], [578, 197], [565, 159], [546, 125], [528, 89], [499, 64], [462, 55], [429, 34], [391, 26], [353, 15], [322, -8], [305, -44], [289, -80], [274, -117], [256, -152], [230, -181], [211, -216], [213, -255], [219, -294], [218, -333], [210, -372], [185, -402], [154, -425], [116, -433], [77, -427], [37, -427], [-1, -434], [-38, -449], [-73, -467], [-104, -491], [-132, -519], [-157, -550], [-178, -584], [-212, -591], [-245, -570], [-280, -551], [-314, -532], [-348, -511], [-380, -487], [-397, -453], [-397, -413], [-397, -374], [-393, -335], [-390, -297], [-394, -258], [-379, -223], [-381, -192], [-360, -168], [-351, -129], [-341, -91], [-329, -53], [-318, -15], [-316, 23], [-337, 56], [-367, 82], [-400, 104], [-427, 133], [-447, 167], [-468, 201], [-488, 234], [-506, 270], [-517, 308], [-519, 347], [-520, 387]];
+function necklace(b: MeshBuilder) {
+  // ground under each post (the anchor is on the water, so offsets are absolute heights)
+  const z = NECKLACE.map(([x, y]) => Math.max(groundDz(MERRITT, 0, x, y), 1.4));
+  const H = 4.6;
+  for (let i = 0; i < NECKLACE.length; i++) {
+    const [x, y] = NECKLACE[i];
+    b.color('#3C4743').beam([x, y, z[i]], [x, y, z[i] + H], 0.3);
+    b.color('#FFF6D8').box(x, y, z[i] + H, 0.8, 0.8, 0.8);
+    const [x2, y2] = NECKLACE[(i + 1) % NECKLACE.length];
+    const z2 = z[(i + 1) % NECKLACE.length];
+    if (Math.hypot(x2 - x, y2 - y) > 70) continue; // no string across the Glen Echo inlet gap
+    const pts: V3[] = [];
+    for (let k = 0; k <= 6; k++) {
+      const t = k / 6;
+      pts.push([x + (x2 - x) * t, y + (y2 - y) * t, z[i] + (z2 - z[i]) * t + H - 0.3 - 1.6 * 4 * t * (1 - t)]);
+    }
+    b.color('#FFF2C4').polyline(pts, 0.28);
+  }
+}
+const necklace1925: Landmark = {
+  id: 'lake_merritt_necklace_1925',
+  name: 'Necklace of Lights, Lake Merritt (1925)',
+  kind: 'monument',
+  built: [1925.0, 1925.5],
+  end: 1941.95,
+  anchor: MERRITT,
+  build: necklace,
+  facts: {
+    Lit: '1925 — 126 lampposts and 3,400 "pearly bulbs" strung round the lake',
+    Dark: 'removed in 1941 for the World War II blackout',
+    Model: 'posts spaced evenly on the TIGER shoreline (positions estimated); strings drawn thicker than real so they read at map scale; months estimated'
+  },
+  sources: [WIKI + 'Lake_Merritt']
+};
+const necklace1987: Landmark = {
+  id: 'lake_merritt_necklace',
+  name: 'Necklace of Lights, Lake Merritt',
+  kind: 'monument',
+  built: [1986.8, 1987.3],
+  end: 9999,
+  anchor: MERRITT,
+  build: necklace,
+  facts: {
+    Relit: '1987, after a decade-long campaign by the Lake Merritt Breakfast Club (first lit 1925, dark 1941–87)',
+    Model: 'posts spaced evenly on the TIGER shoreline (positions estimated); strings drawn thicker than real'
+  },
+  sources: [WIKI + 'Lake_Merritt']
+};
