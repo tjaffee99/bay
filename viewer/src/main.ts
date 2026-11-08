@@ -346,7 +346,7 @@ let zoomKey = '';
 map.on('zoom', () => {
   const z = map.getZoom();
   const lod = treeLod(z);
-  const key = `${labelZoomKey(z)}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}|${wantShadow(z)}`;
+  const key = `${labelZoomKey(z)}|${z >= 9}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}|${wantShadow(z)}`;
   if (key === zoomKey || state.playing) return;
   zoomKey = key;
   setShadows(z);

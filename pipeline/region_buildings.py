@@ -40,6 +40,7 @@ from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_EARLY, M_GLASS, M_INDUSTRI
 UTM = "EPSG:32610"
 COUNTIES = {"041": "Marin", "013": "Contra Costa", "001": "Alameda", "081": "San Mateo", "085": "Santa Clara"}
 TILE_Z = 13
+LOW_Z = 11
 OUT = VIEWER_DATA / "region-buildings"
 CURRENT_YEAR = 2026.5
 
@@ -321,7 +322,25 @@ def main():
         b = t.total_bounds
         write_buildings(path, t, origin, CONF, USE_CATEGORIES)
         index.append({"x": int(x), "y": int(y), "n": int(len(t)), "bbox": [round(float(v), 5) for v in b]})
-    (OUT / "index.json").write_text(json.dumps({"z": TILE_Z, "tiles": index}, separators=(",", ":")))
+    # zoomed out (city scale): only buildings big enough to see there — footprint over
+    # 600 m² or taller than 12 m — in z11 tiles, outlines simplified to 1.5 m
+    au = g.to_crs(UTM)
+    big = (au.geometry.area.values > 600) | (g.height.values - 1.0 > 12)
+    low = g[big].copy()
+    low["geometry"] = au.geometry[big].simplify(1.5, preserve_topology=True).to_crs(4326).values
+    low = low[~low.geometry.is_empty & low.geometry.is_valid & (low.geometry.geom_type == "Polygon")]
+    lp = low.geometry.representative_point()
+    lx, ly = tile_of(lp.x.values, lp.y.values, LOW_Z)
+    low = low.assign(tx=lx, ty=ly)
+    low_index = []
+    for (x, y), t in low.groupby(["tx", "ty"]):
+        path = OUT / str(LOW_Z) / str(x) / f"{y}.bin.gz"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        write_buildings(path, t, tile_origin(x, y, LOW_Z), CONF, USE_CATEGORIES)
+        low_index.append({"x": int(x), "y": int(y), "n": int(len(t))})
+    log(f"region: wrote {len(low_index)} low-zoom tiles with {len(low)} large buildings")
+    (OUT / "index.json").write_text(json.dumps({"z": TILE_Z, "tiles": index, "low": {"z": LOW_Z, "tiles": low_index}},
+                                               separators=(",", ":")))
     log(f"region: wrote {len(index)} tiles, {len(g)} buildings -> {OUT}")
 
 
