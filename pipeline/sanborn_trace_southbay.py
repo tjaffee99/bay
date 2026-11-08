@@ -242,7 +242,20 @@ def xing(a, b, near=None):
         c = pts[d <= d.min() + 35]
         return c.mean(axis=0), "node" if len(c) == 1 else f"node x{len(c)}"
     pa, pb = nearest_points(ga, gb)
-    return np.array([(pa.x + pb.x) / 2, (pa.y + pb.y) / 2]), f"closest-approach {pa.distance(pb):.0f}m"
+    if near is not None:  # the streets cross more than once or not at all: closest approach near the hint
+        from shapely.geometry import Point
+        nb = Point(*near).buffer(150)
+        ga2, gb2 = ga.intersection(nb), gb.intersection(nb)
+        if not ga2.is_empty and not gb2.is_empty:
+            pa, pb = nearest_points(ga2, gb2)
+    mid = np.array([(pa.x + pb.x) / 2, (pa.y + pb.y) / 2])
+    try:  # a street that stops short of the other (paseo, closed street): extend both as straight lines
+        L1, L2 = street_line(a, mid, 90), street_line(b, mid, 90)
+        if abs(L1[1] @ L2[1]) < 0.9:
+            return line_x(L1, L2), f"lines extended (gap {pa.distance(pb):.0f}m)"
+    except ValueError:
+        pass
+    return mid, f"closest-approach {pa.distance(pb):.0f}m"
 
 
 def near_xy(near):
@@ -293,7 +306,7 @@ def parcel_blocks():
     return _blocks
 
 
-def property_corner(a, b, q, near=None, reach=(18, 75)):
+def property_corner(a, b, q, near=None, reach=(18, 75), R=150, wa=None, wb=None):
     """block corner (property-line crossing) in quadrant q (NE/NW/SE/SW: N = along the more north-south street of the
     two, E = along the more east-west one) of the a x b street crossing, from today's parcel block in that quadrant:
     along each street the property line is the street's direction at the median normal offset of the block boundary
@@ -303,9 +316,10 @@ def property_corner(a, b, q, near=None, reach=(18, 75)):
     X = xing(a, b, near)[0]
     ds = []
     for n in (a, b):
-        d = street_line(n, X, 150)[1]
+        d = street_line(n, X, R)[1]
         ds.append(d)
     k = int(np.argmax([abs(d[1]) / (abs(d[0]) + 1e-9) for d in ds]))  # the more north-south one
+    widths = [wa, wb] if k == 0 else [wb, wa]  # ft, per (NS street, EW street): centreline + half width instead of parcels
     eN, eE = ds[k], ds[1 - k]
     eN = eN if eN[1] > 0 else -eN
     eE = eE if eE[0] > 0 else -eE
@@ -315,8 +329,10 @@ def property_corner(a, b, q, near=None, reach=(18, 75)):
     geoms, tree = parcel_blocks()
     cand = [geoms[i] for i in tree.query(Point(*probe).buffer(25))]
     blk = min(cand, key=lambda g: g.distance(Point(*probe))) if cand else None
-    if blk is None or blk.distance(Point(*probe)) > 15:
+    if (blk is None or blk.distance(Point(*probe)) > 15) and not (wa and wb):
         raise ValueError(f"no parcel block in quadrant {q} of {a} x {b}")
+    if wa and wb:
+        blk = Point(*probe).buffer(1)
     ring = np.asarray(blk.exterior.coords)[:, :2]
     pts = []
     for p0, p1 in zip(ring[:-1], ring[1:]):
@@ -326,7 +342,10 @@ def property_corner(a, b, q, near=None, reach=(18, 75)):
     nN = np.array([eN[1], -eN[0]]); nN = nN if nN @ eE > 0 else -nN  # normal of the NS street, toward +E
     nE = np.array([-eE[1], eE[0]]); nE = nE if nE @ eN > 0 else -nE  # normal of the EW street, toward +N
     offs = []
-    for e_al, n_ac, s_al, s_ac in ((eN, nN, sN, sE), (eE, nE, sE, sN)):
+    for (e_al, n_ac, s_al, s_ac), w in zip(((eN, nN, sN, sE), (eE, nE, sE, sN)), widths):
+        if w:  # street whose today's property line is not the old one: centreline + half the mapped width
+            offs.append(w * FT / 2)
+            continue
         al, ac = rel @ e_al * s_al, rel @ n_ac * s_ac
         sel = (al > reach[0]) & (al < reach[1]) & (ac > 0)
         if sel.sum() < 5:
@@ -364,7 +383,10 @@ def world_of(c):
          industrial tool).
     xl:  crossing of two straight centreline fits (centre of the corridor)."""
     if "pc" in c:
-        p, lab, offs = property_corner(c["pc"][0], c["pc"][1], c["q"], c.get("near"))
+        p, lab, offs = property_corner(c["pc"][0], c["pc"][1], c["q"], c.get("near"), tuple(c.get("reach", (18, 75))), c.get("R", 150),
+                                       c.get("wa"), c.get("wb"))
+        if c.get("wa") or c.get("wb"):
+            lab += " (" + ", ".join(f"{n} centreline + {w} ft / 2" for n, w in zip(c["pc"], (c.get("wa"), c.get("wb"))) if w) + ")"
         return p, c.get("label", lab)
     if "bcx" in c:
         a, na, b, nb = c["bcx"]
@@ -448,6 +470,130 @@ def compact(key, spec):
     CONTROL.mkdir(parents=True, exist_ok=True)
     json.dump(cfg, open(CONTROL / f"{key}.json", "w"), indent=1)
     return cfg
+
+
+# ----------------------------------------------------------------------------------------------- footprints
+def extract(key):
+    """colour-segment the building fills (yellow frame, pink brick, blue stone / concrete, ochre fire-proof, grey iron)
+    as in the waterfront tool, with two changes for the San José plates: (1) the pink brick wash is darker here
+    (grey level ~105-115) than on the SF plates, so drawn lines are found relative to their surroundings (darker than
+    the 7-px local median by 28+ and below grey 100), not by an absolute grey level; (2) every class is split along the
+    drawn partition walls (long straight lines, 14 px = 2.8 m or more, axis-aligned on these sheets), so a row of
+    brick stores becomes one feature per building, as drawn."""
+    import cv2
+    from shapely.geometry import Polygon
+    G = json.load(open(INTERIM / f"{key}.M.json"))
+    ed = key.split("_")[0]
+    rgb = np.asarray(Image.open(G["img"]).convert("RGB"))
+    hsv = cv2.cvtColor(cv2.medianBlur(rgb, 3), cv2.COLOR_RGB2HSV).astype(int)
+    Hh, S, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    small = cv2.resize(hsv.astype(np.uint8), None, fx=1 / 8, fy=1 / 8, interpolation=cv2.INTER_AREA)
+    bgV = cv2.resize(cv2.medianBlur(np.ascontiguousarray(small[..., 2]), 31), (S.shape[1], S.shape[0])).astype(int)
+    dV = V - bgV
+    pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
+    pH, pS, pV = int(np.median(Hh[pm])), int(np.median(S[pm])), int(np.median(V[pm]))
+    cfg = json.load(open(CONTROL / f"{key}.json"))
+    if ed in EDITION_1950:  # yellowed paper and paste-over slips: hue + saturation relative to the paper
+        fr = ((Hh >= max(pH, 22)) & (Hh <= 36) & (S >= pS + 40) & (V >= 70)) | ((Hh >= 19) & (Hh <= 36) & (S >= 125) & (V >= 70))
+    else:
+        fr = (Hh >= 19) & (Hh <= 38) & (S >= max(80, pS + 40)) & (V >= 80)
+    classes = {
+        "frame": fr,
+        "brick": ((Hh >= 155) | (Hh <= 7)) & (S >= 40) & (V >= 55),
+        "stone": (Hh >= 80) & (Hh <= 130) & (S >= 30) & (V >= 55),
+        "fireproof": (Hh >= 8) & (Hh <= 18) & (S >= 100) & (V >= 50),
+        "iron": ((Hh >= 17) & (Hh <= 30) & (S <= pS + 4) & (V >= 80) & (V <= pV - 22) & (dV <= -10)),
+    }
+    if cfg.get("stone_low_sat"):
+        classes["stone"] = classes["stone"] | ((Hh >= 85) & (Hh <= 125) & (S >= 20) & (V >= 60) & (V <= pV - 15))
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.int16)
+    med = cv2.medianBlur(gray.astype(np.uint8), 7).astype(np.int16)
+    line = ((gray < med - 28) & (gray < 100)) | (gray < 60)
+    L = int(cfg.get("wall_len", 14))
+    part = ndi.binary_opening(line, structure=np.ones((L, 1))) | ndi.binary_opening(line, structure=np.ones((1, L)))
+    part = ndi.binary_dilation(part, structure=np.ones((2, 2)))
+    darkd = ndi.binary_dilation(line | (gray < 95), iterations=3)
+    M = np.array(G["M"]); blocks = G.get("blocks", []); zones_only = G.get("zones_only", False)
+
+    def transform_for(cx, cy):
+        best, bd = None, 1e9
+        for b in blocks:
+            x0, y0, x1, y1 = b["rect_px"]
+            d = max(x0 - cx, 0, cx - x1) + max(y0 - cy, 0, cy - y1)
+            if d < bd:
+                best, bd = b, d
+        if best is not None and bd <= 40:
+            return np.array(best["M"]), best["name"]
+        return (None, None) if zones_only else (M, "sheet")
+    feats = []
+    for cls, m in classes.items():
+        m = ndi.binary_opening(m, structure=np.ones((2, 2)))
+        m = (ndi.binary_closing(m, structure=np.ones((3, 3))) | m) & ~part
+        holes = ndi.binary_fill_holes(m) & ~m
+        hl, hn = ndi.label(holes)
+        if hn:
+            hs = ndi.sum(holes, hl, range(1, hn + 1))
+            m = m | np.isin(hl, np.nonzero(hs < 2500)[0] + 1)
+        m = m & ~part
+        lab, n = ndi.label(m)
+        if not n:
+            continue
+        sizes = ndi.sum(m, lab, range(1, n + 1)); objs = ndi.find_objects(lab)
+        for i in range(n):
+            sl = objs[i]
+            if sizes[i] < 90 or sl[0].start < 12 or sl[1].start < 12 or sl[0].stop > m.shape[0] - 12 or sl[1].stop > m.shape[1] - 12:
+                continue
+            if min(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) < 6:
+                continue
+            sub = lab[sl] == i + 1
+            dist = ndi.distance_transform_edt(np.pad(sub, 1))
+            if dist.max() < 3.5:
+                continue
+            hullA = cv2.contourArea(cv2.convexHull(np.argwhere(sub)[:, ::-1].astype(np.int32)))
+            solid = sizes[i] / hullA if hullA > 0 else 0
+            if cls == "iron" and (sizes[i] < 400 or dist.max() < 6 or solid < 0.75):
+                continue
+            ring_out = ndi.binary_dilation(np.pad(sub, 4), iterations=1) & ~np.pad(sub, 4)
+            y0_, x0_ = max(0, sl[0].start - 4), max(0, sl[1].start - 4)
+            dd = darkd[y0_:sl[0].stop + 4, x0_:sl[1].stop + 4]
+            oy, ox = 4 - (sl[0].start - y0_), 4 - (sl[1].start - x0_)
+            dd = np.pad(dd, ((oy, max(0, ring_out.shape[0] - dd.shape[0] - oy)), (ox, max(0, ring_out.shape[1] - dd.shape[1] - ox))))
+            dd = dd[:ring_out.shape[0], :ring_out.shape[1]]
+            edge_dark = float(dd[ring_out].mean()) if ring_out.any() else 0
+            if edge_dark < (0.6 if cls == "iron" else 0.7) or (solid < 0.5 and edge_dark < 0.85):
+                continue
+            cs, _ = cv2.findContours(np.pad(sub, 2).astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+            rings = []
+            for c in cs:
+                c = c[:, 0, :].astype(float)
+                if len(c) >= 4:
+                    c[:, 0] += sl[1].start - 2; c[:, 1] += sl[0].start - 2
+                    rings.append(c)
+            if not rings:
+                continue
+            rings.sort(key=lambda c: -Polygon(c).area)
+            outer = Polygon(rings[0]).buffer(1.2, join_style=2).simplify(1.0)  # half the partition wall back
+            if outer.geom_type != "Polygon":
+                outer = max(outer.geoms, key=lambda p: p.area)
+            hol = [Polygon(r).buffer(-0.8, join_style=2).simplify(1.0) for r in rings[1:] if Polygon(r).area > 400]
+            hol = [h for h in hol if h.geom_type == "Polygon" and outer.contains(h)]
+            poly = Polygon(outer.exterior.coords, [h.exterior.coords for h in hol])
+            cx, cy = poly.centroid.x, poly.centroid.y
+            vp = G.get("valid_px")
+            if vp and not (vp[0] <= cx <= vp[2] and vp[1] <= cy <= vp[3]):
+                continue
+            if G.get("valid_poly_px") and not Polygon(G["valid_poly_px"]).contains(poly.centroid):
+                continue
+            T, zone = transform_for(cx, cy)
+            if T is None:
+                continue
+            ext = W.apply(T, np.asarray(poly.exterior.coords))
+            hw = [W.apply(T, np.asarray(h.coords)) for h in poly.interiors]
+            feats.append({"id": f"{key}_{cls[0]}{i + 1}", "cls": cls, "zone": zone, "px_centroid": [round(cx, 1), round(cy, 1)],
+                          "px_ring": np.round(np.asarray(poly.exterior.coords), 1).tolist(), "area_m2": round(float(Polygon(ext, hw).area), 1),
+                          "ring_utm": np.round(ext, 2).tolist(), "holes_utm": [np.round(h, 2).tolist() for h in hw]})
+    json.dump(feats, open(INTERIM / f"{key}.json", "w"))
+    log(key, len(feats), "footprints")
 
 
 if __name__ == "__main__":

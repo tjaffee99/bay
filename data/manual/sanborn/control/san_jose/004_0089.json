@@ -1,0 +1,48 @@
+{
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "points": [
+  {
+   "pc": [
+    "1st Street",
+    "San Fernando Street"
+   ],
+   "q": "SW",
+   "x": 420.0,
+   "y": 184.0
+  },
+  {
+   "pc": [
+    "1st Street",
+    "Paseo de San Antonio"
+   ],
+   "q": "NW",
+   "x": 1260.0,
+   "y": 182.0,
+   "wb": 60
+  },
+  {
+   "pc": [
+    "Market Street",
+    "Paseo de San Antonio"
+   ],
+   "q": "NE",
+   "x": 1260.0,
+   "y": 630.0,
+   "R": 50,
+   "wb": 60
+  },
+  {
+   "pc": [
+    "Market Street",
+    "San Fernando Street"
+   ],
+   "q": "SE",
+   "x": 420.0,
+   "y": 810.0
+  }
+ ],
+ "pct": 25
+}
