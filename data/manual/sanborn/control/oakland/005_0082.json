@@ -2,7 +2,7 @@
  "zones_only": true,
  "residential": true,
  "refine_R": 22,
- "notes": "two strips (10th-8th, 8th-7th) fitted separately: 8th St is drawn wider than scale.",
+ "notes": "two strips (10th-8th, 8th-7th) fitted separately: 8th St is drawn wider than scale.; the 8th-7th St strip fits with 4 % off the plate scale (0.1928 m/px, corners only on Filbert and Market St): capped at medium",
  "blocks": [
   {
    "name": "544",
@@ -1277,5 +1277,6 @@
    ]
   }
  ],
- "pct": 25
+ "pct": 25,
+ "confidence_cap": "medium"
 }

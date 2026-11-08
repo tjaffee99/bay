@@ -175,7 +175,7 @@ const appleRing = landmark(
     revolve(b, 0, 0, [[R_GLASS_IN, EAVE + 0.2 + (CROWN - 1.3 - EAVE) * 0.2], [R_GLASS_IN, EAVE + 0.2]], 0, 360, 4);
   },
   {
-    Built: 'groundbreaking Nov 2013 (demolition of the former HP Cupertino campus from Oct 2013); employees moved in from Apr 2017',
+    Built: 'Cupertino approved the plans Oct 15, 2013 and demolition of the former HP campus followed; construction 2014–17; employees moved in from Apr 2017',
     Architect: 'Foster + Partners (Norman Foster); engineers Arup',
     Size: 'ring 1,512 ft (461 m) in diameter, 4,805 ft (1.46 km) round; four storeys; 2.8 million sq ft; eight sections between nine atria',
     Height: 'about 57 ft (17.4 m) at the edge and 75 ft (22.9 m) at the centre of the roof',
@@ -1705,7 +1705,7 @@ const filoli = landmark(
     });
   },
   {
-    Built: '1915–1917 for William Bowers Bourn II (Empire Mine, Spring Valley Water Co.) and Agnes Bourn; architect Willis Polk; gardens by Bruce Porter and Isabella Worn',
+    Built: '1915–1917 for William Bowers Bourn II (gold-mine owner, president of the Spring Valley Water Company) and Agnes Moody Bourn; architect Willis Polk',
     Size: '54,256 sq ft, 56 rooms; 16 acres of formal gardens in a 654-acre estate; National Trust since 1975',
     Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); wall height (9.5 m), roof pitch, chimneys and portico estimated from photographs'
   },
@@ -1807,7 +1807,7 @@ const slacGallery = landmark(
   },
   {
     Built: 'laboratory founded 1962; the 2-mile (3.2 km) linac first ran in 1966; from 1966 to 1999 the longest building in the world',
-    Gallery: '3,073.7 m long; 240 klystrons feed the accelerator in a 10 × 11 ft tunnel under 25 ft of compacted earth',
+    Gallery: '3,073.7 m long; the klystrons feed the accelerator in a 10 × 11 ft tunnel under 25 ft of compacted earth',
     Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); section 17 ft × 30 ft (SLAC); drawn in ~100 m steps following the ground'
   },
   [WIKI + 'SLAC_National_Accelerator_Laboratory', 'https://ahro.slac.stanford.edu/resources/slac-history/history-bits'],
