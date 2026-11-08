@@ -32,12 +32,13 @@ export type BuildingSet = {
   info: (i: number) => Record<string, string | number>;
 };
 
-function colorArrays(n: number, start: Float32Array, height: Float32Array, conf: Uint8Array, ids?: ArrayLike<number>) {
+function colorArrays(n: number, conf: Uint8Array, ids?: ArrayLike<number>, mat?: ArrayLike<number>, roof?: ArrayLike<number>) {
   const colors = new Uint8Array(n * 4);
   const qualityColors = new Uint8Array(n * 4);
   for (let i = 0; i < n; i++) {
-    buildingColor(start[i], height[i], ids ? ids[i] : i, colors, i * 4);
+    buildingColor(mat ? mat[i] : 0, roof ? roof[i] : 0, ids ? ids[i] : i, colors, i * 4);
     qualityColors.set(CONFIDENCE_COLORS[conf[i]] ?? CONFIDENCE_COLORS[1], i * 4);
+    qualityColors[i * 4 + 3] = 252; // roofs as walls
   }
   return {colors, qualityColors};
 }
@@ -77,7 +78,7 @@ function fromBinary(file: ColumnarFile & {dim: number}): BuildingSet {
   const end = c.end_year as Float32Array;
   const height = c.height as Float32Array;
   const confidence = c.confidence as Uint8Array;
-  const {colors, qualityColors} = colorArrays(n, start, height, confidence, c.fid as Uint32Array);
+  const {colors, qualityColors} = colorArrays(n, confidence, c.fid as Uint32Array, c.mat as Uint8Array | undefined, c.roof as Uint8Array | undefined);
   // ring-end markers: stored as u8, deck wants u16
   const vertexValid = Uint16Array.from(c.vertex_valid as Uint8Array);
   const meta = file.header.meta;
@@ -148,7 +149,7 @@ async function fromSample(): Promise<BuildingSet> {
   const end = new Float32Array(feats.map(f => f.properties.end_year));
   const height = new Float32Array(feats.map(f => f.properties.height_m));
   const confidence = new Uint8Array(feats.map(f => Math.max(0, CONFIDENCE.indexOf(f.properties.year_confidence))));
-  const {colors, qualityColors} = colorArrays(n, start, height, confidence);
+  const {colors, qualityColors} = colorArrays(n, confidence);
   return {
     kind: 'geojson',
     count: n,
@@ -181,7 +182,7 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean,
       target[0] = colors[index * 4];
       target[1] = colors[index * 4 + 1];
       target[2] = colors[index * 4 + 2];
-      target[3] = 255;
+      target[3] = colors[index * 4 + 3];
       return target as any;
     },
     getYears: (_: any, {index, target}: {index: number; target: number[]}) => {

@@ -44,4 +44,6 @@ SFEI_POSTER_1800 = {
 LANDCOVER_TABLE = {"dunes": DUNES, "beach": BEACH, "coastal_scrub": SCRUB, "grassland": GRASS,
                    "oak_woodland": OAK, "redwood_forest": FOREST, "chaparral": SCRUB, "marsh": MARSH,
                    "farmland": FARM, "orchard": ORCHARD, "vineyard": VINEYARD, "dairy_pasture": PASTURE,
-                   "salt_pond": SALTPOND}
+                   "salt_pond": SALTPOND,
+                   # open spaces inside the city (e.g. parade grounds paved / restored)
+                   "park": PARK, "lawn": PARK, "paved": URBAN, "lake": RESERVOIR}

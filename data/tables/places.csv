@@ -461,3 +461,21 @@ scl_rancho_milpitas,Rancho Milpitas,historic,37.43000,-121.87000,1835,1852,,Sant
 scl_rancho_santa_teresa,Rancho Santa Teresa,historic,37.25000,-121.81000,1834,1852,,Santa Clara,Granted 1834 to José Joaquín Bernal. End year = claim filed with the US Public Land Commission (Land Act of 1851) unless stated.,https://en.wikipedia.org/wiki/Rancho_Santa_Teresa
 scl_rancho_pala,Rancho Pala,historic,37.36000,-121.80000,1835,1853,,Santa Clara,Granted 1835 to José Joaquín Higuera; east San Jose. Claim filed 1853. End year = claim filed with the US Public Land Commission (Land Act of 1851) unless stated.,https://en.wikipedia.org/wiki/Rancho_Pala
 cc_rancho_san_ramon,Rancho San Ramón,historic,37.71000,-121.95000,1834,1852,,Contra Costa,"Granted 1834 to José María Amador (Wikipedia, San Ramon article); patented 1865 (end estimated). End year = claim filed with the US Public Land Commission (Land Act of 1851) unless stated.",https://en.wikipedia.org/wiki/Rancho_San_Ramon_(Amador)
+sf_harding_park,Harding Park,landscape,37.724,-122.4935,1925,9999,,San Francisco,"Golf course, 1925.",https://en.wikipedia.org/wiki/TPC_Harding_Park
+sf_lincoln_park_golf,Lincoln Park Golf Course,landscape,37.783,-122.497,1902,9999,,San Francisco,1902.,https://www.sfpublicgolf.org/courses/lincoln-park
+sf_presidio_golf,Presidio Golf Course,landscape,37.7905,-122.462,1895,9999,,San Francisco,1895.,https://en.wikipedia.org/wiki/Presidio_Golf_Course
+sf_sf_golf_club,San Francisco Golf Club,landscape,37.7085,-122.472,1915,9999,,San Francisco,Year estimated.,https://en.wikipedia.org/wiki/San_Francisco_Golf_Club
+sf_olympic_club,Olympic Club,landscape,37.7095,-122.4925,1924,9999,,San Francisco,Lake and Ocean courses 1924.,https://en.wikipedia.org/wiki/Olympic_Club
+sf_ggp_golf,Golden Gate Park Golf Course,landscape,37.7695,-122.505,1951,9999,,San Francisco,1951.,https://en.wikipedia.org/wiki/Golden_Gate_Park
+sf_gleneagles,Gleneagles Golf Course,landscape,37.718,-122.4205,1962,9999,,San Francisco,Year estimated.,https://en.wikipedia.org/wiki/John_McLaren_Park
+sf_lake_merced,Lake Merced,landscape,37.7225,-122.493,1775,9999,,San Francisco,"Laguna de la Merced, named by the Spanish in 1775; natural lake.",https://en.wikipedia.org/wiki/Lake_Merced
+sf_sunset_reservoir,Sunset Reservoir,landscape,37.753,-122.487,1941,9999,,San Francisco,"Covered reservoir; begun late 1930s, first basin covered by 1941, completed 1960.",https://en.wikipedia.org/wiki/Sunset_Reservoir
+sf_sutro_reservoir,Sutro Reservoir,landscape,37.7545,-122.4545,1952,9999,,San Francisco,Year from the National Inventory of Dams (1952).,https://snoflo.org/reservoir/california/ca00135-sutro-reservoir
+sf_university_mound,University Mound Reservoir,landscape,37.724,-122.411,1885,9999,,San Francisco,"Spring Valley Water Co., 1885 (north basin).","https://en.wikipedia.org/wiki/University_Mound,_San_Francisco"
+sf_college_hill_res,College Hill Reservoir,landscape,37.7385,-122.4205,1870,9999,,San Francisco,"Spring Valley Water Co., 1870.",https://en.wikipedia.org/wiki/College_Hill_Reservoir
+sf_laguna_honda_res,Laguna Honda Reservoir,landscape,37.7505,-122.46,1866,9999,,San Francisco,Spring Valley Water Co. reservoir in a natural lake basin (year estimated).,https://www.wikipedia.org/wiki/Laguna_Honda_Reservoir
+sf_stow_lake,Stow Lake,landscape,37.7695,-122.476,1893,9999,,San Francisco,Built 1893 around Strawberry Hill.,https://en.wikipedia.org/wiki/Stow_Lake
+sf_spreckels_lake,Spreckels Lake,landscape,37.7708,-122.493,1904,9999,,San Francisco,1904.,https://en.wikipedia.org/wiki/Golden_Gate_Park
+sf_mountain_lake,Mountain Lake,landscape,37.7875,-122.469,1700,9999,,San Francisco,Natural lake; Anza camped here in 1776.,https://en.wikipedia.org/wiki/Mountain_Lake_(San_Francisco)
+sf_pine_lake,Pine Lake,landscape,37.7365,-122.489,1700,9999,,San Francisco,Natural lake (Laguna Puerca) in Stern Grove.,https://en.wikipedia.org/wiki/Pine_Lake_(San_Francisco)
+sf_main_parade,Main Parade,landscape,37.8008,-122.4573,1776,9999,,San Francisco,Parade ground of the Presidio (plaza of the 1776 presidio).,https://presidio.gov/explore/blog/then-now-main-parade-ground

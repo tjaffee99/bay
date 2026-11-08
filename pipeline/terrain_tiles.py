@@ -43,7 +43,7 @@ from rasterio import features
 from rasterio.transform import Affine
 from scipy import ndimage
 
-from common import INTERIM, MANUAL, TABLES, VIEWER_DATA, log
+from common import INTERIM, MANUAL, RAW, TABLES, VIEWER_DATA, log
 from export_columnar import write_columnar
 from terrain_grid import GRIDS, VERTS, grid_def
 
@@ -109,6 +109,26 @@ def sf_building_years(g):
     tmp = np.where(filled, yr, 9999.0)
     tmp = ndimage.minimum_filter(tmp, size=3)
     out = np.where(filled, yr, np.where(tmp < 9999, tmp, np.nan))
+    return out
+
+
+def golf_years(g):
+    """Golf courses: real outlines (Overture land_use golf_course) with researched opening years."""
+    out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
+    path = TABLES / "golf_courses.csv"
+    lu = RAW / "overture" / "2026-10-21.0" / "base_land_use.parquet"
+    if not path.exists() or not lu.exists():
+        return out
+    t = pd.read_csv(path)
+    d = pd.read_parquet(lu)
+    gdf = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
+    gdf = gdf[gdf["class"] == "golf_course"].to_crs(3857)
+    years = dict(zip(t.name, t.year_open))
+    shapes = [(geom, float(years[nm])) for nm, geom in zip(gdf["name"], gdf.geometry) if nm in years]
+    if shapes:
+        out = rasterize_on(g, shapes).astype(np.float32)
+        out[out == 0] = np.nan
+    log(f"golf: {len(shapes)} courses")
     return out
 
 
@@ -231,6 +251,12 @@ def histories(name, g, d):
     N[in_sf & (tree | (wc == 50) | (wc == 40))] = SCRUB
     N[sf_dunes & ~(wc == 60)] = DUNES
     lc_rows = polygon_table(TABLES / "landcover_history.csv", g)
+    # researched open spaces inside the city (parade grounds, plazas...) override the
+    # built-up snapshot outlines: their own rows say when they were grass / paved / lawn
+    open_override = np.zeros((rows, cols), bool)
+    for r, poly in lc_rows:
+        if str(r.get("region", "")) == "San Francisco" and str(r.cover).strip() in ("grassland", "park", "lawn", "paved", "lake"):
+            open_override |= raster_mask(g, poly)
     for r, poly in lc_rows:
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
         if c is None or pd.notna(r.get("year_start")) and float(r.year_start) > 1800:
@@ -274,7 +300,15 @@ def histories(name, g, d):
         hh = (np.add.outer(np.arange(rows) * 7919, np.arange(cols) * 104729) % 997) / 997.0
         ext_y = sf_extent_years(g, hh)
         has_ext = np.isfinite(ext_y) & ~water_now
-        urban_y = np.where(has_ext & (np.isnan(urban_y) | (ext_y < urban_y)), ext_y, urban_y)
+        # the snapshot outlines cover whole districts: squares, parade grounds and other
+        # ground that is lawn or trees today (and has no building on it) became green
+        # open space, not city fabric
+        green_now = np.isin(wc, [10, 30]) & ~np.isfinite(sfy)
+        ext_green_y = np.where(has_ext & green_now, ext_y, np.nan)
+        urban_y = np.where(has_ext & ~green_now & (np.isnan(urban_y) | (ext_y < urban_y)), ext_y, urban_y)
+    else:
+        ext_green_y = np.full((rows, cols), np.nan, np.float32)
+        sfy = np.full((rows, cols), np.nan, np.float32)
     # Outside SF, HISDAC's 250 m "first built-up year" comes from the oldest *surviving*
     # building in the cell, so a lone 1890s farmhouse paints a 250 m city block in the
     # middle of the orchards. Use the neighbourhood median instead (undeveloped cells
@@ -285,10 +319,17 @@ def histories(name, g, d):
     out_sf_urban = np.where(dense, np.maximum(fb_med, np.where(fbv, fb, fb_med)), np.where(built_frac > 0.5, fb_filled, np.nan))
     urban_y = np.where(np.isnan(urban_y) & (built_now | dense) & ~in_sf, out_sf_urban, urban_y)
     urban_y = np.where(np.isnan(urban_y) & built_now & in_sf, np.where(fbv, fb, fb_filled), urban_y)
-    urban = np.isfinite(urban_y) & ~water_now
+    urban = np.isfinite(urban_y) & ~water_now & ~open_override
 
     # ---- parks (SF)
     park_y, wood_y = park_layers(g)
+    golf_y = golf_years(g)
+    park_y = np.where(np.isfinite(golf_y) & (np.isnan(park_y) | (golf_y < park_y)), golf_y, park_y)
+    park_y = np.where(np.isnan(park_y), ext_green_y, park_y)
+    park_y[open_override] = np.nan
+    # parks and planted woods never paint over water (Lake Merced, Stow Lake, ...)
+    park_y[water_now] = np.nan
+    wood_y[water_now] = np.nan
     is_park = np.isfinite(park_y)
     urban &= ~is_park
 
@@ -361,7 +402,23 @@ def histories(name, g, d):
     filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier
     fill_y = np.where(np.isfinite(zones_fill), zones_fill, np.where(urban, urban_y - 3, np.nan))
     fill_y = np.where(filled & np.isnan(fill_y), 1950.0, fill_y)
+    # In the city, made land was put to use within a few years (wharves, rail yards,
+    # warehouses, streets) — not left bare until today's buildings went up: anything
+    # standing on it today means it was city soon after filling. Open fill greens over.
+    stadium = np.zeros((rows, cols), bool)
+    lu = RAW / "overture" / "2026-10-21.0" / "base_land_use.parquet"
+    if lu.exists() and in_sf.any():
+        dl = pd.read_parquet(lu)
+        gl = gpd.GeoDataFrame(dl, geometry=gpd.GeoSeries.from_wkb(dl.geometry), crs=4326)
+        gl = gl[gl["class"].isin(["stadium"])].to_crs(3857)
+        if len(gl):
+            stadium = rasterize_on(g, [(geom, 1) for geom in gl.geometry], fill=0, dtype="uint8").astype(bool)
+    city_fill = filled & in_sf & (built_now | stadium | np.isfinite(sfy) | np.isfinite(urban_y)) & ~is_park & np.isfinite(fill_y)
+    urban_y = np.where(city_fill, np.fmin(urban_y, fill_y + 3.0), urban_y)
+    urban |= city_fill
+    open_fill = filled & ~urban & ~is_park & np.isfinite(fill_y)
     event(filled, FILL, fill_y)
+    event(open_fill, GRASS, fill_y + 6.0)
     event(is_pier & ~water_now, URBAN, pier_y)
     for m, y in excavated:
         event(m & water_now & ~was_wet, SHALLOW, y)
@@ -391,7 +448,9 @@ def histories(name, g, d):
             m &= trees_near  # forests stand where trees are (today's canopy, slightly widened)
         if c in (FARM, ORCHARD, VINEYARD, PASTURE):
             m &= slope < 12
-        event(m, c, ys + 6 * h)
+        # landscape-scale eras spread over ~6 years; city open spaces change on the date
+        spread = 0.5 if c in (PARK, URBAN, RESERVOIR) else 6.0
+        event(m, c, ys + spread * h)
 
     # ---- urbanisation, parks, planted woods
     event(urban, URBAN, urban_y)
@@ -517,6 +576,24 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             log(f"deco {name}: skip {url.split('/')[-1]} {e}")
     tree_fine = fine == 10
     shrub_fine = fine == 20
+    # no trees on sports fields, in stadiums (Oracle Park's grass reads as canopy) or
+    # inside building footprints
+    blockers = []
+    lu = RAW / "overture" / "2026-10-21.0" / "base_land_use.parquet"
+    if lu.exists():
+        d = pd.read_parquet(lu)
+        gl = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
+        gl = gl[gl["class"].isin(["stadium", "pitch", "track", "fairway", "green", "tee", "bunker", "driving_range"])].to_crs(3857)
+        blockers += [(geom, 1) for geom in gl.geometry if geom is not None]
+    bpath = INTERIM / "sf_buildings.parquet"
+    if name == "detail" and bpath.exists():
+        bg = gpd.read_parquet(bpath).to_crs(3857)
+        blockers += [(geom, 1) for geom in bg.geometry if geom is not None]
+    if blockers:
+        block = features.rasterize(blockers, out_shape=shape, transform=t, fill=0, dtype="uint8").astype(bool)
+        log(f"deco {name}: {int((tree_fine & block).sum())} canopy sub-cells removed (fields, stadiums, buildings)")
+        tree_fine &= ~block
+        shrub_fine &= ~block
     log(f"deco {name}: tree sub-cells {tree_fine.sum()}, shrub {shrub_fine.sum()}")
     rng_seed = 1906
 
