@@ -99,6 +99,12 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
   2000–03) have no surviving geometry and are not modelled; Psycho Mouse, Woodstock Express and the entrance-plaza
   buildings are left to the generic footprints. Six Flags announced on Nov 6, 2026 that the park closes on Sep 6, 2027
   (not yet reflected in `end`).
+- **Taco Bell Cantina, Pacifica (Linda Mar)** — KQED (Apr 23, 2026): opened spring 1972 as an A&W (grand opening late
+  April 1972; approved before Proposition 20), became a Taco Bell in 1985; wood siding then and now. ABC7: reopened
+  Jul 13, 2019 as a Cantina after ~2 months of renovation (inside: lounge seating, fireplace; walk-up window and surfboard
+  rack kept). No source documents a c.2015 remodel or a changed exterior, so one model covers 1972 → today. Footprint from
+  the OSM API (way 1292202052, building + deck); the split between restaurant and deck and all heights are estimates
+  (orthophoto blurred, no photo examined).
 - **NASA Ames NFAC** — OSM gives 54.9 m (180 ft) for the whole complex; only the 80 × 120 ft inlet is drawn that tall;
   the 40 × 80 ft circuit heights are estimates (**LOW CONFIDENCE**).
 
@@ -693,4 +699,15 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Size: 106 ft (32 m) high, 1,800 ft (549 m) of track
 - Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
 - Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://www.undercovertourist.com/san-francisco/californias-great-america/railblazer/
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Taco Bell Cantina, Linda Mar (Pacifica) (`pacifica_taco_bell`)
+
+- Model years: construction 1971.6 → 1972.3, end standing; anchor 37.597196, -122.503752; 103 triangles; model top 4.6 m.
+- Opened: spring 1972 (grand opening late Apr 1972) as an A&W franchise on Bud Wiechers' beachfront lot — approved just before Proposition 20 (1972) created the Coastal Commission; a restaurant like it could not be built there today
+- Taco Bell: A&W closed in 1985 and the building became a Taco Bell that year (Pacifica Tribune, Jul 31, 1985)
+- Cantina: renovated for about two months and reopened Jul 13, 2019 as a Taco Bell Cantina serving alcohol; the walk-up take-out window and surfboard rack kept; new fireplace and lounge seating inside
+- Exterior: dark brown wood siding in the A&W years and today, deck over the beach — the 2019 remodel was mainly inside, so one model covers 1972 to today
+- Model: outline from OpenStreetMap (© OSM contributors, ODbL; building and deck); split between restaurant and deck, wall and roof heights, window, sign and fire-pit positions estimated from the (blurred) orthophoto and descriptions — no photograph was examined
+- Sources: https://www.kqed.org/news/12080794/its-the-most-beautiful-taco-bell-in-the-world-heres-why-it-could-never-be-built-today, https://abc7news.com/post/restaurant-some-call-taco-bell-heaven-re-opens-at-pacifica-beach/5392123/, https://www.atlasobscura.com/places/linda-mar-taco-bell
 - Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo

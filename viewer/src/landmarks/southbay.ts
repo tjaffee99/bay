@@ -2423,6 +2423,50 @@ const gaCarousel = landmark(
   [circle(-213.8, 36.9, 12, 12)]
 );
 
+// =================================================================== PACIFICA
+
+// ---- Taco Bell Cantina, Linda Mar (Pacifica State Beach): the 1972 A&W, a Taco Bell since 1985 (frame 27.8°, −u = the surf)
+const PACIFICA_TB: V2 = [-122.503752, 37.597196];
+const PACIFICA_TB_OUTLINE: V2[] = [
+  [-8.6, -10.7], [-8.6, -4.4], [-6.7, 10.0], [-4.0, 10.0], [-4.0, 14.0], [7.0, 14.2], [7.1, 12.4], [7.1, -11.8], [5.5, -11.9], [5.6, -15.1], [0.7, -15.2], [0.7, -12.0], [-4.2, -11.9], [-4.2, -10.7]
+];
+const pacificaTacoBell = landmark(
+  'pacifica_taco_bell',
+  'Taco Bell Cantina, Linda Mar (Pacifica)',
+  'building',
+  [1971.6, 1972.3],
+  9999,
+  PACIFICA_TB,
+  b => {
+    b.frame(0, 0, 0, 27.8, () => {
+      const WOOD = '#5B3F2E'; // dark brown wood siding (KQED, 2026)
+      // the restaurant on the landward part of the lot, dark wood-clad, with a low roof (light membrane on the orthophoto)
+      b.color(WOOD);
+      b.prism([[-4, -14.5], [6.8, -14.5], [6.8, 13.8], [-4, 13.8]], 0, 4.2, {top: false});
+      b.color('#CFCBC2').cap([[-4.4, -14.9], [7.2, -14.9], [7.2, 14.2], [-4.4, 14.2]], 4.4);
+      b.color('#4A3426').walls([[-4.4, -14.9], [7.2, -14.9], [7.2, 14.2], [-4.4, 14.2]], 3.9, 4.6);
+      // walk-up window toward the beach, purple Taco Bell sign
+      b.color('#2C2A30').box(-4.05, -2, 1.0, 0.1, 3.2, 1.3);
+      b.color('#5B2C83').box(-4.1, 6, 3.0, 0.15, 4.5, 0.9);
+      // deck facing the surf (the A&W-era patio on stilts), railing and fire pits
+      b.color('#8A6A4E').prism([[-8.6, -10.7], [-4, -10.7], [-4, 10], [-6.7, 10], [-8.6, -4.4]], 0, 1.0);
+      b.color('#4A3426').wallProfile([[-4, -10.7], [-8.6, -10.7], [-8.6, -4.4], [-6.7, 10], [-4, 10]], 1.0, 2.0);
+      b.color('#3A3633');
+      for (const v of [-6, 3]) b.cylinder(-6.4, v, 0.7, 1.0, 1.5, 8);
+    });
+  },
+  {
+    Opened: 'spring 1972 (grand opening late Apr 1972) as an A&W franchise on Bud Wiechers\' beachfront lot — approved just before Proposition 20 (1972) created the Coastal Commission; a restaurant like it could not be built there today',
+    'Taco Bell': 'A&W closed in 1985 and the building became a Taco Bell that year (Pacifica Tribune, Jul 31, 1985)',
+    Cantina: 'renovated for about two months and reopened Jul 13, 2019 as a Taco Bell Cantina serving alcohol; the walk-up take-out window and surfboard rack kept; new fireplace and lounge seating inside',
+    Exterior: 'dark brown wood siding in the A&W years and today, deck over the beach — the 2019 remodel was mainly inside, so one model covers 1972 to today',
+    Model:
+      'outline from OpenStreetMap (© OSM contributors, ODbL; building and deck); split between restaurant and deck, wall and roof heights, window, sign and fire-pit positions estimated from the (blurred) orthophoto and descriptions — no photograph was examined'
+  },
+  ['https://www.kqed.org/news/12080794/its-the-most-beautiful-taco-bell-in-the-world-heres-why-it-could-never-be-built-today', 'https://abc7news.com/post/restaurant-some-call-taco-bell-heaven-re-opens-at-pacifica-beach/5392123/', 'https://www.atlasobscura.com/places/linda-mar-taco-bell'],
+  [rotPoly(PACIFICA_TB_OUTLINE, 27.8)]
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -2485,5 +2529,6 @@ export const SOUTHBAY: Landmark[] = [
   gaFlightDeck,
   gaDropTower,
   gaGoldStriker,
-  gaRailBlazer
+  gaRailBlazer,
+  pacificaTacoBell
 ];

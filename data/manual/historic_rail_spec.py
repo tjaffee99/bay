@@ -29,8 +29,8 @@ def rail(*wps, names=None, snap=150.0, kinds=("heavy",), join=25.0, smooth=None)
             "smooth": smooth}
 
 
-def road(*wps, snap=60.0):
-    return {"method": "road", "wps": list(wps), "snap": snap, "join": 8.0}
+def road(*wps, names=None, snap=60.0):
+    return {"method": "road", "wps": list(wps), "names": names, "snap": snap, "join": 8.0}
 
 
 def topo(sheet, *wps, corridor=110.0, smooth=70.0, step=1, via=None):

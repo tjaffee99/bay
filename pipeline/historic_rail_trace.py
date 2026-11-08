@@ -534,7 +534,7 @@ def piece_geometry(p):
     if meth in ("rail", "road"):
         bb = bbox_of(wps, pad=p.get("pad", 0.015))
         gdf = rail_lines(bb, kinds=p.get("kinds", ("heavy",))) if meth == "rail" else road_lines(bb)
-        if meth == "rail" and p.get("names"):
+        if p.get("names"):
             gdf = gdf[gdf["name"].fillna("").str.contains("|".join(p["names"]))]
         net = Network(lines_utm(gdf), join=p.get("join", 25.0 if meth == "rail" else 8.0))
         xy, dmax = net.path(W, snap=p.get("snap", 150.0))
