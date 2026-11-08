@@ -327,6 +327,29 @@ def osm_extract():
                 fl.add("is_tunnel")
             rows.append({"class": "osm_" + (rw or "lifecycle"), "name": t.get("name") or t.get("old_name") or t.get("operator"),
                          "flags": fl, "src": f"osm:{e['id']}", "geometry": LineString(c)})
+    # BBBike OSM extract of San Francisco (data/raw/osm_bbbike/, bbox -122.53..-122.30, 37.54..37.94)
+    pbf = RAW / "osm_bbbike" / "SanFrancisco.osm.pbf"
+    if pbf.exists():
+        import pyogrio
+        df = pyogrio.read_dataframe(pbf, layer="lines", where="railway IS NOT NULL OR other_tags LIKE '%railway%'",
+                                    columns=["osm_id", "name", "railway", "other_tags"])
+        for r in df.itertuples():
+            ot = str(r.other_tags or "")
+            rw = str(r.railway or "")
+            if int(r.osm_id) in seen or rw in ("platform", "platform_edge", "turntable"):
+                continue
+            ab = rw in ("abandoned", "razed", "dismantled") or "abandoned:railway" in ot or "razed:railway" in ot
+            if not ab and rw != "disused":
+                continue        # active track: Overture has it
+            seen.add(int(r.osm_id))
+            fl = {"is_abandoned"} if ab else {"is_disused"}
+            if '"bridge"' in ot:
+                fl.add("is_bridge")
+            if '"tunnel"' in ot:
+                fl.add("is_tunnel")
+            for ln in getattr(r.geometry, "geoms", [r.geometry]):
+                rows.append({"class": "osm_" + (rw or "lifecycle"), "name": r.name if isinstance(r.name, str) else None,
+                             "flags": fl, "src": f"osm:{r.osm_id}", "geometry": ln})
     _OSM = gpd.GeoDataFrame(rows, crs="EPSG:4326") if rows else None
     return _OSM
 

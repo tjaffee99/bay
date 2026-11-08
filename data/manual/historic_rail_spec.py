@@ -240,3 +240,92 @@ route("cp_main", "Central Pacific (Western Pacific of 1869) Oakland - San Leandr
              "the Alameda wharf 1869-09-06 over a temporary connection to the SF&A at San Leandro. Today's UP "
              "Niles Subdivision (geometry: OSM).", source_url=WIKI + "Alameda_Terminal"),
 ])
+
+# =====================================================================================
+# OCEAN SHORE RAILWAY (1905-1920): San Francisco - Daly City - Pacifica - Half Moon Bay - Tunitas
+# =====================================================================================
+OSR = WIKI + "Ocean_Shore_Railroad"
+OSR_END = 1920.58          # mainline service ended 1920-07-31
+route("osr", "Ocean Shore Railway", "rail", OSR, [
+    seg("San Francisco: 12th & Mission - 12th St - Division (trestle over the SP) - Florida - Mariposa - "
+        "Potrero Ave - Army St - Old San Bruno Rd (electric street section)", 1907.75, OSR_END,
+        pts((-122.418618, 37.773053), (-122.416900, 37.771724), (-122.413283, 37.770229), (-122.411759, 37.768693),
+            (-122.411207, 37.762973), (-122.407305, 37.763188), (-122.406201, 37.751521), (-122.405261, 37.749353),
+            (-122.403593, 37.749472), (-122.403243, 37.743794), (-122.406888, 37.736762), chaikin=1),
+        mode="interurban",
+        note="Depot at the SE corner of 12th & Mission; electrified 600 V (city franchise) to the Army St shops; "
+             "street sections from DataSF intersections (route per the earlier routes.csv research). North-end "
+             "service from 1907-10-02; mainline service ended 1920-07-31 (a southeast-SF piece later carried "
+             "Western Pacific freight into the 1980s - which piece is not documented here).",
+        geometry_confidence="medium"),
+    seg("San Francisco: Islais Creek / Alemany grade to Daly City", 1907.75, OSR_END,
+        road((-122.4069, 37.7368), (-122.4289, 37.7312), (-122.4386, 37.7216), (-122.4550, 37.7106),
+             (-122.4689, 37.7108), (-122.4722, 37.7047), names=["Alemany"], snap=120),
+        note="'then steam via Barneveld/Loomis and the Alemany Blvd (Islais Creek) grade'; the OSR's Mission (5.4 "
+             "mi) and Daly City (7.6 mi) stations fit this alignment; geometry follows today's Alemany Boulevard "
+             "(built on the grade; OSM).", confidence="estimated", geometry_confidence="medium"),
+    seg("Daly City - Crosby - Thornton - Mussel Rock - Edgemar - Salada - Brighton - Vallemar - Rockaway",
+        1907.75, OSR_END,
+        pts((-122.4722, 37.7047), (-122.4718, 37.7030)),
+        topo("sm1915", (-122.4718, 37.7030), (-122.4718, 37.6990), (-122.4728, 37.6963), (-122.4845, 37.6963),
+             (-122.4885, 37.6995), (-122.4930, 37.6998), (-122.4965, 37.6978), (-122.4972, 37.6900),
+             (-122.4958, 37.6800), (-122.4955, 37.6700), (-122.4945, 37.6630), (-122.4945, 37.6550),
+             (-122.4935, 37.6450), (-122.4925, 37.6370), (-122.4940, 37.6260), (-122.4945, 37.6180),
+             (-122.4950, 37.6125), (-122.4962, 37.6075), corridor=160),
+        note="Along the face of the sea cliffs from Thornton to Mussel Rock (the San Andreas rift crossing), then "
+             "the beach terraces of Salada (Sharp Park) and Rockaway. Geometry: USGS San Mateo 1915 sheet "
+             "('Ocean Shore')."),
+    seg("Rockaway - Pedro Valley (Tobin)", 1907.75, OSR_END,
+        pts((-122.4962, 37.6075), (-122.4985, 37.6035), (-122.5025, 37.5995), (-122.5065, 37.5972),
+            (-122.5095, 37.5966)),
+        note="Tobin station at San Pedro Point (Danmann Ave / Shelter Cove Rd), reached 1907-10-02. Geometry "
+             "hand-placed along the valley floor (LOW CONFIDENCE).", geometry_confidence="low"),
+    seg("Tobin - Shelter Cove (San Pedro Point)", 1908.45, OSR_END,
+        pts((-122.5095, 37.5966), (-122.5130, 37.5975), (-122.5150, 37.5972)),
+        note="Along today's Shelter Cove road (on the grade); extension south opened to Granada June 1908.",
+        geometry_confidence="medium"),
+    seg("Pedro Point tunnel", 1908.45, OSR_END,
+        pts((-122.5150, 37.5972), (-122.5168, 37.5950), (-122.5186, 37.5926), chaikin=2),
+        elevated="tunnel",
+        note="Tunnel through San Pedro Point (built during construction, 1905-08). Position APPROXIMATE.",
+        geometry_confidence="low"),
+    seg("Cliff shelf round Devil's Slide to Montara", 1908.45, OSR_END,
+        pts((-122.5186, 37.5926), (-122.5195, 37.5895), (-122.5190, 37.5855), (-122.5182, 37.5812),
+            (-122.5180, 37.5775), (-122.5172, 37.5745), (-122.5162, 37.5712), (-122.5150, 37.5680),
+            (-122.5137, 37.5650), (-122.5130, 37.5615), (-122.5133, 37.5585), (-122.5130, 37.5555),
+            (-122.5140, 37.5515), (-122.5138, 37.5470)),
+        note="Shelf cut into the sea cliffs of Montara Mountain round Devil's Slide; washed out January 1916 and "
+             "the track relocated round the slide. Hand-placed along the cliff and the 1937 highway "
+             "(USGS Montara Mountain 1949 sheet) - LOW CONFIDENCE.", geometry_confidence="low",
+        source_url=WIKI + "Devil%27s_Slide_(California)"),
+    seg("Montara - Farallone - Moss Beach", 1908.45, OSR_END,
+        rail((-122.5136, 37.5462), (-122.5169, 37.5395), snap=60),
+        pts((-122.5169, 37.5395), (-122.5162, 37.5340), (-122.5145, 37.5300), (-122.5130, 37.5270)),
+        note="Montara station (222 Second St) and Farallone City (Seventh St); the grade is under today's Cabrillo "
+             "Highway in Montara (OSM abandoned:railway, old operator Ocean Shore Railway); Moss Beach "
+             "approximate.", geometry_confidence="medium"),
+    seg("Moss Beach - Princeton - North Granada - Granada", 1908.45, OSR_END,
+        pts((-122.5130, 37.5270), (-122.5085, 37.5205), (-122.5010, 37.5135), (-122.4945, 37.5070),
+            (-122.4890, 37.5035), (-122.4820, 37.5025), (-122.4735, 37.5012), (-122.4685, 37.4985),
+            (-122.4617, 37.4966)),
+        note="Granada reached June 1908; North Granada depot (1900 building) at 10151 Cabrillo Hwy. Geometry "
+             "hand-placed along the shore of Half Moon Bay (LOW CONFIDENCE).", geometry_confidence="low"),
+    seg("Granada - Miramar - Half Moon Bay", 1908.78, OSR_END,
+        rail((-122.4617, 37.4966), (-122.4565, 37.4904), snap=80),
+        pts((-122.4565, 37.4904), (-122.4510, 37.4820), (-122.4465, 37.4735), (-122.4442, 37.4668)),
+        rail((-122.4442, 37.4668), (-122.4437, 37.4644), snap=80),
+        note="'Ocean Shore' station reached October 1908 (Half Moon Bay; Arleta Park depot at 920 Railroad Ave). "
+             "Geometry: OSM grade fragments (Miramar, Half Moon Bay), hand-placed between.",
+        geometry_confidence="medium"),
+    seg("Half Moon Bay - Arleta - Purisima - Lobitos - Tunitas Glen", 1908.9, OSR_END,
+        pts((-122.4437, 37.4644), (-122.4425, 37.4600), (-122.4409, 37.4559)),
+        rail((-122.4409, 37.4559), (-122.4393, 37.4508), (-122.4381, 37.4466), snap=60),
+        pts((-122.4381, 37.4466), (-122.4360, 37.4390), (-122.4330, 37.4300), (-122.4306, 37.4254)),
+        rail((-122.4306, 37.4254), (-122.4185, 37.3924), (-122.4127, 37.3847), (-122.4089, 37.3795),
+             (-122.4063, 37.3753), (-122.4057, 37.3680), (-122.4050, 37.3628), snap=60, join=60),
+        pts((-122.4050, 37.3628), (-122.4035, 37.3600), (-122.4010, 37.3570)),
+        note="End of track at Tunitas Glen (1908, month ESTIMATED); a Stanley Steamer auto stage bridged the "
+             "26-mile gap to Swanton. Geometry: OSM grade fragments south of Half Moon Bay and at Purisima, "
+             "hand-placed between (south of Purisima LOW CONFIDENCE).", confidence="estimated",
+        geometry_confidence="medium"),
+])

@@ -819,6 +819,178 @@ const CARRIERS: Landmark[] = [
     }, [WIKI + 'USS_Carl_Vinson', SRC_NAS])
 ];
 
+// =================================================================== HUNTERS POINT NAVAL SHIPYARD (San Francisco)
+
+const SRC_HP_NRHP_DD4 = 'https://catalog.archives.gov/id/123861089';
+const SRC_HP_NRHP_DD23 = 'https://catalog.archives.gov/id/123861175';
+const SRC_HP_CRANE = WIKI + 'Hunter%27s_Point_crane';
+
+/** A graving dock seen flooded: concrete coping round the basin, water inside, the caisson gate across the open end (+y). */
+function drydock(id: string, name: string, anchor: V2, brg: number, ring: V2[], gateY: number, gateW: number, built: [number, number], facts: Record<string, string>, sources: string[]): Landmark {
+  return {
+    id,
+    name,
+    kind: 'monument',
+    built,
+    end: 9999,
+    anchor,
+    build: b =>
+      b.frame(0, 0, 0, brg, () => {
+        // the terrain draws the dock as quay ground: the basin is a water plane just above it
+        const z = 0.8;
+        b.color('#3F5862').cap(ring, z);
+        b.color('#B9B4A8').prism(scaleRing(ring, 1.0), z, z + 0.6, {top: false});
+        // coping: a 4 m band round the rim (drawn as a slightly larger ring's walls + top strip via a ring with a hole)
+        b.color('#C9C4B8').cap(scaleRing(ring, 1.06), z + 0.55, [ring]);
+        b.color('#6F767B').box(0, gateY, z - 0.5, gateW + 6, 6, 3.4); // caisson gate
+      }),
+    facts,
+    sources
+  };
+}
+
+const DD4_RING: V2[] = [[23.4, 165.0], [26.0, 151.9], [26.2, -143.4], [22.5, -156.7], [14.0, -165.7], [0.2, -169.8], [-12.5, -165.8], [-22.8, -156.3], [-26.6, -143.9], [-26.7, 149.3], [-23.3, 165.3]];
+const DD2_RING: V2[] = [[-14.9, 111.7], [16.7, 110.6], [18.3, -77.9], [14.1, -98.7], [10.3, -109.7], [6.8, -114.7], [1.0, -117.6], [-5.4, -116.0], [-9.4, -111.4], [-15.3, -93.7], [-18.1, -78.0], [-17.3, 79.2]];
+const DD3_RING: V2[] = [[-21.0, 152.9], [20.5, 153.1], [22.8, 111.2], [23.6, -112.4], [19.3, -138.3], [13.0, -152.9], [7.7, -160.0], [2.2, -163.9], [-2.1, -164.2], [-5.9, -161.8], [-12.3, -153.6], [-19.2, -137.7], [-23.0, -113.7], [-23.4, 115.4]];
+
+const HP_CRANE: V2 = [-122.361223, 37.719968];
+const huntersPointCrane: Landmark = {
+  id: 'hunters_point_gantry_crane',
+  name: 'Hunters Point gantry crane',
+  kind: 'tower',
+  built: [1946.3, 1947.5],
+  end: 9999,
+  anchor: HP_CRANE,
+  build: b =>
+    b.frame(0, 0, 0, 36.5, () => {
+      // local y: the 730 ft girder across the Gun Mole pier (cantilevered over the water both sides);
+      // x: along the pier. OSM outline 222 × 52 m, height 137 m (450 ft).
+      const col = '#9A4F3C';
+      const legX = 22;
+      const legY = 30;
+      const zg = 112;
+      b.color('#5E6266');
+      for (const y of [-legY, legY]) b.box(0, y, 0, 2 * legX + 12, 4, 3); // bogie trucks on the pier rails
+      b.color(col);
+      for (const x of [-legX, legX])
+        for (const y of [-legY, legY]) {
+          b.beam([x * 1.15, y * 1.25, 3], [x * 0.85, y * 0.7, zg], 3.2);
+        }
+      for (const y of [-legY, legY]) {
+        b.beam([-legX * 1.1, y * 1.15, 40], [legX * 1.1, y * 1.15, 40], 2.2);
+        b.beam([-legX, y * 0.92, 80], [legX, y * 0.92, 80], 2.2);
+        b.beam([-legX * 1.15, y * 1.25, 3], [legX * 0.9, y * 0.85, 75], 1.6); // portal bracing
+        b.beam([legX * 1.15, y * 1.25, 3], [-legX * 0.9, y * 0.85, 75], 1.6);
+      }
+      for (const x of [-legX, legX]) b.beam([x, -legY * 0.9, 60], [x, legY * 0.9, 60], 2.0);
+      // the long top girder: two Warren trusses with top and bottom chords
+      for (const x of [-legX + 2, legX - 2]) {
+        b.box(x, 0, zg, 2.4, 222, 2.6);
+        b.box(x, 0, zg + 15, 2.4, 222, 2.4);
+        for (let k = 0; k < 14; k++) {
+          const y0 = -111 + k * (222 / 14);
+          const y1 = y0 + 222 / 14;
+          b.beam([x, y0, zg + 2.6], [x, (y0 + y1) / 2, zg + 15], 1.0).beam([x, (y0 + y1) / 2, zg + 15], [x, y1, zg + 2.6], 1.0);
+        }
+      }
+      for (const y of [-110, -55, 0, 55, 110]) b.box(0, y, zg + 15, 2 * legX - 2, 2.2, 2.2);
+      b.color('#B9B3A6').box(0, 6, zg + 17.4, 18, 30, 7.5); // hoist and machinery house on top (to ≈137 m)
+      b.color('#45494D').box(0, 70, zg - 3, 12, 10, 3); // trolley + hook block on the cantilever
+    }),
+  facts: {
+    Built: 'completed 1947 by the American Bridge Company on the Gun Mole Pier, to repair battleships and aircraft carriers — “the mightiest crane in the world”; used for Operation Skycatch (Polaris tests, 1959) and the 1967 Poseidon test frame',
+    Size: '450 ft (137 m) tall, 730 ft (222 m) long; 450–630 long-ton lifts (sources differ)',
+    Model: 'outline (222 × 52 m) and height from OpenStreetMap (© OSM contributors, ODbL); leg spacing, truss panels and the machinery house estimated from photos; colour (rust red) from photos'
+  },
+  sources: [SRC_HP_CRANE, 'https://www.kqed.org/news/12005257/the-hunters-point-cranes-legacy-is-both-majestic-and-troubling']
+};
+
+const HUNTERS_POINT: Landmark[] = [
+  drydock('hunters_point_drydock_4', 'Hunters Point Drydock 4', [-122.363758, 37.724768], 126.2, DD4_RING, 160, 49, [1942.2, 1943.1], {
+    Built: '1942–43 in ten months on the site of the leveled hill; the largest drydock on the West Coast, able to take any ship of the fleet (NRHP 2012)',
+    Size: '≈335 × 53 m (OSM outline; ≈1,100 ft)',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); drawn flooded, with the caisson gate at the bay end (gate position estimated)'
+  }, [SRC_HP_NRHP_DD4, 'https://www.foundsf.org/Hunter%27s_Point_Naval_Shipyard']),
+  drydock('hunters_point_drydock_2', 'Hunters Point Drydock 2', [-122.35916, 37.728513], 73.5, DD2_RING, 108, 32, [1901.5, 1903.0], {
+    Built: '1903 (Hunters Point Commercial Drydock Historic District, NRHP 2012); depth 8.8 m (OSM)',
+    Model: 'outline from OpenStreetMap; drawn flooded with the gate at the bay end (estimated)'
+  }, [SRC_HP_NRHP_DD23]),
+  drydock('hunters_point_drydock_3', 'Hunters Point Drydock 3', [-122.360543, 37.728975], 73.5, DD3_RING, 150, 41, [1916.5, 1918.0], {
+    Built: '1918 (Hunters Point Commercial Drydock Historic District, NRHP 2012); depth 12.1 m (OSM)',
+    Model: 'outline from OpenStreetMap; drawn flooded with the gate at the bay end (estimated)'
+  }, [SRC_HP_NRHP_DD23]),
+  huntersPointCrane
+];
+
+// =================================================================== KAISER RICHMOND SHIPYARD No. 3 (1942–45)
+
+// Five graving basins at Point Potrero (OSM nodes “Basin no. 1–5”); whirley cranes ran on the four
+// piers between them and on the outer walls. The basins are water in the terrain; the cranes are modelled.
+const Y3_PIERS: [V2, V2][] = [
+  [[-122.3657533, 37.9048044], [-122.3661246, 37.906364]],
+  [[-122.3662105, 37.9047407], [-122.3665624, 37.9062895]],
+  [[-122.366668, 37.9046725], [-122.3670344, 37.9062218]],
+  [[-122.3671108, 37.904589], [-122.3675237, 37.906154]]
+];
+const Y3_ANCHOR: V2 = [-122.3666793, 37.9055509];
+const SRC_RORI = 'https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm';
+const SRC_WHIRLEY = 'https://www.nps.gov/rori/learn/historyculture/the-whirley-crane.htm';
+
+function y3Crane(b: MeshBuilder, p: V2, slew: number) {
+  const q = lngLatToLocal(Y3_ANCHOR, p);
+  // Clyde whirley: ≈10 m portal over the pier track, 110 ft (33.5 m) boom
+  b.frame(q[0], q[1], dz(Y3_ANCHOR, q), slew, () => whirley(b, 9, 11, 33.5, 62, 0, '#6E5A4A'));
+}
+
+const kaiserYard3Cranes: Landmark = {
+  id: 'kaiser_yard3_whirley_cranes',
+  name: 'Kaiser Richmond Shipyard No. 3 whirley cranes',
+  kind: 'tower',
+  built: [1942.1, 1942.6],
+  end: 1946.0,
+  anchor: Y3_ANCHOR,
+  build: b => {
+    Y3_PIERS.forEach(([s, n], i) => {
+      for (const t of [0.3, 0.72]) {
+        const p: V2 = [s[0] + (n[0] - s[0]) * t, s[1] + (n[1] - s[1]) * t];
+        y3Crane(b, p, (i % 2 ? 80 : -100) + (t > 0.5 ? 20 : 0));
+      }
+    });
+  },
+  facts: {
+    Built: 'Shipyard No. 3, built 1942 by Kaiser’s Permanente Metals as a permanent yard with five graving basins (27 ways in the four Richmond yards; 747 ships built in all)',
+    Use: 'whirley cranes carried prefabricated sections of up to 50 tons from the platens to the hulls in the basins',
+    Model: 'eight cranes, two on each pier between the basins (count, positions and post-war removal year estimated); generic whirley massing scaled to the surviving Clyde crane (110 ft boom)'
+  },
+  sources: [SRC_RORI, SRC_WHIRLEY, WIKI + 'Richmond_Shipyards']
+};
+
+const kaiserWhirley: Landmark = {
+  id: 'kaiser_yard3_preserved_whirley',
+  name: 'Whirley crane, Richmond Shipyard No. 3',
+  kind: 'tower',
+  built: [1942.1, 1942.6],
+  end: 9999,
+  anchor: Y3_ANCHOR,
+  build: b => y3Crane(b, [-122.36545, 37.90556], -100),
+  facts: {
+    Built: 'Clyde Iron Works, Duluth, 1935, for Grand Coulee Dam; barged to Richmond in 1941 (Todd California Shipbuilding, later Yard No. 1); now beside the SS Red Oak Victory at Basin 5',
+    Size: '110 ft boom, 166,000 lb lift, 229,000 lb; legs “as tall as a 10-story building”',
+    Model: 'shown at Yard 3 from 1942 (its move from Yard 1 is undated: estimate); position by Basin 5 estimated; generic whirley massing'
+  },
+  sources: [SRC_WHIRLEY]
+};
+
 // =================================================================== registry
 
-export const PORTS: Landmark[] = [...OAKLAND_CRANES, ...OAKLAND_YARDS, ...HANGARS, controlTower, seaplaneRamps, ...CARRIERS];
+export const PORTS: Landmark[] = [
+  ...OAKLAND_CRANES,
+  ...OAKLAND_YARDS,
+  ...HANGARS,
+  controlTower,
+  seaplaneRamps,
+  ...CARRIERS,
+  ...HUNTERS_POINT,
+  kaiserYard3Cranes,
+  kaiserWhirley
+];

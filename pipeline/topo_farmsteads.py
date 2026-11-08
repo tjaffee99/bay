@@ -772,7 +772,7 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
     # (vanished in the opening) come from the ink components: straight, 0.8-6 mm long.
     n0, lab0, st0, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
     dim0 = np.maximum(st0[:, 2], st0[:, 3])
-    cand0 = np.nonzero((dim0 >= 0.8 * ppm) & (dim0 <= 6 * ppm))[0]
+    cand0 = np.nonzero((dim0 >= 0.45 * ppm) & (dim0 <= 6 * ppm))[0]
     cand0 = cand0[cand0 > 0]
     if len(cand0):
         ys_, xs_ = np.nonzero(ink)
@@ -787,8 +787,8 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
             tr, det = sxx[q] + syy[q], sxx[q] * syy[q] - sxy[q] ** 2
             dd = math.sqrt(max(tr * tr / 4 - det, 0))
             l1, l2 = tr / 2 + dd, max(tr / 2 - dd, 1e-6)
-            if l1 / l2 < 40 or 4 * math.sqrt(l1) < 0.8 * ppm:
-                continue                          # not a straight dash
+            if l1 / l2 < 20 or 4 * math.sqrt(l1) < 0.6 * ppm:
+                continue                          # not a straight dash (power-line dashes ~0.9 mm)
             th = 0.5 * math.atan2(2 * sxy[q], sxx[q] - syy[q])
             dashes.append((mx_[q], my_[q], math.cos(th), math.sin(th), 2 * math.sqrt(l1)))
     del lab0

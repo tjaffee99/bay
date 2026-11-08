@@ -465,6 +465,24 @@ def overture_extras(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     counties = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
     sf = counties[(counties.STATEFP == "06") & (counties.COUNTYFP == "075")].to_crs(UTM).geometry.iloc[0]
     ov = ov[ov.representative_point().within(sf)]
+    # not buildings you can see: subway stations under Market St (Powell, Civic Center,
+    # Montgomery, Embarcadero… mapped as building=train_station over the street — a
+    # station on its own parcel, like 4th & King, stays), roofs / canopies, and the
+    # Visitor Information Center down in sunken Hallidie Plaza
+    pa = gpd.read_parquet(INTERIM / "sf_parcels_active.parquet").to_crs(UTM) if (INTERIM / "sf_parcels_active.parquet").exists() else None
+    station = ov["class"].eq("train_station").values
+    if pa is not None and station.any():
+        pu = shapely.union_all(pa.geometry[pa.intersects(shapely.union_all(ov.geometry.values[station]).buffer(5))].values)
+        on_parcel = np.array([g.intersection(pu).area / max(g.area, 1) for g in ov.geometry.values[station]])
+        under = np.zeros(len(ov), bool)
+        under[np.nonzero(station)[0][on_parcel < 0.5]] = True
+    else:
+        under = station
+    sunken = ov["name"].fillna("").str.contains("Visitor Information Center").values
+    canopy = ov["class"].eq("roof").values
+    log(f"overture: dropping {int(under.sum())} subway stations under the street, {int(canopy.sum())} roofs/canopies, "
+        f"{int(sunken.sum())} sunken-plaza buildings")
+    ov = ov[~(under | canopy | sunken)]
     # area of each Overture building covered by DataSF footprints
     hits = gpd.sjoin(ov[["geometry"]], df[["geometry"]], predicate="intersects", how="left")
     covered = np.zeros(len(ov))
