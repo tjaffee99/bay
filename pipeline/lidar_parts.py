@@ -1,49 +1,56 @@
 """Stage: per-building massing (stepped parts) from airborne LiDAR.
 
 Every footprint in sf_buildings is one prism at one height, so a 16-storey tower on a
-6-storey courtyard podium reads as a flat slab. Where OSM mappers drew building:parts
-we already use them (sf_buildings.apply_parts); everywhere else this stage cuts the
-footprint into parts from a 1 m LiDAR surface model:
+6-storey courtyard podium reads as a flat slab. OSM building:parts help only where they
+carry heights (188 of SF's 286 OSM-parts buildings give every part the same height).
+This stage cuts footprints into parts from a 1 m LiDAR surface model:
 
   1. DSM / DTM: USGS 3DEP point cloud as Entwine Point Tiles (EPT, public AWS bucket
-     usgs-lidar-public). Nodes down to depth 8 (~0.5 m voxels, ~5 pts/m2 on roofs) are
-     streamed, decoded (laspy + lazrs) and binned on a 1 m UTM 10N grid, nothing is kept
-     on disk but the rasters:
+     usgs-lidar-public, EPSG:3857). Nodes down to ~0.5-0.7 m voxels (SF: depth 8, ~1.65 G
+     points, ~13 min with 3 processes) are streamed, decoded (laspy + lazrs) and binned on a
+     1 m UTM 10N grid; only the rasters are kept:
         dsm   max z of all returns (noise classes 7/18 dropped)
         dsml  max z of last / single returns (tree canopy suppressed, roofs unchanged)
         dtm   max z of ground / water / ignored-ground points, gaps under buildings
               filled by inverse-distance interpolation
         veg   % of points that are non-last returns (canopy marker)
      -> data/interim/lidar/<job>/{dsm,dsml,dtm,veg}.tif   (int16 decimetres / uint8 %)
-  2. Parts: inside each footprint (1 m inset for the statistics) roof pixels are joined
-     into plateaus where neighbouring pixels differ by < 2 m (pitched roofs stay one
-     surface, a storey step cuts), plateaus closer than 3 m in median roof elevation or
-     smaller than 40 m2 are merged into their neighbour, plateaus less than 2 m above the
-     local ground (courtyards, light courts open to the sky) become holes. Footprints
-     with two or more plateaus (or a courtyard) are polygonised from the 1 m label raster
-     (coverage-simplified ~1 m so shared edges stay shared) and clipped to the footprint.
-     Heights: median roof elevation of the plateau minus the footprint's ground (mean
-     DTM along its outline -- the same reference sf_export uses for the roof).
-     Footprints newer than the survey, demolished before it, or OSM parts are skipped.
+  2. Parts: inside each footprint (1 m inset for the statistics; canopy pixels dropped) the
+     3x3-median roof surface is joined into plateaus where neighbouring pixels differ by
+     < 2 m (pitched roofs stay one surface, a storey step cuts); plateaus under 40 m2 join
+     the neighbour closest in height, neighbours closer than 3 m (median roof) merge,
+     plateaus whose returns are mostly split are canopy (dropped), plateaus less than 2 m
+     above the local ground (courtyards open to the sky) become holes. Footprints with two
+     or more plateaus (or a courtyard) are polygonised from the 1 m label raster (vote-
+     smoothed, coverage-simplified so shared edges stay shared), clipped to the footprint;
+     touching parts closer than 3 m merge, strips narrower than 3 m (crane booms, ledges)
+     join their neighbour. Heights: median roof elevation of the plateau minus the
+     footprint's ground (mean DTM along the outline, the reference sf_export uses).
+     Buildings drawn as OSM building:parts are segmented as one outline ("osmbld:<id>",
+     `replaces` = their part keys, `prefer_lidar` where the OSM parts carry no height
+     variation or disagree with the LiDAR). Footprints newer than the survey or gone
+     before it are skipped.
      -> data/interim/<job>_lidar_parts.parquet (EPSG:4326; key, part_index, height_m,
-        roof_m, ground_m, area_m2, lidar_year, lidar_project, geometry)
-        data/interim/<job>_lidar_heights.parquet (one row per footprint: whole-footprint
-        LiDAR median height, plateau count, status)
-        data/interim/reports/<job>_lidar_parts.md (+ preview PNGs)
+        roof_m, ground_m, area_m2, replaces, prefer_lidar, lidar_year, lidar_project)
+        data/interim/<job>_lidar_heights.parquet (one row per footprint / OSM part:
+        status, whole-footprint LiDAR median height, plateau count)
+        data/interim/reports/<job>_lidar_parts.md (+ <job>_lidar_<view>.png validation views)
 
 Usage (from pipeline/):
   python lidar_parts.py sf [--bbox lon0,lat0,lon1,lat1] [--workers 3]
       San Francisco: project CA_SanFrancisco_1_B23 (NV5 for USGS, flown 2023-04-20, NPS
       0.15 m). --bbox restricts to a test area (separate job "sf_<hash>").
-  python lidar_parts.py region --bbox lon0,lat0,lon1,lat1 --name oakland [--project NAME]
-      any other area: picks the most recent EPT project covering the bbox (or --project);
+  python lidar_parts.py region --bbox lon0,lat0,lon1,lat1 --name oakland [--project A,B]
+      any other area: the newest survey year whose EPT projects cover the bbox (e.g. Oakland
+      CA_AlamedaCo_2_2021 + _3_2021, San Jose CA_SantaClaraCounty_2020) or --project;
       footprints = Overture region buildings (download_region.py) inside the bbox.
   python lidar_parts.py preview --job sf --bbox lon0,lat0,lon1,lat1 --out file.png
-      top-down height map of the DSM with footprints and parts (validation).
+      top-down height maps: LiDAR | one prism per footprint | with the LiDAR parts.
 
-Idempotent: EPT hierarchy pages and project metadata are cached in data/raw/lidar/,
-the rasters are built once per job (resumable: finished work units are logged), the
-parts are recomputed when missing. Delete data/interim/lidar/<job>/ to rebuild.
+Idempotent: EPT metadata and hierarchy pages are cached in data/raw/lidar/<project>/, the
+rasters are built once per job (resumable: finished work units are logged in acc/done.txt),
+the parts are recomputed when their parquet is missing. Delete data/interim/lidar/<job>/
+to rebuild the rasters.
 """
 from __future__ import annotations
 
@@ -53,7 +60,6 @@ import io
 import json
 import os
 import re
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import get_context
@@ -89,6 +95,7 @@ MIN_STEP = 3.0         # plateaus closer than this (median roof elevation) are o
 MIN_PART = 40.0        # smallest part / courtyard
 OPEN_HAG = 2.0         # plateau less than this above ground = open to the sky (courtyard)
 VEG_FRAC = 40          # % non-last returns -> canopy pixel, ignored
+CANOPY_PLATEAU = 15    # plateau with median >= this % non-last returns = tree canopy, not a part
 INSET = 1.0            # footprint inset for the statistics
 THIN = 3.0             # parts narrower than this (crane booms, ledges) join their neighbour
 SIMPLIFY = 1.5         # coverage simplification of the 1 m staircase (VW, sqrt of area)
@@ -232,6 +239,7 @@ def _worker_init(grid_json):
 
 def _fetch(url):
     s = _W["s"]
+    err = None
     for attempt in range(6):
         try:
             r = s.get(url, timeout=120)
@@ -242,7 +250,7 @@ def _fetch(url):
         except Exception as e:  # noqa: BLE001 - network hiccup, retry
             err = e
         time.sleep(1.5 * 2 ** attempt)
-    raise RuntimeError(f"failed to fetch {url}")
+    raise RuntimeError(f"failed to fetch {url}: {err!r}")
 
 
 def _bin_unit(unit):
@@ -474,7 +482,7 @@ def _components(z, S, step):
     return out
 
 
-def segment(z, hag, S, px_area=1.0):
+def segment(z, hag, S, px_area=1.0, veg=None):
     """Plateau labels (>= 0, -1 elsewhere) and {label: (median z, median hag, area px, open)}.
     z: roof elevation (nan = no data / canopy), hag: height above local ground, S: pixels to use.
     1. pixels join where 4-neighbours differ by < EDGE_STEP (a pitched roof is one surface,
@@ -549,6 +557,16 @@ def segment(z, hag, S, px_area=1.0):
         merge(i, j)
         hmed.pop(i)
         hmed[j] = float(np.median(hf[pix[j]]))
+    if veg is not None and len(pix) > 1:
+        # a plateau whose returns are often split (median >= CANOPY_PLATEAU %) is tree canopy over
+        # the roof / courtyard: its pixels go to the neighbouring plateaus (filled by nearest later)
+        vf = veg.ravel()
+        for i in [i for i in pix if np.nanmedian(np.r_[vf[pix[i]], 0.0]) >= CANOPY_PLATEAU]:
+            if len(pix) > 1:
+                dropped.append(pix.pop(i))
+                area.pop(i), med.pop(i), hmed.pop(i)
+                for k in nb.pop(i):
+                    nb[k].discard(i)
     lab = np.full(z.size, -1, np.int64)
     info = {}
     for k, (i, p) in enumerate(pix.items()):
@@ -576,7 +594,7 @@ def _smooth_labels(lab, sigma=1.2):
     return ids[np.argmax(votes, axis=0)]
 
 
-def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
+def split_footprint(geom, wt, z, hag, dtm, veg=None, px_area=1.0):
     """-> (status, whole_roof_z, ground_ref, parts[list of (polygon, roof_z, area)])"""
     import shapely
     from rasterio.features import rasterize, shapes
@@ -610,7 +628,7 @@ def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
     if area < 2 * MIN_PART or (p99 - p1 < MIN_STEP and open_frac * area < MIN_PART):
         return "single", whole, gref, []
     # plateaus on the inset (edge pixels are mixed with walls / eaves), then extended to the footprint
-    lab, info = segment(np.where(Si, z, np.nan), hag, Si, px_area)
+    lab, info = segment(np.where(Si, z, np.nan), hag, Si, px_area, veg)
     if len(info) <= 1:
         return "single", whole, gref, []
     nparts = sum(1 for v in info.values() if not v[3])
@@ -637,6 +655,25 @@ def split_footprint(geom, wt, z, hag, dtm, px_area=1.0):
         if p.is_empty:
             continue
         parts.append([p, info[k][0], p.area])
+    # touching parts closer than MIN_STEP (split apart by the inset at a narrow neck, or by canopy)
+    merged = True
+    while merged and len(parts) > 1:
+        merged = False
+        best = None
+        for i in range(len(parts)):
+            for j in range(i + 1, len(parts)):
+                d = abs(parts[i][1] - parts[j][1])
+                if d < MIN_STEP and (best is None or d < best[0]) and \
+                        parts[i][0].buffer(0.3).intersection(parts[j][0]).area > 1.0:
+                    best = (d, i, j)
+        if best:
+            _, i, j = best
+            a, b = parts[i], parts[j]
+            parts[i] = [shapely.make_valid(shapely.union_all([a[0], b[0]])), (a[1] * a[2] + b[1] * b[2]) / (a[2] + b[2]),
+                        a[2] + b[2]]
+            parts[i][2] = parts[i][0].area
+            parts.pop(j)
+            merged = True
     # slivers left by clipping and thin strips (crane booms, ledges, < ~3 m wide): join the
     # neighbour sharing the longest edge (keeping its height)
     def bad(p):
@@ -679,7 +716,7 @@ def _read(win):
     dtm = np.where(dtm == NODATA, np.nan, dtm / 10.0)
     canopy = (veg != 255) & (veg >= VEG_FRAC) & (dsm - dsml > 10)  # many split returns, first > last + 1 m
     z = np.where(canopy, np.nan, z)
-    return z, dtm
+    return z, dtm, np.where(veg == 255, np.nan, veg.astype(np.float32))
 
 
 def _seg_chunk(chunk):
@@ -693,7 +730,7 @@ def _seg_chunk(chunk):
     c0, r1 = inv * (xs[:, 0].min() - 6, xs[:, 1].min() - 6)
     c1, r0 = inv * (xs[:, 2].max() + 6, xs[:, 3].max() + 6)
     W = Window(int(c0), int(r0), int(c1 - c0) + 2, int(r1 - r0) + 2)
-    Z, DTM = _read(W)
+    Z, DTM, VEG = _read(W)
     WT = wtransform(W, f.transform)
     hag_all = Z - DTM
     out_parts, out_rows = [], []
@@ -706,10 +743,10 @@ def _seg_chunk(chunk):
         dtm = DTM[sl]
         wt = wtransform(Window(sl[1].start, sl[0].start, z.shape[1], z.shape[0]), WT)
         try:
-            status, whole, gref, parts = split_footprint(geom, wt, z, hag_all[sl], dtm)
+            status, whole, gref, parts = split_footprint(geom, wt, z, hag_all[sl], dtm, VEG[sl])
         except Exception as e:  # noqa: BLE001 - one bad footprint must not stop the run
             status, whole, gref, parts = f"error:{type(e).__name__}", np.nan, np.nan, []
-        extra = None
+        extra = None if status != "split" else True  # plain footprint: use its LiDAR parts
         if members:  # OSM parts: LiDAR roof per part vs its OSM height
             diffs, areas, hs = [], [], []
             for pkey, pg, ph in members:
@@ -774,12 +811,13 @@ def load_region_footprints(bbox_ll):
     import pandas as pd
     import shapely
     from download_region import OUT_OVERTURE
-    d = pd.read_parquet(OUT_OVERTURE / "region5_building.parquet", columns=["id", "has_parts", "px", "py", "geometry"],
+    d = pd.read_parquet(OUT_OVERTURE / "region5_building.parquet", columns=["id", "has_parts", "height", "px", "py", "geometry"],
                         filters=[("px", ">=", bbox_ll[0]), ("px", "<=", bbox_ll[2]),
                                  ("py", ">=", bbox_ll[1]), ("py", "<=", bbox_ll[3])])
     g = gpd.GeoDataFrame({"key": d["id"].values, "source": np.where(d.has_parts.fillna(False), "overture_has_parts",
                                                                      "overture"),
-                          "start_year": np.nan, "end_year": np.nan, "height": np.nan, "members": None},
+                          "start_year": np.nan, "end_year": np.nan, "height": d.height.astype(float).values,
+                          "members": None},
                          geometry=shapely.from_wkb(d.geometry.values), crs="EPSG:4326")
     log(f"region: {len(g)} Overture footprints in {bbox_ll}")
     return g
@@ -837,6 +875,8 @@ def run_parts(job: str, fp, workers: int = 3):
     pg["roof_m"] = pg.roof_m.round(2)
     pg["ground_m"] = pg.ground_m.round(2)
     pg["area_m2"] = pg.area_m2.round(1)
+    pg["prefer_lidar"] = pg.prefer_lidar.astype(bool)
+    st["prefer_lidar"] = st.prefer_lidar.astype("boolean")
     pg["lidar_year"] = year
     pg["lidar_project"] = meta["project"]
     pg = pg[["key", "part_index", "height_m", "roof_m", "ground_m", "area_m2", "replaces", "prefer_lidar", "lidar_year",
@@ -873,7 +913,7 @@ def preview(job, bbox_ll, out_png, fp=None, parts=None, title=None):
     pp = parts.to_crs(UTM) if parts is not None and len(parts) else None
     used = set()
     if pp is not None:
-        ok = pp.prefer_lidar.isna() | pp.prefer_lidar.astype(bool) if "prefer_lidar" in pp else np.ones(len(pp), bool)
+        ok = pp.prefer_lidar.fillna(True).astype(bool) if "prefer_lidar" in pp else np.ones(len(pp), bool)
         pp = pp[np.asarray(ok, bool)]
         used = set(pp.key)
 
@@ -898,11 +938,14 @@ def preview(job, bbox_ll, out_png, fp=None, parts=None, title=None):
 
     asp = (ext[3] - ext[2]) / max(1.0, ext[1] - ext[0])
     fig, axs = plt.subplots(1, 3, figsize=(22, 22 / 3 * asp + 1.2), layout="constrained")
-    panels = [(ndsm, "LiDAR 2023: height above ground, footprints"), (model(False), "model now: one prism per footprint"),
+    from matplotlib.colors import PowerNorm
+    norm = PowerNorm(0.5, vmin=0, vmax=vmax)  # towers and houses both readable
+    year = json.loads((d / "meta.json").read_text())["lidar_year"]
+    panels = [(ndsm, f"LiDAR {int(year)}: height above ground (DSM - DTM), footprints"), (model(False), "model now: one prism per footprint"),
               (model(True), "model with LiDAR parts")]
     for ax, (img, ttl) in zip(axs, panels):
         ax.set_facecolor("#202020")
-        ax.imshow(img, extent=ext, cmap="magma", vmin=0, vmax=vmax, interpolation="nearest")
+        ax.imshow(img, extent=ext, cmap="magma", norm=norm, interpolation="nearest")
         ax.set_title(ttl)
         ax.set_xlim(ext[0], ext[1])
         ax.set_ylim(ext[2], ext[3])
@@ -917,7 +960,7 @@ def preview(job, bbox_ll, out_png, fp=None, parts=None, title=None):
             if r.geometry.area > 200:
                 c = r.geometry.representative_point()
                 axs[2].annotate(f"{r.height_m:.0f}", (c.x, c.y), color="cyan", fontsize=6, ha="center", va="center")
-    sm = plt.cm.ScalarMappable(cmap="magma", norm=plt.Normalize(0, vmax))
+    sm = plt.cm.ScalarMappable(cmap="magma", norm=norm)
     fig.colorbar(sm, ax=axs, fraction=0.012, pad=0.01, label="m above ground")
     if title:
         fig.suptitle(title)
@@ -939,7 +982,7 @@ EXAMPLES = {  # validation views (lon0, lat0, lon1, lat1)
 STATUS_TEXT = {
     "split": "cut into LiDAR parts",
     "single": "one roof plateau (no step >= 3 m over >= 40 m2): stays one prism",
-    "mostly_open": "> 60 % of the footprint is ground level in 2023 (building gone / footprint over open ground)",
+    "mostly_open": "> 60 % of the footprint is at ground level in the survey (building gone / footprint over open ground)",
     "no_data": "too few LiDAR returns inside (glass / water / outside the survey)",
     "no_ground": "no ground around it in the DTM",
     "newer_than_survey": "start_year after the survey: keeps its flat footprint",
@@ -994,7 +1037,7 @@ def report(job, st, pg, fp, extra_lines=()):
                 dh = g.lidar_height_m - g.height
                 lines.append(f"| {src} | {len(g)} | {dh.median():+.2f} | {(dh.abs() > 5).mean():.1%} |")
             lines.append("")
-            lines.append("`lidar_height_m` (2023 median roof minus the mean ground along the outline) is in "
+            lines.append("`lidar_height_m` (survey median roof minus the mean ground along the outline) is in "
                          f"`{job}_lidar_heights.parquet` for every footprint, also the unsplit ones.")
     lines += [""] + list(extra_lines)
     if len(split):
@@ -1007,7 +1050,9 @@ def report(job, st, pg, fp, extra_lines=()):
                   for r in big.itertuples() if r.key in hs.index]
     lines += ["", "## Using the parts", "",
               "* `replaces`: the sf_buildings keys a footprint's parts stand in for (`|`-separated; the footprint "
-              "itself, or all OSM parts of an `osmbld:` outline -- use those only where `prefer_lidar`).",
+              "itself, or all OSM parts of an `osmbld:` outline). `prefer_lidar` is True for every plain footprint; "
+              "for an `osmbld:` outline only where its OSM parts carry no height variation or disagree with the LiDAR "
+              "(else keep the OSM parts).",
               "* `height_m` = part roof (median, NAVD88 `roof_m`) minus the footprint's ground (`ground_m`, mean DTM "
               "along the outline, the reference sf_export uses for the roof). On a slope the parts of one footprint "
               "share that ground, so keep the roof consistent by adding (footprint ground - part ground) when each "
@@ -1090,10 +1135,12 @@ def main():
     elif args.cmd == "region":
         projects = args.project.split(",") if args.project else pick_projects(args.bbox)
         fp = load_region_footprints(args.bbox)
-        run(args.name, projects, fp, args.workers, args.bbox, {})
+        b = args.bbox
+        cx, cy, hw, hh = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, min(0.004, (b[2] - b[0]) / 2), min(0.003, (b[3] - b[1]) / 2)
+        run(args.name, projects, fp, args.workers, args.bbox, {"centre": (cx - hw, cy - hh, cx + hw, cy + hh)})
     elif args.cmd == "preview":
         import geopandas as gpd
-        fp = load_sf_footprints(args.bbox) if args.job.startswith("sf") else None
+        fp = load_sf_footprints(args.bbox) if args.job.startswith("sf") else load_region_footprints(args.bbox)
         p = INTERIM / f"{args.job}_lidar_parts.parquet"
         parts = gpd.read_parquet(p).cx[args.bbox[0]:args.bbox[2], args.bbox[1]:args.bbox[3]] if p.exists() else None
         preview(args.job, args.bbox, args.out, fp, parts, title=args.job)
