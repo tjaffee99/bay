@@ -168,9 +168,17 @@ def arcgis_download(url: str, out: Path, fields: list[str] | str = "*", where: s
     meta = s.get(url, params={"f": "json"}, timeout=120).json()
     oid = meta.get("objectIdField") or next(f["name"] for f in meta["fields"] if f["type"] == "esriFieldTypeOID")
     page = min(int(meta.get("maxRecordCount") or 1000), 2000)
-    ids = s.get(f"{url}/query", params={"where": where, "returnIdsOnly": "true", "f": "json"}, timeout=300).json()["objectIds"]
-    ids = sorted(ids or [])
-    log(f"{out.name}: {len(ids)} features from {url}")
+    count = s.get(f"{url}/query", params={"where": where, "returnCountOnly": "true", "f": "json"}, timeout=300).json()["count"]
+    # returnIdsOnly is capped on some servers (400k on hosted layers): page through id ranges
+    ids: list[int] = []
+    while len(ids) < count:
+        w = f"({where}) AND {oid} > {ids[-1]}" if ids else where
+        got = s.get(f"{url}/query", params={"where": w, "returnIdsOnly": "true", "f": "json"}, timeout=300).json()["objectIds"]
+        if not got:
+            break
+        ids.extend(sorted(got))
+    ids = sorted(set(ids))
+    log(f"{out.name}: {len(ids)} of {count} features from {url}")
     outf = fields if isinstance(fields, str) else ",".join(dict.fromkeys([oid, *fields]))
 
     def fetch(chunk):
