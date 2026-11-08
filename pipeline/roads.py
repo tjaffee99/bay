@@ -185,6 +185,39 @@ def streets_by_name(st):
 
 
 # ---------------------------------------------------------------- writer
+# routes.csv lines replaced by the traced historic railways (data/manual/historic_rail.geojson)
+RAIL_SUPERSEDED = {"rr_sfsj_valencia", "rr_sfsj_main_sf", "rr_sfsj_ocean_view", "rr_sfsj_peninsula", "rr_ocean_shore_sf",
+                   "rr_ocean_shore_coast", "rr_cp_long_wharf", "rr_sp_oakland_mole", "rr_alameda_mole", "rr_sf_oakland_rr",
+                   "ks_mole", "ks_trunk", "ir_40_san_mateo", "sn_oakland"}
+
+
+def historic_rail():
+    """Historic railways, interurbans and rail piers of the region, traced from today's
+    track, mapped abandoned grades, 1895-1919 USGS topo sheets and Sanborn maps, dated per
+    segment (data/manual/historic_rail.geojson, data/research/historic_rail.md)."""
+    p = MANUAL / "historic_rail.geojson"
+    if not p.exists():
+        return []
+    h = gpd.read_file(p).to_crs(UTM)
+    KIND = {"rail": K_RAIL, "narrow_gauge": K_RAIL, "interurban": K_RAIL, "streetcar": K_STREETCAR, "pier": K_RAIL}
+    # rail bridges, piers and trestles sit a few metres over the creek / water, not at
+    # road-bridge height
+    EL = {"ground": 0, "bridge": ELEV["embankment"], "tunnel": ELEV["tunnel"], "pier": ELEV["embankment"],
+          "trestle": ELEV["embankment"]}
+    items = []
+    for g, mode, y0, y1, el in zip(h.geometry, h["mode"], h["year_start"], h["year_end"], h["elevated"]):
+        y0 = pd.to_numeric(y0, errors="coerce")
+        y1 = pd.to_numeric(y1, errors="coerce")
+        if g is None or not np.isfinite(y0):
+            continue
+        k = KIND.get(str(mode), K_RAIL)
+        for part in getattr(g, "geoms", [g]):
+            if part.geom_type == "LineString" and part.length > 5:
+                items.append((part, k, WIDTH[k], float(y0), float(y1) if np.isfinite(y1) else 9999.0, EL.get(str(el), 0)))
+    log(f"roads: {len(items)} historic railway segments")
+    return items
+
+
 def sanborn_tracks():
     """Railway tracks traced from the Sanborn maps (data/manual/sanborn/<area>_<year>_tracks.geojson:
     rail yards, spurs, the State Belt). A track drawn on consecutive maps (>= 60 % of it
@@ -805,8 +838,9 @@ def main():
     # freeways / highways still standing are drawn from Overture's real geometry
     # (freeways.bin.gz); the researched lines only date them. Demolished ones stay here.
     draw_routes = [it for it, rid in zip(ritems, rids) if not (it[1] in (K_FREEWAY, K_HIGHWAY) and it[4] >= 9999)
-                   and rid not in LANDMARK_ROUTES]
+                   and rid not in LANDMARK_ROUTES and rid not in RAIL_SUPERSEDED]
     draw_routes += sanborn_tracks()
+    draw_routes += historic_rail()
     write_paths(VIEWER_DATA / "routes.bin.gz", draw_routes, ground, z_offset)
 
     # ---- region roads (outside SF)
