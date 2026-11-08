@@ -112,6 +112,9 @@ const overlay = new MapboxOverlay({
   // picking buffer on each mouse move and at the start of every drag, then stalls
   // the GPU to read it back. Objects are picked on click only (below).
   pickAsync: false,
+  // a composite layer (TextLayer labels, …) marked shadowEnabled: false must not cast
+  // shadows through its sublayers either (pixel-sized text seen from the sun is huge)
+  layerFilter: ({layer, renderPass}: any) => !(renderPass === 'shadow' && layer.props.shadowEnabled === false),
   // full resolution up to 2× (3× phone screens would cost 9× the pixels of 1×)
   useDevicePixels: Math.min(2, window.devicePixelRatio || 1),
   getCursor: ({isDragging}: {isDragging: boolean}) => (isDragging ? 'grabbing' : 'grab'),
