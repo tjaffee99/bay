@@ -209,7 +209,7 @@ def main():
     pred = pred.to_crs(4326)
     pred["base"] = 0.0
     pred["use"] = pred["use_sanborn"].map(SANBORN_USE).fillna(0).astype(int) if "use_sanborn" in pred else 0
-    pred = pred.drop(columns=["use_sanborn"], errors="ignore")
+    pred = pred.drop(columns=["use_sanborn", "doc_id", "doc_traced"], errors="ignore")
     pred["raw_year"] = 0
     pred["end_year"] = pred.end_year.astype(float)
     pred.to_parquet(INTERIM / "sf_predecessors.parquet")
@@ -345,6 +345,22 @@ def apply_sanborn(pred, today, fire, areas):
                              "use_sanborn": use, "year_confidence": "estimated",
                              "year_reason": f"sanborn_{int(first)}_{int(y)}"})
     new = gpd.GeoDataFrame(rows, crs=UTM)
+    # documented buildings whose footprint was traced on these maps (notable_demolished
+    # rows pointing at Sanborn ids): the traced outline takes the documented dates and the
+    # table's placeholder rectangle goes
+    if "doc_traced" in pred and len(new):
+        doc = pred[pred.doc_traced.fillna(False).astype(bool)]
+        nc = new.geometry.representative_point()
+        drop_doc = []
+        for i, r in doc.iterrows():
+            hit = nc.within(r.geometry.buffer(25)).values
+            if hit.any():
+                new.loc[hit, "start_year"] = r.start_year
+                new.loc[hit, "end_year"] = r.end_year
+                new.loc[hit, "year_reason"] = f"documented:{r.doc_id}"
+                drop_doc.append(i)
+        pred = pred.drop(index=drop_doc)
+        log(f"predecessors: {len(drop_doc)} documented buildings take their traced Sanborn outline")
     # the generated fabric gives way inside the mapped blocks (what vanished before the first map stays)
     c = pred.geometry.representative_point()
     drop = np.zeros(len(pred), bool)
@@ -557,6 +573,7 @@ def table_buildings(path, lots, source, embarcadero=None):
                          "height": float(height), "stories": float(storeys) if np.isfinite(storeys) else np.nan, "kind": "building",
                          "source": source, "material": mat_key,
                          "mapblklot": str(lots.mapblklot.iloc[int(lot_i)]) if (pd.notna(lot_i) and n == 1) else f"n:{r.id}:{k}",
+                         "doc_id": str(r.id), "doc_traced": "sanborn" in str(r.get("shape_note", "")).lower(),
                          "year_confidence": "procedural" if n > 1 else "estimated", "year_reason": "documented"})
     return rows
 
