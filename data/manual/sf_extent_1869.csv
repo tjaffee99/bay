@@ -1,0 +1,39 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Larkin St,Chestnut St,"NW corner. Traced from US Coast Survey ""San Francisco Peninsula"" 1869 (1:40,000; built frontages drawn as heavy black block outlines)",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,2,Powell St,Chestnut St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,3,Powell St,Bay St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,4,Kearny St,Bay St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,5,The Embarcadero,Lombard St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,6,The Embarcadero,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,7,The Embarcadero,Brannan St,Rincon Point / Pacific Mail dock,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,8,3rd St,Townsend St,Steamboat Point,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,9,5th St,Bryant St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,10,8th St,Harrison St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,11,10th St,Mission St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,12,Larkin St,Market St,west edge follows Larkin (old 1850s city limit); Western Addition beyond is scattered,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_corridor,1,10th St,Market St,Ribbon development along Mission/Valencia horse-car lines (1869 Coast Survey),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_corridor,2,10th St,Howard St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_corridor,3,14th St,South Van Ness Ave,1869 Howard St,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_corridor,4,14th St,Valencia St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_corridor,5,Valencia St,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission,1,Dolores St,14th St,Mission district cluster: densest along 16th St and Mission/Valencia (1869 Coast Survey),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission,2,Folsom St,14th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission,3,Folsom St,18th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission,4,Mission St,20th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission,5,Dolores St,20th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+hayes_valley,1,Gough St,Grove St,"Hayes Valley: per the Market & Octavia context statement, the 1869 Coast Survey shows the core developed along Hayes St, about a block either side (Grove to Fell); horse-car line to Hayes Park at Laguna",https://default.sfplanning.org/DPRforms/MO_Context_Final_202007.pdf
+hayes_valley,2,Buchanan St,Grove St,,https://default.sfplanning.org/DPRforms/MO_Context_Final_202007.pdf
+hayes_valley,3,Buchanan St,Fell St,,https://default.sfplanning.org/DPRforms/MO_Context_Final_202007.pdf
+hayes_valley,4,Gough St,Fell St,,https://default.sfplanning.org/DPRforms/MO_Context_Final_202007.pdf
+potrero_point,1,3rd St,18th St,Potrero Point industry: Pacific Rolling Mills (1868) and workers housing; LOW confidence on limits,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,2,Illinois St,18th St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,3,Illinois St,22nd St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,4,3rd St,22nd St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+south_sf_oakdale,1,3rd St,Newcomb Ave,"""South San Francisco"" (Bayview): densest point in 1869 was Railroad Ave (3rd St) & 15th Ave (Oakdale) in the ONeill & Haley tract (BVHP context, 1869 Coast Survey snapshot); small cluster",https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,2,Phelps St,Newcomb Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,3,Phelps St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,4,3rd St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post (1860s frame officers row and barracks), NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

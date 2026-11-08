@@ -9,15 +9,16 @@ import maplibregl from 'maplibre-gl';
 import {MapboxOverlay} from '@deck.gl/mapbox';
 import {AmbientLight, DirectionalLight, LightingEffect} from '@deck.gl/core';
 import type {Layer, PickingInfo} from '@deck.gl/core';
-import {SolidPolygonLayer} from '@deck.gl/layers';
-import {TimeExtension} from './layers/time-extension';
 
-import {WATER, LAND, LAND_SIDE, GROUND_COLORS} from './palette';
+import {WATER} from './palette';
+import {terrainLayer} from './layers/terrain';
+import {loadElevation} from './layers/elevation';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
-import {eraAt, events, eventTime, populationLabelAt} from './data/tables';
+import {events, eventTime, populationLabelAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
+import {installCameraControls} from './camera-controls';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
 
 export const YEAR_MIN = 1769;
@@ -30,17 +31,11 @@ const state = {
   playing: false,
   speed: 6,
   quality: false,
-  showLandmarks: true,
-  showTrees: true
 };
 
 let buildings: BuildingSet | null = null;
 let landmarks: LandmarkSet | null = null;
 let trees: TreeSet[] = [];
-let ground: {kind: string; poly: number[][][]; years: [number, number]}[] = [];
-let land: any[] = [];
-let fire: any[] = [];
-const fadeTime = new TimeExtension({mode: 'fade'});
 
 // ---------------------------------------------------------------- map + deck
 const map = new maplibregl.Map({
@@ -60,6 +55,7 @@ const map = new maplibregl.Map({
   attributionControl: false,
   canvasContextAttributes: {antialias: true}
 });
+installCameraControls(map);
 
 const lighting = new LightingEffect({
   ambient: new AmbientLight({color: [255, 250, 242], intensity: 1.0}),
@@ -79,64 +75,15 @@ const overlay = new MapboxOverlay({
 });
 map.addControl(overlay as any);
 
-function landLayer() {
-  return new SolidPolygonLayer({
-    id: 'land',
-    data: land,
-    // A shallow slab (top at z=0) gives the shoreline a diorama edge.
-    getPolygon: (f: any) => f.geometry.coordinates.map((ring: number[][]) => ring.map(p => [p[0], p[1], -6])),
-    extruded: true,
-    getElevation: 6,
-    getFillColor: LAND,
-    getLineColor: LAND_SIDE,
-    material: {ambient: 0.66, diffuse: 0.3, shininess: 0, specularColor: [0, 0, 0]},
-    pickable: false
-  });
-}
-
-/** Parks, woods and beaches, fading in from their (researched) start years. */
-function groundLayer() {
-  return new SolidPolygonLayer({
-    id: 'ground',
-    data: ground,
-    getPolygon: (d: any) => {
-      const z = d.kind === 'sand' ? 0.12 : d.kind === 'park' ? 0.2 : 0.28;
-      return d.poly.map((ring: number[][]) => ring.map(c => [c[0], c[1], z]));
-    },
-    getFillColor: (d: any) => GROUND_COLORS[d.kind] ?? GROUND_COLORS.park,
-    pickable: false,
-    extensions: [fadeTime],
-    getYears: (d: any) => d.years,
-    currentYear: state.year,
-    growYears: 6,
-    shrinkYears: 1
-  } as any);
-}
-
-/** 18 Apr 1906: the burned district darkens, then fades as the city rebuilds. */
-function fireLayer() {
-  return new SolidPolygonLayer({
-    id: 'fire-1906',
-    data: fire,
-    getPolygon: (p: number[][][]) => p.map(ring => ring.map(c => [c[0], c[1], 0.4])),
-    getFillColor: [74, 52, 40, 175],
-    pickable: false,
-    extensions: [fadeTime],
-    getYears: [1906.296, 1910],
-    currentYear: state.year,
-    growYears: 0.02,
-    shrinkYears: 3.2
-  } as any);
-}
+/** Extent of the terrain tiles (Sonoma/Napa to Santa Cruz). */
+const REGION: [number, number, number, number] = [-123.2, 36.85, -121.2, 38.9];
 
 function render() {
   const layers: Layer[] = [];
-  if (land.length) layers.push(landLayer());
-  if (fire.length && state.year >= 1906 && state.year < 1910) layers.push(fireLayer());
-  if (ground.length) layers.push(groundLayer());
-  if (state.showTrees) for (const t of trees) layers.push(...treesLayer(t, state.year));
-  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, state.showLandmarks && !!landmarks));
-  if (landmarks && state.showLandmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
+  layers.push(terrainLayer(state.year, REGION) as any);
+  for (const t of trees) layers.push(...treesLayer(t, state.year));
+  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
+  if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   overlay.setProps({layers});
   updateOverlays();
 }
@@ -146,8 +93,6 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 const slider = $<HTMLInputElement>('slider');
 const playBtn = $<HTMLButtonElement>('play');
 const yearLabel = $('year-label');
-const eraTitle = $('era-title');
-const eraSubtitle = $('era-subtitle');
 const popValue = $('population-value');
 const popArea = $('population-area');
 const infoBox = $('info');
@@ -157,18 +102,10 @@ slider.min = String(YEAR_MIN);
 slider.max = String(YEAR_MAX);
 slider.value = String(state.year);
 
-let lastEra = '';
 function updateOverlays() {
   const y = Math.floor(state.year);
   yearLabel.textContent = String(y);
   if (document.activeElement !== slider || state.playing) slider.value = String(state.year);
-  const era = eraAt(state.year);
-  const key = era ? era.title : '';
-  if (key !== lastEra) {
-    lastEra = key;
-    eraTitle.textContent = era?.title ?? '';
-    eraSubtitle.textContent = era?.subtitle ?? '';
-  }
   const pop = populationLabelAt(state.year);
   popValue.textContent = pop == null ? '—' : Math.round(pop.value).toLocaleString('en-US');
   popArea.textContent = pop == null ? '' : pop.label;
@@ -221,17 +158,11 @@ document.addEventListener('keydown', e => {
   }
 });
 
+const DEBUG = new URLSearchParams(location.search).has('debug');
+$('toolbar').hidden = !DEBUG;
 $<HTMLInputElement>('toggle-quality').addEventListener('change', e => {
   state.quality = (e.target as HTMLInputElement).checked;
   legend.hidden = !state.quality;
-  render();
-});
-$<HTMLInputElement>('toggle-landmarks').addEventListener('change', e => {
-  state.showLandmarks = (e.target as HTMLInputElement).checked;
-  render();
-});
-$<HTMLInputElement>('toggle-trees').addEventListener('change', e => {
-  state.showTrees = (e.target as HTMLInputElement).checked;
   render();
 });
 
@@ -334,55 +265,26 @@ $('attribution').innerHTML =
 const loading = $('loading');
 async function boot() {
   render();
-  const landP = fetch('data/sf-land.json')
-    .then(r => r.json())
-    .then(gj => {
-      land = gj.features.filter((f: any) => f.geometry.type === 'Polygon');
-      render();
-    })
-    .catch(e => console.warn('land', e));
-  fetch('data/fire-1906.json')
-    .then(r => r.json())
-    .then(gj => {
-      for (const f of gj.features) {
-        const g = f.geometry;
-        if (g.type === 'Polygon') fire.push(g.coordinates);
-        else if (g.type === 'MultiPolygon') fire.push(...g.coordinates);
-      }
-      render();
-    })
-    .catch(() => {});
-  const lmP = loadLandmarks()
-    .then(l => {
+  const elevP = loadElevation().then(() => render());
+  const lmP = Promise.all([loadLandmarks(), elevP])
+    .then(([l]) => {
       landmarks = l;
       render();
     })
     .catch(e => console.warn('landmarks', e));
-  const treeP = Promise.all([
-    loadTrees('data/sf-trees.bin.gz', 'street', 6).then(t => trees.push(t)),
-    loadTrees('data/sf-woods.bin.gz', 'woods', 12).then(t => trees.push(t))
-  ])
-    .then(() => render())
-    .catch(e => console.warn('trees', e));
-  fetch('data/sf-ground.json')
-    .then(r => r.json())
-    .then(gj => {
-      const order: Record<string, number> = {sand: 0, park: 1, wood: 2};
-      for (const f of gj.features) {
-        const p = f.properties;
-        const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates : [];
-        for (const poly of polys) ground.push({kind: p.kind, poly, years: [p.start_year, p.end_year]});
-      }
-      ground.sort((a, b) => (order[a.kind] ?? 1) - (order[b.kind] ?? 1));
+  const treeP = elevP
+    .then(() => loadTrees('data/sf-trees.bin.gz', 'street', 6))
+    .then(t => {
+      trees.push(t);
       render();
     })
-    .catch(() => {});
+    .catch(e => console.warn('trees', e));
   // ?nobuildings skips the city (fast landmark previews / debugging)
   if (!new URLSearchParams(location.search).has('nobuildings')) {
     buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));
   }
   render();
-  await Promise.all([landP, lmP, treeP]);
+  await Promise.all([lmP, treeP]);
   if (buildings && landmarks) {
     buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
     render();

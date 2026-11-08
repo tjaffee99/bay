@@ -8,11 +8,6 @@
   <body>
     <div id="map"></div>
 
-    <header id="era">
-      <div id="era-title"></div>
-      <div id="era-subtitle"></div>
-    </header>
-
     <div id="population">
       <div class="label">Population</div>
       <div id="population-value">—</div>
@@ -21,10 +16,9 @@
 
     <div id="year-label">1769</div>
 
-    <div id="toolbar">
+    <!-- debug panel: shown with ?debug -->
+    <div id="toolbar" hidden>
       <label><input type="checkbox" id="toggle-quality" /> Data quality</label>
-      <label><input type="checkbox" id="toggle-landmarks" checked /> Landmarks</label>
-      <label><input type="checkbox" id="toggle-trees" checked /> Trees</label>
       <select id="events-select"><option value="">Jump to event…</option></select>
     </div>
 

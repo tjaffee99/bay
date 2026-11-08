@@ -62,7 +62,9 @@ export const transamerica: Landmark = {
   kind: 'tower',
   built: [1969.95, 1972.5],
   end: 9999,
-  anchor: [-122.402651, 37.795187],
+  // OSM/Overture footprint centroid (54.5 m square, faces 81°/171°);
+  // audit 2026-11: the earlier anchor sat 12 m east of the real base
+  anchor: [-122.402786, 37.795166],
   build: buildTransamerica,
   replaces: [rect(0, 0, 58, 58)],
   facts: {
@@ -134,13 +136,14 @@ export const salesforceTower: Landmark = {
 // ------------------------------------------------------------ Salesforce Transit Center + Park
 // 436 × 50 m along bearing 45°; undulating white perforated skin from ~8 m to the
 // 21 m rooftop park; glazed ground storey set back behind V-columns; First St
-// (+24 m along the axis) and Fremont St (+133 m) pass beneath.
+// (+7.8 m along the axis) and Fremont St (+117.4 m) pass beneath.
 function buildTransitCenter(b: MeshBuilder) {
   const L = 436;
   const W = 50;
+  // street centrelines measured along the axis from the anchor (DataSF streets)
   const streets: [number, number][] = [
-    [24 - 12, 24 + 12],
-    [133 - 12, 133 + 12]
+    [7.8 - 12, 7.8 + 12],
+    [117.4 - 12, 117.4 + 12]
   ];
   const n = 72;
   const wave = (y: number, side: number) => 2.4 * Math.sin((y + 31 * side) / 14) * Math.sin((y + 17) / 41);
@@ -202,7 +205,8 @@ export const transitCenter: Landmark = {
   kind: 'building',
   built: [2010.6, 2018.61],
   end: 9999,
-  anchor: [-122.397009, 37.78901],
+  // midpoint of the OSM footprint (436.6 × 55 m, axis 45.3°); audit 2026-11: was 16 m SW
+  anchor: [-122.396881, 37.78911],
   build: buildTransitCenter,
   replaces: [
     (() => {

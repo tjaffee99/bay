@@ -2,66 +2,64 @@
  * Legion of Honor and the Painted Ladies — reconstructed from
  * data/research/landmarks.md (OSM footprints + 1932 NARA aerial + 2022 photos).
  */
-import {lngLatToLocal, MeshBuilder, rect, type V2} from './kit';
+import {lngLatToLocal, MeshBuilder, rect, rotRect, type V2} from './kit';
 import type {Landmark} from './types';
 
 // ------------------------------------------------------------ Legion of Honor
 // U-shaped museum around the Court of Honor; long axis bearing 49° (entrance
-// gate at the NE end). Footprint ≈ 94 × 60 m; gallery wings 15 m + 2 m hipped
-// roofs; court ≈ 25 × 45 m with Ionic colonnades; 4-column entrance portico;
-// rotunda (Ø 13.6 m) and verdigris dome (to ~21 m) on the axis at the rear.
+// gate at the NE end). Layout measured from the OSM 3D parts (audit 2026-11):
+// building axis 3 m SE of the anchor; solid gallery block Y −34…+5 (60 m wide,
+// 17 m) with the rotunda (Ø 13.6 m, dome to ~21 m) half-projecting at the SW end;
+// outer wings 12.6 m wide run on to the NE end (Y 54); single-storey Ionic
+// colonnades (11 m) frame the 30 × 41 m court; portico Y 9–15; triumphal-arch
+// gate in the NE screen.
 const LOH_ANCHOR: V2 = [-122.500846, 37.78451];
 const STONE = '#E3DCCB';
 const STONE_SHADE = '#CFC6B2';
 const ROOF = '#9A9C9E';
 
 function buildLegion(b: MeshBuilder) {
-  const dome = lngLatToLocal(LOH_ANCHOR, [-122.501101, 37.784297]);
-  const domeY = -Math.hypot(dome[0], dome[1]); // on the axis, toward the rear
-  b.frame(0, 0, 0, 49, () => {
-    // gallery wings
-    for (const sx of [-1, 1]) {
-      const cx = sx * 21.25;
-      b.color(STONE).box(cx, -3, 0, 17.5, 88, 15);
-      b.color(ROOF).hip(cx, -3, 17.5, 88, 15, 2.2);
-      // skylight strip
-      b.color('#6E747A').box(cx, -3, 16.2, 3, 70, 0.9);
-    }
-    // rear block across the axis
-    b.color(STONE).box(0, -24.5, 0, 25, 45, 15);
-    b.color(ROOF).box(0, -24.5, 15, 25, 45, 1.2);
-    // rotunda + dome
-    b.color(STONE_SHADE).cylinder(0, domeY, 6.8, 0, 17.5, 20);
-    b.color(STONE).cylinder(0, domeY, 7.3, 15.5, 16.4, 20);
-    b.color('#B9C07F').dome(0, domeY, 6.8, 17.5, 4.5, 20, 4);
-    // entrance portico at the rear of the court
-    b.color(STONE).box(0, -0.5, 0, 22, 3, 14.5);
-    b.color(STONE_SHADE);
-    for (const x of [-7.5, -2.5, 2.5, 7.5]) b.cylinder(x, 3, 0.75, 0, 12, 8);
-    b.color(STONE).box(0, 3, 12, 20, 2.4, 2.6);
-    // court colonnades (single storey, Ionic) along both wings
-    for (const sx of [-1, 1]) {
-      const xCol = sx * 9.6;
-      b.color(STONE).box(sx * 11, 20.5, 8.2, 3.2, 41, 1.8);
-      b.color('#B8AF9B').box(sx * 11, 20.5, 9.9, 3.6, 41, 0.5);
+  b.frame(0, 0, 0, 49, () =>
+    b.frame(3.0, 0, 0, 0, () => {
+      // solid SW gallery block (inner galleries + central halls)
+      b.color(STONE).box(0, -14.3, 0, 60.5, 39, 15);
+      b.color(ROOF).box(0, -14.3, 15, 58.5, 37, 1.6);
+      b.color('#6E747A').box(-18, -14.3, 16.6, 3, 30, 0.6).box(18, -14.3, 16.6, 3, 30, 0.6); // skylights
+      // outer wings along the court to the NE end
+      for (const sx of [-1, 1]) {
+        const cx = sx * 23.9;
+        b.color(STONE).box(cx, 29.75, 0, 12.6, 49, 15);
+        b.color(ROOF).hip(cx, 29.75, 12.6, 49, 15, 2.2);
+        b.color('#6E747A').box(cx, 29.75, 16.2, 2.5, 38, 0.8);
+      }
+      // rotunda + verdigris dome on the axis at the SW end
+      b.color(STONE_SHADE).cylinder(-0.1, -32.5, 6.8, 0, 17.5, 20);
+      b.color(STONE).cylinder(-0.1, -32.5, 7.3, 15.5, 16.4, 20);
+      b.color('#B9C07F').dome(-0.1, -32.5, 6.8, 17.5, 4.2, 20, 4);
+      // portico at the SW end of the court: 4 columns + pediment block
+      b.color(STONE).box(0, 11, 0, 12.6, 4, 15);
       b.color(STONE_SHADE);
-      for (let y = 1.5; y < 41; y += 3.4) b.cylinder(xCol, y, 0.4, 0, 8.2, 6);
-    }
-    // court paving + 1995 glass pyramid skylight
-    b.color('#D9D2C1').box(0, 20.5, 0, 18, 40, 0.15);
-    b.color('#A9C1CC').pyramid(rect(0, 18, 5.2, 5.2), 0.15, [0, 18, 1.8]);
-    // triumphal-arch gateway at the NE end + screen colonnades to the wings
-    b.color(STONE).box(-5.5, 44, 0, 5, 6, 16).box(5.5, 44, 0, 5, 6, 16).box(0, 44, 10, 6, 6, 6);
-    b.color(STONE).box(-10.5, 44, 7.5, 5, 3, 1.5).box(10.5, 44, 7.5, 5, 3, 1.5);
-    b.color(STONE_SHADE);
-    for (const x of [-12, -9, 9, 12]) b.cylinder(x, 44, 0.4, 0, 7.5, 6);
-    // forecourt with the El Cid statue on its plinth
-    const cid = lngLatToLocal(LOH_ANCHOR, [-122.5004, 37.78521]);
-    const cidY = Math.hypot(cid[0], cid[1]);
-    b.color('#C9C3B5').cylinder(0, cidY, 14, 0, 0.4, 24);
-    b.color('#8E8A80').box(0, cidY, 0.4, 2.5, 4, 3);
-    b.color('#5E6A5C').box(0, cidY, 3.4, 1.4, 3, 3.2);
-  });
+      for (const x of [-4.5, -1.5, 1.5, 4.5]) b.cylinder(x, 14.2, 0.7, 0, 12, 8);
+      b.color(STONE).box(0, 14.2, 12, 12.6, 1.8, 2.6);
+      // court colonnades (single storey) along both wings and the NE screen
+      for (const sx of [-1, 1]) {
+        b.color(STONE).box(sx * 16.3, 28.75, 8.2, 2.8, 41, 2.8);
+        b.color(STONE_SHADE);
+        for (let y = 9.5; y < 49; y += 3.4) b.cylinder(sx * 15.2, y, 0.4, 0, 8.2, 6);
+        b.color(STONE).box(sx * 11.45, 51, 8.2, 12.3, 3.7, 2.8);
+        for (let x = 6.5; x < 17; x += 3) b.color(STONE_SHADE).cylinder(sx * x, 49.6, 0.4, 0, 8.2, 6);
+      }
+      // court paving + 1995 glass pyramid skylight
+      b.color('#D9D2C1').box(0, 28.75, 0, 30, 41, 0.15);
+      b.color('#A9C1CC').pyramid(rect(0, 26, 5.2, 5.2), 0.15, [0, 26, 1.8]);
+      // triumphal-arch gateway in the NE screen
+      b.color(STONE).box(-4, 51.5, 0, 3, 5, 16).box(4, 51.5, 0, 3, 5, 16).box(0, 51.5, 10.5, 11, 5, 5.5);
+    })
+  );
+  // El Cid equestrian statue (Anna Hyatt Huntington, 1937) on the lawn NW of the forecourt walk
+  const cid = lngLatToLocal(LOH_ANCHOR, [-122.5004, 37.78521]);
+  b.color('#8E8A80').box(cid[0], cid[1], 0, 2.5, 4, 3);
+  b.color('#5E6A5C').box(cid[0], cid[1], 3, 1.4, 3, 3.2);
 }
 
 export const legionOfHonor: Landmark = {
@@ -72,18 +70,14 @@ export const legionOfHonor: Landmark = {
   end: 9999,
   anchor: LOH_ANCHOR,
   build: buildLegion,
-  replaces: [
-    (() => {
-      const a = (-49 * Math.PI) / 180;
-      return rect(0, 0, 64, 100).map(([x, y]) => [Math.cos(a) * x - Math.sin(a) * y, Math.sin(a) * x + Math.cos(a) * y] as V2);
-    })()
-  ],
+  replaces: [rotRect(lngLatToLocal(LOH_ANCHOR, [-122.50079, 37.784513])[0], lngLatToLocal(LOH_ANCHOR, [-122.50079, 37.784513])[1], 66, 100, 49)],
   facts: {
     Construction: '1921 – 1924',
     Opened: 'Nov 11, 1924 (Armistice Day)',
     Design: '¾-scale replica of the Palais de la Légion d’Honneur, Paris (via the 1915 PPIE French Pavilion)',
     Architect: 'George Applegarth & Henri Guillaume',
-    'Site before': 'Golden Gate Cemetery (1870–1909)'
+    'Site before': 'Golden Gate Cemetery (1870–1909)',
+    Model: 'plan from OSM 3D parts (wings 17 m, colonnades 11 m); roof and gate heights estimated'
   },
   sources: ['https://en.wikipedia.org/wiki/Legion_of_Honor_(museum)', 'https://famsf.org/legion/history']
 };

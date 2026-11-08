@@ -22,6 +22,11 @@ viewer/public/data/*
 !viewer/public/data/sf-ground.json
 !viewer/public/data/sf-woods.bin.gz
 !viewer/public/data/README.md
+!viewer/public/data/elevation-detail.bin.gz
+!viewer/public/data/elevation-region.bin.gz
+!viewer/public/data/terrain.json
+# terrain tiles (~75 MB) are rebuilt by `make terrain` and shipped by `make deploy`
+viewer/public/tiles/
 
 .DS_Store
 *.log

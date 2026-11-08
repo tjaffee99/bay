@@ -1,0 +1,28 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Powell St,Broadway,"NW corner. Traced from US Coast Survey ""City of San Francisco and its vicinity"" (Cutts/Rodgers, survey completed July 1853, publ. 1853): blocks with buildings drawn in black",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,2,Kearny St,Broadway,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,3,Kearny St,Green St,"Telegraph Hill SW slope, scattered-to-moderate",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,4,Battery St,Green St,Clark's Point / Laws Wharf area,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,5,Front St,Vallejo St,Waterfront (built on piles/fill in the former cove),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,6,Front St,Pacific Ave,Waterfront: buildings on piles out toward Front/Davis,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,7,Davis St,California St,Central Wharf / Government Reserve,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,8,Battery St,Market St,Market St Wharf; 1852 shore near Battery/First,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,9,Montgomery St,Bush St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,10,Kearny St,Bush St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,11,Stockton St,Pine St,moderate density west of Kearny,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+core,12,Powell St,California St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,1,1st St,Market St,"Happy Valley and Rincon Point clusters, scattered-to-moderate (1853 Coast Survey)",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,2,3rd St,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,3,3rd St,Howard St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,4,2nd St,Folsom St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,5,Spear St,Harrison St,Rincon Point (US Marine Hospital and cluster),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,6,Spear St,Folsom St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+happy_valley_rincon,7,Beale St,Mission St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,1,Dolores St,15th St,"Mission Dolores settlement, small cluster on Center (16th) St (1853 Coast Survey)",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,2,Valencia St,15th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,3,Valencia St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,4,Dolores St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post (adobe quadrangle), NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

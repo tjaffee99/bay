@@ -112,7 +112,8 @@ const oraclePark: Landmark = {
   end: 9999,
   anchor: ORACLE,
   build: b => {
-    const park: Park = {home: [-100, -6], cf: 90, fence: [339 * FT, 354 * FT, 391 * FT, 415 * FT, 309 * FT]};
+    // home plate measured on the orthophoto (audit 2026-11; was 97 m off at the block corner)
+    const park: Park = {home: [-5.5, -31], cf: 90, fence: [339 * FT, 354 * FT, 391 * FT, 415 * FT, 309 * FT]};
     b.frame(park.home[0], park.home[1], 0, park.cf, () => {
       const inner = foulPath(16, 103, 72);
       const outer = foulPath(62, 103, 72);
@@ -136,15 +137,15 @@ const oraclePark: Landmark = {
         b.color('#4A4F55').box(-10, 0, 0, 1.5, 1.5, 14).box(10, 0, 0, 1.5, 1.5, 14);
         b.color('#2C3136').box(0, 0, 14, 32, 2.5, 11);
       });
-      // Coca-Cola bottle and the giant glove behind the LF bleachers
-      b.color('#B23A33').beam([-112, 70, 3], [-100, 88, 7], 7);
-      b.color('#B23A33').beam([-100, 88, 7], [-96, 94, 8], 3);
-      b.color('#8A5A33').dome(-118, 52, 5, 0, 7, 10, 3);
+      // Coca-Cola bottle (OSM position, axis ≈ 117°) and the giant glove behind the LF bleachers
+      b.color('#B23A33').beam([-78, 118, 3], [-66, 136, 7], 7);
+      b.color('#B23A33').beam([-66, 136, 7], [-62, 142, 8], 3);
+      b.color('#8A5A33').dome(-84, 100, 5, 0, 7, 10, 3);
       // light standards on the rim
       for (const p of foulPath(60, 95, 66).filter((_, i) => i % 6 === 3)) lightTower(b, p[0], p[1], 45);
-      // clock tower over the Willie Mays Plaza gate (3rd & King)
-      b.color('#8E4B3A').box(0, -70, 0, 9, 9, 30);
-      b.color('#5D6B66').pyramid(rect(0, -70, 10, 10), 30, [0, -70, 36]);
+      // clock tower over the Willie Mays Plaza gate (OSM footprint 13.6 × 12 m)
+      b.color('#8E4B3A').box(0, -84.5, 0, 12, 12, 30);
+      b.color('#5D6B66').pyramid(rect(0, -84.5, 13, 13), 30, [0, -84.5, 37]);
     });
   },
   replaces: [rotRect(0, 0, 195, 215, 45)],
@@ -153,7 +154,7 @@ const oraclePark: Landmark = {
     Opened: 'Mar 31, 2000 (as Pacific Bell Park)',
     Capacity: '≈ 41,900',
     Fences: 'LF 339 ft · CF 391 ft · RC 415 ft · RF 309 ft',
-    Model: 'field from published fence distances; stand heights estimated from aerial photo'
+    Model: 'home plate and orientation measured on the orthophoto; fences from published distances; stand heights estimated'
   },
   sources: ['https://en.wikipedia.org/wiki/Oracle_Park']
 };
@@ -165,7 +166,7 @@ const chaseCenter: Landmark = {
   kind: 'stadium',
   built: [2017.05, 2019.68],
   end: 9999,
-  anchor: [-122.38752, 37.767915],
+  anchor: [-122.387396, 37.767874], // OSM footprint centroid (audit 2026-11: was 12 m west)
   build: b => {
     const ring = (s: number) => roundedRect(0, 0, s, s * 0.994, s * 0.36, 6);
     b.color('#6E8796').loft([ring(146), ring(146)], [0, 11], {top: false});
@@ -186,7 +187,8 @@ const chaseCenter: Landmark = {
 };
 
 // ------------------------------------------------------------------ Kezar Stadium
-const KEZAR: V2 = [-122.456077, 37.766924];
+// field centre: midpoint of the two 1990 stands (OSM); audit 2026-11 (was the site centroid, 9 m off)
+const KEZAR: V2 = [-122.456001, 37.766866];
 function kezarArch(b: MeshBuilder, x: number, y: number) {
   // 1925 triumphal-arch gate at the east end (≈ 12 m tall, 10 m wide), salmon trim
   b.frame(x, y, 0, 90, () => {
@@ -195,8 +197,9 @@ function kezarArch(b: MeshBuilder, x: number, y: number) {
   });
 }
 function track(b: MeshBuilder) {
-  b.color('#A65A4A').cap(roundedRect(0, 0, 176, 92, 44, 8), 0.25);
-  b.color('#5E9442').cap(roundedRect(0, 0, 150, 66, 31, 8), 0.35);
+  // track oval measured on the orthophoto (≈ 152 × 82 m)
+  b.color('#A65A4A').cap(roundedRect(-4, 1, 152, 82, 40, 8), 0.25);
+  b.color('#5E9442').cap(roundedRect(-4, 1, 126, 56, 27, 8), 0.35);
 }
 const kezar1925: Landmark = {
   id: 'kezar_stadium_1925',
@@ -218,7 +221,7 @@ const kezar1925: Landmark = {
     );
     b.color('#BDB3A2').wallProfile(outer, 0, zOut, true);
     b.color('#8F8A80').box(0, -58, 15, 40, 6, 5); // press box on the south rim
-    kezarArch(b, 118, 0);
+    kezarArch(b, 111, 6);
   },
   replaces: [rect(0, 0, 250, 150)],
   facts: {
@@ -239,38 +242,40 @@ const kezar1990: Landmark = {
   anchor: KEZAR,
   build: b => {
     track(b);
+    // two straight bleachers, 139 × 15 m each (OSM footprints)
     for (const sy of [-1, 1]) {
-      const y0 = sy * 52;
-      const y1 = sy * 72;
+      const y0 = sy * 47.5;
+      const y1 = sy * 62.8;
       b.color('#CDB79E');
       b.ribbon(
         [
-          [-54, y0, 1],
-          [54, y0, 1]
+          [-69.5, y0, 1],
+          [69.5, y0, 1]
         ],
         [
-          [-54, y1, 9.5],
-          [54, y1, 9.5]
+          [-69.5, y1, 9.5],
+          [69.5, y1, 9.5]
         ]
       );
       b.wallProfile(
         [
-          [-54, y1],
-          [54, y1]
+          [-69.5, y1],
+          [69.5, y1]
         ],
         0,
         9.5
       );
       b.wallProfile(
         [
-          [-54, y0],
-          [54, y0]
+          [-69.5, y0],
+          [69.5, y0]
         ],
         0,
         1
       );
+      for (const x of [-69.5, 69.5]) b.quad([x, y0, 0], [x, y1, 0], [x, y1, 9.5], [x, y0, 1]);
     }
-    b.color('#B9A893').box(0, 76, 0, 34, 7, 14); // press box (north)
+    b.color('#B9A893').box(-6.7, 82.4, 0, 34, 7, 14); // press box (north)
     for (const [x, y] of [
       [-60, 80],
       [0, 84],
@@ -282,11 +287,11 @@ const kezar1990: Landmark = {
       lightTower(b, x, y, 30);
     // salmon colonnade and the surviving 1925 arch at the east end
     b.color('#C9795E');
-    for (let y = -30; y <= 30; y += 7.5) b.cylinder(104, y, 0.8, 0, 7, 8);
-    kezarArch(b, 118, 0);
+    for (let y = -24; y <= 36; y += 7.5) b.cylinder(97, y, 0.8, 0, 7, 8);
+    kezarArch(b, 111, 6);
   },
   replaces: [rect(0, 0, 250, 150)],
-  facts: {Opened: '1990 (≈10,000 seats)', 'Kept from 1925': 'the triumphal-arch entrance gate'},
+  facts: {Opened: '1990 (≈10,000 seats)', 'Kept from 1925': 'the triumphal-arch entrance gate', Model: 'stands and track from OSM / orthophoto; heights estimated'},
   sources: ['https://en.wikipedia.org/wiki/Kezar_Stadium', 'https://broughttolight.ucsf.edu/2016/02/03/kezar/']
 };
 
@@ -358,7 +363,10 @@ const candlestick1971: Landmark = {
 // ------------------------------------------------------------------ Seals Stadium
 const SEALS: V2 = [-122.409239, 37.766756];
 function sealsModel(b: MeshBuilder, color: string, bleachers: boolean) {
-  const park: Park = {home: [-88, 58], cf: 135, fence: [365 * FT, 380 * FT, 405 * FT, 375 * FT, 348 * FT]};
+  // RF corner at 16th & Bryant, field facing SE, RF bleachers bounded by 16th St (Wikipedia);
+  // home placed so the stands stay inside Bryant St / the Potrero Center block, grid rotated −4.3°
+  // (audit 2026-11: was 50 m further north, stands spilling across Bryant St)
+  const park: Park = {home: [-56, 5], cf: 130.7, fence: [365 * FT, 380 * FT, 405 * FT, 375 * FT, 348 * FT]};
   b.frame(park.home[0], park.home[1], 0, park.cf, () => {
     diamond(b, park, '#5E9442', '#B9906A', foulPath(14, 112, 108));
     stands(b, foulPath(14, 95, 95), foulPath(44, 95, 95), 2, 13, {seats: color, wall: color});
@@ -382,7 +390,7 @@ const seals1931: Landmark = {
   facts: {
     Opened: 'Apr 7, 1931 — "the Queen of Concrete"',
     Grandstand: 'single deck, no roof, foul pole to foul pole',
-    Model: 'field orientation and distances documented; stand height estimated'
+    Model: 'orientation and distances documented; home-plate position derived from the street block (estimated); stand height estimated'
   },
   sources: ['https://en.wikipedia.org/wiki/Seals_Stadium']
 };
@@ -406,7 +414,9 @@ const seals1946: Landmark = {
 // ------------------------------------------------------------------ Ewing Field
 const EWING: V2 = [-122.448, 37.7801];
 function ewingPark(): Park {
-  return {home: [55, 45], cf: 225, fence: [340 * FT, 370 * FT, 400 * FT, 375 * FT, 356 * FT]};
+  // home near Masonic & Anza (NE corner) facing SW; street grid rotated −9.5° here.
+  // audit 2026-11: was 55 m further east, with the stands across Masonic Ave
+  return {home: [0, 63], cf: 215.5, fence: [340 * FT, 370 * FT, 400 * FT, 375 * FT, 356 * FT]};
 }
 const ewingGrandstand: Landmark = {
   id: 'ewing_field',
@@ -474,7 +484,8 @@ const recreationPark: Landmark = {
   end: 1940.5,
   anchor: [-122.423198, 37.76716],
   build: b => {
-    const park: Park = {home: [68, -44], cf: 315, fence: [315 * FT, 330 * FT, 340 * FT, 305 * FT, 284 * FT]};
+    // home at 15th & Valencia facing NW (grid −4.3°), stands kept inside the block (audit 2026-11)
+    const park: Park = {home: [56, -23], cf: 310.5, fence: [315 * FT, 330 * FT, 340 * FT, 305 * FT, 284 * FT]};
     b.frame(park.home[0], park.home[1], 0, park.cf, () => {
       diamond(b, park, '#6E9A4E', '#B9906A', foulPath(12, 98, 90));
       stands(b, foulPath(12, 72, 72), foulPath(36, 72, 72), 2, 14, {seats: '#9C8B74', wall: '#8A7A64', rim: '#6B5E52'});
@@ -497,7 +508,7 @@ const cowPalace: Landmark = {
   kind: 'stadium',
   built: [1940.4, 1941.3],
   end: 9999,
-  anchor: [-122.418864, 37.706764],
+  anchor: [-122.418771, 37.706758], // OSM footprint centroid (audit 2026-11: 8 m)
   build: b => {
     b.frame(0, 0, 0, 19, () => {
       const L = 120;

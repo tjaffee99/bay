@@ -215,3 +215,4 @@ html, body {
   #attribution { display: none; }
   #info { left: 12px; right: 12px; max-width: none; top: auto; bottom: 150px; }
 }
+[hidden] { display: none !important; }

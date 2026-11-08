@@ -39,7 +39,7 @@ import shapely
 from scipy.spatial import cKDTree
 from shapely.geometry import shape
 
-from common import CURRENT_YEAR, INTERIM, MANUAL, RAW, STILL_EXISTS, log
+from common import CURRENT_YEAR, INTERIM, MANUAL, RAW, STILL_EXISTS, TABLES, log
 from download_overture import RELEASE
 
 UTM = "EPSG:32610"
@@ -129,22 +129,66 @@ def main():
             lower[inside] = np.maximum(lower[inside], r.year)
             log(f"years: {inside.sum()} buildings on {r['name']} (land from {r.year}); {bad.sum()} predate it")
 
+    # ---------------------------------------------------------------- other evidence
+    # LiDAR (2010) saw a building here -> it existed by 2010; every DataSF footprint existed by 2016
+    lidar = df.hgt_median_m.astype(float).values
+    upper[np.isfinite(lidar) & (lidar >= 3.0)] = np.minimum(upper[np.isfinite(lidar) & (lidar >= 3.0)], 2010)
+    is_2016 = (df.source == "datasf_footprints_2016").values
+    upper[is_2016] = np.minimum(upper[is_2016], 2016)
+
+    year = raw.values.astype(float)
+    conf = np.where(reason == "ok", "exact", "estimated").astype(object)
+    src_year = np.where(reason == "ok", "assessor", "").astype(object)
+
+    # DBI new-construction permits (completed) for parcels without a usable assessor year
+    py = permit_years()
+    if py is not None:
+        pyr = df.mapblklot.map(py).values.astype(float)
+        use = (reason != "ok") & np.isfinite(pyr) & (pyr >= lower) & (pyr <= np.maximum(upper, pyr))
+        use &= pyr <= np.where(np.isfinite(upper), upper + 1, 9999)
+        year[use] = pyr[use]
+        reason[use] = "ok_permit"
+        conf[use] = "exact"
+        src_year[use] = "dbi_permit"
+        log(f"years: {use.sum()} buildings dated from completed new-construction permits")
+
+    # researched dates (federal / exempt land, public buildings) — point in footprint
+    kd = known_dates()
+    if kd is not None:
+        hit = gpd.sjoin(kd, gpd.GeoDataFrame(geometry=df.geometry, crs=UTM), predicate="within", how="inner")
+        for _, r in hit.iterrows():
+            i = int(r.index_right)
+            year[i] = r.start_year
+            reason[i] = "ok_research"
+            conf[i] = "exact"
+            src_year[i] = "research"
+        log(f"years: {hit.index_right.nunique()} buildings dated from data/tables/known_building_dates.csv")
+
     # ---------------------------------------------------------------- imputation
-    good = reason == "ok"
+    good = np.isin(reason, ["ok", "ok_permit", "ok_research"])
     xy = np.column_stack([cent.x.values, cent.y.values])
     tree = cKDTree(xy[good])
-    good_years = raw.values[good].astype(float)
-    year = raw.values.astype(float)
+    good_years = year[good].astype(float)
     need = np.where(~good)[0]
     dist, idx = tree.query(xy[need], k=12, distance_upper_bound=150)
     victorian = np.sort(good_years[good_years < 1906])
+    fbuy = fbuy_years(cent)
     fallback = 0
+    parcel_year: dict = {}
     for j, i in enumerate(need):
         ok = np.isfinite(dist[j])
         cands = good_years[idx[j][ok]]
         cands = cands[(cands >= lower[i]) & (cands <= upper[i])]
-        if len(cands):
+        key = df.mapblklot.iloc[i]
+        if isinstance(key, str) and key in parcel_year:
+            # all footprints of one parcel share the parcel's imputed year
+            year[i] = parcel_year[key]
+        elif len(cands):
             year[i] = float(np.median(cands))
+        elif np.isfinite(fbuy[i]) and lower[i] <= fbuy[i] <= upper[i]:
+            # HISDAC-US first built-up year of the 250 m cell
+            year[i] = fbuy[i]
+            src_year[i] = "hisdac_fbuy"
         else:
             fallback += 1
             h = stable_hash01(str(df.sf16_bldgid.iloc[i] or i))
@@ -161,8 +205,11 @@ def main():
             else:
                 year[i] = 1925 + 20 * h
         year[i] = min(max(year[i], lower[i]), upper[i], CURRENT_YEAR)
-    log(f"years: imputed {len(need)} ({fallback} without usable neighbours)")
-    conf = np.where(good, "exact", "estimated")
+        if isinstance(key, str) and key not in parcel_year:
+            parcel_year[key] = year[i]
+        if not src_year[i]:
+            src_year[i] = "neighbours"
+    log(f"years: imputed {len(need)} ({fallback} without usable neighbours or HISDAC)")
 
     # sub-year jitter so a whole tract doesn't pop on the same frame
     jit = np.array([stable_hash01(f"j{k}") for k in range(len(df))])
@@ -171,9 +218,12 @@ def main():
     df["end_year"] = float(STILL_EXISTS)
     df["year_confidence"] = conf
     df["year_reason"] = reason
+    df["year_source"] = src_year
     df["in_fire_zone"] = in_fire
 
     # ---------------------------------------------------------------- heights
+    ovh = overture_heights(df)
+    df["overture_height"] = np.where(df.get("overture_height").notna(), df.get("overture_height"), ovh) if "overture_height" in df else ovh
     df["height"] = heights(df)
     df["base"] = 0.0
     df["use"] = df.use_code.map(USE_MAP).fillna(0).astype(int)
@@ -186,7 +236,7 @@ def main():
     report(df, raw, spikes)
     df = df.to_crs(4326)
     keep = ["sf16_bldgid", "mapblklot", "address", "raw_year", "start_year", "end_year", "year_confidence",
-            "year_reason", "height", "base", "stories", "units", "use", "use_definition", "kind", "source",
+            "year_reason", "year_source", "height", "base", "stories", "units", "use", "use_definition", "kind", "source",
             "in_fire_zone", "geometry"]
     df = df[keep]
     df.to_parquet(OUT)
@@ -194,7 +244,11 @@ def main():
     log(f"buildings: wrote {OUT} ({len(df)} features)")
 
 
+MAX_STORIES = 65  # SF's tallest building has 61 floors; assessor values like 752 are typos
+
+
 def heights(df: gpd.GeoDataFrame) -> np.ndarray:
+    """LiDAR (if the building existed in 2010) > OSM/Overture height > sane storey count > 7 m."""
     lidar = df.hgt_median_m.astype(float).values
     stories = df.stories.astype(float).values
     ov = df.overture_height.astype(float).values if "overture_height" in df else np.full(len(df), np.nan)
@@ -202,12 +256,88 @@ def heights(df: gpd.GeoDataFrame) -> np.ndarray:
     h = np.full(len(df), np.nan)
     use_lidar = np.isfinite(lidar) & (lidar >= 2.5) & (start < 2010)
     h[use_lidar] = lidar[use_lidar]
-    from_st = ~np.isfinite(h) & np.isfinite(stories) & (stories > 0)
-    h[from_st] = stories[from_st] * 3.3 + 1.5
     from_ov = ~np.isfinite(h) & np.isfinite(ov) & (ov > 2)
     h[from_ov] = ov[from_ov]
+    sane = np.isfinite(stories) & (stories > 0) & (stories <= MAX_STORIES)
+    from_st = ~np.isfinite(h) & sane
+    h[from_st] = stories[from_st] * 3.3 + 1.5
     h[~np.isfinite(h)] = 7.0
+    bad = np.isfinite(stories) & (stories > MAX_STORIES)
+    if bad.any():
+        log(f"heights: ignored {bad.sum()} implausible storey counts (> {MAX_STORIES})")
     return np.clip(h, 2.5, 340.0)
+
+
+def overture_heights(df: gpd.GeoDataFrame) -> np.ndarray:
+    """OSM/Overture height of the Overture building overlapping each footprint most."""
+    ov = read_overture("building").to_crs(UTM)
+    ov = ov[ov.height.notna()][["height", "geometry"]].reset_index(drop=True)
+    hits = gpd.sjoin(gpd.GeoDataFrame(geometry=df.geometry, crs=UTM), ov, predicate="intersects", how="inner")
+    out = np.full(len(df), np.nan)
+    best = np.zeros(len(df))
+    for i, j in zip(hits.index.values, hits.index_right.values):
+        a = df.geometry.iloc[i].intersection(ov.geometry.iloc[j]).area
+        if a > best[i] and a > 0.5 * df.geometry.iloc[i].area:
+            best[i] = a
+            out[i] = ov.height.iloc[j]
+    return out
+
+
+def permit_years():
+    import glob
+    import json as _json
+    files = sorted(glob.glob(str(RAW / "sf_permits_newdemo" / "page-*.json")))
+    if not files:
+        return None
+    rows = []
+    for f in files:
+        rows.extend(_json.load(open(f)))
+    p = pd.DataFrame(rows)
+    p = p[p.permit_type.isin(["1", "2"]) & p.status.fillna("").str.lower().isin(["complete", "completed"])]
+    p["year"] = pd.to_datetime(p.completed_date, errors="coerce").dt.year
+    p = p[p.year.between(1900, CURRENT_YEAR)]
+    p["blklot"] = p.block.str.strip() + p.lot.str.strip()
+    # permits are filed on unit or map parcels; map them to map parcels via the parcels table
+    pm = parcel_map()
+    p["mapblklot"] = p.blklot.map(pm).fillna(p.blklot)
+    return p.groupby("mapblklot").year.max()
+
+
+_PARCEL_MAP = None
+
+
+def parcel_map():
+    global _PARCEL_MAP
+    if _PARCEL_MAP is None:
+        import glob
+        frames = [gpd.read_file(f, columns=["blklot", "mapblklot"], ignore_geometry=True) for f in sorted(glob.glob(str(RAW / "sf_parcels" / "page-*.geojson")))]
+        t = pd.concat(frames)
+        _PARCEL_MAP = dict(zip(t.blklot, t.mapblklot))
+    return _PARCEL_MAP
+
+
+def known_dates():
+    path = TABLES / "known_building_dates.csv"
+    if not path.exists():
+        return None
+    k = pd.read_csv(path)
+    k = k[pd.to_numeric(k.start_year, errors="coerce").notna() & k.lat.notna() & k.lon.notna()]
+    k["start_year"] = k.start_year.astype(float)
+    return gpd.GeoDataFrame(k[["name", "start_year"]], geometry=gpd.points_from_xy(k.lon, k.lat), crs=4326).to_crs(UTM)
+
+
+def fbuy_years(points: gpd.GeoSeries) -> np.ndarray:
+    """HISDAC-US first built-up year (250 m) at each point; NaN where unknown."""
+    path = RAW / "hisdac" / "FBUY" / "data" / "FBUY.tif"
+    out = np.full(len(points), np.nan)
+    if not path.exists():
+        return out
+    import rasterio
+    with rasterio.open(path) as src:
+        pts = points.to_crs(src.crs)
+        vals = np.array([v[0] for v in src.sample(zip(pts.x, pts.y))], dtype=float)
+    vals[(vals < 1810) | (vals > CURRENT_YEAR)] = np.nan  # 0/1/nodata: no record or year unknown
+    return vals
 
 
 def read_overture(typ: str) -> gpd.GeoDataFrame:

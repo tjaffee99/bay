@@ -1,0 +1,34 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Laguna St,Pacific Ave,"NW corner. INTERPOLATED between 1869 Coast Survey and 1886-87 Sanborn coverage, checked against the 1875 Britton Rey & Co. bird's-eye ""Graphic chart""; Western Addition built up east of ~Laguna after the 1870s cable/horse-car lines",https://www.loc.gov/item/75693102/
+core,2,Larkin St,Pacific Ave,,https://www.loc.gov/item/75693102/
+core,3,Larkin St,Bay St,Russian Hill north slope moderate,https://www.loc.gov/item/75693102/
+core,4,Kearny St,Bay St,,https://www.loc.gov/item/75693102/
+core,5,The Embarcadero,Lombard St,,https://www.loc.gov/item/75693102/
+core,6,The Embarcadero,Market St,,https://www.loc.gov/item/75693102/
+core,7,The Embarcadero,Townsend St,,https://www.loc.gov/item/75693102/
+core,8,4th St,Townsend St,SP depot at 3rd & Townsend (1875),https://www.loc.gov/item/75693102/
+core,9,8th St,Bryant St,,https://www.loc.gov/item/75693102/
+core,10,11th St,Harrison St,,https://www.loc.gov/item/75693102/
+core,11,South Van Ness Ave,14th St,,https://www.loc.gov/item/75693102/
+core,12,Laguna St,Haight St,,https://www.loc.gov/item/75693102/
+mission,1,Dolores St,14th St,Mission district (interpolated 1869->1887),https://www.loc.gov/item/75693102/
+mission,2,Folsom St,14th St,,https://www.loc.gov/item/75693102/
+mission,3,Folsom St,22nd St,,https://www.loc.gov/item/75693102/
+mission,4,Dolores St,22nd St,,https://www.loc.gov/item/75693102/
+potrero_point,1,3rd St,18th St,Potrero Point / Irish Hill industry and housing; LOW confidence,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,2,Illinois St,18th St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,3,Illinois St,22nd St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+potrero_point,4,3rd St,22nd St,,https://default.sfplanning.org/Preservation/showplace_survey/Final_Context_10.22.09.pdf
+butchertown,1,3rd St,Arthur Ave,"Butchertown (Butchers Reservation, first abattoir 1868) east of Kentucky (3rd) St from First (Arthur) Ave; LOW confidence on limits",https://timkelleyconsulting.com/BVHP_Context.pdf
+butchertown,2,Quint St,Arthur Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+butchertown,3,Rankin St,Davidson Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+butchertown,4,Rankin St,Evans Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+butchertown,5,3rd St,Evans Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,1,3rd St,Newcomb Ave,Bayview: 3rd (Railroad Ave) & Oakdale cluster (BVHP context),https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,2,Phelps St,Newcomb Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,3,Phelps St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,4,3rd St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post, NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

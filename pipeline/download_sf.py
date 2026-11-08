@@ -53,6 +53,14 @@ def main():
         page_size=50000,
     )
     socrata_pages("3nje-yn2u", RAW / "sf_rpd_parks", fmt="geojson", page_size=50000)
+    # DBI building permits: new construction (types 1, 2) and demolitions (6) that completed
+    socrata_pages(
+        "i98e-djp9", RAW / "sf_permits_newdemo",
+        select="permit_number,permit_type,block,lot,status,filed_date,issued_date,completed_date,"
+               "description,number_of_proposed_stories,proposed_units,existing_use,proposed_use,location",
+        where="permit_type in ('1','2','6') AND completed_date IS NOT NULL",
+        page_size=50000,
+    )
     # Census TIGER/Line: county outlines (they extend into the water) + area water
     # polygons, used to derive a detailed modern land polygon.
     download_file("https://www2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip",

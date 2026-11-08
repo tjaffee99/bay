@@ -1,0 +1,46 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Arguello Blvd,Jackson St,NW corner. Based on the volume-coverage inset of the Sanborn 1899-1900 edition (vols. 1-6 cover everything east of Stanyan/Arguello and north of ~Cesar Chavez; vol. 4 extends into the inner Richmond). Pacific Heights/Presidio Heights built up to the Presidio wall,https://www.loc.gov/item/sanborn00813_008/
+core,2,Lyon St,Jackson St,,https://www.loc.gov/item/sanborn00813_008/
+core,3,Lyon St,Greenwich St,Cow Hollow (Presidio wall at Lyon),https://www.loc.gov/item/sanborn00813_008/
+core,4,Laguna St,Greenwich St,Cow Hollow / Harbor View lowlands north of Greenwich mostly unbuilt,https://www.loc.gov/item/sanborn00813_008/
+core,5,Laguna St,Bay St,Fort Mason reserve to the north-west,https://www.loc.gov/item/sanborn00813_008/
+core,6,The Embarcadero,Bay St,,https://www.loc.gov/item/sanborn00813_008/
+core,7,The Embarcadero,Townsend St,,https://www.loc.gov/item/sanborn00813_008/
+core,8,7th St,Townsend St,,https://www.loc.gov/item/sanborn00813_008/
+core,9,Potrero Ave,16th St,,https://www.loc.gov/item/sanborn00813_008/
+core,10,Potrero Ave,Cesar Chavez St,1899 Army St,https://www.loc.gov/item/sanborn00813_008/
+core,11,Mission St,Cesar Chavez St,,https://www.loc.gov/item/sanborn00813_008/
+core,12,Castro St,30th St,Noe Valley built to ~30th,https://www.loc.gov/item/sanborn00813_008/
+core,13,Douglass St,17th St,,https://www.loc.gov/item/sanborn00813_008/
+core,14,Clayton St,17th St,Haight-Ashbury (1890s),https://www.loc.gov/item/sanborn00813_008/
+core,15,Stanyan St,Waller St,,https://www.loc.gov/item/sanborn00813_008/
+core,16,Stanyan St,Fulton St,,https://www.loc.gov/item/sanborn00813_008/
+core,17,Arguello Blvd,Fulton St,,https://www.loc.gov/item/sanborn00813_008/
+inner_richmond,1,Arguello Blvd,California St,"Inner Richmond: Sanborn 1899 vol. 4 coverage along Point Lobos Ave/Clement; scattered, LOW-MEDIUM",https://www.loc.gov/item/sanborn00813_008/
+inner_richmond,2,6th Ave,California St,,https://www.loc.gov/item/sanborn00813_008/
+inner_richmond,3,6th Ave,Fulton St,,https://www.loc.gov/item/sanborn00813_008/
+inner_richmond,4,Arguello Blvd,Fulton St,,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,1,Potrero Ave,16th St,Potrero Hill and Dogpatch/Potrero Point (Sanborn 1899 vol. 2/5); hill top still sparse,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,2,3rd St,16th St,,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,3,Illinois St,18th St,,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,4,Illinois St,23rd St,,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,5,Pennsylvania Ave,25th St,,https://www.loc.gov/item/sanborn00813_008/
+potrero_hill,6,Potrero Ave,25th St,,https://www.loc.gov/item/sanborn00813_008/
+bernal,1,Mission St,Cesar Chavez St,Bernal Heights north and west slopes (Sanborn 1899 vol. 5); LOW-MEDIUM,https://www.loc.gov/item/sanborn00813_008/
+bernal,2,Folsom St,Precita Ave,,https://www.loc.gov/item/sanborn00813_008/
+bernal,3,Folsom St,Cortland Ave,,https://www.loc.gov/item/sanborn00813_008/
+bernal,4,Mission St,Cortland Ave,,https://www.loc.gov/item/sanborn00813_008/
+bayview,1,3rd St,Arthur Ave,Butchertown + Bayview along 3rd St (Railroad Ave) to Palou (Sanborn 1899 vol. 5; BVHP context),https://timkelleyconsulting.com/BVHP_Context.pdf
+bayview,2,Quint St,Arthur Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+bayview,3,Rankin St,Davidson Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+bayview,4,Rankin St,Evans Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+bayview,5,Phelps St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+bayview,6,3rd St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+ocean_view,1,Broad St,Plymouth Ave,"Ocean View (Sanborn 1897 ""Ocean View"" sheet): small railroad village around Broad/Plymouth near San Jose Ave; LOW confidence",https://www.loc.gov/item/sanborn00730_001/
+ocean_view,2,Broad St,Orizaba Ave,,https://www.loc.gov/item/sanborn00730_001/
+ocean_view,3,Sargent St,Orizaba Ave,,https://www.loc.gov/item/sanborn00730_001/
+ocean_view,4,Lobos St,Plymouth Ave,,https://www.loc.gov/item/sanborn00730_001/
+presidio_post,1,Funston Ave,Moraga Ave,"@37.80250,-122.46200 Presidio main post incl. Montgomery St brick barracks (1895-97); NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.80250,-122.45350 NE (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79650,-122.45350 SE (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79650,-122.46200 SW (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

@@ -7,6 +7,7 @@ import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {TimeExtension} from '../layers/time-extension';
 import {BUILDING_MATERIAL} from '../layers/buildings';
 import {MeshBuilder, localToLngLat, type V2} from './kit';
+import {elevationAt} from '../layers/elevation';
 import type {Landmark} from './types';
 import {goldenGateBridge} from './golden-gate-bridge';
 import {transamerica, salesforceTower, transitCenter} from './downtown';
@@ -64,7 +65,8 @@ export function landmarkLayers(set: LandmarkSet, year: number, quality: boolean)
           id: `landmark-${lm.id}`,
           data: [lm],
           mesh,
-          getPosition: (d: Landmark) => [d.anchor[0], d.anchor[1], 0],
+          // bridges are modelled from sea level; everything else stands on the terrain
+          getPosition: (d: Landmark) => [d.anchor[0], d.anchor[1], d.kind === 'bridge' ? 0 : elevationAt(d.anchor[0], d.anchor[1]) - 0.5],
           getColor: quality ? [214, 176, 52] : [255, 255, 255],
           getOrientation: [0, 0, 0],
           material: BUILDING_MATERIAL,

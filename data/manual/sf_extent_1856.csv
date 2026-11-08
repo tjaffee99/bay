@@ -1,0 +1,23 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Taylor St,Union St,"NW corner. Traced from US Coast Survey ""City of San Francisco and its vicinity"" 1857 (Rodgers plane-table survey; same survey reissued 1859 with buildings in black)",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+core,2,Mason St,Francisco St,North Beach (moderate),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,3,Kearny St,Francisco St,North Beach shore,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,4,Sansome St,Greenwich St,"@37.80330,-122.40310 East base of Telegraph Hill (approx.)",https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,5,Davis St,Broadway,Waterfront (approx. line of 1857 bulkheads),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,6,Drumm St,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,7,Steuart St,Folsom St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,8,Spear St,Harrison St,Rincon Point,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,9,2nd St,Brannan St,Rincon Hill / South Park (1856) area,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,10,3rd St,Brannan St,Steamboat Point side,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,11,4th St,Folsom St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2212~180003
+core,12,6th St,Mission St,Mission St plank road westward is scattered only,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+core,13,Powell St,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+core,14,Taylor St,Post St,Union Square district moderate,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+mission_dolores,1,Dolores St,14th St,Mission Dolores settlement along 16th (Center) St and the Mission plank road (1857 Coast Survey),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+mission_dolores,2,Valencia St,14th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+mission_dolores,3,Valencia St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+mission_dolores,4,Dolores St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~239938~5512085
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post (adobe quadrangle), NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

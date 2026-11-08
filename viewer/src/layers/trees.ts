@@ -9,12 +9,13 @@ import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {loadColumnar} from '../data/columnar';
 import {MeshBuilder, circle} from '../landmarks/kit';
 import {TimeExtension} from './time-extension';
+import {elevationAt} from './elevation';
 
 export type TreeSet = {
   id: string;
   origin: [number, number];
   growYears: number;
-  forms: {data: any; count: number}[];
+  forms: {data: any; count: number; scale: Float32Array}[];
 };
 
 const treeTime = new TimeExtension({mode: 'mesh'});
@@ -74,31 +75,33 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
     const pos = new Float32Array(m * 3);
     const scl = new Float32Array(m * 3);
     const years = new Float32Array(m * 2);
-    const col = new Uint8Array(m * 3);
+    const col = new Uint8Array(m * 4);
     let j = 0;
     for (let i = 0; i < n; i++) {
       if (form[i] !== k) continue;
       pos[j * 3] = q[i * 2] * scale;
       pos[j * 3 + 1] = q[i * 2 + 1] * scale;
-      const cr = (c.crown as Float32Array)[i];
+      pos[j * 3 + 2] = elevationAt(f.header.origin[0] + pos[j * 3], f.header.origin[1] + pos[j * 3 + 1]) - 0.3;
+      const cr = Math.max(4, (c.crown as Float32Array)[i] * 2.0);
       scl[j * 3] = cr;
       scl[j * 3 + 1] = cr;
-      scl[j * 3 + 2] = (c.height as Float32Array)[i];
+      scl[j * 3 + 2] = (c.height as Float32Array)[i] * 1.45;
       years[j * 2] = (c.start_year as Float32Array)[i];
       years[j * 2 + 1] = 9999;
       const g = GREENS[k][(i * 2654435761) % GREENS[k].length >>> 0] ?? GREENS[k][0];
-      col.set(g, j * 3);
+      col.set(g, j * 4);
+      col[j * 4 + 3] = 255;
       j++;
     }
     return {
       count: m,
+      scale: scl,
       data: {
         length: m,
         attributes: {
           getPosition: {value: pos, size: 3},
-          getScale: {value: scl, size: 3},
           getYears: {value: years, size: 2},
-          getColor: {value: col, size: 3, normalized: true}
+          getColor: {value: col, size: 4, normalized: true}
         }
       }
     };
@@ -113,6 +116,18 @@ export function treesLayer(trees: TreeSet, year: number): Layer[] {
         id: `trees-${trees.id}-${k}`,
         data: f.data,
         mesh: MESHES[k],
+        getScale: (_: any, {index, target}: any) => {
+          target[0] = f.scale[index * 3];
+          target[1] = f.scale[index * 3 + 1];
+          target[2] = f.scale[index * 3 + 2];
+          return target;
+        },
+        getOrientation: (_: any, {index, target}: any) => {
+          target[0] = 0;
+          target[1] = ((index * 2654435761) % 360) >>> 0;
+          target[2] = 0;
+          return target;
+        },
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [trees.origin[0], trees.origin[1], 0],
         material: {ambient: 0.55, diffuse: 0.55, shininess: 4, specularColor: [20, 24, 18]},

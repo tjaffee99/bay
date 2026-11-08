@@ -1,0 +1,20 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Stockton St,Broadway,NW corner. Gold Rush town around Portsmouth Square; tents and frame houses up the slope to Stockton (Dupont/Kearny dense). LOW confidence: no 1849 survey shows individual buildings; extent reconstructed from the 1849 Eddy street plan + the 1851-53 Coast Survey building pattern + narrative sources,https://www.loc.gov/item/77692722/
+core,2,Kearny St,Broadway,"""Sydney Town"" around Broadway/Pacific & Kearny at the foot of Telegraph Hill",https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+core,3,Battery St,Broadway,"Clark's Point (Broadway & Battery), main landing place for 1849 arrivals",https://www.sanfranciscostory.com/a-room-at-clarks-point/
+core,4,Sansome St,Pacific Ave,"@37.79740,-122.40150 1849 shoreline of Yerba Buena Cove ran roughly along Montgomery St; buildings on piers/hulks out to about Sansome by late 1849 (approx.)",https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+core,5,Sansome St,California St,Cove; Long Wharf (Commercial St) ran east from here,https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+core,6,Montgomery St,California St,Commercial district ran from the bay edge at Montgomery up to Portsmouth Square (Chronicle),https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+core,7,Stockton St,California St,SW corner (approx.),https://www.loc.gov/item/77692722/
+happy_valley,1,1st St,Market St,"Happy Valley tent city (SoMa near the later Palace Hotel), ~2,000 residents in 1849; LOW confidence on limits",https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+happy_valley,2,3rd St,Market St,,https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+happy_valley,3,3rd St,Howard St,,https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+happy_valley,4,1st St,Howard St,,https://preview-prod.w.sfchronicle.com/bayarea/article/Seeking-gold-the-49ers-found-a-sad-sodden-S-F-5969393.php
+mission_dolores,1,Dolores St,15th St,Mission Dolores (1791 church) and a few adobes; LOW confidence on extent,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,2,Guerrero St,15th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,3,Guerrero St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+mission_dolores,4,Dolores St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~321600~90090766
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post (adobe quadrangle, 1776-1840s; US Army from 1847), NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

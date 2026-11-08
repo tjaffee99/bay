@@ -284,6 +284,12 @@ const skyway: Landmark = {
 };
 
 // =========================================================== Ferry Building
+// Audit 2026-11: the earlier model was mirrored across its long axis (tower on
+// the bay side, sheds standing in the Embarcadero). Geometry now from the OSM
+// footprint + 3D tower parts in a frame whose +y runs NW along the Embarcadero
+// (324°) and +x points NE to the bay: main block x −27…20.4 (47 m) × 201 m,
+// projecting entrance pavilion on the Embarcadero side (x −36…−27, 43 m long),
+// tower on that side at (−22, 2.9): 11.4 m shaft to 43.5 m, stepped stages to 60.5 m.
 const ferryBuilding: Landmark = {
   id: 'ferry_building',
   name: 'Ferry Building',
@@ -293,76 +299,129 @@ const ferryBuilding: Landmark = {
   anchor: [-122.393383, 37.795538],
   build: b => {
     const stone = '#D8D2C4';
-    b.frame(0, 0, 0, 144, () => {
-      // local +y along the Embarcadero (144°), +x toward the bay (NE side)
-      b.color(stone).box(0, 0, 0, 40, 201, 15);
-      b.color('#8E9396').gable(0, 0, 41, 202, 15, 6, true);
-      b.color('#B9BDBF').box(0, 0, 19, 8, 190, 2.5); // clerestory
-      // arcade on the Embarcadero (SW) side
+    b.frame(0, 0, 0, 324, () => {
+      b.color(stone).box(-3.3, 2.4, 0, 47.4, 200.8, 15);
+      b.color('#8E9396').gable(-3.3, 2.4, 48.4, 201.8, 15, 6, true);
+      b.color('#B9BDBF').box(-3.3, 2.4, 19, 8, 190, 2.5); // clerestory over the Great Nave
+      // entrance pavilion under the tower (Embarcadero side)
+      b.color(stone).box(-31.45, 3.15, 0, 8.9, 43.1, 16);
+      b.color('#8E9396').box(-31.45, 3.15, 16, 9.4, 43.6, 1);
+      // ground-floor arcade along the Embarcadero front
       b.color('#C9C2B2');
-      for (let y = -96; y <= 96; y += 8) b.box(-20.6, y, 0, 1.2, 2.2, 6.5);
-      b.color(stone).box(-20.6, 0, 6.5, 1.4, 200, 1.4);
-      // ferry sheds / piers behind
-      b.color('#B5B3AC').box(28, -60, 0, 16, 70, 8).box(28, 60, 0, 16, 70, 8);
-      // Giralda-style clock tower on the Market St axis
-      b.color(stone).box(-6, 0, 0, 13, 13, 52);
-      b.color('#F4F2EC').box(-6, 0, 44, 13.6, 13.6, 7); // clock stage
-      b.color(stone).box(-6, 0, 51, 10.5, 10.5, 9).box(-6, 0, 60, 8, 8, 6).box(-6, 0, 66, 5.5, 5.5, 4);
-      b.color('#9BA1A3').dome(-6, 0, 2.6, 70, 5, 10, 3);
+      for (let y = -94; y <= 100; y += 8) if (y < -19 || y > 25) b.box(-27.6, y, 0, 1.2, 2.2, 6.5);
+      for (let y = -16; y <= 23; y += 6.5) b.box(-36.5, y, 0, 1.2, 2.2, 7);
+      b.color(stone).box(-27.6, -57.5, 6.5, 1.4, 81, 1.4).box(-27.6, 63.3, 6.5, 1.4, 79, 1.4);
+      // Giralda-style clock tower (OSM 3D parts), clock stage with 6.7 m dials, cupola to 75 m
+      const tx = -22;
+      const ty = 2.9;
+      b.color(stone).box(tx, ty, 0, 11.4, 12.1, 40);
+      b.color('#F4F2EC').box(tx, ty, 40, 12, 12.7, 5.5); // clock stage
+      b.color(stone).box(tx, ty, 45.5, 10.3, 11.1, 5).box(tx, ty, 50.5, 8.3, 8.2, 3.7).box(tx, ty, 54.2, 6.4, 6.5, 6.3);
+      b.color('#C9C2B2').box(tx, ty, 60.5, 4.6, 4.6, 6);
+      b.color('#9BA1A3').dome(tx, ty, 2.6, 66.5, 5.5, 10, 3);
+      b.color('#7E8487').cylinder(tx, ty, 0.25, 72, 75, 4);
     });
   },
   replaces: [rotRect(0, 0, 60, 205, 144)],
-  facts: {Opened: 'Jul 13, 1898 (architect A. Page Brown)', 'Clock tower': '75 m (245 ft), after the Giralda of Seville', Survived: '1906 earthquake and fire', Restored: '2002–2003'},
+  facts: {
+    Opened: 'Jul 13, 1898 (architect A. Page Brown)',
+    'Clock tower': '75 m (245 ft), after the Giralda of Seville; four 6.7 m clock dials',
+    Survived: '1906 earthquake and fire',
+    Restored: '2002–2003',
+    Model: 'footprint and tower stages from OSM; roof pitch and cupola estimated'
+  },
   sources: [WIKI + 'San_Francisco_Ferry_Building']
 };
 
 // =========================================================== City Hall
+// Audit 2026-11 (owner report "oriented the wrong way"): the earlier model ran
+// its long axis E–W. The OSM/DataSF footprints and the orthophoto show the
+// long axis N–S along Polk (E, main front) and Van Ness (W) on the −9° street
+// grid: main block 87 × 126.6 m, centre pavilions projecting ~6 m on both long
+// fronts, two light courts N and S of the rotunda wing (28 m deep, E–W), and the
+// dome centred on the rotunda wing. Dome stages follow the OSM 3D parts
+// (drum r ≈ 17 m to 46–52 m, dome r ≈ 14.5 m from 60 m) and the 93.7 m total.
+function cityHallBuild(b: MeshBuilder) {
+  const granite = '#DDD9CF';
+  const shade = '#CFCAC0';
+  const gold = '#C9A43A';
+  b.frame(0, 0, 0, -9, () => {
+    // local +x = east (Polk St front), +y = north (McAllister St)
+    const outer = rect(0, 0.4, 87, 126.6);
+    const courts = [rect(0, 29.9, 50, 31.4), rect(0, -29.6, 50, 30.8)];
+    b.color(granite).prism(outer, 0, 26, {holes: courts});
+    b.color('#D3CEC3').prism(rect(0, 0.4, 85.6, 125.2), 26, 30, {holes: courts, top: false});
+    b.color('#9FB3AA').cap(rect(0, 0.4, 85.6, 125.2), 30, courts); // verdigris copper roofs (orthophoto)
+    b.color('#A9BDB9');
+    for (const c of courts) b.cap(c, 8); // glazed court roofs at the second floor
+    // rotunda wing across the middle, rising above the ring
+    b.color(granite).box(0, 0, 30, 86, 28.4, 5);
+    b.color(granite).box(0, 0, 35, 39, 40, 2);
+    // centre pavilions on Polk (E) and Van Ness (W): portico + pediment + six columns
+    for (const sx of [-1, 1]) {
+      b.color(granite).box(sx * 45.5, 0, 0, 5, 24.6, 27);
+      b.color(shade).gable(sx * 45.5, 0, 5.6, 25.4, 27, 4.2, false);
+      b.color('#E6E2D8');
+      for (const y of [-8.5, -5.1, -1.7, 1.7, 5.1, 8.5]) b.cylinder(sx * 48.6, y, 0.85, 4, 24.5, 8);
+      b.color(granite).box(sx * 48.4, 0, 0, 2.6, 26, 4); // steps / podium
+      b.color(granite).box(sx * 48.6, 0, 24.5, 2.2, 22, 2.5); // entablature
+      // giant order along the long fronts (2nd–3rd floors on a rusticated base)
+      b.color('#E6E2D8');
+      for (const sy of [-1, 1]) for (let y = 16; y <= 52; y += 4) b.cylinder(sx * 43.9, sy * y + 0.4, 0.7, 8, 24, 6);
+      // end pavilions with small pediments
+      for (const sy of [-1, 1]) {
+        b.color(granite).box(sx * 44, sy * 56.5 + 0.4, 0, 2, 13, 27);
+        b.color(shade).gable(sx * 44.6, sy * 56.5 + 0.4, 3, 13, 27, 2.6, false);
+      }
+    }
+    // drum: colonnaded ring (r 17, 24 columns) on the rotunda base, attic, dome
+    b.color(shade).cylinder(0, 0, 15.6, 37, 52, 24);
+    b.color('#E6E2D8');
+    for (let i = 0; i < 24; i++) {
+      const a = (i / 24) * Math.PI * 2;
+      b.cylinder(Math.cos(a) * 17, Math.sin(a) * 17, 0.65, 37, 51, 6);
+    }
+    b.color(granite).cylinder(0, 0, 17.8, 51, 53.5, 24).cylinder(0, 0, 15.6, 53.5, 60, 24);
+    const R0 = 14.6;
+    const H = 15;
+    b.color('#6C7377').dome(0, 0, R0, 60, H, 24, 6);
+    // gilded ribs following the dome profile
+    const Rs = (R0 * R0 + H * H) / (2 * H);
+    const zc = 60 + H - Rs;
+    b.color(gold);
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+      const pts: V3[] = [];
+      for (let k = 0; k <= 4; k++) {
+        const z = 60 + (H - 2) * (k / 4);
+        const r = Math.sqrt(Math.max(Rs * Rs - (z - zc) * (z - zc), 0)) + 0.2;
+        pts.push([Math.cos(a) * r, Math.sin(a) * r, z]);
+      }
+      b.polyline(pts, 0.6);
+    }
+    // lantern, cupola and spire to 93.7 m
+    b.color(granite).cylinder(0, 0, 3.6, 74, 84.5, 10);
+    b.color(gold).dome(0, 0, 3.8, 84.5, 3.5, 10, 3).cylinder(0, 0, 0.5, 88, 93.7, 6);
+  });
+}
+
 const cityHall: Landmark = {
   id: 'city_hall_1915',
   name: 'San Francisco City Hall',
   kind: 'building',
   built: [1913.26, 1915.95],
   end: 9999,
-  anchor: [-122.419284, 37.779322],
-  build: b => {
-    const granite = '#DDD9CF';
-    // 119 m (E–W) × 83 m (N–S) block, two light courts
-    const outer = rect(0, 0, 119, 83);
-    const courts = [rect(-30, 0, 30, 45), rect(30, 0, 30, 45)];
-    b.color(granite).prism(outer, 0, 30, {holes: courts});
-    b.color('#C9C4B8').box(0, 0, 30, 121, 85, 1.2, {top: false}).cap(outer, 31.2, courts);
-    // Doric colonnaded centre pavilions on Polk (E) and Van Ness (W)
-    for (const sx of [-1, 1]) {
-      b.color(granite).box(sx * 61, 0, 0, 4, 40, 27);
-      b.color('#CFCAC0');
-      for (let y = -16; y <= 16; y += 4) b.cylinder(sx * 64, y, 0.9, 4, 24, 8);
-      b.color(granite).box(sx * 64, 0, 24, 3, 38, 4);
-    }
-    // rotunda: colonnaded drum, ribbed dome, lantern (dome to 93.7 m)
-    b.color(granite).cylinder(0, 0, 17, 31, 46, 24);
-    b.color('#CFCAC0');
-    for (let i = 0; i < 24; i++) {
-      const a = (i / 24) * Math.PI * 2;
-      b.cylinder(Math.cos(a) * 17.6, Math.sin(a) * 17.6, 0.7, 34, 46, 6);
-    }
-    b.color(granite).cylinder(0, 0, 18.2, 46, 49, 24);
-    b.color('#6C7377').dome(0, 0, 15.5, 49, 25, 24, 6);
-    b.color('#C9A43A');
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      b.beam([Math.cos(a) * 15.5, Math.sin(a) * 15.5, 49], [Math.cos(a) * 3, Math.sin(a) * 3, 73.5], 0.6);
-    }
-    b.color('#C9C4B8').cylinder(0, 0, 3.4, 73, 85, 10);
-    b.color('#C9A43A').dome(0, 0, 3.6, 85, 4, 10, 3).cylinder(0, 0, 0.5, 89, 93.7, 6);
-  },
-  replaces: [rect(0, 0, 135, 95)],
+  anchor: [-122.419235, 37.779274], // rotunda centre (OSM 3D parts)
+  build: cityHallBuild,
+  replaces: [rotRect(0, 0, 104, 132, -9)],
   facts: {
     Construction: 'Apr 1913 – Dec 1915 (in time for the PPIE)',
     Architect: 'Bakewell & Brown (Arthur Brown Jr.)',
     Dome: '93.7 m (307.5 ft); gilding restored 1999',
-    Footprint: '119 × 83 m'
+    Footprint: '≈ 127 m (N–S, along Polk St) × 87 m, two light courts',
+    Model: 'footprint and dome stages from OSM/DataSF; column counts and roof pitches estimated from photos'
   },
-  sources: [WIKI + 'San_Francisco_City_Hall']
+  sources: [WIKI + 'San_Francisco_City_Hall', 'https://www.openstreetmap.org/relation/7261820']
 };
 
 const oldCityHall: Landmark = {
@@ -402,7 +461,8 @@ const coitTower: Landmark = {
   anchor: [-122.405842, 37.802373],
   build: b => {
     const conc = '#E2DED3';
-    b.color(conc).prism(roundedRect(0, 0, 22, 22, 3, 2), 0, 8);
+    // base building rotated −14.5° (OSM footprint 22 m, axes 75.6°/165.6°)
+    b.frame(0, 0, 0, -14.5, () => b.color(conc).prism(roundedRect(0, 0, 22, 22, 3, 2), 0, 8));
     // fluted shaft (24 flutes approximated by a 24-gon) tapering slightly to 55 m
     b.color('#E8E4DA').frustum(0, 0, 5.8, 5.4, 8, 55, 24, false);
     // arcaded crown
@@ -424,48 +484,91 @@ const coitTower: Landmark = {
 };
 
 // =========================================================== Palace of Fine Arts
+// Audit 2026-11: rebuilt from the OSM 3D geometry (the earlier hall arc was too
+// small and the colonnades curved the wrong way). Local metres from the rotunda
+// centre. Exhibition hall: OSM outline (≈ 270 m arc, 45 m deep) with its raised
+// clerestory band; colonnade arms: centrelines of the OSM colonnade outlines
+// with paired columns every 4.5 m and the planter boxes on top (OSM h 19–21 m);
+// rotunda: 8 piers on r = 24.5 m at bearings 13.5° + 45°k, entablature ring to
+// 33 m, drum r 17.9 m to 40 m, dome r 16.3 m to 49.4 m (162 ft); lagoon from
+// the US Census TIGER area-water polygon.
+const POFA_HALL: V2[] = [
+  [-78.9, -61.2], [-61.1, -89.7], [-33.6, -116.1], [-10.0, -129.6], [6.6, -136.4], [10.8, -126.8], [8.7, -125.9], [16.5, -107.2],
+  [18.1, -107.8], [22.6, -97.2], [3.7, -89.5], [-4.7, -84.1], [-26.4, -64.1], [-35.7, -51.5], [-44.6, -34.2], [-52.0, -7.0],
+  [-53.4, 11.6], [-48.7, 43.4], [-41.7, 59.7], [-30.3, 78.7], [-17.3, 94.0], [-9.5, 99.7], [-16.9, 107.9], [-18.1, 106.8],
+  [-30.9, 121.4], [-28.6, 123.5], [-36.4, 132.1], [-52.5, 117.1], [-68.2, 99.4], [-86.2, 65.9], [-92.5, 41.2], [-96.7, 10.6],
+  [-94.7, -10.4], [-87.8, -42.5]
+];
+const POFA_CLERESTORY: V2[] = [
+  [6.6, -110.9], [-3.1, -106.3], [-21.6, -93.9], [-31.4, -85.2], [-49.2, -64.2], [-63.4, -35.6], [-70.5, -7.2], [-71.5, 24.4],
+  [-67.3, 42.3], [-52.6, 74.6], [-44.1, 88.4], [-27.5, 106.6], [-32.2, 111.9], [-50.4, 92.7], [-59.3, 78.9], [-68.5, 60.1],
+  [-74.4, 43.3], [-77.9, 25.7], [-77.6, -7.8], [-69.9, -37.6], [-63.5, -53.7], [-56.4, -67.7], [-47.3, -80.5], [-15.7, -107.7],
+  [3.7, -117.7]
+];
+const POFA_ARMS: V2[][] = [
+  [[-35.9, 20.4], [-32.1, 28.6], [-30.1, 39.8], [-25.6, 48.4], [-21.5, 58.9], [-15.1, 66.4], [-8.2, 74.9], [0.4, 80.1], [6.8, 80.0], [16.3, 80.8], [17.0, 91.1], [13.7, 101.3], [12.1, 106.7]],
+  [[-27.5, -30.2], [-22.1, -37.3], [-16.4, -46.9], [-10.1, -55.1], [-2.0, -62.6], [5.4, -69.3], [16.1, -73.6], [25.1, -74.4], [33.4, -74.8], [41.1, -72.2], [43.3, -76.0], [44.4, -87.2], [47.4, -97.2], [47.9, -104.2]]
+];
+const POFA_LAGOON: V2[] = [
+  [-15.3, 41.2], [1.3, 60.7], [30.9, 73.0], [33.4, 80.6], [31.6, 97.4], [36.5, 102.8], [50.8, 107.0], [54.4, 131.7], [65.6, 131.5],
+  [76.6, 123.4], [93.3, 99.8], [90.2, 73.0], [102.8, 54.5], [106.5, 39.3], [108.6, 11.3], [96.6, -4.4], [118.6, -33.7], [112.8, -46.0],
+  [118.7, -62.3], [111.7, -71.5], [109.6, -80.4], [96.8, -90.3], [93.1, -103.4], [80.7, -107.5], [64.2, -95.2], [56.7, -70.5],
+  [45.6, -59.6], [37.2, -56.6], [16.4, -60.7], [4.7, -51.2], [2.6, -44.2], [4.9, -42.8], [33.9, -39.1], [41.8, -31.1], [48.6, 9.0],
+  [43.9, 20.5], [30.9, 35.4], [20.0, 42.7], [-9.0, 34.4], [-14.6, 35.9]
+];
+
+function pofaColonnade(b: MeshBuilder, path: V2[], stone: string) {
+  let acc = 0;
+  let next = 1;
+  let k = 0;
+  for (let i = 0; i < path.length - 1; i++) {
+    const [ax, ay] = path[i];
+    const [bx, by] = path[i + 1];
+    const L = Math.hypot(bx - ax, by - ay);
+    const ux = (bx - ax) / L;
+    const uy = (by - ay) / L;
+    b.color(stone).beam([ax, ay, 11.8], [bx, by, 11.8], 4.6, 1.6);
+    while (next <= acc + L) {
+      const t = next - acc;
+      const x = ax + ux * t;
+      const y = ay + uy * t;
+      for (const o of [-1.6, 1.6]) b.cylinder(x - uy * o, y + ux * o, 0.45, 0, 11, 5, {top: false});
+      if (k % 5 === 2) b.beam([x - ux * 2, y - uy * 2, 15.6], [x + ux * 2, y + uy * 2, 15.6], 4.4, 6); // planter box
+      next += 4.5;
+      k++;
+    }
+    acc += L;
+  }
+}
+
 function palaceOfFineArts(stone: string, dome: string) {
   return (b: MeshBuilder) => {
-    // octagonal open rotunda, 49 m
-    const R = 17;
-    b.color(stone);
+    // lagoon (drawn just above the ground plane)
+    b.color('#9FC2D0').cap(POFA_LAGOON, 0.15);
+    // exhibition hall
+    b.color(stone).prism(POFA_HALL, 0, 14, {top: false});
+    b.color('#8E8A84').cap(POFA_HALL, 14).prism(POFA_CLERESTORY, 14, 18.5);
+    // colonnade arms + their end pavilions (OSM blocks, 21 m)
+    for (const arm of POFA_ARMS) pofaColonnade(b, arm, stone);
+    b.color(stone).box(-3, 105.7, 0, 8.2, 8.2, 21).box(30.2, -101.4, 0, 8, 8, 21);
+    b.box(15, 99, 0, 9, 13, 19).box(46.2, -99.5, 0, 8, 10, 19).box(31, -74.8, 0, 13, 8, 19);
+    // rotunda: eight piers, entablature ring, drum and dome
+    const R = 24.5;
     for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
-      b.box(Math.cos(a) * R, Math.sin(a) * R, 0, 4, 4, 24);
+      const brg = 13.5 + 45 * i;
+      const a = (brg * Math.PI) / 180;
+      b.frame(Math.sin(a) * R, Math.cos(a) * R, 0, brg, () => {
+        b.color(stone).box(0, 0, 0, 9.3, 5.4, 25);
+        b.box(0, 0.4, 25, 6, 4, 11); // pier tops with the figure boxes
+      });
     }
-    b.prism(circle(0, 0, R + 2.2, 8), 24, 30, {holes: [circle(0, 0, R - 2.2, 8)]});
-    b.color(dome).loft([circle(0, 0, R + 1, 8), circle(0, 0, R - 2, 8), circle(0, 0, 10, 8), circle(0, 0, 2, 8)], [30, 38, 45, 49], {top: true});
-    // curving peristyle colonnades embracing the lagoon (arc centred east of the rotunda)
-    const cx = 75;
-    const rr = 75;
-    for (const sgn of [-1, 1]) {
-      for (let k = 1; k <= 14; k++) {
-        const t = (sgn * (k * 4.2) * Math.PI) / 180;
-        const x = cx - Math.cos(t) * rr;
-        const y = Math.sin(t) * rr;
-        if (k % 4 === 0) b.color(stone).box(x, y, 0, 4, 4, 17).box(x, y, 17, 5, 5, 1.5);
-        else b.color(stone).cylinder(x, y, 0.8, 0, 12, 8);
-      }
-      const arc: V3[] = [];
-      const arcO: V3[] = [];
-      for (let k = 0; k <= 14; k++) {
-        const t = (sgn * (k * 4.2) * Math.PI) / 180;
-        arc.push([cx - Math.cos(t) * (rr - 1.5), Math.sin(t) * (rr - 1.5), 12]);
-        arcO.push([cx - Math.cos(t) * (rr + 1.5), Math.sin(t) * (rr + 1.5), 12]);
-      }
-      b.color(stone).ribbon(arc, arcO);
-    }
-    // long curved windowless exhibition hall behind (west)
-    const hallIn: V2[] = [];
-    const hallOut: V2[] = [];
-    for (let k = 0; k <= 20; k++) {
-      const a = ((200 + (140 * k) / 20) * Math.PI) / 180;
-      hallIn.push([Math.sin(a) * 60, Math.cos(a) * 60]);
-      hallOut.push([Math.sin(a) * 88, Math.cos(a) * 88]);
-    }
-    b.color(stone).prism([...hallIn, ...hallOut.slice().reverse()], 0, 20);
-    // lagoon edge (water is the ground plane colour here: a low rim only)
-    b.color('#9FC2D0').cap(roundedRect(85, 0, 70, 140, 30, 6), 0.3);
+    const ring = (r: number) => circle(0, 0, r, 8).map(([x, y]) => {
+      const a = (-9 * Math.PI) / 180; // align the octagon with the piers
+      return [x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)] as V2;
+    });
+    b.color(stone).prism(ring(28.6), 25, 33, {holes: [ring(22.6)]});
+    b.color(stone).cylinder(0, 0, 17.9, 25, 40, 20);
+    b.color(dome).dome(0, 0, 16.3, 40, 9.4, 20, 5);
   };
 }
 const pofa1915: Landmark = {
@@ -480,7 +583,7 @@ const pofa1915: Landmark = {
     Built: '1914–15 for the Panama-Pacific Exposition (Bernard Maybeck), wood frame and plaster "staff"',
     Fate: 'the only PPIE building kept on site; decayed and demolished 1964',
     Rotunda: '49 m (162 ft)',
-    Model: 'hall arc length and peristyle radius estimated'
+    Model: 'layout of the 1967 replica (OSM 3D) applied to the 1915 original; column count estimated'
   },
   sources: [WIKI + 'Palace_of_Fine_Arts']
 };
@@ -491,8 +594,13 @@ const pofa1967: Landmark = {
   built: [1964.5, 1967.5],
   end: 9999,
   build: palaceOfFineArts('#D7B98E', '#B07A52'),
-  replaces: [rect(-20, 0, 190, 200)],
-  facts: {Rebuilt: '1964–67 in steel and concrete to the 1915 design', Exploratorium: '1969–2013', Rotunda: '49 m (162 ft)'}
+  replaces: [rect(-30, -2, 150, 280)],
+  facts: {
+    Rebuilt: '1964–67 in steel and concrete to the 1915 design',
+    Exploratorium: '1969–2013',
+    Rotunda: '49 m (162 ft)',
+    Model: 'hall, colonnades and rotunda from OSM 3D geometry; column count estimated'
+  }
 };
 
 // =========================================================== Sutro Tower
@@ -509,7 +617,8 @@ const sutroTower: Landmark = {
     const side = (z: number) => (z <= 168 ? 45.7 + ((18.3 - 45.7) * z) / 168 : 18.3 + ((30.5 - 18.3) * (z - 168)) / 67);
     const leg = (k: number, z: number): V3 => {
       const r = side(z) / Math.sqrt(3);
-      const a = (k / 3) * Math.PI * 2 + Math.PI / 2;
+      // legs point W, SE and NE (OSM truss-level outlines; audit 2026-11: was rotated 90°, a leg pointing N)
+      const a = (k / 3) * Math.PI * 2 + Math.PI;
       return [Math.cos(a) * r, Math.sin(a) * r, z];
     };
     const bands = (z: number) => (Math.floor(z / 30) % 2 === 0 ? '#BF4E3B' : '#F2F2F2');
@@ -546,16 +655,22 @@ const alcatrazCellhouse: Landmark = {
   end: 9999,
   anchor: ALC,
   build: b => {
-    const p = lngLatToLocal(ALC, [-122.423015, 37.826659]);
+    // OSM footprint centroids (audit 2026-11: the administration block was at the
+    // wrong (NW) end; it closes the SE end, its long axis at 46°)
+    const p = lngLatToLocal(ALC, [-122.422932, 37.82663]);
     b.frame(p[0], p[1], 0, 136, () => {
       b.color('#CFC8B8').box(0, 0, 0, 49, 65, 15);
       b.color('#9C968A').box(0, 0, 15, 49, 65, 1, {top: true});
-      b.color('#B9B2A3').box(0, -38, 0, 15, 35, 12); // administration block
     });
-    const d = lngLatToLocal(ALC, [-122.423454, 37.82703]);
-    b.frame(d[0], d[1], 0, 136, () => b.color('#CFC8B8').box(0, 0, 0, 20, 52, 9));
+    const ad = lngLatToLocal(ALC, [-122.422557, 37.826417]);
+    b.frame(ad[0], ad[1], 0, 46, () => b.color('#B9B2A3').box(0, 0, 0, 14.7, 34.9, 12)); // administration block
+    const d = lngLatToLocal(ALC, [-122.423393, 37.826994]);
+    b.frame(d[0], d[1], 0, 136, () => b.color('#CFC8B8').box(0, 0, 0, 20, 52, 9)); // dining hall
   },
-  replaces: [circle(lngLatToLocal(ALC, [-122.423015, 37.826659])[0], lngLatToLocal(ALC, [-122.423015, 37.826659])[1], 45, 12)],
+  replaces: [
+    circle(lngLatToLocal(ALC, [-122.422932, 37.82663])[0], lngLatToLocal(ALC, [-122.422932, 37.82663])[1], 45, 12),
+    circle(lngLatToLocal(ALC, [-122.423393, 37.826994])[0], lngLatToLocal(ALC, [-122.423393, 37.826994])[1], 12, 8)
+  ],
   facts: {
     Built: '1909–1912 (Army disciplinary barracks, incorporating the 1859 citadel)',
     'Federal penitentiary': '1934 – Mar 21, 1963',
@@ -629,26 +744,48 @@ const fortPoint: Landmark = {
   end: 9999,
   anchor: [-122.477092, 37.8106],
   build: b => {
+    // OSM outline (relation 5504536) in a frame with +y at 68° (ENE) and +x at 158°
+    // (SSE, the landward gorge wall); casemate faces: NNW (−x), ENE (+y), WSW (−y).
+    // Audit 2026-11: the gun embrasures were on the landward face.
     b.frame(0, 0, 0, 68, () => {
       const outer: V2[] = [
-        [-30, -46],
-        [30, -46],
-        [30, 40],
-        [0, 48],
-        [-30, 40]
+        [-18.6, -39.6], [-14.3, -39.7], [-6.0, -32.6], [33.0, -45.3], [36.2, -42.5], [21.3, 27.6], [0.9, 34.2], [-1.3, 44.5],
+        [-4.8, 46.7], [-12.4, 45.0], [-14.8, 41.5], [-12.7, 31.3], [-22.3, 22.7], [-23.5, 17.9], [-15.1, -22.1], [-23.3, -29.2], [-23.8, -33.8]
       ];
       const inner: V2[] = [
-        [-18, -30],
-        [18, -30],
-        [18, 30],
-        [-18, 30]
+        [-8.2, -10.3], [-14.1, 17.2], [-5.6, 19.1], [-2.7, 17.5], [-0.6, 20.3], [8.1, 22.3], [10.9, 20.6], [21.4, -28.5],
+        [18.7, -30.8], [6.1, -26.9], [0.5, -20.4], [0.9, -17.8], [-2.1, -17.4]
       ];
       b.color('#8C4A36').prism(outer, 0, 15, {holes: [inner]});
       b.color('#9A968C').prism(outer, 15, 16, {holes: [inner]});
       b.color('#B7A48C').cap(inner, 0.2);
-      // gun embrasure tiers on the bay faces
+      // three tiers of gun embrasures on the water faces
       b.color('#5E3224');
-      for (const z of [3, 7.5, 12]) for (let y = -40; y <= 34; y += 6) b.box(30.2, y, z, 0.4, 1.2, 1.4);
+      const faces: [V2, V2][] = [
+        [[-15.1, -22.1], [-23.5, 17.9]],
+        [[-12.7, 31.3], [-22.3, 22.7]],
+        [[21.3, 27.6], [0.9, 34.2]],
+        [[-6.0, -32.6], [33.0, -45.3]]
+      ];
+      for (const [p0, p1] of faces) {
+        const dx = p1[0] - p0[0];
+        const dy = p1[1] - p0[1];
+        const L = Math.hypot(dx, dy);
+        const brg = (Math.atan2(dx, dy) * 180) / Math.PI;
+        // outward normal = to the right of the walking direction when the ring is clockwise; test both, keep the one away from the parade
+        const nx = dy / L;
+        const ny = -dx / L;
+        const mx = (p0[0] + p1[0]) / 2;
+        const my = (p0[1] + p1[1]) / 2;
+        const out = nx * (mx - 3) + ny * (my + 2) > 0 ? 1 : -1;
+        for (let t = 3; t < L - 2; t += 6) {
+          const x = p0[0] + (dx * t) / L + out * nx * 0.25;
+          const y = p0[1] + (dy * t) / L + out * ny * 0.25;
+          b.frame(x, y, 0, brg, () => {
+            for (const z of [3, 7.5, 12]) b.box(0, 0, z, 0.5, 1.4, 1.4);
+          });
+        }
+      }
     });
     b.color('#2F3437').cylinder(-14, 14, 1.2, 16, 22, 6);
   },
@@ -669,27 +806,33 @@ const missionAdobe: Landmark = {
   kind: 'building',
   built: [1782.5, 1791.5],
   end: 9999,
-  anchor: [-122.426736, 37.764151],
+  // OSM footprint centroid; audit 2026-11: was 6 m east, 17 m wide and on a 90° axis
+  anchor: [-122.426799, 37.764182],
   build: b => {
-    b.frame(0, 0, 0, 90, () => {
-      // facade faces east (+y here) onto Dolores St
-      b.color('#F1EEE6').box(0, 0, 0, 17, 46, 9);
-      b.color('#A0523A').gable(0, 0, 18, 47, 9, 3.2, true);
-      // facade: six engaged columns in two tiers and a bell balcony
+    b.frame(0, 0, 0, 82, () => {
+      // facade faces ENE (+y here) onto Dolores St; nave 11.5 × 46 m (OSM)
+      b.color('#F1EEE6').box(0, 0, 0, 11.5, 46, 7.5);
+      b.color('#A0523A').gable(0, 0, 13.4, 47.4, 7.5, 3.6, true);
+      // facade: six engaged columns in two tiers and the bell balcony
       b.color('#E4DFD3');
-      for (const x of [-6, -3.5, -1.2, 1.2, 3.5, 6]) b.box(x, 23.3, 0, 0.8, 0.7, 10.5);
-      b.color('#F1EEE6').box(0, 23.4, 10, 17, 0.6, 2.4);
-      b.color('#5E4A3A').box(0, 23.9, 6, 7, 1.2, 0.4);
+      for (const x of [-4.6, -2.8, -1, 1, 2.8, 4.6]) b.box(x, 23.3, 0, 0.8, 0.7, 7.8);
+      b.color('#F1EEE6').box(0, 23.4, 7.5, 11.5, 0.6, 2.6);
+      b.color('#5E4A3A').box(0, 23.9, 5.4, 7, 1.2, 0.4);
     });
   },
-  replaces: [rotRect(0, 0, 20, 50, 90)],
+  replaces: [rotRect(0, 0, 15, 50, 82)],
   facts: {
     Founded: 'Oct 9, 1776 (temporary structures nearby)',
     'Adobe church': 'built 1782–1791 — the oldest intact building in San Francisco',
-    Size: '≈ 46 × 17 m'
+    Size: '≈ 46 × 11.5 m (OSM)',
+    Model: 'wall and ridge heights estimated from photos (≈ 7.5 / 11 m)'
   },
   sources: [WIKI + 'Mission_San_Francisco_de_As%C3%ADs']
 };
+// Basilica: cruciform church in a frame with +y at 85° (east, towards Dolores St)
+// and +x at 175° (south, towards the adobe); plan from the OSM footprint:
+// nave 20.7 m wide, transept 27.7 m, crossing dome, twin-towered front 25 m wide.
+// Audit 2026-11: the earlier 33 × 59 m box overlapped the adobe church.
 const missionBasilica: Landmark = {
   id: 'mission_dolores_basilica',
   name: 'Mission Dolores Basilica',
@@ -698,18 +841,39 @@ const missionBasilica: Landmark = {
   end: 9999,
   anchor: [-122.427016, 37.76434],
   build: b => {
-    b.frame(0, 0, 0, 90, () => {
-      b.color('#E8DCC6').box(0, 0, 0, 33, 59, 14);
-      b.color('#B5654A').gable(0, 0, 34, 60, 14, 5, true);
-      for (const x of [-12, 12]) {
-        b.color('#E8DCC6').box(x, 26, 0, 7, 7, 22);
-        b.color('#E8DCC6').box(x, 26, 22, 5, 5, 4);
-        b.color('#B5654A').dome(x, 26, 2.8, 26, 3, 8, 2);
+    const cream = '#E8DCC6';
+    const tile = '#B5654A';
+    b.frame(0, 0, 0, 85, () => {
+      // nave (y 14.5–28.2) and transept/crossing (y −10.9–14.5)
+      b.color(cream).box(-3.15, 21.35, 0, 20.7, 13.7, 14);
+      b.color(tile).gable(-3.15, 21.35, 21.5, 14.2, 14, 4.5, true);
+      b.color(cream).box(-3.25, 1.8, 0, 27.7, 25.4, 14);
+      b.color(tile).gable(-3.25, 1.8, 28.5, 25.9, 14, 4.5, false);
+      // sanctuary block and the apse to the west, sacristy on the south
+      b.color(cream).box(-3.5, -15.95, 0, 27, 10.1, 12);
+      b.color(tile).box(-3.5, -15.95, 12, 27.4, 10.5, 1);
+      b.color(cream).cylinder(-3.6, -21, 5.9, 0, 11, 10);
+      b.color(cream).box(13, -16, 0, 6, 10, 9);
+      // crossing dome on a drum (estimated from photos)
+      b.color(cream).cylinder(-3.4, 1.8, 8.5, 14, 18, 16);
+      b.color(tile).dome(-3.4, 1.8, 8.5, 18, 6, 16, 4);
+      b.color('#6FA58E').cylinder(-3.4, 1.8, 1.4, 24, 26, 6);
+      // Churrigueresque front and twin bell towers (≈ 28 m, estimated from photo)
+      b.color(cream).box(-2.95, 31.55, 0, 24.9, 6.7, 17);
+      for (const x of [-12.2, 6.3]) {
+        b.color(cream).box(x, 31.5, 17, 6.4, 6.4, 2.5).box(x, 31.5, 19.5, 5.2, 5.2, 5);
+        b.color('#6FA58E').dome(x, 31.5, 2.5, 24.5, 3, 8, 2);
+        b.color('#C9A43A').cylinder(x, 31.5, 0.2, 27.5, 28.8, 4);
       }
     });
   },
-  replaces: [rotRect(0, 0, 36, 62, 90)],
-  facts: {Cornerstone: '1913', Dedicated: 'Christmas 1918; Churrigueresque remodel 1926; basilica since 1952', Replaced: 'the 1876 Gothic parish church destroyed in 1906'},
+  replaces: [rotRect(-0.3, -3, 36, 62, 85)],
+  facts: {
+    Cornerstone: '1913',
+    Dedicated: 'Christmas 1918; Churrigueresque remodel 1926; basilica since 1952',
+    Replaced: 'the 1876 Gothic parish church destroyed in 1906',
+    Model: 'plan from OSM; tower, dome and roof heights estimated from photos'
+  },
   sources: [WIKI + 'Mission_San_Francisco_de_As%C3%ADs']
 };
 
@@ -761,13 +925,21 @@ const cliff1909: Landmark = {
   end: 9999,
   anchor: CLIFF,
   build: b => {
-    b.frame(0, 0, 0, 155, () => {
-      b.color('#F1EFEA').box(0, 0, 0, 32, 71, 10);
-      b.color('#DCD8CF').box(-4, -10, 10, 22, 30, 3);
+    // the 1909 block only: south part of today's OSM footprint (frame +y at 335°, +x at 65°);
+    // the 2004 Sutro wing to the north is a separate landmark (batch3)
+    b.frame(0, 0, 0, 335, () => {
+      b.color('#F1EFEA').box(-0.9, -16.9, 0, 22.2, 26.6, 12);
+      b.color('#E4E0D6').box(-0.9, -16.9, 12, 21.4, 25.8, 0.8);
+      b.color('#F1EFEA').box(7, -33.85, 0, 13.2, 7.3, 4); // south terrace wing
     });
   },
   replaces: [rotRect(0, 0, 36, 75, 155)],
-  facts: {Built: '1909 (Reid & Reid), neoclassical concrete', Restored: '2003–04 toward its 1909 look', Restaurant: 'closed Dec 2020'},
+  facts: {
+    Built: '1909 (Reid & Reid), neoclassical concrete',
+    Restored: '2003–04 toward its 1909 look',
+    Restaurant: 'closed Dec 2020',
+    Model: 'block from the OSM footprint (audit 2026-11: was a 32 × 71 m box over the cliff edge); height from photo'
+  },
   sources: [WIKI + 'Cliff_House,_San_Francisco']
 };
 const sutroBaths: Landmark = {
@@ -778,19 +950,28 @@ const sutroBaths: Landmark = {
   end: 1966.45,
   anchor: [-122.514124, 37.780156],
   build: b => {
-    b.frame(0, 0, 0, 160, () => {
+    // audit 2026-11: the hall stood east of the surviving seawall (the anchor
+    // lies on it), long axis ≈ N–S along the cove — not on a 160° axis
+    // straddling the rocks. Ruins traced on the orthophoto.
+    b.frame(38, 0, 0, -2, () => {
       b.color('#D8D4CA').box(0, 0, 0, 75, 150, 4);
       // parallel gabled glass roofs over the pools
       for (let x = -30; x <= 30; x += 15) {
         b.color('#F2F1EC').box(x, 0, 4, 1.2, 150, 9);
-        b.color('#B9CBD4').gable(x + 7.5, 0, 15, 150, 13, 5, true);
+        if (x < 30) b.color('#B9CBD4').gable(x + 7.5, 0, 15, 150, 13, 5, true);
       }
-      // Greek-temple entrance pavilion up the slope
-      b.color('#EDE9DF').box(0, 92, 0, 22, 14, 10);
-      b.color('#B5B0A5').gable(0, 92, 23, 15, 10, 3, false);
+    });
+    // Greek-temple entrance pavilion up the slope on Point Lobos Ave (position estimated)
+    b.frame(90, -70, 0, 270, () => {
+      b.color('#EDE9DF').box(0, 0, 0, 22, 14, 10);
+      b.color('#B5B0A5').gable(0, 0, 23, 15, 10, 3, false);
     });
   },
-  facts: {Opened: 'Mar 14, 1896 — the world’s largest indoor swimming establishment (7 pools)', Fate: 'burned June 1966; ruins remain', Model: 'glass-hall size estimated (~150 × 75 m)'},
+  facts: {
+    Opened: 'Mar 14, 1896 — the world’s largest indoor swimming establishment (7 pools)',
+    Fate: 'burned June 1966; ruins remain',
+    Model: 'hall ≈ 152 × 77 m (499.5 × 254 ft, commonly cited) placed on the ruins; roof form from photos; entrance position estimated'
+  },
   sources: [WIKI + 'Sutro_Baths']
 };
 
@@ -847,29 +1028,43 @@ const conservatory: Landmark = {
   end: 9999,
   anchor: [-122.460184, 37.77259],
   build: b => {
+    // plan from the OSM footprint in a −6° frame centred on the dome (audit 2026-11):
+    // the end pavilions are N–S wings 11.4 × 24.3 m projecting south, not small boxes
     const white = '#F6F5F0';
-    // central domed pavilion + two barrel-vault wings ending in pavilions, 73 m long
-    b.color(white).prism(circle(0, 0, 9, 12), 0, 7);
-    b.color('#E9EEF0').dome(0, 0, 9, 7, 11, 16, 5);
-    b.color(white).cylinder(0, 0, 1.8, 18, 21, 8);
-    for (const sx of [-1, 1]) {
-      b.color(white).box(sx * 20, 0, 0, 22, 12, 5);
-      const n = 8;
-      for (let i = 0; i < n; i++) {
-        const a0 = (i / n) * Math.PI;
-        const a1 = ((i + 1) / n) * Math.PI;
-        const y0 = -Math.cos(a0) * 6;
-        const y1 = -Math.cos(a1) * 6;
-        const z0 = 5 + Math.sin(a0) * 4;
-        const z1 = 5 + Math.sin(a1) * 4;
-        b.color('#E6ECEE').quad([sx * 9, y0, z0], [sx * 31, y0, z0], [sx * 31, y1, z1], [sx * 9, y1, z1]);
+    b.frame(-3.87, 2.41, 0, -6, () => {
+      b.color(white).prism(circle(0, 0, 9, 12), 0, 7);
+      b.color('#E9EEF0').dome(0, 0, 9, 7, 11, 16, 5);
+      b.color(white).cylinder(0, 0, 1.8, 18, 21, 8);
+      for (const sx of [-1, 1]) {
+        // barrel-vaulted wing
+        b.color(white).box(sx * 17.4, 0.2, 0, 17, 11, 5);
+        const n = 8;
+        for (let i = 0; i < n; i++) {
+          const a0 = (i / n) * Math.PI;
+          const a1 = ((i + 1) / n) * Math.PI;
+          const y0 = 0.2 - Math.cos(a0) * 5.5;
+          const y1 = 0.2 - Math.cos(a1) * 5.5;
+          const z0 = 5 + Math.sin(a0) * 4;
+          const z1 = 5 + Math.sin(a1) * 4;
+          b.color('#E6ECEE').quad([sx * 8.9, y0, z0], [sx * 25.9, y0, z0], [sx * 25.9, y1, z1], [sx * 8.9, y1, z1]);
+        }
+        // end pavilion
+        b.color(white).box(sx * 31.4, -3.55, 0, 11.4, 24.3, 7);
+        b.color('#E6ECEE').hip(sx * 31.4, -3.55, 11.4, 24.3, 7, 4.5);
       }
-      b.color(white).box(sx * 34, 0, 0, 8, 14, 8);
-      b.color('#E6ECEE').pyramid(rect(sx * 34, 0, 8, 14), 8, [sx * 34, 0, 11]);
-    }
+      // entrance vestibule on the south side of the dome
+      b.color(white).box(0.2, -12.8, 0, 7.8, 8.6, 6);
+      b.color('#E6ECEE').gable(0.2, -12.8, 8.2, 9, 6, 2.5, true);
+    });
   },
   replaces: [rect(0, 0, 76, 36)],
-  facts: {Opened: 'Apr 1879 — oldest building in Golden Gate Park', 'Dome': 'burned 1883 and rebuilt taller', Restored: 'reopened 2003', Size: '73 m long, dome ≈ 18 m'},
+  facts: {
+    Opened: 'Apr 1879 — oldest building in Golden Gate Park',
+    Dome: 'burned 1883 and rebuilt taller',
+    Restored: 'reopened 2003',
+    Size: '74 m long (OSM), dome ≈ 18 m',
+    Model: 'plan from OSM; vault and roof heights estimated from photos'
+  },
   sources: [WIKI + 'Conservatory_of_Flowers']
 };
 
@@ -896,7 +1091,7 @@ const dutchWindmill: Landmark = {
   kind: 'building',
   built: [1902.5, 1903.5],
   end: 9999,
-  anchor: [-122.509403, 37.770732],
+  anchor: [-122.509406, 37.770441], // OSM footprint centroid (audit 2026-11: was 32 m north)
   build: b => b.frame(0, 0, 0, 90, () => windmill(b, '#7A5A44')),
   replaces: [circle(0, 0, 10, 8)],
   facts: {Completed: '1903 — pumped groundwater to irrigate the park', Restored: '1981', Model: 'height estimated from photos (~22 m to cap, ~30 m sail tip)'},
@@ -922,16 +1117,20 @@ const templeOfMusic: Landmark = {
   end: 9999,
   anchor: [-122.4686, 37.769872],
   build: b => {
-    b.frame(0, 0, 0, 228, () => {
-      // faces NE across the concourse; +y = toward the audience
-      b.color('#D9CDB4').box(0, -6, 0, 26, 10, 21);
-      b.color('#CBBE9F');
-      b.loft([circle(0, -1, 9, 10).filter(([, y]) => y >= -1).concat([[-9, -1]]), circle(0, -1, 2, 10).filter(([, y]) => y >= -1).concat([[-2, -1]])], [4, 19], {top: false});
-      for (const sx of [-1, 1]) {
-        b.color('#D9CDB4').box(sx * 20, -4, 0, 14, 6, 9);
-        for (let x = 14; x <= 26; x += 3) b.cylinder(sx * x, 0, 0.5, 0, 8, 6);
-      }
-    });
+    // faces NE (48°) across the Music Concourse; +y = toward the audience. Plan from
+    // the OSM footprint: shell block 18 m wide (x −9…9, y −11.6…8.5), colonnade
+    // wings to ±27 m. Audit 2026-11: the earlier frame (228°) faced it backwards.
+    b.frame(0, 0, 0, 48, () =>
+      b.frame(2.25, 0, 0, 0, () => {
+        b.color('#D9CDB4').box(0, -6.3, 0, 18, 10.6, 21);
+        b.color('#CBBE9F');
+        b.loft([circle(0, -1, 8.6, 10).filter(([, y]) => y >= -1).concat([[-8.6, -1]]), circle(0, -1, 2, 10).filter(([, y]) => y >= -1).concat([[-2, -1]])], [4, 19], {top: false});
+        for (const sx of [-1, 1]) {
+          b.color('#D9CDB4').box(sx * 18.2, 2.3, 0, 18.6, 6.6, 9);
+          for (let x = 10.5; x <= 27; x += 3.3) b.cylinder(sx * x, 6, 0.5, 0, 8, 6);
+        }
+      })
+    );
   },
   replaces: [rect(0, 0, 50, 30)],
   facts: {Dedicated: 'Sep 9, 1900 (Claus Spreckels)', Shell: '21 m (70 ft), Colusa sandstone'},
@@ -954,20 +1153,28 @@ const deYoung2005: Landmark = {
       ] as [number, number][])
         b.frame(x, 0, 0, skew, () => b.color(copper).box(0, 0, 0, 20, 140, 13));
       b.color('#5F4230').box(0, 0, 13, 76, 154, 1.2);
-      // Hamon tower: twists as it rises to 43.9 m
+      // Hamon tower over the NW side of the NE end (OSM, audit 2026-11: was on the SE side).
+      // Floor plates ≈ 30 × 10 m, long axis across the museum (138°) at the roof,
+      // turning clockwise ~1.3°/m (OSM plates at 18/23/28 m) to ≈ 180° at the top.
       const tw: V2[][] = [];
       const zs: number[] = [];
       for (let k = 0; k <= 4; k++) {
-        const a = ((k / 4) * 18 * Math.PI) / 180;
-        const r = rect(0, 0, 16, 26).map(([x, y]) => [x * Math.cos(a) - y * Math.sin(a) + 26, x * Math.sin(a) + y * Math.cos(a) + 62] as V2);
+        const a = ((-(k / 4) * 42) * Math.PI) / 180;
+        const r = rect(0, 0, 30, 10).map(([x, y]) => [x * Math.cos(a) - y * Math.sin(a) - 23, x * Math.sin(a) + y * Math.cos(a) + 54] as V2);
         tw.push(r);
-        zs.push(14 + (k / 4) * 29.9);
+        zs.push(13 + (k / 4) * 30.9);
       }
       b.color('#704D36').loft(tw, zs, {top: true});
+      b.color('#2E3438').loft([tw[4], tw[4]], [41, 41.6], {top: false}); // glazed observation floor band
     });
   },
   replaces: [rotRect(0, 0, 80, 160, 48)],
-  facts: {Opened: 'Oct 15, 2005 (Herzog & de Meuron)', 'Hamon tower': '43.9 m (144 ft), twisting to align with the street grid', Cladding: 'perforated copper', Model: 'tower twist angle estimated'},
+  facts: {
+    Opened: 'Oct 15, 2005 (Herzog & de Meuron)',
+    'Hamon tower': '43.9 m (144 ft), twisting to align with the street grid',
+    Cladding: 'perforated copper',
+    Model: 'tower position and lower floor plates from OSM; total twist (≈ 42°) extrapolated'
+  },
   sources: [WIKI + 'De_Young_Museum']
 };
 const deYoung1919: Landmark = {

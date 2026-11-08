@@ -1,0 +1,40 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Steiner St,Pacific Ave,NW corner. Based on the coverage of the Sanborn 1886-87 edition (vol. 3 1887 key map = Mission/SoMa west of 8th; vol. 5 1886 = outer districts); Western Addition built to about Steiner by the late 1880s (Japantown context statement),https://archives.sfplanning.org/documents/1696-Japantown_Context_Statement_REVISED_5-11.pdf
+core,2,Van Ness Ave,Pacific Ave,,https://www.loc.gov/item/sanborn00813_004/
+core,3,Van Ness Ave,Bay St,Black Point (Fort Mason) to the west is military reserve,https://www.loc.gov/item/sanborn00813_004/
+core,4,Kearny St,Bay St,,https://www.loc.gov/item/sanborn00813_004/
+core,5,The Embarcadero,Lombard St,,https://www.loc.gov/item/sanborn00813_004/
+core,6,The Embarcadero,Townsend St,,https://www.loc.gov/item/sanborn00813_004/
+core,7,7th St,Townsend St,,https://www.loc.gov/item/sanborn00813_004/
+core,8,Potrero Ave,16th St,Vol. 3 covers east to Potrero Ave,https://www.loc.gov/item/sanborn00813_004/
+core,9,Potrero Ave,25th St,,https://www.loc.gov/item/sanborn00813_004/
+core,10,Dolores St,26th St,Vol. 3 key: Mission covered south to ~26th St between Dolores and Potrero,https://www.loc.gov/item/sanborn00813_004/
+core,11,Dolores St,18th St,,https://www.loc.gov/item/sanborn00813_004/
+core,12,Castro St,18th St,Eureka Valley partly covered by vol. 5 (sheets 124-127),https://www.loc.gov/item/sanborn00813_007/
+core,13,Castro St,Market St,,https://www.loc.gov/item/sanborn00813_007/
+core,14,Steiner St,Haight St,,https://archives.sfplanning.org/documents/1696-Japantown_Context_Statement_REVISED_5-11.pdf
+noe_valley,1,Dolores St,22nd St,"Noe Valley / upper Mission blocks covered by Sanborn 1886 vol. 5 (sheets 128-137); partial, scattered houses; LOW-MEDIUM",https://www.loc.gov/item/sanborn00813_007/
+noe_valley,2,Dolores St,26th St,,https://www.loc.gov/item/sanborn00813_007/
+noe_valley,3,Castro St,26th St,,https://www.loc.gov/item/sanborn00813_007/
+noe_valley,4,Castro St,22nd St,,https://www.loc.gov/item/sanborn00813_007/
+bernal_precita,1,Mission St,Cesar Chavez St,Upper Mission / Precita & Mission St to ~Crescent covered by Sanborn 1886 vol. 5 (sheets 138-142); 1886 Army St,https://www.loc.gov/item/sanborn00813_007/
+bernal_precita,2,Folsom St,Precita Ave,,https://www.loc.gov/item/sanborn00813_007/
+bernal_precita,3,Folsom St,Cortland Ave,,https://www.loc.gov/item/sanborn00813_007/
+bernal_precita,4,Mission St,Cortland Ave,,https://www.loc.gov/item/sanborn00813_007/
+potrero_point,1,3rd St,18th St,"Potrero Point / Irish Hill (Pacific Rolling Mills, Union Iron Works from 1883-84): Sanborn 1886 vol. 5 sheets 144/155",https://www.loc.gov/item/sanborn00813_007/
+potrero_point,2,Illinois St,18th St,,https://www.loc.gov/item/sanborn00813_007/
+potrero_point,3,Illinois St,23rd St,,https://www.loc.gov/item/sanborn00813_007/
+potrero_point,4,3rd St,23rd St,,https://www.loc.gov/item/sanborn00813_007/
+butchertown,1,3rd St,Arthur Ave,"Butchertown: Sanborn 1886 vol. 5 sheets 145-152 (""South San Francisco"")",https://www.loc.gov/item/sanborn00813_007/
+butchertown,2,Quint St,Arthur Ave,,https://www.loc.gov/item/sanborn00813_007/
+butchertown,3,Rankin St,Davidson Ave,,https://www.loc.gov/item/sanborn00813_007/
+butchertown,4,Rankin St,Evans Ave,,https://www.loc.gov/item/sanborn00813_007/
+butchertown,5,3rd St,Evans Ave,,https://www.loc.gov/item/sanborn00813_007/
+south_sf_oakdale,1,3rd St,Newcomb Ave,Bayview 3rd & Oakdale cluster (BVHP context; Sanborn 1886 vol. 5 sheets 147-151),https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,2,Phelps St,Newcomb Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,3,Phelps St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+south_sf_oakdale,4,3rd St,Palou Ave,,https://timkelleyconsulting.com/BVHP_Context.pdf
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post, NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9

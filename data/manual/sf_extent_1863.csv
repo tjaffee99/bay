@@ -1,0 +1,22 @@
+ring,seq,street_a,street_b,note,source_url
+core,1,Larkin St,Union St,NW corner. INTERPOLATED between the 1857/59 and 1869 Coast Survey maps (no dated 1863 survey used); old city limit at Larkin,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,2,Larkin St,Chestnut St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,3,Powell St,Chestnut St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,4,Powell St,Bay St,North Beach waterfront industry,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,5,Kearny St,Bay St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,6,The Embarcadero,Lombard St,Telegraph Hill east base / waterfront,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,7,The Embarcadero,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,8,The Embarcadero,Harrison St,Rincon Point,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,9,2nd St,Townsend St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,10,4th St,Bryant St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,11,7th St,Folsom St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,12,8th St,Mission St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+core,13,Larkin St,Market St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_dolores,1,Dolores St,14th St,Mission Dolores / 16th St settlement (interpolated 1857-1869),https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_dolores,2,South Van Ness Ave,14th St,1863 Howard St,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_dolores,3,South Van Ness Ave,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+mission_dolores,4,Dolores St,17th St,,https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2214~190053
+presidio_post,1,Funston Ave,Moraga Ave,"@37.79830,-122.45980 Presidio main post; brick/frame officers quarters 1862 (Bldgs 5-16) along Funston Ave, NW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,2,Funston Ave,Moraga Ave,"@37.79830,-122.45820 Presidio main post, NE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,3,Funston Ave,Moraga Ave,"@37.79700,-122.45820 Presidio main post, SE corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
+presidio_post,4,Funston Ave,Moraga Ave,"@37.79700,-122.45980 Presidio main post, SW corner (approx.)",https://npgallery.nps.gov/GetAsset/df170ac0-9c4f-463e-bff0-87fb950887f9
