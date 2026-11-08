@@ -61,7 +61,8 @@ OUT_DIR = MANUAL / "farmsteads"
 
 TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
 LINE_BAND = 0.10        # mm: a line passing this close to a blob's centre runs through it
-DETECTOR_VERSION = 3
+DETECTOR_VERSION = 6
+EARLY_COMPATIBLE = set()   # versions whose early-sheet results are still valid
 
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
 # selected when their footprint overlaps one of these boxes.
@@ -512,10 +513,16 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
     k_out = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * int(round(0.45 * ppm)) + 1,) * 2)
     sqfill = np.zeros((H, W), np.uint8)       # accepted open squares, filled
     opens = []
+    # all small holes: a letter like B, 8, g has two counters side by side
+    hsel = np.nonzero((ost[:, 4] >= 0.015 * ppm ** 2) & (ost[:, 4] <= 2.0 * ppm ** 2))[0]
+    hsel = hsel[hsel > 0]
+    htree = cKDTree(ocen[hsel]) if len(hsel) else None
     for i in range(1, no):
         x, y, w, h, a = ost[i]
         if not (0.07 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.25 * ppm:
             continue
+        if htree is not None and len(htree.query_ball_point(ocen[i], 0.55 * ppm)) > 1:
+            continue                          # a second counter next to it: 8, a letter
         pad = int(0.5 * ppm) + 2
         y0, y1, x0, x1 = max(y - pad, 0), min(y + h + pad, H), max(x - pad, 0), min(x + w + pad, W)
         hole = (olab[y0:y1, x0:x1] == i).astype(np.uint8)
@@ -544,6 +551,29 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
         fc = max(fc, key=cv2.contourArea)
         if len(cv2.approxPolyDP(fc, 0.06 * cv2.arcLength(fc, True), True)) != 4:
             continue
+        # the outline's own ink: a barn outline holds one hole; a letter (B, R, P, 8, 9 …)
+        # or digit with this counter holds more than one
+        pad2 = int(1.5 * ppm)
+        z0, z1, w0_, w1_ = max(y - pad2, 0), min(y + h + pad2, H), max(x - pad2, 0), min(x + w + pad2, W)
+        zi = inkc[z0:z1, w0_:w1_]
+        _, zl = cv2.connectedComponents(zi, connectivity=8)
+        ring_lab = np.bincount(zl[(cv2.dilate((olab[z0:z1, w0_:w1_] == i).astype(np.uint8), k_in) > 0) & (zi > 0)]).argmax() \
+            if ((olab[z0:z1, w0_:w1_] == i).any()) else 0
+        if ring_lab > 0:
+            cm = (zl == ring_lab).astype(np.uint8)
+            hc, hh_ = cv2.findContours(cm, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+            nh = 0
+            if hh_ is not None:
+                for q_, hq in enumerate(hh_[0]):
+                    if hq[3] < 0:
+                        continue
+                    ha_ = cv2.contourArea(hc[q_])
+                    bx_, by_, bw_, bh_ = cv2.boundingRect(hc[q_])
+                    if ha_ >= 0.015 * ppm ** 2 and max(bw_, bh_) < 3 * max(min(bw_, bh_), 1) and \
+                            math.hypot(bx_ + bw_ / 2 + w0_ - ocen[i][0], by_ + bh_ / 2 + z0 - ocen[i][1]) < 1.5 * ppm:
+                        nh += 1
+            if nh >= 2:
+                continue
         sqfill[y0:y1, x0:x1] |= filled.astype(np.uint8)
         fa = int(filled.sum())
         opens.append({"oi": i, "x": float(ocen[i][0]), "y": float(ocen[i][1]), "area_mm2": fa / ppm ** 2,
@@ -721,6 +751,10 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
             qm = cl[qy:qy + qh, qx:qx + qw] == q
             if (qm & symw[qy:qy + qh, qx:qx + qw]).sum() > 0.5 * qa:
                 continue                      # another building symbol
+            qc, _ = cv2.findContours(qm.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            rw_, rh_ = cv2.minAreaRect(np.concatenate(qc))[1]
+            if min(rw_, rh_) < 0.28 * ppm or max(rw_, rh_) > 4 * min(rw_, rh_):
+                continue                      # dashes of dashed roads / trails (also in pairs)
             letters += 1
         wr = int(round(0.6 * ppm))
         wwin = waterw[max(cy - y0 - wr, 0):cy - y0 + wr + 1, max(cx - x0 - wr, 0):cx - x0 + wr + 1]
@@ -850,7 +884,7 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
             reasons.append("glyph2")          # isolated glyph: other dark strokes around it
         if r["holes"] >= 1:
             reasons.append("counter")         # a letter with a counter (a, e, o, R …)
-        if r["letters_near"] >= 2 or (r["open"] and r["letters_near"] >= 1 and r["elong"] > 1.25):
+        if r["letters_near"] >= 2 or (r["open"] and r["letters_near"] >= 1 and r["elong"] > 1.2):
             reasons.append("text")
         if r["water"] > 0.06:
             reasons.append("water")
@@ -862,13 +896,25 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
                                                 min(int(r["x"]) // 4, urban_px[0].shape[1] - 1)]:
             reasons.append("urban")           # red urban tint: only landmark buildings shown
         r["reject"] = reasons
+        r["s_tmp"] = None
         s_area = math.exp(-abs(math.log(r["area_mm2"] / (a_typ_open if r["open"] else a_typ))) / 0.8)
         s_shape = max(0.0, min(1.0, (2.6 - r["elong"]) / 1.2)) * max(0.0, min(1.0, (r["solidity"] - 0.78) / 0.12)) \
             * max(0.0, min(1.0, (r["rect_fill"] - 0.58) / 0.15))
         s_dark = min(1.0, max(0.0, (0.45 * paper - r["dark"]) / (0.25 * paper)))
         s_ctx = 1.0 - 0.25 * min(r["letters_near"], 1)
         r["score"] = float(max(0.0, min(1.0, 0.3 * s_area + 0.4 * s_shape + 0.2 * s_dark + 0.1)) * s_ctx)
-        if not reasons:
+    # lettering leaves a trail of rejected letter pieces: a kept blob with two or more of
+    # them within 1.5 mm is part of a word too (road knots / hachures don't count)
+    from scipy.spatial import cKDTree
+    LETTERY = {"glyph", "glyph2", "counter", "text", "bigtext", "stroke", "triangle", "shape", "elongated"}
+    lp_ = [r for r in allr if LETTERY & set(r["reject"])]
+    ltree = cKDTree([[r["x"], r["y"]] for r in lp_]) if lp_ else None
+    for r in allr:
+        r.pop("s_tmp", None)
+        if not r["reject"] and ltree is not None:
+            if len(ltree.query_ball_point([r["x"], r["y"]], 1.5 * ppm)) >= 2:
+                r["reject"].append("nearletters")
+        if not r["reject"]:
             keep.append(r)
     stats = {"paper": paper, "ink_t": ink_t, "a_min_mm2": a_min, "a_typ_mm2": a_typ,
              "n_candidates": len(allr), "n_open_candidates": sum(1 for r in allr if r["open"]),
@@ -1056,23 +1102,34 @@ def road_alignment(res, ink_small):
     A = np.array(rows)
     xc, yc = A[:, 0].mean(), A[:, 1].mean()
     X = np.column_stack([np.ones(len(A)), (A[:, 0] - xc) / 1000, (A[:, 1] - yc) / 1000])
-    use = np.ones(len(A), bool)
-    affine = len(A) >= 8
+    # consensus: the shift most windows agree with (within tol), weighted by correlation;
+    # windows locked onto the wrong road of the grid or onto changed roads drop out
+    tol = 45.0 if res.get("edition") == "early" else 15.0
+    best_w, best_use = -1, None
+    for k in range(len(A)):
+        inl = np.hypot(A[:, 2] - A[k, 2], A[:, 3] - A[k, 3]) <= 2 * tol
+        w = A[inl, 4].sum()
+        if w > best_w:
+            best_w, best_use = w, inl
+    use = best_use
+    if use.sum() < 4 or use.sum() < 0.35 * len(A):
+        return {"aligned": False, "reason": f"no consensus ({int(use.sum())} of {len(A)} windows)", "n_windows": len(A)}
+    affine = False
+    cx_ = np.array([np.median(A[use, 2]), 0, 0]); cy_ = np.array([np.median(A[use, 3]), 0, 0])
     for _ in range(5):
-        if affine and use.sum() >= 8:
-            cx_, *_ = np.linalg.lstsq(X[use], A[use, 2], rcond=None)
-            cy_, *_ = np.linalg.lstsq(X[use], A[use, 3], rcond=None)
-        else:
-            affine = False
-            cx_ = np.array([np.median(A[use, 2]), 0, 0]); cy_ = np.array([np.median(A[use, 3]), 0, 0])
+        if use.sum() >= 8 and np.ptp(A[use, 0]) > 4000 and np.ptp(A[use, 1]) > 4000:
+            cxa, *_ = np.linalg.lstsq(X[use], A[use, 2], rcond=None)
+            cya, *_ = np.linalg.lstsq(X[use], A[use, 3], rcond=None)
+            # an affine model must not move any part of the sheet by much more than the windows did
+            corners = np.array([[1, -6, -7], [1, 6, -7], [1, -6, 7], [1, 6, 7]])
+            if np.abs(corners @ cxa).max() < 400 and np.abs(corners @ cya).max() < 400:
+                cx_, cy_, affine = cxa, cya, True
         resid = np.hypot(A[:, 2] - X @ cx_, A[:, 3] - X @ cy_)
-        mad = np.median(resid[use]) * 1.4826
-        new = resid <= max(3 * mad, 25.0)
-        if (new == use).all():
+        new = resid <= tol
+        if (new == use).all() or new.sum() < 4:
             break
         use = new
-    if use.sum() < 3:
-        return {"aligned": False, "reason": "no consistent shift", "n_windows": len(rows)}
+    resid = np.hypot(A[:, 2] - X @ cx_, A[:, 3] - X @ cy_)
     rms = float(np.sqrt(np.mean(resid[use] ** 2)))
     shift = np.hypot(X[use] @ cx_, X[use] @ cy_)
     return {"aligned": True, "model": "affine" if affine else "constant", "xc_m": float(xc), "yc_m": float(yc),
@@ -1151,7 +1208,8 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
     if out.exists():
         res = json.loads(out.read_text())
-        if res.get("detector_version") == DETECTOR_VERSION:
+        if res.get("detector_version") == DETECTOR_VERSION or (
+                m.get("edition") == "early" and res.get("detector_version") in EARLY_COMPATIBLE):
             if want_orchards and res.get("orchard_version") != ORCHARD_VERSION:
                 download_file(m["pdf_url"], pdf)
                 res["orchard_px"] = extract_orchards(GeoPDF(pdf))
@@ -1320,7 +1378,8 @@ def export():
     from shapely.geometry import Polygon, mapping
     from shapely.ops import unary_union
     sheets = [json.loads(p.read_text()) for p in sorted(MAP_CACHE.glob("*.json"))]
-    sheets = [r for r in sheets if r.get("detector_version") == DETECTOR_VERSION]
+    sheets = [r for r in sheets if r.get("detector_version") == DETECTOR_VERSION
+              or (r.get("edition") == "early" and r.get("detector_version") in EARLY_COMPATIBLE)]
     polys = {r["id"]: Polygon(r["neatline"]) for r in sheets}
     feats, towns, cov = [], [], []
     for r in sheets:
@@ -1392,7 +1451,7 @@ def export():
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", nargs="?", default="all", choices=["all", "list", "process", "export"])
+    ap.add_argument("cmd", nargs="?", default="all", choices=["all", "list", "process", "realign", "export"])
     ap.add_argument("--area", action="append", help=f"farming district(s): {', '.join(AREAS)} (default: all)")
     ap.add_argument("--keep", action="store_true", help="keep the downloaded PDFs")
     ap.add_argument("--debug", type=int, default=0, help="overlay crops per sheet in data/interim/topo/debug")
@@ -1420,7 +1479,16 @@ def main():
                     f"(corner error {res.get('corner_error_m')} m)")
             except Exception as e:          # one bad scan must not stop the batch
                 log(f"[{k + 1}/{len(maps)}] {m['quad']} {m['edition_year']} FAILED: {e!r}")
-    if a.cmd in ("all", "export"):
+    if a.cmd == "realign":
+        # recompute the road alignment and every coordinate from the cached pixel positions
+        for pth in sorted(MAP_CACHE.glob("*.json")):
+            res = json.loads(pth.read_text())
+            georeference(res)
+            pth.write_text(json.dumps(res))
+            al = res.get("align") or {}
+            log(f"{res['quad']} {res['edition_year']}: shift {al.get('median_shift_m')} m, RMS {al.get('rms_m')} m "
+                f"({al.get('n_used')}/{al.get('n_windows')} windows){'' if al.get('aligned') else ' not aligned'}")
+    if a.cmd in ("all", "export", "realign"):
         export()
 
 

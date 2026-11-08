@@ -66,12 +66,15 @@ Orchard properties: `kind` (`orchard` | `vineyard`), `map_year`, `edition_year`,
 6. **Alignment to today's ground.** The early surveys are not on modern control: cross-
    correlating each sheet's black ink with today's road centrelines (OpenStreetMap via
    Overture, `roads_region.parquet`) in 2.5 km windows (± 450 m search for early sheets, ±
-   150 m for late ones), with a robust affine fit over the window shifts, shows the
-   1885–1895 surveys about **150–230 m** off (residual RMS 35–50 m after the fit) and the
-   1915 surveys ~35 m; the 1:24,000 sheets of 1947–56 agree with today's roads to ~5 m
-   (not corrected unless the fitted shift exceeds 10 m). The fitted correction is applied
-   to every symbol, town and orchard outline and to the coverage polygon of the sheet
-   (`align` in the per-sheet cache: model, windows used, RMS).
+   150 m for late ones; ambiguous peaks dropped) and fitting the window shifts by
+   consensus (the shift most windows agree with within 45 m / 15 m, then an affine model
+   over those windows, bounded) shows the 1885–1899 surveys about **190–240 m** off, the
+   1904–1916 surveys 35–110 m, with an inlier RMS of 12–28 m after the fit; the 1:24,000
+   sheets of 1947–56 agree with today's roads to 3–15 m (corrected only when the fitted
+   shift exceeds 10 m). The correction is applied to every symbol, town and orchard
+   outline and to the coverage polygon of the sheet (`align` in the per-sheet cache:
+   model, windows used, RMS). Sheets with too few roads (hill quadrangles) stay as
+   published.
 7. **Orchards / vineyards** (1939–1956 sheets, at 1/3 resolution): orchard = regular
    pattern of round green dots ~1 mm across (density of dot-shaped green components over
    3 mm); vineyard = green tint carrying a screen of white lines ~0.9 mm apart (horizontal
@@ -83,20 +86,27 @@ Orchard properties: `kind` (`orchard` | `vineyard`), `map_year`, `edition_year`,
 Precision was checked by eye on contact sheets of random detections (rural areas, after
 the town filter) and on overlay crops (`data/interim/topo/debug/`):
 
-* 1899 San Jose sheet (1895 survey), 96 random detections of an earlier detector version,
-  re-scored with the final rules: **precision 0.97** (2 false of 63 kept; remaining false
-  positives: a hachure stroke, a short heavy line), recall relative to the earlier version
-  0.90 (houses touching a road at a junction and touching rows of houses are given up).
-* 1953 San Jose East (1:24,000): solid symbols **~0.99** (96 sampled: all buildings; three
-  were long sheds / a school drawn as solid bars), open squares **~0.98** after the
-  four-corner test (the five false of 48 sampled before it were digit / letter counters).
+* 1899 San Jose sheet (1895 survey): 96 random rural detections of the final detector —
+  86 clearly buildings, 5 clearly not (a road crossing, a T-junction, two hachure strokes,
+  a triangulation station corner), 5 ambiguous (blob where a road meets a building):
+  **precision 0.90–0.95**. An independent earlier sample of 96, re-scored with the final
+  rules: 0.97 (61 of 63 kept are buildings).
+* Overlay crops of other early sheets (Petaluma 1914, Byron 1916, Pleasanton 1906, Palo
+  Alto 1897, Morgan Hill 1917): ~0.9–0.98 per crop; the misses there are pieces of
+  medium-size serif place names ("Byron", "Marin School") and hachures.
+* 1953 San Jose East (1:24,000): solid symbols **0.98** (47 of 48 random detections are
+  buildings — long sheds and schools are drawn as solid bars too; one well dot), open
+  squares **~0.92** (36 of 39: the misses are the counters of O / 9 in road and place
+  names; B / 8 / R counters are excluded by the two-counter test).
 * Recall is lower than precision by design: on the 15' sheets roughly 70–85 % of the
   rural building symbols are found (missed: symbols touching road junctions, rows of
   touching symbols, symbols on contour-dense slopes, symbols inside or touching lettering);
   on the 1:24,000 sheets ~90 %.
 * Farmstead points inherit the symbol position: on the 1:24,000 sheets ~5–10 m from the
-  true position (map accuracy standard: 12 m), on the early 15' sheets ~35–50 m RMS after
-  the road alignment (symbols themselves are ~25 m across on the ground at 1:62,500).
+  true position (map accuracy standard: 12 m), on the early 15' sheets ~15–30 m RMS after
+  the road alignment, more where the old survey was locally distorted (symbols themselves
+  are ~25 m across on the ground at 1:62,500). Unaligned sheets (`align.aligned = false`
+  in the cache; marked "not aligned" in the table below) are hill sheets of 1947–56.
 
 ## Known failure modes
 
