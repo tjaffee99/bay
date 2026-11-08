@@ -43,11 +43,13 @@ CLAUDE.md          this file
 ```
 make setup      # python venv + npm install
 make sf         # download + build San Francisco data (~2 min after downloads)
+make terrain    # elevation + land-cover tiles for the whole Bay Area (~20 min, ~80 MB, not committed)
 make dev        # viewer at http://localhost:5173
+make deploy     # build + publish viewer/dist (incl. terrain tiles) to gh-pages → bay.theojaffee.net
 ```
 
 Pipeline stages (each idempotent, cached in data/raw or data/interim):
-`download_sf` → `land` → `fire_1906` → `sf_join` → `sf_buildings` → `sf_export`, plus `download_overture` (buildings, parts, base land/land_use), `trees` (street trees), `ground` (parks, woods, sand + woodland trees).
+`download_sf` → `land` → `fire_1906` → `sf_join` → `sf_buildings` → `sf_predecessors` → `sf_export`, plus `download_overture` (buildings, parts, base land/land_use, roads), `trees` (street trees), `ground` (parks, woods, sand), `roads` (streets, region roads, historic routes), and the terrain chain `baylands_pdf` → `terrain_grid` → `terrain_tiles`.
 
 ## Landmarks (viewer/src/landmarks/)
 
@@ -58,7 +60,7 @@ All dimensions come from `data/research/landmarks.md` (sources per item); anythi
 * `stadiums.ts`: Oracle Park, Chase Center, Kezar 1925/1990, Candlestick 1960/1971, Seals Stadium 1931/1946, Ewing Field (+1926 grandstand fire), Recreation Park, Cow Palace
 * `city.ts`: Bay Bridge (west span; 1936 east span demolished in stages 2014–16; 2013 SAS + skyway), Ferry Building, City Hall 1915 + old City Hall (–1906), Coit Tower, Palace of Fine Arts 1915/1967, Sutro Tower, Alcatraz (cellhouse, lighthouses 1854/1909, water tower), Fort Point, Mission Dolores (adobe + basilica), Cliff House 1863/1896/1909, Sutro Baths, Embarcadero Freeway (1959–91), Golden Gate Park buildings (Conservatory, windmills, Temple of Music, de Young 1919/2005, Cal Academy 2008)
 
-Known model limits: the map is flat (no terrain), so hilltop landmarks (Coit, Sutro Tower) stand on the ground plane and bridge approaches/anchorages stand on it too; LOW CONFIDENCE models (Kezar 1925, old City Hall, Recreation Park, 1936 east-span alignment, Embarcadero Freeway route) say so in their facts.
+Landmarks stand on the terrain (`elevationAt(anchor)`); bridges keep z = 0 (sea level). Known model limits: LOW CONFIDENCE models (Kezar 1925, old City Hall, Recreation Park, 1936 east-span alignment, Embarcadero Freeway route) say so in their facts.
 
 ## Decisions log (deviations from the original brief, with reasons)
 
@@ -72,6 +74,14 @@ Known model limits: the map is flat (no terrain), so hilltop landmarks (Coit, Su
 8. **Population counter:** San Francisco city/county until Phase 5, then 9-county total.
 9. **Trees:** street trees are real (DataSF positions; planting year recorded or estimated from trunk diameter). Park woods use real OSM wood extents with procedural positions inside (no per-tree survey exists) — confidence `procedural`. Woods are dated by park year, Golden Gate Park's documented east→west reclamation, the 1886 Presidio planting, and Lands End's 1930s planting.
 10. **Built data in git:** `viewer/public/data/sf-buildings.bin.gz` and friends are committed at milestones so a fresh clone runs with `npm install && npm run dev`; otherwise regenerate with `make sf`.
+
+11. **Terrain = one mesh for land, water and land cover.** MapLibre terrain was not used: deck.gl's own `TerrainMeshLayer` (Web-Mercator tiles, 64×64 cells, region grid z13 ≈ 60 m from 3DEP overview 1, SF grid z14 ≈ 30 m) carries per-vertex *cover histories* — a natural c.1800 cover plus up to 4 dated changes (fill, diking, farms/orchards, city, 1906 burn, parks/woods). The year is a uniform, so the slider never reloads tiles; covers blend over 2.5 years (the burn is instant). Shoreline over time falls out of this: bay cells become fill/city at their researched year.
+12. **c.1800 cover, best source wins:** WorldCover-based rules < SFEI EcoAtlas poster (vectorised from the PDF, georeferenced by label control points + IoU refinement + local rubber-sheet) < SFEI historical-ecology GIS < Hidden Nature SF. SFEI c.1998 "fill" is bay by definition (Treasure Island is water until 1936).
+13. **Trees and farms are procedural on real evidence:** trees stand on real WorldCover tree pixels (forest/oak/riparian/park covers, species by region and elevation); orchard rows and farmsteads are generated in dated farm/orchard cells. Trees are drawn ~2× real crown size so they read at map scale (Latos style). Confidence `procedural`.
+14. **Pre-1906 city (Phase 3) is procedural massing on real lots:** SF parcel lines mostly date from the 19th-century subdivisions, so `sf_predecessors.py` stands era-typical buildings on today's lots wherever the researched extent snapshot says the block was built, ending them in the fire or when today's building replaced them. Documented buildings (`notable_pre1906.csv`) take their lots. Sanborn tracing would replace this block by block.
+15. **Roads are draped paths, not polygons:** DataSF centerlines (SF, dated by extent snapshot or first nearby building), Overture roads elsewhere, researched routes (cable car, streetcar, Key System, ferries, freeways incl. Embarcadero/Central freeways) with lifespans; viaducts get columns. Cars and trams are CPU-animated along the paths with an era density curve (none before ~1903) — `procedural`.
+16. **Labels** (`places.csv`) show the name in use that year, by zoom tier, with a collision filter; neighborhood names change with the era (e.g. Yerba Buena → San Francisco 1847, South of the Slot, Butchertown).
+17. **UI:** no era title card, no layer toggles (landmarks and trees are always on); `?debug` shows the data-quality overlay and event jump; shift+drag rotates/tilts.
 
 ## Year cleaning (SF assessor roll)
 
@@ -104,10 +114,10 @@ Each phase ends with something runnable in the browser.
 
 * **Phase 0 — Skeleton** ✅ viewer, time filter + grow animation, Latos-style UI.
 * **Phase 1 — SF modern-data era** ✅ (first pass) pipeline + 177k buildings, confidence overlay, picking. Acceptance: 60 fps on a laptop (check on real GPU — CI/headless uses software GL), roughly matches known history.
-* **Phase 2 — Time-varying land and water**: historical bay + marsh (SFEI), fill polygons with emplacement years (USGS), coastline grows outward; validation that no building predates its land.
-* **Phase 3 — Pre-1906 SF and the fire**: trace street grid and built-up extent from Sanborn/Coast Survey/Rumsey maps for snapshot years; buildings from traced footprints where maps show them (Sanborn maps show individual footprints!), procedural only where unavoidable; `end_year = 1906` inside the burned zone; 1906 event.
-* **Phase 4 — Landmarks, infrastructure, storytelling**: ~50 reconstructed landmarks, eras, events and population done early (owner request); still to do: rail (Key System, cable cars), Central Freeway, other freeways, Transbay Terminal 1939.
-* **Phase 5 — Region**: San Mateo → Alameda → Santa Clara → Marin → Contra Costa → rest; Overture + county years + ACS imputation; PMTiles + low-zoom aggregate.
+* **Phase 2 — Time-varying land and water** ✅ (first pass): terrain + land-cover histories, SFEI c.1800 habitats, 96 dated fill/diking zones, coastline grows outward. Still to do: automatic check that no building predates its land beyond `land_not_before`.
+* **Phase 3 — Pre-1906 SF and the fire** ✅ (first pass, procedural on real lots; burn + rebuild in the terrain). Next: trace street grid and built-up extent from Sanborn/Coast Survey/Rumsey maps for snapshot years; buildings from traced footprints where maps show them (Sanborn maps show individual footprints!), procedural only where unavoidable; `end_year = 1906` inside the burned zone; 1906 event.
+* **Phase 4 — Landmarks, infrastructure, storytelling**: ~50 reconstructed landmarks, eras, events and population done early (owner request); routes (cable cars, streetcars, Key System, ferries, freeways) and traffic done; still to do: Transbay Terminal 1939 model, more landmark batches.
+* **Phase 5 — Region** (prepared: terrain, land cover, trees, farms, roads and labels already cover Sonoma/Napa → Santa Cruz; buildings remain): San Mateo → Alameda → Santa Clara → Marin → Contra Costa → rest; Overture + county years + ACS imputation; PMTiles + low-zoom aggregate.
 * **Phase 6 — Farmland and orchards** from historical topo maps and aerials.
 * **Phase 7 — Polish and ship**: performance, mobile, shareable URLs (done early: `#year=…&c=lng,lat&z=…&p=…&b=…`), attribution panel, deploy.
 

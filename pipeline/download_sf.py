@@ -53,6 +53,9 @@ def main():
         page_size=50000,
     )
     socrata_pages("3nje-yn2u", RAW / "sf_rpd_parks", fmt="geojson", page_size=50000)
+    # street centerlines again, with road class (roads.py)
+    socrata_pages("3psu-pn9h", RAW / "sf_streets_classes", fmt="geojson",
+                  select="cnn,street,st_type,classcode,active,layer,line", page_size=50000)
     # DBI building permits: new construction (types 1, 2) and demolitions (6) that completed
     socrata_pages(
         "i98e-djp9", RAW / "sf_permits_newdemo",

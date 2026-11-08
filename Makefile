@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings export trees ground dev build deploy shots clean-interim
+.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads dev build deploy shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -12,7 +12,7 @@ setup:
 	cd viewer && npm install
 
 # ---- San Francisco ---------------------------------------------------------
-sf: download land fire overture join buildings export trees ground
+sf: download land fire overture join buildings predecessors export trees ground roads
 
 download:
 	$(P) ../$(PY) download_sf.py
@@ -32,7 +32,12 @@ join: download
 buildings: join overture fire
 	$(P) ../$(PY) sf_buildings.py
 
-export: buildings
+# Phase 3: the pre-1906 city and the houses today's buildings replaced (procedural
+# massing on real lots inside researched built-up extents)
+predecessors: buildings
+	$(P) ../$(PY) sf_predecessors.py
+
+export: buildings predecessors grid
 	$(P) ../$(PY) sf_export.py
 
 trees: buildings
@@ -40,6 +45,23 @@ trees: buildings
 
 ground: download overture
 	$(P) ../$(PY) ground.py
+
+# streets (DataSF centerlines dated by the extent snapshots / first buildings),
+# region roads (Overture), historic routes (data/manual/routes.csv)
+roads: download overture grid
+	$(P) ../$(PY) roads.py
+
+# ---- terrain: elevation + time-varying land cover tiles (whole Bay Area) -----
+terrain: baylands grid tiles
+
+baylands:
+	$(P) ../$(PY) baylands_pdf.py
+
+grid: baylands
+	$(P) ../$(PY) terrain_grid.py
+
+tiles: grid fire
+	$(P) ../$(PY) terrain_tiles.py
 
 # ---- viewer ----------------------------------------------------------------
 dev:

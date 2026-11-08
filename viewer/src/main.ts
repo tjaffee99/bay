@@ -13,9 +13,11 @@ import type {Layer, PickingInfo} from '@deck.gl/core';
 import {WATER} from './palette';
 import {terrainLayer} from './layers/terrain';
 import {loadElevation} from './layers/elevation';
+import {labelLayers, loadPlaces, placeLabelsOnTerrain} from './layers/labels';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
+import {loadRoads, roadLayers, trafficLayers, hasTraffic} from './layers/roads';
 import {events, eventTime, populationLabelAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
@@ -80,10 +82,14 @@ const REGION: [number, number, number, number] = [-123.2, 36.85, -121.2, 38.9];
 
 function render() {
   const layers: Layer[] = [];
+  const zoom = map.getZoom();
   layers.push(terrainLayer(state.year, REGION) as any);
+  layers.push(...roadLayers(state.year, zoom));
   for (const t of trees) layers.push(...treesLayer(t, state.year));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
+  layers.push(...trafficLayers(state.year, zoom, performance.now() / 1000));
+  layers.push(...(labelLayers(state.year, zoom) as any));
   overlay.setProps({layers});
   updateOverlays();
 }
@@ -254,6 +260,27 @@ function scheduleHash() {
   hashTimer = window.setTimeout(() => writeHash(map, state.year), 400);
 }
 map.on('moveend', scheduleHash);
+// labels fade by zoom band: re-render when the zoom changes (once per frame at most)
+let zoomPending = false;
+map.on('zoom', () => {
+  if (zoomPending) return;
+  zoomPending = true;
+  requestAnimationFrame(() => {
+    zoomPending = false;
+    if (!state.playing) render();
+  });
+});
+
+// traffic moves continuously when zoomed in close enough to see it (~30 fps)
+let lastTraffic = 0;
+function trafficLoop(t: number) {
+  requestAnimationFrame(trafficLoop);
+  if (state.playing || !hasTraffic() || map.getZoom() < 12.5 || document.hidden) return;
+  if (t - lastTraffic < 33) return;
+  lastTraffic = t;
+  render();
+}
+if (!new URLSearchParams(location.search).has('notraffic')) requestAnimationFrame(trafficLoop);
 
 // ---------------------------------------------------------------- attribution
 $('attribution').innerHTML =
@@ -265,13 +292,21 @@ $('attribution').innerHTML =
 const loading = $('loading');
 async function boot() {
   render();
-  const elevP = loadElevation().then(() => render());
+  loadPlaces();
+  const elevP = Promise.all([loadElevation(), document.fonts.ready]).then(() => {
+    placeLabelsOnTerrain();
+    render();
+  });
   const lmP = Promise.all([loadLandmarks(), elevP])
     .then(([l]) => {
       landmarks = l;
       render();
     })
     .catch(e => console.warn('landmarks', e));
+  const roadP = elevP
+    .then(() => loadRoads())
+    .then(render)
+    .catch(e => console.warn('roads', e));
   const treeP = elevP
     .then(() => loadTrees('data/sf-trees.bin.gz', 'street', 6))
     .then(t => {
@@ -284,7 +319,7 @@ async function boot() {
     buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));
   }
   render();
-  await Promise.all([lmP, treeP]);
+  await Promise.all([lmP, treeP, roadP]);
   if (buildings && landmarks) {
     buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
     render();

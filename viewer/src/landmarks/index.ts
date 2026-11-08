@@ -14,6 +14,8 @@ import {transamerica, salesforceTower, transitCenter} from './downtown';
 import {legionOfHonor, paintedLadies, kavanaughHouse} from './neighborhoods';
 import {STADIUMS} from './stadiums';
 import {CITY_LANDMARKS} from './city';
+import {BATCH3} from './batch3';
+import {TRANSBAY} from './transbay';
 
 export const LANDMARKS: Landmark[] = [
   goldenGateBridge,
@@ -24,7 +26,9 @@ export const LANDMARKS: Landmark[] = [
   paintedLadies,
   kavanaughHouse,
   ...STADIUMS,
-  ...CITY_LANDMARKS
+  ...CITY_LANDMARKS,
+  ...BATCH3,
+  ...TRANSBAY
 ];
 
 export type LandmarkSet = {

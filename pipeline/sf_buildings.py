@@ -323,6 +323,10 @@ def known_dates():
     k = pd.read_csv(path)
     k = k[pd.to_numeric(k.start_year, errors="coerce").notna() & k.lat.notna() & k.lon.notna()]
     k["start_year"] = k.start_year.astype(float)
+    # modern footprints are standing buildings: a documented building that was demolished
+    # before the 2016 snapshot (e.g. the 1939 Transbay Terminal) can't date its successor
+    end = pd.to_numeric(k.get("end_year"), errors="coerce")
+    k = k[end.isna() | (end >= 2016)]
     return gpd.GeoDataFrame(k[["name", "start_year"]], geometry=gpd.points_from_xy(k.lon, k.lat), crs=4326).to_crs(UTM)
 
 

@@ -24,7 +24,7 @@ dated by their area; natural forest always present), orchard rows and
 farmsteads (procedural placement inside dated farm/orchard cells).
 
 Tile file (BAYT): tiles/{z}/{x}/{y}.bin.gz with columns
-  elev i16 (decimetres), cover u8[4] per vertex, year u16[3] per vertex
+  elev i16 (decimetres), cover u8[5] per vertex, year u16[4] per vertex
   ((year-1000)*10, 0 = no change), deco_pos u16[2], deco_kind u8,
   deco_size u8 (metres), deco_years u16[2] (start, end; 0 = open)
 
@@ -50,14 +50,12 @@ from terrain_grid import GRIDS, VERTS, grid_def
 TILES = VIEWER_DATA.parent / "tiles" / "terrain"
 
 # ---- cover codes (shared with viewer/src/layers/terrain.ts) -------------------
-DEEP, SHALLOW, FLAT, MARSH, BEACH, DUNES, GRASS, SCRUB, OAK, FOREST, FARM, ORCHARD, VINEYARD, PASTURE, \
-    SALTPOND, DIKED, URBAN, PARK, ROCK, RIPARIAN, FILL, WETLAND, RESERVOIR, BURNED = range(24)
+from covers import (BEACH, BURNED, DEEP, DIKED, DUNES, FARM, FILL, FLAT, FOREST, GRASS, LANDCOVER_TABLE,  # noqa: E402
+                    MARSH, OAK, ORCHARD, PARK, PASTURE, RESERVOIR, RIPARIAN, ROCK, SALTPOND, SCRUB, SHALLOW,
+                    URBAN, VINEYARD, WET, WETLAND)
 COVER_NAMES = ["deep_water", "shallow_water", "tidal_flat", "tidal_marsh", "beach", "dunes", "grassland",
                "scrub", "oak_woodland", "forest", "farmland", "orchard", "vineyard", "pasture", "salt_pond",
                "diked_wetland", "urban", "park", "rock", "riparian", "fill", "wetland", "reservoir", "burned"]
-LANDCOVER_NAMES = {"dunes": DUNES, "beach": BEACH, "coastal_scrub": SCRUB, "grassland": GRASS, "oak_woodland": OAK,
-                   "redwood_forest": FOREST, "chaparral": SCRUB, "marsh": MARSH, "farmland": FARM, "orchard": ORCHARD,
-                   "vineyard": VINEYARD, "dairy_pasture": PASTURE, "salt_pond": SALTPOND}
 # decoration kinds
 D_BROADLEAF, D_CONIFER, D_PALM, D_ORCHARD, D_FARMHOUSE, D_SHRUB = range(6)
 
@@ -74,7 +72,7 @@ def enc_year(y):
 
 def load_grid(name):
     g = grid_def(name)
-    d = {k: np.load(INTERIM / f"grid_{name}_{k}.npy") for k in ("elev", "wc", "fbuy", "b1800", "b1998")}
+    d = {k: np.load(INTERIM / f"grid_{name}_{k}.npy") for k in ("elev", "wc", "fbuy", "b1800", "b1998", "hist")}
     d["elev"][d["elev"] < -500] = np.nan
     return g, d
 
@@ -131,29 +129,45 @@ def park_layers(g):
 
 
 def polygon_table(path, g):
-    """Rasterise a researched table with ring columns (lonlat rings only here)."""
+    """Rows of a researched table with their ring as an EPSG:3857 polygon (lonlat or streets rings)."""
     if not path.exists():
         return []
+    from geocode import ring_polygon
     t = pd.read_csv(path)
     out = []
     for _, r in t.iterrows():
-        if str(r.get("ring_type", "")).strip() != "lonlat":
-            continue
         try:
-            pts = [tuple(map(float, p.split())) for p in str(r.ring).split(";") if p.strip()]
-            if len(pts) < 3:
-                continue
-            poly = gpd.GeoSeries([shapely_polygon(pts)], crs=4326).to_crs(3857).iloc[0]
-            out.append((r, poly))
-        except Exception:
+            poly = ring_polygon(r.ring, r.get("ring_type", ""))
+        except Exception as e:  # noqa: BLE001
+            log(f"geocode: {r.get('zone_id', r.get('area_id', '?'))}: {e}")
             continue
+        if poly is not None and not poly.is_empty:
+            out.append((r, poly))
     return out
 
 
-def shapely_polygon(pts):
-    from shapely.geometry import Polygon
-    import shapely
-    return shapely.make_valid(Polygon(pts))
+def raster_mask(g, poly):
+    return rasterize_on(g, [(poly, 1)], fill=0, dtype="uint8").astype(bool)
+
+
+def sf_extent_years(g, h):
+    """Year each vertex became built-up per the researched snapshot extents (NaN = not in any)."""
+    import glob
+    from geocode import intersection_rings
+    files = sorted(glob.glob(str(MANUAL / "sf_extent_*.csv")))
+    out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
+    prev = 1846.0
+    for f in files:
+        year = float(f.split("_")[-1].split(".")[0])
+        rings = intersection_rings(f)
+        m = np.zeros_like(out, bool)
+        for poly in rings.values():
+            m |= raster_mask(g, poly)
+        new = m & np.isnan(out)
+        out[new] = (prev + (year - prev) * h)[new]
+        log(f"extent {year:.0f}: {len(rings)} rings, {new.sum()} newly built vertices")
+        prev = year
+    return out
 
 
 def histories(name, g, d):
@@ -163,6 +177,10 @@ def histories(name, g, d):
     wc, b18, b98, fb = d["wc"], d["b1800"], d["b1998"], d["fbuy"].astype(float)
     in_sf = (lon > SF_BOX[0]) & (lon < SF_BOX[2]) & (lat > SF_BOX[1]) & (lat < SF_BOX[3])
     water_now = (wc == 80) | (wc == 0)
+    # WorldCover reads deep skyscraper shadows as water: "water" standing well above
+    # the bay inside built-up surroundings is city, not a pond
+    built_frac = ndimage.uniform_filter((wc == 50).astype(np.float32), 7)
+    water_now &= ~((elev > 1.5) & (built_frac > 0.35))
     dy, dx = np.gradient(elev, g["res"] * 0.79)  # ~ground metres at this latitude
     slope = np.degrees(np.arctan(np.hypot(dx, dy)))
 
@@ -185,20 +203,25 @@ def histories(name, g, d):
     sf_dunes = in_sf & (lon < -122.445) & (elev < 120)
     N[in_sf & (tree | (wc == 50) | (wc == 40))] = SCRUB
     N[sf_dunes & ~(wc == 60)] = DUNES
-    for r, poly in polygon_table(TABLES / "landcover_history.csv", g):
-        c = LANDCOVER_NAMES.get(str(r.cover).strip())
+    lc_rows = polygon_table(TABLES / "landcover_history.csv", g)
+    for r, poly in lc_rows:
+        c = LANDCOVER_TABLE.get(str(r.cover).strip())
         if c is None or pd.notna(r.get("year_start")) and float(r.year_start) > 1800:
             continue  # only natural (pre-1800) cover here; eras handled below
-        m = rasterize_on(g, [(poly, 1)], fill=0, dtype="uint8").astype(bool) & ~water_now
+        m = raster_mask(g, poly) & ~water_now & (d["hist"] == 0)
         N[m] = c
     # inland open water that is not bay: reservoirs / lakes
     N[water_now] = RESERVOIR
-    # bay & baylands c.1800 override everything
-    bay_map = {1: DEEP, 2: SHALLOW, 3: FLAT, 4: MARSH, 5: SHALLOW, 6: FLAT, 7: RIPARIAN, 8: GRASS}
-    for k, v in bay_map.items():
-        N[b18 == k] = v
-    # open ocean / bay outside the SFEI frame
-    N[water_now & (b18 == 0) & (elev <= 2)] = DEEP
+    # open ocean / bay
+    N[water_now & (elev <= 2)] = DEEP
+    # mapped c.1800 habitats (SFEI) override the rules wherever they exist
+    hist = d["hist"]
+    N = np.where(hist > 0, hist.astype(np.int16) - 1, N).astype(np.uint8)
+    N[water_now & (hist == 0) & (elev <= 2)] = DEEP
+    # SFEI c.1998 "bay fill" is made land by definition: it was bay before (e.g. the
+    # Yerba Buena Shoals under Treasure Island), whatever the coarser c.1800 layers say
+    made_land = np.isin(b98, [12, 13]) & ~np.isin(N, list(WET))
+    N[made_land] = SHALLOW
 
     ev_cover, ev_year = [], []
 
@@ -218,6 +241,11 @@ def histories(name, g, d):
     fbv = (fb >= 1810) & (fb <= 2026)
     fb_filled = nearest_fill(np.where(fbv, fb, np.nan), fbv) if fbv.any() else np.full_like(fb, np.nan)
     built_now = (wc == 50)
+    if in_sf.any():
+        hh = (np.add.outer(np.arange(rows) * 7919, np.arange(cols) * 104729) % 997) / 997.0
+        ext_y = sf_extent_years(g, hh)
+        has_ext = np.isfinite(ext_y) & ~water_now
+        urban_y = np.where(has_ext & (np.isnan(urban_y) | (ext_y < urban_y)), ext_y, urban_y)
     urban_y = np.where(np.isnan(urban_y) & built_now & ~in_sf, np.where(fbv, fb, fb_filled), urban_y)
     urban_y = np.where(np.isnan(urban_y) & built_now & in_sf, np.where(fbv, fb, fb_filled), urban_y)
     urban = np.isfinite(urban_y) & ~water_now
@@ -232,28 +260,77 @@ def histories(name, g, d):
     salt = np.isin(b18, [3, 4, 6]) & np.isin(b98, [6, 11])
     diked = np.isin(b18, [3, 4, 6]) & np.isin(b98, [9, 10])
     zones_fill = np.full((rows, cols), np.nan, np.float32)
-    for r, poly in polygon_table(MANUAL / "fill_zones.csv", g):
+    pier_y = np.full((rows, cols), np.nan, np.float32)
+    h = (np.add.outer(np.arange(rows) * 7919, np.arange(cols) * 104729) % 997) / 997.0
+    restored = []
+    excavated = []
+    was_wet0 = np.isin(N, list(WET))
+    # distance (cells) from the c.1800 shore: fill advanced outward from it
+    shore_d = ndimage.distance_transform_edt(was_wet0).astype(np.float32)
+    zone_rows = polygon_table(MANUAL / "fill_zones.csv", g)
+    zone_rows.sort(key=lambda rp: str(rp[0].zone_id).startswith("fb_"))  # specific zones first
+    covered = np.zeros((rows, cols), bool)
+    researched_fill = np.zeros((rows, cols), bool)
+    for r, poly in zone_rows:
         ys = pd.to_numeric(r.year_start, errors="coerce")
         ye = pd.to_numeric(r.year_end, errors="coerce")
-        y = np.nanmean([ys, ye]) if np.isfinite(ys) or np.isfinite(ye) else np.nan
-        if not np.isfinite(y):
+        if not (np.isfinite(ys) or np.isfinite(ye)):
             continue
-        m = rasterize_on(g, [(poly, 1)], fill=0, dtype="uint8").astype(bool)
+        ys = ys if np.isfinite(ys) else ye
+        ye = ye if np.isfinite(ye) else ys
+        m = raster_mask(g, poly)
         k = str(r.kind).strip()
+        fallback = str(r.zone_id).startswith("fb_")
+        if fallback:
+            m &= ~covered
+        if not m.any():
+            continue
+        if k == "fill" and fallback:
+            # only a bracket: use the urban year if it falls inside, else the midpoint
+            y = np.where(np.isfinite(urban_y) & (urban_y - 3 >= ys) & (urban_y - 3 <= ye), urban_y - 3, (ys + ye) / 2)
+        else:
+            dz = shore_d[m]
+            span = max(float(dz.max()), 1.0)
+            y = np.full((rows, cols), np.nan, np.float32)
+            y[m] = ys + (ye - ys) * np.clip(dz / span, 0, 1)
         if k == "diked_marsh":
-            dike_year[m & (salt | diked)] = y
+            sel = m & (salt | diked)
+            dike_year[sel] = y[sel]
         elif k == "fill":
-            zones_fill[m] = np.where(np.isnan(zones_fill[m]), y, np.minimum(zones_fill[m], y))
+            upd = m & (np.isnan(zones_fill) | (y < zones_fill))
+            zones_fill[upd] = y[upd]
+            covered |= m
+            if not fallback:
+                researched_fill |= m
+        elif k == "pier":
+            pier_y[m] = np.where(np.isnan(pier_y[m]), y[m], np.fmin(pier_y[m], y[m]))
+        elif k == "excavated":
+            excavated.append((m, y))
+        elif k == "restored":
+            restored.append((m, y))
     event(salt, SALTPOND, dike_year)
     event(diked, DIKED, dike_year)
 
-    # ---- fill: c.1800 water/flat/marsh that is land now
-    was_wet = np.isin(b18, [1, 2, 3, 4, 5, 6])
-    filled = was_wet & ~water_now & ~salt & ~diked
+    # bridge decks / causeways read as built-up over open bay (DEM at water level):
+    # still water underneath — the bridges themselves are landmarks / road paths
+    deck = (wc == 50) & (elev < 0.5) & np.isin(N, [DEEP, SHALLOW]) & ~np.isin(b98, [12, 13]) \
+        & ~researched_fill & np.isnan(pier_y)
+    water_now = water_now | deck
+    urban &= ~deck
+
+    # ---- fill: c.1800 water/flat/marsh/lagoon that is land now (piers are decks, not fill)
+    was_wet = np.isin(N, list(WET))
+    is_pier = np.isfinite(pier_y) & was_wet
+    filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier
     fill_y = np.where(np.isfinite(zones_fill), zones_fill, np.where(urban, urban_y - 3, np.nan))
     fill_y = np.where(filled & np.isnan(fill_y), 1950.0, fill_y)
     event(filled, FILL, fill_y)
-    # where fill came before the city, show it as raw fill until urbanised; parks on fill too
+    event(is_pier & ~water_now, URBAN, pier_y)
+    for m, y in excavated:
+        event(m & water_now & ~was_wet, SHALLOW, y)
+    for m, y in restored:
+        event(m & water_now & (salt | diked), SHALLOW, y)
+        event(m & (wc == 90) & (salt | diked), MARSH, y)
 
     # ---- agriculture (outside SF)
     flat = slope < 6
@@ -264,16 +341,17 @@ def histories(name, g, d):
     ag_candidates = farmable & (farm_now | (urban & ~early_urban))
     scv = (lon > SANTA_CLARA_VALLEY[0]) & (lon < SANTA_CLARA_VALLEY[2]) & (lat > SANTA_CLARA_VALLEY[1]) & (lat < SANTA_CLARA_VALLEY[3])
     wine = (lon > WINE_VALLEYS[0]) & (lon < WINE_VALLEYS[2]) & (lat > WINE_VALLEYS[1]) & (lat < WINE_VALLEYS[3])
-    h = (np.add.outer(np.arange(rows) * 7919, np.arange(cols) * 104729) % 997) / 997.0
     event(ag_candidates, FARM, 1852.0 + 10 * h)
     event(ag_candidates & scv, ORCHARD, 1878.0 + 15 * h)
     event(ag_candidates & wine & farm_now & (h < 0.6), VINEYARD, 1870.0 + 40 * h)
-    for r, poly in polygon_table(TABLES / "landcover_history.csv", g):
-        c = LANDCOVER_NAMES.get(str(r.cover).strip())
+    for r, poly in lc_rows:
+        c = LANDCOVER_TABLE.get(str(r.cover).strip())
         ys = pd.to_numeric(r.get("year_start"), errors="coerce")
         if c is None or not np.isfinite(ys) or ys <= 1800:
             continue
-        m = rasterize_on(g, [(poly, 1)], fill=0, dtype="uint8").astype(bool) & farmable
+        m = raster_mask(g, poly) & ~water_now & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH])
+        if c in (FARM, ORCHARD, VINEYARD, PASTURE):
+            m &= slope < 12
         event(m, c, ys + 6 * h)
 
     # ---- urbanisation, parks, planted woods
@@ -289,37 +367,42 @@ def histories(name, g, d):
     event(is_park, PARK, park_y)
     event(np.isfinite(wood_y), FOREST, wood_y)
 
-    # ---- assemble: natural cover + first three events in time order
-    C = np.stack(ev_cover)          # (E, rows, cols)
-    Y = np.stack(ev_year)
-    Y = np.where(C == 255, np.nan, Y)
-    order = np.argsort(np.where(np.isnan(Y), np.inf, Y), axis=0)
-    C = np.take_along_axis(C, order, 0)
-    Y = np.take_along_axis(Y, order, 0)
-    # drop events that don't change the cover or are superseded within the same year
-    covers = np.zeros((4, rows, cols), np.uint8)
-    years = np.full((3, rows, cols), np.nan, np.float32)
+    # ---- assemble: natural cover + first three events in time order (row chunks: memory)
+    covers = np.zeros((5, rows, cols), np.uint8)
+    years = np.full((4, rows, cols), np.nan, np.float32)
     covers[0] = N
-    n = np.zeros((rows, cols), np.int8)
-    last = N.copy()
-    for e in range(C.shape[0]):
-        ce, ye = C[e], Y[e]
-        ok = np.isfinite(ye) & (ce != last) & (n < 3)
-        # agriculture can't come after urbanisation / fill
-        ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, FILL, PARK]))
-        # natural "fill" after the place is already urban is meaningless
-        ok &= ~((ce == FILL) & (last == URBAN))
-        # bare fill that is built on within 4 years: go straight to the city (saves a slot)
-        nxt_urban = np.zeros_like(ok)
-        for e2 in range(e + 1, C.shape[0]):
-            nxt_urban |= (C[e2] == URBAN) & (Y[e2] - ye < 4)
-        ok &= ~((ce == FILL) & nxt_urban)
-        idx = n[ok]
-        rr, cc = np.nonzero(ok)
-        covers[idx + 1, rr, cc] = ce[ok]
-        years[idx, rr, cc] = ye[ok]
-        last = np.where(ok, ce, last)
-        n = n + ok
+    n_all = np.zeros((rows, cols), np.int8)
+    for r0 in range(0, rows, 384):
+        r1 = min(rows, r0 + 384)
+        C = np.stack([c[r0:r1] for c in ev_cover])
+        Y = np.stack([y[r0:r1] for y in ev_year])
+        Y = np.where(C == 255, np.nan, Y)
+        order = np.argsort(np.where(np.isnan(Y), np.inf, Y), axis=0, kind="stable")
+        C = np.take_along_axis(C, order, 0)
+        Y = np.take_along_axis(Y, order, 0)
+        n = np.zeros((r1 - r0, cols), np.int8)
+        last = N[r0:r1].copy()
+        for e in range(C.shape[0]):
+            ce, ye = C[e], Y[e]
+            ok = np.isfinite(ye) & (ce != last) & (n < 4)
+            # agriculture can't come after urbanisation / fill
+            ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, FILL, PARK]))
+            # natural "fill" after the place is already urban is meaningless
+            ok &= ~((ce == FILL) & (last == URBAN))
+            # bare fill that is built on within 4 years: go straight to the city (saves a slot)
+            if (ce == FILL).any():
+                nxt_urban = np.zeros_like(ok)
+                for e2 in range(e + 1, C.shape[0]):
+                    nxt_urban |= (C[e2] == URBAN) & (Y[e2] - ye < 4)
+                ok &= ~((ce == FILL) & nxt_urban)
+            idx = n[ok]
+            rr, cc = np.nonzero(ok)
+            covers[idx + 1, rr + r0, cc] = ce[ok]
+            years[idx, rr + r0, cc] = ye[ok]
+            last = np.where(ok, ce, last)
+            n = n + ok
+        n_all[r0:r1] = n
+    n = n_all
     log(f"terrain {name}: changes per vertex " + str(np.bincount(n.ravel(), minlength=4).tolist()))
     return covers, years, elev, slope, urban_y, park_y, wood_y
 
@@ -438,13 +521,13 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         cv = covers[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
         yv = years[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
         for kind_code, deco in ((ORCHARD, D_ORCHARD), (FARM, D_FARMHOUSE), (VINEYARD, D_FARMHOUSE), (PASTURE, D_FARMHOUSE)):
-            for e in range(1, 4):
+            for e in range(1, 5):
                 m = cv[e] == kind_code
                 if not m.any():
                     continue
                 vy, vx = np.nonzero(m)
                 y_start = yv[e - 1][m]
-                y_end = yv[e][m] if e < 3 else np.full(m.sum(), np.nan)
+                y_end = yv[e][m] if e < 4 else np.full(m.sum(), np.nan)
                 if deco == D_ORCHARD:
                     # rows of trees: a 3x3 block per lattice cell (≈20 m spacing in the region grid)
                     oy, ox = np.meshgrid(np.linspace(-0.33, 0.33, 3), np.linspace(-0.33, 0.33, 3))

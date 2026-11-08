@@ -113,6 +113,31 @@ def rasterize_classes(path, mapping, g):
     return features.rasterize(shapes, out_shape=(g["rows"], g["cols"]), transform=g["transform"], fill=0, dtype="uint8")
 
 
+def hist_raster(g):
+    """Pre-colonial (c.1800) habitat as cover code + 1 (0 = unknown), best source wins:
+    SFEI EcoAtlas poster < SFEI historical ecology GIS < SFEI Hidden Nature SF."""
+    import glob as _glob
+    from covers import SFEI_ECOLOGY, SFEI_HIDDEN_NATURE, SFEI_POSTER_1800
+    sources = [(INTERIM / "baylands_1800.geojson", "class", SFEI_POSTER_1800)]
+    sources += [(f, "LegLabel", SFEI_ECOLOGY) for f in sorted(_glob.glob(str(RAW / "sfei_historical_ecology" / "*.geojson")))]
+    sources += [(RAW / "sfei_hidden_nature_sf" / "sf_historical_habitats_2021.geojson", "HabitatCla", SFEI_HIDDEN_NATURE)]
+    out = np.zeros((g["rows"], g["cols"]), np.uint8)
+    for path, field, mapping in sources:
+        try:
+            gdf = gpd.read_file(path).to_crs(3857)
+        except Exception as e:
+            log(f"hist: skip {path} ({e.__class__.__name__})")
+            continue
+        shapes = [(geom, mapping[c] + 1) for c, geom in zip(gdf[field], gdf.geometry) if c in mapping and geom is not None and not geom.is_empty]
+        if not shapes:
+            continue
+        shapes.sort(key=lambda s: s[0].area, reverse=True)
+        tmp = features.rasterize(shapes, out_shape=(g["rows"], g["cols"]), transform=g["transform"], fill=0, dtype="uint8")
+        out = np.where(tmp > 0, tmp, out)
+        log(f"hist {g['name']}: {str(path).split('/')[-1]} -> {int((tmp > 0).sum())} cells")
+    return out
+
+
 def build(name):
     g = grid_def(name)
     log(f"grid {name}: z{g['z']} tiles x {g['tx0']}..{g['tx1']} y {g['ty0']}..{g['ty1']}, {g['rows']}x{g['cols']} vertices, {g['res']:.1f} m")
@@ -130,6 +155,7 @@ def build(name):
         np.save(f"{out}_fbuy.npy", fb)
     np.save(f"{out}_b1800.npy", rasterize_classes(INTERIM / "baylands_1800.geojson", B1800, g))
     np.save(f"{out}_b1998.npy", rasterize_classes(INTERIM / "baylands_1998.geojson", B1998, g))
+    np.save(f"{out}_hist.npy", hist_raster(g))
     meta = {k: (v if not isinstance(v, Affine) else list(v)[:6]) for k, v in g.items()}
     (INTERIM / f"grid_{name}_meta.json").write_text(json.dumps(meta, indent=1))
     log(f"grid {name}: done")

@@ -73,7 +73,8 @@ const vs = `#version 300 es
 #define SHADER_NAME terrain-tile-vs
 in vec3 positions;
 in vec4 covers;
-in vec3 years;
+in float cover4;
+in vec4 years;
 in float skirt;
 out vec4 vColor;
 out vec3 vCommon;
@@ -97,7 +98,10 @@ void main(void) {
   if (years.x > 0.0 && y >= years.x) { prev = c; c = covers.y; t0 = years.x; }
   if (years.y > 0.0 && y >= years.y) { prev = c; c = covers.z; t0 = years.y; }
   if (years.z > 0.0 && y >= years.z) { prev = c; c = covers.w; t0 = years.z; }
-  float k = smoothstep(0.0, 1.0, clamp((y - t0) / 2.5, 0.0, 1.0));
+  if (years.w > 0.0 && y >= years.w) { prev = c; c = cover4; t0 = years.w; }
+  // land changes blend over ~2.5 years; fire is instant
+  float dur = abs(c - 23.0) < 0.5 ? 0.04 : 2.5;
+  float k = smoothstep(0.0, 1.0, clamp((y - t0) / dur, 0.0, 1.0));
   vec3 col = mix(PAL[int(prev + 0.5)], PAL[int(c + 0.5)], k);
   float z = mix(coverZ(prev, positions.z), coverZ(c, positions.z), k) * terrain.exaggeration;
   if (skirt > 0.5) z -= 80.0;
@@ -134,6 +138,7 @@ void main(void) {
 export type TerrainMesh = {
   positions: Float32Array;
   covers: Float32Array;
+  cover4: Float32Array;
   years: Float32Array;
   skirt: Float32Array;
   indices: Uint32Array;
@@ -187,7 +192,8 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
         attributes: {
           positions: {size: 3, value: m.positions},
           covers: {size: 4, value: m.covers},
-          years: {size: 3, value: m.years},
+          cover4: {size: 1, value: m.cover4},
+          years: {size: 4, value: m.years},
           skirt: {size: 1, value: m.skirt}
         },
         indices: {size: 1, value: m.indices}
@@ -283,7 +289,8 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
   const nv = n * n + 4 * n;
   const positions = new Float32Array(nv * 3);
   const covers = new Float32Array(nv * 4);
-  const years = new Float32Array(nv * 3);
+  const cover4 = new Float32Array(nv);
+  const years = new Float32Array(nv * 4);
   const skirt = new Float32Array(nv);
   const latAt = (i: number) => tileLat(y + i / (n - 1), z) - north;
   const lats = Array.from({length: n}, (_, i) => latAt(i));
@@ -292,8 +299,9 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     positions[v * 3] = ((east - west) * j) / (n - 1);
     positions[v * 3 + 1] = lats[i];
     positions[v * 3 + 2] = elev[src] / 10;
-    for (let k = 0; k < 4; k++) covers[v * 4 + k] = cov[src * 4 + k];
-    for (let k = 0; k < 3; k++) years[v * 3 + k] = decodeYear(yrs[src * 3 + k]);
+    for (let k = 0; k < 4; k++) covers[v * 4 + k] = cov[src * 5 + k];
+    cover4[v] = cov[src * 5 + 4];
+    for (let k = 0; k < 4; k++) years[v * 4 + k] = decodeYear(yrs[src * 4 + k]);
   };
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) setV(i * n + j, i, j);
   const edges: [number, number][][] = [
@@ -309,7 +317,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
       skirt[v] = 1;
     })
   );
-  const mesh: TerrainMesh = {positions, covers, years, skirt, indices: gridIndices(n), origin: [west, north]};
+  const mesh: TerrainMesh = {positions, covers, cover4, years, skirt, indices: gridIndices(n), origin: [west, north]};
 
   // decorations
   const deco: DecoInstances = [];

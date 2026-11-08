@@ -13,6 +13,7 @@ from __future__ import annotations
 import zlib
 
 import geopandas as gpd
+import pandas as pd
 import numpy as np
 import shapely
 
@@ -54,6 +55,12 @@ ORIGIN = (-122.44, 37.76)
 
 def main():
     df = gpd.read_parquet(INTERIM / "sf_buildings.parquet")
+    pred_path = INTERIM / "sf_predecessors.parquet"
+    if pred_path.exists():
+        pred = gpd.read_parquet(pred_path)
+        pred["sf16_bldgid"] = "pred:" + pred.mapblklot.astype(str) + ":" + pred.start_year.round(1).astype(str)
+        df = gpd.GeoDataFrame(pd.concat([df, pred[[c for c in pred.columns if c in df.columns]]], ignore_index=True), crs=4326)
+        log(f"export: + {len(pred)} vanished buildings (pre-1906 city, replaced houses)")
     df = df.explode(index_parts=False).reset_index(drop=True)
     df = df[df.geometry.geom_type == "Polygon"]
     # simplify by 25 cm in metres: drops survey jitter / collinear vertices, invisible at map scale
