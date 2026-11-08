@@ -1,0 +1,115 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "points": [
+  {
+   "tie": "016_0223",
+   "px_other": [
+    114.5,
+    1450.0
+   ],
+   "label": "tie 223: Merrimac north kerb x Michigan west kerb (hydrant corner)",
+   "x": 553.0,
+   "y": 1702.0,
+   "norefine": 1
+  },
+  {
+   "tie": "016_0223",
+   "px_other": [
+    214.5,
+    1450.0
+   ],
+   "label": "tie 223: Merrimac south kerb x Michigan west kerb (hydrant corner)",
+   "x": 531.0,
+   "y": 1797.0,
+   "norefine": 1
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "lines": [
+  {
+   "street": "MERRIMAC",
+   "cnn": [
+    8993000
+   ],
+   "near": [
+    553830,
+    4180547
+   ],
+   "R": 200,
+   "off": [
+    32,
+    "N"
+   ],
+   "px": [
+    [
+     420,
+     1662
+    ],
+    [
+     500,
+     1686
+    ]
+   ]
+  },
+  {
+   "street": "MERRIMAC",
+   "cnn": [
+    8993000
+   ],
+   "near": [
+    553830,
+    4180547
+   ],
+   "R": 200,
+   "off": [
+    32,
+    "S"
+   ],
+   "px": [
+    [
+     400,
+     1760
+    ],
+    [
+     480,
+     1783
+    ]
+   ]
+  },
+  {
+   "street": "04TH",
+   "cnn": [
+    273000
+   ],
+   "near": [
+    553790,
+    4180750
+   ],
+   "R": 200,
+   "px": [
+    [
+     366,
+     860
+    ],
+    [
+     480,
+     1150
+    ]
+   ],
+   "note": "centre of the street = position of the '4TH ST.' label (+-2 m)"
+  }
+ ],
+ "note": "drawn rotated ~18 deg. Control: the Merrimac x Michigan hydrant corners shared with sheet 223, Merrimac St kerbs (DataSF retired segment), and the old 4th St centreline at its label. Kentucky and Illinois St (retired DataSF segments) fall on their labels (check, not used).",
+ "confidence_cap": "medium"
+}

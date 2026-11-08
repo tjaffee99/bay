@@ -1,6 +1,7 @@
 """Trace historical building footprints for the San Francisco waterfront from Library of Congress Sanborn maps.
 
-Areas: Fisherman's Wharf / northern waterfront (1899, 1913, 1950) and Mission Bay / China Basin (1913-14, 1950).
+Areas: Fisherman's Wharf / northern waterfront (1899, 1913, 1950), Mission Bay / China Basin (1913-14, 1950) and
+Potrero Point / Central Basin / Dogpatch (1914, 1950). Rail-yard tracks: see `tracks()`.
 Inputs (committed, hand-measured):  data/manual/sanborn/control/<vol>_<sheet>.json  (control points, block corners,
                                     street-line constraints, registration transforms), *.wharves.json (deck seeds),
                                     attributes.json (storeys / use / names read from the sheets)
@@ -45,8 +46,16 @@ AREAS = {
     ("fishermans_wharf", 1899): ["008_0074", "008_0088", "008_0093", "008_0111"],
     ("fishermans_wharf", 1913): ["015_0001", "015_0051", "015_0064", "015_0065", "015_0079", "015_0080", "015_0081", "015_0096"],
     ("fishermans_wharf", 1950): ["030_0001", "030_0051", "030_0064", "030_0065", "030_0079", "030_0080", "030_0081", "030_0096"],
-    ("mission_bay", 1913): ["016_0152", "016_0160", "016_0168", "016_0176", "016_0217", "016_0220", "020_0546", "020_0560", "020_0561"],
-    ("mission_bay", 1950): ["031_0152", "031_0160", "031_0168", "031_0176", "031_0217", "031_0220", "035_0546", "035_0560", "035_0561"],
+    ("mission_bay", 1913): ["016_0152", "016_0160", "016_0168", "016_0176", "016_0217", "016_0220", "020_0546", "020_0560", "020_0561",
+                            "016_0215", "016_0216", "016_0217r", "016_0219", "016_0221", "016_0222", "016_0223",
+                            "020_0545", "020_0545b", "020_0546u", "020_0547", "020_0559"],
+    ("mission_bay", 1950): ["031_0152", "031_0160", "031_0168", "031_0176", "031_0217", "031_0220", "035_0546", "035_0560", "035_0561",
+                            "031_0215", "031_0216", "031_0217r", "031_0219", "031_0221", "031_0222", "031_0223",
+                            "035_0545", "035_0545b", "035_0546u", "035_0547", "035_0559"],
+    ("potrero_point", 1914): ["020_0560b", "020_0561b", "020_0562", "020_0574", "020_0575", "020_0589", "020_0590", "020_0591", "020_0592",
+                              "020_0593", "020_0594", "020_0607", "020_0608", "020_0609", "020_0610", "020_0626"],
+    ("potrero_point", 1950): ["035_0560b", "035_0561b", "035_0562", "035_0574", "035_0575", "035_0589", "035_0590", "035_0591", "035_0592",
+                              "035_0593", "035_0594", "035_0607", "035_0608", "035_0609", "035_0610", "035_0626"],
 }
 RESIDENTIAL_SHEETS = {"0065", "0081", "0096", "0088", "0546", "0561"}
 EDITION_1950 = ("028", "029", "030", "031", "032", "033", "034", "035", "036", "037", "038")
@@ -135,13 +144,16 @@ def near_xy(near):
     return xing(*near)[0]
 
 
-def street_line(name, near, R=350):
+def street_line(name, near, R=350, cnn=None):
     """least-squares straight line (point, unit dir) through the centreline of `name` within R m of `near`.
     DataSF's retired segments (active = false) are included: the old Mission Bay grid (6th St and 4th St south of the
     channel, Channel St, Illinois / Merrimac / Alameda / El Dorado east of 3rd) survives only there."""
     from fire_1906 import street_rows
     pts = []
-    for geom in street_rows(streets(), name).geometry:
+    rows = street_rows(streets(), name)
+    if cnn:  # only these DataSF segments (e.g. the retired diagonal 4th St, not today's N-S 4th St beside it)
+        rows = rows[rows.cnn.astype(float).astype(int).isin([int(c) for c in cnn])]
+    for geom in rows.geometry:
         for gg in ([geom] if geom.geom_type == "LineString" else list(geom.geoms)):
             c = np.asarray(gg.coords)
             for a, b in zip(c[:-1], c[1:]):
@@ -206,7 +218,8 @@ def world_of(c):
         return apply(Mo, [c["px_other"]])[0], c.get("label", f"tie to {c['tie']} {c['px_other']}")
     if "la" in c:  # crossing of two fitted centrelines, extended where the street no longer reaches (optional offsets in ft)
         def L(spec):  # [street, other street] (near their crossing) or [street, [x, y]] (near a UTM position)
-            return street_line(spec[0], near_xy(spec if isinstance(spec[1], str) else spec[1]), c.get("R", 350))
+            return street_line(spec[0], near_xy(spec if isinstance(spec[1], str) else spec[1]), c.get("R", 350),
+                               spec[2] if len(spec) > 2 else None)
         L1, L2 = L(c["la"]), L(c["lb"])
         p1, p2 = L1[0], L2[0]
         if "off" in c:  # block corner: shift each line sideways by [ft, compass direction], e.g. [[41.25, "SE"], [41.25, "NE"]]
@@ -358,6 +371,9 @@ def georef(key):
         out["blocks"] = [dict(b, M=comp(b["M"]), rect_px=back(b["rect_px"])) for b in D.get("blocks", [])]
         if D.get("valid_px"):
             out["valid_px"] = back(D["valid_px"])
+        if D.get("valid_poly_px"):
+            q = np.array(D["valid_poly_px"], float)
+            out["valid_poly_px"] = (q @ Ti[:, :2].T + Ti[:, 2]).tolist()
         json.dump(out, open(INTERIM / f"{key}.M.json", "w"), indent=1)
         log(key, "registered to", cfg["registered_to"], out["scale"], f"reg {cfg['reg_rms_px']:.2f} px")
         return
@@ -369,7 +385,7 @@ def georef(key):
         allpx.append(measured(c, masks)); allw.append(w); alllab.append(lab)
     lines = []
     for ln in cfg.get("lines", []):
-        p0, d = street_line(ln["street"], near_xy(ln["near"]), ln.get("R", 300))
+        p0, d = street_line(ln["street"], near_xy(ln["near"]), ln.get("R", 300), ln.get("cnn"))
         if "off" in ln:  # points on a kerb / building line parallel to the centreline: [ft, compass side]
             n = np.array([-d[1], d[0]])
             comp = {"N": (0, 1), "S": (0, -1), "E": (1, 0), "W": (-1, 0), "NE": (1, 1), "NW": (-1, 1), "SE": (1, -1), "SW": (-1, -1)}
@@ -395,6 +411,7 @@ def georef(key):
     pxs = allpx + [tuple(q) for q, _, _ in lines]
     json.dump({"M": M.tolist(), "pct": 25, "img": str(img), "rms": float(np.sqrt((d ** 2).mean())), "max": float(d.max()), "n": len(d),
                "scale": describe(M), "blocks": blocks, "zones_only": cfg.get("zones_only", False), "valid_px": cfg.get("valid_px"),
+               "valid_poly_px": cfg.get("valid_poly_px"),
                "tied_to": sorted(tied), "tie_rms": tie_rms,
                "points": [{"label": l, "px": list(map(float, p)), "res_m": round(float(r), 2)} for l, p, r in zip(labs, pxs, d)]},
               open(INTERIM / f"{key}.M.json", "w"), indent=1)
@@ -450,6 +467,8 @@ def extract(key):
         "iron": ((Hh >= 17) & (Hh <= 28) & (S <= 31) & (V >= 115) & (V <= 146) & (dV <= -4))
                 | ((ed in EDITION_1950) & (Hh >= 31) & (Hh <= 42) & (S >= 28) & (S <= pS - 6) & (V >= 112) & (V <= 152)),
     }
+    if cfg.get("stone_low_sat"):  # 1950 paste-over slips: the blue (concrete) wash is paler (saturation 25-35)
+        classes["stone"] = classes["stone"] | ((Hh >= 85) & (Hh <= 125) & (S >= 22) & (V >= 60) & (V <= pV - 20))
     if cfg.get("iron_rule") == "dark_grey":  # 1914 vol. 6 iron buildings: paper hue and saturation, 14+ darker than paper
         classes["iron"] = (Hh >= 14) & (Hh <= 32) & (S <= pS + 4) & (V <= pV - 14) & (V >= 80)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
@@ -532,6 +551,8 @@ def extract(key):
             vp = G.get("valid_px")
             if vp and not (vp[0] <= cx <= vp[2] and vp[1] <= cy <= vp[3]):
                 continue
+            if G.get("valid_poly_px") and not Polygon(G["valid_poly_px"]).contains(poly.centroid):
+                continue  # part of the sheet drawn in another orientation (another key covers it)
             T, zone = transform_for(cx, cy)
             if T is None:
                 continue
@@ -588,6 +609,170 @@ def wharves(key):
     log(key, len(out), "wharf decks")
 
 
+# ----------------------------------------------------------------------------------------------- railway tracks
+def warp_px(G, pts):
+    """pixel -> UTM for a sheet: its sheet transform, or for block-wise sheets (streets drawn wider than scale) a
+    rubber sheet: each block's transform inside its rectangle, inverse-distance blend of the block transforms in the
+    streets between them (so a track crossing a too-wide street stays continuous)."""
+    pts = np.asarray(pts, float)
+    if not G.get("zones_only"):
+        return apply(np.array(G["M"]), pts)
+    acc, wsum = np.zeros((len(pts), 2)), np.zeros(len(pts))
+    for b in G["blocks"]:
+        x0, y0, x1, y1 = b["rect_px"]
+        d = np.hypot(np.maximum(0, np.maximum(x0 - pts[:, 0], pts[:, 0] - x1)), np.maximum(0, np.maximum(y0 - pts[:, 1], pts[:, 1] - y1)))
+        w = 1.0 / (d + 0.5) ** 4
+        acc += w[:, None] * apply(np.array(b["M"]), pts)
+        wsum += w
+    return acc / wsum[:, None]
+
+
+def in_blocks(G, pts, margin=0):
+    pts = np.asarray(pts, float)
+    ok = np.zeros(len(pts), bool)
+    for b in G.get("blocks", []):
+        x0, y0, x1, y1 = b["rect_px"]
+        ok |= (pts[:, 0] >= x0 - margin) & (pts[:, 0] <= x1 + margin) & (pts[:, 1] >= y0 - margin) & (pts[:, 1] <= y1 + margin)
+    return ok
+
+
+def skeleton_paths(sk):
+    """pixel paths between end / junction pixels of a 1-px skeleton (8-connected)."""
+    H, W = sk.shape
+    ys, xs = np.nonzero(sk)
+    on = set(zip(ys.tolist(), xs.tolist()))
+    nb = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+    def nbrs(p):
+        return [(p[0] + a, p[1] + b) for a, b in nb if (p[0] + a, p[1] + b) in on]
+    deg = {p: len(nbrs(p)) for p in on}
+    nodes = {p for p, d in deg.items() if d != 2}
+    seen, paths = set(), []
+    for n0 in nodes:
+        for q in nbrs(n0):
+            if (n0, q) in seen:
+                continue
+            path, prev, cur = [n0], n0, q
+            while True:
+                seen.add((prev, cur)); seen.add((cur, prev))
+                path.append(cur)
+                if cur in nodes:
+                    break
+                nx_ = [r for r in nbrs(cur) if r != prev and (cur, r) not in seen]
+                if not nx_:
+                    break
+                prev, cur = cur, nx_[0]
+            paths.append(path)
+    left = on - {p for path in paths for p in path}  # loops without end or junction pixels
+    while left:
+        p0 = next(iter(left)); path, prev, cur = [p0], None, p0
+        while True:
+            nx_ = [r for r in nbrs(cur) if r != prev and r in left and r not in path]
+            if not nx_:
+                break
+            prev, cur = cur, nx_[0]; path.append(cur)
+        left -= set(path)
+        paths.append(path)
+    return [np.array([(x, y) for y, x in path], float) for path in paths if len(path) >= 2]
+
+
+def tracks(key):
+    """railway track centrelines: a track is two parallel rail lines 5.5-8.5 px (1.1-1.7 m; standard gauge 1.435 m)
+    apart. Dark straight-line pixels (opening with a 15-px line in 16 orientations; drops lettering and the dashed
+    water-pipe and fence lines) are paired across the gap, the paper pixels between a pair are skeletonised and
+    vectorised; building fills, sheet margins and short pieces are dropped."""
+    import cv2
+    from shapely.geometry import LineString, MultiLineString, Polygon
+    from shapely.ops import linemerge, unary_union
+    from skimage.morphology import skeletonize
+    G = json.load(open(INTERIM / f"{key}.M.json"))
+    tcfg_path = CONTROL / f"{key}.tracks.json"
+    tcfg = json.load(open(tcfg_path)) if tcfg_path.exists() else {}
+    rgb = np.asarray(Image.open(G["img"]).convert("RGB"))
+    g = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    small = cv2.resize(g, None, fx=1 / 8, fy=1 / 8, interpolation=cv2.INTER_AREA)
+    bg = cv2.resize(cv2.medianBlur(small.astype(np.uint8), 31), (g.shape[1], g.shape[0])).astype(np.float32)
+    dark = (g < bg - 38).astype(np.uint8)
+    hsv = cv2.cvtColor(cv2.medianBlur(rgb, 3), cv2.COLOR_RGB2HSV).astype(int)
+    Hh, S, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
+    pS = int(np.median(S[pm]))
+    fill = (S > pS + 42) | (((Hh >= 80) & (Hh <= 130)) & (S >= 30)) | (((Hh >= 158) | (Hh <= 6)) & (S >= 45))
+    fill = ndi.binary_dilation(ndi.binary_opening(fill, structure=np.ones((5, 5))), iterations=5)
+    C = np.zeros(g.shape, bool)
+    dark3 = cv2.dilate(dark, np.ones((3, 3), np.uint8))  # 1-px rails survive a slightly misaligned line opening
+    for th in np.radians(np.arange(0, 180, 7.5)):
+        k = np.zeros((17, 17), np.uint8)
+        dx, dy = 7 * math.cos(th), 7 * math.sin(th)
+        cv2.line(k, (int(round(8 - dx)), int(round(8 - dy))), (int(round(8 + dx)), int(round(8 + dy))), 1, 1)
+        Lt = cv2.morphologyEx(dark3, cv2.MORPH_OPEN, k).astype(bool)
+        nx_, ny_ = -math.sin(th), math.cos(th)
+        for r in (3.0, 3.5, 4.0):
+            ox, oy = int(round(r * nx_)), int(round(r * ny_))
+            A = np.roll(np.roll(Lt, oy, axis=0), ox, axis=1)
+            B = np.roll(np.roll(Lt, -oy, axis=0), -ox, axis=1)
+            C |= A & B
+    C &= ~dark.astype(bool) & ~fill
+    m = 14
+    C[:m], C[-m:], C[:, :m], C[:, -m:] = False, False, False, False
+    C = ndi.binary_closing(C, structure=np.ones((3, 3)))
+    lab, n = ndi.label(C)
+    if n:
+        sizes = ndi.sum(C, lab, range(1, n + 1))
+        C = np.isin(lab, np.nonzero(sizes >= 40)[0] + 1)
+    sk = skeletonize(C)
+    paths = skeleton_paths(sk)
+    lines = [LineString(p) for p in paths if len(p) >= 2]
+    # drop skeleton barbs (short dead-end twigs), then merge through the remaining degree-2 joints
+    for _ in range(2):
+        ends = {}
+        for ln in lines:
+            for c in (ln.coords[0], ln.coords[-1]):
+                ends[c] = ends.get(c, 0) + 1
+        lines = [ln for ln in lines if not (ln.length < 14 and (ends[ln.coords[0]] == 1 or ends[ln.coords[-1]] == 1))]
+        merged = linemerge(MultiLineString(lines)) if lines else None
+        lines = list(getattr(merged, "geoms", [merged])) if merged is not None and not merged.is_empty else []
+    vp = G.get("valid_px")
+    clip = Polygon([[vp[0], vp[1]], [vp[2], vp[1]], [vp[2], vp[3]], [vp[0], vp[3]]]) if vp else None
+    if G.get("valid_poly_px"):
+        clip = Polygon(G["valid_poly_px"]) if clip is None else clip.intersection(Polygon(G["valid_poly_px"]))
+    for ex in tcfg.get("exclude_px", []):  # hand-marked non-track double lines (e.g. a viaduct parapet), see the .tracks.json
+        clip = (clip if clip is not None else Polygon([[0, 0], [1e5, 0], [1e5, 1e5], [0, 1e5]])).difference(Polygon(ex))
+    out = []
+    comp_len = {}
+    if lines:
+        U = unary_union(lines)
+        groups = list(getattr(U.buffer(2.5), "geoms", [U.buffer(2.5)]))
+        for gi, gp in enumerate(groups):
+            comp_len[gi] = sum(ln.length for ln in lines if ln.intersects(gp))
+    for ln in lines:
+        ln = ln.simplify(0.8)
+        if clip is not None:
+            ln = ln.intersection(clip)
+        for part in getattr(ln, "geoms", [ln]):
+            if part.is_empty or part.geom_type != "LineString" or part.length < 40:
+                continue
+            gi = next((i for i, gp in enumerate(groups) if gp.intersects(part)), None)
+            if gi is not None and comp_len[gi] < 150:  # isolated short pieces (lettering, symbols)
+                continue
+            (ax, ay), (bx, by) = part.coords[0], part.coords[-1]
+            if (gi is not None and comp_len[gi] < 400 and min(ay, by) > 0.82 * g.shape[0]
+                    and abs(math.degrees(math.atan2(by - ay, bx - ax))) % 180 in [a for a in range(0, 2)] + [179, 180]):
+                continue  # the "Scale of Feet" bar (two parallel lines like a track) at the foot of the sheet
+            px = np.asarray(part.coords)
+            if G.get("zones_only"):
+                dens = np.linspace(0, part.length, max(2, int(part.length / 4)))
+                px = np.array([part.interpolate(t).coords[0] for t in dens])
+                share_in = float(in_blocks(G, px, 10).mean())
+            else:
+                share_in = 1.0
+            utm = warp_px(G, px)
+            out.append({"id": f"{key}_t{len(out) + 1}", "px": np.round(px, 1).tolist(), "utm": np.round(utm, 2).tolist(),
+                        "share_in_blocks": round(share_in, 2)})
+    json.dump(out, open(INTERIM / f"{key}.tracks.json", "w"))
+    log(key, len(out), "track lines", round(sum(LineString(t["utm"]).length for t in out)), "m")
+
+
 # ----------------------------------------------------------------------------------------------- outputs
 def assemble():
     import glob
@@ -616,6 +801,7 @@ def assemble():
             return "high"
         return "medium" if f.get("n", 0) >= 3 and f.get("rms", 9) <= 3 else "low"
     covers = {}
+    rank_c = {"high": 0, "medium": 1, "low": 2}
     for (area, year), keys in AREAS.items():
         feats, cover = [], []
         for key in keys:
@@ -640,7 +826,10 @@ def assemble():
             else:
                 x0, y0, x1, y1 = G.get("valid_px") or [30, 30, W_ - 30, H_ - 30]
                 x0, y0, x1, y1 = max(x0, 30), max(y0, 30), min(x1, W_ - 30), min(y1, H_ - 30)
-                cover.append(Polygon(apply(np.array(G["M"]), [[x0, y0], [x1, y0], [x1, y1], [x0, y1]])))
+                rect = Polygon([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])
+                if G.get("valid_poly_px"):
+                    rect = rect.intersection(Polygon(G["valid_poly_px"]))
+                cover.append(Polygon(apply(np.array(G["M"]), np.asarray(rect.exterior.coords))))
             for r in rows:
                 g = make_valid(Polygon(r["ring_utm"], r.get("holes_utm") or []))
                 if g.geom_type != "Polygon":
@@ -676,6 +865,8 @@ def assemble():
                     else:
                         stories, use, ssrc, usrc = st, us, rule, "default"
                 conf = conf_of(fitq)
+                if kcfg.get("confidence_cap") and rank_c[conf] < rank_c[kcfg["confidence_cap"]]:
+                    conf = kcfg["confidence_cap"]  # e.g. scale only from the prior, or control from street labels
                 if r.get("confidence") == "low" or (G.get("zones_only") and zone == "sheet") or (map_year < 1900 and cls == "fireproof"):
                     conf = "low"
                 feats.append((g, {"id": r["id"], "map_year": map_year, "volume": f"sanborn00813_{vol}", "volume_label": vlabel,

@@ -1,0 +1,45 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "STOCKTON ST",
+   "b": "BEACH ST",
+   "x": 819.0,
+   "y": 1299.0,
+   "norefine": 1
+  },
+  {
+   "a": "STOCKTON ST",
+   "b": "NORTH POINT ST",
+   "x": 819.0,
+   "y": 1815.0,
+   "norefine": 1
+  },
+  {
+   "a": "GRANT AVE",
+   "b": "NORTH POINT ST",
+   "x": 1525.0,
+   "y": 1815.0,
+   "norefine": 1
+  },
+  {
+   "a": "POWELL ST",
+   "b": "NORTH POINT ST",
+   "x": 96.0,
+   "y": 1815.0,
+   "norefine": 1
+  },
+  {
+   "a": "POWELL ST",
+   "b": "BEACH ST",
+   "x": 96.0,
+   "y": 1299.0,
+   "norefine": 1
+  }
+ ],
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

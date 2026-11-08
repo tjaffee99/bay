@@ -1,0 +1,407 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Pacific-Jackson/Davis-Front",
+   "corners": [
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552902.4,
+       4183560.0
+      ],
+      "DAVIS ST",
+      [
+       552902.4,
+       4183560.0
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x DAVIS ST (centrelines extended; today closest-approach 105m)",
+     "x": 272.0,
+     "y": 328.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552970.2,
+       4183472.8
+      ],
+      "DAVIS ST",
+      [
+       552970.2,
+       4183472.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DAVIS ST",
+     "x": 685.0,
+     "y": 328.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552850.6,
+       4183551.3
+      ],
+      "FRONT ST",
+      [
+       552850.6,
+       4183551.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x FRONT ST",
+     "x": 272.0,
+     "y": 743.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552866.9,
+       4183453.8
+      ],
+      "FRONT ST",
+      [
+       552866.9,
+       4183453.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x FRONT ST",
+     "x": 685.0,
+     "y": 743.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    272.0,
+    328.0,
+    685.0,
+    743.0
+   ]
+  },
+  {
+   "name": "Jackson-Washington/Davis-Front",
+   "corners": [
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552970.2,
+       4183472.8
+      ],
+      "DAVIS ST",
+      [
+       552970.2,
+       4183472.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DAVIS ST",
+     "x": 991.0,
+     "y": 328.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       552986.8,
+       4183372.4
+      ],
+      "DAVIS ST",
+      [
+       552986.8,
+       4183372.4
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x DAVIS ST",
+     "x": 1403.0,
+     "y": 328.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552866.9,
+       4183453.8
+      ],
+      "FRONT ST",
+      [
+       552866.9,
+       4183453.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x FRONT ST",
+     "x": 991.0,
+     "y": 743.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       552891.3,
+       4183306.3
+      ],
+      "FRONT ST",
+      [
+       552891.3,
+       4183306.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x FRONT ST (centrelines extended; today closest-approach 97m)",
+     "x": 1403.0,
+     "y": 743.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    991.0,
+    328.0,
+    1403.0,
+    743.0
+   ]
+  },
+  {
+   "name": "Pacific-Jackson/Front-Battery #2",
+   "corners": [
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552850.6,
+       4183551.3
+      ],
+      "FRONT ST",
+      [
+       552850.6,
+       4183551.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x FRONT ST",
+     "x": 270.0,
+     "y": 1195.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552866.9,
+       4183453.8
+      ],
+      "FRONT ST",
+      [
+       552866.9,
+       4183453.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x FRONT ST",
+     "x": 684.0,
+     "y": 1195.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552747.1,
+       4183533.7
+      ],
+      "BATTERY ST",
+      [
+       552747.1,
+       4183533.7
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x BATTERY ST",
+     "x": 270.0,
+     "y": 1612.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552763.7,
+       4183436.5
+      ],
+      "BATTERY ST",
+      [
+       552763.7,
+       4183436.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x BATTERY ST",
+     "x": 684.0,
+     "y": 1612.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    270.0,
+    1195.0,
+    684.0,
+    1612.0
+   ]
+  },
+  {
+   "name": "Jackson-Washington/Front-Battery #2",
+   "corners": [
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552866.9,
+       4183453.8
+      ],
+      "FRONT ST",
+      [
+       552866.9,
+       4183453.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x FRONT ST",
+     "x": 987.0,
+     "y": 1195.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       552891.3,
+       4183306.3
+      ],
+      "FRONT ST",
+      [
+       552891.3,
+       4183306.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x FRONT ST (centrelines extended; today closest-approach 97m)",
+     "x": 1400.0,
+     "y": 1195.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552763.7,
+       4183436.5
+      ],
+      "BATTERY ST",
+      [
+       552763.7,
+       4183436.5
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x BATTERY ST",
+     "x": 987.0,
+     "y": 1612.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       552781.6,
+       4183336.6
+      ],
+      "BATTERY ST",
+      [
+       552781.6,
+       4183336.6
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x BATTERY ST",
+     "x": 1400.0,
+     "y": 1612.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    987.0,
+    1195.0,
+    1400.0,
+    1612.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

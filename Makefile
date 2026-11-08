@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads transit ground-detail dev build deploy shots clean-interim
+.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads transit ground-detail region-download region dev build deploy shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -60,6 +60,14 @@ roads: download overture grid transit
 # land_use outlines draped on the terrain) + park labels
 ground-detail: export
 	$(P) ../$(PY) ground_detail.py
+
+# ---- five counties around SF (Phase 5): Overture footprints + assessor / survey years
+# (data/research/region_buildings.md), z13 building tiles (not committed, shipped by deploy)
+region-download:
+	$(P) ../$(PY) download_region.py all
+
+region: grid
+	$(P) ../$(PY) region_buildings.py
 
 # ---- terrain: elevation + time-varying land cover tiles (whole Bay Area) -----
 terrain: baylands grid tiles

@@ -1,0 +1,20 @@
+{
+ "registered_to": "016_0217r",
+ "T": [
+  [
+   0.9958493269454833,
+   0.006857677250782627,
+   10.620134067376275
+  ],
+  [
+   -0.006857677250782627,
+   0.9958493269454833,
+   13.64654923221661
+  ]
+ ],
+ "reg_inliers": 1213,
+ "reg_rms_px": 1.84,
+ "note": "same scan and SIFT registration as 031_0217 (other part of the sheet, georeferenced separately as 016_0217r)",
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "stone_low_sat": true
+}

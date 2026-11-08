@@ -64,23 +64,22 @@ def tile_origin(x, y, z=TILE_Z):
 
 
 def load_footprints():
-    p = RAW / "overture" / RELEASE / "region5_building.parquet"
-    df = pd.read_parquet(p)
-    geom = df.geometry
-    if len(geom) and isinstance(geom.iloc[0], (bytes, bytearray, memoryview)):
-        geom = gpd.GeoSeries.from_wkb(geom)
-    g = gpd.GeoDataFrame(df.drop(columns=["geometry"]), geometry=geom, crs=4326)
+    """Overture footprints of the five counties (download_region.py: clipped, with county),
+    joined to the per-footprint candidate years (region5_footprint_years.parquet)."""
+    g = gpd.read_parquet(RAW / "overture" / RELEASE / "region5_building.parquet")
+    if g.crs is None:
+        g = g.set_crs(4326)
+    fy = pd.read_parquet(INTERIM / "region5_footprint_years.parquet")
+    fy = fy.drop(columns=[c for c in ("county",) if c in fy])
+    only = __import__("os").environ.get("REGION_COUNTY")  # e.g. REGION_COUNTY=Marin for a test run
+    if only:
+        g = g[g.county == only]
+    g = g.merge(fy, on="id", how="left")
+    g = g[~g.get("is_underground", pd.Series(False, index=g.index)).fillna(False).astype(bool)]
     g = g.explode(index_parts=False)
     g = g[g.geometry.geom_type == "Polygon"].reset_index(drop=True)
-    counties = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
-    counties = counties[(counties.STATEFP == "06") & counties.COUNTYFP.isin(COUNTIES)][["COUNTYFP", "geometry"]].to_crs(4326)
-    rp = gpd.GeoDataFrame(geometry=g.geometry.representative_point(), crs=4326)
-    j = gpd.sjoin(rp, counties, predicate="within", how="left")
-    j = j[~j.index.duplicated()]
-    g["county"] = j.COUNTYFP.map(COUNTIES).values
-    g = g[g.county.notna()].reset_index(drop=True)
-    u = g.to_crs(UTM)
-    g = g[u.geometry.area.values > 12].reset_index(drop=True)
+    area = g.to_crs(UTM).geometry.area.values
+    g = g[area > 12].reset_index(drop=True)
     log(f"region: {len(g)} footprints ({g.county.value_counts().to_dict()})")
     return g
 
@@ -105,42 +104,28 @@ def clean_years(y, src):
 
 
 def assign_years(g):
-    p = INTERIM / "region_years.parquet"
+    """Recorded years, best source first: historic-resource surveys (OHP directory, San
+    José inventory: they also fix exempt buildings the roll misdates), the official
+    assessor roll, public copies of it, then the vendor copy (FEMA / Lightbox). A
+    round placeholder year (spike) is only an upper bound for the imputation."""
     year = np.full(len(g), np.nan)
     raw = np.zeros(len(g))
     conf = np.array(["estimated"] * len(g), dtype=object)
-    if p.exists():
-        ry = gpd.read_parquet(p)
-        if ry.crs is None:
-            ry = ry.set_crs(4326)
-        ry = ry.to_crs(4326)
-        ry = ry[ry.year_built.notna()]
-        src = ry["source"].astype(str).values if "source" in ry else np.array(["?"] * len(ry))
-        yy, spike = clean_years(ry.year_built.astype(float).values, src)
-        ry = ry.assign(_y=yy, _spike=spike)
-        rp = gpd.GeoDataFrame({"i": np.arange(len(g))}, geometry=g.geometry.representative_point(), crs=4326)
-        polys = ry[ry.geometry.geom_type.isin(["Polygon", "MultiPolygon"])]
-        pts = ry[ry.geometry.geom_type == "Point"]
-        hit = pd.Series(np.nan, index=range(len(g)))
-        sp = pd.Series(False, index=range(len(g)))
-        if len(polys):
-            j = gpd.sjoin(rp, polys[["_y", "_spike", "geometry"]], predicate="within", how="inner")
-            j = j[~j.index.duplicated()]
-            hit.loc[j.i.values] = j._y.values
-            sp.loc[j.i.values] = j._spike.values
-        if len(pts):
-            fp = gpd.GeoDataFrame({"i": np.arange(len(g))}, geometry=g.geometry.values, crs=4326)
-            j = gpd.sjoin(pts[["_y", "_spike", "geometry"]], fp, predicate="within", how="inner")
-            j = j.sort_values("_y").drop_duplicates("i")
-            fill = hit.loc[j.i.values].isna().values
-            hit.loc[j.i.values[fill]] = j._y.values[fill]
-            sp.loc[j.i.values[fill]] = j._spike.values[fill]
-        rec = hit.values
-        raw = np.nan_to_num(rec)
-        good = np.isfinite(rec) & ~sp.values
-        year[good] = rec[good]
-        conf[good] = "exact"
-        log(f"region: {good.sum()} footprints with a recorded year ({np.isfinite(rec).sum()} incl. {sp.sum()} spike placeholders)")
+    src = np.array([""] * len(g), dtype=object)
+    for col in ("historic", "public", "third_party", "commercial"):
+        if f"year_{col}" not in g:
+            continue
+        y = pd.to_numeric(g[f"year_{col}"], errors="coerce").astype("float64").to_numpy(dtype=float, na_value=np.nan)
+        sp = g[f"spike_{col}"].fillna(False).astype(bool).values
+        y = np.where((y < 1769) | (y > CURRENT_YEAR), np.nan, y)
+        take = np.isnan(year) & np.isfinite(y) & ~sp
+        year[take] = y[take]
+        conf[take] = "exact"
+        src[take] = g[f"src_{col}"].astype(str).values[take]
+        ph = (raw == 0) & np.isfinite(y)
+        raw[ph] = y[ph]
+    log(f"region: {np.isfinite(year).sum()} footprints with a recorded year "
+        f"({pd.Series(src[np.isfinite(year)]).str.split(':').str[0].value_counts().head(8).to_dict()})")
     # imputation from recorded neighbours (and the placeholder as an upper bound)
     u = g.to_crs(UTM).geometry.representative_point()
     xy = np.column_stack([u.x.values, u.y.values])
@@ -159,13 +144,16 @@ def assign_years(g):
     if miss.any():
         from terrain_grid import grid_def
         gR = grid_def("region")
-        fb = np.load(INTERIM / "grid_region_fbuy.npy").astype(float)
-        rp = g.geometry.representative_point()
-        X = np.radians(rp.x.values) * 6378137.0
-        Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(rp.y.values) / 2))
-        c = np.clip(((X - gR["X0"]) / gR["res"]).astype(int), 0, gR["cols"] - 1)
-        r = np.clip(((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
-        f = fb[r, c]
+        if "fbuy" in g:
+            f = pd.to_numeric(g["fbuy"], errors="coerce").astype("float64").to_numpy(dtype=float, na_value=np.nan)
+        else:
+            fb = np.load(INTERIM / "grid_region_fbuy.npy").astype(float)
+            rp = g.geometry.representative_point()
+            X = np.radians(rp.x.values) * 6378137.0
+            Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(rp.y.values) / 2))
+            c = np.clip(((X - gR["X0"]) / gR["res"]).astype(int), 0, gR["cols"] - 1)
+            r = np.clip(((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
+            f = fb[r, c]
         ok = miss & (f >= 1810) & (f <= 2026)
         hh = np.array([h01(f"r{k}") for k in range(len(g))])
         year[ok] = f[ok] + hh[ok] * np.clip(2020 - f[ok], 0, 25)
@@ -217,8 +205,14 @@ def row_timing(g, year):
 
 def heights(g):
     area = g.to_crs(UTM).geometry.area.values
-    h = pd.to_numeric(g.get("height"), errors="coerce").values if "height" in g else np.full(len(g), np.nan)
-    fl = pd.to_numeric(g.get("num_floors"), errors="coerce").values if "num_floors" in g else np.full(len(g), np.nan)
+    def num(col):
+        if col not in g:
+            return np.full(len(g), np.nan)
+        return pd.to_numeric(g[col], errors="coerce").astype("float64").to_numpy(dtype=float, na_value=np.nan)
+    h = num("height")
+    fl = num("num_floors")
+    lidar = num("smc_lidar_height_m")
+    h = np.where(np.isfinite(lidar) & (lidar > 2), lidar, h)
     out = np.where(np.isfinite(h) & (h > 2), h, np.where(np.isfinite(fl) & (fl > 0), fl * 3.3 + 1.5, np.nan))
     default = np.where(area < 60, 3.2, np.where(area < 300, 5.5, np.where(area < 1500, 7.0, 9.0)))
     stories = np.where(np.isfinite(fl), fl, np.round(np.where(np.isfinite(out), out, default) / 3.3))

@@ -1,0 +1,231 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "valid_px": [
+  30,
+  30,
+  1640,
+  960
+ ],
+ "blocks": [
+  {
+   "name": "3949",
+   "corners": [
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "16TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       40.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of TEXAS ST x 16TH ST (lines fitted on the straight grid)",
+     "x": 374.0,
+     "y": 220.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "16TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       40.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of MISSISSIPPI ST x 16TH ST (lines fitted on the straight grid)",
+     "x": 672.0,
+     "y": 221.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "TEXAS ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of MISSISSIPPI ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 674.0,
+     "y": 816.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "TEXAS ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of TEXAS ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 375.0,
+     "y": 816.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3948",
+   "corners": [
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "16TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       40.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of MISSISSIPPI ST x 16TH ST (lines fitted on the straight grid)",
+     "x": 980.0,
+     "y": 215.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "16TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       40.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of PENNSYLVANIA AVE x 16TH ST (lines fitted on the straight grid)",
+     "x": 1282.0,
+     "y": 220.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of PENNSYLVANIA AVE x 17TH ST (lines fitted on the straight grid)",
+     "x": 1283.0,
+     "y": 815.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of MISSISSIPPI ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 986.0,
+     "y": 815.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "note": "upper half of sheet 545 (Texas St - Pennsylvania Ave, 16th - 17th St)",
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

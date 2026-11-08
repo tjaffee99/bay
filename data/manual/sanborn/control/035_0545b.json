@@ -1,0 +1,19 @@
+{
+ "registered_to": "020_0545b",
+ "T": [
+  [
+   0.990679558446885,
+   -0.0027504708433781994,
+   18.098106419989673
+  ],
+  [
+   0.0027504708433781994,
+   0.990679558446885,
+   2.2525800188949003
+  ]
+ ],
+ "reg_inliers": 1133,
+ "reg_rms_px": 1.56,
+ "note": "same scan and SIFT registration as 035_0545 (other part of the sheet, georeferenced separately as 020_0545b)",
+ "stone_low_sat": true
+}

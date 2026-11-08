@@ -1,0 +1,119 @@
+{
+ "pct": 25,
+ "iron_rule": "dark_grey",
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "valid_px": [
+  30,
+  990,
+  1640,
+  1890
+ ],
+ "points": [
+  {
+   "la": [
+    "PENNSYLVANIA AVE",
+    "18TH ST"
+   ],
+   "lb": [
+    "16TH ST",
+    "MISSISSIPPI ST"
+   ],
+   "off": [
+    [
+     45.0,
+     "W"
+    ],
+    [
+     40.0,
+     "S"
+    ]
+   ],
+   "R": 160,
+   "label": "SW corner of PENNSYLVANIA AVE x 16TH ST (lines fitted on the straight grid)",
+   "x": 338,
+   "y": 1128,
+   "norefine": 1
+  },
+  {
+   "la": [
+    "PENNSYLVANIA AVE",
+    "18TH ST"
+   ],
+   "lb": [
+    "16TH ST",
+    "MISSISSIPPI ST"
+   ],
+   "off": [
+    [
+     45.0,
+     "E"
+    ],
+    [
+     40.0,
+     "S"
+    ]
+   ],
+   "R": 160,
+   "label": "SE corner of PENNSYLVANIA AVE x 16TH ST (lines fitted on the straight grid)",
+   "x": 472,
+   "y": 1128,
+   "norefine": 1
+  },
+  {
+   "la": [
+    "PENNSYLVANIA AVE",
+    "18TH ST"
+   ],
+   "lb": [
+    "17TH ST",
+    "PENNSYLVANIA AVE"
+   ],
+   "off": [
+    [
+     45.0,
+     "W"
+    ],
+    [
+     33.0,
+     "S"
+    ]
+   ],
+   "R": 160,
+   "label": "SW corner of PENNSYLVANIA AVE x 17TH ST (lines fitted on the straight grid)",
+   "x": 341,
+   "y": 1822,
+   "norefine": 1
+  },
+  {
+   "la": [
+    "PENNSYLVANIA AVE",
+    "18TH ST"
+   ],
+   "lb": [
+    "17TH ST",
+    "PENNSYLVANIA AVE"
+   ],
+   "off": [
+    [
+     45.0,
+     "E"
+    ],
+    [
+     33.0,
+     "S"
+    ]
+   ],
+   "R": 160,
+   "label": "SE corner of PENNSYLVANIA AVE x 17TH ST (lines fitted on the straight grid)",
+   "x": 474,
+   "y": 1820,
+   "norefine": 1
+  }
+ ],
+ "note": "lower half of sheet 545 (Pennsylvania Ave to the 546 match line, 16th - 17th St); the upper half is 020_0545",
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

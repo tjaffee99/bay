@@ -1,0 +1,319 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Pacific-Jackson/Embarcadero-Drumm",
+   "corners": [
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552963.0,
+       4183520.8
+      ],
+      "DRUMM ST",
+      [
+       552963.0,
+       4183520.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x DRUMM ST (centrelines extended; today closest-approach 233m)",
+     "x": 264.0,
+     "y": 977.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       553075.4,
+       4183490.3
+      ],
+      "DRUMM ST",
+      [
+       553075.4,
+       4183490.3
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DRUMM ST",
+     "x": 677.0,
+     "y": 977.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    264.0,
+    420.0,
+    677.0,
+    977.0
+   ]
+  },
+  {
+   "name": "Pacific-Jackson/Drumm-Davis",
+   "corners": [
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552963.0,
+       4183520.8
+      ],
+      "DRUMM ST",
+      [
+       552963.0,
+       4183520.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x DRUMM ST (centrelines extended; today closest-approach 233m)",
+     "x": 264.0,
+     "y": 1269.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       553075.4,
+       4183490.3
+      ],
+      "DRUMM ST",
+      [
+       553075.4,
+       4183490.3
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DRUMM ST",
+     "x": 677.0,
+     "y": 1269.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "PACIFIC AVE",
+      [
+       552902.4,
+       4183560.0
+      ],
+      "DAVIS ST",
+      [
+       552902.4,
+       4183560.0
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of PACIFIC AVE x DAVIS ST (centrelines extended; today closest-approach 105m)",
+     "x": 264.0,
+     "y": 1686.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552970.2,
+       4183472.8
+      ],
+      "DAVIS ST",
+      [
+       552970.2,
+       4183472.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DAVIS ST",
+     "x": 677.0,
+     "y": 1686.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    264.0,
+    1269.0,
+    677.0,
+    1686.0
+   ]
+  },
+  {
+   "name": "Jackson-Washington/Embarcadero-Drumm",
+   "corners": [
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       553075.4,
+       4183490.3
+      ],
+      "DRUMM ST",
+      [
+       553075.4,
+       4183490.3
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DRUMM ST",
+     "x": 975.0,
+     "y": 977.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       553091.8,
+       4183390.9
+      ],
+      "DRUMM ST",
+      [
+       553091.8,
+       4183390.9
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x DRUMM ST",
+     "x": 1388.0,
+     "y": 977.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    975.0,
+    420.0,
+    1388.0,
+    977.0
+   ]
+  },
+  {
+   "name": "Jackson-Washington/Drumm-Davis",
+   "corners": [
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       553075.4,
+       4183490.3
+      ],
+      "DRUMM ST",
+      [
+       553075.4,
+       4183490.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DRUMM ST",
+     "x": 975.0,
+     "y": 1269.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       553091.8,
+       4183390.9
+      ],
+      "DRUMM ST",
+      [
+       553091.8,
+       4183390.9
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x DRUMM ST",
+     "x": 1388.0,
+     "y": 1269.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "JACKSON ST",
+      [
+       552970.2,
+       4183472.8
+      ],
+      "DAVIS ST",
+      [
+       552970.2,
+       4183472.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of JACKSON ST x DAVIS ST",
+     "x": 975.0,
+     "y": 1686.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "WASHINGTON ST",
+      [
+       552986.8,
+       4183372.4
+      ],
+      "DAVIS ST",
+      [
+       552986.8,
+       4183372.4
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 49,
+     "wb": 68.75,
+     "label": "corner of WASHINGTON ST x DAVIS ST",
+     "x": 1388.0,
+     "y": 1686.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    975.0,
+    1269.0,
+    1388.0,
+    1686.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.002
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

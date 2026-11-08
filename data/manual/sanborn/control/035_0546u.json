@@ -1,0 +1,20 @@
+{
+ "registered_to": "020_0546u",
+ "T": [
+  [
+   0.9749980858697976,
+   0.006798822708431971,
+   28.161384283525276
+  ],
+  [
+   -0.006798822708431971,
+   0.9749980858697976,
+   31.967272150053212
+  ]
+ ],
+ "reg_inliers": 1218,
+ "reg_rms_px": 1.44,
+ "note": "same scan and SIFT registration as 035_0546 (other part of the sheet, georeferenced separately as 020_0546u)",
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "stone_low_sat": true
+}

@@ -1,0 +1,80 @@
+{
+ "iron_rule": "dark_grey",
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "valid_px": [
+  30,
+  100,
+  1640,
+  975
+ ],
+ "note": "upper half of sheet 546 (SP yard between 16th and 17th St, east of the 545 lower half); the lower half is 020_0546",
+ "points": [
+  {
+   "tie": "020_0560",
+   "px_other": [
+    480.8,
+    138.3
+   ],
+   "label": "tie 560 (SIFT match on the shared drawing at the 17th St match line)",
+   "x": 291.2,
+   "y": 841.7,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0560",
+   "px_other": [
+    1139.3,
+    124.6
+   ],
+   "label": "tie 560 (SIFT match, storehouse at 17th St)",
+   "x": 947.0,
+   "y": 820.4,
+   "norefine": 1
+  },
+  {
+   "tie": "020_0560",
+   "px_other": [
+    1235.1,
+    179.4
+   ],
+   "label": "tie 560 (SIFT match, shed at 17th St)",
+   "x": 1044.6,
+   "y": 875.6,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "16TH ST",
+   "near": [
+    "16TH ST",
+    "MISSISSIPPI ST"
+   ],
+   "R": 220,
+   "off": [
+    41.25,
+    "S"
+   ],
+   "px": [
+    [
+     200,
+     225
+    ],
+    [
+     800,
+     225
+    ],
+    [
+     1450,
+     225
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

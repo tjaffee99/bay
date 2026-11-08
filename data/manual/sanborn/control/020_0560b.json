@@ -1,0 +1,336 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "residential": true,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "valid_px": [
+  0,
+  940,
+  1668,
+  1949
+ ],
+ "blocks": [
+  {
+   "name": "3998",
+   "corners": [
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of IOWA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 257.0,
+     "y": 1124.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "INDIANA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of INDIANA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 555.0,
+     "y": 1122.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "INDIANA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of INDIANA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 549.0,
+     "y": 1717.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of IOWA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 261.0,
+     "y": 1720.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3997",
+   "corners": [
+    {
+     "la": [
+      "INDIANA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of INDIANA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 673.0,
+     "y": 1121.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MINNESOTA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of MINNESOTA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 970.0,
+     "y": 1118.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MINNESOTA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of MINNESOTA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 973.0,
+     "y": 1713.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "INDIANA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of INDIANA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 677.0,
+     "y": 1715.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3996",
+   "corners": [
+    {
+     "la": [
+      "MINNESOTA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of MINNESOTA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1148.0,
+     "y": 1117.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "TENNESSEE ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of TENNESSEE ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1445.0,
+     "y": 1115.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "TENNESSEE ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of TENNESSEE ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 1445.0,
+     "y": 1708.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MINNESOTA ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MINNESOTA ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of MINNESOTA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 1150.0,
+     "y": 1710.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "note": "lower half of sheet 560 (Mariposa - 18th St, Iowa - Tennessee); the upper half is 020_0560 (mission_bay)",
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

@@ -1,0 +1,98 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "note": "drawn rotated (north up-right). Control: old 6th St kerbs (DataSF retired diagonal 6th St) and two SIFT ties on the drawing shared with sheet 215 (fence line B and the tracks crossing it); a third SIFT tie at the west end of line B disagreed by 7.7 m and was dropped.",
+ "points": [
+  {
+   "tie": "016_0215",
+   "px_other": [
+    1515.9,
+    1826.2
+   ],
+   "label": "tie 215 (SIFT, tracks at fence line B)",
+   "x": 1518.8,
+   "y": 93.7,
+   "norefine": 1
+  },
+  {
+   "tie": "016_0215",
+   "px_other": [
+    1570.2,
+    1837.6
+   ],
+   "label": "tie 215 (SIFT, end of fence line B)",
+   "x": 1576.6,
+   "y": 105.4,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "06TH",
+   "cnn": [
+    347000,
+    348000
+   ],
+   "near": [
+    553400,
+    4180350
+   ],
+   "R": 400,
+   "off": [
+    41.25,
+    "NE"
+   ],
+   "px": [
+    [
+     219,
+     360
+    ],
+    [
+     220,
+     900
+    ],
+    [
+     222,
+     1440
+    ]
+   ]
+  },
+  {
+   "street": "06TH",
+   "cnn": [
+    347000,
+    348000
+   ],
+   "near": [
+    553400,
+    4180350
+   ],
+   "R": 400,
+   "off": [
+    41.25,
+    "SW"
+   ],
+   "px": [
+    [
+     96,
+     360
+    ],
+    [
+     97,
+     1170
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

@@ -1,0 +1,97 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "confidence_cap": "medium",
+ "note": "drawn rotated (north up-right). Control: old 4th St (DataSF retired diagonal segment, cnn 272000) and Kentucky (3rd) St kerbs, i.e. the 4th x Kentucky junction; the scale comes from the prior (+-1.5 %), so footprints far from the junction (Pacific Lumber Co. yard, north-west corner) can be several metres off: confidence capped at medium.",
+ "points": [],
+ "lines": [
+  {
+   "street": "04TH",
+   "near": [
+    553650,
+    4180890
+   ],
+   "R": 400,
+   "px": [
+    [
+     1506.5,
+     217
+    ],
+    [
+     1506.5,
+     825
+    ],
+    [
+     1506.5,
+     1430
+    ]
+   ],
+   "cnn": [
+    272000
+   ]
+  },
+  {
+   "street": "3RD ST",
+   "near": [
+    553760,
+    4180700
+   ],
+   "R": 250,
+   "off": [
+    40,
+    "W"
+   ],
+   "px": [
+    [
+     1440,
+     1605
+    ],
+    [
+     1366.4,
+     1691.1
+    ],
+    [
+     1270,
+     1800
+    ]
+   ]
+  },
+  {
+   "street": "3RD ST",
+   "near": [
+    553760,
+    4180700
+   ],
+   "R": 250,
+   "off": [
+    40,
+    "E"
+   ],
+   "px": [
+    [
+     1548.0,
+     1660.1
+    ],
+    [
+     1500.9,
+     1716.7
+    ],
+    [
+     1437,
+     1795
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

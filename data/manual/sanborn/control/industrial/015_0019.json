@@ -1,0 +1,407 @@
+{
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "Chestnut-Lombard/Battery-Sansome",
+   "corners": [
+    {
+     "bcx": [
+      "CHESTNUT ST",
+      [
+       552590.9,
+       4184302.6
+      ],
+      "BATTERY ST",
+      [
+       552590.9,
+       4184302.6
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of CHESTNUT ST x BATTERY ST (centrelines extended; today closest-approach 157m)",
+     "x": 426.0,
+     "y": 498.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552644.8,
+       4184245.2
+      ],
+      "BATTERY ST",
+      [
+       552644.8,
+       4184245.2
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x BATTERY ST",
+     "x": 834.0,
+     "y": 498.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CHESTNUT ST",
+      [
+       552515.2,
+       4184367.8
+      ],
+      "SANSOME ST",
+      [
+       552515.2,
+       4184367.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of CHESTNUT ST x SANSOME ST",
+     "x": 426.0,
+     "y": 911.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552523.7,
+       4184239.8
+      ],
+      "SANSOME ST",
+      [
+       552523.7,
+       4184239.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x SANSOME ST",
+     "x": 834.0,
+     "y": 911.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    426.0,
+    498.0,
+    834.0,
+    911.0
+   ]
+  },
+  {
+   "name": "Chestnut-Lombard/Sansome-Montgomery",
+   "corners": [
+    {
+     "bcx": [
+      "CHESTNUT ST",
+      [
+       552515.2,
+       4184367.8
+      ],
+      "SANSOME ST",
+      [
+       552515.2,
+       4184367.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of CHESTNUT ST x SANSOME ST",
+     "x": 426.0,
+     "y": 1127.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552523.7,
+       4184239.8
+      ],
+      "SANSOME ST",
+      [
+       552523.7,
+       4184239.8
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x SANSOME ST",
+     "x": 834.0,
+     "y": 1127.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "CHESTNUT ST",
+      [
+       552362.6,
+       4184320.1
+      ],
+      "MONTGOMERY ST",
+      [
+       552362.6,
+       4184320.1
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of CHESTNUT ST x MONTGOMERY ST",
+     "x": 426.0,
+     "y": 1747.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552379.7,
+       4184216.9
+      ],
+      "MONTGOMERY ST",
+      [
+       552379.7,
+       4184216.9
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x MONTGOMERY ST",
+     "x": 834.0,
+     "y": 1747.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    426.0,
+    1127.0,
+    834.0,
+    1747.0
+   ]
+  },
+  {
+   "name": "Lombard-Greenwich/Battery-Sansome",
+   "corners": [
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552644.8,
+       4184245.2
+      ],
+      "BATTERY ST",
+      [
+       552644.8,
+       4184245.2
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x BATTERY ST",
+     "x": 1052.0,
+     "y": 498.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "GREENWICH ST",
+      [
+       552653.5,
+       4184154.2
+      ],
+      "BATTERY ST",
+      [
+       552653.5,
+       4184154.2
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of GREENWICH ST x BATTERY ST",
+     "x": 1480.0,
+     "y": 498.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552523.7,
+       4184239.8
+      ],
+      "SANSOME ST",
+      [
+       552523.7,
+       4184239.8
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x SANSOME ST",
+     "x": 1052.0,
+     "y": 911.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "GREENWICH ST",
+      [
+       552541.0,
+       4184136.5
+      ],
+      "SANSOME ST",
+      [
+       552541.0,
+       4184136.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of GREENWICH ST x SANSOME ST",
+     "x": 1480.0,
+     "y": 911.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1052.0,
+    498.0,
+    1480.0,
+    911.0
+   ]
+  },
+  {
+   "name": "Lombard-Greenwich/Sansome-Montgomery",
+   "corners": [
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552523.7,
+       4184239.8
+      ],
+      "SANSOME ST",
+      [
+       552523.7,
+       4184239.8
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x SANSOME ST",
+     "x": 1052.0,
+     "y": 1127.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "GREENWICH ST",
+      [
+       552541.0,
+       4184136.5
+      ],
+      "SANSOME ST",
+      [
+       552541.0,
+       4184136.5
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of GREENWICH ST x SANSOME ST",
+     "x": 1480.0,
+     "y": 1127.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "LOMBARD ST",
+      [
+       552379.7,
+       4184216.9
+      ],
+      "MONTGOMERY ST",
+      [
+       552379.7,
+       4184216.9
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of LOMBARD ST x MONTGOMERY ST",
+     "x": 1052.0,
+     "y": 1747.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "GREENWICH ST",
+      [
+       552390.0,
+       4184112.5
+      ],
+      "MONTGOMERY ST",
+      [
+       552390.0,
+       4184112.5
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 68.75,
+     "wb": 68.75,
+     "label": "corner of GREENWICH ST x MONTGOMERY ST",
+     "x": 1480.0,
+     "y": 1747.0,
+     "norefine": 1
+    }
+   ],
+   "zone_px": [
+    1052.0,
+    1127.0,
+    1480.0,
+    1747.0
+   ]
+  }
+ ],
+ "zones_only": true,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

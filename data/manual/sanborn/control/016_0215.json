@@ -1,0 +1,124 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "note": "drawn rotated (north up-right). The street on the left edge is labelled 6TH ST: control = old 6th St (DataSF retired diagonal segments) and its crossings with Hooper, Irwin and Hubbell St, whose DataSF centrelines survive only south-west of 7th St and are extended north-east (straight 1860s grid).",
+ "points": [
+  {
+   "la": [
+    "06TH",
+    [
+     553300,
+     4180450
+    ],
+    [
+     345000,
+     346000,
+     347000,
+     348000
+    ]
+   ],
+   "lb": [
+    "HOOPER ST",
+    "7TH ST"
+   ],
+   "R": 400,
+   "label": "6th x Hooper (Hooper extended NE across 7th St)",
+   "x": 152.5,
+   "y": 508.5,
+   "norefine": 1
+  },
+  {
+   "la": [
+    "06TH",
+    [
+     553300,
+     4180450
+    ],
+    [
+     345000,
+     346000,
+     347000,
+     348000
+    ]
+   ],
+   "lb": [
+    "IRWIN ST",
+    "7TH ST"
+   ],
+   "R": 400,
+   "label": "6th x Irwin (Irwin extended NE)",
+   "x": 152.5,
+   "y": 974.5,
+   "norefine": 1
+  },
+  {
+   "la": [
+    "06TH",
+    [
+     553300,
+     4180450
+    ],
+    [
+     345000,
+     346000,
+     347000,
+     348000
+    ]
+   ],
+   "lb": [
+    "HUBBELL ST",
+    "7TH ST"
+   ],
+   "R": 400,
+   "label": "6th x Hubbell (Hubbell extended NE)",
+   "x": 152.5,
+   "y": 1440.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "06TH",
+   "cnn": [
+    345000,
+    346000,
+    347000,
+    348000
+   ],
+   "near": [
+    553300,
+    4180450
+   ],
+   "R": 400,
+   "off": [
+    41.25,
+    "NE"
+   ],
+   "px": [
+    [
+     217,
+     541
+    ],
+    [
+     215,
+     1153
+    ],
+    [
+     215,
+     1765
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

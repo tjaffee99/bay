@@ -1,0 +1,76 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "RANKIN ST",
+   "b": "DAVIDSON AVE",
+   "x": 582.5,
+   "y": 128.0,
+   "norefine": 1
+  },
+  {
+   "a": "RANKIN ST",
+   "b": "EVANS AVE",
+   "x": 582.5,
+   "y": 550.5,
+   "norefine": 1
+  },
+  {
+   "a": "QUINT ST",
+   "b": "DAVIDSON AVE",
+   "x": 1591.0,
+   "y": 128.0,
+   "norefine": 1
+  },
+  {
+   "a": "QUINT ST",
+   "b": "EVANS AVE",
+   "x": 1591.0,
+   "y": 550.5,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "GALVEZ AVE",
+   "near": [
+    "GALVEZ AVE",
+    "SELBY ST"
+   ],
+   "px": [
+    [
+     200,
+     1404
+    ],
+    [
+     1400,
+     1404
+    ]
+   ],
+   "R": 300
+  },
+  {
+   "street": "HUDSON AVE",
+   "near": [
+    "HUDSON AVE",
+    "SELBY ST"
+   ],
+   "px": [
+    [
+     200,
+     1826.5
+    ],
+    [
+     1400,
+     1826.5
+    ]
+   ],
+   "R": 300
+  }
+ ],
+ "scale_prior": [
+  0.197,
+  0.005
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

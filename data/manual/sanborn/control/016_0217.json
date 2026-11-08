@@ -61,5 +61,32 @@
   }
  ],
  "points": [],
- "image": "IIIF pct:25 of LOC sheet (see README)"
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "valid_poly_px": [
+  [
+   55,
+   1828
+  ],
+  [
+   1345,
+   297
+  ],
+  [
+   1640,
+   297
+  ],
+  [
+   1640,
+   1920
+  ],
+  [
+   30,
+   1920
+  ],
+  [
+   30,
+   1858
+  ]
+ ],
+ "note": "the north-up drawing of this sheet: south-east of the heavy break line (Kentucky St); the rotated part north-west of it is 016_0217r"
 }

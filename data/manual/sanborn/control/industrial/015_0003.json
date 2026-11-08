@@ -1,0 +1,31 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "GRANT AVE",
+   "b": "NORTH POINT ST",
+   "x": 185.5,
+   "y": 1293.5,
+   "norefine": 1
+  },
+  {
+   "a": "KEARNY ST",
+   "b": "NORTH POINT ST",
+   "x": 877.1472868217054,
+   "y": 1295.0,
+   "norefine": 1
+  },
+  {
+   "a": "KEARNY ST",
+   "b": "BAY ST",
+   "x": 875.1472868217054,
+   "y": 1815.0,
+   "norefine": 1
+  }
+ ],
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

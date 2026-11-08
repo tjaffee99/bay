@@ -1,0 +1,56 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "EVANS AVE",
+   "b": "NEWHALL ST",
+   "x": 50.0,
+   "y": 942.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "DAVIDSON AVE",
+   "near": [
+    "DAVIDSON AVE",
+    "03RD ST"
+   ],
+   "px": [
+    [
+     476,
+     300
+    ],
+    [
+     476,
+     1800
+    ]
+   ],
+   "R": 400
+  },
+  {
+   "street": "EVANS AVE",
+   "near": [
+    "EVANS AVE",
+    "NEWHALL ST"
+   ],
+   "px": [
+    [
+     50,
+     600
+    ],
+    [
+     50,
+     1800
+    ]
+   ],
+   "R": 300
+  }
+ ],
+ "scale_prior": [
+  0.197,
+  0.005
+ ],
+ "confidence_cap": "low",
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}

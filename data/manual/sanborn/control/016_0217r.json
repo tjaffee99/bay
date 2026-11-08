@@ -1,0 +1,116 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1640,
+  1890
+ ],
+ "valid_poly_px": [
+  [
+   30,
+   30
+  ],
+  [
+   1640,
+   30
+  ],
+  [
+   1640,
+   297
+  ],
+  [
+   1345,
+   297
+  ],
+  [
+   55,
+   1828
+  ],
+  [
+   30,
+   1828
+  ]
+ ],
+ "note": "upper-left part of sheet 217, drawn rotated (north up-right, own compass rose); the heavy line is Kentucky St's east kerb in this drawing (the north-up drawing 016_0217 covers the rest). Control: 4th St NE kerb (old diagonal 4th St, DataSF retired segment), Kentucky St east kerb, and the 4th x Kentucky corner shared with sheet 216.",
+ "points": [
+  {
+   "tie": "016_0216",
+   "px_other": [
+    1563,
+    1640
+   ],
+   "x": 168.5,
+   "y": 1694.0,
+   "norefine": 1,
+   "label": "tie 216: corner of 4th St east kerb and Kentucky St east kerb (both drawn rotated)"
+  }
+ ],
+ "lines": [
+  {
+   "street": "04TH",
+   "cnn": [
+    272000
+   ],
+   "near": [
+    553650,
+    4180890
+   ],
+   "R": 400,
+   "off": [
+    41.25,
+    "NE"
+   ],
+   "px": [
+    [
+     166.0,
+     312.5
+    ],
+    [
+     167.0,
+     875.0
+    ],
+    [
+     170.0,
+     1437.5
+    ]
+   ]
+  },
+  {
+   "street": "3RD ST",
+   "near": [
+    553760,
+    4180700
+   ],
+   "R": 250,
+   "off": [
+    40,
+    "E"
+   ],
+   "px": [
+    [
+     413.1,
+     1405.2
+    ],
+    [
+     702.3,
+     1064.4
+    ],
+    [
+     990.4,
+     722.7
+    ],
+    [
+     1277.6,
+     380.3
+    ]
+   ]
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "pct": 25
+}

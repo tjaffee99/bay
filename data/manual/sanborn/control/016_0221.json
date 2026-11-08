@@ -1,0 +1,75 @@
+{
+ "residential": false,
+ "scale_prior": [
+  0.2025,
+  0.003
+ ],
+ "valid_px": [
+  30,
+  30,
+  1620,
+  1890
+ ],
+ "note": "north-up. Control: Kentucky (3rd) St centreline (kerb lines at x 82 / 200, 80 ft) and SIFT ties to the Kentucky St drawing shared with sheet 217 (north-up part) for the position along the street. No east-west street survives on this sheet (Santa Fe yard between the channel and El Dorado St).",
+ "points": [
+  {
+   "tie": "016_0217",
+   "px_other": [
+    1148.5,
+    1103.9
+   ],
+   "label": "tie 217 (SIFT, Kentucky St)",
+   "x": 131.4,
+   "y": 946.2,
+   "norefine": 1
+  },
+  {
+   "tie": "016_0217",
+   "px_other": [
+    1151.6,
+    1213.4
+   ],
+   "label": "tie 217 (SIFT, Kentucky St)",
+   "x": 135.4,
+   "y": 1057.1,
+   "norefine": 1
+  },
+  {
+   "tie": "016_0217",
+   "px_other": [
+    1159.7,
+    1092.5
+   ],
+   "label": "tie 217 (SIFT, Kentucky St)",
+   "x": 143.3,
+   "y": 934.9,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "3RD ST",
+   "near": [
+    "3RD ST",
+    "16TH ST"
+   ],
+   "R": 500,
+   "px": [
+    [
+     141,
+     370
+    ],
+    [
+     141,
+     1000
+    ],
+    [
+     141,
+     1630
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

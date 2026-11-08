@@ -1,0 +1,644 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "iron_rule": "dark_grey",
+ "residential": true,
+ "scale_prior": [
+  0.2025,
+  0.004
+ ],
+ "blocks": [
+  {
+   "name": "3986",
+   "corners": [
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of TEXAS ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 164.0,
+     "y": 215.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of MISSISSIPPI ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 464.0,
+     "y": 218.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of MISSISSIPPI ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 465.0,
+     "y": 814.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of TEXAS ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 165.0,
+     "y": 813.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3987",
+   "corners": [
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of MISSISSIPPI ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 659.0,
+     "y": 218.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       45.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of PENNSYLVANIA AVE x 17TH ST (lines fitted on the straight grid)",
+     "x": 958.0,
+     "y": 220.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of PENNSYLVANIA AVE x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 960.0,
+     "y": 815.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of MISSISSIPPI ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 661.0,
+     "y": 813.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3988",
+   "corners": [
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       45.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of PENNSYLVANIA AVE x 17TH ST (lines fitted on the straight grid)",
+     "x": 1151.0,
+     "y": 220.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "17TH ST",
+      "PENNSYLVANIA AVE"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of IOWA ST x 17TH ST (lines fitted on the straight grid)",
+     "x": 1455.0,
+     "y": 215.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of IOWA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1452.0,
+     "y": 817.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of PENNSYLVANIA AVE x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1153.0,
+     "y": 816.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4001",
+   "corners": [
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of TEXAS ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 167.0,
+     "y": 1111.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of MISSISSIPPI ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 467.0,
+     "y": 1111.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of MISSISSIPPI ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 469.0,
+     "y": 1706.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "TEXAS ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of TEXAS ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 169.0,
+     "y": 1707.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "4000",
+   "corners": [
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of MISSISSIPPI ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 662.0,
+     "y": 1111.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of PENNSYLVANIA AVE x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 961.0,
+     "y": 1112.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of PENNSYLVANIA AVE x 18TH ST (lines fitted on the straight grid)",
+     "x": 961.0,
+     "y": 1706.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "MISSISSIPPI ST",
+      "MARIPOSA ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of MISSISSIPPI ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 664.0,
+     "y": 1706.0,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "3999",
+   "corners": [
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "E"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SE corner of PENNSYLVANIA AVE x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1155.0,
+     "y": 1113.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "MARIPOSA ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "S"
+      ]
+     ],
+     "R": 160,
+     "label": "SW corner of IOWA ST x MARIPOSA ST (lines fitted on the straight grid)",
+     "x": 1450.0,
+     "y": 1114.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "IOWA ST",
+      "18TH ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       40.0,
+       "W"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NW corner of IOWA ST x 18TH ST (lines fitted on the straight grid)",
+     "x": 1450.0,
+     "y": 1707.0,
+     "norefine": 1
+    },
+    {
+     "la": [
+      "PENNSYLVANIA AVE",
+      "18TH ST"
+     ],
+     "lb": [
+      "18TH ST",
+      "MISSISSIPPI ST"
+     ],
+     "off": [
+      [
+       45.0,
+       "E"
+      ],
+      [
+       33.0,
+       "N"
+      ]
+     ],
+     "R": 160,
+     "label": "NE corner of PENNSYLVANIA AVE x 18TH ST (lines fitted on the straight grid)",
+     "x": 1155.0,
+     "y": 1708.0,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "points": [],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

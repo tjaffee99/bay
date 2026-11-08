@@ -1,0 +1,75 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "xl": [
+    "EVANS AVE",
+    "MENDELL ST",
+    "LANE ST",
+    "FAIRFAX AVE"
+   ],
+   "R": 200,
+   "label": "Evans x Lane (Lane extended from Fairfax)",
+   "x": 170.0,
+   "y": 1042.5,
+   "norefine": 1
+  },
+  {
+   "xl": [
+    "DAVIDSON AVE",
+    "03RD ST",
+    "LANE ST",
+    "FAIRFAX AVE"
+   ],
+   "R": 200,
+   "label": "Davidson x Lane (both extended)",
+   "x": 594.0,
+   "y": 1042.5,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "EVANS AVE",
+   "near": [
+    "EVANS AVE",
+    "MENDELL ST"
+   ],
+   "px": [
+    [
+     170,
+     300
+    ],
+    [
+     170,
+     1800
+    ]
+   ],
+   "R": 300
+  },
+  {
+   "street": "DAVIDSON AVE",
+   "near": [
+    "DAVIDSON AVE",
+    "03RD ST"
+   ],
+   "px": [
+    [
+     594,
+     300
+    ],
+    [
+     594,
+     1800
+    ]
+   ],
+   "R": 400
+  }
+ ],
+ "scale_prior": [
+  0.197,
+  0.005
+ ],
+ "confidence_cap": "medium",
+ "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
+}
