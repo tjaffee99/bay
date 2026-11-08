@@ -94,14 +94,25 @@ def main():
             end = m - 0.3  # replaced by today's building
         else:
             continue  # today's building may be the original — nothing to add
-        fp = footprint(geom, downtown)
+        early = dev < 1853  # gold rush: tents and 1-2 storey wood frame, not built out to the lot lines
+        fp = footprint(geom, downtown and not early)
         if fp is None:
             continue
-        storeys = (3 + int(2 * h01(key, "s"))) if downtown else (2 + int(h01(key, "s") < (0.5 if dev > 1885 else 0.15)))
-        storey_h = 4.5 if downtown else 3.6
-        rows.append({"geometry": fp, "start_year": dev, "end_year": end, "height": storeys * storey_h + (1.5 if not downtown else 0),
+        storeys, storey_h, base = massing(dev, downtown, key)
+        # downtown's gold-rush frame buildings burned in the 1849-51 fires and the core
+        # rebuilt in brick (fire limits): a second, built-out building from then on
+        brick_from = 1851.4 + 7.0 * h01(key, "b") if (early and downtown) else None
+        first_end = min(end, brick_from) if brick_from else end
+        rows.append({"geometry": fp, "start_year": dev, "end_year": first_end, "height": storeys * storey_h + base,
                      "stories": storeys, "kind": "building", "source": "sf_extent_procedural", "mapblklot": key,
                      "year_confidence": "procedural", "year_reason": "predecessor"})
+        if brick_from and brick_from < end - 1:
+            fp2 = footprint(geom, True)
+            if fp2 is not None:
+                st2, sh2, b2 = massing(brick_from, True, key)
+                rows.append({"geometry": fp2, "start_year": brick_from, "end_year": end, "height": st2 * sh2 + b2,
+                             "stories": st2, "kind": "building", "source": "sf_extent_procedural", "mapblklot": key,
+                             "year_confidence": "procedural", "year_reason": "predecessor_brick"})
         # burned-zone rebuild that stood until today's (later) building
         if burned[i] and np.isfinite(m) and m > BURN_REBUILD[1] + 5:
             rb = BURN_REBUILD[0] + (BURN_REBUILD[1] - BURN_REBUILD[0]) * h01(key, "r")
@@ -125,6 +136,21 @@ def main():
     pred["end_year"] = pred.end_year.astype(float)
     pred.to_parquet(INTERIM / "sf_predecessors.parquet")
     log(f"predecessors: wrote {len(pred)} features")
+
+
+def massing(year, downtown, key):
+    """Storeys, storey height and base for a generated building, per the era rules in
+    data/manual/sf_extent_README.md ("Suggested rules"):
+      before 1853: tents / 1-2 storey wood frame;
+      downtown in the fire limits: brick 2-5 storeys (mostly 3) to 1889, 3-6 after;
+      residential: 2 storeys (to 1885), 2-3 after, ~3.6 m storeys over a raised basement."""
+    hs = h01(key, "s")
+    if year < 1853:
+        return (1 if hs < 0.6 else 2), 3.6, 0.6
+    if downtown:
+        choices = [2, 3, 3, 3, 4, 5] if year < 1890 else [3, 3, 4, 4, 5, 6]
+        return choices[int(hs * len(choices))], 4.5, 0.0
+    return (2 + int(hs < (0.5 if year > 1885 else 0.15))), 3.6, 1.5
 
 
 def footprint(lot, downtown):

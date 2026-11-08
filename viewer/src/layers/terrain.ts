@@ -66,8 +66,15 @@ const terrainModule: ShaderModule<TerrainUniforms> = {
   uniformTypes: {year: 'f32', exaggeration: 'f32'}
 };
 
-const glslPalette = `const vec3 PAL[${PALETTE.length}] = vec3[${PALETTE.length}](${PALETTE.map(c => `vec3(${c.map(v => v.toFixed(3)).join(',')})`).join(',')});`;
 
+// How the land cover is drawn. Covers live on the grid vertices (30 m in SF, 60 m
+// elsewhere). Interpolating their colours across triangles looked like blurry
+// 30 m pixels; snapping to the nearest vertex showed the grid's staircase. Instead,
+// each tile's current cover colours go into a small texture (one texel per vertex,
+// alpha = water), refreshed when the year changes. The fragment shader takes a
+// smooth B-spline sample of it (a 4×4 neighbourhood) and snaps that to the nearest
+// of the surrounding real covers, with a little noise: crisp edges that follow
+// rounded, natural curves instead of grid steps. Hills are smooth-shaded.
 const vs = `#version 300 es
 #define SHADER_NAME terrain-tile-vs
 in vec3 positions;
@@ -75,20 +82,14 @@ in vec4 covers;
 in float cover4;
 in vec4 years;
 in float skirt;
-out vec4 vColor;
-out vec3 vWaterColor;
+in vec3 normals;
+in vec2 uv;
+out vec2 vUv;
+out float vSkirt;
+out vec3 vNormal;
 out vec3 vCommon;
-out float vWater;
 out vec3 vCamera;
 out vec2 vLngLat;
-${glslPalette}
-// Land and water are interpolated separately and split per pixel in the fragment
-// shader (below), so a coastline is a crisp, slightly ragged edge instead of a
-// 30–60 m colour smear: water vertices carry a wet-sand "land" colour and land
-// vertices a shallow-water "water" colour.
-const vec3 SHORE = vec3(0.79, 0.75, 0.63);
-vec3 landOf(float c) { return (c < 1.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? SHORE : PAL[int(c + 0.5)]; }
-vec3 waterOf(float c) { return (c < 1.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? PAL[int(c + 0.5)] : PAL[1]; }
 float coverZ(float c, float z) {
   if (c < 1.5) return 0.0;                         // bay / ocean surface
   if (abs(c - 22.0) < 0.5) return z;               // reservoir surface
@@ -107,19 +108,19 @@ void main(void) {
   if (years.y > 0.0 && y >= years.y) { prev = c; c = covers.z; t0 = years.y; }
   if (years.z > 0.0 && y >= years.z) { prev = c; c = covers.w; t0 = years.z; }
   if (years.w > 0.0 && y >= years.w) { prev = c; c = cover4; t0 = years.w; }
-  // land changes blend over ~2.5 years; fire is instant
   float dur = abs(c - 23.0) < 0.5 ? 0.04 : 2.5;
   float k = smoothstep(0.0, 1.0, clamp((y - t0) / dur, 0.0, 1.0));
-  vec3 col = mix(landOf(prev), landOf(c), k);
-  vWaterColor = mix(waterOf(prev), waterOf(c), k);
+  float wet = mix(waterness(prev), waterness(c), k);
   float z = mix(coverZ(prev, positions.z), coverZ(c, positions.z), k) * terrain.exaggeration;
   if (skirt > 0.5) z -= 80.0;
-  vWater = mix(waterness(prev), waterness(c), k);
+  vUv = uv;
+  vSkirt = skirt;
+  // water lies flat; land uses the elevation grid's normal
+  vNormal = project_normal(normalize(mix(normals, vec3(0.0, 0.0, 1.0), wet)));
   vec4 commonPos;
   gl_Position = project_position_to_clipspace(vec3(positions.xy, z), vec3(0.0), vec3(0.0), commonPos);
   vCommon = commonPos.xyz;
   vCamera = project.cameraPosition;
-  vColor = vec4(col, 1.0);
   vLngLat = positions.xy + project.coordinateOrigin.xy;
 }
 `;
@@ -127,10 +128,11 @@ void main(void) {
 const fs = `#version 300 es
 #define SHADER_NAME terrain-tile-fs
 precision highp float;
-in vec4 vColor;
-in vec3 vWaterColor;
+uniform sampler2D coverTex;
+in vec2 vUv;
+in float vSkirt;
+in vec3 vNormal;
 in vec3 vCommon;
-in float vWater;
 in vec3 vCamera;
 in vec2 vLngLat;
 out vec4 fragColor;
@@ -141,27 +143,113 @@ float vnoise(vec2 p) {
   f = f * f * (3.0 - 2.0 * f);
   return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
 }
+// cubic B-spline sample from 4 bilinear taps
+vec4 bspline(vec2 st, vec2 size) {
+  vec2 i = floor(st);
+  vec2 f = st - i;
+  vec2 f2 = f * f;
+  vec2 f3 = f2 * f;
+  vec2 w0 = (-f3 + 3.0 * f2 - 3.0 * f + 1.0) / 6.0;
+  vec2 w1 = (3.0 * f3 - 6.0 * f2 + 4.0) / 6.0;
+  vec2 w2 = (-3.0 * f3 + 3.0 * f2 + 3.0 * f + 1.0) / 6.0;
+  vec2 w3 = f3 / 6.0;
+  vec2 g0 = w0 + w1;
+  vec2 g1 = w2 + w3;
+  vec2 h0 = (i - 1.0 + w1 / g0 + 0.5) / size;
+  vec2 h1 = (i + 1.0 + w3 / g1 + 0.5) / size;
+  return g0.y * (g0.x * texture(coverTex, vec2(h0.x, h0.y)) + g1.x * texture(coverTex, vec2(h1.x, h0.y)))
+       + g1.y * (g0.x * texture(coverTex, vec2(h0.x, h1.y)) + g1.x * texture(coverTex, vec2(h1.x, h1.y)));
+}
 void main(void) {
-  vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
-  // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
-  // ragged shoreline: threshold the interpolated wetness with a little noise (~20 m and ~6 m)
-  vec2 q = (vLngLat - vec2(-122.0, 37.5)) * vec2(3500.0, 4400.0);
-  float jitter = (vnoise(q * 0.2) - 0.5) * 0.22 + (vnoise(q * 0.8) - 0.5) * 0.08;
-  float wet = vWater + jitter;
-  float aa = fwidth(vWater) * 0.8 + 0.01;
-  float w = smoothstep(0.5 - aa, 0.5 + aa, wet);
-  vec3 land = vColor.rgb;
+  vec2 size = vec2(textureSize(coverTex, 0));
+  vec2 st = vUv * size - 0.5;
+  vec4 smoothC = bspline(st, size);
+  vec4 C = smoothC;
+  // snap to a real cover where texels are big enough on screen to see the edge
+  vec2 dst = fwidth(st);
+  float texelPx = 1.0 / max(max(dst.x, dst.y), 1e-4);
+  float sel = smoothstep(2.0, 5.0, texelPx) * (1.0 - step(0.01, vSkirt));
+  if (sel > 0.0) {
+    ivec2 i0 = ivec2(floor(st));
+    ivec2 mx = ivec2(size) - 1;
+    vec4 t[4] = vec4[4](
+      texelFetch(coverTex, clamp(i0, ivec2(0), mx), 0),
+      texelFetch(coverTex, clamp(i0 + ivec2(1, 0), ivec2(0), mx), 0),
+      texelFetch(coverTex, clamp(i0 + ivec2(0, 1), ivec2(0), mx), 0),
+      texelFetch(coverTex, clamp(i0 + ivec2(1, 1), ivec2(0), mx), 0));
+    // nearest real cover A, then the nearest *different* cover B
+    int a = 0;
+    float da = 1e9;
+    for (int k = 0; k < 4; k++) { float d = distance(smoothC, t[k]); if (d < da) { da = d; a = k; } }
+    int bb = -1;
+    float db = 1e9;
+    for (int k = 0; k < 4; k++) {
+      if (distance(t[k], t[a]) < 0.01) continue;
+      float d = distance(smoothC, t[k]);
+      if (d < db) { db = d; bb = k; }
+    }
+    vec4 picked = t[a];
+    if (bb >= 0) {
+      vec4 A = t[a];
+      vec4 B = t[bb];
+      vec4 AB = B - A;
+      float s = dot(smoothC - A, AB) / max(dot(AB, AB), 1e-6);
+      // organic edge: ~25 m and ~9 m noise on the threshold
+      vec2 q = (vLngLat - vec2(-122.0, 37.5)) * vec2(3500.0, 4400.0) * 1.1;
+      float nz = (vnoise(q) * 0.62 + vnoise(q * 2.7 + 13.1) * 0.38 - 0.5) * 0.22;
+      float e = s + nz - 0.5;
+      float aa = fwidth(s) * 0.75 + 1e-4;
+      picked = mix(A, B, smoothstep(-aa, aa, e));
+    }
+    C = mix(smoothC, picked, sel);
+  }
+  vec3 color = C.rgb;
+  float wet = C.a;
+  vec3 n = normalize(vNormal);
+  if (n.z < 0.2) n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
+  // steep natural slopes read as rock (cliffs)
   float steep = 1.0 - n.z;
-  land = mix(land, vec3(0.64, 0.6, 0.54), smoothstep(0.45, 0.75, steep) * 0.75);
-  vec3 litLand = lighting_getLightColor(land, vCamera, vCommon, n);
-  // water: calm and bright, a shade lighter in the shallows next to the edge
-  vec3 water = vWaterColor * (1.0 + 0.05 * smoothstep(0.8, 0.5, wet));
-  fragColor = vec4(mix(litLand, water, w), 1.0);
+  vec3 land = mix(color, vec3(0.64, 0.6, 0.54), smoothstep(0.45, 0.75, steep) * 0.75 * (1.0 - wet));
+  vec3 lit = lighting_getLightColor(land, vCamera, vCommon, n);
+  // water: calm and flat-bright
+  fragColor = vec4(mix(lit, color * 1.02, wet * 0.85), 1.0);
 }
 `;
 
+const WATERISH = new Set([0, 1, 14, 22]);
+/** Current cover colour (rgb) and wetness (a) of each grid vertex — same rules as the vertex shader. */
+function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
+  const nn = m.n * m.n;
+  for (let v = 0; v < nn; v++) {
+    let c = m.covers[v * 4];
+    let prev = c;
+    let t0 = -100000;
+    for (let k = 0; k < 4; k++) {
+      const yk = m.years[v * 4 + k];
+      if (yk > 0 && year >= yk) {
+        prev = c;
+        c = k < 3 ? m.covers[v * 4 + k + 1] : m.cover4[v];
+        t0 = yk;
+      }
+    }
+    const dur = c === 23 ? 0.04 : 2.5;
+    const x = Math.min(1, Math.max(0, (year - t0) / dur));
+    const kk = x * x * (3 - 2 * x);
+    const p0 = PALETTE[prev] ?? PALETTE[0];
+    const p1 = PALETTE[c] ?? PALETTE[0];
+    const w = (WATERISH.has(prev) ? 1 : 0) * (1 - kk) + (WATERISH.has(c) ? 1 : 0) * kk;
+    out[v * 4] = Math.round((p0[0] + (p1[0] - p0[0]) * kk) * 255);
+    out[v * 4 + 1] = Math.round((p0[1] + (p1[1] - p0[1]) * kk) * 255);
+    out[v * 4 + 2] = Math.round((p0[2] + (p1[2] - p0[2]) * kk) * 255);
+    out[v * 4 + 3] = Math.round(w * 255);
+  }
+}
+
 export type TerrainMesh = {
+  n: number;
   positions: Float32Array;
+  normals: Float32Array;
+  uv: Float32Array;
   covers: Float32Array;
   cover4: Float32Array;
   years: Float32Array;
@@ -193,7 +281,7 @@ const meshDefaults: DefaultProps<TerrainMeshLayerProps> = {
 class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   static layerName = 'TerrainMeshLayer';
   static defaultProps = meshDefaults;
-  state!: {model?: Model};
+  state!: {model?: Model; texture?: any; texYear?: number; texData?: Uint8Array};
 
   getShaders() {
     return super.getShaders({
@@ -211,13 +299,24 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
     super.updateState(params);
     if (params.props.mesh !== params.oldProps.mesh || params.changeFlags.extensionsChanged) {
       this.state.model?.destroy();
-      this.setState({model: this._getModel()});
+      this.state.texture?.destroy();
+      const m = this.props.mesh;
+      const texture = m
+        ? this.context.device.createTexture({
+            width: m.n,
+            height: m.n,
+            format: 'rgba8unorm',
+            sampler: {minFilter: 'linear', magFilter: 'linear', addressModeU: 'clamp-to-edge', addressModeV: 'clamp-to-edge'}
+          })
+        : undefined;
+      this.setState({model: this._getModel(), texture, texYear: undefined, texData: m ? new Uint8Array(m.n * m.n * 4) : undefined});
     }
   }
 
   finalizeState(context: LayerContext) {
     super.finalizeState(context);
     this.state.model?.destroy();
+    this.state.texture?.destroy();
   }
 
   _getModel() {
@@ -233,7 +332,9 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
           covers: {size: 4, value: m.covers},
           cover4: {size: 1, value: m.cover4},
           years: {size: 4, value: m.years},
-          skirt: {size: 1, value: m.skirt}
+          skirt: {size: 1, value: m.skirt},
+          uv: {size: 2, value: m.uv},
+          normals: {size: 3, value: m.normals}
         },
         indices: {size: 1, value: m.indices}
       }),
@@ -242,8 +343,15 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   }
 
   draw() {
-    const {model} = this.state;
-    if (!model) return;
+    const {model, texture, texData} = this.state;
+    if (!model || !texture || !texData) return;
+    // refresh the cover texture when the year moved (cheap: 65×65 per tile)
+    if (this.state.texYear === undefined || Math.abs(this.state.texYear - terrainYear) > 0.01) {
+      coverColors(this.props.mesh, terrainYear, texData);
+      texture.writeData(texData);
+      this.state.texYear = terrainYear;
+      model.setBindings({coverTex: texture});
+    }
     model.shaderInputs.setProps({
       terrain: {
         year: terrainYear,
@@ -341,10 +449,31 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
   const cover4 = new Float32Array(nv);
   const years = new Float32Array(nv * 4);
   const skirt = new Float32Array(nv);
+  const normals = new Float32Array(nv * 3);
+  const uv = new Float32Array(nv * 2);
   const latAt = (i: number) => tileLat(y + i / (n - 1), z) - north;
   const lats = Array.from({length: n}, (_, i) => latAt(i));
+  // grid spacing in metres (same for a sub-window: it keeps its parent's spacing)
+  const dxm = ((east - west) / (n - 1)) * 111320 * Math.cos((north * Math.PI) / 180);
+  const dym = Math.abs(lats[1] - lats[0]) * 110574;
+  const h = (r: number, c: number) => Math.max(elev[Math.min(N - 1, Math.max(0, r)) * N + Math.min(N - 1, Math.max(0, c))] / 10, 0);
   const setV = (v: number, i: number, j: number) => {
     const src = (sub.r0 + i) * N + (sub.c0 + j);
+    const r = sub.r0 + i;
+    const cc = sub.c0 + j;
+    const rUp = Math.max(0, r - 1);
+    const rDn = Math.min(N - 1, r + 1);
+    const cL = Math.max(0, cc - 1);
+    const cR = Math.min(N - 1, cc + 1);
+    const gx = (h(r, cR) - h(r, cL)) / (dxm * (cR - cL) || 1);
+    const gy = (h(rUp, cc) - h(rDn, cc)) / (dym * (rDn - rUp) || 1); // rows run south
+    const len = Math.hypot(gx, gy, 1);
+    normals[v * 3] = -gx / len;
+    normals[v * 3 + 1] = -gy / len;
+    normals[v * 3 + 2] = 1 / len;
+    // texel centre of this vertex in the tile's cover texture (n × n)
+    uv[v * 2] = (j + 0.5) / n;
+    uv[v * 2 + 1] = (i + 0.5) / n;
     positions[v * 3] = ((east - west) * j) / (n - 1);
     positions[v * 3 + 1] = lats[i];
     positions[v * 3 + 2] = elev[src] / 10;
@@ -367,6 +496,9 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     })
   );
   const mesh: TerrainMesh = {
+    n,
+    normals,
+    uv,
     positions,
     covers,
     cover4,
