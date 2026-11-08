@@ -13,12 +13,11 @@
  * Hangar One's skin, San José's electric light tower …) are placed from
  * documented positions. Every estimate is named in the model's facts ("Model: …").
  */
-import {MeshBuilder, circle, ellipse, lngLatToLocal, localToLngLat, rect, roundedRect, type V2, type V3} from './kit';
+import {MeshBuilder, circle, ellipse, localToLngLat, rect, roundedRect, type V2, type V3} from './kit';
 import type {Landmark} from './types';
 import {elevationAt} from '../layers/elevation';
 
 const WIKI = 'https://en.wikipedia.org/wiki/';
-const OSM = 'https://www.openstreetmap.org/';
 const FT = 0.3048;
 
 // ------------------------------------------------------------------ helpers
@@ -77,16 +76,6 @@ function octagon(cx: number, cy: number, r: number): V2[] {
   });
 }
 
-/** Ring offset of a convex-ish polygon by scaling about its centroid. */
-function grow(ring: V2[], d: number): V2[] {
-  const cx = ring.reduce((s, p) => s + p[0], 0) / ring.length;
-  const cy = ring.reduce((s, p) => s + p[1], 0) / ring.length;
-  return ring.map(([x, y]) => {
-    const L = Math.hypot(x - cx, y - cy) || 1;
-    return [x + ((x - cx) / L) * d, y + ((y - cy) / L) * d] as V2;
-  });
-}
-
 /**
  * Ground height at a point of a landmark's local frame (bearing `brg`) relative to the
  * anchor's ground — for long buildings over uneven ground (as in batch4.ts).
@@ -103,13 +92,6 @@ function rotPoly(ring: V2[], bearing: number, dx = 0, dy = 0): V2[] {
   const ex: V2 = [Math.cos(a), -Math.sin(a)];
   const ey: V2 = [Math.sin(a), Math.cos(a)];
   return ring.map(([u, v]) => [dx + u * ex[0] + v * ey[0], dy + u * ex[1] + v * ey[1]] as V2);
-}
-
-/** Lattice girder between two points: two chords with zig-zag diagonals (frames, towers, trusses). */
-function lattice(b: MeshBuilder, a: V3, c: V3, off: V3, n: number, w: number) {
-  const P = (t: number, s: number): V3 => [a[0] + (c[0] - a[0]) * t + off[0] * s, a[1] + (c[1] - a[1]) * t + off[1] * s, a[2] + (c[2] - a[2]) * t + off[2] * s];
-  b.beam(P(0, 0), P(1, 0), w).beam(P(0, 1), P(1, 1), w);
-  for (let i = 0; i < n; i++) b.beam(P(i / n, i % 2), P((i + 1) / n, (i + 1) % 2), w * 0.6);
 }
 
 function landmark(
@@ -1828,6 +1810,74 @@ const slacGallery = landmark(
   [rotPoly(rect(-1.2, 7.7, 16, 3070), 81.4)]
 );
 
+// ---- NASA Ames: National Full-Scale Aerodynamics Complex (frame 0°, anchor = OSM 40 × 80 ft tunnel centroid)
+const NFAC: V2 = [-122.062854, 37.415067];
+const NFAC_40X80: V2[] = [
+  [-47.4, 141.8], [-49.8, 63.0], [-52.7, 63.1], [-54.4, 31.6], [-57.2, 31.7], [-57.7, 23.1], [-50.7, 22.8], [-56.4, -67.8], [-56.9, -123.6], [66.7, -123.1],
+  [67.1, -54.1], [54.7, -33.3], [52.0, -10.6], [27.7, -10.5], [23.5, -31.4], [12.3, -53.4], [12.5, -68.6], [-2.4, -68.5], [-7.3, 21.9], [-3.3, 22.4],
+  [-6.2, 62.8], [-9.7, 62.3], [-11.5, 106.2], [22.7, 106.1], [24.7, 29.5], [52.7, 29.8], [57.7, 105.4], [56.9, 142.5]
+];
+const nfac40x80 = landmark(
+  'nasa_ames_40x80_wind_tunnel',
+  'NASA Ames 40 × 80 ft wind tunnel',
+  'building',
+  [1941.6, 1944.45],
+  9999,
+  NFAC,
+  b => {
+    // closed-circuit tunnel: two legs, turning vanes at both ends, drive fans in the south end
+    b.color('#C4C6C3').prism(NFAC_40X80, 0, 30);
+    b.color('#B3B6B4');
+    boxR(b, [-56.9, 66.7, -123.4, -68.6], 30, 36);
+    b.color('#8E9396');
+    for (let k = 0; k < 6; k++) b.box(-48 + k * 20, -125, 4, 14, 1.2, 22);
+  },
+  {
+    Built: 'built 1941–44 at the NACA Ames Aeronautical Laboratory; the largest wind tunnel in the world, 40 × 80 ft test section, six 40 ft fans; upgraded 1982–87 into the National Full-Scale Aerodynamics Complex',
+    Model: 'outline from OpenStreetMap (© OSM contributors, ODbL); the circuit\'s heights (30–36 m; OSM gives 54.9 m for the complex) and fan housings estimated (LOW CONFIDENCE)'
+  },
+  [WIKI + 'Ames_Research_Center'],
+  [rect(5, 9.5, 126, 268)]
+);
+const nfac80x120 = landmark(
+  'nasa_ames_80x120_wind_tunnel',
+  'NASA Ames 80 × 120 ft wind tunnel',
+  'building',
+  [1982.5, 1987.9],
+  9999,
+  NFAC,
+  b => {
+    // open-circuit leg: the great inlet (screened face, open to the north-west) and the diffuser into the 40 × 80 circuit
+    b.color('#BFC2BF').prism(
+      [[-49.2, 78.7], [-47.7, 133.3], [-63.7, 147.7], [-60.2, 151.5], [-111.5, 203.4], [-117.5, 215.4], [-139.6, 165.5], [-94.3, 117.7], [-90.9, 120.7]],
+      0,
+      40
+    );
+    b.color('#D6D8D3');
+    const front: V2[] = [[-123.4, 268.5], [-211.4, 181.0]];
+    const back: V2[] = [[-114.2, 256.2], [-158.3, 174.8]];
+    b.quad([front[0][0], front[0][1], 0], [front[1][0], front[1][1], 0], [back[1][0], back[1][1], 54.9], [back[0][0], back[0][1], 54.9]);
+    b.color('#A9ACA9');
+    b.quad([back[0][0], back[0][1], 0], [back[1][0], back[1][1], 0], [back[1][0], back[1][1], 54.9], [back[0][0], back[0][1], 54.9]);
+    b.prism([[-118.7, 227.5], [-114.2, 256.2], [-158.3, 174.8], [-139.6, 165.5], [-117.5, 215.4]], 0, 54.9);
+    b.walls([[-211.4, 181.0], [-158.3, 174.8]], 0, 54.9);
+    b.color('#8E9396');
+    for (let t = 0.1; t < 1; t += 0.2) {
+      const x0 = front[0][0] + (front[1][0] - front[0][0]) * t;
+      const y0 = front[0][1] + (front[1][1] - front[0][1]) * t;
+      const x1 = back[0][0] + (back[1][0] - back[0][0]) * t;
+      const y1 = back[0][1] + (back[1][1] - back[0][1]) * t;
+      b.beam([x0, y0, 0], [x1, y1, 54.9], 0.8);
+    }
+  },
+  {
+    Built: '1982–87: an open-circuit 80 × 120 ft test section added to the 40 × 80 ft tunnel — the largest wind tunnel in the world (National Full-Scale Aerodynamics Complex)',
+    Model: 'outline and height (54.9 m) from OpenStreetMap (© OSM contributors, ODbL); the sloping screened inlet face from the orthophoto; diffuser height estimated (LOW CONFIDENCE)'
+  },
+  [WIKI + 'Ames_Research_Center'],
+  [[[-49.2, 78.7], [-47.7, 133.3], [-112.5, 261.2], [-123.4, 268.5], [-211.4, 181.0], [-90.9, 120.7]]]
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -1867,5 +1917,7 @@ export const SOUTHBAY: Landmark[] = [
   filoli,
   pigeonPoint,
   stanfordDish,
-  slacGallery
+  slacGallery,
+  nfac40x80,
+  nfac80x120
 ];

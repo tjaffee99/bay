@@ -1,0 +1,190 @@
+{
+ "005_0095": [
+  [
+   560,
+   1250,
+   "W. P. Fuller & Co. warehouses",
+   "warehouse"
+  ],
+  [
+   700,
+   1600,
+   "A. E. Howard & Co. hardwood veneer & doors, planing mill",
+   "factory"
+  ],
+  [
+   1290,
+   1300,
+   "Golden West Brewing Co.",
+   "factory"
+  ],
+  [
+   1330,
+   1700,
+   "Washington Brewery",
+   "factory"
+  ],
+  [
+   390,
+   720,
+   "Oakland Mercantile & Warehouse Co. (seed cleaning)",
+   "warehouse"
+  ]
+ ],
+ "005_0096": [
+  [
+   380,
+   520,
+   "Standard Warehouse",
+   "warehouse"
+  ],
+  [
+   330,
+   1300,
+   "Commissary Dept. of Southern Pacific R.R.",
+   "warehouse"
+  ]
+ ],
+ "005_0097": [
+  [
+   850,
+   1050,
+   "Scott, Magner & Miller hay & grain warehouse",
+   "warehouse"
+  ],
+  [
+   850,
+   1135,
+   "Pacific Shade Cloth Factory",
+   "factory"
+  ],
+  [
+   470,
+   1040,
+   "Western Paper Box Co. factory",
+   "factory"
+  ],
+  [
+   1300,
+   1030,
+   "Tompkins Public School",
+   "other"
+  ],
+  [
+   950,
+   760,
+   "Kretz Safe & Lock Co. factory",
+   "factory"
+  ],
+  [
+   900,
+   300,
+   "M. W. Hanning Co. olive factory",
+   "factory"
+  ]
+ ],
+ "005_0080": [
+  [
+   869,
+   648,
+   "Union St. Presbyterian Church",
+   "other"
+  ]
+ ],
+ "005_0081": [
+  [
+   940,
+   1457,
+   "St. Joseph Portuguese Church",
+   "other"
+  ]
+ ],
+ "005_0082": [
+  [
+   1250,
+   1421,
+   "Market Laundry Co.",
+   "factory"
+  ],
+  [
+   762,
+   1471,
+   "St. Marcus Church (German Evangelical Lutheran)",
+   "other"
+  ]
+ ],
+ "005_0084": [
+  [
+   1202,
+   1548,
+   "St. Mary's R.C. Church",
+   "other"
+  ],
+  [
+   571,
+   1469,
+   "St. John's Episcopal Church",
+   "other"
+  ],
+  [
+   500,
+   786,
+   "Oakland Parcel Delivery",
+   "other"
+  ]
+ ],
+ "005_0100": [
+  [
+   952,
+   1179,
+   "Campbell School",
+   "other"
+  ],
+  [
+   1214,
+   1690,
+   "Standard Brass Casting Co.",
+   "factory"
+  ]
+ ],
+ "005_0077": [
+  [
+   429,
+   452,
+   "First Congregational Church",
+   "other"
+  ]
+ ],
+ "005_0086": [
+  [
+   329,
+   1000,
+   "Hotel Crellin",
+   "other"
+  ]
+ ],
+ "005_0071": [
+  [
+   1000,
+   519,
+   "Contra Costa Laundry Co. (steam)",
+   "factory"
+  ]
+ ],
+ "005_0079": [
+  [
+   320,
+   1330,
+   "MacDermot mansion (MacDermot properties)",
+   "dwelling"
+  ]
+ ],
+ "005_0092": [
+  [
+   1000,
+   880,
+   "Oakland New Century Club",
+   "other"
+  ]
+ ]
+}

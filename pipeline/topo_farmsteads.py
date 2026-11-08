@@ -246,13 +246,20 @@ def read_geopdf(pdf_path: Path):
                  "px_per_mm": px_per_mm, "m_per_px": abs(a) / s}
 
 
-def crs_for(proj: dict):
-    """pyproj CRS of a GeoPDF's projected coordinates (NAD27 maps)."""
+def crs_for(proj: dict, bbox=None):
+    """pyproj CRS of a GeoPDF's projected coordinates (NAD27 maps). The LGIDict rounds the
+    central meridian to 3 decimals (-121.813 for -121.8125, ~45 m of longitude); a
+    polyconic quadrangle is projected on its own centre, so that is taken from the
+    quadrangle's footprint when it agrees."""
     import pyproj
     t = proj.get("ProjectionType", "")
     datum = proj.get("Datum", "NAS-C")
     ell = "+datum=NAD27" if datum.startswith("NAS") else "+datum=NAD83" if datum.startswith("NAR") else "+datum=WGS84"
     lon0 = float(proj.get("CentralMeridian", 0) or 0)
+    if bbox is not None and t == "PH":
+        c = (bbox[0] + bbox[2]) / 2
+        if abs(c - lon0) < 0.0011:
+            lon0 = c
     lat0 = float(proj.get("OriginLatitude", 0) or 0)
     fe = float(proj.get("FalseEasting", 0) or 0)
     fn = float(proj.get("FalseNorthing", 0) or 0)
@@ -550,7 +557,7 @@ def detect_symbols(img, g, debug=None):
             reasons.append("bigtext")         # next to the strokes of large lettering
         if r["on_line"]:
             reasons.append("online")          # knot on a rail / road crossing
-        if r["tri_fill"] > 0.8 and r["area_mm2"] >= 0.22:
+        if r["tri_fill"] > 0.72 and r["area_mm2"] >= 0.22:
             reasons.append("triangle")        # triangulation station, letter wedge
         if not r["touches"] and r["resid_dark_mm2"] > 0.04:
             reasons.append("glyph2")          # isolated glyph: other dark strokes around it
@@ -610,7 +617,7 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     log(f"{m['quad']} {m['edition_year']} 1:{m['scale']}: {img.shape[1]}x{img.shape[0]} px, "
         f"{g['px_per_mm'] * 25.4:.0f} ppi, {g['m_per_px']:.2f} m/px")
     keep, stats = detect_symbols(img, g)
-    crs = crs_for(g["proj"])
+    crs = crs_for(g["proj"], m["bbox"])
     if keep:
         X, Y = g["px_to_proj"]([r["x"] for r in keep], [r["y"] for r in keep])
         lon, lat = to_wgs84(crs, X, Y)

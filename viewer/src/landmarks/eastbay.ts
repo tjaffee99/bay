@@ -1472,3 +1472,184 @@ const goldenGateFields: Landmark = {
   },
   sources: [WIKI + 'Golden_Gate_Fields']
 };
+
+// ------------------------------------------------------------ Claremont Hotel
+// Begun after the 1905 purchase, halted by the 1906 earthquake, resumed 1910, opened 1915
+// (Charles W. Dickey, Walter D. Reed); a wooden building whose central tower, 160 ft (49 m),
+// is one of the tallest wooden structures in the world (Wikipedia). OSM outline 181 × 84 m
+// in a 155.3° frame (+x = WSW, downhill toward the bay). From the photos: white walls, steep
+// light-grey cross-gabled roofs, the tower with an arcaded belvedere and cupola. Wings
+// simplified to five gabled blocks over the OSM outline; the building steps down the
+// ≈12 m slope across its width (foundations reach the lower ground).
+const CLAREMONT: V2 = [-122.242066, 37.85941];
+const claremontHotel: Landmark = {
+  id: 'claremont_hotel',
+  name: 'Claremont Hotel',
+  kind: 'building',
+  built: [1906.0, 1915.3],
+  end: 9999,
+  anchor: CLAREMONT,
+  build: b => {
+    const white = '#F3F2EC';
+    const roof = '#C3C6C8';
+    b.frame(0, 0, 0, 155.3, () => {
+      const ring: V2[] = [[31.4, 1.7], [47.2, 6.8], [24.3, 80.6], [13.1, 77.3], [13.6, 74.9], [-4.0, 70.1], [-1.9, 61.7], [-28.7, 51.4], [-24.0, 37.6], [-36.7, 32.7], [-30.7, 14.7], [-24.1, 16.5], [-28.4, 4.1], [-34.9, 5.1], [-34.2, -3.7], [-16.9, -8.6], [-17.9, -11.8], [-22.9, -10.3], [-23.8, -13.6], [-32.7, -11.0], [-36.7, -25.6], [-29.1, -40.0], [-33.3, -42.3], [-31.7, -48.0], [-29.9, -50.9], [-26.0, -48.8], [-14.9, -71.0], [-19.0, -92.9], [3.3, -100.9], [11.4, -77.2], [16.8, -71.3], [14.9, -66.7], [10.4, -64.0], [3.3, -49.8], [7.2, -47.7], [8.1, -43.3], [3.8, -41.9], [15.3, -2.9], [20.6, -1.4], [21.5, -3.8], [31.8, -0.7]];
+      b.color(white).prism(ring, -10, 19);
+      b.color('#E2E1DA').cap(ring, 19.05);
+      // gabled wings (centre, size, axis rotation in the frame)
+      const wings: [number, number, number, number, number, number][] = [
+        [-10, -20, 30, 52, 0, 8], // spine
+        [27, 40, 17, 78, -17, 8], // north-west range (the long front)
+        [-17, 43, 18, 44, 22, 7],
+        [-4, -72, 22, 50, 18, 7.5],
+        [-22, 3, 24, 22, 0, 7]
+      ];
+      for (const [cx, cy, sx, sy, rot, h] of wings) b.frame(cx, cy, 0, rot, () => b.color(roof).gable(0, 0, sx, sy, 19, h, true));
+      // cross gables facing the bay
+      for (const [cx, cy] of [[33, 18], [27, 40], [21, 62], [6, -22], [8, -80]] as V2[]) b.frame(cx, cy, 0, 90, () => b.color(roof).gable(0, 0, 9, 12, 19, 8.5, true));
+      // central tower with belvedere and cupola (top 49 m)
+      b.color(white).box(16, 0, -6, 10, 10, 44);
+      b.color('#D9D9D2').box(16, 0, 38, 10.8, 10.8, 0.8);
+      b.color(white).box(16, 0, 38.8, 8.4, 8.4, 5.2);
+      b.color('#5E6670').box(16, 0, 39.6, 8.6, 3.0, 3.4).box(16, 0, 39.6, 3.0, 8.6, 3.4);
+      b.color(roof).loft([rect(16, 0, 9, 9), rect(16, 0, 4.5, 4.5), rect(16, 0, 1.2, 1.2)], [44, 47.5, 49], {top: true});
+      b.color('#8A8C8E').beam([16, 0, 49], [16, 0, 54], 0.2);
+    });
+  },
+  replaces: [rotRect(5, -10, 92, 190, 155.3)],
+  facts: {
+    Construction: 'begun 1906 after the Claremont Hotel Company bought the site (Nov 1905); halted by the 1906 earthquake, resumed 1910; opened 1915',
+    Design: 'Charles W. Dickey and Walter D. Reed; wood frame — the 160 ft (49 m) tower is among the tallest wooden structures',
+    Notes: 'the Key System "E" line ran to its doors until 1958; spared by the 1991 Oakland firestorm',
+    Model: 'outline from OSM; wings simplified to gabled blocks; eave (≈19 m) and roof heights estimated from photos'
+  },
+  sources: [WIKI + 'Claremont_Hotel_%26_Spa']
+};
+
+// ------------------------------------------------------------ Cathedral of Christ the Light
+// Craig W. Hartman (SOM); groundbreaking May 21, 2005, dedicated Sep 25, 2008. A vesica
+// piscis of glass and Douglas-fir louvres rising from a concrete plaza podium over the
+// Lake Merritt shore, the crown ringed by aluminium fins (photo). OSM: cathedral part
+// 56 × 44 m (162.7° frame), height 41 m; the podium/conference wing 156 × 63 m. The shells
+// lean outward: base lens ≈32 × 48 m (estimated) widening to the OSM lens at the top.
+const CTL: V2 = [-122.263122, 37.810532];
+function vesica(cy: number, w: number, L: number, n = 12): V2[] {
+  const R = (L * L + w * w) / (2 * w);
+  const right: V2[] = [];
+  for (let i = 0; i <= n; i++) {
+    const y = -L + (2 * L * i) / n;
+    right.push([-(R - w) + Math.sqrt(Math.max(R * R - y * y, 0)), cy + y]);
+  }
+  const left = right.slice(1, -1).reverse().map(([x, y]) => [-x, y] as V2);
+  return [...right, ...left];
+}
+const cathedralChristTheLight: Landmark = {
+  id: 'cathedral_christ_the_light',
+  name: 'Cathedral of Christ the Light',
+  kind: 'building',
+  built: [2005.39, 2008.73],
+  end: 9999,
+  anchor: CTL,
+  build: b => {
+    b.frame(0, 0, 0, 162.7, () => {
+      const podium: V2[] = [[-5.3, 38.9], [-17.8, 32.8], [-47.7, -13.4], [-8.2, -36.5], [2.7, -37.2], [8.8, -36.0], [12.8, -32.8], [25.6, -13.5], [27.3, -14.4], [84.7, 86.7], [41.7, 111.5], [37.1, 103.4], [31.9, 106.5]];
+      b.color('#BDB8AE').prism(podium, -2, 5.5, {holes: [[[21.7, 53.5], [41.0, 42.8], [36.7, 35.2], [17.5, 45.9]]]});
+      b.color('#C7C2B8').box(47.2, 34.2, 5.5, 22, 22, 11.4); // conference / rectory block
+      // glass lens of the cathedral, widening upward
+      const base = vesica(-3.2, 16, 24);
+      const top = vesica(-3.2, 21.9, 28.2);
+      b.color('#A7BFC8').loft([base, top], [5.5, 36], {top: false});
+      b.color('#B98E5E').cap(vesica(-3.2, 21, 27.5), 34.5); // Douglas-fir louvred vault seen from above
+      // crown of aluminium fins
+      b.color('#D9DCDD');
+      for (let i = 0; i < top.length; i += 1) {
+        const [x, y] = top[i];
+        b.box(x, y, 36, 0.35, 0.35, 5.5);
+      }
+      // the Omega window (the pointed front of the lens, toward the lake)
+      b.color('#DCE7EA').tri([0, -31.4, 6], [-5.5, -27.2, 6], [0, -31.4, 33]).tri([0, -31.4, 6], [5.5, -27.2, 6], [0, -31.4, 33]);
+      // entrance plaza steps
+      b.color('#A8A39A').box(-2, 34, -1.5, 20, 8, 3.5);
+    });
+  },
+  replaces: [rotRect(18, 37, 140, 160, 162.7)],
+  facts: {
+    Construction: 'groundbreaking May 21, 2005; consecrated and dedicated Sep 25, 2008',
+    Design: 'Craig W. Hartman, Skidmore Owings & Merrill — a vesica piscis of glass and Douglas-fir louvres; Omega window with the image of Christ (from Chartres)',
+    Height: '41 m (OSM)',
+    Model: 'top lens and podium from OSM; the base lens size and the fin crown height estimated from the photo'
+  },
+  sources: [WIKI + 'Cathedral_of_Christ_the_Light_(Oakland,_California)']
+};
+
+// ------------------------------------------------------------ Cathedral Building
+// 1914, Benjamin Geer McDougall (as the Federal Realty Building): the first Gothic Revival
+// skyscraper in the West, a narrow wedge on Latham Square where Telegraph Avenue leaves
+// Broadway (Wikipedia). OSM wedge 31.6 × 10.8 m, 42 m, 12 floors. White terra cotta shaft,
+// arcaded crown with pinnacles and a steep pale-green mansard (photo).
+const cathedralBuilding: Landmark = {
+  id: 'cathedral_building_oakland',
+  name: 'Cathedral Building',
+  kind: 'tower',
+  built: [1913.2, 1914.6],
+  end: 9999,
+  anchor: [-122.270244, 37.806232],
+  build: b => {
+    const wedge: V2[] = [[8.9, 9.5], [-0.8, 14.3], [-7.3, -17.6], [-5.1, -18.8]];
+    b.color('#EEEBE2').prism(wedge, -1, 30);
+    b.color('#DDD8CC').prism(scaleRing(wedge, 1.04), 4.2, 5.2).prism(scaleRing(wedge, 1.05), 30, 31.2);
+    b.color('#EEEBE2').prism(scaleRing(wedge, 0.97), 31.2, 35);
+    b.color('#A9C3BD').loft([scaleRing(wedge, 0.95), scaleRing(wedge, 0.45, 0.85)], [35, 42], {top: true});
+    b.color('#E6E2D8');
+    for (const p of wedge) b.frustum(p[0] * 0.95, p[1] * 0.95, 0.6, 0.05, 31.2, 38.5, 6, false);
+  },
+  replaces: [rect(1, -2, 18, 36)],
+  facts: {
+    Built: '1914 (Benjamin Geer McDougall), the Federal Realty Building — "the Wedding Cake"',
+    Height: '42 m, 12 floors (OSM)',
+    Model: OSM_NOTE + '; crown, pinnacle and mansard proportions from the photo; construction start estimated'
+  },
+  sources: [WIKI + 'Cathedral_Building']
+};
+
+// ------------------------------------------------------------ Ford Assembly Building (Richmond)
+// Albert Kahn, built 1930 (opened 1931): the largest assembly plant on the West Coast,
+// ≈500,000 sq ft (Wikipedia); Jeep and tank assembly in WWII; closed 1956; damaged 1989;
+// rehabilitated 2008 (the Craneway Pavilion). OSM outline 124 × 321 m (frame 0.1°), 17.3 m:
+// the main assembly hall with white roof monitors (photo), the Craneway at the south end on
+// the water, and the entrance pavilion between them.
+const fordRichmond: Landmark = {
+  id: 'ford_richmond_assembly_plant',
+  name: 'Ford Assembly Building (Craneway)',
+  kind: 'building',
+  built: [1930.2, 1931.2],
+  end: 9999,
+  anchor: [-122.358387, 37.91058],
+  build: b => {
+    const brick = '#C9A66B';
+    const glass = '#6F8794';
+    // main assembly hall
+    b.color(brick).box(-2.7, 33.3, -1, 99.2, 265.4, 3.5);
+    b.color(glass).box(-2.7, 33.3, 2.5, 99.4, 265.6, 6.5);
+    b.color(brick).box(-2.7, 33.3, 9, 99.2, 265.4, 2.2);
+    b.color('#8E8A80').cap(rect(-2.7, 33.3, 99.2, 265.4), 11.2);
+    b.color('#F0EFEA');
+    for (let y = -88; y <= 160; y += 18) b.box(-2.7, y, 11.2, 92, 6, 2.8); // roof monitors (across the hall)
+    // stair towers on the east side
+    b.color(brick).box(48.3, -63, -1, 3, 16, 13).box(48.2, -2.4, -1, 3, 15.8, 13).box(48.5, 58.7, -1, 3.3, 15.4, 13).box(48.1, 119, -1, 2.4, 15.2, 13);
+    // the Craneway (south end) and the entrance pavilion
+    b.color(brick).box(9.65, -127.1, -1, 123.7, 55.4, 6);
+    b.color(glass).box(9.65, -127.1, 5, 123.9, 55.6, 9.5);
+    b.color(brick).box(9.65, -127.1, 14.5, 123.7, 55.4, 2.8);
+    b.color('#2F3A44').box(9.65, -127.1, 17.3, 60, 40, 2.0); // raised monitor (solar panels today)
+    b.color(brick).box(-46, -101, -1, 14, 16, 18.5);
+    b.color(glass).box(-53.2, -101, 4, 0.3, 10, 12);
+  },
+  replaces: [rect(6, 5, 128, 325)],
+  facts: {
+    Built: '1930 – 31 (Albert Kahn) on Richmond’s inner harbour; ≈500,000 sq ft',
+    History: 'Ford assembly 1931–56 (Jeeps and tanks in WWII); Loma Prieta damage 1989; rehabilitated 2008; part of Rosie the Riveter/WWII Home Front NHP',
+    Model: OSM_NOTE + '; wall, monitor and Craneway heights estimated from the photo (OSM height 17.3 m); construction months estimated'
+  },
+  sources: [WIKI + 'Ford_Assembly_Building']
+};

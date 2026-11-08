@@ -991,6 +991,24 @@ def assemble():
     def lonlat(g):
         return shapely.transform(g, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))
     attrs = json.load(open(CONTROL / "attributes.json")) if (CONTROL / "attributes.json").exists() else {}
+    # names / uses read off the sheets, by pixel position (control/oakland/labels.json: {key: [[x, y, name, use], ...]}):
+    # the footprint containing the label point, else the nearest within 12 px
+    labels = json.load(open(CONTROL / "labels.json")) if (CONTROL / "labels.json").exists() else {}
+    for key, labs in labels.items():
+        if not (INTERIM / f"{key}.json").exists():
+            continue
+        rows = json.load(open(INTERIM / f"{key}.json"))
+        polys = [(r["id"], Polygon(r["px_ring"]).buffer(0)) for r in rows]
+        for x, y, name, use in labs:
+            pt = Point(x, y)
+            hit = [rid for rid, pg in polys if pg.contains(pt)]
+            if not hit:
+                near = sorted((pg.distance(pt), rid) for rid, pg in polys)
+                hit = [near[0][1]] if near and near[0][0] <= 12 else []
+            if hit:
+                attrs.setdefault(hit[0], {}).update({"name": name, **({"use": use} if use else {})})
+            else:
+                log(key, "label not placed:", name)
     fp = modern_footprints()
     fpg = list(fp.geometry.values)
     tree = STRtree(fpg)
@@ -1109,6 +1127,121 @@ def assemble():
                   open(OUT / f"{area}_coverage.geojson", "w"))
 
 
+def assemble_tracks():  # adapted from sanborn_trace_waterfront.assemble_tracks (Oakland volumes, 7th / 3rd St labels)
+    """<area>_<year>_tracks.geojson: track centrelines per map year; overlaps between sheets kept once (best fit first)."""
+    import shapely
+    from pyproj import Transformer
+    from shapely.geometry import LineString, Point, Polygon, mapping
+    from shapely.ops import unary_union
+    from shapely.strtree import STRtree
+    to_ll = Transformer.from_crs(32610, 4326, always_xy=True)
+    rank = {"high": 0, "medium": 1, "low": 2}
+    down = {"high": "medium", "medium": "low", "low": "low"}
+    rnd = lambda gj: json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
+    for (area, year), keys in AREAS.items():
+        if not all((INTERIM / f"{k}.tracks.json").exists() for k in keys):
+            continue
+        info = []
+        for key in keys:
+            G = json.load(open(INTERIM / f"{key}.M.json"))
+            kcfg = json.load(open(CONTROL / f"{key}.json"))
+            base = json.load(open(CONTROL / f"{kcfg['registered_to']}.json")) if "registered_to" in kcfg else kcfg
+            if G.get("zones_only"):
+                q = dict(n=min(b["n"] for b in G["blocks"]), rms=max(b["rms"] for b in G["blocks"]), max=max(b["max"] for b in G["blocks"]))
+                polys = [Polygon(W.apply(np.array(b["M"]), [[b["rect_px"][0], b["rect_px"][1]], [b["rect_px"][2], b["rect_px"][1]],
+                                                          [b["rect_px"][2], b["rect_px"][3]], [b["rect_px"][0], b["rect_px"][3]]])) for b in G["blocks"]]
+                cover = unary_union(polys).convex_hull.buffer(12)
+            else:
+                q = dict(n=G.get("n", 0), rms=G.get("rms", 9), max=G.get("max", 9))
+                W_, H_ = Image.open(G["img"]).size
+                x0, y0, x1, y1 = G.get("valid_px") or [30, 30, W_ - 30, H_ - 30]
+                rect = Polygon([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])
+                if G.get("valid_poly_px"):
+                    rect = rect.intersection(Polygon(G["valid_poly_px"]))
+                cover = Polygon(W.apply(np.array(G["M"]), np.asarray(rect.exterior.coords)))
+            if "registered_to" in G:
+                q["rms"] = math.hypot(q["rms"], G.get("reg_rms_m", 0.3))
+            if G.get("tie_rms"):
+                q["rms"] = math.hypot(q["rms"], G["tie_rms"])
+            conf = "high" if q["n"] >= 4 and q["rms"] <= 1.5 and q["max"] <= 3 else "medium" if q["n"] >= 3 and q["rms"] <= 3 else "low"
+            if base.get("confidence_cap") and rank[conf] < rank[base["confidence_cap"]]:
+                conf = base["confidence_cap"]
+            info.append((rank[conf], q["rms"], key, conf, q, cover, G))
+        info.sort(key=lambda t: (t[0], t[1]))
+        claimed, feats = None, []
+        for _, _, key, conf, q, cover, G in info:
+            vol, sheet = key.split("_")
+            rec = W.sheet_rec(key)
+            tcfg = W.track_cfg(key)
+            for t in json.load(open(INTERIM / f"{key}.tracks.json")):
+                ln = LineString(t["utm"])
+                px = np.asarray(t["px"])
+                if claimed is not None:
+                    ln = ln.difference(claimed.buffer(-1.0))
+                for part in getattr(ln, "geoms", [ln]):
+                    if part.is_empty or part.geom_type != "LineString" or part.length < 8:
+                        continue
+                    mid = px[len(px) // 2]
+                    rr, rsrc = tcfg.get("railroad"), "map label" if tcfg.get("railroad") else None
+                    for r in tcfg.get("railroads", []):
+                        if Polygon(r["poly_px"]).contains(Point(*mid)):
+                            rr, rsrc = r["name"], "map label"
+                    is_main = any(Polygon(m).contains(Point(*mid)) for m in tcfg.get("main_px", []))
+                    c = conf if t.get("share_in_blocks", 1) >= 0.6 else down[conf]
+                    feats.append([part, {"id": f"{t['id']}" + (f"_{len(feats)}" if part.length < ln.length - 0.5 else ""), "map_year": VOLUMES[vol][0],
+                                         "volume": f"sanborn{CITY}_{vol}", "volume_label": VOLUMES[vol][1], "sheet": rec["id"],
+                                         "sheet_no": int(sheet[:4].lstrip("0") or 0), "loc_url": f"https://www.loc.gov/item/sanborn{CITY}_{vol}/",
+                                         "iiif": rec["info"].replace("/info.json", ""), "railroad": rr, "railroad_source": rsrc,
+                                         "kind": "main" if is_main else None, "kind_source": "map label" if is_main else None,
+                                         "confidence": c, "georef": "blocks (rubber sheet)" if G.get("zones_only") else "sheet",
+                                         "georef_rms_m": round(float(q["rms"]), 2), "length_m": round(part.length, 1)}])
+            claimed = cover if claimed is None else claimed.union(cover)
+        # kind by rule: a yard track has >= 2 parallel tracks 3-15 m to either side along most of its length
+        geoms = [f[0] for f in feats]
+        tree = STRtree(geoms)
+        for i, (g, p) in enumerate(feats):
+            if p["kind"]:
+                continue
+            hits = 0
+            samples = [g.interpolate(d) for d in np.arange(2.5, g.length, 5.0)] or [g.interpolate(0.5, normalized=True)]
+            for pt in samples:
+                d0 = g.project(pt)
+                a, b = g.interpolate(max(0, d0 - 2)), g.interpolate(min(g.length, d0 + 2))
+                tv = np.array([b.x - a.x, b.y - a.y]); tv = tv / (np.hypot(*tv) or 1)
+                par = 0
+                for j in tree.query(pt.buffer(15)):
+                    if j == i:
+                        continue
+                    o = geoms[j]
+                    dist = o.distance(pt)
+                    if not 3 <= dist <= 15:
+                        continue
+                    dj = o.project(pt)
+                    a2, b2 = o.interpolate(max(0, dj - 2)), o.interpolate(min(o.length, dj + 2))
+                    tv2 = np.array([b2.x - a2.x, b2.y - a2.y]); tv2 = tv2 / (np.hypot(*tv2) or 1)
+                    par += abs(float(tv @ tv2)) > 0.98
+                hits += par >= 2
+            p["kind"] = "yard" if hits >= 0.5 * len(samples) else "spur"
+            p["kind_source"] = "rule: parallel tracks" if p["kind"] == "yard" else "rule: default"
+        for g, p in feats:  # railroad named on the sheets along these streets (most of the line within 20 m of the centreline)
+            for street, name in (("7th", "Southern Pacific R.R. (electric), 7th St line"), ("3rd", "Western Pacific R.R. (3rd St spur track)")):
+                try:
+                    L = street_line(street, np.array([g.centroid.x, g.centroid.y]), 250)
+                except ValueError:
+                    continue
+                nrm = np.array([-L[1][1], L[1][0]])
+                cs = np.asarray(g.coords)
+                if np.mean(np.abs((cs - L[0]) @ nrm) < 20) > 0.8 and p["railroad"] is None:
+                    p["railroad"], p["railroad_source"] = name, f"map label along {street} St"
+        fc = {"type": "FeatureCollection", "name": f"{area}_{year}_tracks",
+              "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
+              "features": [{"type": "Feature", "properties": p,
+                            "geometry": rnd(mapping(shapely.transform(g, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))))}
+                           for g, p in sorted(feats, key=lambda f: f[1]["id"])]}
+        json.dump(fc, open(OUT / f"{area}_{year}_tracks.geojson", "w"))
+        log(area, year, len(feats), "track lines", round(sum(f[0].length for f in feats)), "m")
+
+
 # ----------------------------------------------------------------------------------------------- driver
 def all_keys():
     return list(dict.fromkeys(k for ks in AREAS.values() for k in ks))
@@ -1153,5 +1286,9 @@ if __name__ == "__main__":
     if stage == "overlay":
         for k in keys:
             print(overlay(k, scale=float(os.environ.get("SCALE", 0.5))))
+    if stage in ("all", "tracks"):
+        for k in keys:
+            W.tracks(k)
     if stage in ("all", "assemble"):
         assemble()
+        assemble_tracks()
