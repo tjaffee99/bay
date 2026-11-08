@@ -450,6 +450,19 @@ const sutter450: Landmark = {
 };
 
 // =========================================================== 140 New Montgomery (1925)
+// Plan: the OSM outline (frame 135°: +v along New Montgomery St to the south-east, −u = the New Montgomery front),
+// 44.8 × 48.8 m = the documented 147 × 160 ft L (Wikipedia); the two light-court slots that OSM shows cut into the back
+// of the New Montgomery range carry up the tower, giving the "truncated E" plan (SAH Archipedia). Heights: top floor
+// 413 ft (125.9 m), roof / crown 435 ft (132.7 m), spire 460 ft (140.2 m); eight 13 ft eagles on the crown.
+const NM140_L: V2[] = [
+  [9.0, 12.7], [9.0, 26.1], [1.8, 26.1], [1.8, 27.6], [-16.9, 27.7], [-16.6, -21.0], [28.1, -21.0], [28.1, -6.4], [9.0, -6.4],
+  [9.0, 8.3], [6.4, 8.3], [6.3, 9.9], [-1.5, 9.9], [-1.5, 12.7]
+];
+/** Tower floors: the New Montgomery range with its two rear arms (light courts between them), as an outline. */
+const NM140_E: V2[] = [
+  [9.0, 13.2], [9.0, 27.6], [-16.9, 27.7], [-16.6, -21.0], [9.0, -21.0], [9.0, -2.6], [-1.5, -2.6], [-1.5, 0.4], [9.0, 0.4], [9.0, 9.6],
+  [-1.5, 9.6], [-1.5, 13.2]
+];
 const newMontgomery140: Landmark = {
   id: 'new_montgomery_140',
   name: '140 New Montgomery (Pacific Telephone Building)',
@@ -459,35 +472,47 @@ const newMontgomery140: Landmark = {
   anchor: [-122.40001, 37.786679],
   build: b => {
     const white = '#E6E4DE';
+    const shade = '#D8D5CC';
+    const inset = (ring: V2[], d: number): V2[] => {
+      // shrink a rectilinear outline toward its bounding-box centre by d on every side (setbacks)
+      const xs = ring.map(p => p[0]);
+      const ys = ring.map(p => p[1]);
+      const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+      return rect((x0 + x1) / 2, (y0 + y1) / 2, x1 - x0 - 2 * d, y1 - y0 - 2 * d);
+    };
     b.frame(0, 0, 0, 135, () => {
-      const ring: V2[] = [
-        [9.1, 12.8], [9.0, 26.1], [1.8, 26.1], [1.8, 27.7], [-16.9, 27.7], [-16.6, -20.9], [28.2, -21.0], [28.1, -6.3], [-3.4, -6.3],
-        [-3.5, -2.5], [9.0, -1.5], [9.0, 8.4], [6.4, 8.4], [6.4, 9.9], [-1.4, 9.9], [-1.4, 12.0]
-      ];
-      b.color(white).prism(ring, 0, 76);
-      // central tower on New Montgomery St with stepped Art Deco crown
-      b.color(white).box(-4, 3.3, 76, 25, 46, 30);
-      b.color('#DCDAD2').box(-4, 3.3, 106, 20, 34, 12).box(-4, 3.3, 118, 14, 20, 9);
-      b.color(white).box(-4, 3.3, 127, 8, 10, 5.6);
-      b.color('#8A8C8E').cylinder(-4, 3.3, 0.25, 132.6, 140.2, 4); // flagpole
-      // eagles' piers on the corners of the crown
-      for (const [x, y] of [
-        [-14, -13],
-        [6, -13],
-        [6, 20],
-        [-14, 20]
-      ])
-        b.color('#EFEDE7').box(x, y, 106, 1.4, 1.4, 14);
+      // base filling the lot; the rear (Minna St) wing of the L rises to ≈ 20 floors
+      b.color(white).prism(NM140_L, 0, 22);
+      b.color(white).prism([[9.0, -21.0], [28.1, -21.0], [28.1, -6.4], [9.0, -6.4]], 22, 88);
+      // tower shaft on the truncated-E plan, straight up to the first setback (≈ floor 22)
+      b.color(white).prism(NM140_E, 22, 99);
+      // strong vertical piers on the New Montgomery front
+      b.color(shade);
+      for (let v = -19; v <= 26; v += 4.5) b.box(-17.1, v, 22, 0.5, 0.9, 77);
+      // stepped crown after the Tribune Tower design: three setbacks to the top floor (413 ft) and the crown (435 ft)
+      const front: V2[] = [[-16.9, -21.0], [9.0, -21.0], [9.0, 27.7], [-16.9, 27.7]];
+      b.color(white).prism(inset(front, 2.2), 99, 111);
+      b.color(shade).prism(inset(front, 5.5), 111, 119);
+      b.color(white).prism(inset(front, 8.5), 119, 125.9);
+      b.color(shade).prism(inset(front, 10.5), 125.9, 132.7);
+      // eight 13 ft eagles on the corners of the two upper setbacks
+      b.color('#F1EFEA');
+      const eagles = (r: V2[], z: number) => r.forEach(([x, y]) => b.box(x, y, z, 1.6, 1.6, 4));
+      eagles(inset(front, 3.2), 111);
+      eagles(inset(front, 9.3), 125.9);
+      b.color('#8A8C8E').cylinder(-3.95, 3.35, 0.25, 132.7, 140.2, 4); // spire / flagpole
     });
   },
-  replaces: [rotRect(0, 0, 50, 54, 135)],
+  replaces: [rotRect(5.6, 3.35, 46, 50, 135)],
   facts: {
-    Opened: 'May 30, 1925 (Miller & Pflueger with A. A. Cantin), Art Deco headquarters of Pacific Telephone & Telegraph',
-    Height: '132.6 m roof, 140.2 m tip',
-    Floors: '26',
-    Model: OSM_NOTE + '; tower width and crown steps estimated from photo'
+    Built: 'Jan 1924 – opened May 30, 1925 (Miller & Pflueger, Timothy Pflueger, with A. A. Cantin): Art Deco headquarters of Pacific Telephone & Telegraph',
+    Height: '26 floors; top floor 413 ft (125.9 m), roof 435 ft (132.7 m), spire 460 ft (140.2 m)',
+    Plan: 'L-shaped, 147 × 160 ft (Wikipedia); light courts make the tower a "truncated E" (SAH Archipedia); setbacks after the Tribune Tower design; eight 13 ft terra-cotta eagles on the crown (fibreglass replicas since the 1989 earthquake)',
+    Model:
+      OSM_NOTE +
+      '; the light courts are the two OSM slots carried up the tower; podium height (22 m), rear-wing height, setback levels and insets, and the eagles’ positions estimated from photographs — no HABS drawing was read'
   },
-  sources: [WIKI + '140_New_Montgomery']
+  sources: [WIKI + '140_New_Montgomery', 'https://sah-archipedia.org/node/83240', 'https://www.loc.gov/item/ca3887/']
 };
 
 // =========================================================== 555 California (1969)
