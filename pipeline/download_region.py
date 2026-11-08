@@ -169,14 +169,16 @@ def arcgis_download(url: str, out: Path, fields: list[str] | str = "*", where: s
     oid = meta.get("objectIdField") or next(f["name"] for f in meta["fields"] if f["type"] == "esriFieldTypeOID")
     page = min(int(meta.get("maxRecordCount") or 1000), 2000)
     count = s.get(f"{url}/query", params={"where": where, "returnCountOnly": "true", "f": "json"}, timeout=300).json()["count"]
-    # returnIdsOnly is capped on some servers (400k on hosted layers): page through id ranges
+    # returnIdsOnly is capped on some servers (400k on hosted layers): ask per object-id window
+    st = s.get(f"{url}/query", params={"where": where, "f": "json", "outStatistics": json.dumps([
+        {"statisticType": "min", "onStatisticField": oid, "outStatisticFieldName": "lo"},
+        {"statisticType": "max", "onStatisticField": oid, "outStatisticFieldName": "hi"}])}, timeout=300).json()
+    lo, hi = (st["features"][0]["attributes"][k] for k in ("lo", "hi"))
     ids: list[int] = []
-    while len(ids) < count:
-        w = f"({where}) AND {oid} > {ids[-1]}" if ids else where
-        got = s.get(f"{url}/query", params={"where": w, "returnIdsOnly": "true", "f": "json"}, timeout=300).json()["objectIds"]
-        if not got:
-            break
-        ids.extend(sorted(got))
+    for a in range(lo, hi + 1, 200_000):
+        w = f"({where}) AND {oid} >= {a} AND {oid} < {a + 200_000}"
+        ids.extend(s.get(f"{url}/query", params={"where": w, "returnIdsOnly": "true", "f": "json"},
+                         timeout=300).json()["objectIds"] or [])
     ids = sorted(set(ids))
     log(f"{out.name}: {len(ids)} of {count} features from {url}")
     outf = fields if isinstance(fields, str) else ",".join(dict.fromkeys([oid, *fields]))

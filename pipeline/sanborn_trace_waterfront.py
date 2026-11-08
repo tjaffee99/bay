@@ -194,6 +194,13 @@ def world_of(c):
         return p, f"{c['a']} x {c['b']} [{how}]"
     if "sum" in c:
         return sum((1 if sg == "+" else -1) * xing(a, b)[0] for sg, a, b in c["sum"]), c.get("label", "grid point")
+    if "tie" in c:  # a feature drawn on an adjacent, already georeferenced sheet (street corner, wharf corner, match line end)
+        G = json.load(open(INTERIM / f"{c['tie']}.M.json"))
+        Mo = np.array(G["M"])
+        for b in G.get("blocks", []):
+            if b["name"] == c.get("tie_block"):
+                Mo = np.array(b["M"])
+        return apply(Mo, [c["px_other"]])[0], c.get("label", f"tie to {c['tie']} {c['px_other']}")
     if "la" in c:  # crossing of two fitted centrelines, extended where the street no longer reaches (optional offsets in ft)
         def L(spec):  # [street, other street] (near their crossing) or [street, [x, y]] (near a UTM position)
             return street_line(spec[0], near_xy(spec if isinstance(spec[1], str) else spec[1]), c.get("R", 350))
@@ -684,9 +691,22 @@ def all_keys():
 
 
 def base_first(keys):
-    """georeference base plates before the sheets registered onto them."""
-    reg = [k for k in keys if "registered_to" in json.load(open(CONTROL / f"{k}.json"))]
-    return [k for k in keys if k not in reg] + reg
+    """georeference street-controlled sheets first, then sheets tied to them, then the 1950 sheets registered onto
+    their base plates."""
+    cfg = {k: json.load(open(CONTROL / f"{k}.json")) for k in keys}
+    reg = [k for k in keys if "registered_to" in cfg[k]]
+
+    def ties(k):
+        c = cfg[k]
+        return {e["tie"] for e in c.get("points", []) + [x for b in c.get("blocks", []) for x in b["corners"]] if "tie" in e}
+    order, left = [], [k for k in keys if k not in reg]
+    while left:
+        ready = [k for k in left if not (ties(k) & set(left))]
+        if not ready:
+            raise ValueError(f"circular sheet ties: {left}")
+        order += ready
+        left = [k for k in left if k not in ready]
+    return order + reg
 
 
 if __name__ == "__main__":

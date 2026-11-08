@@ -1,0 +1,42 @@
+{
+ "points": [
+  {
+   "a": "ILLINOIS ST",
+   "b": "20TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 205.0,
+   "y": 1746.0,
+   "norefine": 1
+  },
+  {
+   "a": "MICHIGAN ST",
+   "b": "20TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 623.0,
+   "y": 1744.0,
+   "norefine": 1
+  },
+  {
+   "a": "ILLINOIS ST",
+   "b": "19TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 204.5,
+   "y": 1058.5,
+   "norefine": 1
+  },
+  {
+   "a": "ILLINOIS ST",
+   "b": "18TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 203.0,
+   "y": 365.5,
+   "norefine": 1
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

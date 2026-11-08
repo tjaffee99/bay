@@ -1,94 +1,193 @@
 {
  "pct": 25,
- "points": [
+ "blocks": [
   {
-   "bcx": [
-    "BRYANT ST",
-    [
-     553559.6,
-     4182160.3
-    ],
-    "01ST ST",
-    [
-     553559.6,
-     4182160.3
-    ]
-   ],
-   "sa": -1,
-   "sb": 1,
-   "wa": 82.5,
-   "wb": 82.5,
-   "label": "corner of BRYANT ST x 01ST ST (centrelines extended; today closest-approach 110m)",
-   "x": 338.0,
-   "y": 337.0,
-   "norefine": 1
+   "name": "Bryant-Federal/01St-02Nd",
+   "corners": [
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553559.6,
+       4182160.3
+      ],
+      "01ST ST",
+      [
+       553559.6,
+       4182160.3
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 01ST ST (centrelines extended; today closest-approach 110m)",
+     "x": 338.0,
+     "y": 337.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FEDERAL ST",
+      [
+       553576.2,
+       4182131.0
+      ],
+      "01ST ST",
+      [
+       553576.2,
+       4182131.0
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FEDERAL ST x 01ST ST (centrelines extended; today closest-approach 173m)",
+     "x": 578.0,
+     "y": 337.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRYANT ST",
+      [
+       553395.4,
+       4181920.6
+      ],
+      "02ND ST",
+      [
+       553395.4,
+       4181920.6
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRYANT ST x 02ND ST",
+     "x": 338.0,
+     "y": 1581.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FEDERAL ST",
+      [
+       553442.9,
+       4181873.4
+      ],
+      "02ND ST",
+      [
+       553442.9,
+       4181873.4
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FEDERAL ST x 02ND ST",
+     "x": 578.0,
+     "y": 1581.0,
+     "norefine": 1
+    }
+   ]
   },
   {
-   "bcx": [
-    "BRANNAN ST",
-    [
-     553620.9,
-     4182086.7
-    ],
-    "01ST ST",
-    [
-     553620.9,
-     4182086.7
-    ]
-   ],
-   "sa": -1,
-   "sb": -1,
-   "wa": 82.5,
-   "wb": 82.5,
-   "label": "corner of BRANNAN ST x 01ST ST (centrelines extended; today closest-approach 299m)",
-   "x": 1312.0,
-   "y": 338.0,
-   "norefine": 1
-  },
-  {
-   "bcx": [
-    "BRYANT ST",
-    [
-     553395.4,
-     4181920.6
-    ],
-    "02ND ST",
-    [
-     553395.4,
-     4181920.6
-    ]
-   ],
-   "sa": 1,
-   "sb": 1,
-   "wa": 82.5,
-   "wb": 82.5,
-   "label": "corner of BRYANT ST x 02ND ST",
-   "x": 339.0,
-   "y": 1581.0,
-   "norefine": 1
-  },
-  {
-   "bcx": [
-    "BRANNAN ST",
-    [
-     553532.0,
-     4181784.8
-    ],
-    "02ND ST",
-    [
-     553532.0,
-     4181784.8
-    ]
-   ],
-   "sa": 1,
-   "sb": -1,
-   "wa": 82.5,
-   "wb": 82.5,
-   "label": "corner of BRANNAN ST x 02ND ST",
-   "x": 1311.0,
-   "y": 1581.0,
-   "norefine": 1
+   "name": "Federal-Brannan/01St-02Nd",
+   "corners": [
+    {
+     "bcx": [
+      "FEDERAL ST",
+      [
+       553576.2,
+       4182131.0
+      ],
+      "01ST ST",
+      [
+       553576.2,
+       4182131.0
+      ]
+     ],
+     "sa": -1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FEDERAL ST x 01ST ST (centrelines extended; today closest-approach 173m)",
+     "x": 778.0,
+     "y": 337.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553620.9,
+       4182086.7
+      ],
+      "01ST ST",
+      [
+       553620.9,
+       4182086.7
+      ]
+     ],
+     "sa": -1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 01ST ST (centrelines extended; today closest-approach 299m)",
+     "x": 1311.0,
+     "y": 337.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "FEDERAL ST",
+      [
+       553442.9,
+       4181873.4
+      ],
+      "02ND ST",
+      [
+       553442.9,
+       4181873.4
+      ]
+     ],
+     "sa": 1,
+     "sb": 1,
+     "wa": 35,
+     "wb": 82.5,
+     "label": "corner of FEDERAL ST x 02ND ST",
+     "x": 778.0,
+     "y": 1581.0,
+     "norefine": 1
+    },
+    {
+     "bcx": [
+      "BRANNAN ST",
+      [
+       553532.0,
+       4181784.8
+      ],
+      "02ND ST",
+      [
+       553532.0,
+       4181784.8
+      ]
+     ],
+     "sa": 1,
+     "sb": -1,
+     "wa": 82.5,
+     "wb": 82.5,
+     "label": "corner of BRANNAN ST x 02ND ST",
+     "x": 1311.0,
+     "y": 1581.0,
+     "norefine": 1
+    }
+   ]
   }
  ],
+ "zones_only": true,
  "image": "IIIF pct:25 of LOC sheet (see README_industrial.md)"
 }

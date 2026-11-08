@@ -1,0 +1,66 @@
+{
+ "points": [
+  {
+   "a": "MICHIGAN ST",
+   "b": "22ND ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 430.0,
+   "y": 1571.0,
+   "norefine": 1
+  },
+  {
+   "a": "MICHIGAN ST",
+   "b": "20TH ST",
+   "wv": 80,
+   "wh": 66,
+   "x": 430.0,
+   "y": 143.0,
+   "norefine": 1
+  }
+ ],
+ "lines": [
+  {
+   "street": "20TH ST",
+   "near": [
+    "MICHIGAN ST",
+    "20TH ST"
+   ],
+   "R": 250,
+   "off": [
+    33,
+    "N"
+   ],
+   "px": [
+    [
+     700,
+     94
+    ],
+    [
+     1500,
+     93
+    ]
+   ]
+  },
+  {
+   "street": "22ND ST",
+   "near": [
+    "ILLINOIS ST",
+    "22ND ST"
+   ],
+   "R": 120,
+   "px": [
+    [
+     900,
+     1570
+    ],
+    [
+     1250,
+     1568.5
+    ]
+   ]
+  }
+ ],
+ "pct": 25,
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}
