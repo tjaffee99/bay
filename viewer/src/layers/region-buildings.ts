@@ -7,6 +7,15 @@
 import {TileLayer} from '@deck.gl/geo-layers';
 import type {Layer} from '@deck.gl/core';
 import {buildingsLayer, fromBinary, loadTileInWorker, type BuildingSet} from './buildings';
+import {replacedMask, type LandmarkSet} from '../landmarks';
+
+// landmarks standing on region footprints (Apple Park, Stanford, stadiums…): the
+// footprints under a landmark are hidden, older buildings on the site stand until its
+// construction starts — same rule as in San Francisco
+let landmarks: LandmarkSet | null = null;
+export function setRegionLandmarks(set: LandmarkSet | null) {
+  landmarks = set;
+}
 
 type Index = {
   z: number;
@@ -49,9 +58,13 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
       return fromBinary(file);
     },
     renderSubLayers: (props: any) => {
-      const s = props.data as BuildingSet | null;
+      const s = props.data as (BuildingSet & {lmDone?: boolean}) | null;
       if (!s) return null;
-      return buildingsLayer(s, year, quality, false, `${props.id}-b`) as any;
+      if (landmarks && !s.lmDone) {
+        s.replaced = replacedMask(landmarks, s.centroids, s.count);
+        s.lmDone = true;
+      }
+      return buildingsLayer(s, year, quality, true, `${props.id}-b`) as any;
     },
     updateTriggers: {renderSubLayers: [year, quality]}
   } as any);

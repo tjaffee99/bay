@@ -15,7 +15,7 @@ import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/
 import {loadElevation} from './layers/elevation';
 import {addStationLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
-import {loadRegionIndex, regionBuildingLayers} from './layers/region-buildings';
+import {loadRegionIndex, regionBuildingLayers, setRegionLandmarks} from './layers/region-buildings';
 import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
@@ -424,6 +424,7 @@ async function boot() {
     buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
     render();
   }
+  setRegionLandmarks(landmarks);
   loading.classList.add('done');
   warnIfSoftwareRendering();
   (window as any).__ready = true;

@@ -137,6 +137,9 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 ### `overture_land_use` detail — golf, sport and park outlines
 - `theme=base/type=land_use`, classes fairway, green, tee, rough, bunker, driving_range, pitch, track, playground, dog_park, plaza, garden, grass — ODbL 1.0 (OpenStreetMap). Use: `ground-detail.bin.gz` (dated by golf course / RPD park / first buildings nearby) and park labels (DataSF RPD parks, `parks.csv`).
 
+### `overture_airports` — Overture base / infrastructure (airports, runways, taxiways, aprons) — OSM
+Airport outlines and runway / taxiway / apron features (OSM centrelines buffered to typical widths) from Overture release 2026-10-21.0 (`region_airports.parquet`), ODbL. Opening years per airport in `data/tables/airports.csv` (source URL per row: Wikipedia articles, county / city airport history pages, militarymuseum.org; rows without a URL are estimates and say so); undated small fields default to 1950 (`estimated`).
+
 ### `land_not_before` (manual)
 - File: `data/manual/land_not_before.geojson`
 - Treasure Island: built 1936–37 on the Yerba Buena Shoals for the 1939 Golden Gate International Exposition — https://en.wikipedia.org/wiki/Treasure_Island,_San_Francisco . Outline from TIGER.
