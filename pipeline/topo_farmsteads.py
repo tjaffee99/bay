@@ -456,7 +456,7 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
     opens = []
     for i in range(1, no):
         x, y, w, h, a = ost[i]
-        if not (0.03 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.12 * ppm:
+        if not (0.07 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.2 * ppm:
             continue
         pad = int(0.5 * ppm) + 2
         y0, y1, x0, x1 = max(y - pad, 0), min(y + h + pad, H), max(x - pad, 0), min(x + w + pad, W)
