@@ -714,7 +714,30 @@ def _detect_tile(img, inside, ppm, paper, ink_t, a_min, core_box):
                   "resid_thick_mm2": resid_thick / ppm ** 2, "big_text": big_text,
                   "on_line": on_line, "holes": holes, "letters_near": letters,
                   "water": float(wwin.mean()), "own_px": int(own.sum())})
-    # --- dash-dot boundaries: a candidate on the extension of a long dash
+    # --- dash-dot boundaries: a candidate on the extension of a long dash. Thin dashes
+    # (vanished in the opening) come from the ink components: straight, 0.8-6 mm long.
+    n0, lab0, st0, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
+    dim0 = np.maximum(st0[:, 2], st0[:, 3])
+    cand0 = np.nonzero((dim0 >= 0.8 * ppm) & (dim0 <= 6 * ppm))[0]
+    cand0 = cand0[cand0 > 0]
+    if len(cand0):
+        ys_, xs_ = np.nonzero(ink)
+        ll = lab0[ys_, xs_]
+        cnt = np.bincount(ll, minlength=n0).astype(float) + 1e-9
+        mx_ = np.bincount(ll, xs_, n0) / cnt; my_ = np.bincount(ll, ys_, n0) / cnt
+        sxx = np.bincount(ll, xs_.astype(float) ** 2, n0) / cnt - mx_ ** 2
+        syy = np.bincount(ll, ys_.astype(float) ** 2, n0) / cnt - my_ ** 2
+        sxy = np.bincount(ll, xs_.astype(float) * ys_, n0) / cnt - mx_ * my_
+        del ys_, xs_, ll
+        for q in cand0:
+            tr, det = sxx[q] + syy[q], sxx[q] * syy[q] - sxy[q] ** 2
+            dd = math.sqrt(max(tr * tr / 4 - det, 0))
+            l1, l2 = tr / 2 + dd, max(tr / 2 - dd, 1e-6)
+            if l1 / l2 < 40 or 4 * math.sqrt(l1) < 0.8 * ppm:
+                continue                          # not a straight dash
+            th = 0.5 * math.atan2(2 * sxy[q], sxx[q] - syy[q])
+            dashes.append((mx_[q], my_[q], math.cos(th), math.sin(th), 2 * math.sqrt(l1)))
+    del lab0
     D = np.array(dashes) if dashes else None
     dtree = cKDTree(D[:, :2]) if dashes else None
     out = recs_c + opens
