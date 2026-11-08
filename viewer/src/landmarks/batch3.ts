@@ -775,6 +775,7 @@ const sfmoma2016: Landmark = {
       b.color('#D9DBDA').prism(scaleRing(ring, 0.9), 60, 62);
     });
   },
+  replaces: [rotRect(0, 0, 90, 110, 135)],
   facts: {
     Opened: 'May 14, 2016 (Snøhetta)',
     Size: '7 gallery levels + 3 support floors, fibre-reinforced-plastic panels rippled after the bay fog',
@@ -1431,6 +1432,13 @@ const treasureIslandHangars: Landmark = {
       )
     );
   },
+  replaces: [
+    rotRect(0, 0, 106, 90, 152),
+    (() => {
+      const p = lngLatToLocal([-122.367812, 37.818479], [-122.365883, 37.819406]);
+      return rotRect(p[0], p[1], 140, 106, 152);
+    })()
+  ],
   facts: {
     Built: '1937–38 as Exposition halls (Building 3: Palace of Fine and Decorative Arts; Building 2: transportation hall), designed for later use as airport hangars',
     Height: '≈ 20 m (OSM)',

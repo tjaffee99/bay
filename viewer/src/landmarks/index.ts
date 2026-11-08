@@ -32,7 +32,7 @@ export const LANDMARKS: Landmark[] = [
 ];
 
 export type LandmarkSet = {
-  items: {lm: Landmark; mesh: any; vertices: number}[];
+  items: {lm: Landmark; mesh: any; vertices: number; data: Landmark[]}[];
   /** replaced-footprint polygons in lon/lat, with the landmark index */
   replaced: {poly: V2[]; bbox: [number, number, number, number]; idx: number}[];
 };
@@ -43,7 +43,7 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
   const items = LANDMARKS.map(lm => {
     const b = new MeshBuilder();
     lm.build(b);
-    return {lm, mesh: b.build(), vertices: b.vertexCount};
+    return {lm, mesh: b.build(), vertices: b.vertexCount, data: [lm]};
   });
   const replaced: LandmarkSet['replaced'] = [];
   LANDMARKS.forEach((lm, idx) => {
@@ -64,10 +64,10 @@ export function landmarkLayers(set: LandmarkSet, year: number, quality: boolean)
   return set.items
     .filter(({lm}) => year >= lm.built[0] - 0.01 && year < lm.end + 1)
     .map(
-      ({lm, mesh}) =>
+      ({lm, mesh, data}) =>
         new SimpleMeshLayer({
           id: `landmark-${lm.id}`,
-          data: [lm],
+          data,
           mesh,
           // bridges are modelled from sea level; everything else stands on the terrain
           getPosition: (d: Landmark) => [d.anchor[0], d.anchor[1], d.kind === 'bridge' ? 0 : elevationAt(d.anchor[0], d.anchor[1]) - 0.5],

@@ -882,3 +882,4 @@ osm_relation19309896,United Nations Building,37.780438,-122.415001,1933,9999,htt
 osm_way1517853832,2550 Irving,37.763423,-122.485157,2026,9999,https://www.openstreetmap.org/way/1517853832,"OSM start_date='2026-03' (crowd-sourced, unverified); building=residential; levels=7"
 osm_relation5504536,Fort Point,37.810486,-122.476882,1861,9999,https://www.openstreetmap.org/relation/5504536,"OSM start_date='1861' (crowd-sourced, unverified); building=fort; levels=3"
 osm_way1570474940,building (toilets),37.747244,-122.411482,2026,9999,https://www.openstreetmap.org/way/1570474940,"OSM start_date='2026-03-06' (crowd-sourced, unverified); building=toilets; levels=1"
+salesforce_transit_center,Salesforce Transit Center,37.789444,-122.396389,2018.61,9999,https://en.wikipedia.org/wiki/Salesforce_Transit_Center,"Opened 12 Aug 2018 on the site of the 1939 Transbay Terminal (construction 2010-2018); rooftop park 5.4 acres."

@@ -55,12 +55,22 @@ function zoomAlpha(zoom: number, band: [number, number, number, number]) {
 
 const collision = new CollisionFilterExtension();
 
+// keep the same data array while the visible set is unchanged, so re-renders
+// (traffic animation, zoom) don't re-layout the text
+const cache: Record<string, Place[]> = {};
+function visible(tier: string, year: number) {
+  const next = places.filter(p => p.tier === tier && year >= p.start && year < p.end);
+  const prev = cache[tier];
+  if (prev && prev.length === next.length && prev.every((p, i) => p === next[i])) return prev;
+  return (cache[tier] = next);
+}
+
 export function labelLayers(year: number, zoom: number) {
   const out: TextLayer[] = [];
   for (const [tier, cfg] of Object.entries(TIERS)) {
     const alpha = zoomAlpha(zoom, cfg.zoom);
     if (alpha <= 0.01) continue;
-    const data = places.filter(p => p.tier === tier && year >= p.start && year < p.end);
+    const data = visible(tier, year);
     if (!data.length) continue;
     out.push(
       new TextLayer<Place>({
