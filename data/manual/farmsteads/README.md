@@ -77,9 +77,13 @@ Orchard properties: `kind` (`orchard` | `vineyard`), `map_year`, `edition_year`,
    published.
 7. **Orchards / vineyards** (1939–1956 sheets, at 1/3 resolution): orchard = regular
    pattern of round green dots ~1 mm across (density of dot-shaped green components over
-   3 mm); vineyard = green tint carrying a screen of white lines ~0.9 mm apart (horizontal
-   autocorrelation peak at 0.8–1.0 mm, none at half that); solid woodland tint and woodland
-   cut by contour lines show neither. Closed / opened morphologically, ≥ 1 ha.
+   3 mm); vineyard = green tint carrying a screen of white-paper lines ~0.9 mm apart
+   (horizontal autocorrelation of the green-vs-white mask peaks at 0.8–1.0 mm, not at half
+   that; brown contour lines and black roads count as "not white", so woodland tint cut by
+   dense contours — which fooled a first version in the Marin hills — shows no screen).
+   Closed / opened morphologically, ≥ 1 ha. Checked by overlay on San Jose East 1953
+   (orchards across the valley floor and foothills, vineyards only in the Evergreen
+   district, as on the map) and San Geronimo 1954 (woodland, no false orchards / vineyards).
 
 ## Quality
 

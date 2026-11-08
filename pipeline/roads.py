@@ -33,6 +33,7 @@ from common import INTERIM, MANUAL, RAW, VIEWER_DATA, log
 from download_overture import RELEASE
 from export_columnar import write_columnar
 from terrain_grid import grid_def
+from extent import in_extent
 
 ORIGIN = (-122.44, 37.76)
 UTM = "EPSG:32610"
@@ -805,6 +806,7 @@ def main():
     counties = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
     sf_poly = counties[(counties.STATEFP == "06") & (counties.COUNTYFP == "075")].geometry.iloc[0]
     rr = rr[~rr.geometry.representative_point().within(sf_poly)]
+    rr = rr[in_extent(rr.geometry.representative_point())]
     rr = rr.to_crs(UTM)
     rr = rr[rr.geometry.geom_type == "LineString"]
     rr = rr[~rr["class"].isin(["motorway", "trunk"])]  # drawn in 3D from freeways.bin.gz
@@ -828,6 +830,11 @@ def main():
     r_ = np.clip(((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
     fby = fb[r_, c]
     fby[(fby < 1810) | (fby > 2026)] = np.nan
+    # main roads: like the streets, a year before the buildings along them went up (the
+    # old county roads — primary / secondary — no later than their towns' first
+    # buildings, and before 1880 in open country, when no buildings date them)
+    by_bld, n_bld = date_by_buildings(rr.geometry.values, mid_ll, np.where(rr["class"].isin(["primary", "secondary"]).values, 1870.0, 1900.0))
+    log(f"region roads: {len(rr)} segments, {n_bld} dated by the buildings along them")
     items = []
     for i, (g, klass) in enumerate(zip(rr.geometry.values, rr["class"].values)):
         if klass in ("motorway", "trunk"):
@@ -839,7 +846,7 @@ def main():
                     y = float(fw_tree[1][ii])
         else:
             k = K_MAJOR if klass in ("primary", "secondary") else K_STREET
-            y = float(fby[i]) if np.isfinite(fby[i]) and klass == "tertiary" else 1880.0
+            y = float(by_bld[i])
         items.append((g, k, WIDTH[k], y, 9999.0, 0))
     write_paths(VIEWER_DATA / "roads-region.bin.gz", items, ground, z_offset, step=60.0)
     # researched freeway lines with their direction, to date Overture's real geometry
@@ -870,6 +877,53 @@ def main():
 
 
 LOCAL_Z = 12  # tiles of the suburban street grid (~9.8 km), loaded from zoom 12.5
+LOCAL_LOW_Z = 10  # simplified street grid for city scale (zoom 9-12.5)
+
+
+def date_by_buildings(lines_utm, mid_ll, default):
+    """A street is cut a year before the 2nd-earliest building within 45 m of it goes up
+    (today's footprints and vanished ones: region_building_points.parquet), as in SF;
+    with one building, a year before it; without, the HISDAC first built-up year of its
+    cell; else `default` (scalar or array). Never before the ground under it (fill).
+    Returns (years, number dated by buildings)."""
+    from airports import land_year
+    seg, px, py = [], [], []
+    for i, g in enumerate(lines_utm):
+        n = max(2, int(g.length // 20) + 1)
+        pts = shapely.line_interpolate_point(g, np.linspace(0, g.length, n))
+        seg.append(np.full(n, i))
+        px.append(shapely.get_x(pts))
+        py.append(shapely.get_y(pts))
+    seg, px, py = np.concatenate(seg), np.concatenate(px), np.concatenate(py)
+    b = pd.read_parquet(INTERIM / "region_building_points.parquet", columns=["lon", "lat", "start_year"])
+    bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
+    tree = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
+    by = b.start_year.values.astype(float)
+    d, idx = tree.query(np.column_stack([px, py]), k=4, distance_upper_bound=45)
+    yrs = np.where(np.isfinite(d), by[np.minimum(idx, len(by) - 1)], np.nan)
+    flat = pd.DataFrame({"s": np.repeat(seg, 4), "y": yrs.ravel()}).dropna().sort_values(["s", "y"])
+    flat["r"] = flat.groupby("s").cumcount()
+    n = len(lines_utm)
+    year = np.full(n, np.nan)
+    first = flat[flat.r == 0].set_index("s").y
+    second = flat[flat.r == 1].set_index("s").y
+    year[first.index.values] = first.values
+    year[second.index.values] = second.values
+    year -= 1.0
+    n_bld = int(np.isfinite(year).sum())
+    gR = grid_def("region")
+    fb = np.load(INTERIM / "grid_region_fbuy.npy").astype(float)
+    X = np.radians(mid_ll.x.values) * 6378137.0
+    Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(mid_ll.y.values) / 2))
+    c = np.clip(((X - gR["X0"]) / gR["res"]).astype(int), 0, gR["cols"] - 1)
+    r_ = np.clip(((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
+    fby = fb[r_, c]
+    fby[(fby < 1810) | (fby > 2026)] = np.nan
+    year = np.where(np.isfinite(year), year, fby - 1.0)
+    year = np.where(np.isfinite(year), year, default)
+    ly = land_year(mid_ll.x.values, mid_ll.y.values)
+    year = np.where(np.isfinite(ly), np.maximum(year, ly + 0.5), year)
+    return year, n_bld
 
 
 def local_streets():
@@ -881,7 +935,6 @@ def local_streets():
     (country lanes). Never before the ground under it (bay fill)."""
     import json
     import shutil
-    from airports import land_year
     rr = gpd.read_parquet(RAW / "overture" / RELEASE / "roads_local.parquet")
     if rr.crs is None:
         rr = rr.set_crs(4326)
@@ -889,50 +942,10 @@ def local_streets():
     sf_poly = counties[(counties.STATEFP == "06") & (counties.COUNTYFP == "075")].geometry.iloc[0]
     rr = rr[rr.geometry.geom_type == "LineString"]
     rr = rr[~rr.geometry.representative_point().within(sf_poly)].reset_index(drop=True)
+    rr = rr[in_extent(rr.geometry.representative_point())].reset_index(drop=True)
     ru = rr.to_crs(UTM)
-    # sample points every ~20 m along each street
-    seg, px, py = [], [], []
-    for i, g in enumerate(ru.geometry.values):
-        n = max(2, int(g.length // 20) + 1)
-        d = np.linspace(0, g.length, n)
-        pts = shapely.line_interpolate_point(g, d)
-        seg.append(np.full(n, i))
-        px.append(shapely.get_x(pts))
-        py.append(shapely.get_y(pts))
-    seg, px, py = np.concatenate(seg), np.concatenate(px), np.concatenate(py)
-    b = pd.read_parquet(INTERIM / "region_building_points.parquet", columns=["lon", "lat", "start_year"])
-    bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
-    tree = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
-    by = b.start_year.values.astype(float)
-    d, idx = tree.query(np.column_stack([px, py]), k=4, distance_upper_bound=45)
-    ok = np.isfinite(d)
-    yrs = np.where(ok, by[np.minimum(idx, len(by) - 1)], np.nan)
-    # per street: the 2nd-earliest building year along it
-    flat = pd.DataFrame({"s": np.repeat(seg, 4), "y": yrs.ravel()}).dropna()
-    flat = flat.sort_values(["s", "y"])
-    flat["r"] = flat.groupby("s").cumcount()
-    second = flat[flat.r == 1].set_index("s").y
-    first = flat[flat.r == 0].set_index("s").y
-    y_b = np.full(len(rr), np.nan)
-    y_b[second.index.values] = second.values
-    lone = np.isnan(y_b)
-    y_b[first.index.values[lone[first.index.values]]] = first.values[lone[first.index.values]]
-    year = y_b - 1.0
-    # HISDAC first built-up year of the cell, then country lanes
     mid = rr.geometry.interpolate(0.5, normalized=True)
-    gR = grid_def("region")
-    fb = np.load(INTERIM / "grid_region_fbuy.npy").astype(float)
-    X = np.radians(mid.x.values) * 6378137.0
-    Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(mid.y.values) / 2))
-    c = np.clip(((X - gR["X0"]) / gR["res"]).astype(int), 0, gR["cols"] - 1)
-    r_ = np.clip(((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
-    fby = fb[r_, c]
-    fby[(fby < 1810) | (fby > 2026)] = np.nan
-    n_bld = int(np.isfinite(year).sum())
-    year = np.where(np.isfinite(year), year, fby - 1.0)
-    year = np.where(np.isfinite(year), year, 1925.0)
-    ly = land_year(mid.x.values, mid.y.values)
-    year = np.where(np.isfinite(ly), np.maximum(year, ly + 0.5), year)
+    year, n_bld = date_by_buildings(ru.geometry.values, mid, 1925.0)
     log(f"local streets: {len(rr)} segments, {n_bld} dated by the buildings along them")
     # tiles
     n = 2 ** LOCAL_Z
@@ -952,8 +965,21 @@ def local_streets():
         p.parent.mkdir(parents=True, exist_ok=True)
         write_paths(p, items, ground, z_offset, step=30.0)
         index.append({"x": int(x), "y": int(y), "n": len(items)})
-    (out / "index.json").write_text(json.dumps({"z": LOCAL_Z, "tiles": index}))
-    log(f"local streets: {len(index)} z{LOCAL_Z} tiles -> {out}")
+    # city scale: the same streets, simplified to 8 m and not draped vertex by vertex
+    nL = 2 ** LOCAL_LOW_Z
+    tx = np.floor((mid.x.values + 180) / 360 * nL).astype(int)
+    ty = np.floor((1 - np.log(np.tan(lat) + 1 / np.cos(lat)) / np.pi) / 2 * nL).astype(int)
+    simp = ru.geometry.simplify(8.0).values
+    low = []
+    df = pd.DataFrame({"tx": tx, "ty": ty, "i": np.arange(len(rr))})
+    for (x, y), grp in df.groupby(["tx", "ty"]):
+        items = [(simp[i], K_STREET, WIDTH[K_STREET], float(year[i]), 9999.0, 0) for i in grp.i.values]
+        p = out / str(LOCAL_LOW_Z) / str(x) / f"{y}.bin.gz"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        write_paths(p, items, ground, z_offset, step=400.0)
+        low.append({"x": int(x), "y": int(y), "n": len(items)})
+    (out / "index.json").write_text(json.dumps({"z": LOCAL_Z, "tiles": index, "low": {"z": LOCAL_LOW_Z, "tiles": low}}))
+    log(f"local streets: {len(index)} z{LOCAL_Z} tiles + {len(low)} z{LOCAL_LOW_Z} tiles -> {out}")
 
 
 if __name__ == "__main__":

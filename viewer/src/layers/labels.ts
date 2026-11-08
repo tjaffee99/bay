@@ -65,7 +65,7 @@ export async function loadParkLabels() {
     const rows = (await res.json()) as {name: string; lon: number; lat: number; start: number; ha: number}[];
     const have = new Set(places.map(p => p.name));
     for (const r of rows) {
-      if (have.has(r.name)) continue;
+      if (have.has(r.name) || (keepFn && !keepFn(r.lon, r.lat))) continue;
       const tier = r.ha >= 8 ? 'park_major' : 'park';
       places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
     }
@@ -79,10 +79,19 @@ export async function loadParkLabels() {
 export function addStationLabels(rows: {name: string; system: string; lon: number; lat: number; start: number; end: number}[]) {
   const bart = rows.filter(r => r.system === 'bart');
   for (const r of rows) {
+    if (keepFn && !keepFn(r.lon, r.lat)) continue;
     if (r.system !== 'bart' && bart.some(b => Math.hypot(b.lon - r.lon, b.lat - r.lat) < 0.0015)) continue;
     const tier = r.system === 'bart' ? 'station' : 'station_muni';
     places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
   }
+  placedKey = '';
+}
+
+/** Drop labels outside the map's extent (or in its faded margin). */
+let keepFn: ((lon: number, lat: number) => boolean) | null = null;
+export function dropLabels(keep: (lon: number, lat: number) => boolean) {
+  keepFn = keep;
+  places = places.filter(p => keep(p.lon, p.lat));
   placedKey = '';
 }
 

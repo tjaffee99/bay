@@ -5,7 +5,7 @@
  */
 import {COORDINATE_SYSTEM} from '@deck.gl/core';
 import type {Layer} from '@deck.gl/core';
-import {SolidPolygonLayer} from '@deck.gl/layers';
+import {PathLayer, SolidPolygonLayer} from '@deck.gl/layers';
 import {loadColumnar} from '../data/columnar';
 import {TimeExtension} from './time-extension';
 
@@ -96,6 +96,9 @@ let apData: any = null;
 let apOrigin: [number, number] = [0, 0];
 let apColors: Uint8Array | null = null;
 let apYears: Float32Array | null = null;
+// runway / taxiway centre lines (airports.py): a minimum pixel width keeps the
+// airfields readable when zoomed far out, where the true 45 m width is sub-pixel
+let apLines: any = null;
 
 export async function loadAirports() {
   try {
@@ -108,16 +111,59 @@ export async function loadAirports() {
     apColors = new Uint8Array(n * 4);
     for (let i = 0; i < n; i++) apColors.set([...(AIRPORT_COLORS[kind[i]] ?? AIRPORT_COLORS[1]), 255], i * 4);
     apData = {length: n, startIndices: c.start_indices, attributes: {getPolygon: {value: c.positions, size: 3}}};
+    const l = await loadColumnar('data/airport-lines.bin.gz');
+    const lc = l.columns;
+    apLines = {
+      n: l.header.counts.paths,
+      kind: lc.kind as Uint8Array,
+      width: lc.width as Uint8Array,
+      years: lc.years as Float32Array,
+      origin: l.header.origin,
+      data: {length: l.header.counts.paths, startIndices: lc.start_indices, attributes: {getPath: {value: lc.positions, size: 3}}}
+    };
   } catch (e) {
     console.warn('airports', e);
   }
 }
 
 export function airportLayers(year: number, zoom: number): Layer[] {
-  if (!apData || zoom < 9.5) return [];
+  if (!apData) return [];
   const col = apColors!;
   const yrs = apYears!;
+  const out: Layer[] = [];
+  if (apLines && zoom < 13.5) {
+    const L = apLines;
+    out.push(
+      new PathLayer({
+        id: 'airport-lines',
+        data: L.data,
+        positionFormat: 'XYZ',
+        _pathType: 'open',
+        coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+        coordinateOrigin: [L.origin[0], L.origin[1], 0],
+        getWidth: (_: any, {index}: any) => L.width[index],
+        getColor: (_: any, {index}: any) => (L.kind[index] === 0 ? [96, 98, 102, 255] : [128, 130, 132, 220]),
+        widthUnits: 'meters',
+        widthMinPixels: zoom < 11 ? 1.6 : 1,
+        capRounded: false,
+        billboard: false,
+        pickable: false,
+        shadowEnabled: false,
+        extensions: [fade],
+        getYears: (_: any, {index, target}: any) => {
+          target[0] = L.years[index * 2];
+          target[1] = L.years[index * 2 + 1];
+          return target;
+        },
+        currentYear: year,
+        growYears: 1,
+        shrinkYears: 0.5,
+        parameters: {depthBias: -3, depthBiasSlopeScale: -1.5} as any
+      } as any) as any
+    );
+  }
   return [
+    ...out,
     new SolidPolygonLayer({
       id: 'airports',
       data: apData,

@@ -18,6 +18,7 @@ import type {ShaderModule} from '@luma.gl/shadertools';
 import {loadColumnar} from '../data/columnar';
 import {DECO_COLORS} from './decoration-meshes';
 import {DECO_ORIGIN, decoLayers, setVisibleDeco, type DecoBatch} from './deco-layer';
+import {extentFade, extentReady} from './extent';
 
 // cover codes — keep in sync with pipeline/terrain_tiles.py
 const PALETTE: [number, number, number][] = [
@@ -87,10 +88,12 @@ in vec4 covers;
 in float cover4;
 in vec4 years;
 in float skirt;
+in float fade;
 in vec3 normals;
 in vec2 uv;
 out vec2 vUv;
 out float vSkirt;
+out float vFade;
 out vec3 vNormal;
 out vec3 vCommon;
 out vec3 vCamera;
@@ -120,6 +123,7 @@ void main(void) {
   if (skirt > 0.5) z -= 80.0;
   vUv = uv;
   vSkirt = skirt;
+  vFade = fade;
   // water lies flat; land uses the elevation grid's normal
   vNormal = project_normal(normalize(mix(normals, vec3(0.0, 0.0, 1.0), wet)));
   vec4 commonPos;
@@ -138,6 +142,7 @@ precision highp float;
 uniform sampler2D coverTex;
 in vec2 vUv;
 in float vSkirt;
+in float vFade;
 in vec3 vNormal;
 in vec3 vCommon;
 in vec3 vCamera;
@@ -387,6 +392,14 @@ void main(void) {
   vec3 lit = lighting_getLightColor(land, vCamera, vCommon, n);
   // water: calm and flat-bright
   fragColor = vec4(mix(lit, color * 1.02, wet * 0.85), 1.0);
+  // the edge of the map: land and water fade into parchment over the last few km,
+  // with a ragged, organic line (old game map)
+  if (vFade < 0.999) {
+    vec2 q = (vLngLat - vec2(-122.0, 37.5)) * vec2(88.0, 111.0);
+    float n = inoise(q * 0.35) * 0.6 + inoise(q * 1.3 + 4.0) * 0.4;
+    float f = smoothstep(0.15, 0.85, vFade + (n - 0.5) * 0.45);
+    fragColor.rgb = mix(vec3(0.925, 0.9, 0.84), fragColor.rgb, f);
+  }
   DECKGL_FILTER_COLOR(fragColor, geometry);
 }
 `;
@@ -434,6 +447,8 @@ export type TerrainMesh = {
   cover4: Float32Array;
   years: Float32Array;
   skirt: Float32Array;
+  /** 0 outside the map's extent … 1 inside (extent.ts) */
+  fade: Float32Array;
   indices: Uint32Array;
   origin: [number, number];
   /** z13 lattice cells per vertex step, and the tile's lattice origin (farm patterns) */
@@ -516,6 +531,7 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
           cover4: {size: 1, value: m.cover4},
           years: {size: 4, value: m.years},
           skirt: {size: 1, value: m.skirt},
+          fade: {size: 1, value: m.fade},
           uv: {size: 2, value: m.uv},
           normals: {size: 3, value: m.normals}
         },
@@ -604,6 +620,7 @@ async function fetchTile(z: number, x: number, y: number) {
 
 /** Load a tile; z14 outside the San Francisco detail grid falls back to a quadrant of its z13 parent. */
 export async function loadTerrainTile(z: number, x: number, y: number): Promise<TileContent> {
+  await extentReady;
   let f = await fetchTile(z, x, y);
   let sub = {r0: 0, c0: 0, step: 1, n: N, srcZ: z, srcX: x, srcY: y};
   if (!f && z === TILE_ZOOM_DETAIL) {
@@ -634,6 +651,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
   const cover4 = new Float32Array(nv);
   const years = new Float32Array(nv * 4);
   const skirt = new Float32Array(nv);
+  const fade = new Float32Array(nv);
   const normals = new Float32Array(nv * 3);
   const uv = new Float32Array(nv * 2);
   const latAt = (i: number) => tileLat(y + i / (n - 1), z) - north;
@@ -661,6 +679,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     uv[v * 2 + 1] = (i + 0.5) / n;
     positions[v * 3] = ((east - west) * j) / (n - 1);
     positions[v * 3 + 1] = lats[i];
+    fade[v] = extentFade(west + ((east - west) * j) / (n - 1), north + lats[i]);
     positions[v * 3 + 2] = elev[src] / 10;
     for (let k = 0; k < 4; k++) covers[v * 4 + k] = cov[src * 5 + k];
     cover4[v] = cov[src * 5 + 4];
@@ -689,6 +708,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     cover4,
     years,
     skirt,
+    fade,
     indices: gridIndices(n),
     origin: [west, north],
     latScale: 2 ** (13 - sub.srcZ),
@@ -712,6 +732,8 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         if (gx < 0 || gy < 0 || gx > n - 1 || gy > n - 1) continue;
       }
       if (kinds[i] <= 1 && kinds.length > 6000 && (i * 2654435761) % 5 >= 2) continue;
+      // nothing stands in the faded margin of the map
+      if (extentFade(west + ((east - west) * (sub.n !== N ? gx : gx)) / (n - 1), tileLat(y + gy / (n - 1), z)) < 0.4) continue;
       const arr = groups.get(kinds[i]) ?? [];
       arr.push(i);
       groups.set(kinds[i], arr);

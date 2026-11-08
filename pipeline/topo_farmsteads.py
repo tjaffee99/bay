@@ -926,7 +926,7 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
 
 
 # ----------------------------------------------------------------------------- orchards
-ORCHARD_VERSION = 2
+ORCHARD_VERSION = 3
 
 
 def extract_orchards(sheet: "GeoPDF", step=3):
@@ -941,9 +941,11 @@ def extract_orchards(sheet: "GeoPDF", step=3):
     sheet._cache.clear()
     ppm = g["px_per_mm"] / step
     green = np.zeros(sm.shape[:2], np.uint8)
+    paperish = np.zeros(sm.shape[:2], np.uint8)     # white paper (the vineyard screen lines)
     for r in range(0, sm.shape[0], 1024):
         b = sm[r:r + 1024].astype(np.int16)
         green[r:r + 1024] = (b[:, :, 1] - b[:, :, 2] > 45) & (b[:, :, 1] > 150) & (b[:, :, 1] >= b[:, :, 0] - 10)
+        paperish[r:r + 1024] = (b.min(2) > 175) & (b[:, :, 1] - b[:, :, 2] < 40)
     del sm
     ins = np.zeros(green.shape, np.uint8)
     cv2.fillPoly(ins, [np.round(g["neat_px"] / step).astype(np.int32)], 1)
@@ -964,9 +966,11 @@ def extract_orchards(sheet: "GeoPDF", step=3):
     kw = int(2.0 * ppm) | 1
     vine = np.zeros(green.shape, np.uint8)
     band, mg = 1200, 3 * kw
+    # the screen lines of the vineyard symbol are white paper; contour lines (brown) or
+    # roads crossing a woodland tint every ~1 mm are not, so only green-vs-white counts
     for r0 in range(0, green.shape[0], band):                  # in bands: bounded memory
         a0, a1 = max(r0 - mg, 0), min(r0 + band + mg, green.shape[0])
-        gfl = green[a0:a1].astype(np.float32)
+        gfl = (1 - paperish[a0:a1]).astype(np.float32)
         gf = cv2.blur(gfl, (int(1.2 * ppm) | 1,) * 2)
         A = gfl - cv2.blur(gfl, (kw, kw))
         del gfl
@@ -982,7 +986,8 @@ def extract_orchards(sheet: "GeoPDF", step=3):
             l = max(2, int(round(lmm * ppm)))
             c = corr(l) - np.maximum(corr(max(1, l // 2)), 0)
             best = c if best is None else np.maximum(best, c)
-        v = (gf > 0.40) & (gf < 0.92) & (cv2.blur(best, (kw, kw)) > 0.22)
+        gg = cv2.blur(green[a0:a1].astype(np.float32), (int(1.2 * ppm) | 1,) * 2)
+        v = (gf > 0.40) & (gf < 0.92) & (gg > 0.35) & (cv2.blur(best, (kw, kw)) > 0.22)
         vine[r0:min(r0 + band, green.shape[0])] = v[r0 - a0:r0 - a0 + min(band, green.shape[0] - r0)]
         del A, den, best, gf, v
 

@@ -21,6 +21,7 @@ import pandas as pd
 from common import INTERIM, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from export_columnar import write_columnar
+from extent import in_extent
 from roads import ORIGIN, UTM, Ground
 
 AIRPORT_CLASSES = ["airport", "international_airport", "military_airport", "municipal_airport", "private_airport"]
@@ -50,6 +51,7 @@ def land_year(lon, lat):
 def main():
     d = pd.read_parquet(RAW / "overture" / RELEASE / "region_airports.parquet")
     g = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
+    g = g[in_extent(g.geometry.representative_point())]
     ports = g[g["class"].isin(AIRPORT_CLASSES) & (g.geom_type == "Polygon")].copy()
     t = pd.read_csv(TABLES / "airports.csv")
     ports = ports.merge(t[["name", "opened", "closed"]], on="name", how="left")
@@ -98,6 +100,36 @@ def main():
         starts.append(starts[-1] + len(ring))
         kinds.append(k)
         years.extend((float(y0), float(y1)))
+    # centre lines of runways and taxiways (long axis of each piece): drawn with a
+    # minimum pixel width so the airfields still read when zoomed far out
+    lstarts, lpos, lkind, lwidth, lyears = [0], [], [], [], []
+    fu = f.geometry.values
+    for geom, k, y0, y1 in zip(fu, f["class"].map(KIND).values, start, f.closed.values):
+        if k == 2:
+            continue
+        rect = np.asarray(geom.minimum_rotated_rectangle.exterior.coords)[:4]
+        e1, e2 = rect[1] - rect[0], rect[2] - rect[1]
+        if np.hypot(*e1) >= np.hypot(*e2):
+            a, b, w = (rect[0] + rect[3]) / 2, (rect[1] + rect[2]) / 2, np.hypot(*e2)
+        else:
+            a, b, w = (rect[0] + rect[1]) / 2, (rect[2] + rect[3]) / 2, np.hypot(*e1)
+        if np.hypot(*(b - a)) < 3 * w:
+            continue
+        ll = gpd.GeoSeries(gpd.points_from_xy([a[0], b[0]], [a[1], b[1]]), crs=UTM).to_crs(4326)
+        lon, lat = ll.x.values, ll.y.values
+        z = ground(lon, lat) + 0.45
+        lpos.append(np.column_stack([lon - ORIGIN[0], lat - ORIGIN[1], z]).ravel())
+        lstarts.append(lstarts[-1] + 2)
+        lkind.append(k)
+        lwidth.append(min(255, max(1, round(w))))
+        lyears.extend((float(y0), float(y1)))
+    write_columnar(VIEWER_DATA / "airport-lines.bin.gz", {
+        "start_indices|shuffle": np.asarray(lstarts, np.uint32),
+        "positions|shuffle": np.concatenate(lpos).astype(np.float32),
+        "kind": np.asarray(lkind, np.uint8),
+        "width": np.asarray(lwidth, np.uint8),
+        "years": np.asarray(lyears, np.float32),
+    }, origin=ORIGIN, counts={"paths": len(lkind), "vertices": lstarts[-1]})
     write_columnar(VIEWER_DATA / "airports.bin.gz", {
         "start_indices|shuffle": np.asarray(starts, np.uint32),
         "positions|shuffle": np.concatenate(pos).astype(np.float32),

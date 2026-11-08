@@ -56,6 +56,8 @@ type PathSet = {
 /** Whole sets (traffic) and what is drawn: the region's 124k roads are split into
  *  map squares so that only the squares in view go through the GPU. */
 const sets: PathSet[] = [];
+// suburban streets at city scale: thin and translucent, a texture rather than lines
+const FAINT_STREET: [number, number, number, number] = [150, 146, 138, 150];
 const drawSets: PathSet[] = [];
 const fade = new TimeExtension({mode: 'fade'});
 
@@ -115,7 +117,9 @@ function decodeSet(id: string, f: any): PathSet {
 // Residential streets, lanes and alleys outside SF (roads.py local_streets): z12 tiles
 // loaded on demand from zoom 12.5, like the region buildings.
 let localIndex: Set<string> | null = null;
+let localLow: Set<string> | null = null;
 let localZ = 12;
+let localLowZ = 10;
 export async function loadLocalStreetIndex() {
   try {
     const r = await fetch('data/region-streets/index.json');
@@ -123,33 +127,42 @@ export async function loadLocalStreetIndex() {
     const j = await r.json();
     localZ = j.z;
     localIndex = new Set((j.tiles as {x: number; y: number}[]).map(t => `${t.x}/${t.y}`));
+    if (j.low) {
+      localLowZ = j.low.z;
+      localLow = new Set((j.low.tiles as {x: number; y: number}[]).map(t => `${t.x}/${t.y}`));
+    }
   } catch (e) {
     console.warn('region streets index', e);
   }
 }
 
+function streetTiles(id: string, z: number, have: Set<string>, zoomOffset: number, year: number, low: boolean) {
+  return new TileLayer<PathSet | null>({
+    id,
+    minZoom: z,
+    maxZoom: z,
+    tileSize: 256,
+    zoomOffset,
+    maxCacheSize: 60,
+    extent: [-123.2, 36.85, -121.2, 38.9],
+    getTileData: async ({index: t}: any) => {
+      if (!have.has(`${t.x}/${t.y}`)) return null;
+      return decodeSet(`${id}-${t.x}-${t.y}`, await loadColumnar(`data/region-streets/${z}/${t.x}/${t.y}.bin.gz`));
+    },
+    renderSubLayers: (props: any) => {
+      const s = props.data as PathSet | null;
+      return s ? pathLayer(s, year, `${props.id}-p`, low) : null;
+    },
+    updateTriggers: {renderSubLayers: [year]}
+  } as any) as any;
+}
+
+/** Residential streets: the simplified grid at city scale (a fine grey texture where
+ *  the suburbs are), every street from zoom 12.5. */
 export function localStreetLayers(year: number, zoom: number): Layer[] {
-  if (!localIndex || zoom < 12.5) return [];
-  const have = localIndex;
-  return [
-    new TileLayer<PathSet | null>({
-      id: 'region-streets',
-      minZoom: localZ,
-      maxZoom: localZ,
-      tileSize: 256,
-      maxCacheSize: 60,
-      extent: [-123.2, 36.85, -121.2, 38.9],
-      getTileData: async ({index: t}: any) => {
-        if (!have.has(`${t.x}/${t.y}`)) return null;
-        return decodeSet(`region-streets-${t.x}-${t.y}`, await loadColumnar(`data/region-streets/${localZ}/${t.x}/${t.y}.bin.gz`));
-      },
-      renderSubLayers: (props: any) => {
-        const s = props.data as PathSet | null;
-        return s ? pathLayer(s, year, `${props.id}-p`) : null;
-      },
-      updateTriggers: {renderSubLayers: [year]}
-    } as any) as any
-  ];
+  if (!localIndex) return [];
+  if (zoom >= 12.5) return [streetTiles('region-streets', localZ, localIndex, 1, year, false)];
+  return localLow ? [streetTiles('region-streets-low', localLowZ, localLow, 1, year, true)] : [];
 }
 
 /** Bents under elevated paths: a wall-like pier across the roadway every ~60 m,
@@ -373,7 +386,6 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
     view = [view[0] - mx, view[1] - my, view[2] + mx, view[3] + my];
   }
   for (const s of drawSets) {
-    if (s.id.startsWith('roads-region') && zoom > 15.5) continue;
     if (view && s.bbox && (s.bbox[2] < view[0] || s.bbox[0] > view[2] || s.bbox[3] < view[1] || s.bbox[1] > view[3])) continue;
     out.push(pathLayer(s, year, `paths-${s.id}`));
     if (s.decks)
@@ -409,7 +421,7 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
   return out;
 }
 
-function pathLayer(s: PathSet, year: number, id: string): Layer {
+function pathLayer(s: PathSet, year: number, id: string, faint = false): Layer {
   return new PathLayer({
     id,
     data: s.data,
@@ -418,9 +430,10 @@ function pathLayer(s: PathSet, year: number, id: string): Layer {
     coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
     coordinateOrigin: [s.origin[0], s.origin[1], 0],
     getWidth: (_: any, {index}: any) => s.width[index] * (s.kind[index] === K.FERRY ? 0.6 : s.id === 'transit' && s.elevated[index] === 4 ? 0.5 : 1),
-    getColor: (_: any, {index}: any) => (s.id === 'transit' ? trackColor(s.kind[index], s.elevated[index]) : (COLORS[s.kind[index]] ?? COLORS[0])),
+    getColor: (_: any, {index}: any) =>
+      s.id === 'transit' ? trackColor(s.kind[index], s.elevated[index]) : faint ? FAINT_STREET : (COLORS[s.kind[index]] ?? COLORS[0]),
     widthUnits: 'meters',
-    widthMinPixels: s.id === 'routes' ? 1.5 : 0.8,
+    widthMinPixels: s.id === 'routes' ? 1.5 : faint ? 0.5 : 0.8,
     shadowEnabled: false,
     billboard: false,
     jointRounded: true,

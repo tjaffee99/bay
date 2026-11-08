@@ -10,10 +10,10 @@ import {MapboxOverlay} from '@deck.gl/mapbox';
 import {AmbientLight, DirectionalLight, LightingEffect} from '@deck.gl/core';
 import type {Layer, PickingInfo} from '@deck.gl/core';
 
-import {WATER} from './palette';
 import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/terrain';
 import {loadElevation} from './layers/elevation';
-import {addStationLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
+import {addStationLabels, dropLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
+import {extentBounds, extentDistance, extentReady} from './layers/extent';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
 import {loadRegionIndex, regionBuildingLayers, setRegionLandmarks} from './layers/region-buildings';
 import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail} from './layers/ground-detail';
@@ -49,7 +49,8 @@ const map = new maplibregl.Map({
   style: {
     version: 8,
     sources: {},
-    layers: [{id: 'water', type: 'background', paint: {'background-color': WATER}}]
+    // beyond the terrain tiles: the parchment the map fades into at its edges
+    layers: [{id: 'water', type: 'background', paint: {'background-color': '#ece6d6'}}]
   },
   center: initial.center ?? [-122.4235, 37.7835],
   zoom: initial.zoom ?? 13.1,
@@ -388,6 +389,13 @@ async function boot() {
   loadPlaces();
   const transitP = loadTransit().then(() => addStationLabels(stations));
   loadRegionIndex().then(render);
+  extentReady.then(() => {
+    const b = extentBounds();
+    if (b) map.setMaxBounds([[b[0], b[1]], [b[2], b[3]]]);
+    // labels in the faded margin or outside the map go (and their station / park twins)
+    dropLabels((lon, lat) => extentDistance(lon, lat) > 2.5);
+    render();
+  });
   loadLocalStreetIndex().then(render);
   const elevP = Promise.all([loadElevation(), document.fonts.ready, loadParkLabels(), transitP]).then(() => {
     placeLabelsOnTerrain();

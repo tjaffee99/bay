@@ -8,6 +8,7 @@ import {TileLayer} from '@deck.gl/geo-layers';
 import type {Layer} from '@deck.gl/core';
 import {buildingsLayer, fromBinary, loadTileInWorker, type BuildingSet} from './buildings';
 import {replacedMask, type LandmarkSet} from '../landmarks';
+import {extentDistance} from './extent';
 
 // landmarks standing on region footprints (Apple Park, Stanford, stadiums…): the
 // footprints under a landmark are hidden, older buildings on the site stand until its
@@ -54,6 +55,11 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
     extent: [-123.2, 36.85, -121.2, 38.9],
     getTileData: async ({index: t}: any) => {
       if (!set.has(`${t.x}/${t.y}`)) return null;
+      // outside the map's extent (Morgan Hill, Antioch, …): not drawn
+      const n = 2 ** t.z;
+      const lon = ((t.x + 0.5) / n) * 360 - 180;
+      const lat = (Math.atan(Math.sinh(Math.PI * (1 - (2 * (t.y + 0.5)) / n))) * 180) / Math.PI;
+      if (extentDistance(lon, lat) < -2) return null;
       const file = await loadTileInWorker(new URL(`data/region-buildings/${z}/${t.x}/${t.y}.bin.gz`, document.baseURI).href);
       return fromBinary(file);
     },
