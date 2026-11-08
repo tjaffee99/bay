@@ -652,6 +652,43 @@ def join_pieces(parts):
     return out
 
 
+def flagged_runs(xy, bbox_ll, min_tunnel=60.0, min_bridge=150.0):
+    """Per-vertex 'tunnel' / 'bridge' / None for a polyline that follows mapped track: a vertex
+    within 6 m of an OSM/Overture line flagged is_tunnel (is_bridge) takes that flag; runs
+    shorter than min_* are dropped. -> list of (flag, i0, i1) covering the line."""
+    from shapely import STRtree
+    from shapely.geometry import LineString, Point
+    rl = rail_lines(bbox_ll, kinds=("all",))
+    flags = np.array([None] * len(xy), dtype=object)
+    for fl, key in (("bridge", "is_bridge"), ("tunnel", "is_tunnel")):
+        sub = rl[[key in f for f in rl["flags"]]]
+        if not len(sub):
+            continue
+        geoms = [LineString(c) for c in lines_utm(sub)]
+        tree = STRtree(geoms)
+        for i, (x, y) in enumerate(xy):
+            idx = tree.query(Point(x, y).buffer(6.0))
+            if len(idx) and min(geoms[j].distance(Point(x, y)) for j in idx) <= 6.0:
+                flags[i] = fl
+    seglen = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(xy, axis=0).T))])
+    runs, i0 = [], 0
+    for i in range(1, len(xy) + 1):
+        if i == len(xy) or flags[i] != flags[i0]:
+            runs.append([flags[i0], i0, i - 1])
+            i0 = i
+    for r in runs:
+        L = seglen[r[2]] - seglen[r[1]]
+        if (r[0] == "tunnel" and L < min_tunnel) or (r[0] == "bridge" and L < min_bridge):
+            r[0] = None
+    merged = []
+    for r in runs:
+        if merged and merged[-1][0] == r[0]:
+            merged[-1][2] = r[2]
+        else:
+            merged.append(list(r))
+    return merged
+
+
 def build(spec_mod, only=None):
     feats = []
     report = []
@@ -659,7 +696,7 @@ def build(spec_mod, only=None):
         if only and not any(r["route_id"].startswith(o) for o in only):
             continue
         for seg in r["segments"]:
-            parts, info = [], []
+            parts, info, lens = [], [], []
             for p in seg["pieces"]:
                 try:
                     xy, inf = piece_geometry(p)
@@ -668,18 +705,39 @@ def build(spec_mod, only=None):
                     raise
                 parts.append(xy)
                 info.append(inf)
+                lens.append((p["method"], float(np.sum(np.hypot(*np.diff(xy, axis=0).T)))))
             xy = join_pieces(parts)
             xy = densify(simplify(xy, 0.5), 20.0)
-            lon, lat = to_ll(xy[:, 0], xy[:, 1])
+            total = sum(L for _m, L in lens) or 1.0
+            share = {m: sum(L for mm, L in lens if mm == m) / total for m in ("rail", "road", "topo", "pts")}
+            gc = seg.get("geometry_confidence") or ("low" if share["pts"] > 0.5 else
+                                                    "high" if share["rail"] + share["road"] > 0.8 else "medium")
             props = {k: seg.get(k, r.get(k)) for k in
                      ("route_id", "name", "mode", "year_start", "year_end", "elevated", "confidence", "source_url", "note")}
             props["route_id"] = r["route_id"]
+            props["geometry_confidence"] = gc
             props["geometry_source"] = "; ".join(info)
-            feats.append({"type": "Feature", "properties": props,
-                          "geometry": {"type": "LineString",
-                                       "coordinates": [[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)]}})
+            # tunnels / long bridges on mapped track become their own segments
+            runs = [[None, 0, len(xy) - 1]]
+            if props["elevated"] == "ground" and share["rail"] > 0:
+                lon, lat = to_ll(xy[:, 0], xy[:, 1])
+                runs = flagged_runs(xy, (lon.min() - 0.01, lat.min() - 0.01, lon.max() + 0.01, lat.max() + 0.01))
+            for fl, i0, i1 in runs:
+                if i1 <= i0:
+                    continue
+                sub = xy[i0:i1 + 1]
+                lon, lat = to_ll(sub[:, 0], sub[:, 1])
+                pr = dict(props)
+                if fl:
+                    pr["elevated"] = fl
+                    pr["name"] = f"{props['name']} ({fl})"
+                feats.append({"type": "Feature", "properties": pr,
+                              "geometry": {"type": "LineString",
+                                           "coordinates": [[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)]}})
             length = float(np.sum(np.hypot(*np.diff(xy, axis=0).T)))
-            report.append(f"{r['route_id']:28s} {seg.get('year_start')}-{seg.get('year_end')} {length/1000:6.2f} km  {props['geometry_source']}")
+            nt = sum(1 for f_, a, b in runs if f_)
+            report.append(f"{r['route_id']:28s} {seg.get('year_start')}-{seg.get('year_end')} {length/1000:6.2f} km "
+                          f"[{gc}{', %d tunnel/bridge runs' % nt if nt else ''}]  {props['geometry_source']}")
             log(report[-1])
     return feats, report
 

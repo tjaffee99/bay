@@ -92,6 +92,15 @@ route("ks_mole", "Key System Mole and pier (Key Route Pier)", "pier", WIKI + "Ke
              "except the last 3,800 ft by 1916; pier fire 1933-05-06 (rebuilt slightly to the south); ferries to "
              "the Bay Bridge 1939-01-15, Exposition trains/ferries until 1939-10-29. Geometry: USGS San Francisco "
              "1915 sheet ('San Francisco-Oakland Terminal Key Route Pier')."),
+    seg("Key System main line ashore: mole root - Emeryville (40th St) yard", 1903.82, 1958.3,
+        pts((-122.2975, 37.8263), (-122.2955, 37.8267)),
+        topo("sf1915", (-122.2955, 37.8267), (-122.2925, 37.8278), (-122.2890, 37.8287), (-122.2850, 37.8292),
+             (-122.2810, 37.8298), corridor=60),
+        mode="interurban", geometry_confidence="medium",
+        note="Double track from the mole across the SP main line to the Key System yard and shops near 40th St / "
+             "San Pablo Ave, where the Berkeley, Piedmont, Claremont and 22nd St lines branched; Key trains used "
+             "the Bay Bridge from 1939-01-15; last Key train 1958-04-20. Geometry: USGS San Francisco 1915 sheet "
+             "(the junction east of the yard is not traced)."),
 ])
 
 # =====================================================================================
@@ -704,4 +713,24 @@ route("sp_san_ramon", "Southern Pacific San Ramon branch (Avon - Concord - Walnu
               note="SP branch from Avon to Walnut Creek, Danville and San Ramon (1891, month ESTIMATED; extended to "
                    "Radum 1909); abandoned 1978, now the Iron Horse Trail. Only the Avon - Walnut Creek part "
                    "(OSM 'San Ramon Line') is traced here.", confidence="estimated"),
+      ])
+
+# =====================================================================================
+# OAKLAND: San Francisco & Oakland Railroad (1863) on 7th Street
+# =====================================================================================
+route("sfo_7th_st", "San Francisco & Oakland Railroad / SP 7th Street line (Oakland)", "rail",
+      WIKI + "East_Bay_Electric_Lines", [
+          seg("Oakland Point - 7th St - Broadway", 1863.67, 1941.57,
+              road((-122.3062, 37.8081), (-122.2960, 37.8056), (-122.2828, 37.8027), (-122.2766, 37.8005),
+                   names=["7th Street"], snap=120),
+              note="San Francisco & Oakland Railroad ferry-train line from the Oakland Point wharf along 7th Street "
+                   "(opened September 1863); Central Pacific 1868-69; SP steam commute trains, electrified 1911-12 "
+                   "(East Bay Electric Lines / Interurban Electric Ry); last train 1941-07-26. Geometry: today's 7th "
+                   "Street (OSM).", confidence="estimated"),
+          seg("7th St east of Broadway to the Lake Merritt outlet (toward Brooklyn / East Oakland)", 1864.5, 1941.57,
+              road((-122.2766, 37.8005), (-122.2705, 37.7980), (-122.2643, 37.7956), (-122.2586, 37.7928),
+                   names=["7th Street"], snap=120),
+              note="SF&O extension east toward Brooklyn (year ESTIMATED); the 7th Street line of the SP electric "
+                   "trains (1911-41). Its continuation through East Oakland to Fruitvale is not traced here.",
+              confidence="estimated"),
       ])
