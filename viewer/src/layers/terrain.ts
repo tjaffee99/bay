@@ -276,7 +276,7 @@ void main(void) {
       picked = mix(A, B, smoothstep(-aa, aa, e));
       dom = e > 0.0 ? B : A;
     } else {
-      dom = A;
+      dom = t[a];
     }
     C = mix(smoothC, picked, sel);
   }
