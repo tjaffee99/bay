@@ -12,6 +12,7 @@ from pathlib import Path
 
 import numpy as np
 import shapely
+import shapely.affinity
 from shapely.geometry import Polygon, LineString, Point
 
 from trace_sites import Site, P, ring, path_poly
@@ -299,8 +300,84 @@ def oakland_trans_pacific():
                name=f"Trans Pacific Centre site: {label}")
 
 
+# =====================================================================================
+# San Francisco race tracks: Bay District (1874-1896) and Ingleside (1895-1906)
+# =====================================================================================
+def sf_racetracks():
+    d = J("bay_district_track_1895.json")
+    S = Site("bay_district_track", "Bay District race track", "racetrack", d["cx"], d["cy"],
+             "https://richmondsfblog.com/2019/03/27/so-yeah-there-used-to-be-a-horse-racing-track-in-the-richmond-district/")
+    T95 = TOPO + "CA_San%20Francisco_298889_1895_62500_geo.tif"
+    OPEN, LAST, GONE = 1874.7, 1896.4, 1898.0   # opened Sep 1874; last race 27 May 1896; streets cut across the infield by 1898
+    outer = poly(d["outer_oval_local"])
+    S.part(poly(d["grounds_local"]).difference(outer), "grass", OPEN, GONE, "estimated",
+           "race-track grounds between First Ave (Arguello), Fulton St, Fifth Ave and Point Lobos Ave (Geary) (OpenSFHistory; "
+           "Richmond SF Blog): stands, stables and paddocks (not traced); corners = today's centreline crossings", surface="race-track grounds",
+           src=T95)
+    S.part(ring(outer, outer.buffer(-14)), "dirt_track", OPEN, GONE, "estimated",
+           "one-mile track: the oval of the USGS San Francisco 1:62,500 sheet (1894 survey) read on a NADCON render and placed by an "
+           "affine of the sheet's four boundary-street corners onto today's (residuals < 0.5 m; the oval itself +-20 m; drawn "
+           "outer perimeter 1.65 km); width 14 m estimated; opened Sep 1874, last race 27 May 1896, streets cut across by 1898",
+           surface="dirt track", src=T95)
+    S.part(outer.buffer(-14), "grass", OPEN, GONE, "estimated", "infield", surface="infield", src=T95)
+    # Ingleside: Urbano Drive was paved along the loop of the old track (1912): a stadium fitted to its centreline (rms 0.25 m)
+    I = Site("ingleside_racetrack", "Ingleside race track", "racetrack", -122.4660, 37.7245,
+             "https://en.wikipedia.org/wiki/Ingleside_Terraces,_San_Francisco")
+    u, v, a, L, R = -56.81, -6.86, 98.45, 188.79, 115.48
+    st = lambda r: geom.stadium(u, v, a, L, r, step=3.0)
+    OPEN, CLOSED, SOLD = 1895.91, 1906.3, 1910.5   # opened 28 Nov 1895; refugee camp after Apr 1906, never reopened; sold 1910
+    I.part(ring(st(R + 11), st(R - 11)), "dirt_track", OPEN, SOLD, "estimated",
+           "track: Urbano Drive (Ingleside Terraces, paved 1912 'along the loop of the old track') fitted with a stadium (rms 0.25 m, "
+           "centreline perimeter 1.48 km); track width 22 m ESTIMATE; opened 28 Nov 1895 (Pacific Coast Jockey Club), refugee camp "
+           "after the 1906 earthquake and never reopened, bought by J. A. Leonard's Urban Realty Improvement Co. 1910",
+           surface="dirt track", src="https://en.wikipedia.org/wiki/Ingleside_Terraces,_San_Francisco")
+    I.part(st(R - 11), "grass", OPEN, SOLD, "estimated", "infield (the Ingleside Terraces sundial park of 1913 is near its centre)",
+           surface="infield", src="https://en.wikipedia.org/wiki/Ingleside_Terraces,_San_Francisco")
+
+
+# =====================================================================================
+# Russell City, Hayward (laid out 1907 - cleared 1964-66)
+# =====================================================================================
+def russell_city():
+    d = J("russell_city_topo.json")
+    S = Site("russell_city", "Russell City", "town", d["cx"], d["cy"], "https://en.wikipedia.org/wiki/Russell_City,_California")
+    T47 = TOPO + "CA_San%20Leandro_300122_1947_24000_geo.tif"
+    T59 = TOPO + "CA_San%20Leandro_300124_1959_24000_geo.tif"
+    town = poly(d["town1958"])
+    S.part(town, "urban", 1908.0, 1965.5, "estimated",
+           "Russell City: the built-up (urban) tint of the USGS San Leandro 1:24k sheet of 1959 (1958 photos); laid out 1907 (700 lots "
+           "sold by 1908), ~1,400 residents when Hayward declared it blighted in the 1950s, annexed 1964, residents evicted by eminent "
+           "domain 1964, last buildings cleared 1966 (Wikipedia); the 1968 photorevision shows the streets without buildings or tint",
+           surface="town", src=T59)
+    S.part(town, "industrial", 1968.0, 9999, "estimated",
+           "Hayward industrial park on the cleared town (Russell City Energy Center 2013); start ESTIMATED from the 1968 photorevision",
+           surface="industrial park", name="Hayward industrial park (former Russell City)", src=T59)
+    n = 0
+    for b in d["buildings"]:
+        if not b["in_town"] or b["w"] < 6 or b["l"] > 40 or b["l"] / max(b["w"], 1) > 2.2:
+            continue                       # street-line fragments and lettering, not building symbols
+        g = poly(b["coords"])
+        c = g.centroid
+        if b["area_sym"] <= 450:           # a standard house symbol (~14 m square at 1:24,000): a house of ~9 x 9 m
+            g = shapely.affinity.scale(g, 9.0 / max(b["w"], 1), 9.0 / max(b["w"], 1), origin=c)
+            note_fp = "symbol of the 1947 sheet; footprint = a 9 x 9 m house at the symbol (the symbol is not to scale) - ESTIMATE"
+        else:
+            g = g.buffer(-3.0, join_style=2)
+            note_fp = "large symbol of the 1947 sheet (to scale or merged houses), shrunk 3 m - ESTIMATE"
+        if g.is_empty:
+            continue
+        y0, why = (1925.0, "drawn on the Hayward 1:62,500 sheet of 1942 (1939 photos): built 1907-39, start = midpoint (ESTIMATE)") \
+            if b["ink1939"] >= 0.12 else (1943.0, "not on the 1939-photo sheet, on the 1947 sheet: start = midpoint (ESTIMATE)")
+        h = (int(abs(b["cx"]) * 7 + abs(b["cy"]) * 13) % 200) / 100.0
+        S.bldg(g, "Russell City house", y0, 1964.5 + h, 5.0, 1, "wood frame", "dwelling", "estimated",
+               f"{note_fp}; {why}; end: evictions 1964 - last buildings cleared 1966 (spread over those years, ESTIMATE)", src=T47)
+        n += 1
+
+
 def build():
     idora_park()
     alameda_baths()
     emeryville()
     oakland_trans_pacific()
+    sf_racetracks()
+    russell_city()

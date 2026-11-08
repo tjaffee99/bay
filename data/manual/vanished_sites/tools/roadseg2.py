@@ -33,6 +33,13 @@ SITES = {  # site_id: (not_before, evidence for dated segments, keep-names, evid
                       "Central Ave (1897 Sanborn)", None),
     "shell_mound_park": (1925, "lies on Shell Mound Park (1877-1924; land sold for factories after the 1924 closing); not on the 1911 "
                                "Sanborn sheets 323/324", ("Park Avenue",), "Park Ave (1911 Sanborn)", None),
+    "bay_district_track": (1898, "lies on the Bay District race track (1874-1896): streets were cut across its infield by 1898",
+                           ("Fulton Street", "Arguello Boulevard", "5th Avenue", "Geary Boulevard"),
+                           "boundary street of the track grounds (First Ave, Fulton St, Fifth Ave, Point Lobos Ave)", None),
+    "ingleside_racetrack": (1911, "street of Ingleside Terraces, laid out on the race track from 1911 (Urbano Drive paved by 1912)",
+                            (), "", None),
+    "russell_city": (1966, "lies on Russell City (cleared 1964-66): the industrial-park streets are not on the 1947 / 1959 sheets "
+                           "(the old street grid differs)", ("Hesperian Boulevard",), "", None),
     "oaks_park": (1958, "lies on Oaks Park (ball park 1913-1955, demolished c.1957; 1950 Sanborn sheet 317)",
                   ("Park Avenue", "San Pablo Avenue", "45th Street"), "boundary street of Oaks Park (1950 Sanborn sheet 317)", None),
 }
