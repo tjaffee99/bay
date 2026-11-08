@@ -204,13 +204,151 @@ def main():
         pred = pred[~(hit & (pred.start_year >= pred.end_year - 0.5))].drop(columns=["s0", "s1"])
         pred = pd.concat([pred, notable], ignore_index=True)
         log(f"predecessors: {len(notable)} documented buildings (pre-1906, early SF, demolished)")
-    pred = gpd.GeoDataFrame(pred, geometry="geometry", crs=UTM).to_crs(4326)
+    pred = gpd.GeoDataFrame(pred, geometry="geometry", crs=UTM)
+    pred = apply_sanborn(pred, b, fire, areas)
+    pred = pred.to_crs(4326)
     pred["base"] = 0.0
-    pred["use"] = 0
+    pred["use"] = pred["use_sanborn"].map(SANBORN_USE).fillna(0).astype(int) if "use_sanborn" in pred else 0
+    pred = pred.drop(columns=["use_sanborn"], errors="ignore")
     pred["raw_year"] = 0
     pred["end_year"] = pred.end_year.astype(float)
     pred.to_parquet(INTERIM / "sf_predecessors.parquet")
     log(f"predecessors: wrote {len(pred)} features")
+
+
+# ---------------------------------------------------------------- Sanborn maps
+SANBORN_USE = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
+               "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}
+SANBORN_SKIP = {"wharf", "pier"}
+
+
+def apply_sanborn(pred, today, fire, areas):
+    """Traced Sanborn footprints (data/manual/sanborn/<area>_<map year>.geojson) replace
+    the generated fabric in the blocks the sheets cover. The same building on
+    consecutive maps (IoU >= 0.5) is one building; it starts at the block's development
+    year if it is on the first map (else between the two maps), and ends between maps
+    when it is gone from the next one (in the 1906 fire inside the burned area), else
+    when today's building on the spot (or a clearance) replaced it. A footprint that is
+    today's building (IoU >= 0.5 with one built by then) is left to the modern data."""
+    files = sorted(glob.glob(str(MANUAL / "sanborn" / "*_[12][0-9][0-9][0-9].geojson")))
+    if not files:
+        return pred
+    frames = []
+    for f in files:
+        stem = f.split("/")[-1][:-8]
+        area, yr = stem.rsplit("_", 1)
+        g = gpd.read_file(f)
+        if not len(g):
+            continue
+        g = g.to_crs(UTM)
+        g["area"] = area
+        g["map_year"] = float(yr)
+        frames.append(g[["area", "map_year", "stories", "material", "use", "geometry"] +
+                        [c for c in ("basement", "half_storey", "confidence") if c in g]])
+    sb = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=UTM)
+    sb = sb[sb.geometry.notna() & sb.geometry.is_valid & (sb.geometry.area > 6)]
+    sb = sb[~sb["use"].fillna("").isin(SANBORN_SKIP)].reset_index(drop=True)
+    burned_zone = shapely.union_all(fire.geometry.values)
+    today_sidx = today.sindex
+    t_start = today.start_year.values
+    pred_sidx = pred.sindex
+    rows, covered = [], []
+    for area, A in sb.groupby("area"):
+        years = sorted(A.map_year.unique())
+        cov_file = MANUAL / "sanborn" / f"{area}_coverage.geojson"
+        if cov_file.exists():
+            cov = gpd.read_file(cov_file).to_crs(UTM)
+            covered.append((shapely.union_all(cov.geometry.values), years[0]))
+        else:
+            covered.append((shapely.union_all(A.geometry.buffer(15).values), years[0]))
+        # chain the same building across consecutive maps
+        A = A.reset_index(drop=True)
+        nxt = {}
+        for y0, y1 in zip(years[:-1], years[1:]):
+            a = A[A.map_year == y0]
+            b_ = A[A.map_year == y1]
+            sidx = b_.sindex
+            for i, g in zip(a.index, a.geometry.values):
+                best, bi = 0.0, None
+                for j in sidx.query(g, predicate="intersects"):
+                    h = b_.geometry.values[j]
+                    iou = g.intersection(h).area / max(g.union(h).area, 1e-6)
+                    if iou > best:
+                        best, bi = iou, b_.index[j]
+                if best >= 0.5:
+                    nxt[i] = bi
+        has_prev = set(nxt.values())
+        for i in A.index:
+            if i in has_prev:
+                continue  # part of a chain started on an earlier map
+            chain = [i]
+            while chain[-1] in nxt:
+                chain.append(nxt[chain[-1]])
+            first, last = A.loc[chain[0]], A.loc[chain[-1]]
+            g = first.geometry
+            key = f"{area}:{chain[0]}"
+            hk = h01(key)
+            fy, ly = first.map_year, last.map_year
+            # today's building on the spot
+            cand = today_sidx.query(g, predicate="intersects")
+            same, later = None, []
+            for j in cand:
+                tg = today.geometry.values[j]
+                inter = g.intersection(tg).area
+                iou = inter / max(g.union(tg).area, 1e-6)
+                if iou >= 0.5 and t_start[j] <= ly + 2:
+                    same = j
+                elif inter > 0.2 * g.area and t_start[j] > fy:
+                    later.append(t_start[j])
+            if same is not None:
+                continue  # the building still stands: the modern data has it
+            # start
+            if fy == years[0]:
+                near = pred_sidx.query(g.buffer(25), predicate="intersects")
+                st = [pred.start_year.values[j] for j in near if pred.start_year.values[j] < fy]
+                start = float(np.median(st)) + 2 * (hk - 0.5) if st else fy - 6 - 6 * hk
+                start = min(start, fy - 0.5)
+            else:
+                prev_y = years[years.index(fy) - 1]
+                start = prev_y + (fy - prev_y) * (0.2 + 0.7 * hk)
+            # end
+            if ly != years[-1]:
+                ny = years[years.index(ly) + 1]
+                if ly < 1906.29 < ny and g.centroid.within(burned_zone):
+                    end = 1906.29
+                else:
+                    end = ly + (ny - ly) * (0.25 + 0.6 * h01(key, "e"))
+            else:
+                ends = [x - 0.3 for x in later if x > ly]
+                c = g.centroid
+                for poly, cs, ce, _fab, _aid in areas:
+                    if c.within(poly) and cs > ly:
+                        ends.append(cs + (ce - cs) * h01(key, "c"))
+                end = min(ends) if ends else max(ly + 15, 1960.0)
+            if end <= start + 0.5:
+                continue
+            stories = float(first.stories) if pd.notna(first.stories) and first.stories > 0 else 2.0
+            use = str(first.use or "")
+            storey_h = 4.5 if use in ("warehouse", "factory", "rail") else 3.6
+            height = stories * storey_h + (1.6 if bool(first.get("half_storey", False)) else 0) + (1.2 if use in ("dwelling", "flats") else 0.6)
+            mat = str(first.material or "")
+            rows.append({"geometry": g, "start_year": float(start), "end_year": float(end), "height": height,
+                         "stories": stories, "kind": "building", "source": f"sanborn_{area}",
+                         "mapblklot": key, "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),
+                         "use_sanborn": use, "year_confidence": "estimated",
+                         "year_reason": f"sanborn_{int(fy)}_{int(ly)}"})
+    new = gpd.GeoDataFrame(rows, crs=UTM)
+    # the generated fabric gives way inside the mapped blocks (what vanished before the first map stays)
+    c = pred.geometry.representative_point()
+    drop = np.zeros(len(pred), bool)
+    for poly, y_first in covered:
+        inside = c.within(poly).values
+        gen = pred.source.astype(str).str.endswith("_procedural").values
+        drop |= inside & gen & (pred.end_year.values > y_first)
+    log(f"predecessors: Sanborn maps: {len(new)} traced buildings from {len(files)} map files; "
+        f"{int(drop.sum())} generated buildings replaced")
+    out = pd.concat([pred[~drop], new], ignore_index=True)
+    return gpd.GeoDataFrame(out, geometry="geometry", crs=UTM)
 
 
 def massing(year, downtown, key):

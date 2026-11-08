@@ -236,7 +236,17 @@ def side_lines(mask, bbox, trim=0.08, inset=1.5):
     res = {}
     for name in 'LRTB':
         t, ok = (rows, any_r) if name in 'LR' else (cols, any_c)
-        fit = ransac_line(t[ok].astype(float), prof[name][ok])
+        tt, vv = t[ok].astype(float), prof[name][ok]
+        fit = ransac_line(tt, vv)
+        if fit is not None:
+            # a block drawn joined to its neighbour (street never cut through) or with a lane: prefer the OUTER
+            # straight line when it has real support (the inner one is then an alley / lane edge)
+            sgn = -1 if name in 'LT' else 1
+            outer = sgn * (vv - (fit[0] + fit[1] * tt)) > 20
+            if outer.sum() >= max(0.25 * len(tt), 20):
+                f2 = ransac_line(tt[outer], vv[outer])
+                if f2 is not None and f2[3] * outer.sum() >= max(0.12 * len(tt), 30):
+                    fit = f2
         if fit is None:
             res[name] = (np.nan, 0.0, np.nan, 0.0); continue
         a0, b, rms, frac = fit
@@ -348,13 +358,18 @@ def fit_sheet(F, comps, blab, spec, kind='similarity', ext_tol=25, min_frac=0.2)
         worst = {}
         for k, o in enumerate(obs):
             worst[(o[0], o[5])] = max(worst.get((o[0], o[5]), 0), abs(res[k]))
-        key, w = max(worst.items(), key=lambda kv: kv[1])
-        if w <= 1.2: break
-        axis = [o[2] for o in obs if (o[0], o[5]) == key][0]
-        if not any(o[0] == key[0] and o[2] == axis and o[5] != key[1] for o in obs): break
-        obs = [o for o in obs if (o[0], o[5]) != key]; dropped.append((key, round(float(w), 2)))
+        if max(worst.values()) <= 1.2: break
+        best = None
+        for key, w in sorted(worst.items(), key=lambda kv: -kv[1])[:3]:  # try the 3 worst sides, keep the best drop
+            axis = [o[2] for o in obs if (o[0], o[5]) == key][0]
+            if not any(o[0] == key[0] and o[2] == axis and o[5] != key[1] for o in obs): continue
+            ob2 = [o for o in obs if (o[0], o[5]) != key]
+            s2, r2 = solve(ob2)
+            if best is None or np.abs(r2).max() < best[0]: best = (np.abs(r2).max(), key, w, ob2, s2, r2)
+        if best is None: break
+        _, key, w, obs, sol, res = best
+        dropped.append((key, round(float(w), 2)))
         comps[key[0]]['street_sides'] = [s for s in comps[key[0]]['street_sides'] if s != key[1]]
-        sol, res = solve(obs)
     if kind == 'similarity':
         S = np.array([[sol[0], -sol[1]], [sol[1], sol[0]]]); T = sol[2:].reshape(K, 2)
     else:

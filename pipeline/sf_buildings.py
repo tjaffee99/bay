@@ -253,9 +253,33 @@ def main():
             src_year[i] = "neighbours"
     log(f"years: imputed {len(need)} ({fallback} without usable neighbours or HISDAC)")
 
-    # sub-year jitter so a whole tract doesn't pop on the same frame
+    # Sub-year timing. Houses finished the same year on the same block went up as a row
+    # (tract builders worked along the street): order them along the block's long axis
+    # so the row fills from one end instead of popping up at random; lone buildings get
+    # a hash.
     jit = np.array([stable_hash01(f"j{k}") for k in range(len(df))])
-    df["start_year"] = np.floor(year) + 0.9 * jit
+    blk = df.mapblklot.astype(str).str[:-3].values
+    yi = np.floor(year)
+    cx = df.geometry.centroid.x.values
+    cy = df.geometry.centroid.y.values
+    grp = pd.DataFrame({"b": blk, "y": yi, "i": np.arange(len(df))})
+    grp = grp[(grp.b != "") & (grp.b != "na")]
+    rows_ordered = 0
+    for (_, _), g in grp.groupby(["b", "y"]):
+        if len(g) < 3:
+            continue
+        idx = g.i.values
+        P = np.column_stack([cx[idx], cy[idx]])
+        P = P - P.mean(axis=0)
+        _, _, vt = np.linalg.svd(P, full_matrices=False)
+        t = P @ vt[0]
+        order = np.argsort(np.argsort(t))
+        span = min(0.9, 0.12 * len(idx))
+        start = 0.9 * stable_hash01(f"b{g.b.iloc[0]}{g.y.iloc[0]}") * (0.9 - span)
+        jit[idx] = (start + span * order / max(len(idx) - 1, 1)) / 0.9
+        rows_ordered += len(idx)
+    log(f"years: {rows_ordered} buildings timed as rows along their block")
+    df["start_year"] = yi + 0.9 * jit
     df.loc[df.start_year < lower, "start_year"] = lower[df.start_year < lower]
     df["end_year"] = np.where(np.isfinite(known_end), known_end, float(STILL_EXISTS))
     df["year_confidence"] = conf
