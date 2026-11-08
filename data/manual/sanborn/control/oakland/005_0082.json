@@ -1,0 +1,1281 @@
+{
+ "zones_only": true,
+ "residential": true,
+ "refine_R": 22,
+ "notes": "two strips (10th-8th, 8th-7th) fitted separately: 8th St is drawn wider than scale.",
+ "blocks": [
+  {
+   "name": "544",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Linden",
+    "E": "Filbert"
+   },
+   "px4_est": [
+    [
+     148,
+     207
+    ],
+    [
+     529,
+     207
+    ],
+    [
+     529,
+     1131
+    ],
+    [
+     148,
+     1131
+    ]
+   ],
+   "corners": [
+    {
+     "x": 526.1,
+     "y": 207.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 527.4,
+     "y": 1131.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 613.1,
+     "y": 206.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 993.1,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 994.4,
+     "y": 1128.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 614.4,
+     "y": 1130.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 1080.6,
+     "y": 205.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1460.6,
+     "y": 1126.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1081.9,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    }
+   ],
+   "with": [
+    "543",
+    "542"
+   ],
+   "px4": [
+    [
+     147.0,
+     210.3
+    ],
+    [
+     526.1,
+     207.7
+    ],
+    [
+     527.4,
+     1131.1
+    ],
+    [
+     147.0,
+     1132.4
+    ]
+   ],
+   "edge_q": [
+    0.65,
+    0.82,
+    0.79,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 147.0,
+     "y": 210.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Linden",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [82.9  8.9] at Linden x 10th SE"
+    },
+    {
+     "x": 526.1,
+     "y": 207.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 527.4,
+     "y": 1131.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 147.0,
+     "y": 1132.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Linden",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [90.4 10.6] at Linden x 8th NE"
+    }
+   ],
+   "zone_px": [
+    147.0,
+    207.7042885192687,
+    527.4080337251419,
+    1132.411348252521
+   ]
+  },
+  {
+   "name": "543",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Filbert",
+    "E": "Myrtle"
+   },
+   "px4_est": [
+    [
+     612,
+     207
+    ],
+    [
+     995,
+     207
+    ],
+    [
+     995,
+     1131
+    ],
+    [
+     612,
+     1131
+    ]
+   ],
+   "corners": [
+    {
+     "x": 613.1,
+     "y": 206.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 993.1,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 994.4,
+     "y": 1128.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 614.4,
+     "y": 1130.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 526.1,
+     "y": 207.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 527.4,
+     "y": 1131.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 1080.6,
+     "y": 205.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1460.6,
+     "y": 1126.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1081.9,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    }
+   ],
+   "with": [
+    "544",
+    "542"
+   ],
+   "px4": [
+    [
+     613.1,
+     206.8
+    ],
+    [
+     993.1,
+     204.2
+    ],
+    [
+     994.4,
+     1128.2
+    ],
+    [
+     614.4,
+     1130.8
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.61,
+    0.77,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 613.1,
+     "y": 206.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 993.1,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 994.4,
+     "y": 1128.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 614.4,
+     "y": 1130.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    613.0918322618112,
+    204.1973470231933,
+    994.4038908441138,
+    1130.7992468815344
+   ]
+  },
+  {
+   "name": "542",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Myrtle",
+    "E": "Market"
+   },
+   "px4_est": [
+    [
+     1081,
+     207
+    ],
+    [
+     1460,
+     207
+    ],
+    [
+     1460,
+     1131
+    ],
+    [
+     1081,
+     1131
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1080.6,
+     "y": 205.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1460.6,
+     "y": 1126.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 1081.9,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "542"
+    },
+    {
+     "x": 526.1,
+     "y": 207.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 527.4,
+     "y": 1131.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "544"
+    },
+    {
+     "x": 613.1,
+     "y": 206.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 993.1,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 994.4,
+     "y": 1128.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    },
+    {
+     "x": 614.4,
+     "y": 1130.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "543"
+    }
+   ],
+   "with": [
+    "544",
+    "543"
+   ],
+   "px4": [
+    [
+     1080.6,
+     205.0
+    ],
+    [
+     1461.9,
+     205.0
+    ],
+    [
+     1460.6,
+     1126.2
+    ],
+    [
+     1081.9,
+     1128.8
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.77,
+    0.73,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 1080.6,
+     "y": 205.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Myrtle",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1461.9,
+     "y": 205.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Market",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.6  1.3] at Market x 10th SW"
+    },
+    {
+     "x": 1460.6,
+     "y": 1126.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1081.9,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1080.589257233994,
+    205.0,
+    1461.910742766006,
+    1128.809507183425
+   ]
+  },
+  {
+   "name": "539",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Linden",
+    "E": "Filbert"
+   },
+   "px4_est": [
+    [
+     148,
+     1238
+    ],
+    [
+     529,
+     1238
+    ],
+    [
+     529,
+     1681
+    ],
+    [
+     148,
+     1681
+    ]
+   ],
+   "corners": [
+    {
+     "x": 528.5,
+     "y": 1252.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 528.5,
+     "y": 1674.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 614.3,
+     "y": 1251.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    },
+    {
+     "x": 616.8,
+     "y": 1673.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    },
+    {
+     "x": 1460.6,
+     "y": 1248.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    },
+    {
+     "x": 1461.8,
+     "y": 1659.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    }
+   ],
+   "with": [
+    "540",
+    "541"
+   ],
+   "px4": [
+    [
+     148.3,
+     1254.8
+    ],
+    [
+     528.5,
+     1252.2
+    ],
+    [
+     528.5,
+     1674.1
+    ],
+    [
+     150.8,
+     1675.4
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.87,
+    0.7,
+    0.67
+   ],
+   "corners_all": [
+    {
+     "x": 148.3,
+     "y": 1254.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Linden",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [86.8  7.7] at Linden x 8th SE"
+    },
+    {
+     "x": 528.5,
+     "y": 1252.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 528.5,
+     "y": 1674.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 150.8,
+     "y": 1675.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Linden",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 20.2] at Linden x 7th NE"
+    }
+   ],
+   "zone_px": [
+    148.284090692945,
+    1252.1876640419948,
+    528.5,
+    1675.3982852836082
+   ]
+  },
+  {
+   "name": "540",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Filbert",
+    "E": "Myrtle"
+   },
+   "px4_est": [
+    [
+     612,
+     1238
+    ],
+    [
+     995,
+     1238
+    ],
+    [
+     995,
+     1681
+    ],
+    [
+     612,
+     1681
+    ]
+   ],
+   "corners": [
+    {
+     "x": 614.3,
+     "y": 1251.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    },
+    {
+     "x": 616.8,
+     "y": 1673.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    },
+    {
+     "x": 528.5,
+     "y": 1252.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 528.5,
+     "y": 1674.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 1460.6,
+     "y": 1248.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    },
+    {
+     "x": 1461.8,
+     "y": 1659.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    }
+   ],
+   "with": [
+    "539",
+    "541"
+   ],
+   "px4": [
+    [
+     614.3,
+     1251.9
+    ],
+    [
+     994.0,
+     1250.6
+    ],
+    [
+     994.0,
+     1670.7
+    ],
+    [
+     616.8,
+     1673.3
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.72,
+    0.61,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 614.3,
+     "y": 1251.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 994.0,
+     "y": 1250.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [77.6  7.8] at Myrtle x 8th SW"
+    },
+    {
+     "x": 994.0,
+     "y": 1670.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Myrtle",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [76.9 19.1] at Myrtle x 7th NW"
+    },
+    {
+     "x": 616.8,
+     "y": 1673.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    614.266782150697,
+    1250.5955407448125,
+    994.0,
+    1673.2830153372547
+   ]
+  },
+  {
+   "name": "541",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Myrtle",
+    "E": "Market"
+   },
+   "px4_est": [
+    [
+     1081,
+     1238
+    ],
+    [
+     1460,
+     1238
+    ],
+    [
+     1460,
+     1681
+    ],
+    [
+     1081,
+     1681
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1460.6,
+     "y": 1248.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    },
+    {
+     "x": 1461.8,
+     "y": 1659.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "541"
+    },
+    {
+     "x": 528.5,
+     "y": 1252.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 528.5,
+     "y": 1674.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "539"
+    },
+    {
+     "x": 614.3,
+     "y": 1251.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Filbert",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    },
+    {
+     "x": 616.8,
+     "y": 1673.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Filbert",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "540"
+    }
+   ],
+   "with": [
+    "539",
+    "540"
+   ],
+   "px4": [
+    [
+     1081.5,
+     1250.8
+    ],
+    [
+     1460.6,
+     1248.2
+    ],
+    [
+     1461.8,
+     1659.1
+    ],
+    [
+     1081.5,
+     1660.4
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.82,
+    0.36,
+    0.92
+   ],
+   "corners_all": [
+    {
+     "x": 1081.5,
+     "y": 1250.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Myrtle",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [81.2  8.4] at Myrtle x 8th SE"
+    },
+    {
+     "x": 1460.6,
+     "y": 1248.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Market",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1461.8,
+     "y": 1659.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Market",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1081.5,
+     "y": 1660.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Myrtle",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [68.1 15.6] at Myrtle x 7th NE"
+    }
+   ],
+   "zone_px": [
+    1081.5,
+    1248.1798893114799,
+    1461.8428053567839,
+    1660.406158866824
+   ]
+  }
+ ],
+ "pct": 25
+}

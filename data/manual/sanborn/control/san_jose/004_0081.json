@@ -1,0 +1,130 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.201,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "blocks": [
+  {
+   "name": "73+72 Julian-StJames/1st-Market",
+   "corners": [
+    {
+     "pc": [
+      "1st Street",
+      "Julian Street"
+     ],
+     "q": "SW",
+     "x": 400.0,
+     "y": 256.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "Devine Street"
+     ],
+     "q": "NW",
+     "x": 776.0,
+     "y": 256.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Julian Street"
+     ],
+     "q": "SE",
+     "x": 400.0,
+     "y": 890.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Devine Street"
+     ],
+     "q": "NE",
+     "x": 776.0,
+     "y": 890.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "Devine Street"
+     ],
+     "q": "SW",
+     "x": 864.0,
+     "y": 256.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "Saint James Street"
+     ],
+     "q": "NW",
+     "x": 1240.0,
+     "y": 256.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Devine Street"
+     ],
+     "q": "SE",
+     "x": 864.0,
+     "y": 890.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Saint James Street"
+     ],
+     "q": "NE",
+     "x": 1240.0,
+     "y": 890.0
+    }
+   ]
+  },
+  {
+   "name": "74 Julian-StJames/Market-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Market Street",
+      "Julian Street"
+     ],
+     "q": "SW",
+     "x": 400.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "Market Street",
+      "Saint James Street"
+     ],
+     "q": "NW",
+     "x": 1240.0,
+     "y": 1376.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Julian Street"
+     ],
+     "q": "SE",
+     "x": 400.0,
+     "y": 1670.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Saint James Street"
+     ],
+     "q": "NE",
+     "x": 1240.0,
+     "y": 1670.0
+    }
+   ]
+  }
+ ],
+ "pct": 25
+}

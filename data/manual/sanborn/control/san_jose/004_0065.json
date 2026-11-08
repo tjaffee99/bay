@@ -1,0 +1,66 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "note": "San Antonio St east of 1st is today's Paseo de San Antonio, which does not keep the old street line (it diverges eastward: 181 m from San Fernando at 1st St, 256 m at 4th St), so only the San Fernando corners are used; the sheet is drawn to scale",
+ "points": [
+  {
+   "pc": [
+    "4th Street",
+    "San Fernando Street"
+   ],
+   "q": "SW",
+   "x": 400.0,
+   "y": 230.0
+  },
+  {
+   "pc": [
+    "3rd Street",
+    "San Fernando Street"
+   ],
+   "q": "SE",
+   "x": 400.0,
+   "y": 650.0
+  },
+  {
+   "pc": [
+    "3rd Street",
+    "San Fernando Street"
+   ],
+   "q": "SW",
+   "x": 396.0,
+   "y": 770.0
+  },
+  {
+   "pc": [
+    "2nd Street",
+    "San Fernando Street"
+   ],
+   "q": "SE",
+   "x": 396.0,
+   "y": 1194.0
+  },
+  {
+   "pc": [
+    "2nd Street",
+    "San Fernando Street"
+   ],
+   "q": "SW",
+   "x": 396.0,
+   "y": 1310.0
+  },
+  {
+   "pc": [
+    "1st Street",
+    "San Fernando Street"
+   ],
+   "q": "SE",
+   "x": 396.0,
+   "y": 1724.0
+  }
+ ],
+ "pct": 25
+}

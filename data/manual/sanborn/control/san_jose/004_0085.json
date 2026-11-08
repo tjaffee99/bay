@@ -1,0 +1,41 @@
+{
+ "scale_prior": [
+  0.2015,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "points": [
+  {
+   "pc": [
+    "San Pedro Street",
+    "Santa Clara Street"
+   ],
+   "q": "NW",
+   "x": 1372.0,
+   "y": 354.0
+  },
+  {
+   "pc": [
+    "San Pedro Street",
+    "Saint John Street"
+   ],
+   "q": "SW",
+   "x": 264.0,
+   "y": 354.0,
+   "wb": 60,
+   "label": "San Pedro x San Augustine (= W St John St west of San Pedro) SW; St John centreline + 30 ft"
+  },
+  {
+   "pc": [
+    "Santa Teresa Street",
+    "Saint John Street"
+   ],
+   "q": "SE",
+   "x": 264.0,
+   "y": 1590.0,
+   "label": "Santa Teresa x San Augustine (= W St John) SE"
+  }
+ ],
+ "pct": 25
+}

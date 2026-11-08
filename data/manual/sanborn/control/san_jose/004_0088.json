@@ -1,0 +1,56 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "confidence_cap": "medium",
+ "points": [
+  {
+   "tie": "004_0086",
+   "tie_block": "SantaClara-Post (blocks 25, 180, 52)",
+   "px_other": [
+    221.3,
+    1710.7
+   ],
+   "shift": [
+    60,
+    "Santa Clara Street",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Locust (west line) x Santa Clara: sheet 86 corner (Locust east line) moved 60 ft west along Santa Clara",
+   "x": 347.0,
+   "y": 205.0
+  },
+  {
+   "tie": "004_0086",
+   "tie_block": "Post-SanFernando (blocks 26, 51, 215)",
+   "px_other": [
+    1496.7,
+    1710.7
+   ],
+   "shift": [
+    60,
+    "San Fernando Street",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Locust (west line) x San Fernando: sheet 86 corner moved 60 ft west along San Fernando",
+   "x": 1392.7,
+   "y": 207.7
+  },
+  {
+   "pc": [
+    "Delmas Avenue",
+    "San Fernando Street"
+   ],
+   "q": "NE",
+   "x": 1376.0,
+   "y": 1711.7,
+   "norefine": 1
+  }
+ ],
+ "pct": 25
+}

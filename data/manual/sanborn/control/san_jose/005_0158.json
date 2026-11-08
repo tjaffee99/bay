@@ -1,0 +1,55 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  31.3,
+  0.6
+ ],
+ "confidence_cap": "medium",
+ "points": [
+  {
+   "tie": "005_0156",
+   "px_other": [
+    1015,
+    1860.3
+   ],
+   "shift": [
+    60,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Vine (west line) x San Carlos: sheet 156 corner moved 60 ft across San Carlos",
+   "x": 987.7,
+   "y": 78.7
+  },
+  {
+   "tie": "005_0156",
+   "px_other": [
+    1136,
+    1861.7
+   ],
+   "shift": [
+    60,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Vine (east line) x San Carlos: sheet 156 corner moved 60 ft across San Carlos",
+   "x": 1076.7,
+   "y": 78.7
+  },
+  {
+   "pc": [
+    "Almaden Avenue",
+    "Balbach Street"
+   ],
+   "q": "NW",
+   "x": 1505.0,
+   "y": 1760.0,
+   "norefine": 1,
+   "label": "Orchard (= S Almaden Ave) x Balbach NW, block 228 corner"
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,39 @@
+{
+ "scale_prior": [
+  0.2015,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "points": [
+  {
+   "pc": [
+    "1st Street",
+    "San Carlos Street"
+   ],
+   "q": "SW",
+   "x": 270.0,
+   "y": 176.0,
+   "wb": 60
+  },
+  {
+   "pc": [
+    "1st Street",
+    "San Salvador Street"
+   ],
+   "q": "NW",
+   "x": 1180.0,
+   "y": 176.0
+  },
+  {
+   "pc": [
+    "Market Street",
+    "San Salvador Street"
+   ],
+   "q": "NE",
+   "x": 1180.0,
+   "y": 504.0
+  }
+ ],
+ "pct": 25
+}

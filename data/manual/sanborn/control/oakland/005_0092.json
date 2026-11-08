@@ -1,0 +1,1183 @@
+{
+ "zones_only": true,
+ "notes": "Main Post Office superblock: Willow, Campbell, Atlantic, Pacific St and the western 5th St (which ran ~56 m north of today's 5th St, a jog at Peralta) are gone. Control: the 7th St corners (Willow / Campbell centrelines extended from north of 7th, offset by half widths measured on today's parcels: Willow, Campbell 60 ft, 7th 100 ft, Peralta 80 ft) and the Peralta-Lewis block 468 (today's property lines); one similarity for the whole sheet (to scale). The 3rd St corners of block 468 disagree by 3.5 m (3rd St realigned near the port / freeway): not used.",
+ "scale_prior": [
+  0.2015,
+  0.002
+ ],
+ "confidence_cap": "medium",
+ "blocks": [
+  {
+   "name": "500",
+   "streets": {
+    "N": "7th",
+    "S": "5th",
+    "W": "Willow",
+    "E": "Campbell"
+   },
+   "px4_est": [
+    [
+     220,
+     237
+    ],
+    [
+     842,
+     237
+    ],
+    [
+     842,
+     535
+    ],
+    [
+     220,
+     535
+    ]
+   ],
+   "corners": [
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    }
+   ],
+   "w": {
+    "N": 100,
+    "S": 80,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "499",
+    "501",
+    "498",
+    "466",
+    "468"
+   ],
+   "px4": [
+    [
+     232.9,
+     238.8
+    ],
+    [
+     835.9,
+     236.2
+    ],
+    [
+     834.6,
+     539.2
+    ],
+    [
+     231.6,
+     541.8
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.83,
+    0.81,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    231.56222681204667,
+    236.20997045594,
+    835.9113830340166,
+    541.7668716076661
+   ]
+  },
+  {
+   "name": "499",
+   "streets": {
+    "N": "7th",
+    "S": "5th",
+    "W": "Campbell",
+    "E": "Peralta"
+   },
+   "px4_est": [
+    [
+     918,
+     237
+    ],
+    [
+     1313,
+     237
+    ],
+    [
+     1267,
+     535
+    ],
+    [
+     918,
+     535
+    ]
+   ],
+   "corners": [
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    }
+   ],
+   "w": {
+    "N": 100,
+    "S": 80,
+    "W": 60,
+    "E": 80
+   },
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "500",
+    "501",
+    "498",
+    "466",
+    "468"
+   ],
+   "px4": [
+    [
+     925.1,
+     235.0
+    ],
+    [
+     1299.0,
+     235.0
+    ],
+    [
+     1251.0,
+     537.3
+    ],
+    [
+     926.4,
+     539.8
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.18,
+    0.71,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    925.0832744613211,
+    235.0,
+    1299.049046485654,
+    539.752232862689
+   ]
+  },
+  {
+   "name": "501",
+   "streets": {
+    "N": "5th",
+    "S": "Atlantic",
+    "W": "Willow",
+    "E": "Campbell"
+   },
+   "px4_est": [
+    [
+     220,
+     625
+    ],
+    [
+     842,
+     625
+    ],
+    [
+     842,
+     936
+    ],
+    [
+     220,
+     936
+    ]
+   ],
+   "corners": [
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "500",
+    "499",
+    "498",
+    "466",
+    "468"
+   ],
+   "px4": [
+    [
+     232.1,
+     633.8
+    ],
+    [
+     836.0,
+     631.2
+    ],
+    [
+     836.0,
+     939.7
+    ],
+    [
+     233.4,
+     942.3
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.75,
+    0.69,
+    0.81
+   ],
+   "corners_all": [],
+   "zone_px": [
+    232.12918629588773,
+    631.209595532239,
+    836.0,
+    942.2589508575015
+   ]
+  },
+  {
+   "name": "498",
+   "streets": {
+    "N": "5th",
+    "S": "Atlantic",
+    "W": "Campbell",
+    "E": "Peralta"
+   },
+   "px4_est": [
+    [
+     918,
+     625
+    ],
+    [
+     1190,
+     625
+    ],
+    [
+     1110,
+     936
+    ],
+    [
+     918,
+     936
+    ]
+   ],
+   "corners": [
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "W": 60,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "500",
+    "499",
+    "501",
+    "466",
+    "468"
+   ],
+   "px4": [
+    [
+     927.0,
+     630.4
+    ],
+    [
+     1182.2,
+     629.1
+    ],
+    [
+     1102.9,
+     937.6
+    ],
+    [
+     927.0,
+     938.8
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.34,
+    0.76,
+    0.79
+   ],
+   "corners_all": [],
+   "zone_px": [
+    927.0,
+    629.1297112628655,
+    1182.2260877404353,
+    938.8462171052631
+   ]
+  },
+  {
+   "name": "466",
+   "streets": {
+    "N": "Atlantic",
+    "S": "Pacific",
+    "W": "Willow",
+    "E": "Campbell"
+   },
+   "px4_est": [
+    [
+     220,
+     1024
+    ],
+    [
+     840,
+     1024
+    ],
+    [
+     840,
+     1336
+    ],
+    [
+     220,
+     1336
+    ]
+   ],
+   "corners": [
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "500",
+    "499",
+    "501",
+    "498",
+    "468"
+   ],
+   "px4": [
+    [
+     233.9,
+     1029.3
+    ],
+    [
+     838.0,
+     1026.7
+    ],
+    [
+     838.0,
+     1334.2
+    ],
+    [
+     232.6,
+     1336.8
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.8,
+    0.71,
+    0.82
+   ],
+   "corners_all": [],
+   "zone_px": [
+    232.58889019840734,
+    1026.692699490662,
+    838.0,
+    1336.762356153657
+   ]
+  },
+  {
+   "name": "468",
+   "streets": {
+    "N": "5th",
+    "S": "3rd",
+    "W": "Peralta",
+    "E": "Lewis"
+   },
+   "px4_est": [
+    [
+     1217,
+     883
+    ],
+    [
+     1403,
+     883
+    ],
+    [
+     1403,
+     1687
+    ],
+    [
+     1017,
+     1687
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "468"
+    },
+    {
+     "x": 232.9,
+     "y": 238.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Willow",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 835.9,
+     "y": 236.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "500"
+    },
+    {
+     "x": 925.1,
+     "y": 235.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Campbell",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    },
+    {
+     "x": 1299.0,
+     "y": 235.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Peralta",
+      "7th"
+     ],
+     "w": [
+      80,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "499"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 60
+   },
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "500",
+    "499",
+    "501",
+    "498",
+    "466"
+   ],
+   "px4": [
+    [
+     1222.5,
+     898.0
+    ],
+    [
+     1395.2,
+     898.0
+    ],
+    [
+     1391.2,
+     1700.1
+    ],
+    [
+     1022.7,
+     1701.4
+    ]
+   ],
+   "edge_q": [
+    0.36,
+    0.69,
+    0.22,
+    0.24
+   ],
+   "corners_all": [
+    {
+     "x": 1222.5,
+     "y": 898.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Peralta",
+      "5th"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1395.2,
+     "y": 898.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Lewis",
+      "5th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1022.6950548005984,
+    898.0,
+    1395.1500392772978,
+    1701.3884815421304
+   ]
+  }
+ ],
+ "pct": 25
+}

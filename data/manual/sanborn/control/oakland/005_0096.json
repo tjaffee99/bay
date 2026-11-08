@@ -1,0 +1,1186 @@
+{
+ "zones_only": true,
+ "blocks": [
+  {
+   "name": "491",
+   "streets": {
+    "N": "7th",
+    "S": "5th",
+    "W": "Kirkham",
+    "E": "Poplar"
+   },
+   "px4_est": [
+    [
+     200,
+     256
+    ],
+    [
+     550,
+     256
+    ],
+    [
+     550,
+     836
+    ],
+    [
+     200,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    }
+   ],
+   "with": [
+    "490",
+    "489",
+    "474",
+    "475",
+    "476"
+   ],
+   "px4": [
+    [
+     200.1,
+     267.8
+    ],
+    [
+     548.1,
+     265.2
+    ],
+    [
+     549.4,
+     837.6
+    ],
+    [
+     201.4,
+     838.9
+    ]
+   ],
+   "edge_q": [
+    0.89,
+    0.85,
+    0.71,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 548.1,
+     "y": 265.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Poplar",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [51.7 15.8] at Poplar x 7th SW"
+    },
+    {
+     "x": 549.4,
+     "y": 837.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Poplar",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [51.9  1. ] at Poplar x 5th NW"
+    },
+    {
+     "x": 201.4,
+     "y": 838.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kirkham",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.9 1.1] at Kirkham x 5th NE"
+    }
+   ],
+   "zone_px": [
+    200.11890856493721,
+    265.1983987009487,
+    549.4115116098583,
+    838.9025771446213
+   ]
+  },
+  {
+   "name": "490",
+   "streets": {
+    "N": "7th",
+    "S": "5th",
+    "W": "Poplar",
+    "E": "Union"
+   },
+   "px4_est": [
+    [
+     640,
+     256
+    ],
+    [
+     986,
+     256
+    ],
+    [
+     986,
+     836
+    ],
+    [
+     640,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    }
+   ],
+   "with": [
+    "491",
+    "489",
+    "474",
+    "475",
+    "476"
+   ],
+   "px4": [
+    [
+     638.6,
+     263.3
+    ],
+    [
+     984.2,
+     260.7
+    ],
+    [
+     986.8,
+     838.0
+    ],
+    [
+     639.9,
+     838.0
+    ]
+   ],
+   "edge_q": [
+    0.7,
+    0.75,
+    0.79,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 638.6,
+     "y": 263.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Poplar",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [87.7 15.8] at Poplar x 7th SE"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 986.8,
+     "y": 838.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Union",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  9.9] at Union x 5th NW"
+    },
+    {
+     "x": 639.9,
+     "y": 838.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Poplar",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [18.   0.9] at Poplar x 5th NE"
+    }
+   ],
+   "zone_px": [
+    638.608725887283,
+    260.69785879468276,
+    986.8248638838476,
+    838.0
+   ]
+  },
+  {
+   "name": "489",
+   "streets": {
+    "N": "7th",
+    "S": "5th",
+    "W": "Union",
+    "E": "Magnolia"
+   },
+   "px4_est": [
+    [
+     1080,
+     256
+    ],
+    [
+     1494,
+     256
+    ],
+    [
+     1494,
+     836
+    ],
+    [
+     1080,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    }
+   ],
+   "with": [
+    "491",
+    "490",
+    "474",
+    "475",
+    "476"
+   ],
+   "px4": [
+    [
+     1074.2,
+     260.4
+    ],
+    [
+     1478.2,
+     259.1
+    ],
+    [
+     1480.8,
+     837.1
+    ],
+    [
+     1076.8,
+     838.4
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.82,
+    0.79,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1480.8,
+     "y": 837.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1076.8,
+     "y": 838.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [27.6  5. ] at Union x 5th NE"
+    }
+   ],
+   "zone_px": [
+    1074.2042936245748,
+    259.14232625252686,
+    1480.8209346253896,
+    838.4179800395849
+   ]
+  },
+  {
+   "name": "474",
+   "streets": {
+    "N": "5th",
+    "S": "3rd",
+    "W": "Kirkham",
+    "E": "Poplar"
+   },
+   "px4_est": [
+    [
+     200,
+     956
+    ],
+    [
+     550,
+     956
+    ],
+    [
+     550,
+     1700
+    ],
+    [
+     200,
+     1700
+    ]
+   ],
+   "corners": [
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    }
+   ],
+   "with": [
+    "491",
+    "490",
+    "489",
+    "475",
+    "476"
+   ],
+   "px4": [
+    [
+     200.4,
+     960.3
+    ],
+    [
+     549.2,
+     957.7
+    ],
+    [
+     551.8,
+     1694.2
+    ],
+    [
+     205.6,
+     1696.8
+    ]
+   ],
+   "edge_q": [
+    0.86,
+    0.81,
+    0.82,
+    0.53
+   ],
+   "corners_all": [
+    {
+     "x": 200.4,
+     "y": 960.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [177.7   3.3] at Kirkham x 5th SE"
+    },
+    {
+     "x": 549.2,
+     "y": 957.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Poplar",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 551.8,
+     "y": 1694.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Poplar",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [184.3 157.2] at Poplar x 3rd NW"
+    },
+    {
+     "x": 205.6,
+     "y": 1696.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kirkham",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [178.4 156.9] at Kirkham x 3rd NE"
+    }
+   ],
+   "zone_px": [
+    200.39893031973398,
+    957.6902993290918,
+    551.7951708863924,
+    1696.7736183828426
+   ]
+  },
+  {
+   "name": "475",
+   "streets": {
+    "N": "5th",
+    "S": "3rd",
+    "W": "Poplar",
+    "E": "Union"
+   },
+   "px4_est": [
+    [
+     640,
+     956
+    ],
+    [
+     986,
+     956
+    ],
+    [
+     986,
+     1700
+    ],
+    [
+     640,
+     1700
+    ]
+   ],
+   "corners": [
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    }
+   ],
+   "with": [
+    "491",
+    "490",
+    "489",
+    "474",
+    "476"
+   ],
+   "px4": [
+    [
+     640.2,
+     958.9
+    ],
+    [
+     986.7,
+     957.6
+    ],
+    [
+     989.3,
+     1694.1
+    ],
+    [
+     642.8,
+     1695.4
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.71,
+    0.78,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 640.2,
+     "y": 958.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Poplar",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.5 37.7] at Poplar x 5th SE"
+    },
+    {
+     "x": 986.7,
+     "y": 957.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [0.9 1.1] at Union x 5th SW"
+    },
+    {
+     "x": 989.3,
+     "y": 1694.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [296.9 159.7] at Union x 3rd NW"
+    },
+    {
+     "x": 642.8,
+     "y": 1695.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Poplar",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [113.7 159. ] at Poplar x 3rd NE"
+    }
+   ],
+   "zone_px": [
+    640.1944933330008,
+    957.5894819264042,
+    989.294848526515,
+    1695.3972485958823
+   ]
+  },
+  {
+   "name": "476",
+   "streets": {
+    "N": "5th",
+    "S": "3rd",
+    "W": "Union",
+    "E": "Magnolia"
+   },
+   "px4_est": [
+    [
+     1080,
+     956
+    ],
+    [
+     1494,
+     956
+    ],
+    [
+     1494,
+     1700
+    ],
+    [
+     1080,
+     1700
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "476"
+    },
+    {
+     "x": 200.1,
+     "y": 267.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "491"
+    },
+    {
+     "x": 984.2,
+     "y": 260.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "490"
+    },
+    {
+     "x": 1074.2,
+     "y": 260.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    },
+    {
+     "x": 1478.2,
+     "y": 259.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "489"
+    }
+   ],
+   "with": [
+    "491",
+    "490",
+    "489",
+    "474",
+    "475"
+   ],
+   "px4": [
+    [
+     1077.2,
+     956.5
+    ],
+    [
+     1480.1,
+     956.5
+    ],
+    [
+     1481.4,
+     1691.3
+    ],
+    [
+     1079.8,
+     1693.8
+    ]
+   ],
+   "edge_q": [
+    0.85,
+    0.81,
+    0.79,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 1077.2,
+     "y": 956.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Union",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Union x 5th"
+    },
+    {
+     "x": 1480.1,
+     "y": 956.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Magnolia",
+      "5th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Magnolia x 5th"
+    },
+    {
+     "x": 1481.4,
+     "y": 1691.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Magnolia",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1079.8,
+     "y": 1693.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Union",
+      "3rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1077.1859790605547,
+    956.5,
+    1481.39244544086,
+    1693.8170994143725
+   ]
+  }
+ ],
+ "pct": 25
+}

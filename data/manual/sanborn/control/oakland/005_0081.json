@@ -1,0 +1,1163 @@
+{
+ "zones_only": true,
+ "residential": true,
+ "refine_R": 26,
+ "blocks": [
+  {
+   "name": "547",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Magnolia",
+    "E": "Adeline"
+   },
+   "px4_est": [
+    [
+     157,
+     210
+    ],
+    [
+     552,
+     210
+    ],
+    [
+     552,
+     1110
+    ],
+    [
+     157,
+     1110
+    ]
+   ],
+   "corners": [
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    }
+   ],
+   "with": [
+    "546",
+    "545",
+    "536",
+    "537",
+    "538"
+   ],
+   "px4": [
+    [
+     161.8,
+     212.9
+    ],
+    [
+     552.8,
+     211.6
+    ],
+    [
+     550.1,
+     1134.5
+    ],
+    [
+     159.1,
+     1134.5
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.68,
+    0.92,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 161.8,
+     "y": 212.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Magnolia",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [88.3  9.3] at Magnolia x 10th SE"
+    },
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 159.1,
+     "y": 1134.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Magnolia",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [87.3  9.5] at Magnolia x 8th NE"
+    }
+   ],
+   "zone_px": [
+    159.11257309941521,
+    211.5894032575092,
+    552.8111420957382,
+    1134.5
+   ]
+  },
+  {
+   "name": "546",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Adeline",
+    "E": "Chestnut"
+   },
+   "px4_est": [
+    [
+     674,
+     210
+    ],
+    [
+     1048,
+     210
+    ],
+    [
+     1048,
+     1110
+    ],
+    [
+     674,
+     1110
+    ]
+   ],
+   "corners": [
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    }
+   ],
+   "with": [
+    "547",
+    "545",
+    "536",
+    "537",
+    "538"
+   ],
+   "px4": [
+    [
+     673.9,
+     211.0
+    ],
+    [
+     1057.0,
+     211.0
+    ],
+    [
+     1057.0,
+     1132.1
+    ],
+    [
+     672.6,
+     1133.4
+    ]
+   ],
+   "edge_q": [
+    0.79,
+    0.82,
+    0.77,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1057.0,
+     "y": 211.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Chestnut",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [84.6  9. ] at Chestnut x 10th SW"
+    },
+    {
+     "x": 1057.0,
+     "y": 1132.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Chestnut",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [82.5 10. ] at Chestnut x 8th NW"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    672.5578757772639,
+    211.0,
+    1057.0,
+    1133.4129683514732
+   ]
+  },
+  {
+   "name": "545",
+   "streets": {
+    "N": "10th",
+    "S": "8th",
+    "W": "Chestnut",
+    "E": "Linden"
+   },
+   "px4_est": [
+    [
+     1148,
+     210
+    ],
+    [
+     1548,
+     210
+    ],
+    [
+     1548,
+     1110
+    ],
+    [
+     1148,
+     1110
+    ]
+   ],
+   "corners": [
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    }
+   ],
+   "with": [
+    "547",
+    "546",
+    "536",
+    "537",
+    "538"
+   ],
+   "px4": [
+    [
+     1149.4,
+     211.4
+    ],
+    [
+     1549.0,
+     210.1
+    ],
+    [
+     1549.0,
+     1131.6
+    ],
+    [
+     1148.1,
+     1132.9
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.79,
+    0.78,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 1149.4,
+     "y": 211.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Chestnut",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [185.7   8.9] at Chestnut x 10th SE"
+    },
+    {
+     "x": 1549.0,
+     "y": 210.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Linden",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [187.5   8.8] at Linden x 10th SW"
+    },
+    {
+     "x": 1549.0,
+     "y": 1131.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Linden",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [180.   10.4] at Linden x 8th NW"
+    },
+    {
+     "x": 1148.1,
+     "y": 1132.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Chestnut",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [187.8  10.3] at Chestnut x 8th NE"
+    }
+   ],
+   "zone_px": [
+    1148.0586144708682,
+    210.08881578947367,
+    1549.0,
+    1132.9077019260826
+   ]
+  },
+  {
+   "name": "536",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Magnolia",
+    "E": "Adeline"
+   },
+   "px4_est": [
+    [
+     95,
+     1226
+    ],
+    [
+     552,
+     1226
+    ],
+    [
+     552,
+     1695
+    ],
+    [
+     95,
+     1695
+    ]
+   ],
+   "corners": [
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "547",
+    "546",
+    "545",
+    "537",
+    "538"
+   ],
+   "px4": [
+    [
+     96.0,
+     1224.5
+    ],
+    [
+     551.5,
+     1224.5
+    ],
+    [
+     551.5,
+     1688.6
+    ],
+    [
+     96.0,
+     1689.9
+    ]
+   ],
+   "edge_q": [
+    0.06,
+    0.99,
+    0.63,
+    0.58
+   ],
+   "corners_all": [
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    96.0,
+    1224.5,
+    551.5,
+    1689.9050155476218
+   ]
+  },
+  {
+   "name": "537",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Adeline",
+    "E": "Chestnut"
+   },
+   "px4_est": [
+    [
+     674,
+     1226
+    ],
+    [
+     1048,
+     1226
+    ],
+    [
+     1048,
+     1695
+    ],
+    [
+     674,
+     1695
+    ]
+   ],
+   "corners": [
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    }
+   ],
+   "with": [
+    "547",
+    "546",
+    "545",
+    "536",
+    "538"
+   ],
+   "px4": [
+    [
+     673.0,
+     1245.4
+    ],
+    [
+     1056.0,
+     1244.1
+    ],
+    [
+     1056.0,
+     1686.1
+    ],
+    [
+     673.0,
+     1688.8
+    ]
+   ],
+   "edge_q": [
+    0.1,
+    0.77,
+    0.76,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 673.0,
+     "y": 1245.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1056.0,
+     "y": 1244.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Chestnut",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1056.0,
+     "y": 1686.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Chestnut",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  21.1] at Chestnut x 7th NW"
+    },
+    {
+     "x": 673.0,
+     "y": 1688.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    673.0,
+    1244.0639600337743,
+    1056.0,
+    1688.8228257810301
+   ]
+  },
+  {
+   "name": "538",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Chestnut",
+    "E": "Linden"
+   },
+   "px4_est": [
+    [
+     1148,
+     1226
+    ],
+    [
+     1548,
+     1226
+    ],
+    [
+     1548,
+     1695
+    ],
+    [
+     1148,
+     1695
+    ]
+   ],
+   "corners": [
+    {
+     "x": 552.8,
+     "y": 211.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 550.1,
+     "y": 1134.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "547"
+    },
+    {
+     "x": 673.9,
+     "y": 211.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Adeline",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 672.6,
+     "y": 1133.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "546"
+    },
+    {
+     "x": 551.5,
+     "y": 1224.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Adeline",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    },
+    {
+     "x": 551.5,
+     "y": 1688.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Adeline",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "536"
+    }
+   ],
+   "with": [
+    "547",
+    "546",
+    "545",
+    "536",
+    "537"
+   ],
+   "px4": [
+    [
+     1147.0,
+     1223.5
+    ],
+    [
+     1548.4,
+     1223.5
+    ],
+    [
+     1547.1,
+     1681.3
+    ],
+    [
+     1147.0,
+     1685.2
+    ]
+   ],
+   "edge_q": [
+    0.28,
+    0.72,
+    0.75,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 1147.0,
+     "y": 1223.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Chestnut",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1548.4,
+     "y": 1223.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Linden",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1547.1,
+     "y": 1681.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Linden",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 0.9 20.4] at Linden x 7th NW"
+    },
+    {
+     "x": 1147.0,
+     "y": 1685.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Chestnut",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 20.6] at Chestnut x 7th NE"
+    }
+   ],
+   "zone_px": [
+    1147.0,
+    1223.5,
+    1548.4149085400068,
+    1685.233552631579
+   ]
+  }
+ ],
+ "pct": 25
+}

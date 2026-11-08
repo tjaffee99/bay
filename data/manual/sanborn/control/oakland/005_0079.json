@@ -1,0 +1,985 @@
+{
+ "zones_only": true,
+ "notes": "Kirkham St north of 7th is today an internal lane of a superblock (not the 1911 alignment): only the Center St corners control the fit (collinear: confidence capped at medium).",
+ "confidence_cap": "medium",
+ "blocks": [
+  {
+   "name": "556",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Center",
+    "E": "Cypress"
+   },
+   "px4_est": [
+    [
+     300,
+     200
+    ],
+    [
+     784,
+     200
+    ],
+    [
+     784,
+     670
+    ],
+    [
+     300,
+     670
+    ]
+   ],
+   "corners": [
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "555"
+    },
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "1226",
+    "555",
+    "551",
+    "531"
+   ],
+   "px4": [
+    [
+     290.0,
+     204.1
+    ],
+    [
+     786.8,
+     205.4
+    ],
+    [
+     784.2,
+     674.4
+    ],
+    [
+     290.0,
+     673.1
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.77,
+    0.79,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    290.0,
+    204.06491953023055,
+    786.7854677086508,
+    674.4083284249575
+   ]
+  },
+  {
+   "name": "1226",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Cypress",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     874,
+     200
+    ],
+    [
+     1396,
+     200
+    ],
+    [
+     1396,
+     670
+    ],
+    [
+     874,
+     670
+    ]
+   ],
+   "corners": [
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "555"
+    },
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "556",
+    "555",
+    "551",
+    "531"
+   ],
+   "px4": [
+    [
+     877.8,
+     206.0
+    ],
+    [
+     1389.5,
+     206.0
+    ],
+    [
+     1389.5,
+     669.7
+    ],
+    [
+     875.1,
+     677.4
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.49,
+    0.52,
+    0.78
+   ],
+   "corners_all": [
+    {
+     "x": 1389.5,
+     "y": 206.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kirkham",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [82.2  8.8] at Kirkham x 10th SW"
+    },
+    {
+     "x": 1389.5,
+     "y": 669.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kirkham",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 82.6 103.4] at Kirkham x 9th NW"
+    }
+   ],
+   "zone_px": [
+    875.1426086921174,
+    206.0,
+    1389.5,
+    677.4300875878386
+   ]
+  },
+  {
+   "name": "555",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Center",
+    "E": "Cypress"
+   },
+   "px4_est": [
+    [
+     300,
+     760
+    ],
+    [
+     784,
+     760
+    ],
+    [
+     784,
+     1106
+    ],
+    [
+     300,
+     1106
+    ]
+   ],
+   "corners": [
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "555"
+    },
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 80,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "556",
+    "1226",
+    "551",
+    "531"
+   ],
+   "px4": [
+    [
+     290.9,
+     764.5
+    ],
+    [
+     784.4,
+     764.5
+    ],
+    [
+     783.1,
+     1096.5
+    ],
+    [
+     289.6,
+     1096.5
+    ]
+   ],
+   "edge_q": [
+    0.97,
+    0.71,
+    0.33,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 289.6,
+     "y": 1096.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    289.62823243078793,
+    764.5,
+    784.3907818679647,
+    1096.5
+   ]
+  },
+  {
+   "name": "551",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Cypress",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     874,
+     760
+    ],
+    [
+     1396,
+     760
+    ],
+    [
+     1396,
+     1106
+    ],
+    [
+     874,
+     1106
+    ]
+   ],
+   "corners": [
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "555"
+    },
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 80,
+    "W": 60
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "556",
+    "1226",
+    "555",
+    "531"
+   ],
+   "px4": [
+    [
+     874.9,
+     766.0
+    ],
+    [
+     1397.4,
+     759.4
+    ],
+    [
+     1402.5,
+     1096.2
+    ],
+    [
+     873.6,
+     1098.8
+    ]
+   ],
+   "edge_q": [
+    0.57,
+    0.67,
+    0.24,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 1397.4,
+     "y": 759.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kirkham",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [100.2 197.5] at Kirkham x 9th SW"
+    },
+    {
+     "x": 1402.5,
+     "y": 1096.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kirkham",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 98.8 197. ] at Kirkham x 8th NW"
+    }
+   ],
+   "zone_px": [
+    873.6194185118878,
+    759.4433863410225,
+    1402.4817696034158,
+    1098.8177081139752
+   ]
+  },
+  {
+   "name": "531",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Center",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     300,
+     1244
+    ],
+    [
+     1396,
+     1244
+    ],
+    [
+     1396,
+     1700
+    ],
+    [
+     300,
+     1700
+    ]
+   ],
+   "corners": [
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "531"
+    },
+    {
+     "x": 290.0,
+     "y": 204.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.0,
+     "y": 673.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "556"
+    },
+    {
+     "x": 290.9,
+     "y": 764.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "9th"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "555"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 100,
+    "W": 60
+   },
+   "with": [
+    "556",
+    "1226",
+    "555",
+    "551"
+   ],
+   "px4": [
+    [
+     291.1,
+     1248.0
+    ],
+    [
+     1401.0,
+     1248.0
+    ],
+    [
+     1401.0,
+     1699.6
+    ],
+    [
+     292.4,
+     1700.9
+    ]
+   ],
+   "edge_q": [
+    0.63,
+    0.66,
+    0.72,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 291.1,
+     "y": 1248.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "8th"
+     ],
+     "w": [
+      60,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1401.0,
+     "y": 1248.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kirkham",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 94.6 103.9] at Kirkham x 8th SW"
+    },
+    {
+     "x": 1401.0,
+     "y": 1699.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kirkham",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.2 19.1] at Kirkham x 7th NW"
+    },
+    {
+     "x": 292.4,
+     "y": 1700.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "7th"
+     ],
+     "w": [
+      60,
+      100
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    291.1036472760849,
+    1248.0,
+    1401.0,
+    1700.9170061698508
+   ]
+  }
+ ],
+ "pct": 25
+}

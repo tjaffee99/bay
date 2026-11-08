@@ -1,0 +1,43 @@
+{
+ "scale_prior": [
+  0.2015,
+  0.0006,
+  -58.7,
+  0.4
+ ],
+ "points": [
+  {
+   "pc": [
+    "1st Street",
+    "Paseo de San Antonio"
+   ],
+   "q": "SW",
+   "x": 444.0,
+   "y": 184.0,
+   "wb": 60
+  },
+  {
+   "tie": "004_0089",
+   "px_other": [
+    1350,
+    182
+   ],
+   "label": "1st x San Antonio SW corner, drawn on sheet 89",
+   "norefine": 1,
+   "x": 446.0,
+   "y": 182.0
+  },
+  {
+   "tie": "004_0089",
+   "px_other": [
+    1260,
+    182
+   ],
+   "label": "1st x San Antonio NW corner (sheet 89 block), drawn on sheet 90",
+   "norefine": 1,
+   "x": 360.0,
+   "y": 182.0
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,34 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "confidence_cap": "medium",
+ "points": [
+  {
+   "tie": "004_0085",
+   "px_other": [
+    257,
+    1586
+   ],
+   "norefine": 1,
+   "label": "convent block (sheet 85) SW corner, Santa Teresa x San Augustine, drawn on sheet 87",
+   "x": 268.0,
+   "y": 57.0
+  },
+  {
+   "tie": "004_0085",
+   "px_other": [
+    1372,
+    1590
+   ],
+   "norefine": 1,
+   "label": "convent block (sheet 85) corner, Santa Teresa x Santa Clara, drawn on sheet 87",
+   "x": 1377.0,
+   "y": 57.0
+  }
+ ],
+ "pct": 25
+}

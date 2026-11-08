@@ -1,0 +1,2017 @@
+{
+ "zones_only": true,
+ "refine_R": 22,
+ "notes": "Brush-Castro blocks are I-980 land today (Brush / Castro St are frontage roads): only the Market-West-Brush blocks give control.",
+ "blocks": [
+  {
+   "name": "150",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Market",
+    "E": "West"
+   },
+   "px4_est": [
+    [
+     143,
+     186
+    ],
+    [
+     410,
+     186
+    ],
+    [
+     410,
+     488
+    ],
+    [
+     143,
+     488
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     135.0,
+     190.0
+    ],
+    [
+     413.0,
+     190.0
+    ],
+    [
+     413.0,
+     492.6
+    ],
+    [
+     135.0,
+     493.9
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.75,
+    0.84,
+    0.14
+   ],
+   "corners_all": [
+    {
+     "x": 413.0,
+     "y": 190.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [10.8  1.3] at West x 11th SW"
+    },
+    {
+     "x": 413.0,
+     "y": 492.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  13.6] at West x 10th NW"
+    }
+   ],
+   "zone_px": [
+    135.0,
+    190.0,
+    413.0,
+    493.947319140548
+   ]
+  },
+  {
+   "name": "149",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "West",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     529,
+     186
+    ],
+    [
+     983,
+     186
+    ],
+    [
+     983,
+     488
+    ],
+    [
+     529,
+     488
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "with": [
+    "150",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     530.4,
+     188.0
+    ],
+    [
+     984.1,
+     188.0
+    ],
+    [
+     985.4,
+     490.6
+    ],
+    [
+     529.1,
+     491.9
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.75,
+    0.77,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 530.4,
+     "y": 188.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.2 10.9] at West x 11th SE"
+    },
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 985.4,
+     "y": 490.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [10.4  1. ] at Brush x 10th NW"
+    },
+    {
+     "x": 529.1,
+     "y": 491.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of West x 10th"
+    }
+   ],
+   "zone_px": [
+    529.0750798312157,
+    188.0,
+    985.4191577815637,
+    491.90767713937163
+   ]
+  },
+  {
+   "name": "148",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Brush",
+    "E": "Castro"
+   },
+   "px4_est": [
+    [
+     1102,
+     186
+    ],
+    [
+     1590,
+     186
+    ],
+    [
+     1590,
+     488
+    ],
+    [
+     1102,
+     488
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     1105.1,
+     187.1
+    ],
+    [
+     1573.5,
+     188.4
+    ],
+    [
+     1573.5,
+     489.9
+    ],
+    [
+     1106.4,
+     488.6
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.06,
+    0.82,
+    0.65
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1105.0968998579774,
+    187.10045540298205,
+    1573.5,
+    489.8634059534081
+   ]
+  },
+  {
+   "name": "111",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Market",
+    "E": "West"
+   },
+   "px4_est": [
+    [
+     143,
+     612
+    ],
+    [
+     410,
+     612
+    ],
+    [
+     410,
+     948
+    ],
+    [
+     143,
+     948
+    ]
+   ],
+   "corners": [
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     134.0,
+     614.5
+    ],
+    [
+     411.1,
+     614.5
+    ],
+    [
+     412.4,
+     949.0
+    ],
+    [
+     134.0,
+     949.0
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    0.76,
+    0.18,
+    0.2
+   ],
+   "corners_all": [
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 412.4,
+     "y": 949.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "West",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.2 10.1] at West x 9th NW"
+    }
+   ],
+   "zone_px": [
+    134.0,
+    614.5,
+    412.41181077694233,
+    949.0
+   ]
+  },
+  {
+   "name": "112",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "West",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     529,
+     612
+    ],
+    [
+     983,
+     612
+    ],
+    [
+     983,
+     948
+    ],
+    [
+     529,
+     948
+    ]
+   ],
+   "corners": [
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     529.1,
+     613.9
+    ],
+    [
+     986.0,
+     612.6
+    ],
+    [
+     986.0,
+     932.5
+    ],
+    [
+     530.3,
+     932.5
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.75,
+    0.13,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 529.1,
+     "y": 613.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.1 1.2] at West x 10th SE"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 986.0,
+     "y": 932.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 530.3,
+     "y": 932.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    529.0995755253196,
+    612.5834106190587,
+    986.0,
+    932.5
+   ]
+  },
+  {
+   "name": "113",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Brush",
+    "E": "Castro"
+   },
+   "px4_est": [
+    [
+     1102,
+     612
+    ],
+    [
+     1590,
+     612
+    ],
+    [
+     1590,
+     948
+    ],
+    [
+     1102,
+     948
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     1107.0,
+     613.4
+    ],
+    [
+     1604.0,
+     612.1
+    ],
+    [
+     1604.0,
+     930.5
+    ],
+    [
+     1107.0,
+     930.5
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.22,
+    0.11,
+    0.77
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1107.0,
+    612.0543572044867,
+    1604.0,
+    930.5
+   ]
+  },
+  {
+   "name": "110",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Market",
+    "E": "West"
+   },
+   "px4_est": [
+    [
+     220,
+     1029
+    ],
+    [
+     410,
+     1029
+    ],
+    [
+     410,
+     1338
+    ],
+    [
+     220,
+     1338
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "95",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     232.0,
+     1036.8
+    ],
+    [
+     413.0,
+     1035.6
+    ],
+    [
+     413.0,
+     1339.5
+    ],
+    [
+     232.0,
+     1339.5
+    ]
+   ],
+   "edge_q": [
+    0.82,
+    0.81,
+    0.47,
+    0.09
+   ],
+   "corners_all": [
+    {
+     "x": 413.0,
+     "y": 1035.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of West x 9th"
+    },
+    {
+     "x": 413.0,
+     "y": 1339.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "West",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1. 11.] at West x 8th NW"
+    }
+   ],
+   "zone_px": [
+    232.0,
+    1035.5713296398892,
+    413.0,
+    1339.5
+   ]
+  },
+  {
+   "name": "95",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "West",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     529,
+     1029
+    ],
+    [
+     983,
+     1029
+    ],
+    [
+     983,
+     1338
+    ],
+    [
+     529,
+     1338
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "94",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     530.1,
+     1034.8
+    ],
+    [
+     987.0,
+     1032.2
+    ],
+    [
+     987.0,
+     1336.2
+    ],
+    [
+     531.4,
+     1338.8
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.75,
+    0.81,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 530.1,
+     "y": 1034.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.1 1.3] at West x 9th SE"
+    },
+    {
+     "x": 987.0,
+     "y": 1032.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  5.5 146.2] at Brush x 9th SW"
+    },
+    {
+     "x": 987.0,
+     "y": 1336.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [11.9  2. ] at Brush x 8th NW"
+    },
+    {
+     "x": 531.4,
+     "y": 1338.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 10.5] at West x 8th NE"
+    }
+   ],
+   "zone_px": [
+    530.1168425982559,
+    1032.161024808718,
+    987.0,
+    1338.8018124911343
+   ]
+  },
+  {
+   "name": "94",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Brush",
+    "E": "Castro"
+   },
+   "px4_est": [
+    [
+     1102,
+     1029
+    ],
+    [
+     1590,
+     1029
+    ],
+    [
+     1590,
+     1338
+    ],
+    [
+     1102,
+     1338
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "109",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     1107.1,
+     1031.4
+    ],
+    [
+     1612.0,
+     1030.0
+    ],
+    [
+     1612.0,
+     1331.6
+    ],
+    [
+     1108.4,
+     1335.7
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.0,
+    0.62,
+    0.77
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1107.1023000232362,
+    1030.032786885246,
+    1612.0,
+    1335.6719317732368
+   ]
+  },
+  {
+   "name": "109",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Market",
+    "E": "West"
+   },
+   "px4_est": [
+    [
+     300,
+     1445
+    ],
+    [
+     410,
+     1445
+    ],
+    [
+     410,
+     1757
+    ],
+    [
+     300,
+     1757
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "96",
+    "71"
+   ],
+   "px4": [
+    [
+     316.8,
+     1461.5
+    ],
+    [
+     413.3,
+     1461.5
+    ],
+    [
+     415.9,
+     1761.5
+    ],
+    [
+     323.1,
+     1761.5
+    ]
+   ],
+   "edge_q": [
+    0.94,
+    0.87,
+    0.27,
+    0.15
+   ],
+   "corners_all": [
+    {
+     "x": 413.3,
+     "y": 1461.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.2 7.2] at West x 8th SW"
+    },
+    {
+     "x": 415.9,
+     "y": 1761.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [71.2 15.1] at West x 7th NW"
+    }
+   ],
+   "zone_px": [
+    316.80845141700405,
+    1461.5,
+    415.8537449392713,
+    1761.5
+   ]
+  },
+  {
+   "name": "96",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "West",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     529,
+     1445
+    ],
+    [
+     983,
+     1445
+    ],
+    [
+     983,
+     1757
+    ],
+    [
+     529,
+     1757
+    ]
+   ],
+   "corners": [
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    }
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "71"
+   ],
+   "px4": [
+    [
+     531.8,
+     1459.8
+    ],
+    [
+     988.0,
+     1457.2
+    ],
+    [
+     988.0,
+     1759.2
+    ],
+    [
+     534.4,
+     1761.8
+    ]
+   ],
+   "edge_q": [
+    0.65,
+    0.75,
+    0.62,
+    0.67
+   ],
+   "corners_all": [
+    {
+     "x": 531.8,
+     "y": 1459.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  7.6] at West x 8th SE"
+    },
+    {
+     "x": 988.0,
+     "y": 1457.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Brush x 8th"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    531.8090376778433,
+    1457.1552283793183,
+    988.0,
+    1761.7847429479637
+   ]
+  },
+  {
+   "name": "71",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Brush",
+    "E": "Castro"
+   },
+   "px4_est": [
+    [
+     1102,
+     1445
+    ],
+    [
+     1590,
+     1445
+    ],
+    [
+     1590,
+     1757
+    ],
+    [
+     1102,
+     1757
+    ]
+   ],
+   "corners": [
+    {
+     "x": 984.1,
+     "y": 188.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "149"
+    },
+    {
+     "x": 411.1,
+     "y": 614.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "West",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "111"
+    },
+    {
+     "x": 986.0,
+     "y": 612.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "112"
+    },
+    {
+     "x": 988.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    },
+    {
+     "x": 534.4,
+     "y": 1761.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "96"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "150",
+    "149",
+    "148",
+    "111",
+    "112",
+    "113",
+    "110",
+    "95",
+    "94",
+    "109",
+    "96"
+   ],
+   "px4": [
+    [
+     1107.6,
+     1456.2
+    ],
+    [
+     1575.5,
+     1452.4
+    ],
+    [
+     1575.5,
+     1755.9
+    ],
+    [
+     1108.9,
+     1759.7
+    ]
+   ],
+   "edge_q": [
+    0.68,
+    0.08,
+    0.7,
+    0.78
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1107.6392462427564,
+    1452.393604400345,
+    1575.5,
+    1759.667716146247
+   ]
+  }
+ ],
+ "pct": 25
+}

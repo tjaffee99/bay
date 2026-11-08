@@ -1,0 +1,78 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  31.3,
+  0.6
+ ],
+ "confidence_cap": "medium",
+ "points": [
+  {
+   "tie": "004_0080",
+   "px_other": [
+    206,
+    220
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (Julian), drawn on sheet 79",
+   "x": 1410.0,
+   "y": 222.0
+  },
+  {
+   "tie": "004_0080",
+   "px_other": [
+    206,
+    590
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (Devine N), drawn on sheet 79",
+   "x": 1410.0,
+   "y": 590.0
+  },
+  {
+   "tie": "004_0080",
+   "px_other": [
+    206,
+    684
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (Devine S), drawn on sheet 79",
+   "x": 1410.0,
+   "y": 682.0
+  },
+  {
+   "tie": "004_0080",
+   "px_other": [
+    206,
+    1056
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (St James N), drawn on sheet 79",
+   "x": 1409.0,
+   "y": 1055.0
+  },
+  {
+   "tie": "004_0080",
+   "px_other": [
+    200,
+    1146
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (St James S), drawn on sheet 79",
+   "x": 1409.0,
+   "y": 1146.0
+  },
+  {
+   "tie": "004_0080",
+   "px_other": [
+    200,
+    1696
+   ],
+   "norefine": 1,
+   "label": "sheet 80 block corner on Santa Teresa St (San Augustine), drawn on sheet 79",
+   "x": 1409.0,
+   "y": 1700.0
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,75 @@
+{
+ "scale_prior": [
+  0.2015,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "points": [
+  {
+   "pc": [
+    "1st Street",
+    "San Salvador Street"
+   ],
+   "q": "SW",
+   "x": 146.3,
+   "y": 176.7,
+   "norefine": 1
+  },
+  {
+   "pc": [
+    "1st Street",
+    "William Street"
+   ],
+   "q": "NW",
+   "x": 980.0,
+   "y": 175.3,
+   "norefine": 1,
+   "wb": 60
+  },
+  {
+   "pc": [
+    "Market Street",
+    "San Salvador Street"
+   ],
+   "q": "SE",
+   "x": 145.0,
+   "y": 472.0,
+   "norefine": 1
+  },
+  {
+   "pc": [
+    "Market Street",
+    "William Street"
+   ],
+   "q": "SW",
+   "x": 1090.0,
+   "y": 402.7,
+   "norefine": 1,
+   "wb": 60
+  },
+  {
+   "pc": [
+    "Almaden Avenue",
+    "Balbach Street"
+   ],
+   "q": "NE",
+   "x": 875.0,
+   "y": 1767.7,
+   "norefine": 1,
+   "label": "Orchard (= S Almaden Ave) x Balbach, block 751 corner"
+  },
+  {
+   "pc": [
+    "Almaden Avenue",
+    "Balbach Street"
+   ],
+   "q": "SE",
+   "x": 950.0,
+   "y": 1768.0,
+   "norefine": 1,
+   "label": "Orchard (= S Almaden Ave) x Balbach, block 33 corner"
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,77 @@
+{
+ "scale_prior": [
+  0.2015,
+  0.0015
+ ],
+ "confidence_cap": "medium",
+ "points": [
+  {
+   "tie": "004_0086",
+   "tie_block": "Post-SanFernando (blocks 26, 51, 215)",
+   "px_other": [
+    1497,
+    1200
+   ],
+   "shift": [
+    80,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Vine x San Fernando SE: sheet 86 corner (Vine east line x San Fernando N line) moved 80 ft across San Fernando",
+   "x": 1138.0,
+   "y": 107.0
+  },
+  {
+   "tie": "004_0086",
+   "tie_block": "Post-SanFernando (blocks 26, 51, 215)",
+   "px_other": [
+    1497,
+    1291
+   ],
+   "shift": [
+    80,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Vine x San Fernando SW: sheet 86 corner moved 80 ft across San Fernando",
+   "x": 1017.0,
+   "y": 107.0
+  },
+  {
+   "tie": "004_0086",
+   "tie_block": "Post-SanFernando (blocks 26, 51, 215)",
+   "px_other": [
+    1497,
+    1711
+   ],
+   "shift": [
+    80,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Locust x San Fernando SE: sheet 86 corner moved 80 ft across San Fernando",
+   "x": 606.0,
+   "y": 107.0
+  },
+  {
+   "pc": [
+    "Almaden Avenue",
+    "San Fernando Street"
+   ],
+   "q": "NW",
+   "x": 1567.0,
+   "y": 107.0,
+   "shift": [
+    80,
+    "Almaden Avenue",
+    -1
+   ],
+   "norefine": 1,
+   "label": "Orchard x San Fernando SW = parcel corner NW of Almaden Ave (= old Orchard St) x San Fernando moved 80 ft across San Fernando"
+  }
+ ],
+ "pct": 25
+}

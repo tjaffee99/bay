@@ -1,0 +1,135 @@
+{
+ "scale_prior": [
+  0.201,
+  0.0015,
+  31.3,
+  0.6
+ ],
+ "note": "blocks west of Terraine St (747, 79, 78): no surviving property lines (SR 87 takings); they take the sheet fit of all 12 east-column corners (the sheet is drawn to scale across Terraine: 94 px = 19 m)",
+ "blocks": [
+  {
+   "name": "75 Julian-Devine/Terraine-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Terraine Street",
+      "Julian Street"
+     ],
+     "q": "SE",
+     "x": 990.0,
+     "y": 220.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Julian Street"
+     ],
+     "q": "SW",
+     "x": 1444.0,
+     "y": 220.0
+    },
+    {
+     "pc": [
+      "Terraine Street",
+      "Devine Street"
+     ],
+     "q": "NE",
+     "x": 990.0,
+     "y": 590.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Devine Street"
+     ],
+     "q": "NW",
+     "x": 1444.0,
+     "y": 590.0
+    }
+   ]
+  },
+  {
+   "name": "76 Devine-StJames/Terraine-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Terraine Street",
+      "Devine Street"
+     ],
+     "q": "SE",
+     "x": 990.0,
+     "y": 684.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Devine Street"
+     ],
+     "q": "SW",
+     "x": 1444.0,
+     "y": 684.0
+    },
+    {
+     "pc": [
+      "Terraine Street",
+      "Saint James Street"
+     ],
+     "q": "NE",
+     "x": 990.0,
+     "y": 1056.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Saint James Street"
+     ],
+     "q": "NW",
+     "x": 1444.0,
+     "y": 1056.0
+    }
+   ]
+  },
+  {
+   "name": "77 StJames-SanAugustine/Terraine-SanPedro",
+   "corners": [
+    {
+     "pc": [
+      "Terraine Street",
+      "Saint James Street"
+     ],
+     "q": "SE",
+     "x": 980.0,
+     "y": 1146.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Saint James Street"
+     ],
+     "q": "SW",
+     "x": 1444.0,
+     "y": 1146.0
+    },
+    {
+     "pc": [
+      "Terraine Street",
+      "Saint John Street"
+     ],
+     "q": "NE",
+     "x": 980.0,
+     "y": 1710.0
+    },
+    {
+     "pc": [
+      "San Pedro Street",
+      "Saint John Street"
+     ],
+     "q": "NW",
+     "x": 1444.0,
+     "y": 1710.0
+    }
+   ]
+  }
+ ],
+ "pct": 25
+}

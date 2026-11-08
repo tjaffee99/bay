@@ -217,11 +217,11 @@ def norm_name(n):
     """'West 14th Street' -> '14th street', 'Fifth Street' -> '5th street', '7th' -> '7th street', 'Cypress' ->
     'mandela parkway'. 'East 12th Street' (east of Lake Merritt) stays a different street."""
     n = (n if isinstance(n, str) else "").strip().lower().replace(".", "")
-    if n.startswith("west "):
+    if n.startswith("west ") and n[5:] not in ("street", "st", "avenue", "ave"):  # but 'West Street' is a street
         n = n[5:]
     n = n.replace(" st", " street") if n.endswith(" st") else n
     n = n.replace(" ave", " avenue") if n.endswith(" ave") else n
-    if n and n[0].isdigit() and " " not in n:
+    if n and (n[0].isdigit() or n == "west") and " " not in n:  # '7th' -> '7th street', 'West' -> 'west street'
         n = n + " street"
     return ALIASES.get(n, n)
 
@@ -349,7 +349,15 @@ def parcel_blocks():
 def grid_axes(a, b, X, R=150):
     """unit vectors at a crossing: eN along the more north-south of the two streets (northward), eE along the other
     (eastward)."""
-    ds = [street_line(n, X, R)[1] for n in (a, b)]
+    ds = []
+    for n in (a, b):
+        for r in (R, 2 * R, 4 * R):  # a street that ends short of the crossing: its direction from further away
+            try:
+                ds.append(street_line(n, X, r)[1])
+                break
+            except ValueError:
+                if r == 4 * R:
+                    raise
     k = int(np.argmax([abs(d[1]) / (abs(d[0]) + 1e-9) for d in ds]))
     eN, eE = ds[k], ds[1 - k]
     eN = eN if eN[1] > 0 else -eN
@@ -390,6 +398,8 @@ def property_corner(a, b, q, near=None, reach=(18, 75), R=150):
             raise ValueError(f"property line not found at {a} x {b} {q}")
         acs = ac[sel]
         offs.append(float(np.median(acs[acs <= acs.min() + 2.0])))
+    if not all(2.5 <= o <= 24 for o in offs):  # not a street-side property line (superblock, plaza, freeway land)
+        raise ValueError(f"implausible property-line offsets {np.round(offs, 1)} at {a} x {b} {q}")
     p = X + np.linalg.solve(np.array([nN, nE]), np.array([sE * offs[0], sN * offs[1]]))
     return p, f"property corner {q} of {a} x {b}", offs
 
@@ -528,13 +538,136 @@ def block4(name, b):
 
 def spec(key, s):
     """control file from a block spec: {"blocks": {name: block4 dict}, other keys passed through (zones_only,
-    scale_prior, valid_px, valid_poly_px, confidence_cap, residential, notes)}."""
+    scale_prior, valid_px, valid_poly_px, confidence_cap, residential, notes)}. The pixel corners are estimates until
+    `refine` moves the block sides onto the drawn block outline."""
     cfg = {k: v for k, v in s.items() if k != "blocks"}
-    cfg["blocks"] = [{"name": n, "corners": block4(n, b), "streets": {k: b[k] for k in "NSWE"}} for n, b in s["blocks"].items()]
+    cfg["blocks"] = []
+    for n, b in s["blocks"].items():
+        e = {"name": n, "streets": {k: b[k] for k in "NSWE"}, "px4_est": b["px"], "corners": block4(n, b)}
+        for k in ("w", "skip", "oc", "near", "no_refine", "with"):
+            if k in b:
+                e[k] = b[k]
+        cfg["blocks"].append(e)
     cfg.setdefault("pct", 25)
     CONTROL.mkdir(parents=True, exist_ok=True)
     json.dump(cfg, open(CONTROL / f"{key}.json", "w"), indent=1)
     return cfg
+
+
+def refine_block(gray, px4, R=16, inset=0.12):
+    """move each side of an approximate block outline (4 pixel corners, ring order) onto the strongest long dark line
+    within +-R px (darkness profile across the side over the central 76 % of its length, two halves fitted separately
+    so a slightly rotated scan is followed); corners = crossings of adjacent sides. Returns (corners, peak darkness of
+    each side: ~0.8 = a drawn block line along the whole side, < 0.35 = no line found)."""
+    g = gray.astype(float)
+    dark = (g < min(125, np.median(g) - 55)).astype(float)
+    P = np.asarray(px4, float)
+    lines, q = [], []
+    for i in range(4):
+        A, B = P[i], P[(i + 1) % 4]
+        Ls = float(np.hypot(*(B - A)))
+        u = (B - A) / Ls
+        nrm = np.array([-u[1], u[0]])
+        os_ = np.arange(-R, R + 0.01, 0.5)
+        mids, offs, peaks = [], [], []
+        for t0, t1 in ((inset, 0.5), (0.5, 1 - inset)):
+            ts = np.arange(t0 * Ls, t1 * Ls, 1.5)
+            prof = np.array([ndi.map_coordinates(dark, [(A + np.outer(ts, u) + o * nrm)[:, 1], (A + np.outer(ts, u) + o * nrm)[:, 0]],
+                                                 order=1, mode="constant").mean() for o in os_])
+            prof = np.convolve(prof, [0.25, 0.5, 0.25], mode="same")
+            k = int(np.argmax(prof))
+            peaks.append(float(prof[k])); offs.append(float(os_[k])); mids.append(A + (t0 + t1) / 2 * Ls * u)
+        if abs(offs[1] - offs[0]) > 4:  # the halves disagree: the stronger half's offset, parallel to the estimate
+            j = int(np.argmax(peaks))
+            offs = [offs[j], offs[j]]
+        p0, p1 = mids[0] + offs[0] * nrm, mids[1] + offs[1] * nrm
+        lines.append((p0, (p1 - p0) / np.hypot(*(p1 - p0))))
+        q.append(round(min(peaks), 2))
+    corners = [line_x(lines[i - 1], lines[i]) for i in range(4)]
+    return np.array(corners), q
+
+
+def refine(key, weak=0.35):
+    """snap the estimated block outlines of a control file onto the drawn block lines (once per new sheet; writes the
+    refined pixels with norefine = 1, keeps the estimates). A corner on a side without a drawn line (peak < `weak`) is
+    dropped from the fit when the block keeps two other corners."""
+    f = CONTROL / f"{key}.json"
+    cfg = json.load(open(f))
+    gray = np.asarray(Image.open(image(key)).convert("L"))
+    for b in cfg.get("blocks", []):
+        if "px4_est" not in b:
+            continue
+        if b.get("no_refine"):
+            c4, q = np.asarray(b["px4_est"], float), [None] * 4
+        else:
+            c4, q = refine_block(gray, b["px4_est"], R=b.get("refine_R", cfg.get("refine_R", 16)))
+        b["px4"], b["edge_q"] = np.round(c4, 1).tolist(), q
+        b["corners"] = b.get("corners_all", b["corners"])
+        names = ("NW", "NE", "SE", "SW")
+        weak_c = set()
+        for i in range(4):  # side i runs from corner i to corner i+1
+            if q[i] is not None and q[i] < weak:
+                weak_c |= {names[i], names[(i + 1) % 4]}
+        keep = [c for c in b["corners"] if c["corner"] not in weak_c]
+        for c in b["corners"]:
+            j = names.index(c["corner"])
+            c["x"], c["y"], c["norefine"] = float(round(c4[j][0], 1)), float(round(c4[j][1], 1)), 1
+            c["weak"] = c["corner"] in weak_c and len(keep) >= 2
+        b["corners_all"] = b["corners"]
+        b["corners"] = [c for c in b["corners"] if not c["weak"]]
+        if any(qq is not None and qq < weak for qq in q):
+            log(key, "block", b["name"], "weak sides", q, "-> corners used:", [c["corner"] for c in b["corners"]])
+        xs, ys = c4[:, 0], c4[:, 1]
+        b["zone_px"] = [float(xs.min()), float(ys.min()), float(xs.max()), float(ys.max())]
+    # world positions: a corner whose control fails (no such crossing, implausible property line and no printed
+    # width to fall back on) is dropped and logged
+    for b in cfg.get("blocks", []):
+        ok = []
+        for c in b["corners"]:
+            try:
+                world_of(c)
+                ok.append(c)
+            except (ValueError, KeyError, np.linalg.LinAlgError) as e:
+                c["drop"] = str(e)[:120]
+                log(key, "block", b["name"], c["corner"], "dropped:", c["drop"])
+        b["corners"] = ok
+    # a block fitted together with its neighbours ("with": same strip of the sheet, streets drawn to scale there):
+    # its zone keeps its own outline, the fit uses all their corners
+    own = {b["name"]: [dict(c, block=b["name"]) for c in b["corners"]] for b in cfg.get("blocks", [])}
+    def sim(cs):
+        M, d = W.fit([(c["x"], c["y"]) for c in cs], [world_of(c)[0] for c in cs], prior=cfg.get("scale_prior"))
+        return math.hypot(M[0, 0], M[1, 0]), math.degrees(math.atan2(M[1, 0], M[0, 0])), float(np.sqrt((d ** 2).mean()))
+    for b in cfg.get("blocks", []):
+        if not b.get("with"):
+            continue
+        grp = own[b["name"]] + [c for n in b["with"] for c in own[n]]
+        if len(own[b["name"]]) >= 4 and len(grp) > len(own[b["name"]]):
+            # a block with all four corners keeps its own fit if it agrees with the group's scale and rotation
+            s0, r0, _ = sim(grp)
+            s1, r1, e1 = sim(own[b["name"]])
+            if abs(s1 / s0 - 1) < 0.015 and abs(r1 - r0) < 0.8 and e1 < 1.5:
+                continue
+            log(key, "block", b["name"], f"own fit off (scale {s1:.4f} vs {s0:.4f}, rot {r1:.2f} vs {r0:.2f}, RMS {e1:.2f}): group fit")
+        b["corners"] = grp
+    # outliers: refit without the worst corner while it is off by > 3 m and > 3x the median of the others
+    # (a wrongly snapped side, a street realigned since the map); dropped corners are logged
+    dropped = set()
+    for b in cfg.get("blocks", []):
+        while len(b["corners"]) >= 4:
+            px = [(c["x"], c["y"]) for c in b["corners"]]
+            wo = [world_of(c)[0] for c in b["corners"]]
+            _, d = W.fit(px, wo, prior=cfg.get("scale_prior"))
+            j = int(np.argmax(d))
+            rest = np.delete(d, j)
+            if d[j] > 3.0 and d[j] > 3 * max(np.median(rest), 0.3):
+                c = b["corners"].pop(j)
+                tag = (c.get("block", b["name"]), c["corner"])
+                if tag not in dropped:
+                    log(key, "block", b["name"], "outlier corner", tag, f"{d[j]:.1f} m dropped")
+                dropped.add(tag)
+            else:
+                break
+    json.dump(cfg, open(f, "w"), indent=1)
 
 
 def corner_mosaic(key, half=40, zoom=3, out=None):
@@ -570,6 +703,249 @@ def corner_mosaic(key, half=40, zoom=3, out=None):
     return out
 
 
+# ----------------------------------------------------------------------------------------------- footprints
+def extract(key):
+    """colour-segment the building fills (yellow frame, pink brick, blue stone / concrete, ochre fire-proof, grey iron)
+    as in the waterfront tool, with the two changes of pipeline/sanborn_trace_southbay.py (San José): (1) the pink brick
+    wash can be darker than on the SF plates, so drawn lines are found relative to their surroundings (darker than
+    the 7-px local median by 28+ and below grey 100), not by an absolute grey level; (2) every class is split along the
+    drawn partition walls (long straight lines, 14 px = 2.8 m or more, axis-aligned on these sheets), so a row of
+    brick stores becomes one feature per building, as drawn."""
+    import cv2
+    from shapely.geometry import Polygon
+    G = json.load(open(INTERIM / f"{key}.M.json"))
+    ed = key.split("_")[0]
+    rgb = np.asarray(Image.open(G["img"]).convert("RGB"))
+    hsv = cv2.cvtColor(cv2.medianBlur(rgb, 3), cv2.COLOR_RGB2HSV).astype(int)
+    Hh, S, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    small = cv2.resize(hsv.astype(np.uint8), None, fx=1 / 8, fy=1 / 8, interpolation=cv2.INTER_AREA)
+    bgV = cv2.resize(cv2.medianBlur(np.ascontiguousarray(small[..., 2]), 31), (S.shape[1], S.shape[0])).astype(int)
+    dV = V - bgV
+    pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
+    pH, pS, pV = int(np.median(Hh[pm])), int(np.median(S[pm])), int(np.median(V[pm]))
+    cfg = json.load(open(CONTROL / f"{key}.json"))
+    if ed in EDITION_1950:  # yellowed paper and paste-over slips: hue + saturation relative to the paper
+        fr = ((Hh >= max(pH, 22)) & (Hh <= 36) & (S >= pS + 40) & (V >= 70)) | ((Hh >= 19) & (Hh <= 36) & (S >= 125) & (V >= 70))
+    else:
+        fr = (Hh >= 19) & (Hh <= 38) & (S >= max(80, pS + 40)) & (V >= 80)
+    classes = {
+        "frame": fr,
+        "brick": ((Hh >= 155) | (Hh <= 7)) & (S >= 40) & (V >= 55),
+        "stone": (Hh >= 80) & (Hh <= 130) & (S >= 30) & (V >= 55),
+        "fireproof": (Hh >= 8) & (Hh <= 18) & (S >= 100) & (V >= 50),
+        "iron": ((Hh >= 17) & (Hh <= 30) & (S <= pS + 4) & (V >= 80) & (V <= pV - 22) & (dV <= -10)),
+    }
+    if cfg.get("stone_low_sat"):
+        classes["stone"] = classes["stone"] | ((Hh >= 85) & (Hh <= 125) & (S >= 20) & (V >= 60) & (V <= pV - 15))
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.int16)
+    med = cv2.medianBlur(gray.astype(np.uint8), 7).astype(np.int16)
+    line = ((gray < med - 28) & (gray < 100)) | (gray < 60)
+    L = int(cfg.get("wall_len", 14))
+    part = ndi.binary_opening(line, structure=np.ones((L, 1))) | ndi.binary_opening(line, structure=np.ones((1, L)))
+    part = ndi.binary_dilation(part, structure=np.ones((2, 2)))
+    darkd = ndi.binary_dilation(line | (gray < 95), iterations=3)
+    M = np.array(G["M"]); blocks = G.get("blocks", []); zones_only = G.get("zones_only", False)
+
+    def transform_for(cx, cy):
+        best, bd = None, 1e9
+        for b in blocks:
+            x0, y0, x1, y1 = b["rect_px"]
+            d = max(x0 - cx, 0, cx - x1) + max(y0 - cy, 0, cy - y1)
+            if d < bd:
+                best, bd = b, d
+        if best is not None and bd <= 40:
+            return np.array(best["M"]), best["name"]
+        return (None, None) if zones_only else (M, "sheet")
+    feats = []
+    for cls, m in classes.items():
+        m = ndi.binary_opening(m, structure=np.ones((2, 2)))
+        m = (ndi.binary_closing(m, structure=np.ones((3, 3))) | m) & ~part
+        holes = ndi.binary_fill_holes(m) & ~m
+        hl, hn = ndi.label(holes)
+        if hn:
+            hs = ndi.sum(holes, hl, range(1, hn + 1))
+            m = m | np.isin(hl, np.nonzero(hs < 2500)[0] + 1)
+        m = m & ~part
+        lab, n = ndi.label(m)
+        if not n:
+            continue
+        sizes = ndi.sum(m, lab, range(1, n + 1)); objs = ndi.find_objects(lab)
+        for i in range(n):
+            sl = objs[i]
+            if sizes[i] < 90 or sl[0].start < 12 or sl[1].start < 12 or sl[0].stop > m.shape[0] - 12 or sl[1].stop > m.shape[1] - 12:
+                continue
+            if min(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) < 6:
+                continue
+            sub = lab[sl] == i + 1
+            dist = ndi.distance_transform_edt(np.pad(sub, 1))
+            if dist.max() < 3.5:
+                continue
+            hullA = cv2.contourArea(cv2.convexHull(np.argwhere(sub)[:, ::-1].astype(np.int32)))
+            solid = sizes[i] / hullA if hullA > 0 else 0
+            if cls == "iron" and (sizes[i] < 400 or dist.max() < 6 or solid < 0.75):
+                continue
+            ring_out = ndi.binary_dilation(np.pad(sub, 4), iterations=1) & ~np.pad(sub, 4)
+            y0_, x0_ = max(0, sl[0].start - 4), max(0, sl[1].start - 4)
+            dd = darkd[y0_:sl[0].stop + 4, x0_:sl[1].stop + 4]
+            oy, ox = 4 - (sl[0].start - y0_), 4 - (sl[1].start - x0_)
+            dd = np.pad(dd, ((oy, max(0, ring_out.shape[0] - dd.shape[0] - oy)), (ox, max(0, ring_out.shape[1] - dd.shape[1] - ox))))
+            dd = dd[:ring_out.shape[0], :ring_out.shape[1]]
+            edge_dark = float(dd[ring_out].mean()) if ring_out.any() else 0
+            if edge_dark < (0.6 if cls == "iron" else 0.7) or (solid < 0.5 and edge_dark < 0.85):
+                continue
+            cs, _ = cv2.findContours(np.pad(sub, 2).astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+            rings = []
+            for c in cs:
+                c = c[:, 0, :].astype(float)
+                if len(c) >= 4:
+                    c[:, 0] += sl[1].start - 2; c[:, 1] += sl[0].start - 2
+                    rings.append(c)
+            if not rings:
+                continue
+            rings.sort(key=lambda c: -Polygon(c).area)
+            outer = Polygon(rings[0]).buffer(1.2, join_style=2).simplify(1.0)  # half the partition wall back
+            if outer.geom_type != "Polygon":
+                outer = max(outer.geoms, key=lambda p: p.area)
+            hol = [Polygon(r).buffer(-0.8, join_style=2).simplify(1.0) for r in rings[1:] if Polygon(r).area > 400]
+            hol = [h for h in hol if h.geom_type == "Polygon" and outer.contains(h)]
+            poly = Polygon(outer.exterior.coords, [h.exterior.coords for h in hol])
+            cx, cy = poly.centroid.x, poly.centroid.y
+            vp = G.get("valid_px")
+            if vp and not (vp[0] <= cx <= vp[2] and vp[1] <= cy <= vp[3]):
+                continue
+            if G.get("valid_poly_px") and not Polygon(G["valid_poly_px"]).contains(poly.centroid):
+                continue
+            T, zone = transform_for(cx, cy)
+            if T is None:
+                continue
+            ext = W.apply(T, np.asarray(poly.exterior.coords))
+            hw = [W.apply(T, np.asarray(h.coords)) for h in poly.interiors]
+            feats.append({"id": f"{key}_{cls[0]}{i + 1}", "cls": cls, "zone": zone, "px_centroid": [round(cx, 1), round(cy, 1)],
+                          "px_ring": np.round(np.asarray(poly.exterior.coords), 1).tolist(), "area_m2": round(float(Polygon(ext, hw).area), 1),
+                          "ring_utm": np.round(ext, 2).tolist(), "holes_utm": [np.round(h, 2).tolist() for h in hw]})
+    json.dump(feats, open(INTERIM / f"{key}.json", "w"))
+    log(key, len(feats), "footprints")
+
+
+def hsv_of(key):
+    import cv2
+    G = json.load(open(INTERIM / f"{key}.M.json"))
+    rgb = np.asarray(Image.open(G["img"]).convert("RGB"))
+    return G, rgb, cv2.cvtColor(cv2.medianBlur(rgb, 3), cv2.COLOR_RGB2HSV).astype(int)
+
+
+def reclass(key):
+    """brown 'fire proof construction' fills (dark ochre, hue 18-23) fall inside the waterfront tool's yellow class on
+    the vol. 2 / 1950 scans (yellow frame is hue 25-31): split them off by the median hue inside the footprint."""
+    import cv2
+    from PIL import ImageDraw
+    p = INTERIM / f"{key}.json"
+    F = json.load(open(p))
+    G, rgb, hsv = hsv_of(key)
+    n = 0
+    for f in F:
+        if f["cls"] != "frame":
+            continue
+        m = Image.new("L", (rgb.shape[1], rgb.shape[0]), 0)
+        ImageDraw.Draw(m).polygon([tuple(q) for q in f["px_ring"]], fill=1)
+        m = cv2.erode(np.asarray(m, np.uint8), np.ones((5, 5))).astype(bool)
+        if m.sum() < 15:
+            continue
+        h, s = np.median(hsv[m][:, 0]), np.median(hsv[m][:, 1])
+        if h <= 23 and s >= 90:
+            f["cls"] = "fireproof"
+            n += 1
+    json.dump(F, open(p, "w"))
+    if n:
+        log(key, n, "frame -> fireproof (brown) by hue")
+
+
+def extract_regions(key):
+    """second pass for the 1950 paste-over sheets: the colour classes miss faded fills on the correction slips, so take
+    every region enclosed by drawn lines, classify it by its median colour (pink brick, blue concrete, brown fireproof,
+    yellow frame, grey iron; paper-coloured = no building) and add those not already found. ids <key>_r<n>."""
+    import cv2
+    from shapely.geometry import Polygon
+    G, rgb, hsv = hsv_of(key)
+    Hh, S, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(int)
+    pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
+    pS, pV = int(np.median(S[pm])), int(np.median(V[pm]))
+    dark = gray < min(125, pV - 55)
+    walls = ndi.binary_dilation(dark, iterations=1)
+    lab, n = ndi.label(~walls)
+    sizes = ndi.sum(np.ones_like(lab), lab, range(1, n + 1))
+    objs = ndi.find_objects(lab)
+    have = [Polygon(f["px_ring"]).buffer(0) for f in json.load(open(INTERIM / f"{key}.json"))]
+    from shapely.strtree import STRtree
+    tree = STRtree(have) if have else None
+    M = np.array(G["M"]); blocks = G.get("blocks", []); zones_only = G.get("zones_only", False)
+    vp = G.get("valid_px")
+    out = []
+    H_, W_ = lab.shape
+    for i in range(n):
+        if sizes[i] < 150 or sizes[i] > 120000:
+            continue
+        sl = objs[i]
+        if sl[0].start < 12 or sl[1].start < 12 or sl[0].stop > H_ - 12 or sl[1].stop > W_ - 12:
+            continue
+        sub = ndi.binary_fill_holes(lab[sl] == i + 1)
+        hh, ww = sub.shape
+        if min(hh, ww) < 9 or ndi.distance_transform_edt(np.pad(sub, 1)).max() < 4.5:
+            continue
+        pix = hsv[sl][lab[sl] == i + 1]
+        h, s, v = np.median(pix[:, 0]), np.median(pix[:, 1]), np.median(pix[:, 2])
+        if (h >= 160 or h <= 8) and s >= max(38, pS - 5):
+            cls = "brick"
+        elif 55 <= h <= 130 and s >= 14 and v < pV + 5:
+            cls = "stone"
+        elif 17 <= h <= 23 and s >= max(85, pS + 35):
+            cls = "fireproof"
+        elif 24 <= h <= 34 and s >= max(95, pS + 45):
+            cls = "frame"
+        elif s <= pS + 2 and v <= pV - 28 and v >= 95:
+            cls = "iron"
+        else:
+            continue
+        ys, xs = np.nonzero(sub)
+        hull = cv2.convexHull(np.column_stack([xs, ys]).astype(np.int32))
+        solid = sub.sum() / max(cv2.contourArea(hull), 1)
+        if solid < 0.6 or (cls == "iron" and (solid < 0.8 or sub.sum() < 400)):
+            continue
+        cs, _ = cv2.findContours(np.pad(sub, 2).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        c = max(cs, key=cv2.contourArea)[:, 0, :].astype(float)
+        c[:, 0] += sl[1].start - 2; c[:, 1] += sl[0].start - 2
+        poly = Polygon(c).buffer(1.5, join_style=2).simplify(1.0)  # half the wall line back
+        if poly.geom_type != "Polygon" or poly.area < 120:
+            continue
+        if tree is not None:
+            hit = sum(have[j].intersection(poly).area for j in tree.query(poly))
+            if hit > 0.3 * poly.area:
+                continue
+        cx, cy = poly.centroid.x, poly.centroid.y
+        if vp and not (vp[0] <= cx <= vp[2] and vp[1] <= cy <= vp[3]):
+            continue
+        best, bd = None, 1e9
+        for b in blocks:
+            x0, y0, x1, y1 = b["rect_px"]
+            d = max(x0 - cx, 0, cx - x1) + max(y0 - cy, 0, cy - y1)
+            if d < bd:
+                best, bd = b, d
+        if best is not None and bd <= 40:
+            T, zone = np.array(best["M"]), best["name"]
+        elif zones_only:
+            continue
+        else:
+            T, zone = M, "sheet"
+        ext = W.apply(T, np.asarray(poly.exterior.coords))
+        out.append({"id": f"{key}_r{i + 1}", "cls": cls, "zone": zone, "px_centroid": [round(cx, 1), round(cy, 1)],
+                    "px_ring": np.round(np.asarray(poly.exterior.coords), 1).tolist(), "area_m2": round(float(Polygon(ext).area), 1),
+                    "ring_utm": np.round(ext, 2).tolist(), "holes_utm": [], "method": "region"})
+    F = json.load(open(INTERIM / f"{key}.json")) + out
+    json.dump(F, open(INTERIM / f"{key}.json", "w"))
+    log(key, len(out), "region footprints added")
+
+
 # ----------------------------------------------------------------------------------------------- driver
 def all_keys():
     return list(dict.fromkeys(k for ks in AREAS.values() for k in ks))
@@ -602,9 +978,9 @@ if __name__ == "__main__":
     if stage == "mosaic":
         for k in keys:
             print(corner_mosaic(k))
-    if stage == "freeze":
+    if stage == "refine":
         for k in keys:
-            freeze(k)
+            refine(k)
     if stage in ("all", "extract"):
         for k in keys:
             extract(k)

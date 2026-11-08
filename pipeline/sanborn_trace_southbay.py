@@ -401,6 +401,12 @@ def world_of(c):
          points, intersected, and offset by half of each street's width (ft) toward the block (sa / sb as in the
          industrial tool).
     xl:  crossing of two straight centreline fits (centre of the corridor)."""
+    if "shift" in c:  # a corner across a street from a known one: moved along a street's direction by ft
+        ft, street, sgn = c["shift"]
+        p, lab = world_of({k: v for k, v in c.items() if k != "shift"})
+        d = street_line(street, p, c.get("shift_R", 450))[1]
+        d = d if d[1] > 0 else -d
+        return p + sgn * ft * FT * d, f"{lab}, shifted {ft} ft along {street}"
     if "pc" in c:
         p, lab, offs = property_corner(c["pc"][0], c["pc"][1], c["q"], c.get("near"), tuple(c.get("reach", (18, 75))), c.get("R", 150),
                                        c.get("wa"), c.get("wb"), c.get("ma"), c.get("mb"))
@@ -483,14 +489,64 @@ def compact(key, spec):
             e.update(c[5])
         return e
     cfg = {k: v for k, v in spec.items() if k not in ("blocks", "points")}
+    dropped = []
+
+    def ok(e):  # control whose world position cannot be computed (street gone, no parcel block) is listed, not used
+        try:
+            world_of(e)
+            return True
+        except Exception as ex:
+            dropped.append(dict(e, reason=str(ex)))
+            return False
     if "blocks" in spec:
-        cfg["blocks"] = [{"name": n, "corners": [entry(c) for c in cs]} for n, cs in spec["blocks"].items()]
+        cfg["blocks"] = [{"name": n, "corners": [e for e in (entry(c) for c in (cs["corners"] if isinstance(cs, dict) else cs)) if ok(e)],
+                          **({"zone_px": cs["zone_px"]} if isinstance(cs, dict) and "zone_px" in cs else {})}
+                         for n, cs in spec["blocks"].items()]
     if "points" in spec:
-        cfg["points"] = [entry(c) for c in spec["points"]]
+        cfg["points"] = [e for e in (entry(c) for c in spec["points"]) if ok(e)]
+    if dropped:
+        cfg["unresolved"] = dropped
+        log(key, len(dropped), "control entries without a world position:", "; ".join(d["reason"] for d in dropped))
     cfg.setdefault("pct", 25)
     CONTROL.mkdir(parents=True, exist_ok=True)
     json.dump(cfg, open(CONTROL / f"{key}.json", "w"), indent=1)
     return cfg
+
+
+def fit(px, w, lines=(), prior=None):
+    """the waterfront tool's similarity fit (points, point-on-line constraints, scale prior) plus an optional rotation
+    prior: prior = [scale, sigma_scale] or [scale, sigma_scale, rotation_deg, sigma_deg]. The 1915 San José plates are
+    drawn with the street grid axis-aligned and scanned at one resolution, so well-controlled blocks share a scale of
+    ~0.2015 m/px and a rotation of ~-58.7 deg; sheets whose control is clustered or weak use both priors."""
+    from scipy.optimize import least_squares
+    px, w = np.asarray(px, float).reshape(-1, 2), np.asarray(w, float).reshape(-1, 2)
+
+    def resid(v):
+        M = W.M_of(v)
+        r = list((W.apply(M, px) - w).ravel()) if len(px) else []
+        r += [float(n @ (W.apply(M, [q])[0] - p0)) for q, p0, n in lines]
+        if prior:
+            r.append((v[0] - prior[0]) / prior[1])
+            if len(prior) >= 4:
+                d = (math.degrees(v[1]) - prior[2] + 180) % 360 - 180
+                r.append(d / prior[3])
+        return r
+    s0 = prior[0] if prior else 0.2
+    c0 = w.mean(axis=0) if len(w) else lines[0][1]
+    pc = px.mean(axis=0) if len(px) else np.mean([q for q, _, _ in lines], axis=0)
+    best = None
+    for th in np.radians(np.arange(-180, 180, 15)):
+        t = c0 - W.apply(W.M_of([s0, th, 0, 0]), [pc])[0]
+        sol = least_squares(resid, [s0, th, t[0], t[1]])
+        if best is None or sol.cost < best.cost:
+            best = sol
+    M = W.M_of(best.x)
+    res = [float(np.hypot(*(W.apply(M, [p])[0] - q))) for p, q in zip(px, w)]
+    res += [abs(float(n @ (W.apply(M, [q])[0] - p0))) for q, p0, n in lines]
+    return M, np.array(res)
+
+
+W.fit = fit
 
 
 # ----------------------------------------------------------------------------------------------- footprints

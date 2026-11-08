@@ -1,0 +1,94 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.201,
+  0.0015,
+  -58.7,
+  0.6
+ ],
+ "blocks": [
+  {
+   "name": "17 SantaClara-SanFernando/3rd-2nd",
+   "corners": [
+    {
+     "pc": [
+      "3rd Street",
+      "Santa Clara Street"
+     ],
+     "q": "SW",
+     "x": 304.0,
+     "y": 290.0
+    },
+    {
+     "pc": [
+      "3rd Street",
+      "San Fernando Street"
+     ],
+     "q": "NW",
+     "x": 1360.0,
+     "y": 290.0
+    },
+    {
+     "pc": [
+      "2nd Street",
+      "Santa Clara Street"
+     ],
+     "q": "SE",
+     "x": 304.0,
+     "y": 710.0
+    },
+    {
+     "pc": [
+      "2nd Street",
+      "San Fernando Street"
+     ],
+     "q": "NE",
+     "x": 1360.0,
+     "y": 710.0
+    }
+   ]
+  },
+  {
+   "name": "19 SantaClara-SanFernando/2nd-1st",
+   "corners": [
+    {
+     "pc": [
+      "2nd Street",
+      "Santa Clara Street"
+     ],
+     "q": "SW",
+     "x": 296.0,
+     "y": 1210.0
+    },
+    {
+     "pc": [
+      "2nd Street",
+      "San Fernando Street"
+     ],
+     "q": "NW",
+     "x": 1336.0,
+     "y": 1210.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "Santa Clara Street"
+     ],
+     "q": "SE",
+     "x": 296.0,
+     "y": 1630.0
+    },
+    {
+     "pc": [
+      "1st Street",
+      "San Fernando Street"
+     ],
+     "q": "NE",
+     "x": 1336.0,
+     "y": 1630.0
+    }
+   ]
+  }
+ ],
+ "pct": 25
+}
