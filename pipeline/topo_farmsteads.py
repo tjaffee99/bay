@@ -61,7 +61,7 @@ OUT_DIR = MANUAL / "farmsteads"
 
 TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
 LINE_BAND = 0.10        # mm: a line passing this close to a blob's centre runs through it
-DETECTOR_VERSION = 6
+DETECTOR_VERSION = 7
 EARLY_COMPATIBLE = set()   # versions whose early-sheet results are still valid
 
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
