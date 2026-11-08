@@ -319,35 +319,23 @@ def _valley_threshold(areas_mm2, lo=0.05, hi=0.16, default=0.09):
 
 
 def urban_tint(img, inside, ppm):
-    """Red/pink stipple of built-up areas on the 1940s-50s maps (only landmark buildings
-    are drawn inside it). -> (mask at 1/8 resolution, outer rings in full-res pixels) or None."""
+    """Red urban-area tint of the 1940s-50s maps (a pink background with red dots; only
+    landmark buildings are drawn inside it). Contours are orange-brown and thin, red
+    highways narrow, so a pink majority over ~2 mm marks the tint.
+    -> (mask at 1/4 resolution, outer rings in full-res pixels) or None."""
     import cv2
-    H, W, _ = img.shape
-    dots = np.zeros((H, W), np.uint8)
-    for r in range(0, H, 2048):
-        blk = img[r:r + 2048].astype(np.int16)
-        dots[r:r + 2048] = ((blk[:, :, 0] - blk[:, :, 1] > 30) & (blk[:, :, 0] > 150))
-    dots &= inside
-    n, lab, st, _ = cv2.connectedComponentsWithStats(dots, connectivity=8)
-    small = (st[:, 4] <= max(30, 0.045 * ppm ** 2)) & (np.maximum(st[:, 2], st[:, 3]) <= max(7, 0.27 * ppm))
-    small[0] = False
-    del dots
-    d = np.zeros((H // 8 + 1, W // 8 + 1), np.float32)
-    for r in range(0, H, 2048):
-        blk = small[lab[r:r + 2048]].astype(np.float32)
-        hh = blk.shape[0] // 8 * 8
-        ww = W // 8 * 8
-        d[r // 8:r // 8 + hh // 8, :ww // 8] = blk[:hh, :ww].reshape(hh // 8, 8, ww // 8, 8).mean((1, 3))
-    del lab
-    k = max(3, int(round(2.0 * ppm / 8)) | 1)
-    dens = cv2.blur(d, (k, k))
-    m = (dens > 0.08).astype(np.uint8)
-    if m.sum() < (2 * ppm / 8) ** 2:
-        return None
+    sm = img[::4, ::4].astype(np.int16)
+    R, G, B = sm[:, :, 0], sm[:, :, 1], sm[:, :, 2]
+    pink = ((R - G > 22) & (G - B < 18) & (R > 190) & (inside[::4, ::4] > 0)).astype(np.float32)
+    del sm, R, G, B
+    k = max(3, int(round(2.0 * ppm / 4)) | 1)
+    m = (cv2.blur(pink, (k, k)) > 0.35).astype(np.uint8)
     kk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k))
-    m = cv2.morphologyEx(cv2.morphologyEx(m, cv2.MORPH_CLOSE, kk), cv2.MORPH_OPEN, kk)
+    m = cv2.morphologyEx(cv2.morphologyEx(m, cv2.MORPH_OPEN, kk), cv2.MORPH_CLOSE, kk)
+    if m.sum() < (3 * ppm / 4) ** 2:
+        return None
     cnts, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    rings = [(c[:, 0, :] * 8 + 4).tolist() for c in cnts if cv2.contourArea(c) >= (3 * ppm / 8) ** 2]
+    rings = [(c[:, 0, :] * 4 + 2).tolist() for c in cnts if cv2.contourArea(c) >= (4 * ppm / 4) ** 2]
     return m.astype(bool), rings
 
 
@@ -670,8 +658,8 @@ def detect_symbols(img, g, debug=None):
             reasons.append("dashline")
         if r["dark"] > 0.45 * paper:
             reasons.append("faint")
-        if urban_px is not None and urban_px[0][min(int(r["y"]) // 8, urban_px[0].shape[0] - 1),
-                                                min(int(r["x"]) // 8, urban_px[0].shape[1] - 1)]:
+        if urban_px is not None and urban_px[0][min(int(r["y"]) // 4, urban_px[0].shape[0] - 1),
+                                                min(int(r["x"]) // 4, urban_px[0].shape[1] - 1)]:
             reasons.append("urban")           # red urban tint: only landmark buildings shown
         r["reject"] = reasons
         s_area = math.exp(-abs(math.log(r["area_mm2"] / (a_typ_open if r["open"] else a_typ))) / 0.8)
