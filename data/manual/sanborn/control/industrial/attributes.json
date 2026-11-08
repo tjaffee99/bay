@@ -1,0 +1,275 @@
+{
+"016_0151_b3": {
+"use": "warehouse",
+"name": "Terminal Ware Ho. (South End Warehouse Co.)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0151_f206": {
+"use": "factory",
+"name": "San Francisco Stove Works",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0159_b4": {
+"use": "warehouse",
+"name": "W. & J. Sloane (furniture warehouse)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0159_b7": {
+"use": "warehouse",
+"name": "C. F. Weber & Co. / California Steam & Plumbing Supply Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0157_f82": {
+"use": "warehouse",
+"name": "Sunset Publishing House / Overland Freight Transfer Co. (one fill)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0157_f202": {
+"use": "factory",
+"name": "J. P. Lorden Mill Co. planing mill",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0158_f165": {
+"use": "factory",
+"name": "California Mill Co. planing mill",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0158_b2": {
+"use": "church",
+"name": "St. Rose Catholic Church",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0167_f181": {
+"use": "warehouse",
+"name": "John Deere Plow Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0167_b5": {
+"use": "warehouse",
+"name": "Buffalo Brewing Co. beer warehouse",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0167_b15": {
+"use": "warehouse",
+"name": "Holbrook, Merrill & Stetson",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0167_b2": {
+"use": "warehouse",
+"name": "Nathan Dohrmann Co. (crockery warehouse)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0167_f66": {
+"use": "warehouse",
+"name": "Western Meat Co. hide & pelt warehouse",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0175_f54": {
+"use": "factory",
+"name": "Western Meat Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0175_f108": {
+"use": "warehouse",
+"name": "W. W. Montague & Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0175_f237": {
+"use": "factory",
+"name": "American Can Co.'s can factory",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0175_f133": {
+"use": "factory",
+"name": "California Saw Works",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0156_f110": {
+"use": "factory",
+"name": "Judson Mfg. Co. iron & steel works",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0156_f91": {
+"use": "school",
+"name": "Lincoln School",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0156_f62": {
+"use": "other",
+"name": "Southern Police Station, Company B (with adjoining stores)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0166_f55": {
+"use": "warehouse",
+"name": "White Bros. hardwood lumber",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0166_b7": {
+"use": "warehouse",
+"name": "Western Wool Ware Ho. Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0165_f201": {
+"use": "factory",
+"name": "Empire Planing Mill",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0172_f215": {
+"use": "factory",
+"name": "California Artistic Metal & Wire Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0174_f211": {
+"use": "factory",
+"name": "California Cooperage Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0143_s1": {
+"use": "other",
+"name": "Pump Station No. 1 (auxiliary high-pressure fire system)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0143_b14": {
+"use": "warehouse",
+"name": "B. Arnhold & Co. wine storage",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0143_f100": {
+"use": "warehouse",
+"name": "California Wine Association",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0144_f72": {
+"use": "factory",
+"name": "Pope & Talbot's planing mill",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0135_b2": {
+"use": "warehouse",
+"name": "Oriental Ware Ho. Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0135_b3": {
+"use": "warehouse",
+"name": "California Ware Ho. Co. / U.S. Bonded Ware Ho. / American Radiator Co. Ware Ho. No. 20 / Rosenberg Bros. & Co. (block 3789, one fill)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0136_f69": {
+"use": "warehouse",
+"name": "Pacific Mail S.S. Co. warehouses / repair shop",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0115_b3": {
+"use": "warehouse",
+"name": "Sherman, Clay & Co.'s Ware Ho. / U.S. Bonded Ware Ho. / Danforth Ware Ho. Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"016_0115_f145": {
+"use": "warehouse",
+"name": "Santa Fe R.R. Ware Ho.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"015_0010_s1": {
+"use": "warehouse",
+"name": "Wellman, Peck & Co. wholesale grocers",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"022_0810_f264": {
+"use": "factory",
+"name": "South San Francisco Packing & Provision Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"022_0810_f61": {
+"use": "factory",
+"name": "wholesale butchers' slaughterhouses along Railroad Ave (Miller & Lux and others; one fill)",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"022_0812_f111": {
+"use": "factory",
+"name": "Hawaiian Fertilizer Co.",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+},
+"022_0812_f170": {
+"use": "factory",
+"name": "Miller & Lux",
+"src": "default",
+"note": "name / use read from the map label; storeys not read",
+"checked": "label position verified on a crop of the 25 % scan"
+}
+}
