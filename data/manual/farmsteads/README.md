@@ -17,7 +17,7 @@ sources: USGS Historical Topographic Map Collection (public domain, `SOURCES.md`
 | `topo_orchards.geojson` | orchard and vineyard extents (Polygons) from the green vegetation overprint of the 1939–1956 sheets |
 
 Farmstead properties: `map_year` (survey year from the USGS metadata, else the edition
-year printed on the map), `edition_year`, `survey_year`, `photo_year` (aerial photographs
+year printed on the map), `photo_year` (aerial photographs
 the 1940s–50s sheets were compiled from — usually 3–5 years before `map_year`), `quad`,
 `scale`, `n_buildings` (symbols in the group, the farmstead's point included), `n_open`
 (open squares = barns / sheds on the 1940s–50s maps), `has_dwelling` (false for a group of
