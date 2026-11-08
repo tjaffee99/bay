@@ -44,7 +44,8 @@ def baylands(year):
 # name in OSM/Overture, year the reservoir first held water (dam completed), confidence, url, note
 RESERVOIRS = [
     # San Francisco (Golden Gate Park) - artificial lakes dug in the dunes
-    ("Stow Lake", 1893, "high", W + "Stow_Lake", "Dug 1893 around Strawberry Hill (Golden Gate Park)."),
+    ("Blue Heron Lake", 1893, "high", W + "Stow_Lake",
+     "Stow Lake (renamed Blue Heron Lake in 2023), dug 1893 around Strawberry Hill in Golden Gate Park; the hill stays land."),
     ("Spreckels Lake", 1904, "high", W + "Spreckels_Lake", "Model-yacht lake, Golden Gate Park, 1904."),
     # San Mateo (Spring Valley Water Co. / SFPUC)
     ("Pilarcitos Lake", 1866, "high", W + "Pilarcitos_Lake", "Spring Valley Water Works dam completed 1866; first Peninsula reservoir."),
@@ -166,17 +167,6 @@ ESTUARY = [
               "1873-76, dug 1889-92 and 1901-02; opened Aug-Sept 1902 ('Alameda Now an Island'). Same dates as "
               "fill_zones.csv al_tidal_canal (kind excavated).",
          source_url="https://www.hmdb.org/m.asp?m=218625"),
-    dict(area_id="oakland_outer_harbor", name="Oakland Outer Harbor basin / channel", cover="shallow_water",
-         year_start=1927, year_end=9999, confidence="low",
-         ring=P(-122.345, 37.795, -122.290, 37.795, -122.290, 37.825, -122.345, 37.825),
-         note="Tidal flats north of the estuary mouth dredged for the Outer Harbor terminals: city work from c.1910, Port "
-              "of Oakland (1927) channel and turning basin late 1920s; deepened since (container port 1962-). Year LOW.",
-         source_url=W + "Port_of_Oakland"),
-    dict(area_id="oakland_middle_harbor", name="Oakland Middle Harbor", cover="shallow_water", year_start=1941,
-         year_end=9999, confidence="medium",
-         ring=P(-122.335, 37.794, -122.300, 37.794, -122.300, 37.806, -122.335, 37.806),
-         note="Dredged to 50 ft for the Naval Supply Depot (fill_zones al_naval_supply_center_middle_harbor) 1940-41.",
-         source_url=W + "Naval_Supply_Center_Oakland"),
     dict(area_id="richmond_inner_harbor", name="Richmond Inner Harbor and Santa Fe Channel", cover="shallow_water",
          year_start=1920, year_end=9999, confidence="low",
          ring=P(-122.375, 37.895, -122.315, 37.895, -122.315, 37.925, -122.375, 37.925),
@@ -184,11 +174,6 @@ ESTUARY = [
               "bonds and federal channel 1912-1920s, deep-water port 1929, Kaiser shipyard basins 1940-42. Year LOW "
               "(midpoint of 1912-29).",
          source_url=W + "Richmond_Inner_Harbor"),
-    dict(area_id="redwood_city_port_channel", name="Redwood Creek / Port of Redwood City channel", cover="shallow_water",
-         year_start=1937, year_end=9999, confidence="medium",
-         ring=P(-122.235, 37.495, -122.195, 37.495, -122.195, 37.525, -122.235, 37.525),
-         note="Redwood Creek widened and dredged for the deep-water Port of Redwood City (opened 1937).",
-         source_url=W + "Port_of_Redwood_City"),
 ]
 
 
@@ -295,6 +280,8 @@ def salt_rows(b18, b98):
                 near = upl_m.buffer(src[3])
                 gm = gm.intersection(near) if src[2] == "near_upland" else gm.difference(near)
                 geom = gpd.GeoSeries([gm], crs=M).to_crs(4326).iloc[0]
+        # join ponds across their levees (one polygon per complex instead of hundreds of ponds)
+        geom = gpd.GeoSeries([geom], crs=4326).to_crs(M).buffer(30).buffer(-30).to_crs(4326).iloc[0]
         rows.append(dict(a, geometry=geom))
     return rows
 
