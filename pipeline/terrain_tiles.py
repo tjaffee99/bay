@@ -311,7 +311,22 @@ def histories(name, g, d):
     # (refined by data/manual/landscape/dunes.geojson when present)
     sf_dunes |= ~in_sf & (lat > 37.662) & (lat < 37.712) & (lon < -122.462 - (37.712 - lat) * 0.25) & (elev < 110)
     N[in_sf & (tree | (wc == 50) | (wc == 40))] = SCRUB
-    N[sf_dunes & ~(wc == 60) & ~water_now] = DUNES
+    dpath = MANUAL / "landscape" / "dunes.geojson"
+    if dpath.exists():
+        dn = gpd.read_file(dpath).to_crs(3857)
+        mob = rasterize_on(g, [(gm, 1) for gm, k in zip(dn.geometry, dn.kind) if k == "mobile_dune" and gm is not None],
+                           fill=0, dtype="uint8").astype(bool)
+        stab = rasterize_on(g, [(gm, 1) for gm, k in zip(dn.geometry, dn.kind) if k == "stabilized_dune" and gm is not None],
+                            fill=0, dtype="uint8").astype(bool)
+        slack = rasterize_on(g, [(gm, 1) for gm, k in zip(dn.geometry, dn.kind) if k == "dune_slack" and gm is not None],
+                             fill=0, dtype="uint8").astype(bool)
+        peninsula = (lon < -122.37) & (lat > 37.6) & (lat < 37.82)
+        N[mob & ~water_now] = DUNES
+        N[stab & peninsula & ~water_now & ~mob] = SCRUB     # dune scrub on the SF / Daly City sand
+        N[slack & ~water_now] = WETLAND
+        log(f"terrain {name}: dunes from the mapped extent: {int(mob.sum())} mobile, {int(stab.sum())} stabilized cells")
+    else:
+        N[sf_dunes & ~(wc == 60) & ~water_now] = DUNES
     lc_rows = polygon_table(TABLES / "landcover_history.csv", g)
     # researched open spaces inside the city (parade grounds, plazas...) override the
     # built-up snapshot outlines: their own rows say when they were grass / paved / lawn
@@ -457,6 +472,20 @@ def histories(name, g, d):
             excavated.append((m, y))
         elif k == "restored":
             restored.append((m, y))
+    # researched salt-pond / diking years by complex (data/manual/landscape/water_history.csv)
+    wh_rows = polygon_table(MANUAL / "landscape" / "water_history.csv", g)
+    water_rows = []
+    for r, poly in wh_rows:
+        ys = pd.to_numeric(r.year_start, errors="coerce")
+        if not np.isfinite(ys):
+            continue
+        m = raster_mask(g, poly)
+        cov = str(r.cover).strip()
+        if cov in ("salt_pond", "diked"):
+            sel = m & (salt | diked)
+            dike_year[sel] = ys + 4.0 * h[sel]
+        elif cov in ("lake", "shallow_water"):
+            water_rows.append((m, cov, float(ys)))
     event(salt, SALTPOND, dike_year)
     event(diked, DIKED, dike_year)
 
@@ -515,7 +544,20 @@ def histories(name, g, d):
     became = np.isin(N, [MARSH, FLAT]) & water_now & ~salt & ~diked
     broad = ndimage.binary_opening(became, iterations=2)
     N[became & ~broad] = SHALLOW
-    event(broad, SHALLOW, 1870.0 + 20.0 * h)
+    researched_water = np.zeros((rows, cols), bool)
+    for m, cov, ys in water_rows:
+        mm = m & water_now
+        if not mm.any():
+            continue
+        researched_water |= mm
+        if cov == "lake":
+            # dammed lakes / reservoirs: the land (or marsh) it flooded before the dam year
+            dry = mm & np.isin(N, [DEEP, SHALLOW, RESERVOIR])
+            N[dry & (elev > 2)] = GRASS
+            event(mm, RESERVOIR, ys + 0.5 * h)
+        else:
+            event(mm & ~np.isin(N, [DEEP, SHALLOW]), SHALLOW, ys + 2.0 * h)
+    event(broad & ~researched_water, SHALLOW, 1870.0 + 20.0 * h)
 
     # ---- agriculture (outside SF)
     flat = slope < 6
@@ -526,9 +568,75 @@ def histories(name, g, d):
     ag_candidates = farmable & (farm_now | (urban & ~early_urban))
     scv = (lon > SANTA_CLARA_VALLEY[0]) & (lon < SANTA_CLARA_VALLEY[2]) & (lat > SANTA_CLARA_VALLEY[1]) & (lat < SANTA_CLARA_VALLEY[3])
     wine = (lon > WINE_VALLEYS[0]) & (lon < WINE_VALLEYS[2]) & (lat > WINE_VALLEYS[1]) & (lat < WINE_VALLEYS[3])
-    event(ag_candidates, FARM, 1852.0 + 10 * h)
-    event(ag_candidates & scv, ORCHARD, 1878.0 + 15 * h)
-    event(ag_candidates & wine & farm_now & (h < 0.6), VINEYARD, 1870.0 + 40 * h)
+    ag_path = MANUAL / "landscape" / "agriculture.geojson"
+    if ag_path.exists():
+        # researched farm history (data/manual/landscape/agriculture.geojson): district eras
+        # (grazing -> wheat / hay / dairies / vineyards -> orchards), Broek's 1931 landscape map
+        # and the 1940s-50s topo orchards; each cell keeps its first farm era and its last one
+        # before the city (the terrain holds four changes per cell)
+        from scipy.special import ndtr
+        AGK = {"grain": FARM, "hay": FARM, "vegetables": FARM, "nursery": FARM, "farm_mixed": FARM,
+               "orchard": ORCHARD, "vineyard": VINEYARD, "pasture_dairy": PASTURE}
+        PRIO = {"district_era": 0, "broek_1931": 1, "topo_1940s": 2, "special": 3}
+
+        def blob(seed, sigma):
+            r = np.random.default_rng(seed).standard_normal((rows, cols)).astype(np.float32)
+            b = ndimage.gaussian_filter(r, sigma)
+            return ndtr(b / (b.std() + 1e-9)).astype(np.float32)
+        b_share, b_orch, b_year = blob(1851, 4.0), blob(1885, 3.0), blob(1869, 6.0)
+        ag = gpd.read_file(ag_path).to_crs(3857)
+        ag = ag[ag.geometry.notna()].copy()
+        ag["prio"] = ag["layer"].map(PRIO).fillna(0)
+        ag = ag.sort_values(["year_start", "prio"]).reset_index(drop=True)
+        ag_ok = ~water_now & (slope < 15) & (elev < 500) & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH, ROCK, BEACH]) & ~in_sf
+        first_c = np.full((rows, cols), 255, np.uint8)
+        first_y = np.full((rows, cols), np.nan, np.float32)
+        last_c = np.full((rows, cols), 255, np.uint8)
+        last_y = np.full((rows, cols), np.nan, np.float32)
+        last_p = np.full((rows, cols), -1, np.int8)
+        t = Affine(g["res"], 0, g["X0"] - g["res"] / 2, 0, -g["res"], g["Y0"] + g["res"] / 2)
+        for r in ag.itertuples():
+            c = AGK.get(str(r.kind))
+            ys = pd.to_numeric(r.year_start, errors="coerce")
+            if c is None or not np.isfinite(ys):
+                continue
+            yf = pd.to_numeric(r.year_full, errors="coerce")
+            yf = yf if np.isfinite(yf) else ys + 5
+            # rasterize only the feature's window
+            x0, y0b, x1, y1b = r.geometry.bounds
+            c0, c1 = max(int((x0 - g["X0"]) / g["res"]) - 1, 0), min(int((x1 - g["X0"]) / g["res"]) + 2, cols)
+            r0, r1 = max(int((g["Y0"] - y1b) / g["res"]) - 1, 0), min(int((g["Y0"] - y0b) / g["res"]) + 2, rows)
+            if c0 >= c1 or r0 >= r1:
+                continue
+            tw = Affine(g["res"], 0, g["X0"] - g["res"] / 2 + c0 * g["res"], 0, -g["res"], g["Y0"] + g["res"] / 2 - r0 * g["res"])
+            mw = features.rasterize([(r.geometry, 1)], out_shape=(r1 - r0, c1 - c0), transform=tw, fill=0, dtype="uint8").astype(bool)
+            sl = (slice(r0, r1), slice(c0, c1))
+            share = pd.to_numeric(r.share, errors="coerce")
+            share = 1.0 if not np.isfinite(share) else float(share)
+            m = mw & ag_ok[sl] & (b_share[sl] < share)
+            if not m.any():
+                continue
+            cc = np.full(m.shape, c, np.uint8)
+            osh = pd.to_numeric(getattr(r, "orchard_share", np.nan), errors="coerce")
+            if str(r.kind) == "farm_mixed" and np.isfinite(osh):
+                cc = np.where(b_orch[sl] < osh, ORCHARD, FARM).astype(np.uint8)
+            yy = (ys + (yf - ys) * b_year[sl]).astype(np.float32)
+            fy, fcv = first_y[sl], first_c[sl]
+            unset = m & np.isnan(fy)
+            fy[unset], fcv[unset] = yy[unset], cc[unset]
+            ly, lcv, lp = last_y[sl], last_c[sl], last_p[sl]
+            later = m & ~unset & (np.isnan(ly) | (yy >= ly - 0.5) | (r.prio > lp))
+            ly[later], lcv[later], lp[later] = yy[later], cc[later], r.prio
+        has_first = np.isfinite(first_y)
+        event(has_first, first_c, first_y)
+        has_last = np.isfinite(last_y) & (last_c != first_c) & (last_y > first_y)
+        event(has_last, last_c, last_y)
+        log(f"terrain {name}: farm history from researched eras: {int(has_first.sum())} cells, "
+            f"{int(has_last.sum())} with a later farm era")
+    else:
+        event(ag_candidates, FARM, 1852.0 + 10 * h)
+        event(ag_candidates & scv, ORCHARD, 1878.0 + 15 * h)
+        event(ag_candidates & wine & farm_now & (h < 0.6), VINEYARD, 1870.0 + 40 * h)
     for r, poly in lc_rows:
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
         ys = pd.to_numeric(r.get("year_start"), errors="coerce")

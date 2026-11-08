@@ -138,19 +138,40 @@ export function landmarkInfo(set: LandmarkSet, info: PickingInfo) {
 /** Per building: the construction-start year of the landmark standing on it (NaN if none).
  *  Older buildings on the site stand until then; the footprint of the landmark itself
  *  (built at or after that year) is hidden. */
-export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: number): Float32Array {
+export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: number, heights?: Float32Array): Float32Array {
   const mask = new Float32Array(n).fill(NaN);
+  // tall slivers hugging a tower are parts of the same building (OSM maps towers as
+  // several building:parts; a 27 m² piece of Salesforce Tower's crown sits just outside
+  // the outline and stood alone as a 326 m needle): within ~12 m of the outline they go too
+  const TOL_X = 0.00015;
+  const TOL_Y = 0.00011;
   for (const r of set.replaced) {
     const from = LANDMARKS[r.idx].built[0];
     const [x0, y0, x1, y1] = r.bbox;
     for (let i = 0; i < n; i++) {
       const x = centroids[i * 2];
       const y = centroids[i * 2 + 1];
-      if (x < x0 || x > x1 || y < y0 || y > y1) continue;
-      if (pointInPolygon(x, y, r.poly)) mask[i] = Number.isNaN(mask[i]) ? from : Math.min(mask[i], from);
+      if (x < x0 - TOL_X || x > x1 + TOL_X || y < y0 - TOL_Y || y > y1 + TOL_Y) continue;
+      const tall = heights !== undefined && heights[i] > 60;
+      const hit = pointInPolygon(x, y, r.poly) || (tall && distToPolygonDeg(x, y, r.poly) < 1);
+      if (hit) mask[i] = Number.isNaN(mask[i]) ? from : Math.min(mask[i], from);
     }
   }
   return mask;
+}
+
+/** Distance from a point to a polygon's edges, in units of the ~12 m tolerance. */
+function distToPolygonDeg(x: number, y: number, poly: V2[]) {
+  let best = Infinity;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const ax = (x - poly[j][0]) / 0.00015;
+    const ay = (y - poly[j][1]) / 0.00011;
+    const bx = (poly[i][0] - poly[j][0]) / 0.00015;
+    const by = (poly[i][1] - poly[j][1]) / 0.00011;
+    const t = Math.max(0, Math.min(1, (ax * bx + ay * by) / (bx * bx + by * by || 1)));
+    best = Math.min(best, Math.hypot(ax - t * bx, ay - t * by));
+  }
+  return best;
 }
 
 function pointInPolygon(x: number, y: number, poly: V2[]) {

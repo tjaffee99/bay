@@ -421,3 +421,178 @@ route("ir_40", "San Francisco & San Mateo Electric Railway / United Railroads 40
                    "along the documented corridor - MEDIUM CONFIDENCE (the sheet also shows the SP and the county "
                    "road nearby).", geometry_confidence="medium"),
       ])
+
+# =====================================================================================
+# MARIN: North Pacific Coast (narrow gauge, 1874-75) / North Shore (1902) / Northwestern Pacific (1907)
+# and the San Francisco & North Pacific Tiburon line (1884)
+# =====================================================================================
+NPC = WIKI + "North_Pacific_Coast_Railroad"
+NPS_TB = "https://www.nps.gov/pore/learn/photosmultimedia/photogallery_thenandnow_tomalesbay.htm"
+SANS = "https://sananselmohistory.org/articles/trains-in-san-anselmo/"
+route("npc", "North Pacific Coast Railroad / North Shore Railroad / Northwestern Pacific (Marin)", "narrow_gauge", NPC, [
+    seg("Sausalito ferry terminal and waterfront yard", 1875.03, 1941.16,
+        topo("sf1899", (-122.4783, 37.8562), (-122.4830, 37.8585), (-122.4885, 37.8605), (-122.4945, 37.8635),
+             (-122.5007, 37.8669), corridor=120),
+        note="NPC ferry and train terminal at Sausalito (line built from Sausalito from March 1873, open to Tomales "
+             "1875-01-11); electric suburban trains from 1903; Sausalito ferries and electric service ended "
+             "1941-02-28 (freight continued; end of the Sausalito track not modelled). Geometry: USGS San "
+             "Francisco 1899 sheet.", source_url=NPS_TB, mode="rail"),
+    seg("Sausalito - Waldo Point - Manzanita - Mill Valley Junction (Almonte)", 1875.03, 1971.0,
+        rail((-122.5007, 37.8669), (-122.5106, 37.8763), (-122.5177, 37.8818), (-122.5243, 37.8871), snap=200),
+        note="Along the Richardson Bay shore (today's Mill Valley - Sausalito Path, OSM); electrified 1903 "
+             "(third rail); passenger service ended 1941-02-28; freight end ESTIMATED (1971).",
+        confidence="estimated", mode="rail"),
+    seg("Mill Valley Junction - Alto", 1884.1, 1971.0,
+        rail((-122.5243, 37.8871), (-122.5259, 37.8950), (-122.5270, 37.9018), (-122.5249, 37.9105), snap=200),
+        note="Built with the Corte Madera (Alto) tunnel; first train through the tunnel February 1884, the old "
+             "Strawberry Point / Alto Hill route abandoned April 1884 (not modelled). End ESTIMATED.",
+        confidence="estimated", mode="rail", source_url="https://legacy.sfgenealogy.org/marin/history/rrtimeline.htm"),
+    seg("Alto (Corte Madera) tunnel", 1884.1, 1971.0,
+        rail((-122.5249, 37.9105), (-122.5262, 37.9180), snap=200),
+        elevated="tunnel", mode="rail", confidence="estimated",
+        note="First train February 1884; later closed and sealed (end ESTIMATED). Geometry: OSM."),
+    seg("Corte Madera - Larkspur - Kentfield (Tamalpais) - Ross - San Anselmo", 1875.03, 1971.0,
+        rail((-122.5262, 37.9180), (-122.5285, 37.9229), (-122.5302, 37.9273), snap=100),
+        topo("tam1897", (-122.5302, 37.9273), (-122.5330, 37.9350), (-122.5400, 37.9400), (-122.5480, 37.9480),
+             (-122.5530, 37.9530), (-122.5570, 37.9620), (-122.5600, 37.9700), (-122.5615, 37.9755), corridor=200),
+        mode="rail", confidence="estimated",
+        note="NPC main line (1875; standard gauge and electric 1903-04, 'Northwestern Pacific' on the 1910s "
+             "Tamalpais sheet); passenger service ended 1941-02-28, freight end ESTIMATED. Geometry: OSM grade "
+             "(Larkspur Path) and USGS Tamalpais sheet."),
+    seg("San Anselmo (Junction) - San Rafael", 1874.56, 1941.16,
+        topo("tam1897", (-122.5615, 37.9755), (-122.5530, 37.9770), (-122.5440, 37.9760), (-122.5350, 37.9745),
+             (-122.5290, 37.9730), corridor=130),
+        mode="rail", source_url=SANS,
+        note="San Anselmo - San Rafael spur opened 1874-07-25 (San Anselmo Historical Museum); electric to San "
+             "Rafael 1903-10-17; electric service ended 1941-02-28. Geometry: USGS Tamalpais sheet."),
+    seg("San Anselmo - Fairfax - Manor", 1875.03, 1941.16,
+        topo("tam1897", (-122.5615, 37.9755), (-122.5690, 37.9790), (-122.5770, 37.9830), (-122.5880, 37.9870),
+             (-122.5960, 37.9930), (-122.6005, 37.9980), corridor=130),
+        note="NPC narrow gauge (1875); electric suburban trains to Manor from the 1900s; electric service ended "
+             "1941-02-28. Geometry: USGS Tamalpais sheet."),
+    seg("Manor - White's Hill - San Geronimo - Lagunitas - Shafter - Camp Taylor - Tocaloma", 1875.03, 1933.5,
+        topo("pet1914", (-122.6005, 37.9980), (-122.6120, 38.0020), (-122.6250, 38.0045), (-122.6450, 38.0085),
+             (-122.6600, 38.0125), (-122.6750, 38.0135), (-122.6900, 38.0125), (-122.7000, 38.0105),
+             (-122.7050, 38.0040), (-122.7120, 38.0030), (-122.7180, 38.0100), (-122.7250, 38.0170),
+             (-122.7350, 38.0250), (-122.7400, 38.0300), (-122.7450, 38.0400), (-122.7500, 38.0450), corridor=150),
+        note="'San Francisco and Cazadero Line' over White's Hill (tunnel) and down Paper Mill (Lagunitas) Creek; "
+             "narrow gauge to the end; abandoned 1933 (ESTIMATED; last narrow-gauge trains to Point Reyes 1930). "
+             "Geometry: USGS Petaluma 1914 sheet.", confidence="estimated"),
+    seg("Tocaloma - Point Reyes Station", 1875.03, 1933.5,
+        topo("pr1918", (-122.7500, 38.0450), (-122.7600, 38.0520), (-122.7700, 38.0600), (-122.7790, 38.0680),
+             (-122.7860, 38.0680), (-122.7945, 38.0665), (-122.8076, 38.0695), corridor=200),
+        note="Last scheduled narrow-gauge train to Point Reyes Station 1930-03-30; abandoned 1933 (ESTIMATED). "
+             "Geometry: USGS Point Reyes 1918 sheet (no local alignment; checked against OSM grade fragments).",
+        confidence="estimated"),
+    seg("Point Reyes Station - Marshall - Tomales Bay shore - Tomales - Sonoma County line", 1875.03, 1930.25,
+        rail((-122.8076, 38.0695), (-122.8144, 38.0713), (-122.8364, 38.1008), (-122.8632, 38.1215),
+             (-122.8885, 38.1523), (-122.9003, 38.1667), (-122.9176, 38.1914), (-122.9253, 38.2150),
+             (-122.9137, 38.2484), (-122.8993, 38.2634), (-122.9084, 38.3056), snap=150, join=150),
+        source_url=NPS_TB,
+        note="Built 1873-75 along the east shore of Tomales Bay; tracks Point Reyes - Monte Rio abandoned after the "
+             "last narrow-gauge train of 1930-03-30. Geometry: OSM (abandoned grade)."),
+    seg("Mill Valley branch: Mill Valley Junction - Millwood - Mill Valley", 1889.0, 1941.16,
+        topo("tam1897", (-122.5243, 37.8871), (-122.5280, 37.8920), (-122.5340, 37.8960), (-122.5400, 37.9010),
+             (-122.5460, 37.9060), corridor=140),
+        note="Branch to Mill Valley (opening year ESTIMATED with the 1889-90 founding of the town); electric from "
+             "1903-08-20; electric service ended 1941-02-28. Geometry: USGS Tamalpais sheet.",
+        confidence="estimated", mode="rail"),
+])
+
+route("sfnp_tiburon", "San Francisco & North Pacific Railroad (Tiburon line) / Northwestern Pacific", "rail",
+      WIKI + "Northwestern_Pacific_Railroad", [
+          seg("Tiburon terminal - Reed - Corte Madera (San Clemente) - Greenbrae", 1884.36, 1967.0,
+              rail((-122.4560, 37.8734), (-122.4725, 37.8843), (-122.4889, 37.8997), (-122.5048, 37.9117),
+                   (-122.5123, 37.9353), (-122.5133, 37.9466), snap=150, join=60),
+              note="SF&NP terminal and ferry slips at Tiburon and the line across the marshes of Richardson Bay and "
+                   "Corte Madera to San Rafael (1884); NWP passenger ferries until 1941, car floats and freight until "
+                   "the line south of Greenbrae closed (1967, ESTIMATED; Tiburon Linear Park / Old Rail Trail). "
+                   "Geometry: OSM grade.", confidence="estimated"),
+          seg("Greenbrae - San Rafael", 1884.36, 9999,
+              rail((-122.5133, 37.9466), (-122.5180, 37.9580), (-122.5222, 37.9692), snap=300, join=80),
+              note="Still in use (SMART Larkspur extension). Geometry: OSM."),
+      ])
+
+# =====================================================================================
+# SOUTH BAY: SPC San Jose - Los Gatos - Santa Cruz, SP Mayfield Cutoff, Dumbarton, Peninsular Ry
+# =====================================================================================
+route("spc_south", "South Pacific Coast Railroad (narrow gauge): Santa Clara - San Jose - Los Gatos - Santa Cruz",
+      "narrow_gauge", SPC, [
+          seg("Santa Clara - San Jose", 1876.5, 9999,
+              rail((-121.9398, 37.3550), (-121.9139, 37.3421), (-121.9035, 37.3300), snap=200),
+              note="SPC narrow gauge to San Jose (1876; month ESTIMATED); today's UP/Caltrain tracks (geometry: OSM; "
+                   "the 1876 SPC depot and street running in San Jose are not modelled).", confidence="estimated"),
+          seg("San Jose - Campbell - Vasona Junction", 1878.5, 9999,
+              rail((-121.9035, 37.3300), (-121.9028, 37.3256), (-121.9246, 37.3045), (-121.9456, 37.2825),
+                   (-121.9637, 37.2589), names=["Vasona", "Caltrain", "Coast"], snap=200),
+              note="Extended from San Jose to Los Gatos in 1878 (month ESTIMATED); SP from 1887; still the Vasona "
+                   "Industrial Lead (geometry: OSM).", confidence="estimated"),
+          seg("Vasona Junction - Los Gatos", 1878.5, 1959.0,
+              rail((-121.9637, 37.2589), (-121.9663, 37.2544), (-121.9785, 37.2319), (-121.9800, 37.2287), snap=200),
+              note="Last San Jose - Los Gatos commuter train 1955; track to Los Gatos removed later (end ESTIMATED "
+                   "1959). Geometry: OSM grade (Los Gatos Creek Trail).", confidence="estimated"),
+          seg("Los Gatos - Alma - Wrights - Summit tunnel - Laurel - Glenwood - Zayante - Olympia", 1880.33, 1940.43,
+              rail((-121.9800, 37.2287), (-121.9881, 37.2167), (-121.9899, 37.2027), (-121.9846, 37.1758),
+                   (-121.9758, 37.1623), (-121.9563, 37.1462), (-121.9642, 37.1217), (-121.9918, 37.0980),
+                   (-122.0171, 37.1036), (-122.0352, 37.0984), (-122.0507, 37.0787), snap=200, join=2500),
+              note="Mountain line over the Santa Cruz Mountains (eight tunnels) completed 1880 after two years of "
+                   "construction; standard gauge 1909 (Summit tunnel damaged in 1906); last train 1940-02-26, "
+                   "abandoned 1940-06-04; tunnels dynamited 1942. The grade under Lexington Reservoir (1952) is "
+                   "interpolated. Geometry: OSM (abandoned grade and tunnels)."),
+          seg("Olympia - Felton", 1880.33, 9999,
+              rail((-122.0507, 37.0787), (-122.0557, 37.0639), (-122.0643, 37.0476), snap=200),
+              note="SPC main line; today the Santa Cruz, Big Trees & Pacific to Olympia (geometry: OSM)."),
+          seg("Felton - Santa Cruz (Felton & Santa Cruz RR)", 1875.8, 9999,
+              rail((-122.0643, 37.0476), (-122.0602, 37.0234), (-122.0396, 37.0011), (-122.0324, 36.9870),
+                   (-122.0254, 36.9631), snap=200),
+              note="Santa Cruz & Felton narrow gauge (1875, absorbed by the SPC by 1879); SP; today the Santa Cruz, "
+                   "Big Trees & Pacific (geometry: OSM). Opening month ESTIMATED.", confidence="estimated"),
+      ])
+
+route("sp_mayfield_cutoff", "Southern Pacific Mayfield Cutoff (Los Altos line)", "rail", WIKI + "Los_Altos,_California", [
+    seg("Mayfield - Los Altos - Monta Vista", 1908.3, 1964.0,
+        pts((-122.1428, 37.4292), (-122.1418, 37.4235), (-122.1415, 37.4175)),
+        rail((-122.1415, 37.4175), (-122.1343, 37.3996), (-122.1155, 37.3743), (-122.0739, 37.3424),
+             (-122.0601, 37.3317), snap=200, join=300),
+        note="SP cutoff from Mayfield (Palo Alto) through Los Altos to Los Gatos (opened 1908, month ESTIMATED); "
+             "electrified for the Peninsular Railway interurbans (to 1933); abandoned 1964 for the Foothill "
+             "Expressway. Geometry: OSM abandoned grade.", confidence="estimated"),
+    seg("Monta Vista - Vasona Junction", 1908.3, 9999,
+        rail((-122.0601, 37.3317), (-122.0560, 37.3284), (-122.0364, 37.2903), (-122.0070, 37.2757),
+             (-121.9765, 37.2627), (-121.9637, 37.2589), names=["Vasona"], snap=200),
+        note="Still in use as the Vasona Industrial Lead to the Permanente quarry (geometry: OSM).",
+        confidence="estimated"),
+])
+
+route("sp_dumbarton", "Southern Pacific Dumbarton Cutoff and rail bridge", "rail", WIKI + "Dumbarton_Rail_Bridge", [
+    seg("Newark - Dumbarton rail bridge - Redwood City", 1910.5, 9999,
+        rail((-122.0556, 37.5223), (-122.0814, 37.5137), (-122.0966, 37.5064), (-122.1093, 37.4979),
+             (-122.1205, 37.4904), (-122.1372, 37.4822), (-122.1640, 37.4796), (-122.2000, 37.4790), snap=250, join=400),
+        note="SP cutoff across the bay with a swing-span bridge (opened 1910, month ESTIMATED); out of service "
+             "since 1982 and the west trestle damaged by fire in 1998, but the bridge and tracks still stand "
+             "(year_end 9999 = still standing). Geometry: OSM.", confidence="estimated"),
+])
+
+PEN = WIKI + "Peninsular_Railway_(California)"
+route("peninsular", "Peninsular Railway (San Jose & Los Gatos Interurban)", "interurban", PEN, [
+    seg("San Jose - Los Gatos via San Jose-Los Gatos Road (Bascom Ave / Los Gatos Blvd)", 1904.21, 1933.2,
+        road((-121.8871, 37.3314), (-121.9043, 37.3239), (-121.9320, 37.3233), (-121.9317, 37.3027),
+             (-121.9317, 37.2810), (-121.9421, 37.2650), (-121.9539, 37.2514), (-121.9646, 37.2323),
+             (-121.9740, 37.2211), snap=150),
+        note="San Jose-Los Gatos Interurban, first trip 1904-03-19; Peninsular Railway (SP) from 1909; interurban "
+             "service ended 1933 (the company's last car ran 1934-09-30). Route 'via county roads and the San Jose-"
+             "Los Gatos Road (now Bascom Avenue and Los Gatos Boulevard)'; geometry follows today's streets "
+             "(OSM) - LOW CONFIDENCE in the downtown approach.", confidence="estimated", geometry_confidence="low"),
+    seg("San Jose - Cupertino - Monta Vista via Stevens Creek Road", 1907.0, 1933.2,
+        road((-121.9320, 37.3233), (-121.9600, 37.3235), (-121.9950, 37.3230), (-122.0322, 37.3225),
+             (-122.0600, 37.3240), names=["Stevens Creek"], snap=250),
+        note="'Cupertino to San Jose along Stevens Creek Road' (Monta Vista branch). Opening year ESTIMATED. "
+             "Geometry: today's Stevens Creek Boulevard (OSM).", confidence="estimated", geometry_confidence="low"),
+    seg("Cupertino - Saratoga - Los Gatos along the Saratoga roads (Highway 9)", 1904.21, 1933.2,
+        road((-122.0322, 37.3225), (-122.0322, 37.2906), (-122.0320, 37.2593), (-122.0313, 37.2582),
+             (-122.0156, 37.2470), (-121.9968, 37.2398), (-121.9850, 37.2290), snap=150),
+        note="Saratoga loop of the Peninsular Railway ('Cupertino to Los Gatos along Highway 9'); dates per the "
+             "San Jose-Saratoga-Los Gatos timetable (1904-03-19 to 1933-03-12). Geometry: today's roads (OSM) - "
+             "LOW CONFIDENCE.", source_url="https://saratogahistory.com/History/PIrailroad.htm",
+        confidence="estimated", geometry_confidence="low"),
+])

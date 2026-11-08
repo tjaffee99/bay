@@ -157,12 +157,12 @@ function streetTiles(id: string, z: number, have: Set<string>, zoomOffset: numbe
   } as any) as any;
 }
 
-/** Residential streets: the simplified grid at city scale (a fine grey texture where
- *  the suburbs are), every street from zoom 12.5. */
+/** Residential streets, drawn like San Francisco's: every street from zoom 11, the
+ *  simplified grid further out. */
 export function localStreetLayers(year: number, zoom: number): Layer[] {
   if (!localIndex) return [];
-  if (zoom >= 12.5) return [streetTiles('region-streets', localZ, localIndex, 1, year, false)];
-  return localLow ? [streetTiles('region-streets-low', localLowZ, localLow, 1, year, true)] : [];
+  if (zoom >= 11) return [streetTiles('region-streets', localZ, localIndex, 1, year, false)];
+  return localLow ? [streetTiles('region-streets-low', localLowZ, localLow, 1, year, false)] : [];
 }
 
 /** Bents under elevated paths: a wall-like pier across the roadway every ~60 m,

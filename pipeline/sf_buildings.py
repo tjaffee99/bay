@@ -494,6 +494,25 @@ def overture_extras(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
         covered[pos[oi]] += ov.geometry.loc[oi].intersection(fp_geom.iloc[int(fi)]).area
     frac = covered / ov.geometry.area.values
     extra = ov[frac < 0.3].copy()
+    # big buildings only partly in the 2016 snapshot (Stonestown Galleria: the anchors are
+    # there, the enclosed mall between them isn't): the uncovered remainder is a building too
+    part = ov[(frac >= 0.3) & (frac < 0.85) & (ov.geometry.area.values * (1 - frac) > 800)]
+    if len(part):
+        rem = []
+        for oi in part.index:
+            fis = hits.index_right[hits.index == oi].dropna().astype(int).values
+            r = ov.geometry.loc[oi].difference(shapely.union_all(fp_geom.iloc[fis].values).buffer(0.5)) if len(fis) else ov.geometry.loc[oi]
+            for q in getattr(r, "geoms", [r]):
+                if q.geom_type == "Polygon" and q.area > 300:
+                    row = ov.loc[[oi]].copy()
+                    row["geometry"] = [q]
+                    row["id"] = [f"{row['id'].iloc[0]}_rem{len(rem)}"]
+                    rem.append(row)
+        if rem:
+            rem = gpd.GeoDataFrame(pd.concat(rem), geometry="geometry", crs=UTM)
+            rem.index = [f"{i}_rem{k}" for k, i in enumerate(rem.index)]
+            extra = gpd.GeoDataFrame(pd.concat([extra, rem]), geometry="geometry", crs=UTM)
+            log(f"overture: + {len(rem)} remainders of big buildings partly missing from the 2016 snapshot")
     log(f"overture: {len(ov)} buildings in SF, {len(extra)} not in the 2016 DataSF footprints")
     # year: parcel under the centroid -> assessor
     by_map = pd.read_parquet(INTERIM / "sf_assessor_by_map.parquet")

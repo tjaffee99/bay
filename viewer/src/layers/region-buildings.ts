@@ -41,7 +41,9 @@ export async function loadRegionIndex() {
   }
 }
 
-const FULL_FROM = 12.5;
+// every footprint from city scale on, like San Francisco (whose buildings are always all
+// drawn): z13 tiles requested two levels up from zoom 11
+const FULL_FROM = 11;
 
 function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, year: number, quality: boolean, visible: boolean) {
   return new TileLayer<BuildingSet | null>({
@@ -67,7 +69,7 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
       const s = props.data as (BuildingSet & {lmDone?: boolean}) | null;
       if (!s) return null;
       if (landmarks && !s.lmDone) {
-        s.replaced = replacedMask(landmarks, s.centroids, s.count);
+        s.replaced = replacedMask(landmarks, s.centroids, s.count, s.height);
         s.lmDone = true;
       }
       return buildingsLayer(s, year, quality, true, `${props.id}-b`) as any;
@@ -76,7 +78,7 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
   } as any);
 }
 
-/** Region buildings: every footprint in z13 tiles from zoom 12.5; zoomed out, only the
+/** Region buildings: every footprint in z13 tiles from zoom 11; further out, only the
  *  large / tall ones (z11 tiles) — houses are below a pixel there and the suburban ground
  *  colour stands for them. */
 export function regionBuildingLayers(year: number, zoom: number, quality: boolean): Layer[] {
@@ -84,6 +86,6 @@ export function regionBuildingLayers(year: number, zoom: number, quality: boolea
   const out: Layer[] = [];
   if (index.low && zoom >= 9 && zoom < FULL_FROM)
     out.push(tileLayer('region-buildings-low', index.low.z, haveLow, 2, year, quality, true) as any);
-  if (zoom >= FULL_FROM) out.push(tileLayer('region-buildings', index.z, have, 1, year, quality, true) as any);
+  if (zoom >= FULL_FROM) out.push(tileLayer('region-buildings', index.z, have, 2, year, quality, true) as any);
   return out;
 }

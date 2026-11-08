@@ -234,17 +234,31 @@ class Network:
         self.tree = cKDTree(self.pts)
 
     def path(self, wps, snap=150.0):
-        """Shortest path through the waypoints (UTM). Returns (xy, max snap distance)."""
+        """Shortest path through the waypoints (UTM). Returns (xy, max snap distance). A waypoint
+        further than `snap` from the network is kept as a free vertex (straight links to it)."""
         from scipy.sparse.csgraph import dijkstra
         idx, dmax = [], 0.0
         for w in wps:
             d, i = self.tree.query(w)
             if d > snap:
-                raise ValueError(f"waypoint {to_ll(*w)} is {d:.0f} m from the network")
+                log(f"   (waypoint {np.round(to_ll(*w), 5)} is {d:.0f} m from the network: kept as a free vertex)")
+                self.gaps = getattr(self, "gaps", 0) + 1
+                idx.append(("free", np.asarray(w, float)))
+                continue
             dmax = max(dmax, d)
             idx.append(int(i))
+        pts = [p for p in self.pts]
         out = []
         for a, b in zip(idx[:-1], idx[1:]):
+            if isinstance(a, tuple) or isinstance(b, tuple):
+                for q in (a, b):
+                    if isinstance(q, tuple):
+                        pts.append(q[1]); k = len(pts) - 1
+                    else:
+                        k = q
+                    if not out or out[-1] != k:
+                        out.append(k)
+                continue
             dist, pred = dijkstra(self.G, indices=a, return_predecessors=True, limit=np.inf)
             if not np.isfinite(dist[b]):
                 log(f"   (no network path {np.round(to_ll(*self.pts[a]), 5)} -> {np.round(to_ll(*self.pts[b]), 5)}: straight link)")
@@ -256,7 +270,8 @@ class Network:
                 seq.append(pred[seq[-1]])
             seq = seq[::-1]
             out += seq if not out else seq[1:]
-        return self.pts[out], dmax
+        self._pts_ext = np.array(pts)
+        return self._pts_ext[out], dmax
 
 
 _RAIL = None

@@ -65,6 +65,10 @@ const map = new maplibregl.Map({
   canvasContextAttributes: {antialias: true}
 });
 installCameraControls(map);
+// first visit (no view in the URL): the whole of San Francisco, gently tilted
+if (!initial.center) {
+  map.fitBounds([[-122.516, 37.706], [-122.357, 37.812]], {padding: 24, pitch: 45, bearing: -12, duration: 0});
+}
 setTerrainChangeCallback(() => render());
 
 // Late-afternoon sun from the south-west and a cool skylight fill from the north-east.
@@ -349,7 +353,7 @@ let zoomKey = '';
 map.on('zoom', () => {
   const z = map.getZoom();
   const lod = treeLod(z);
-  const key = `${labelZoomKey(z)}|${z >= 9}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}|${wantShadow(z)}`;
+  const key = `${labelZoomKey(z)}|${z >= 9}|${z >= 11}|${z >= 12.5}|${z >= 13}|${z >= 13.5}|${z > 15.5}|${lod.low}|${lod.keep}|${wantShadow(z)}`;
   if (key === zoomKey || state.playing) return;
   zoomKey = key;
   setShadows(z);
@@ -431,7 +435,7 @@ async function boot() {
   render();
   await Promise.all([lmP, treeP, roadP, groundP]);
   if (buildings && landmarks) {
-    buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
+    buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count, buildings.height);
     render();
   }
   setRegionLandmarks(landmarks);
