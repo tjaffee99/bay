@@ -1,0 +1,1206 @@
+{
+ "zones_only": true,
+ "refine_R": 22,
+ "notes": "north to the right (numbered streets vertical); two halves (10th-11th, 11th-12th) fitted separately",
+ "blocks": [
+  {
+   "name": "148",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Jefferson",
+    "E": "Clay"
+   },
+   "px4_est": [
+    [
+     590,
+     107
+    ],
+    [
+     590,
+     567
+    ],
+    [
+     281,
+     567
+    ],
+    [
+     281,
+     107
+    ]
+   ],
+   "corners": [
+    {
+     "x": 587.2,
+     "y": 111.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 583.3,
+     "y": 563.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 280.0,
+     "y": 563.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 286.5,
+     "y": 110.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "146",
+    "144"
+   ],
+   "px4": [
+    [
+     587.2,
+     111.4
+    ],
+    [
+     583.3,
+     563.5
+    ],
+    [
+     280.0,
+     563.5
+    ],
+    [
+     286.5,
+     110.1
+    ]
+   ],
+   "edge_q": [
+    0.66,
+    0.98,
+    0.7,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 587.2,
+     "y": 111.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 583.3,
+     "y": 563.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 280.0,
+     "y": 563.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 286.5,
+     "y": 110.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    280.0105835240274,
+    110.11550381350412,
+    587.1859618539936,
+    563.5
+   ]
+  },
+  {
+   "name": "146",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Clay",
+    "E": "Washington"
+   },
+   "px4_est": [
+    [
+     583,
+     679
+    ],
+    [
+     583,
+     1138
+    ],
+    [
+     279,
+     1138
+    ],
+    [
+     279,
+     679
+    ]
+   ],
+   "corners": [
+    {
+     "x": 581.7,
+     "y": 686.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 278.2,
+     "y": 683.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 587.2,
+     "y": 111.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 583.3,
+     "y": 563.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 280.0,
+     "y": 563.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 286.5,
+     "y": 110.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 574.3,
+     "y": 1716.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 272.2,
+     "y": 1713.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    }
+   ],
+   "with": [
+    "148",
+    "144"
+   ],
+   "px4": [
+    [
+     581.7,
+     686.3
+    ],
+    [
+     577.7,
+     1141.4
+    ],
+    [
+     274.3,
+     1140.1
+    ],
+    [
+     278.2,
+     683.7
+    ]
+   ],
+   "edge_q": [
+    0.72,
+    0.7,
+    0.69,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 581.7,
+     "y": 686.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 577.7,
+     "y": 1141.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Washington",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [104.   12.2] at Washington x 11th SW"
+    },
+    {
+     "x": 274.3,
+     "y": 1140.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Washington",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  10.1] at Washington x 10th NW"
+    },
+    {
+     "x": 278.2,
+     "y": 683.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    274.25850031953746,
+    683.6771421494964,
+    581.6608686165301,
+    1141.385159295587
+   ]
+  },
+  {
+   "name": "144",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Washington",
+    "E": "Broadway"
+   },
+   "px4_est": [
+    [
+     579,
+     1250
+    ],
+    [
+     579,
+     1714
+    ],
+    [
+     269,
+     1714
+    ],
+    [
+     269,
+     1250
+    ]
+   ],
+   "corners": [
+    {
+     "x": 574.3,
+     "y": 1716.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 272.2,
+     "y": 1713.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 587.2,
+     "y": 111.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 583.3,
+     "y": 563.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 280.0,
+     "y": 563.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 286.5,
+     "y": 110.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 581.7,
+     "y": 686.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 278.2,
+     "y": 683.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    }
+   ],
+   "with": [
+    "148",
+    "146"
+   ],
+   "px4": [
+    [
+     578.1,
+     1262.4
+    ],
+    [
+     574.3,
+     1716.3
+    ],
+    [
+     272.2,
+     1713.7
+    ],
+    [
+     274.8,
+     1261.1
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.75,
+    0.78,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 578.1,
+     "y": 1262.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Washington",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [103.5  12.1] at Washington x 11th SE"
+    },
+    {
+     "x": 574.3,
+     "y": 1716.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 272.2,
+     "y": 1713.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 274.8,
+     "y": 1261.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Washington",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  10.2] at Washington x 10th NE"
+    }
+   ],
+   "zone_px": [
+    272.1858481449772,
+    1261.1165226742137,
+    578.1181588721254,
+    1716.2755259533076
+   ]
+  },
+  {
+   "name": "156",
+   "streets": {
+    "N": "12th",
+    "S": "11th",
+    "W": "Jefferson",
+    "E": "Clay"
+   },
+   "px4_est": [
+    [
+     1393,
+     107
+    ],
+    [
+     1393,
+     571
+    ],
+    [
+     1083,
+     571
+    ],
+    [
+     1083,
+     107
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1388.9,
+     "y": 118.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1387.6,
+     "y": 569.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1083.4,
+     "y": 568.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1088.5,
+     "y": 114.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "157",
+    "158"
+   ],
+   "px4": [
+    [
+     1388.9,
+     118.7
+    ],
+    [
+     1387.6,
+     569.9
+    ],
+    [
+     1083.4,
+     568.6
+    ],
+    [
+     1088.5,
+     114.8
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.59,
+    0.63,
+    0.64
+   ],
+   "corners_all": [
+    {
+     "x": 1388.9,
+     "y": 118.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1387.6,
+     "y": 569.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1083.4,
+     "y": 568.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1088.5,
+     "y": 114.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1083.3957147814485,
+    114.84689182793306,
+    1388.8747982186528,
+    569.8849544450642
+   ]
+  },
+  {
+   "name": "157",
+   "streets": {
+    "N": "12th",
+    "S": "11th",
+    "W": "Clay",
+    "E": "Washington"
+   },
+   "px4_est": [
+    [
+     1388,
+     683
+    ],
+    [
+     1388,
+     1143
+    ],
+    [
+     1076,
+     1143
+    ],
+    [
+     1076,
+     683
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1386.3,
+     "y": 690.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "157"
+    },
+    {
+     "x": 1082.6,
+     "y": 688.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "157"
+    },
+    {
+     "x": 1388.9,
+     "y": 118.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1387.6,
+     "y": 569.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1083.4,
+     "y": 568.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1088.5,
+     "y": 114.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1375.9,
+     "y": 1719.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "158"
+    },
+    {
+     "x": 1073.8,
+     "y": 1718.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "158"
+    }
+   ],
+   "with": [
+    "156",
+    "158"
+   ],
+   "px4": [
+    [
+     1386.3,
+     690.8
+    ],
+    [
+     1383.7,
+     1145.0
+    ],
+    [
+     1077.3,
+     1145.0
+    ],
+    [
+     1082.6,
+     688.2
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.74,
+    0.65,
+    0.71
+   ],
+   "corners_all": [
+    {
+     "x": 1386.3,
+     "y": 690.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1383.7,
+     "y": 1145.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Washington",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 0.9 11.5] at Washington x 12th SW"
+    },
+    {
+     "x": 1077.3,
+     "y": 1145.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Washington",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 0.9 12.9] at Washington x 11th NW"
+    },
+    {
+     "x": 1082.6,
+     "y": 688.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1077.3455377574371,
+    688.2396392446153,
+    1386.2711601402114,
+    1145.0
+   ]
+  },
+  {
+   "name": "158",
+   "streets": {
+    "N": "12th",
+    "S": "11th",
+    "W": "Washington",
+    "E": "Broadway"
+   },
+   "px4_est": [
+    [
+     1388,
+     1257
+    ],
+    [
+     1388,
+     1719
+    ],
+    [
+     1071,
+     1719
+    ],
+    [
+     1071,
+     1257
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1375.9,
+     "y": 1719.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "158"
+    },
+    {
+     "x": 1073.8,
+     "y": 1718.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "158"
+    },
+    {
+     "x": 1388.9,
+     "y": 118.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Jefferson",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1387.6,
+     "y": 569.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1083.4,
+     "y": 568.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1088.5,
+     "y": 114.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "156"
+    },
+    {
+     "x": 1386.3,
+     "y": 690.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Clay",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "157"
+    },
+    {
+     "x": 1082.6,
+     "y": 688.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Clay",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "157"
+    }
+   ],
+   "with": [
+    "156",
+    "157"
+   ],
+   "px4": [
+    [
+     1381.0,
+     1265.0
+    ],
+    [
+     1375.9,
+     1719.9
+    ],
+    [
+     1073.8,
+     1718.6
+    ],
+    [
+     1077.7,
+     1265.0
+    ]
+   ],
+   "edge_q": [
+    0.71,
+    0.84,
+    0.71,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 1381.0,
+     "y": 1265.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Washington",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.2 11.6] at Washington x 12th SE"
+    },
+    {
+     "x": 1375.9,
+     "y": 1719.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Broadway",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1073.8,
+     "y": 1718.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Broadway",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1077.7,
+     "y": 1265.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Washington",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 12.9] at Washington x 11th NE"
+    }
+   ],
+   "zone_px": [
+    1073.7797022972695,
+    1265.0,
+    1381.0404420141263,
+    1719.8574989719586
+   ]
+  }
+ ],
+ "pct": 25
+}

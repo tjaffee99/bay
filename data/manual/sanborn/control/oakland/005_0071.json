@@ -1,0 +1,854 @@
+{
+ "zones_only": true,
+ "refine_R": 22,
+ "residential": true,
+ "notes": "Cypress St did not run north of 11th St in 1911 (blocks span Center-Kirkham); the freeway was cut through them. Kirkham St corners are not the 1911 lines (Cypress Village / Acorn rebuilding); the Center St property corners spread by 2-6 m along the street (re-subdivided parcels): only Center St corners used, RMS ~4 m -> confidence capped at low.",
+ "confidence_cap": "low",
+ "blocks": [
+  {
+   "name": "579",
+   "streets": {
+    "N": "14th",
+    "S": "13th",
+    "W": "Center",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     298,
+     162
+    ],
+    [
+     1421,
+     162
+    ],
+    [
+     1421,
+     607
+    ],
+    [
+     298,
+     607
+    ]
+   ],
+   "corners": [
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "579"
+    },
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1210"
+    },
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "1210",
+    "558",
+    "1501",
+    "1500"
+   ],
+   "px4": [
+    [
+     298.9,
+     170.3
+    ],
+    [
+     1410.1,
+     174.2
+    ],
+    [
+     1411.4,
+     610.8
+    ],
+    [
+     297.6,
+     608.2
+    ]
+   ],
+   "edge_q": [
+    0.61,
+    0.81,
+    0.61,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 297.6,
+     "y": 608.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.6 1. ] at Center x 13th NE"
+    }
+   ],
+   "zone_px": [
+    297.5886066041137,
+    170.27942100773583,
+    1411.4191109938613,
+    610.7933381239018
+   ]
+  },
+  {
+   "name": "1210",
+   "streets": {
+    "N": "13th",
+    "S": "12th",
+    "W": "Center",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     298,
+     695
+    ],
+    [
+     1421,
+     695
+    ],
+    [
+     1421,
+     1031
+    ],
+    [
+     298,
+     1031
+    ]
+   ],
+   "corners": [
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1210"
+    },
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "579"
+    },
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "579",
+    "558",
+    "1501",
+    "1500"
+   ],
+   "px4": [
+    [
+     299.0,
+     700.5
+    ],
+    [
+     1411.0,
+     694.0
+    ],
+    [
+     1411.0,
+     1029.4
+    ],
+    [
+     299.0,
+     1034.6
+    ]
+   ],
+   "edge_q": [
+    0.39,
+    0.82,
+    0.48,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 299.0,
+     "y": 1034.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.7 1.1] at Center x 12th NE"
+    }
+   ],
+   "zone_px": [
+    299.0,
+    694.0191099967193,
+    1411.0,
+    1034.626892252894
+   ]
+  },
+  {
+   "name": "558",
+   "streets": {
+    "N": "12th",
+    "S": "11th",
+    "W": "Center",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     298,
+     1119
+    ],
+    [
+     1421,
+     1119
+    ],
+    [
+     1421,
+     1457
+    ],
+    [
+     298,
+     1457
+    ]
+   ],
+   "corners": [
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "579"
+    },
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1210"
+    },
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "579",
+    "1210",
+    "1501",
+    "1500"
+   ],
+   "px4": [
+    [
+     299.2,
+     1124.6
+    ],
+    [
+     1409.9,
+     1119.4
+    ],
+    [
+     1408.6,
+     1456.9
+    ],
+    [
+     301.8,
+     1455.6
+    ]
+   ],
+   "edge_q": [
+    0.54,
+    0.73,
+    0.74,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    299.2280117068802,
+    1119.4204140313989,
+    1409.906258120401,
+    1456.8933572203325
+   ]
+  },
+  {
+   "name": "1501",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Center",
+    "E": "Cypress"
+   },
+   "px4_est": [
+    [
+     298,
+     1536
+    ],
+    [
+     810,
+     1536
+    ],
+    [
+     810,
+     1821
+    ],
+    [
+     298,
+     1821
+    ]
+   ],
+   "corners": [
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "579"
+    },
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1210"
+    },
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "579",
+    "1210",
+    "558",
+    "1500"
+   ],
+   "px4": [
+    [
+     302.1,
+     1531.1
+    ],
+    [
+     803.0,
+     1532.4
+    ],
+    [
+     803.0,
+     1805.9
+    ],
+    [
+     304.8,
+     1816.1
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.57,
+    0.06,
+    0.64
+   ],
+   "corners_all": [
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    302.1389911547735,
+    1531.1027420619725,
+    803.0,
+    1816.1239562914047
+   ]
+  },
+  {
+   "name": "1500",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Cypress",
+    "E": "Kirkham"
+   },
+   "px4_est": [
+    [
+     893,
+     1536
+    ],
+    [
+     1421,
+     1536
+    ],
+    [
+     1421,
+     1821
+    ],
+    [
+     893,
+     1821
+    ]
+   ],
+   "corners": [
+    {
+     "x": 298.9,
+     "y": 170.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "14th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "579"
+    },
+    {
+     "x": 299.0,
+     "y": 700.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "13th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1210"
+    },
+    {
+     "x": 299.2,
+     "y": 1124.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "12th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 301.8,
+     "y": 1455.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "558"
+    },
+    {
+     "x": 302.1,
+     "y": 1531.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    },
+    {
+     "x": 304.8,
+     "y": 1816.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1501"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "579",
+    "1210",
+    "558",
+    "1501"
+   ],
+   "px4": [
+    [
+     893.5,
+     1532.0
+    ],
+    [
+     1408.9,
+     1532.0
+    ],
+    [
+     1406.2,
+     1816.0
+    ],
+    [
+     893.5,
+     1816.0
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.58,
+    0.0,
+    0.64
+   ],
+   "corners_all": [],
+   "zone_px": [
+    893.5,
+    1532.0,
+    1408.8527239150508,
+    1816.0
+   ]
+  }
+ ],
+ "pct": 25
+}

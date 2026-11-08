@@ -71,5 +71,11 @@
    "label": "Orchard (= S Almaden Ave) x Balbach, block 33 corner"
   }
  ],
- "pct": 25
+ "pct": 25,
+ "valid_px": [
+  30,
+  30,
+  1627,
+  1850
+ ]
 }

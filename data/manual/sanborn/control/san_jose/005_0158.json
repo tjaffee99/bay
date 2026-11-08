@@ -5,7 +5,7 @@
   31.3,
   0.6
  ],
- "confidence_cap": "medium",
+ "confidence_cap": "low",
  "points": [
   {
    "tie": "005_0156",
@@ -51,5 +51,11 @@
    "label": "Orchard (= S Almaden Ave) x Balbach NW, block 228 corner"
   }
  ],
- "pct": 25
+ "pct": 25,
+ "valid_px": [
+  30,
+  30,
+  1560,
+  1920
+ ]
 }

@@ -5,6 +5,36 @@
   -58.7,
   0.4
  ],
+ "check": [
+  [
+   1286,
+   184,
+   "1st Street",
+   "San Carlos Street",
+   "NW",
+   {
+    "wb": 60
+   }
+  ],
+  [
+   1286,
+   636,
+   "Market Street",
+   "San Carlos Street",
+   "NE",
+   {
+    "R": 40,
+    "wb": 60
+   }
+  ],
+  [
+   1286,
+   184,
+   "1st Street",
+   "San Carlos Street",
+   "NW"
+  ]
+ ],
  "points": [
   {
    "pc": [
@@ -12,9 +42,12 @@
     "Paseo de San Antonio"
    ],
    "q": "SW",
-   "x": 444.0,
-   "y": 184.0,
-   "wb": 60
+   "x": 450.0,
+   "y": 180.0,
+   "wb": 60,
+   "x0": 444.0,
+   "y0": 184.0,
+   "norefine": 1
   },
   {
    "tie": "004_0089",
@@ -39,5 +72,11 @@
    "y": 182.0
   }
  ],
- "pct": 25
+ "pct": 25,
+ "valid_px": [
+  30,
+  30,
+  1627,
+  1820
+ ]
 }

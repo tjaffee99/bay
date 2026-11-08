@@ -73,5 +73,11 @@
    "label": "Orchard x San Fernando SW = parcel corner NW of Almaden Ave (= old Orchard St) x San Fernando moved 80 ft across San Fernando"
   }
  ],
- "pct": 25
+ "pct": 25,
+ "valid_px": [
+  30,
+  30,
+  1590,
+  1920
+ ]
 }

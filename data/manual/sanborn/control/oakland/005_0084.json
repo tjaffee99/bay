@@ -1,0 +1,2384 @@
+{
+ "zones_only": true,
+ "refine_R": 22,
+ "residential": true,
+ "notes": "Castro St is an I-980 frontage road today: its corners are not used",
+ "blocks": [
+  {
+   "name": "147",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Castro",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     290,
+     179
+    ],
+    [
+     757,
+     179
+    ],
+    [
+     757,
+     488
+    ],
+    [
+     290,
+     488
+    ]
+   ],
+   "corners": [
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "93"
+    },
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "72"
+    },
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "1245",
+    "114",
+    "115",
+    "93",
+    "92",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     301.0,
+     183.0
+    ],
+    [
+     755.0,
+     183.0
+    ],
+    [
+     755.0,
+     486.1
+    ],
+    [
+     301.0,
+     487.4
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.75,
+    0.81,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    301.0,
+    183.0,
+    755.0,
+    487.3769018370337
+   ]
+  },
+  {
+   "name": "1245",
+   "streets": {
+    "N": "11th",
+    "S": "10th",
+    "W": "Grove",
+    "E": "Jefferson"
+   },
+   "px4_est": [
+    [
+     869,
+     179
+    ],
+    [
+     1329,
+     179
+    ],
+    [
+     1329,
+     488
+    ],
+    [
+     869,
+     488
+    ]
+   ],
+   "corners": [
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "147",
+    "114",
+    "115",
+    "93",
+    "92",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     875.6,
+     183.2
+    ],
+    [
+     1329.5,
+     185.8
+    ],
+    [
+     1329.5,
+     488.8
+    ],
+    [
+     876.9,
+     486.2
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.88,
+    0.82,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    875.610083570302,
+    183.22202564971568,
+    1329.5,
+    488.8186498855835
+   ]
+  },
+  {
+   "name": "114",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Castro",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     290,
+     600
+    ],
+    [
+     757,
+     600
+    ],
+    [
+     757,
+     912
+    ],
+    [
+     290,
+     912
+    ]
+   ],
+   "corners": [
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "93"
+    },
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "72"
+    },
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "147",
+    "1245",
+    "115",
+    "93",
+    "92",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     299.6,
+     609.0
+    ],
+    [
+     756.0,
+     609.0
+    ],
+    [
+     756.0,
+     913.8
+    ],
+    [
+     300.9,
+     911.2
+    ]
+   ],
+   "edge_q": [
+    0.72,
+    0.76,
+    0.77,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    299.6300607287449,
+    609.0,
+    756.0,
+    913.8101544009918
+   ]
+  },
+  {
+   "name": "115",
+   "streets": {
+    "N": "10th",
+    "S": "9th",
+    "W": "Grove",
+    "E": "Jefferson"
+   },
+   "px4_est": [
+    [
+     869,
+     600
+    ],
+    [
+     1329,
+     600
+    ],
+    [
+     1329,
+     912
+    ],
+    [
+     869,
+     912
+    ]
+   ],
+   "corners": [
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "147",
+    "1245",
+    "114",
+    "93",
+    "92",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     875.6,
+     609.2
+    ],
+    [
+     1330.0,
+     611.8
+    ],
+    [
+     1330.0,
+     915.2
+    ],
+    [
+     876.9,
+     911.3
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.75,
+    0.73,
+    0.85
+   ],
+   "corners_all": [
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    875.6309975763119,
+    609.222145295059,
+    1330.0,
+    915.2322654462242
+   ]
+  },
+  {
+   "name": "93",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Castro",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     290,
+     1024
+    ],
+    [
+     757,
+     1024
+    ],
+    [
+     757,
+     1333
+    ],
+    [
+     290,
+     1333
+    ]
+   ],
+   "corners": [
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "93"
+    },
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "72"
+    },
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "147",
+    "1245",
+    "114",
+    "115",
+    "92",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     300.1,
+     1029.0
+    ],
+    [
+     754.6,
+     1029.0
+    ],
+    [
+     755.9,
+     1334.8
+    ],
+    [
+     301.4,
+     1332.2
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.79,
+    0.78,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.9,
+     "y": 1334.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    300.11339635496506,
+    1029.0,
+    755.9156007443581,
+    1334.8096788050511
+   ]
+  },
+  {
+   "name": "92",
+   "streets": {
+    "N": "9th",
+    "S": "8th",
+    "W": "Grove",
+    "E": "Jefferson"
+   },
+   "px4_est": [
+    [
+     869,
+     1024
+    ],
+    [
+     1329,
+     1024
+    ],
+    [
+     1329,
+     1333
+    ],
+    [
+     869,
+     1333
+    ]
+   ],
+   "corners": [
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "93"
+    },
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "72"
+    },
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    }
+   ],
+   "with": [
+    "147",
+    "1245",
+    "114",
+    "115",
+    "93",
+    "72",
+    "73"
+   ],
+   "px4": [
+    [
+     876.0,
+     1030.9
+    ],
+    [
+     1329.9,
+     1029.6
+    ],
+    [
+     1328.6,
+     1334.5
+    ],
+    [
+     876.0,
+     1334.5
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.83,
+    0.84,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 876.0,
+     "y": 1334.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [12.6  1.4] at Grove x 8th NE"
+    }
+   ],
+   "zone_px": [
+    876.0,
+    1029.5895763927344,
+    1329.8840931000138,
+    1334.5
+   ]
+  },
+  {
+   "name": "72",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Castro",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     290,
+     1445
+    ],
+    [
+     757,
+     1445
+    ],
+    [
+     757,
+     1762
+    ],
+    [
+     290,
+     1762
+    ]
+   ],
+   "corners": [
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "72"
+    },
+    {
+     "x": 755.0,
+     "y": 183.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 755.0,
+     "y": 486.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 875.6,
+     "y": 183.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 185.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "11th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 1329.5,
+     "y": 488.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 876.9,
+     "y": 486.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1245"
+    },
+    {
+     "x": 756.0,
+     "y": 609.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 756.0,
+     "y": 913.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "114"
+    },
+    {
+     "x": 875.6,
+     "y": 609.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 611.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "10th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 1330.0,
+     "y": 915.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 876.9,
+     "y": 911.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "115"
+    },
+    {
+     "x": 754.6,
+     "y": 1029.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "93"
+    },
+    {
+     "x": 876.0,
+     "y": 1030.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1329.9,
+     "y": 1029.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "9th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1328.6,
+     "y": 1334.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "73"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "147",
+    "1245",
+    "114",
+    "115",
+    "93",
+    "92",
+    "73"
+   ],
+   "px4": [
+    [
+     301.5,
+     1455.1
+    ],
+    [
+     756.0,
+     1456.4
+    ],
+    [
+     756.0,
+     1757.9
+    ],
+    [
+     301.5,
+     1756.6
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.76,
+    0.84,
+    0.85
+   ],
+   "corners_all": [
+    {
+     "x": 756.0,
+     "y": 1456.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [12.4  1.2] at Grove x 8th SW"
+    },
+    {
+     "x": 756.0,
+     "y": 1757.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    301.5,
+    1455.1245069311394,
+    756.0,
+    1757.905077200496
+   ]
+  },
+  {
+   "name": "73",
+   "streets": {
+    "N": "8th",
+    "S": "7th",
+    "W": "Grove",
+    "E": "Jefferson"
+   },
+   "px4_est": [
+    [
+     869,
+     1445
+    ],
+    [
+     1329,
+     1445
+    ],
+    [
+     1329,
+     1762
+    ],
+    [
+     869,
+     1762
+    ]
+   ],
+   "corners": [
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "147",
+    "1245",
+    "114",
+    "115",
+    "93",
+    "92",
+    "72"
+   ],
+   "px4": [
+    [
+     877.0,
+     1457.0
+    ],
+    [
+     1329.5,
+     1457.0
+    ],
+    [
+     1329.5,
+     1758.0
+    ],
+    [
+     877.0,
+     1758.0
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.99,
+    0.75,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 877.0,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 1457.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Jefferson",
+      "8th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.5,
+     "y": 1758.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Jefferson",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 877.0,
+     "y": 1758.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "7th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    877.0,
+    1457.0,
+    1329.5,
+    1758.0
+   ]
+  }
+ ],
+ "pct": 25
+}

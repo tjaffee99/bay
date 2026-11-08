@@ -16,8 +16,11 @@
       "Saint James Street"
      ],
      "q": "SW",
-     "x": 384.0,
-     "y": 256.0
+     "x": 391.0,
+     "y": 256.0,
+     "x0": 384.0,
+     "y0": 256.0,
+     "norefine": 1
     },
     {
      "pc": [
@@ -25,8 +28,11 @@
       "Saint John Street"
      ],
      "q": "NW",
-     "x": 1224.0,
-     "y": 256.0
+     "x": 1227.0,
+     "y": 255.0,
+     "x0": 1224.0,
+     "y0": 256.0,
+     "norefine": 1
     },
     {
      "pc": [
@@ -34,8 +40,11 @@
       "Saint James Street"
      ],
      "q": "SE",
-     "x": 384.0,
-     "y": 880.0
+     "x": 386.0,
+     "y": 880.0,
+     "x0": 384.0,
+     "y0": 880.0,
+     "norefine": 1
     }
    ]
   },
@@ -48,8 +57,11 @@
       "Saint James Street"
      ],
      "q": "SW",
-     "x": 384.0,
-     "y": 1366.0
+     "x": 383.0,
+     "y": 1366.0,
+     "x0": 384.0,
+     "y0": 1366.0,
+     "norefine": 1
     },
     {
      "pc": [
@@ -57,8 +69,11 @@
       "Saint James Street"
      ],
      "q": "SE",
-     "x": 384.0,
-     "y": 1660.0
+     "x": 382.0,
+     "y": 1655.0,
+     "x0": 384.0,
+     "y0": 1660.0,
+     "norefine": 1
     },
     {
      "pc": [
@@ -66,10 +81,13 @@
       "Saint John Street"
      ],
      "q": "NE",
-     "x": 940.0,
-     "y": 1660.0,
+     "x": 946.0,
+     "y": 1658.0,
      "wb": 60,
-     "label": "San Pedro x San Augustine (= W St John west of Market) NE; St John centreline + 30 ft"
+     "label": "San Pedro x San Augustine (= W St John west of Market) NE; St John centreline + 30 ft",
+     "x0": 940.0,
+     "y0": 1660.0,
+     "norefine": 1
     }
    ]
   }
