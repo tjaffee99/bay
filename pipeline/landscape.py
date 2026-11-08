@@ -147,7 +147,19 @@ def write_geojson(gdf: gpd.GeoDataFrame, path, precision=6):
         props = {k: (None if (isinstance(v, float) and not np.isfinite(v)) else
                      (int(v) if isinstance(v, (np.integer,)) else (float(v) if isinstance(v, np.floating) else v)))
                  for k, v in r.items() if k != "geometry"}
-        geom = shapely.set_precision(r.geometry, 10 ** -precision)
+        geom = shapely.make_valid(r.geometry)
+        try:
+            geom = shapely.set_precision(geom, 10 ** -precision)
+        except shapely.errors.GEOSException:
+            geom = shapely.make_valid(shapely.transform(geom, lambda xy: np.round(xy, precision)))
+        if geom.is_empty or geom.geom_type not in ("Polygon", "MultiPolygon"):
+            if geom.geom_type == "GeometryCollection":
+                polys = [q for q in geom.geoms if q.geom_type in ("Polygon", "MultiPolygon")]
+                if not polys:
+                    continue
+                geom = shapely.union_all(polys)
+            else:
+                continue
         if geom.is_empty:
             continue
         feats.append({"type": "Feature", "properties": props, "geometry": mapping(geom)})

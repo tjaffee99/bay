@@ -105,6 +105,10 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
   rack kept). No source documents a c.2015 remodel or a changed exterior, so one model covers 1972 → today. Footprint from
   the OSM API (way 1292202052, building + deck); the split between restaurant and deck and all heights are estimates
   (orthophoto blurred, no photo examined).
+- **San Francisco Main Library (1996)** — opened Apr 18, 1996, completed 1995 (Wikipedia); OSM outline 106.2 × 56.9 m,
+  height 46 m and the 22 m atrium square; granite Beaux-Arts fronts on Fulton / Larkin vs modern Hyde / Grove sides —
+  cornice (30 m) and the set-back upper block are estimates. (The old City Hall reconstruction it stands on lives in
+  `city.ts`: `city_hall_1899`, `city_hall_1899_dome`, `city_hall_1906_ruin`.)
 - **NASA Ames NFAC** — OSM gives 54.9 m (180 ft) for the whole complex; only the 80 × 120 ft inlet is drawn that tall;
   the 40 × 80 ft circuit heights are estimates (**LOW CONFIDENCE**).
 
@@ -710,4 +714,14 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Exterior: dark brown wood siding in the A&W years and today, deck over the beach — the 2019 remodel was mainly inside, so one model covers 1972 to today
 - Model: outline from OpenStreetMap (© OSM contributors, ODbL; building and deck); split between restaurant and deck, wall and roof heights, window, sign and fire-pit positions estimated from the (blurred) orthophoto and descriptions — no photograph was examined
 - Sources: https://www.kqed.org/news/12080794/its-the-most-beautiful-taco-bell-in-the-world-heres-why-it-could-never-be-built-today, https://abc7news.com/post/restaurant-some-call-taco-bell-heaven-re-opens-at-pacifica-beach/5392123/, https://www.atlasobscura.com/places/linda-mar-taco-bell
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### San Francisco Main Library (`sf_main_library`)
+
+- Model years: construction 1992.8 → 1996.29, end standing; anchor 37.779128, -122.415771; 178 triangles; model top 46.0 m.
+- Opened: completed 1995, opened Apr 18, 1996 (construction start estimated), replacing the 1917 Main Library across Fulton St (now the Asian Art Museum); built on Marshall Square, part of the block of the old City Hall (1872–1906)
+- Architects: Pei Cobb Freed & Partners (James Ingo Freed) with Simon Martin-Vegue Winkelstein Moris (Cathy Simon)
+- Design: Beaux-Arts granite fronts toward the Civic Center (Fulton and Larkin Sts) and modern planar sides toward Hyde and Grove Sts; a central five-storey skylit atrium; seven storeys
+- Model: outline, overall height (46 m) and the atrium square from OpenStreetMap (© OSM contributors, ODbL); cornice height, the set-back modern upper block and window bays estimated from photographs
+- Sources: https://en.wikipedia.org/wiki/San_Francisco_Public_Library
 - Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo

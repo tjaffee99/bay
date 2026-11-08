@@ -29,7 +29,7 @@ from scipy.spatial import cKDTree
 from shapely.geometry import LineString, Point
 from shapely.ops import linemerge, substring
 
-from common import INTERIM, MANUAL, RAW, VIEWER_DATA, log
+from common import INTERIM, MANUAL, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from export_columnar import write_columnar
 from terrain_grid import grid_def
@@ -753,6 +753,16 @@ def main():
     for cpoly, cend, _ in cemeteries(UTM):
         inside = gpd.GeoSeries(mids.values, crs=UTM).within(cpoly.buffer(-10)).values
         y0 = np.where(inside, np.maximum(y0, cend + 1), y0)
+    # streets cut through existing blocks later (data/tables/street_dates.csv, researched:
+    # Columbus Ave was Montgomery Avenue, cut diagonally through North Beach in 1873-74)
+    sd = TABLES / "street_dates.csv"
+    if sd.exists():
+        t = pd.read_csv(sd)
+        names = (st.street.fillna("").str.upper().str.strip() + " " + st.st_type.fillna("").str.upper().str.strip()).str.strip().values
+        for r in t.itertuples():
+            m = names == str(r.street).upper().strip()
+            y0 = np.where(m, np.maximum(y0, float(r.year_start)), y0)
+            log(f"roads: {int(m.sum())} segments of {r.street} from {r.year_start}")
     cls = pd.to_numeric(st.classcode, errors="coerce").fillna(5).values
     kind = np.where(cls <= 3, K_MAJOR, K_STREET)
     items = [(g, int(k), WIDTH[int(k)], float(a), 9999.0, 0) for g, k, a in zip(st.geometry.values, kind, y0)]

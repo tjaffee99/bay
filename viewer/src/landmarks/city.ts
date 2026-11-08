@@ -424,31 +424,144 @@ const cityHall: Landmark = {
   sources: [WIKI + 'San_Francisco_City_Hall', 'https://www.openstreetmap.org/relation/7261820']
 };
 
+// =========================================================== Old City Hall (1872–1906)
+// Triangular block south of McAllister St and east of Larkin St (Yerba Buena Park); frontages from the
+// San Francisco News Letter of Aug 5, 1893: Larkin St 450 ft, McAllister St 600 ft, the main front on the diagonal
+// (City Hall Ave / Park Ave). Frame: origin = Larkin & McAllister centreline crossing (Overture/OSM),
+// +u east along McAllister (80.2°), +v north. Today's Main Library (Larkin–Hyde–Fulton–Grove) stands on its site;
+// its ruins were found under Hyde St near Fulton St (CBS).
+const OLD_CH: V2 = [-122.4169901, 37.7804986];
+const OCH_BRG = -9.8;
+const OCH_A: V2 = [10.5, -10.5]; // Larkin / McAllister property corner
+const OCH_B: V2 = [10.5 + 600 * 0.3048, -10.5]; // 600 ft east on McAllister
+const OCH_C: V2 = [10.5, -10.5 - 450 * 0.3048]; // 450 ft south on Larkin
+const OCH_STONE = '#D9D3C4';
+const OCH_ROOF = '#5E6266';
+
+/** A wing along a property line p→q, `d` m deep toward `inward`, walls to `eave`, mansard roof above. */
+function ochWing(b: MeshBuilder, p: V2, q: V2, d: number, eave: number, inward: 1 | -1) {
+  const dx = q[0] - p[0];
+  const dy = q[1] - p[1];
+  const L = Math.hypot(dx, dy);
+  const nx = (-dy / L) * inward;
+  const ny = (dx / L) * inward;
+  const ring: V2[] = [p, q, [q[0] + nx * d, q[1] + ny * d], [p[0] + nx * d, p[1] + ny * d]];
+  b.color(OCH_STONE).prism(ring, 0, eave, {top: false});
+  const inset = (k: number): V2[] => [
+    [p[0] + nx * k + (dx / L) * k, p[1] + ny * k + (dy / L) * k],
+    [q[0] + nx * k - (dx / L) * k, q[1] + ny * k - (dy / L) * k],
+    [q[0] + nx * (d - k) - (dx / L) * k, q[1] + ny * (d - k) - (dy / L) * k],
+    [p[0] + nx * (d - k) + (dx / L) * k, p[1] + ny * (d - k) + (dy / L) * k]
+  ];
+  b.color(OCH_ROOF).loft([ring, inset(3)], [eave, eave + 5]);
+}
+
+function oldCityHallWings(b: MeshBuilder) {
+  b.frame(0, 0, 0, OCH_BRG, () => {
+    ochWing(b, OCH_A, OCH_B, 20, 20, -1); // McAllister wing
+    ochWing(b, OCH_C, OCH_A, 20, 20, -1); // Larkin wing
+    ochWing(b, OCH_B, OCH_C, 24, 22, -1); // main front on the diagonal, facing south-east
+    // Hall of Records: circular domed building at the eastern point of the block (position LOW CONFIDENCE)
+    const hr: V2 = [OCH_B[0] - 32, OCH_B[1] - 14];
+    b.color(OCH_STONE).cylinder(hr[0], hr[1], 14, 0, 20, 20);
+    b.color(OCH_ROOF).dome(hr[0], hr[1], 14.5, 20, 9, 20, 4);
+  });
+}
+
+/** Tower over the middle of the main front: square base, colonnaded drum, ribbed dome, lantern and statue (335 ft). */
+function oldCityHallTower(b: MeshBuilder, ruin: boolean) {
+  const m: V2 = [(OCH_B[0] + OCH_C[0]) / 2 - 8, (OCH_B[1] + OCH_C[1]) / 2 + 8];
+  b.frame(0, 0, 0, OCH_BRG, () => {
+    b.color(OCH_STONE).box(m[0], m[1], 0, 26, 26, ruin ? 30 : 38);
+    if (!ruin) {
+      b.cylinder(m[0], m[1], 13, 38, 46, 20);
+      for (let k = 0; k < 16; k++) {
+        const a = (k / 16) * Math.PI * 2;
+        b.box(m[0] + Math.cos(a) * 12.4, m[1] + Math.sin(a) * 12.4, 46, 1.2, 1.2, 14);
+      }
+      b.cylinder(m[0], m[1], 11, 46, 60, 20).cylinder(m[0], m[1], 13.3, 60, 62.5, 20);
+      b.color('#8C8F8E').dome(m[0], m[1], 12.5, 62.5, 20, 20, 6);
+      b.color(OCH_STONE).cylinder(m[0], m[1], 3, 82.5, 92, 10);
+      b.color('#B89B4A').dome(m[0], m[1], 3.2, 92, 2.5, 10, 2).beam([m[0], m[1], 94.5], [m[0], m[1], 335 * 0.3048], 1.0);
+      return;
+    }
+    // 1906–1909: the steel skeleton of the dome stood on its drum over the gutted building
+    b.color('#5E5A55').cylinder(m[0], m[1], 12.5, 30, 46, 16, {top: false});
+    for (let k = 0; k < 16; k++) {
+      const a0 = (k / 16) * Math.PI * 2;
+      const pts: V3[] = [];
+      for (let i = 0; i <= 6; i++) {
+        const t = (i / 6) * (Math.PI / 2);
+        pts.push([m[0] + Math.cos(a0) * 12.5 * Math.cos(t), m[1] + Math.sin(a0) * 12.5 * Math.cos(t), 62.5 + 20 * Math.sin(t)]);
+      }
+      b.beam([m[0] + Math.cos(a0) * 12.5, m[1] + Math.sin(a0) * 12.5, 46], pts[0], 0.6);
+      b.polyline(pts, 0.5);
+    }
+    b.cylinder(m[0], m[1], 3, 82.5, 88, 8, {top: false});
+  });
+}
+
+const OCH_SOURCES = [
+  WIKI + 'San_Francisco_City_Hall',
+  'https://sfmuseum.org/hist5/laver.html',
+  'https://oac.cdlib.org/ark:/13030/hb096nb16b/',
+  'https://www.cbsnews.com/sanfrancisco/news/construction-crew-unearths-ruins-of-old-san-francisco-city-hall-building-destroyed-in-06-quake'
+];
+
 const oldCityHall: Landmark = {
   id: 'city_hall_1899',
   name: 'Old San Francisco City Hall',
   kind: 'building',
-  built: [1871.0, 1899.0],
+  built: [1872.14, 1889.0],
   end: 1906.3,
-  anchor: [-122.415, 37.7795],
+  anchor: OLD_CH,
+  build: oldCityHallWings,
+  facts: {
+    Built: 'cornerstone Feb 22, 1872; built in stages over 27 years (completed 1899) to Augustus Laver\'s Second Empire design — the wings and Hall of Records first, the tower last',
+    Site: 'triangular block of Yerba Buena Park: 450 ft on Larkin St, 600 ft on McAllister St, the main front (≈ 1,100 ft of irregular walls) on the diagonal avenue — today\'s Main Library block and Fulton St east of Larkin',
+    Destroyed: 'Apr 18, 1906 in the earthquake and fire',
+    Model:
+      'triangle from the documented frontages laid on today\'s Larkin / McAllister lines; wing depths (20–24 m), eave heights, mansards, the Hall of Records position and the split of the build years into wings (to 1889) and tower (1889–98) estimated — LOW CONFIDENCE in detail (no Sanborn sheet of the block was traced)'
+  },
+  sources: OCH_SOURCES
+};
+
+const oldCityHallDome: Landmark = {
+  id: 'city_hall_1899_dome',
+  name: 'Old San Francisco City Hall — tower and dome',
+  kind: 'tower',
+  built: [1889.0, 1898.9],
+  end: 1906.3,
+  anchor: OLD_CH,
+  build: b => oldCityHallTower(b, false),
+  facts: {
+    Height: 'main dome 335 ft (102 m) (Bancroft Library photo record; other sources say about 300 ft); Laver\'s 1870s design had called for a 420 ft tower',
+    Built: 'still unfinished in 1893 (News Letter); completed in the late 1890s, crowned by the Goddess of Progress (her head survives in today\'s City Hall)',
+    Model: 'position at the middle of the diagonal front, stage heights and colonnade estimated from photographs; LOW CONFIDENCE'
+  },
+  sources: OCH_SOURCES
+};
+
+const oldCityHallRuin: Landmark = {
+  id: 'city_hall_1906_ruin',
+  name: 'Old City Hall ruins (dome skeleton)',
+  kind: 'monument',
+  built: [1906.3, 1906.32],
+  end: 1909.5,
+  anchor: OLD_CH,
   build: b => {
-    const stone = '#D6CFBF';
-    // long multi-wing classical building on a triangular block (massing approximate)
-    b.color(stone).box(0, 0, 0, 160, 30, 22).box(-55, 35, 0, 30, 70, 22).box(55, 30, 0, 30, 60, 22);
-    b.color('#8C8F92').hip(0, 0, 160, 30, 22, 4);
-    // domed tower at the Larkin/McAllister side, dome to ≈ 102 m
-    b.color(stone).cylinder(-40, -5, 11, 22, 62, 20);
-    b.color('#7E8487').dome(-40, -5, 11, 62, 22, 20, 5);
-    b.color(stone).cylinder(-40, -5, 2.5, 84, 98, 8);
-    b.color('#B89B4A').dome(-40, -5, 2.6, 98, 4, 8, 2);
+    oldCityHallTower(b, true);
+    b.frame(0, 0, 0, OCH_BRG, () => {
+      b.color('#77716A');
+      for (const [p, q] of [[OCH_A, OCH_B], [OCH_C, OCH_A], [OCH_B, OCH_C]] as [V2, V2][]) b.wallProfile([p, q], 0, 7);
+    });
   },
   facts: {
-    Built: '1871/72 – 1899 (27 years, seven architects)',
-    Destroyed: 'Apr 18, 1906 earthquake and fire; the bare dome skeleton stood over the ruins',
-    Dome: '≈ 102 m (335 ft)',
-    Model: 'LOW CONFIDENCE: massing and exact position approximate'
+    Ruin: 'after the fire the bare steel frame of the dome stood over the gutted walls and was shown to visitors for years',
+    Removed: 'pulled down c. 1909 (one account; others put the sale of the ruins later) — LOW CONFIDENCE end date',
+    Model: 'dome ribs on the drum and low broken walls on the building lines, estimated from the 1906 photographs'
   },
-  sources: [WIKI + 'San_Francisco_City_Hall', 'https://calisphere.org/item/ark:/13030/hb096nb16b/']
+  sources: OCH_SOURCES
 };
 
 // =========================================================== Coit Tower
@@ -1231,6 +1344,8 @@ export const CITY_LANDMARKS: Landmark[] = [
   ferryBuilding,
   cityHall,
   oldCityHall,
+  oldCityHallDome,
+  oldCityHallRuin,
   coitTower,
   pofa1915,
   pofa1967,

@@ -269,15 +269,16 @@ route("osr", "Ocean Shore Railway", "rail", OSR, [
         pts((-122.4722, 37.7047), (-122.4718, 37.7030)),
         topo("sm1915", (-122.4718, 37.7030), (-122.4718, 37.6990), (-122.4728, 37.6963), (-122.4845, 37.6963),
              (-122.4885, 37.6995), (-122.4930, 37.6998), (-122.4965, 37.6978), (-122.4972, 37.6900),
-             (-122.4958, 37.6800), (-122.4955, 37.6700), (-122.4945, 37.6630), (-122.4945, 37.6550),
-             (-122.4935, 37.6450), (-122.4925, 37.6370), (-122.4940, 37.6260), (-122.4945, 37.6180),
-             (-122.4950, 37.6125), (-122.4962, 37.6075), corridor=160),
+             (-122.4958, 37.6800), (-122.4955, 37.6700), (-122.4945, 37.6630), (-122.4920, 37.6600),
+             (-122.4898, 37.6531), (-122.4908, 37.6474), (-122.4904, 37.6420), (-122.4900, 37.6330),
+             (-122.4897, 37.6270), (-122.4891, 37.6255), (-122.4857, 37.6210), (-122.4857, 37.6162),
+             (-122.4887, 37.6147), (-122.4925, 37.6126), (-122.4959, 37.6108), (-122.4982, 37.6090),
+             corridor=60),
         note="Along the face of the sea cliffs from Thornton to Mussel Rock (the San Andreas rift crossing), then "
              "the beach terraces of Salada (Sharp Park) and Rockaway. Geometry: USGS San Mateo 1915 sheet "
              "('Ocean Shore')."),
     seg("Rockaway - Pedro Valley (Tobin)", 1907.75, OSR_END,
-        pts((-122.4962, 37.6075), (-122.4985, 37.6035), (-122.5025, 37.5995), (-122.5065, 37.5972),
-            (-122.5095, 37.5966)),
+        pts((-122.4982, 37.6090), (-122.5010, 37.6040), (-122.5050, 37.5985), (-122.5095, 37.5966)),
         note="Tobin station at San Pedro Point (Danmann Ave / Shelter Cove Rd), reached 1907-10-02. Geometry "
              "hand-placed along the valley floor (LOW CONFIDENCE).", geometry_confidence="low"),
     seg("Tobin - Shelter Cove (San Pedro Point)", 1908.45, OSR_END,
@@ -329,3 +330,96 @@ route("osr", "Ocean Shore Railway", "rail", OSR, [
              "hand-placed between (south of Purisima LOW CONFIDENCE).", confidence="estimated",
         geometry_confidence="medium"),
 ])
+
+# =====================================================================================
+# SAN FRANCISCO & SAN JOSE RAILROAD (1863-64) / SP PENINSULA LINE
+# =====================================================================================
+SFSJ = WIKI + "San_Francisco_and_San_Jose_Railroad"
+OVB = WIKI + "Ocean_View_Branch"
+route("sfsj", "San Francisco & San Jose Railroad / Southern Pacific (Peninsula line)", "rail", SFSJ, [
+    seg("Valencia St street running, 18th St - 25th St (first SF terminal at 18th & Valencia)", 1863.8, 1874.6,
+        road((-122.42160, 37.76170), (-122.42051, 37.75051), names=["Valencia"]),
+        source_url=OVB,
+        note="SF&SJ trains reached the city at 18th & Valencia (October 1863; passengers changed to horsecars), "
+             "then ran up Valencia St to a Market St depot 'by around 1866', until SP moved the line to Harrison, "
+             "Division and Townsend streets (4th & Townsend depot 1874-08-17). Geometry: today's Valencia St.",
+        confidence="estimated"),
+    seg("Valencia St street running, Market St - 18th St", 1866.0, 1874.6,
+        road((-122.42265, 37.77250), (-122.42160, 37.76170), names=["Valencia"]),
+        source_url=OVB, note="Extension to a Market St depot c.1866 (year ESTIMATED).", confidence="estimated"),
+    seg("Mission diagonal (Valencia near 25th - Juri Commons - Dolores St viaduct) and the Bernal Cut to Glen Park",
+        1863.8, 1942.0,
+        topo("sf1899", (-122.4205, 37.7508), (-122.4220, 37.7496), (-122.4246, 37.7462), (-122.4236, 37.7430),
+             (-122.4238, 37.7405), corridor=70),
+        topo("sm1899", (-122.4238, 37.7405), (-122.4260, 37.7378), (-122.4304, 37.7339), (-122.4339, 37.7330),
+             corridor=90),
+        source_url=OVB,
+        note="Private right of way across the Mission (Juri Commons; steel viaduct over Dolores St) into the "
+             "Bernal Cut (dug 1862-63, 43 ft deep; now San Jose Ave); main line until the Bayshore Cutoff "
+             "(1907-12-08), then the Ocean View Branch; abandoned 1942. Geometry: USGS San Francisco 1899 and San "
+             "Mateo 1899 sheets."),
+    seg("Mission diagonal east of Valencia: Harrison St at 22nd - Folsom - Mission St (1874 line)", 1874.6, 1942.0,
+        topo("sf1899", (-122.41223, 37.75584), (-122.4137, 37.7541), (-122.4184, 37.7518), (-122.4205, 37.7508),
+             corridor=60),
+        source_url=OVB,
+        note="Diagonal leaving Harrison at 22nd, crossing Treat/Folsom near 23rd and Mission just south of 24th; "
+             "built when the line moved off Valencia St (1874). Geometry: USGS San Francisco 1899 sheet."),
+    seg("4th & Townsend - Townsend St - Division St - Harrison St to 22nd (1874 main line)", 1874.6, 1907.93,
+        pts((-122.394981, 37.777089), (-122.401657, 37.771817), (-122.404391, 37.769750), (-122.406213, 37.769463),
+            (-122.410872, 37.769232), (-122.413243, 37.766898), (-122.41223, 37.75584), chaikin=2),
+        source_url=OVB,
+        note="SP moved the line onto Townsend, Division and Harrison streets with the 4th & Townsend depot "
+             "(1874-08-17); main line until the Bayshore Cutoff opened 1907-12-08, then Ocean View Branch "
+             "freight (Harrison St freight tracks to Treat Ave survived until c.1990). Street geometry from DataSF "
+             "intersections; the Division/Harrison link approximate.", geometry_confidence="medium"),
+    seg("Ocean View Branch: Glen Park - Ocean View - Daly City - Colma - Baden - San Bruno (original main line)",
+        1863.8, 1942.0,
+        topo("sm1899", (-122.4339, 37.7331), (-122.4378, 37.7306), (-122.4433, 37.7281), (-122.4455, 37.7263),
+             (-122.4471, 37.7236), (-122.4488, 37.7163), (-122.4503, 37.7145), (-122.4533, 37.7119),
+             (-122.4551, 37.7107), (-122.4570, 37.7102), (-122.4640, 37.7101), (-122.4654, 37.7098),
+             (-122.4665, 37.7090), (-122.4706, 37.7043), (-122.4712, 37.7030), (-122.4711, 37.6983),
+             (-122.4700, 37.6948), (-122.4698, 37.6895), (-122.4680, 37.6857), (-122.4621, 37.6817),
+             (-122.4575, 37.6769), (-122.4532, 37.6739), (-122.4479, 37.6669), (-122.4400, 37.6616),
+             (-122.4350, 37.6564), (-122.4283, 37.6526), (-122.4261, 37.6509), (-122.4228, 37.6471),
+             (-122.4194, 37.6433), (-122.4164, 37.6381), (-122.4120, 37.6305), corridor=110),
+        source_url=OVB,
+        note="SF&SJ opened San Francisco - Mayfield October 1863 over this route (through the Bernal Cut, Ocean "
+             "View and Colma); bypassed by the Bayshore Cutoff 1907; Ocean View Branch, abandoned 1942. Geometry: "
+             "USGS San Mateo 1899 sheet."),
+    seg("San Bruno - Millbrae - San Mateo - Redwood City - Mayfield (Palo Alto)", 1863.8, 9999,
+        rail((-122.4112, 37.6298), (-122.4031, 37.6174), (-122.3889, 37.6020), (-122.3713, 37.5912),
+             (-122.3426, 37.5791), (-122.3234, 37.5676), (-122.3072, 37.5490), (-122.2911, 37.5322),
+             (-122.2678, 37.5147), (-122.2429, 37.4931), (-122.2172, 37.4768), (-122.1830, 37.4551),
+             (-122.1573, 37.4389), (-122.1428, 37.4292), names=["Caltrain"]),
+        note="SF&SJ opened to Mayfield 1863-10-18 (to San Jose 1864-01-16); Southern Pacific 1870; Caltrain "
+             "today (geometry: OSM). Later grade separations and the 1907 Bayshore Cutoff junction at San Bruno "
+             "are not modelled separately."),
+    seg("Mayfield - Mountain View - Santa Clara - San Jose", 1864.04, 9999,
+        rail((-122.1428, 37.4292), (-122.1231, 37.4174), (-122.1029, 37.4051), (-122.0729, 37.3932),
+             (-122.0446, 37.3832), (-122.0172, 37.3743), (-121.9859, 37.3705), (-121.9639, 37.3654),
+             (-121.9376, 37.3539), (-121.9132, 37.3415), (-121.9029, 37.3304), names=["Caltrain"]),
+        note="Opened to San Jose 1864-01-16; Caltrain today (geometry: OSM; the San Jose end follows the 1935 "
+             "line to Diridon station, the 1864 depot stood further east)."),
+])
+
+route("ir_40", "San Francisco & San Mateo Electric Railway / United Railroads 40 San Mateo interurban", "interurban",
+      WIKI + "List_of_defunct_San_Francisco_Municipal_Railway_lines", [
+          seg("San Francisco: 5th St and Mission St to Onondaga Ave", 1903.0, 1949.1,
+              road((-122.40807, 37.78401), (-122.40649, 37.78274), names=["5th Street"]),
+              road((-122.40649, 37.78274), (-122.41984, 37.76668), (-122.41831, 37.75065), (-122.4300, 37.7330),
+                   (-122.4425, 37.7186), names=["Mission Street"]),
+              note="Northern terminus 5th & Market by 1906; along Mission St (street running) to San Jose Ave and the "
+                   "private right of way; service from 1902-12-31, through to San Mateo 1903; discontinued 1949 "
+                   "(track and cars worn out). Geometry: today's street centrelines (OSM)."),
+          seg("Daly City - Colma - Baden - San Bruno - Millbrae - Burlingame - San Mateo (private right of way)",
+              1903.0, 1949.1,
+              topo("sm1915", (-122.4425, 37.7186), (-122.4500, 37.7130), (-122.4560, 37.7080), (-122.4600, 37.6990),
+                   (-122.4615, 37.6860), (-122.4570, 37.6770), (-122.4520, 37.6700), (-122.4400, 37.6620),
+                   (-122.4290, 37.6560), (-122.4220, 37.6460), (-122.4140, 37.6330), (-122.4040, 37.6200),
+                   (-122.3940, 37.6080), (-122.3820, 37.5960), (-122.3700, 37.5860), (-122.3580, 37.5790),
+                   (-122.3470, 37.5730), (-122.3360, 37.5690), (-122.3260, 37.5650), corridor=220),
+              note="Private right of way parallel to Mission Rd / El Camino Real (Centennial Way trail in South San "
+                   "Francisco and San Bruno reuses it). Geometry: least-cost trace on the USGS San Mateo 1915 sheet "
+                   "along the documented corridor - MEDIUM CONFIDENCE (the sheet also shows the SP and the county "
+                   "road nearby).", geometry_confidence="medium"),
+      ])

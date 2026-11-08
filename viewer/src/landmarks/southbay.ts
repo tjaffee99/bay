@@ -2467,6 +2467,52 @@ const pacificaTacoBell = landmark(
   [rotPoly(PACIFICA_TB_OUTLINE, 27.8)]
 );
 
+// =================================================================== SAN FRANCISCO CIVIC CENTER
+
+// ---- San Francisco Main Library (1996): Pei Cobb Freed & Partners with Simon Martin-Vegue Winkelstein Moris.
+// OSM outline 106.2 × 56.9 m on the civic-centre grid (frame −9°: +u east from Larkin to Hyde, +v north to Fulton).
+const SF_MAIN_LIBRARY: V2 = [-122.415771, 37.779128];
+const sfMainLibrary = landmark(
+  'sf_main_library',
+  'San Francisco Main Library',
+  'building',
+  [1992.8, 1996.29],
+  9999,
+  SF_MAIN_LIBRARY,
+  b => {
+    b.frame(0, 0, 0, -9, () => {
+      const GRANITE = '#D8D2C4';
+      const MODERN = '#C9CCCB';
+      // granite Beaux-Arts fronts on Fulton St (north, facing the 1917 library) and Larkin St (west), cornice line of the old library
+      b.color(GRANITE);
+      boxR(b, [-53.2, 53.2, -28.4, 28.4], 0, 30, false);
+      b.color('#B8B0A0');
+      boxR(b, [-53.6, 53.6, -28.8, 28.8], 27.5, 30.5, false);
+      b.color('#6F7478');
+      for (const u of [-44, -33, -22, -11, 0, 11, 22, 33, 44]) b.box(u, 28.45, 4, 6.5, 0.15, 18);
+      for (const v of [-18, -6, 6, 18]) b.box(-53.25, v, 4, 0.15, 7, 18);
+      // modern Hyde / Grove sides: a set-back upper block to the OSM height (46 m) and glazed planes
+      b.color(MODERN);
+      boxR(b, [-12, 53.2, -28.4, 14], 30, 46);
+      b.color('#8FA7B2');
+      boxR(b, [53.25, 53.35, -26, 26], 3, 44, false);
+      boxR(b, [-50, 50, -28.5, -28.45], 3, 28, false);
+      b.color('#BEB8AA').cap(rect(0, 0, 106.4, 56.8), 30);
+      // five-storey skylit atrium (OSM part, 22 m) with its glazed roof
+      b.color('#A9C0C9').pyramid([[-31.3, 4.7], [-19.2, -13.5], [-6.9, -5.4], [-19.0, 12.7]], 30, [-19.1, -0.4, 34]);
+    });
+  },
+  {
+    Opened: 'completed 1995, opened Apr 18, 1996 (construction start estimated), replacing the 1917 Main Library across Fulton St (now the Asian Art Museum); built on Marshall Square, part of the block of the old City Hall (1872–1906)',
+    Architects: 'Pei Cobb Freed & Partners (James Ingo Freed) with Simon Martin-Vegue Winkelstein Moris (Cathy Simon)',
+    Design: 'Beaux-Arts granite fronts toward the Civic Center (Fulton and Larkin Sts) and modern planar sides toward Hyde and Grove Sts; a central five-storey skylit atrium; seven storeys',
+    Model:
+      'outline, overall height (46 m) and the atrium square from OpenStreetMap (© OSM contributors, ODbL); cornice height, the set-back modern upper block and window bays estimated from photographs'
+  },
+  [WIKI + 'San_Francisco_Public_Library'],
+  [rotPoly(rect(0, 0, 108, 59), -9)]
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -2530,5 +2576,6 @@ export const SOUTHBAY: Landmark[] = [
   gaDropTower,
   gaGoldStriker,
   gaRailBlazer,
-  pacificaTacoBell
+  pacificaTacoBell,
+  sfMainLibrary
 ];
