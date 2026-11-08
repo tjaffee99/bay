@@ -51,13 +51,13 @@ VOLUMES = {  # LOC item suffix (sanborn00813_<sfx>) -> (map year, label)
     "008": (1899, "1899 Vol. 1"), "009": (1899, "1899 Vol. 2"), "010": (1899, "1899 Vol. 3"), "011": (1899, "1899 Vol. 4"),
     "012": (1900, "1900 Vol. 5"), "013": (1900, "1900 Vol. 6"),
     "015": (1913, "1913 Vol. 1"), "016": (1913, "1913 Vol. 2"), "017": (1913, "1913 Vol. 3"), "018": (1913, "1913 Vol. 4"),
-    "019": (1914, "1914 Vol. 5"), "020": (1914, "1914 Vol. 6"), "021": (1914, "1914 Vol. 7"), "022": (1914, "1914 Vol. 8"),
+    "019": (1914, "1914 Vol. 5"), "020": (1914, "1914 Vol. 6"), "021": (1914, "1914 Vol. 7"), "022": (1914, "1914 Vol. 8 (title page 1914; LOC note 1922)"),
     "023": (1915, "1915 Vol. 9"), "024": (1915, "1915 Vol. 10"),
     "030": (1950, "1913-1950 Vol. 1 (corrected to 1950)"), "031": (1950, "1913-Sep 1950 Vol. 2 (corrected)"),
-    "032": (1950, "1913-1950 Vol. 3 (corrected)"), "033": (1950, "1913-1950 Vol. 4 (corrected)"),
-    "034": (1950, "1914-1950 Vol. 5 (corrected)"), "035": (1950, "1914-Dec 1950 Vol. 6 (corrected)"),
-    "036": (1950, "1914-1950 Vol. 7 (corrected)"), "037": (1950, "1914-1950 Vol. 8 (corrected)"),
-    "038": (1950, "1915-1950 Vol. 9 (corrected)"),
+    "032": (1950, "1913-Oct 1950 Vol. 3 (corrected)"), "033": (1950, "1950 Vol. 4 (corrected)"),
+    "034": (1950, "1950 Vol. 5 (corrected)"), "035": (1950, "1914-Dec 1950 Vol. 6 (corrected)"),
+    "036": (1950, "1914-Jan 1950 Vol. 7 (corrected)"), "037": (1950, "1914-Feb 1950 Vol. 8 (corrected)"),
+    "038": (1950, "1915-Mar 1950 Vol. 9 (corrected)"),
 }
 AREAS: dict[tuple[str, int], list[str]] = {}   # filled from control/industrial/areas.json
 # areas already traced by other tools: their coverage is cut out of ours (no double buildings)
@@ -587,7 +587,16 @@ def assemble(areas=None):
             if not any(feats[j][1]["sheet"] != p["sheet"] and g.intersects(feats[j][0])
                        and g.intersection(feats[j][0]).area / min(g.area, feats[j][0].area) > 0.5 for j in kept):
                 kept.append(i)
-        rnd = lambda gj: json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
+        def rnd(gj):
+            out = json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
+            from shapely.geometry import shape
+            g2 = shape(out)
+            if g2.geom_type in ("Polygon", "MultiPolygon") and not g2.is_valid:  # rounding can pinch a ring:
+                g2 = shapely.set_precision(shape(gj), 1e-7)                   # snap to the 1e-7 grid, kept valid
+                if out["type"] == "Polygon" and g2.geom_type == "MultiPolygon":
+                    g2 = max(g2.geoms, key=lambda q: q.area)
+                out = json.loads(json.dumps(mapping(g2)), parse_float=lambda s: round(float(s), 7))
+            return out
         fc = {"type": "FeatureCollection", "name": f"{area}_{year}", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
               "features": [{"type": "Feature", "properties": feats[i][1], "geometry": rnd(mapping(lonlat(feats[i][0])))}
                            for i in sorted(kept, key=lambda i: feats[i][1]["id"])]}

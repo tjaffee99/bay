@@ -1,0 +1,27 @@
+{
+ "railroad": "Atchison, Topeka & Santa Fe",
+ "railroads": [
+  {
+   "name": "Southern Pacific",
+   "poly_px": [
+    [
+     40,
+     40
+    ],
+    [
+     235,
+     40
+    ],
+    [
+     235,
+     900
+    ],
+    [
+     40,
+     900
+    ]
+   ]
+  }
+ ],
+ "note": "label 'Atchison, Topeka & Santa Fe Railway Yards' / 'A.T.&S.F. Ry'; the bundle along Kentucky St at the upper left is labelled 'S.P.R.R.'"
+}
