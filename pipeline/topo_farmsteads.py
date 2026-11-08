@@ -1299,6 +1299,10 @@ def write_debug(sheet, keep, m, n_crops):
 TOWN_RADIUS_M = 150
 TOWN_MAX = 8            # more than this many other symbols within TOWN_RADIUS_M: a town
 FARMSTEAD_M = 60
+# farmsteads below this detector score are left out: on 160 hand-checked points (4 sheets)
+# it removes ~2/3 of the false positives (letter counters, hachures, power-line towers)
+# and ~6 % of the true farmsteads
+MIN_SCORE = 0.7
 
 
 def local_xy(lon, lat, lat0):
@@ -1393,6 +1397,7 @@ def export():
                   and q["scale"] < r["scale"] and polys[q["id"]].intersects(polys[r["id"]])]
         drop = unary_union(better) if better else None
         f, tw = farmsteads_of_sheet(r, drop)
+        f = [x for x in f if x["properties"]["score"] >= MIN_SCORE]
         feats += f
         towns += tw
         shown = polys[r["id"]].difference(drop) if drop is not None else polys[r["id"]]
