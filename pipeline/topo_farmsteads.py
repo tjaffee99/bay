@@ -391,6 +391,54 @@ def detect_symbols(img, g, debug=None):
         r["shape_ok"] = (r["area_mm2"] >= a_min and r["elong"] <= 2.6 and r["solidity"] >= 0.82
                          and r["rect_fill"] >= 0.62)
         sym_ok[r["i"]] = r["shape_ok"]
+    # --- open squares (barns, sheds, warehouses on the 1940s-50s maps; dwellings are
+    # solid): small holes in the ink enclosed by a closed, thin square outline
+    inv = ((ink == 0) & (inside > 0)).astype(np.uint8)
+    no, olab, ost, ocen = cv2.connectedComponentsWithStats(inv, connectivity=4)
+    del inv
+    ring_t = max(2, int(round(0.16 * ppm)))
+    k_ring = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * ring_t + 1,) * 2)
+    k_out = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * int(round(0.42 * ppm)) + 1,) * 2)
+    sq_ok = np.zeros(no, bool)
+    opens = []
+    for i in range(1, no):
+        x, y, w, h, a = ost[i]
+        if not (0.03 * ppm ** 2 <= a <= 2.0 * ppm ** 2) or max(w, h) > 2.2 * ppm or min(w, h) < 0.12 * ppm:
+            continue
+        pad = int(0.5 * ppm) + 2
+        y0, y1, x0, x1 = max(y - pad, 0), min(y + h + pad, H), max(x - pad, 0), min(x + w + pad, W)
+        hole = (olab[y0:y1, x0:x1] == i).astype(np.uint8)
+        cnts, _ = cv2.findContours(hole, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        c = max(cnts, key=cv2.contourArea)
+        (rw, rh) = cv2.minAreaRect(c)[1]
+        rect_fill = a / max((rw + 1) * (rh + 1), 1)
+        elong = max(rw, rh) / max(min(rw, rh), 1)
+        if rect_fill < 0.72 or elong > 3.5:
+            continue
+        inkw = ink[y0:y1, x0:x1]
+        d1 = cv2.dilate(hole, k_ring)
+        ringm = (d1 > 0) & (hole == 0)
+        ring_ink = float(inkw[ringm].mean())
+        if ring_ink < 0.8:
+            continue                          # not closed by an outline
+        d2 = cv2.dilate(hole, k_out)
+        outer = (d2 > 0) & (d1 == 0)
+        out_ink = float(inkw[outer].mean())
+        if out_ink > 0.4:
+            continue                          # outline is part of a heavy mass, not a square
+        sq_ok[i] = True
+        filled = (d1 > 0) & ((inkw > 0) | (hole > 0))
+        fa = int(filled.sum())
+        opens.append({"oi": i, "x": x + ocen[i][0] - x, "y": ocen[i][1], "area_mm2": fa / ppm ** 2,
+                      "hole_mm2": a / ppm ** 2, "elong": elong, "solidity": 1.0, "rect_fill": rect_fill,
+                      "tri_fill": 0.5, "dark": float(np.median(mn[y0:y1, x0:x1][ringm & (inkw > 0)])),
+                      "w": int(w + 2 * ring_t), "h": int(h + 2 * ring_t), "theta": 0.0, "shape_ok": True,
+                      "ring_ink": ring_ink, "out_ink": out_ink, "open": True})
+    for r in opens:
+        r["x"] = float(ocen[r["oi"]][0])
+    for r in recs:
+        r["open"] = False
+
     # --- context in a window around each candidate. Light ink (hairlines of lettering,
     # soft edges) connects a blob to the rest of its glyph; components are only followed
     # inside the window, so roads and rails leaving it are "lines", not glyphs.
@@ -429,7 +477,7 @@ def detect_symbols(img, g, debug=None):
         sel = slice(None, None, 4)
         gm_pts.append(np.column_stack([xs_[sel] + x, ys_[sel] + y]))
     gm_tree = cKDTree(np.concatenate(gm_pts)) if gm_pts else None
-    for r in recs:
+    for r in recs + opens:
         cx, cy = int(round(r["x"])), int(round(r["y"]))
         y0, y1, x0, x1 = max(cy - R, 0), min(cy + R + 1, H), max(cx - R, 0), min(cx + R + 1, W)
         ccx, ccy = r["x"] - x0, r["y"] - y0
@@ -438,8 +486,15 @@ def detect_symbols(img, g, debug=None):
         inkw = ink[y0:y1, x0:x1]
         lightw = ((mxw < 0.80 * lp) & hue_ok[y0:y1, x0:x1]).astype(np.uint8) | inkw
         labw = lab[y0:y1, x0:x1]
-        own = labw == r["i"]
-        symw = cv2.dilate((sym_ok[labw] | own).astype(np.uint8), small_k) > 0
+        olw = olab[y0:y1, x0:x1]
+        sqw = cv2.dilate(sq_ok[olw].astype(np.uint8), k_ring)
+        if r["open"]:
+            own = (cv2.dilate((olw == r["oi"]).astype(np.uint8), k_ring) > 0) & ((inkw > 0) | (olw == r["oi"]))
+            lightw = lightw | own.astype(np.uint8)
+        else:
+            own = labw == r["i"]
+        symw = (cv2.dilate((sym_ok[labw] | own).astype(np.uint8), small_k) > 0) | \
+               (cv2.dilate(sqw, small_k) > 0)
         hh_, ww_ = own.shape
         # light components
         ncl, cl, cst, _ = cv2.connectedComponentsWithStats(lightw, connectivity=8)
@@ -498,7 +553,7 @@ def detect_symbols(img, g, debug=None):
                         break                   # partner casing, so not a house on a road
         # holes (letter counters) near the blob, for glyphs not attached to lines
         holes = 0
-        if not touches:
+        if not touches and not r["open"]:
             cnts, hier = cv2.findContours(comp.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
             if hier is not None:
                 for q, hh in enumerate(hier[0]):
@@ -538,10 +593,11 @@ def detect_symbols(img, g, debug=None):
     D = np.array(dashes) if dashes else None
     dtree = cKDTree(D[:, :2]) if dashes else None
     a_typ = float(np.median([r["area_mm2"] for r in recs if r["shape_ok"]] or [0.15]))
+    a_typ_open = float(np.median([r["area_mm2"] for r in opens] or [a_typ]))
     keep = []
-    for r in recs:
+    for r in recs + opens:
         reasons = []
-        if r["area_mm2"] < a_min:
+        if r["area_mm2"] < a_min and not r["open"]:
             reasons.append("small")
         if r["elong"] > 2.6:
             reasons.append("elongated")
@@ -578,7 +634,7 @@ def detect_symbols(img, g, debug=None):
         if r["dark"] > 0.45 * paper:
             reasons.append("faint")
         r["reject"] = reasons
-        s_area = math.exp(-abs(math.log(r["area_mm2"] / a_typ)) / 0.8)
+        s_area = math.exp(-abs(math.log(r["area_mm2"] / (a_typ_open if r["open"] else a_typ))) / 0.8)
         s_shape = max(0.0, min(1.0, (2.6 - r["elong"]) / 1.2)) * max(0.0, min(1.0, (r["solidity"] - 0.78) / 0.12)) \
             * max(0.0, min(1.0, (r["rect_fill"] - 0.58) / 0.15))
         s_dark = min(1.0, max(0.0, (0.45 * paper - r["dark"]) / (0.25 * paper)))
@@ -587,9 +643,10 @@ def detect_symbols(img, g, debug=None):
         if not reasons:
             keep.append(r)
     stats = {"paper": paper, "ink_t": ink_t, "a_min_mm2": a_min, "a_typ_mm2": a_typ,
-             "n_cores": int(n - 1), "n_candidates": len(recs), "n_kept": len(keep), "n_dashes": len(dashes)}
+             "n_cores": int(n - 1), "n_candidates": len(recs), "n_open_candidates": len(opens),
+             "n_kept": len(keep), "n_kept_open": sum(1 for r in keep if r["open"]), "n_dashes": len(dashes)}
     if debug is not None:
-        debug["all"] = recs
+        debug["all"] = recs + opens
     return keep, stats
 
 

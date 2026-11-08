@@ -140,7 +140,7 @@ def assign_years(g):
     # campuses (universities, colleges, schools, hospitals, bases): estimated buildings
     # take the years of dated buildings of the same campus, not of the tract houses
     # across the street
-    year = campus_impute(g, xy, year, conf, upper_all)
+    year = campus_impute(g, xy, year, conf, src, upper_all)
     # imputation from recorded neighbours (and the placeholder as an upper bound)
     have = np.isfinite(year)
     if have.any():
@@ -204,15 +204,18 @@ def known_dates(g, year, conf, src):
 CAMPUS_CLASSES = ("university", "college", "school", "hospital", "military")
 
 
-def campus_impute(g, xy, year, conf, upper):
-    """Estimated buildings on a campus (Overture land_use university / college / school /
-    hospital / military outlines, smallest containing one) take the median year of the 8
-    nearest dated buildings of that campus when it has at least 3."""
+def campus_impute(g, xy, year, conf, src, upper):
+    """Buildings on a campus (Overture land_use university / college / school / hospital /
+    military outlines, smallest containing one). Exempt property has no real roll year:
+    a year shared by >= 40 % of a campus's roll-dated buildings is a placeholder (the
+    whole campus parcel's year), not the buildings'. Undated and placeholder-dated
+    buildings take the median year of the 8 nearest dated buildings of the same campus
+    (researched rows, surveys, roll years that aren't the placeholder) when it has >= 3."""
     p = RAW / "overture" / RELEASE / "region5_land_use.parquet"
     if not p.exists():
         return year
     d = pd.read_parquet(p)
-    d = d[d["class"].isin(CAMPUS_CLASSES)]
+    d = d[d["class"].isin(CAMPUS_CLASSES)].reset_index(drop=True)
     lu = gpd.GeoDataFrame(d[["class", "name"]], geometry=gpd.GeoSeries.from_wkb(d.geometry.values), crs=4326)
     lu = lu[lu.geom_type.isin(["Polygon", "MultiPolygon"])].to_crs(UTM)
     lu = lu.assign(area=lu.geometry.area.values)
@@ -223,10 +226,21 @@ def campus_impute(g, xy, year, conf, upper):
     campus = np.full(len(g), -1)
     campus[j.index.values] = j.index_right.values
     year = year.copy()
-    n_done = 0
+    srcs = pd.Series(src).astype(str)
+    researched = (srcs.str.startswith("known:") | srcs.str.startswith("ca_ohp") | srcs.str.startswith("san_jose_hri")).values
     have = np.isfinite(year) & (conf == "exact")
+    n_done, n_ph = 0, 0
     for cid in np.unique(campus[campus >= 0]):
         members = np.nonzero(campus == cid)[0]
+        roll = members[have[members] & ~researched[members]]
+        # (not schools: a school is often built in one go)
+        if len(roll) >= 20 and lu["class"].values[cid] != "school":
+            vals, cnt = np.unique(np.floor(year[roll]), return_counts=True)
+            if cnt.max() >= 0.4 * len(roll):
+                ph = roll[np.floor(year[roll]) == vals[np.argmax(cnt)]]
+                have[ph] = False
+                conf[ph] = "estimated"
+                n_ph += len(ph)
         donors = members[have[members]]
         need = members[~have[members]]
         if len(donors) < 3 or not len(need):
@@ -238,8 +252,8 @@ def campus_impute(g, xy, year, conf, upper):
         med = np.median(year[donors][idx], axis=1)
         year[need] = np.minimum(med, upper[need])
         n_done += len(need)
-    log(f"region: {n_done} undated campus buildings take their campus's years "
-        f"({int((campus >= 0).sum())} footprints on {len(np.unique(campus[campus >= 0]))} campuses)")
+    log(f"region: {n_done} campus buildings take their campus's years ({n_ph} had a campus-wide placeholder; "
+        f"{int((campus >= 0).sum())} footprints on {len(np.unique(campus[campus >= 0]))} campuses)")
     return year
 
 

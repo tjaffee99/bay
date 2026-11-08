@@ -17,13 +17,12 @@
  * the ground falls away. Everything estimated is named in the model's facts
  * ("Model: …").
  */
-import {MeshBuilder, circle, ellipse, lngLatToLocal, localToLngLat, rect, rotRect, type V2, type V3} from './kit';
+import {MeshBuilder, circle, ellipse, localToLngLat, rect, rotRect, type V2, type V3} from './kit';
 import type {Landmark} from './types';
 import {elevationAt} from '../layers/elevation';
 
 const WIKI = 'https://en.wikipedia.org/wiki/';
 const OSM_NOTE = 'footprint from OpenStreetMap (© OSM contributors, ODbL)';
-const FT = 0.3048;
 
 // ------------------------------------------------------------------ helpers
 
@@ -129,7 +128,7 @@ const satherTower: Landmark = {
   id: 'sather_tower',
   name: 'Sather Tower (the Campanile)',
   kind: 'tower',
-  built: [1913.0, 1914.9],
+  built: [1913.0, 1915.0],
   end: 9999,
   anchor: CAMPANILE,
   build: b => {
@@ -173,7 +172,7 @@ const satherTower: Landmark = {
   },
   replaces: [rotRect(0, 0, 13, 13, 74.7)],
   facts: {
-    Construction: '1913 – 1914 (completed 1914; opened to visitors 1916)',
+    Construction: 'built 1914, completed 1915, opened to the public 1916 (construction start estimated)',
     Height: '307 ft (94 m); belfry / observation deck at 200 ft (61 m)',
     Architect: 'John Galen Howard (after St Mark’s Campanile, Venice)',
     Carillon: '61 bells (12-bell chime 1917; 48 in 1979; 61 in 1983)',
@@ -844,7 +843,7 @@ const oaklandArena: Landmark = {
   replaces: [circle(0, 0, 68, 24)],
   facts: {
     Opened: 'Nov 9, 1966 (Oakland–Alameda County Coliseum Arena); Golden State Warriors 1971–2019',
-    Renovated: '1996–97 (HNTB): interior gutted and a new bowl built inside the original walls and roof; reopened Nov 1997 with ≈19,600 seats',
+    Renovated: '1996–97 (HNTB, $121 M): interior gutted and a new bowl built inside the original walls, roof and foundation; ≈19,600 seats; the Warriors played 1996–97 in San José',
     Design: 'Skidmore, Owings & Merrill (Myron Goldsmith) — glass drum under a concrete roof ring, X-braced',
     Model: 'outline from OSM (Ø 130 m); bay count and heights (≈29 m) estimated from photos'
   },
@@ -1344,6 +1343,7 @@ const missionSanJoseWing: Landmark = {
 // (270 × 65 m with the SCB-125 angled deck, 90.1° frame: bow east, island to starboard =
 // south) and the island parts. Hangar deck ≈9 m, flight deck ≈16 m above the waterline
 // (estimated from the photo); island, funnel and lattice mast heights estimated.
+const HORNET: V2 = [-122.30292, 37.77272];
 const HORNET_DECK: V2[] = [[27.7, 134.5], [26.2, 136.2], [-1.8, 138.2], [-3.2, 136.9], [-6.0, 103.3], [-9.4, 100.5], [-8.7, 92.4], [-10.2, 88.3], [-9.3, 82.0], [-8.8, 72.6], [-11.7, 66.3], [-14.6, 30.9], [-24.6, 30.0], [-27.6, -6.2], [-27.4, -12.2], [-33.0, -13.1], [-34.7, -14.3], [-34.6, -15.6], [-27.3, -16.0], [-26.4, -49.8], [-25.1, -61.8], [-27.2, -66.5], [-25.3, -81.6], [-24.4, -110.7], [-25.9, -115.0], [-24.2, -128.9], [-23.3, -131.9], [6.3, -129.3], [7.7, -127.2], [11.9, -72.5], [14.8, -67.8], [12.8, -62.1], [20.2, -57.3], [22.1, -51.9], [28.8, -52.4], [30.0, -33.8], [20.3, -33.1], [15.7, -24.7], [17.9, -8.5], [21.4, 11.8], [22.2, 22.2], [21.0, 36.7], [23.8, 36.7], [24.4, 43.7], [21.8, 44.9], [24.0, 79.1], [26.5, 79.0], [28.5, 88.3], [27.1, 92.7], [30.0, 95.3], [30.1, 98.0], [25.4, 99.1]];
 const ussHornet: Landmark = {
   id: 'uss_hornet_museum',
@@ -1351,9 +1351,10 @@ const ussHornet: Landmark = {
   kind: 'monument',
   built: [1998.77, 1998.79],
   end: 9999,
-  anchor: [-122.30292, 37.77272],
+  anchor: HORNET,
+  // the waterline sits at sea level whatever the height lookup gives at the pier
   build: b =>
-    b.frame(0, 0, 0, 90.1, () => {
+    b.frame(0, 0, 0.5 - elevationAt(HORNET[0], HORNET[1]), 90.1, () => {
       const cx = 3.7;
       const hull: V2[] = [[cx - 9.5, -122], [cx + 9.5, -122], [cx + 14.15, -105], [cx + 14.15, 70], [cx + 9, 110], [cx, 128], [cx - 9, 110], [cx - 14.15, 70], [cx - 14.15, -105]];
       b.color('#61676D').prism(hull, -1, 9);
@@ -1654,3 +1655,40 @@ const fordRichmond: Landmark = {
   },
   sources: [WIKI + 'Ford_Assembly_Building']
 };
+
+// =================================================================== export
+
+export const EASTBAY: Landmark[] = [
+  satherTower,
+  satherGate,
+  greekTheatre,
+  memorialStadium1923,
+  memorialStadium2012,
+  doeNorth,
+  doeSouth,
+  cityHallOakland,
+  foxOakland,
+  paramountOakland,
+  tribuneBase,
+  tribuneTower,
+  oaklandArena,
+  necklace1925,
+  necklace1987,
+  coliseum1966,
+  coliseum1996,
+  temple,
+  station16th,
+  pergola,
+  millsHall,
+  missionSanJose1809,
+  missionSanJoseGothic,
+  missionSanJose1985,
+  missionSanJoseWing,
+  ussHornet,
+  diabloSummit,
+  goldenGateFields,
+  claremontHotel,
+  cathedralChristTheLight,
+  cathedralBuilding,
+  fordRichmond
+];
