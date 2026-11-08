@@ -80,6 +80,25 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
   Santana Row = Hotel Valencia (roll 2003) and the two blocks opposite (roll 2002) — the row's 2006/2013/2016 buildings are
   left generic; Stanford Shopping Center = the three anchors with documented years (Macy's 1961, Neiman Marcus 1985,
   Bloomingdale's 2014); the open-air store blocks (1955–56 onwards, rebuilt piecemeal) are left to the generic footprints.
+- **Our Lady of Mount Carmel, Mill Valley (1968)** — enjoymillvalley.com: unveiled May 1968, architect Fred Houweling,
+  twelve-sided church, copper-covered spire with an 18 ft gold-leaf cross rising 140 ft above the sidewalk, lava-rock
+  entrance and redwood doors. OSM gives the dodecagon (r 21.7 m); the orthophoto shows the twelve-faceted pyramid roof.
+  Wall height and the roof / spire split are estimates; the cross top is set 42.7 m above the anchor ground.
+- **Mill Valley Public Library (1966)** — groundbreaking Jun 29, 1965 (Calisphere photo caption), opened 1966
+  (Mill Valley Historical Society); Wurster, Bernardi & Emmons (PCAD). The OSM outline is today's building including the
+  later expansion, whose extent and year are not documented well enough to separate (one source says 2010). The roof is
+  hidden by redwoods on the orthophoto: low gable and eave heights estimated.
+- **California's Great America** — coaster centrelines from the OpenStreetMap API (`roller_coaster=track` ways,
+  downloaded 2026-11-08, ODbL), chained along their one-way direction and resampled every ~5 m; dates and documented
+  heights from Wikipedia (park article; Demon, Flight Deck, Gold Striker articles), RCDB (Grizzly 91 ft) and park /
+  ticket pages (Gold Striker 108.2 ft, RailBlazer 106 ft). The height profile is **schematic**: lift (OSM `lift_hill`
+  tag for Gold Striker, else the longest straight run) to the documented maximum, a first drop over 1.1 × that height,
+  then four decaying hills — loops, inversions and banking are not modelled (PROCEDURAL). Drop Tower, Star Tower and
+  Carousel Columbia stand on their OSM nodes / outline with documented heights (227 / 200 / 101 ft). Removed rides
+  (Whizzer 1976–88, Gulf Coaster 1976–80, Greased Lightnin' 1977–2002, Sky Whirl 1976–97, Invertigo 1998–2011, Stealth
+  2000–03) have no surviving geometry and are not modelled; Psycho Mouse, Woodstock Express and the entrance-plaza
+  buildings are left to the generic footprints. Six Flags announced on Nov 6, 2026 that the park closes on Sep 6, 2027
+  (not yet reflected in `end`).
 - **NASA Ames NFAC** — OSM gives 54.9 m (180 ft) for the whole complex; only the 80 × 120 ft inlet is drawn that tall;
   the 40 × 80 ft circuit heights are estimates (**LOW CONFIDENCE**).
 
@@ -574,4 +593,104 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Store: the Emporium store was rebranded Bloomingdale's in Nov 1996; this new three-level, 120,000 sq ft store opened in 2014 (the old building was demolished for the 2016 wing)
 - Model: massing from the OpenStreetMap outline and height (© OSM contributors, ODbL); the open-air store blocks are left to the generic footprints because their individual build and rebuild years are not documented; construction start estimated
 - Sources: https://en.wikipedia.org/wiki/Stanford_Shopping_Center
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Our Lady of Mount Carmel Church, Mill Valley (`mill_valley_mount_carmel`)
+
+- Model years: construction 1966.8 → 1968.38, end standing; anchor 37.907618, -122.546361; 74 triangles; model top 42.7 m.
+- Built: unveiled May 1968 after a fund drive by parishioners and residents; architect Fred Houweling
+- Form: twelve-sided (dodecagon) church; copper-covered spire carrying an 18-ft gold-leaf cross that rises 140 ft (42.7 m) above the sidewalk; entrance of lava rock round massive redwood doors
+- Model: dodecagon outline from OpenStreetMap (© OSM contributors, ODbL); the twelve-faceted pyramid roof seen on the orthophoto; wall height (5.5 m) and the split between roof and spire estimated; the cross top set at 140 ft above the anchor ground
+- Sources: https://enjoymillvalley.com/?p=3689
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Mill Valley Public Library (`mill_valley_library`)
+
+- Model years: construction 1965.49 → 1966.7, end standing; anchor 37.906002, -122.554221; 35 triangles; model top 8.1 m.
+- Built: groundbreaking Jun 29, 1965; opened 1966 at 375 Throckmorton Ave, replacing the 1911 Carnegie library
+- Architects: Wurster, Bernardi & Emmons (Donn Emmons); AIA Honor Award 1969, ALA/AIA Library Building Award 1968
+- Later: a later expansion keeps the mid-century character (≈ 27,000 sq ft today); its extent is not separated in the model
+- Model: outline from OpenStreetMap (© OSM contributors, ODbL; today's building, incl. the later expansion); low gable roof, eave height and glazing estimated — the roof is hidden by redwoods on the orthophoto
+- Sources: https://calisphere.org/item/d7603a5e413d0418ed1d6cb108616e2f, https://pcad.lib.washington.edu/building/7977, https://www.mvhistory.org/vignette-carnegie-library/
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Carousel Columbia (Great America) (`great_america_carousel_columbia`)
+
+- Model years: construction 1975.6 → 1976.22, end standing; anchor 37.397000, -121.972000; 348 triangles; model top 31.0 m.
+- Opened: 1976 with the park (Chance Rides): Carousel Columbia, a double-decker carousel 101 ft (31 m) high in the entrance plaza (Carousel Plaza by 1988, Celebration Plaza from 2000) beside the reflecting pool
+- Park: the park opened Mar 20, 1976 as Marriott's Great America on a former pear orchard (Santa Clara 1985, Kings 1989, Paramount 1993, Cedar Fair 2006, Six Flags 2024); on Nov 6, 2026 Six Flags announced it will close on Sep 6, 2027
+- Model: building outline from OpenStreetMap (© OSM contributors, ODbL; r ≈ 11 m); deck and crown proportions estimated; the plaza's other buildings are left to the generic footprints
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Demon (Great America) (`great_america_demon`)
+
+- Model years: construction 1975.6 → 1976.38, end standing; anchor 37.397000, -121.972000; 932 triangles; model top 31.1 m.
+- Opened: May 20, 1976 as Turn of the Century (Arrow Dynamics); after 1979 its two airtime hills were replaced by two vertical loops and it reopened in 1980 as Demon
+- Size: 102 ft (31 m) high, 2,130 ft (650 m) long
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://en.wikipedia.org/wiki/Demon_(Six_Flags_Great_America)
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Star Tower (Great America) (`great_america_star_tower`)
+
+- Model years: construction 1978.8 → 1979.4, end standing; anchor 37.397000, -121.972000; 102 triangles; model top 61.0 m.
+- Opened: 1979; Intamin gyro tower with a rotating observation cabin
+- Height: 200 ft (61 m)
+- Model: position from OpenStreetMap (© OSM contributors, ODbL); column diameter and cabin estimated
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### The Grizzly (Great America) (`great_america_grizzly`)
+
+- Model years: construction 1985.6 → 1986.38, end standing; anchor 37.397000, -121.972000; 2912 triangles; model top 27.7 m.
+- Opened: 1986; wooden out-and-back coaster (Curtis D. Summers)
+- Size: 91 ft (27.7 m) high (RCDB); ≈ 3,250 ft of track (OSM centreline 971 m)
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://en.wikipedia.org/wiki/The_Grizzly, https://rcdb.com/77.htm
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Vortex / Patriot (Great America) (`great_america_vortex_patriot`)
+
+- Model years: construction 1990.6 → 1991.38, end standing; anchor 37.397000, -121.972000; 588 triangles; model top 27.7 m.
+- Opened: 1991 as Vortex (Bolliger & Mabillard stand-up); converted to the floorless Patriot for 2017
+- Size: 91 ft (28 m) drop, 1,920 ft (590 m) of track
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Flight Deck (Top Gun), Great America (`great_america_flight_deck`)
+
+- Model years: construction 1992.6 → 1993.21, end standing; anchor 37.397000, -121.972000; 648 triangles; model top 31.1 m.
+- Opened: Mar 20, 1993 as Top Gun (Bolliger & Mabillard inverted coaster); renamed Flight Deck in 2007
+- Size: 102 ft (31 m) high, 2,260 ft (690 m) long
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://en.wikipedia.org/wiki/Flight_Deck_(California%27s_Great_America)
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Drop Tower (Great America) (`great_america_drop_tower`)
+
+- Model years: construction 1995.8 → 1996.4, end standing; anchor 37.397000, -121.972000; 30 triangles; model top 69.2 m.
+- Opened: 1996 as Drop Zone: Stunt Tower (Intamin); Drop Tower since 2008
+- Height: 227 ft (69 m)
+- Model: position from OpenStreetMap (© OSM contributors, ODbL); column and gondola ring proportions estimated
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Gold Striker (Great America) (`great_america_gold_striker`)
+
+- Model years: construction 2012.6 → 2013.4, end standing; anchor 37.397000, -121.972000; 3680 triangles; model top 33.0 m.
+- Opened: 2013; wooden coaster by Great Coasters International beside the park entrance
+- Size: 108.2 ft (33 m) high — the tallest and fastest wooden coaster in Northern California (53.7 mph)
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://en.wikipedia.org/wiki/Gold_Striker, https://www.sixflags.com/cagreatamerica/attractions/gold-striker
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### RailBlazer (Great America) (`great_america_railblazer`)
+
+- Model years: construction 2017.6 → 2018.45, end standing; anchor 37.397000, -121.972000; 924 triangles; model top 32.3 m.
+- Opened: 2018; Rocky Mountain Construction single-rail coaster on the site of Invertigo (Vekoma, 1998–2011)
+- Size: 106 ft (32 m) high, 1,800 ft (549 m) of track
+- Model: track centreline from OpenStreetMap (© OSM contributors, ODbL); only the documented maximum height is real: lift and first drop to it, the rest of the circuit a schematic of decaying hills (PROCEDURAL; loops, inversions and banking not modelled); supports simplified; track colours not checked
+- Sources: https://en.wikipedia.org/wiki/California%27s_Great_America, https://www.undercovertourist.com/san-francisco/californias-great-america/railblazer/
 - Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo

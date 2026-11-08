@@ -111,6 +111,89 @@ def generated(today, areas):
     return out
 
 
+def clearance_fill(areas, today_utm, pred_utm):
+    """Freeway corridors and renewal areas whose parcels are gone (I-980, the Cypress
+    viaduct, SR-87, I-280, Acorn, …) have no lots to stand predecessors on, and the
+    Sanborn tracing covers only part of them. Where neither today's buildings nor traced /
+    generated predecessors cover the ground, stand rows of houses on a block grid aligned
+    with the surrounding streets (lots 8 m wide, two 30 m rows back to back, 20 m
+    streets), from the neighbourhood's development year until the clearance. Procedural."""
+    from download_overture import RELEASE
+    from common import RAW
+    region_areas = [a for a in areas if a[4].startswith(("oak_", "sj_")) and a[3] not in ("vacant", "rail_yards")]
+    if not region_areas:
+        return gpd.GeoDataFrame(geometry=[], crs=UTM)
+    bb = shapely.union_all([a[0] for a in region_areas]).buffer(600)
+    roads = []
+    for f in ("roads_local.parquet", "roads_region.parquet"):
+        p = RAW / "overture" / RELEASE / f
+        if p.exists():
+            r = gpd.read_parquet(p, columns=["geometry"])
+            r = (r if r.crs else r.set_crs(4326)).to_crs(UTM)
+            roads.append(r[r.intersects(bb)])
+    roads = pd.concat(roads, ignore_index=True) if roads else gpd.GeoDataFrame(geometry=[], crs=UTM)
+    tg = today_utm.geometry.values
+    tsidx = today_utm.sindex
+    psidx = pred_utm.sindex if len(pred_utm) else None
+    ty = today_utm.start_year.values.astype(float)
+    tc = np.column_stack([today_utm.geometry.representative_point().x.values, today_utm.geometry.representative_point().y.values])
+    ttree = cKDTree(tc)
+    rows = []
+    for poly, cs, ce, fab, aid in region_areas:
+        # dominant street direction around the area (bearings mod 90 deg, length-weighted)
+        near = roads[roads.intersects(poly.buffer(400))]
+        ang, wts = [], []
+        for g in near.geometry.values:
+            c = np.asarray(g.coords)
+            d = np.diff(c, axis=0)
+            ang += list(np.degrees(np.arctan2(d[:, 1], d[:, 0])) % 90)
+            wts += list(np.hypot(d[:, 0], d[:, 1]))
+        if not ang:
+            continue
+        hist, edges = np.histogram(ang, bins=90, range=(0, 90), weights=wts)
+        theta = np.radians(edges[np.argmax(hist)] + 0.5)
+        # development year: early quartile of the buildings around that predate the clearance
+        ctr = poly.representative_point()
+        idx = ttree.query_ball_point([ctr.x, ctr.y], 500)
+        yrs = ty[idx] if len(idx) else np.array([])
+        yrs = yrs[yrs < cs]
+        dev = float(np.percentile(yrs, 25)) if len(yrs) >= 10 else 1890.0
+        cu, su = np.cos(theta), np.sin(theta)
+        x0, y0, x1, y1 = poly.bounds
+        R = np.hypot(x1 - x0, y1 - y0) / 2 + 100
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        for vb in np.arange(-R, R, 80.0):                 # block bands across (v)
+            for front, sgn in ((vb + 10.0, 1), (vb + 70.0, -1)):
+                for ub in np.arange(-R, R, 140.0):        # blocks along (u), 20 m cross streets
+                    for k in range(15):
+                        u = ub + 4.0 + 8.0 * k
+                        v = front + sgn * 7.0
+                        px, py = cx + u * cu - v * su, cy + u * su + v * cu
+                        pt = shapely.Point(px, py)
+                        if not poly.contains(pt):
+                            continue
+                        rect = shapely.affinity.rotate(shapely.box(px - 3.5, py - 7.0, px + 3.5, py + 7.0),
+                                                       np.degrees(theta) - 90.0, origin=(px, py))
+                        if len(tsidx.query(rect.buffer(4.0), predicate="intersects")):
+                            continue
+                        if psidx is not None and len(psidx.query(rect.buffer(3.0), predicate="intersects")):
+                            continue
+                        key = f"cf_{aid}_{int(px)}_{int(py)}"
+                        h = h01(key)
+                        start = dev + 10.0 * h
+                        end = cs + (ce - cs) * h01(key, "c")
+                        if end <= start + 3:
+                            continue
+                        st = 1 + int(h01(key, "s") < 0.7)
+                        rows.append({"geometry": rect, "start_year": start, "end_year": end, "height": st * 3.4 + 2.2,
+                                     "stories": st, "kind": "building", "source": "region_procedural", "mapblklot": key,
+                                     "use_sanborn": "dwelling", "year_confidence": "procedural",
+                                     "year_reason": f"cleared_{aid}"})
+    out = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else gpd.GeoDataFrame(geometry=[], crs=UTM)
+    log(f"region predecessors: {len(out)} houses stood where clearances left no parcels")
+    return out
+
+
 def region_predecessors(today):
     """All vanished buildings for the region (EPSG:4326): generated + traced (Sanborn)."""
     from sf_buildings import redevelopment_areas
@@ -129,6 +212,9 @@ def region_predecessors(today):
     tu = today.to_crs(UTM).reset_index(drop=True)
     no_fire = gpd.GeoDataFrame(geometry=[], crs=UTM)
     pred = apply_sanborn(pred, tu, no_fire, areas, include=lambda area: area.startswith(REGION_SANBORN))
+    cf = clearance_fill(areas, tu, pred)
+    if len(cf):
+        pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)
     pred = pred.to_crs(4326)
     use_map = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
                "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}

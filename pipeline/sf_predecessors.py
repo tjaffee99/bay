@@ -207,7 +207,7 @@ def main():
             rows.append({"geometry": fp, "start_year": rb, "end_year": rb_end, "height": st * (4.5 if downtown else 3.6),
                          "stories": st, "kind": "building", "source": "sf_rebuild_procedural", "mapblklot": key,
                          "year_confidence": "procedural", "year_reason": "post_fire_rebuild"})
-    rows += superblock_rows(areas, files)
+    rows += superblock_rows(areas, files, shapely.union_all(fire.geometry.values))
     pred = gpd.GeoDataFrame(rows, crs=UTM)
     log(f"predecessors: {len(pred)} generated buildings ({(pred.source == 'sf_rebuild_procedural').sum()} post-fire rebuilds)")
 
@@ -522,7 +522,7 @@ def strips_for_lot(lot, key, fab, start_fn, end, sidx, source, reason):
     return out
 
 
-def superblock_rows(areas, extent_files):
+def superblock_rows(areas, extent_files, fire_union=None):
     """Urban renewal merged whole blocks into superblock parcels, so today's lots don't
     show the old 25-ft lots. Along every street-facing edge of a large parcel inside a
     clearance area, stand a row of era-typical buildings (Victorian rows, residential
@@ -543,6 +543,12 @@ def superblock_rows(areas, extent_files):
                         "warehouses": lambda hk: 1907.0 + 20 * hk}.get(fab, lambda hk, dev=dev: dev + 6 * hk)
             out += strips_for_lot(lot, key, fab, start_fn, lambda k, key=key: cs + (ce - cs) * h01(key, f"c{k}"), sidx,
                                   "sf_redevelopment_procedural", f"cleared_{aid}")
+            # inside the 1906 burn the post-fire hotels / warehouses had predecessors: the
+            # Victorian South of Market (1850s-80s) that burned on 18-19 April 1906
+            if fab in ("residential_hotels", "warehouses") and fire_union is not None and lot.representative_point().within(fire_union):
+                pre = 1856.0 + 18.0 * h01(key, "pre")
+                out += strips_for_lot(lot, key + "_pre", "victorian_rows", lambda hk, pre=pre: pre + 6 * hk, 1906.29, sidx,
+                                      "sf_redevelopment_procedural", f"burned_{aid}")
     log(f"predecessors: {len(out)} buildings on superblocks of cleared areas")
     return out
 

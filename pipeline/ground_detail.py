@@ -109,7 +109,12 @@ def main():
         z = ground(lon, lat) + 0.3
         pos.append(np.column_stack([lon - ORIGIN[0], lat - ORIGIN[1], z]).ravel())
         starts.append(starts[-1] + n + 1)
-        kinds.append(KINDS[feats["class"].iloc[i]])
+        k = KINDS[feats["class"].iloc[i]]
+        # the big ovals (Golden Gate Park's Polo Field cycling / horse track, ~1 mile) are
+        # dirt and asphalt, not a red synthetic running track
+        if k == KINDS["track"] and fu.geometry.values[i].area > 8000:
+            k = KINDS["playground"]
+        kinds.append(k)
         years.extend((float(year[i]), 9999.0))
     write_columnar(VIEWER_DATA / "ground-detail.bin.gz", {
         "start_indices|shuffle": np.asarray(starts, np.uint32),

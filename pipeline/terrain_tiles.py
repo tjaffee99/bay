@@ -306,8 +306,12 @@ def histories(name, g, d):
     # San Francisco had almost no native trees: planted forests and the city sit on
     # dunes (west) and grassy/scrubby hills (east)
     sf_dunes = in_sf & (lon < -122.445) & (elev < 120)
+    # the dune sheet doesn't stop at the county line: it ran on south through Daly City's
+    # Westlake, Lake Merced's shore and Fort Funston to the cliffs at Mussel Rock
+    # (refined by data/manual/landscape/dunes.geojson when present)
+    sf_dunes |= ~in_sf & (lat > 37.662) & (lat < 37.712) & (lon < -122.462 - (37.712 - lat) * 0.25) & (elev < 110)
     N[in_sf & (tree | (wc == 50) | (wc == 40))] = SCRUB
-    N[sf_dunes & ~(wc == 60)] = DUNES
+    N[sf_dunes & ~(wc == 60) & ~water_now] = DUNES
     lc_rows = polygon_table(TABLES / "landcover_history.csv", g)
     # researched open spaces inside the city (parade grounds, plazas...) override the
     # built-up snapshot outlines: their own rows say when they were grass / paved / lawn
@@ -501,6 +505,15 @@ def histories(name, g, d):
         event(m & water_now & (salt | diked), SHALLOW, y)
         event(m & (wc == 90) & (salt | diked), MARSH, y)
 
+    # c.1800 marsh / flat that is open water today (not a salt pond or diked): narrow
+    # channels are sloughs that were always water; broad water was made later — Lake
+    # Merritt (dammed 1869), the Oakland estuary / tidal canal (1874-1902), dredged
+    # harbours — water from c.1870-90 unless a researched row says when
+    became = np.isin(N, [MARSH, FLAT]) & water_now & ~salt & ~diked
+    broad = ndimage.binary_opening(became, iterations=2)
+    N[became & ~broad] = SHALLOW
+    event(broad, SHALLOW, 1870.0 + 20.0 * h)
+
     # ---- agriculture (outside SF)
     flat = slope < 6
     not_sf = ~in_sf
@@ -545,6 +558,18 @@ def histories(name, g, d):
     # WorldCover sees trees / grass around) reads green-grey, not as a pale city plate
     treeish = ndimage.uniform_filter(np.isin(wc, [10, 30]).astype(np.float32), 3)
     suburb = (bcov < 0.30) & (treeish > 0.12) & ~((bcov > 0.18) & in_sf)
+    # open cells inside the built-up area (WorldCover grass between houses, cells the
+    # building rule missed) take the city ground of their surroundings and its year, and
+    # urban vs suburban is decided by the neighbourhood (5 x 5 cells), not cell by cell
+    uf = ndimage.uniform_filter(urban.astype(np.float32), 5)
+    uy = ndimage.uniform_filter(np.where(urban & np.isfinite(urban_y), urban_y, 0).astype(np.float32), 5)
+    uc = ndimage.uniform_filter((urban & np.isfinite(urban_y)).astype(np.float32), 5)
+    infill = ~urban & (uf > 0.6) & (uc > 0) & ~water_now & ~is_park & ~airport & ~np.isin(N, list(WET) + [FOREST, ROCK, BEACH])
+    urban_y = np.where(infill, uy / np.maximum(uc, 1e-6) + 1.0, urban_y)
+    urban = urban | infill
+    sub_s = ndimage.uniform_filter((suburb & urban).astype(np.float32), 5) / np.maximum(ndimage.uniform_filter(urban.astype(np.float32), 5), 1e-6)
+    suburb = sub_s > 0.5
+    log(f"terrain {name}: {int(infill.sum())} open cells inside the built-up area take its ground")
     event(urban, np.where(suburb, SUBURB, URBAN).astype(np.uint8), urban_y)
     # 1906: the burned district goes dark for about a year and a half, then the city rebuilds
     fire_path = INTERIM / "fire_1906.geojson"
