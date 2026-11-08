@@ -82,6 +82,12 @@ Landmarks stand on the terrain (`elevationAt(anchor)`); bridges keep z = 0 (sea 
 15. **Roads are draped paths, not polygons:** DataSF centerlines (SF, dated by extent snapshot or first nearby building), Overture roads elsewhere, researched routes (cable car, streetcar, Key System, ferries, freeways incl. Embarcadero/Central freeways) with lifespans; viaducts get columns. Cars and trams are CPU-animated along the paths with an era density curve (none before ~1903) — `procedural`.
 16. **Labels** (`places.csv`) show the name in use that year, by zoom tier, with a collision filter; neighborhood names change with the era (e.g. Yerba Buena → San Francisco 1847, South of the Slot, Butchertown).
 17. **UI:** no era title card, no layer toggles (landmarks and trees are always on); `?debug` shows the data-quality overlay and event jump; shift+drag rotates/tilts.
+18. **Performance rules (2026-11 pass; keep them):** deck.gl's per-layer cost dominates frames, so
+    * few layers: all landmarks are ONE merged mesh (`landmarks/merged-layer.ts`, time/grow in the shader, per-vertex picking colour); terrain decorations of all visible tiles are concatenated into one instanced `DecoLayer` per kind (`layers/deco-layer.ts`), street trees and viaduct columns use the same layer; region roads are split into an 8×8 grid and only squares near the view are drawn;
+    * nothing rebuilds per animation frame: traffic moves in the vertex shader from a time uniform (`TrafficLayer`), the loop only calls `setNeedsRedraw()`; the terrain reads the year at draw time; labels are decluttered on the CPU in screen space only on moveend / zoom step / year (no GPU collision pass);
+    * level of detail: trees use 4–10-triangle meshes below zoom 15 and are thinned below 14 (`treeLod`);
+    * no hover picking (`pickAsync: false`), objects are picked on click; deck canvas capped at 2× device pixels, MapLibre at 1×; the high-performance GPU is requested, and a banner warns when the browser renders WebGL in software.
+    * WebGPU was considered and rejected for now: deck.gl's WebGPU backend is experimental and lacks text, paths and our GLSL shader injections; the bottlenecks were CPU-side, not the graphics API.
 
 ## Year cleaning (SF assessor roll)
 

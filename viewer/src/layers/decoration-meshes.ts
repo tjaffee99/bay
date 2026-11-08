@@ -56,6 +56,54 @@ function shrub() {
 
 export const DECO_MESHES = [broadleaf(), conifer(), palm(), orchardTree(), farmstead(), shrub()];
 
+// ------------------------------------------------------------------ level of detail
+// Zoomed out, a tree is a few pixels wide: these 4–10-triangle stand-ins (vs 30–50)
+// keep the same silhouette and size. Shared with the street trees (trees.ts).
+
+/** Crown as a bipyramid (squashed diamond) between z0 and z1 with radius r at zm. */
+function diamond(b: MeshBuilder, sides: number, r: number, z0: number, zm: number, z1: number) {
+  const ring = circle(0, 0, r, sides);
+  b.pyramid(ring, zm, [0, 0, z1]);
+  // bottom half, wound the other way
+  b.pyramid([...ring].reverse(), zm, [0, 0, z0]);
+  return b;
+}
+export function broadleafLow() {
+  return diamond(new MeshBuilder().color('#FFFFFF'), 5, 0.95, 0.25, 0.6, 1).build();
+}
+export function coniferLow() {
+  const b = new MeshBuilder().color('#FFFFFF');
+  b.pyramid(circle(0, 0, 0.8, 4), 0.1, [0, 0, 1]);
+  return b.build();
+}
+export function palmLow() {
+  const b = new MeshBuilder();
+  b.color('#8C7556').frustum(0, 0, 0.1, 0.07, 0, 0.86, 3, false);
+  b.color('#FFFFFF');
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2;
+    b.tri([0, 0, 0.92], [Math.cos(a - 0.4), Math.sin(a - 0.4), 0.78], [Math.cos(a + 0.4), Math.sin(a + 0.4), 0.78]);
+  }
+  return b.build();
+}
+function orchardLow() {
+  return diamond(new MeshBuilder().color('#FFFFFF'), 4, 1, 0.2, 0.5, 0.95).build();
+}
+function shrubLow() {
+  const b = new MeshBuilder().color('#FFFFFF');
+  b.pyramid(circle(0, 0, 1, 4), 0, [0, 0, 0.8]);
+  return b.build();
+}
+export const DECO_MESHES_LOW = [broadleafLow(), coniferLow(), palmLow(), orchardLow(), farmstead(), shrubLow()];
+
+/** Level of detail for all tree-like instances at a map zoom: low-poly below 15, thinned below 14. */
+export function treeLod(zoom: number): {low: boolean; keep: number} {
+  if (zoom >= 15) return {low: false, keep: 1};
+  if (zoom >= 14) return {low: true, keep: 1};
+  if (zoom >= 13) return {low: true, keep: 0.6};
+  return {low: true, keep: 0.4};
+}
+
 export const DECO_COLORS: [number, number, number][][] = [
   [
     [118, 156, 88],

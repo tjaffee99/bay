@@ -150,6 +150,32 @@ def raster_mask(g, poly):
     return rasterize_on(g, [(poly, 1)], fill=0, dtype="uint8").astype(bool)
 
 
+_noise_cache = {}
+
+
+def organic_mask(g, poly, amp=5.0):
+    """A researched polygon (often a coarse 4-8 vertex outline) with its edge displaced by
+    smooth noise of +-amp cells, so painted cover doesn't end in ruler-straight lines."""
+    m = raster_mask(g, poly)
+    if not m.any():
+        return m
+    key = (g["rows"], g["cols"])
+    if key not in _noise_cache:
+        rng = np.random.default_rng(7)
+        f = ndimage.gaussian_filter(rng.standard_normal(key).astype(np.float32), 4)
+        _noise_cache[key] = f / (f.std() + 1e-6)
+    noise = _noise_cache[key]
+    r, c = np.nonzero(m)
+    pad = int(amp * 3) + 2
+    r0, r1 = max(r.min() - pad, 0), min(r.max() + pad + 1, m.shape[0])
+    c0, c1 = max(c.min() - pad, 0), min(c.max() + pad + 1, m.shape[1])
+    sub = m[r0:r1, c0:c1]
+    signed = ndimage.distance_transform_edt(sub) - ndimage.distance_transform_edt(~sub)
+    out = np.zeros_like(m)
+    out[r0:r1, c0:c1] = signed + noise[r0:r1, c0:c1] * amp > 0
+    return out
+
+
 def sf_extent_years(g, h):
     """Year each vertex became built-up per the researched snapshot extents (NaN = not in any)."""
     import glob
@@ -195,6 +221,7 @@ def histories(name, g, d):
     N[bare & (elev < 20) & near_water] = BEACH
     N[bare & ~((elev < 20) & near_water)] = ROCK
     tree = wc == 10
+    trees_near = ndimage.binary_dilation(tree, iterations=2)
     inland = lon > -122.30
     N[tree & inland & (elev < 700)] = OAK
     N[tree & ~(inland & (elev < 700))] = FOREST
@@ -208,7 +235,9 @@ def histories(name, g, d):
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
         if c is None or pd.notna(r.get("year_start")) and float(r.year_start) > 1800:
             continue  # only natural (pre-1800) cover here; eras handled below
-        m = raster_mask(g, poly) & ~water_now & (d["hist"] == 0)
+        m = organic_mask(g, poly) & ~water_now & (d["hist"] == 0)
+        if c in (FOREST, OAK):
+            m &= trees_near
         N[m] = c
     # inland open water that is not bay: reservoirs / lakes
     N[water_now] = RESERVOIR
@@ -246,7 +275,15 @@ def histories(name, g, d):
         ext_y = sf_extent_years(g, hh)
         has_ext = np.isfinite(ext_y) & ~water_now
         urban_y = np.where(has_ext & (np.isnan(urban_y) | (ext_y < urban_y)), ext_y, urban_y)
-    urban_y = np.where(np.isnan(urban_y) & built_now & ~in_sf, np.where(fbv, fb, fb_filled), urban_y)
+    # Outside SF, HISDAC's 250 m "first built-up year" comes from the oldest *surviving*
+    # building in the cell, so a lone 1890s farmhouse paints a 250 m city block in the
+    # middle of the orchards. Use the neighbourhood median instead (undeveloped cells
+    # count as "not yet"): isolated houses drop out, suburbs get their typical year,
+    # and edges are rounded instead of 250 m squares.
+    fb_med = ndimage.median_filter(np.where(fbv, fb, 2100.0).astype(np.float32), size=7)
+    dense = fb_med <= 2026
+    out_sf_urban = np.where(dense, np.maximum(fb_med, np.where(fbv, fb, fb_med)), np.where(built_frac > 0.5, fb_filled, np.nan))
+    urban_y = np.where(np.isnan(urban_y) & (built_now | dense) & ~in_sf, out_sf_urban, urban_y)
     urban_y = np.where(np.isnan(urban_y) & built_now & in_sf, np.where(fbv, fb, fb_filled), urban_y)
     urban = np.isfinite(urban_y) & ~water_now
 
@@ -349,7 +386,9 @@ def histories(name, g, d):
         ys = pd.to_numeric(r.get("year_start"), errors="coerce")
         if c is None or not np.isfinite(ys) or ys <= 1800:
             continue
-        m = raster_mask(g, poly) & ~water_now & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH])
+        m = organic_mask(g, poly) & ~water_now & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH])
+        if c in (FOREST, OAK):
+            m &= trees_near  # forests stand where trees are (today's canopy, slightly widened)
         if c in (FARM, ORCHARD, VINEYARD, PASTURE):
             m &= slope < 12
         event(m, c, ys + 6 * h)

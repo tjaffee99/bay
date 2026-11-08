@@ -1,16 +1,24 @@
 /**
  * Era-accurate place labels (data/tables/places.csv): each name shows only in
- * the years it was in use, by zoom tier, standing above the terrain, with a
- * collision filter so labels don't pile up (bigger tiers win).
+ * the years it was in use, by zoom tier, standing above the terrain.
+ *
+ * Decluttering is done here on the CPU, once per quarter zoom level, in Web
+ * Mercator metres (which map 1:1 to screen pixels at a given zoom): labels are
+ * taken greedily by tier priority and skipped if their box would overlap one
+ * already placed. Unlike deck.gl's GPU CollisionFilterExtension this doesn't
+ * re-run every frame while panning, so labels don't flicker in and out.
  */
 import {TextLayer} from '@deck.gl/layers';
-import {CollisionFilterExtension} from '@deck.gl/extensions';
 import {parseCsv} from '../data/tables';
 import {elevationAt} from './elevation';
 
 const files = import.meta.glob('../../../data/tables/places.csv', {query: '?raw', import: 'default', eager: true}) as Record<string, string>;
 
-type Place = {name: string; tier: string; lon: number; lat: number; start: number; end: number; z: number};
+type Place = {name: string; tier: string; lon: number; lat: number; start: number; end: number; z: number; mx: number; my: number; text: string};
+
+const R = 6378137;
+const mercX = (lon: number) => (lon * Math.PI * R) / 180;
+const mercY = (lat: number) => R * Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
 
 // zoom band per tier [fade-in start, fully visible, fully visible until, gone]
 const TIERS: Record<string, {zoom: [number, number, number, number]; size: number; color: number[]; italic?: boolean; priority: number; caps?: boolean}> = {
@@ -35,7 +43,10 @@ export function loadPlaces() {
       lat: +r.lat,
       start: +r.year_start,
       end: r.year_end ? +r.year_end : 9999,
-      z: 0
+      z: 0,
+      mx: mercX(+r.lon),
+      my: mercY(+r.lat),
+      text: TIERS[r.tier]?.caps ? r.name.toUpperCase() : r.name
     }))
     .filter(p => p.name && Number.isFinite(p.lon) && Number.isFinite(p.lat) && TIERS[p.tier]);
 }
@@ -53,16 +64,67 @@ function zoomAlpha(zoom: number, band: [number, number, number, number]) {
   return 1;
 }
 
-const collision = new CollisionFilterExtension();
+/** Changes only when some tier's zoom fade changes (used to skip re-renders while zooming). */
+export function labelZoomKey(zoom: number) {
+  return Object.values(TIERS)
+    .map(t => Math.round(zoomAlpha(zoom, t.zoom) * 20))
+    .join(',') + `|${Math.round(zoom * 4)}`;
+}
 
-// keep the same data array while the visible set is unchanged, so re-renders
-// (traffic animation, zoom) don't re-layout the text
-const cache: Record<string, Place[]> = {};
-function visible(tier: string, year: number) {
-  const next = places.filter(p => p.tier === tier && year >= p.start && year < p.end);
-  const prev = cache[tier];
-  if (prev && prev.length === next.length && prev.every((p, i) => p === next[i])) return prev;
-  return (cache[tier] = next);
+const ORDER = Object.entries(TIERS).sort((a, b) => b[1].priority - a[1].priority);
+
+/** lon/lat → screen pixels for the current camera (set by main.ts from MapLibre). */
+let project: ((lon: number, lat: number) => [number, number]) | null = null;
+let screen: [number, number] = [1, 1];
+export function setLabelProjector(fn: (lon: number, lat: number) => [number, number], size: [number, number]) {
+  project = fn;
+  screen = size;
+  placedKey = '';
+}
+
+/** Labels shown at this year and zoom, decluttered in screen space for the camera at
+ *  rest; kept while it moves (no flicker), recomputed on moveend / zoom step / year. */
+let placedKey = '';
+let placed: Record<string, Place[]> = {};
+function declutter(year: number, zoom: number) {
+  const visibleNow = places.filter(p => year >= p.start && year < p.end);
+  const key = `${Math.round(zoom * 4)}|${visibleNow.length}|${Math.floor(year)}`;
+  if (key === placedKey) return placed;
+  placedKey = key;
+  const mpp = (2 * Math.PI * R) / (512 * 2 ** zoom); // fallback: flat mercator metres per pixel
+  const toScreen = (p: Place): [number, number] => (project ? project(p.lon, p.lat) : [p.mx / mpp, -p.my / mpp]);
+  const [W, H] = screen;
+  const margin = 300;
+  const boxes: [number, number, number, number][] = [];
+  const next: Record<string, Place[]> = {};
+  for (const [tier, cfg] of ORDER) {
+    const out: Place[] = [];
+    if (zoomAlpha(zoom, cfg.zoom) > 0.01) {
+      for (const p of visibleNow) {
+        if (p.tier !== tier) continue;
+        const [x, y] = toScreen(p);
+        if (project && (x < -margin || y < -margin || x > W + margin || y > H + margin)) continue;
+        // estimated text box in pixels, with padding
+        const hw = (p.text.length * cfg.size * (cfg.caps ? 0.68 : 0.5)) / 2 + 10;
+        const hh = (cfg.size * 1.2) / 2 + 6;
+        let hit = false;
+        for (const o of boxes) {
+          if (x - hw < o[2] && x + hw > o[0] && y - hh < o[3] && y + hh > o[1]) {
+            hit = true;
+            break;
+          }
+        }
+        if (hit) continue;
+        boxes.push([x - hw, y - hh, x + hw, y + hh]);
+        out.push(p);
+      }
+    }
+    // keep the previous array when nothing changed so deck doesn't re-layout the text
+    const prev = placed[tier];
+    next[tier] = prev && prev.length === out.length && prev.every((q, i) => q === out[i]) ? prev : out;
+  }
+  placed = next;
+  return placed;
 }
 
 export function labelLayers(year: number, zoom: number) {
@@ -70,14 +132,14 @@ export function labelLayers(year: number, zoom: number) {
   for (const [tier, cfg] of Object.entries(TIERS)) {
     const alpha = zoomAlpha(zoom, cfg.zoom);
     if (alpha <= 0.01) continue;
-    const data = visible(tier, year);
+    const data = declutter(year, zoom)[tier] ?? [];
     if (!data.length) continue;
     out.push(
       new TextLayer<Place>({
         id: `labels-${tier}`,
         data,
         getPosition: (p: Place) => [p.lon, p.lat, p.z],
-        getText: (p: Place) => (cfg.caps ? p.name.toUpperCase() : p.name),
+        getText: (p: Place) => p.text,
         getSize: cfg.size,
         getColor: [cfg.color[0], cfg.color[1], cfg.color[2], Math.round(255 * alpha)],
         fontFamily: `'Cormorant Garamond', 'EB Garamond', Georgia, serif`,
@@ -93,10 +155,6 @@ export function labelLayers(year: number, zoom: number) {
         characterSpacing: cfg.caps ? 0.08 : 0,
         pickable: false,
         parameters: {depthCompare: 'always'} as any,
-        extensions: [collision],
-        collisionGroup: 'labels',
-        getCollisionPriority: cfg.priority,
-        collisionTestProps: {sizeScale: 2.0},
         updateTriggers: {getColor: [alpha], getPosition: [places.length && places[0].z]}
       } as any)
     );

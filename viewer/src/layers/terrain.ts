@@ -13,12 +13,11 @@
 import {COORDINATE_SYSTEM, Layer, project32, phongMaterial} from '@deck.gl/core';
 import type {LayerContext, UpdateParameters, DefaultProps} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
-import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {Geometry, Model} from '@luma.gl/engine';
 import type {ShaderModule} from '@luma.gl/shadertools';
 import {loadColumnar} from '../data/columnar';
-import {TimeExtension} from './time-extension';
-import {DECO_MESHES, DECO_COLORS} from './decoration-meshes';
+import {DECO_COLORS} from './decoration-meshes';
+import {DECO_ORIGIN, decoLayers, setVisibleDeco, type DecoBatch} from './deco-layer';
 
 // cover codes — keep in sync with pipeline/terrain_tiles.py
 const PALETTE: [number, number, number][] = [
@@ -77,10 +76,19 @@ in float cover4;
 in vec4 years;
 in float skirt;
 out vec4 vColor;
+out vec3 vWaterColor;
 out vec3 vCommon;
 out float vWater;
 out vec3 vCamera;
+out vec2 vLngLat;
 ${glslPalette}
+// Land and water are interpolated separately and split per pixel in the fragment
+// shader (below), so a coastline is a crisp, slightly ragged edge instead of a
+// 30–60 m colour smear: water vertices carry a wet-sand "land" colour and land
+// vertices a shallow-water "water" colour.
+const vec3 SHORE = vec3(0.79, 0.75, 0.63);
+vec3 landOf(float c) { return (c < 1.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? SHORE : PAL[int(c + 0.5)]; }
+vec3 waterOf(float c) { return (c < 1.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? PAL[int(c + 0.5)] : PAL[1]; }
 float coverZ(float c, float z) {
   if (c < 1.5) return 0.0;                         // bay / ocean surface
   if (abs(c - 22.0) < 0.5) return z;               // reservoir surface
@@ -102,7 +110,8 @@ void main(void) {
   // land changes blend over ~2.5 years; fire is instant
   float dur = abs(c - 23.0) < 0.5 ? 0.04 : 2.5;
   float k = smoothstep(0.0, 1.0, clamp((y - t0) / dur, 0.0, 1.0));
-  vec3 col = mix(PAL[int(prev + 0.5)], PAL[int(c + 0.5)], k);
+  vec3 col = mix(landOf(prev), landOf(c), k);
+  vWaterColor = mix(waterOf(prev), waterOf(c), k);
   float z = mix(coverZ(prev, positions.z), coverZ(c, positions.z), k) * terrain.exaggeration;
   if (skirt > 0.5) z -= 80.0;
   vWater = mix(waterness(prev), waterness(c), k);
@@ -111,6 +120,7 @@ void main(void) {
   vCommon = commonPos.xyz;
   vCamera = project.cameraPosition;
   vColor = vec4(col, 1.0);
+  vLngLat = positions.xy + project.coordinateOrigin.xy;
 }
 `;
 
@@ -118,20 +128,35 @@ const fs = `#version 300 es
 #define SHADER_NAME terrain-tile-fs
 precision highp float;
 in vec4 vColor;
+in vec3 vWaterColor;
 in vec3 vCommon;
 in float vWater;
 in vec3 vCamera;
+in vec2 vLngLat;
 out vec4 fragColor;
+float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
 void main(void) {
   vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
-  if (n.z < 0.0) n = -n;
-  vec3 base = vColor.rgb;
+  // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
+  // ragged shoreline: threshold the interpolated wetness with a little noise (~20 m and ~6 m)
+  vec2 q = (vLngLat - vec2(-122.0, 37.5)) * vec2(3500.0, 4400.0);
+  float jitter = (vnoise(q * 0.2) - 0.5) * 0.22 + (vnoise(q * 0.8) - 0.5) * 0.08;
+  float wet = vWater + jitter;
+  float aa = fwidth(vWater) * 0.8 + 0.01;
+  float w = smoothstep(0.5 - aa, 0.5 + aa, wet);
+  vec3 land = vColor.rgb;
   float steep = 1.0 - n.z;
-  base = mix(base, vec3(0.64, 0.6, 0.54), smoothstep(0.45, 0.75, steep) * 0.75 * (1.0 - vWater));
-  vec3 lit = lighting_getLightColor(base, vCamera, vCommon, n);
-  // water: keep it calm and bright
-  lit = mix(lit, base * 1.02, vWater * 0.7);
-  fragColor = vec4(lit, 1.0);
+  land = mix(land, vec3(0.64, 0.6, 0.54), smoothstep(0.45, 0.75, steep) * 0.75);
+  vec3 litLand = lighting_getLightColor(land, vCamera, vCommon, n);
+  // water: calm and bright, a shade lighter in the shallows next to the edge
+  vec3 water = vWaterColor * (1.0 + 0.05 * smoothstep(0.8, 0.5, wet));
+  fragColor = vec4(mix(litLand, water, w), 1.0);
 }
 `;
 
@@ -145,13 +170,23 @@ export type TerrainMesh = {
   origin: [number, number];
 };
 
-type TerrainMeshLayerProps = {mesh: TerrainMesh; currentYear: number; exaggeration: number; material: any};
+type TerrainMeshLayerProps = {
+  mesh: TerrainMesh;
+  currentYear: number;
+  exaggeration: number;
+  material: any;
+};
 
 const meshDefaults: DefaultProps<TerrainMeshLayerProps> = {
   mesh: {type: 'object', value: null as any, compare: true},
   currentYear: 2026,
   exaggeration: 1,
-  material: {ambient: 0.62, diffuse: 0.55, shininess: 4, specularColor: [20, 20, 20]}
+  material: {
+    ambient: 0.62,
+    diffuse: 0.55,
+    shininess: 4,
+    specularColor: [20, 20, 20]
+  }
 };
 
 /** One terrain tile mesh. */
@@ -161,7 +196,11 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   state!: {model?: Model};
 
   getShaders() {
-    return super.getShaders({vs, fs, modules: [project32, phongMaterial, terrainModule]});
+    return super.getShaders({
+      vs,
+      fs,
+      modules: [project32, phongMaterial, terrainModule]
+    });
   }
 
   initializeState(_: LayerContext) {
@@ -205,7 +244,12 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   draw() {
     const {model} = this.state;
     if (!model) return;
-    model.shaderInputs.setProps({terrain: {year: this.props.currentYear, exaggeration: this.props.exaggeration}});
+    model.shaderInputs.setProps({
+      terrain: {
+        year: terrainYear,
+        exaggeration: this.props.exaggeration
+      }
+    });
     model.draw(this.context.renderPass);
   }
 }
@@ -237,8 +281,7 @@ function gridIndices(n: number) {
     idx![k++] = c;
     idx![k++] = d;
   };
-  for (let i = 0; i < n - 1; i++)
-    for (let j = 0; j < n - 1; j++) q(i * n + j, i * n + j + 1, (i + 1) * n + j + 1, (i + 1) * n + j);
+  for (let i = 0; i < n - 1; i++) for (let j = 0; j < n - 1; j++) q(i * n + j, i * n + j + 1, (i + 1) * n + j + 1, (i + 1) * n + j);
   // skirts: 4 edges, skirt vertices start at n*n in edge order (top, right, bottom, left)
   const base = n * n;
   const edge = (e: number, t: number) => base + e * n + t;
@@ -247,14 +290,12 @@ function gridIndices(n: number) {
   const bottom = (t: number) => (n - 1) * n + t;
   const left = (t: number) => t * n;
   const edges = [top, right, bottom, left];
-  for (let e = 0; e < 4; e++)
-    for (let t = 0; t < n - 1; t++) q(edges[e](t), edges[e](t + 1), edge(e, t + 1), edge(e, t));
+  for (let e = 0; e < 4; e++) for (let t = 0; t < n - 1; t++) q(edges[e](t), edges[e](t + 1), edge(e, t + 1), edge(e, t));
   indexCache.set(n, idx);
   return idx;
 }
 
-export type DecoInstances = {kind: number; data: any; count: number; scale: Float32Array}[];
-export type TileContent = {mesh: TerrainMesh; deco: DecoInstances} | null;
+export type TileContent = {mesh: TerrainMesh; deco: DecoBatch[]} | null;
 
 function decodeYear(v: number) {
   return v === 0 ? 0 : v / 10 + 1000;
@@ -275,7 +316,15 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
   if (!f && z === TILE_ZOOM_DETAIL) {
     f = await fetchTile(z - 1, x >> 1, y >> 1);
     if (!f) return null;
-    sub = {r0: (y & 1) * 32, c0: (x & 1) * 32, step: 1, n: 33, srcZ: z - 1, srcX: x >> 1, srcY: y >> 1};
+    sub = {
+      r0: (y & 1) * 32,
+      c0: (x & 1) * 32,
+      step: 1,
+      n: 33,
+      srcZ: z - 1,
+      srcX: x >> 1,
+      srcY: y >> 1
+    };
   }
   if (!f) return null;
   const c = f.columns;
@@ -317,10 +366,18 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
       skirt[v] = 1;
     })
   );
-  const mesh: TerrainMesh = {positions, covers, cover4, years, skirt, indices: gridIndices(n), origin: [west, north]};
+  const mesh: TerrainMesh = {
+    positions,
+    covers,
+    cover4,
+    years,
+    skirt,
+    indices: gridIndices(n),
+    origin: [west, north]
+  };
 
   // decorations
-  const deco: DecoInstances = [];
+  const deco: DecoBatch[] = [];
   const dpos = c.deco_pos as Uint16Array | undefined;
   if (dpos && dpos.length) {
     const kinds = c.deco_kind as Uint8Array;
@@ -352,6 +409,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
       const m = ids.length;
       const pos = new Float32Array(m * 3);
       const scl = new Float32Array(m * 3);
+      const ang = new Float32Array(m);
       const yr = new Float32Array(m * 2);
       const col = new Uint8Array(m * 4);
       const pal = DECO_COLORS[kind] ?? DECO_COLORS[0];
@@ -360,8 +418,10 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         const gy = (dpos[i * 2 + 1] / 65535) * (N - 1);
         const lx = sub.n !== N ? gx - sub.c0 : gx;
         const ly = sub.n !== N ? gy - sub.r0 : gy;
-        pos[k * 3] = ((east - west) * lx) / (n - 1);
-        pos[k * 3 + 1] = tileLat(y + ly / (n - 1), z) - north;
+        // relative to the shared decoration origin (all tiles are drawn together)
+        pos[k * 3] = west + ((east - west) * lx) / (n - 1) - DECO_ORIGIN[0];
+        pos[k * 3 + 1] = tileLat(y + ly / (n - 1), z) - DECO_ORIGIN[1];
+        ang[k] = ((((i * 2654435761) >>> 0) % 360) * Math.PI) / 180;
         pos[k * 3 + 2] = elevAt(gx, gy) - 0.3;
         const s = sizes[i];
         // stylised: crowns ~2x and trunks ~1.5x real size so trees read at city scale (Civ-like)
@@ -371,31 +431,58 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         scl[k * 3 + 2] = kind === 4 ? s : s * 1.45;
         yr[k * 2] = dy[i * 2] ? decodeYear(dy[i * 2]) : -10000;
         yr[k * 2 + 1] = dy[i * 2 + 1] ? decodeYear(dy[i * 2 + 1]) : 10000;
-        col.set(pal[(i * 2654435761) % pal.length >>> 0] ?? pal[0], k * 4);
+        col.set(pal[((i * 2654435761) % pal.length) >>> 0] ?? pal[0], k * 4);
         col[k * 4 + 3] = 255;
       });
       deco.push({
         kind,
         count: m,
+        pos,
         scale: scl,
-        data: {
-          length: m,
-          attributes: {
-            getPosition: {value: pos, size: 3},
-            getYears: {value: yr, size: 2},
-            getColor: {value: col, size: 4, normalized: true}
-          }
-        }
+        angle: ang,
+        years: yr,
+        color: col
       });
     }
   }
   return {mesh, deco};
 }
 
-const decoTime = new TimeExtension({mode: 'mesh'});
+let onDecoChange: (() => void) | null = null;
+/** Called when the merged decorations change (the visible tiles settled): re-render. */
+export function setTerrainChangeCallback(fn: () => void) {
+  onDecoChange = fn;
+}
 
-export function terrainLayer(year: number, extent: [number, number, number, number]) {
-  return new TileLayer<TileContent>({
+// the live TileLayer (deck moves state onto the newest instance passed to setProps)
+let liveTiles: TileLayer<TileContent> | null = null;
+let decoTimer = 0;
+/** Re-merge the decorations of the tiles currently displayed (debounced). */
+export function refreshDecoSoon(delay = 120) {
+  clearTimeout(decoTimer);
+  decoTimer = window.setTimeout(() => {
+    const ts = (liveTiles as any)?.state?.tileset;
+    if (!ts) return;
+    const tiles = (ts.tiles as any[]).filter(t => t.isVisible && t.content?.deco?.length);
+    if (
+      setVisibleDeco(
+        tiles.map(t => ({
+          key: t.id as string,
+          batches: t.content.deco as DecoBatch[]
+        }))
+      )
+    )
+      onDecoChange?.();
+  }, delay);
+}
+
+// The year is read at draw time (not a prop), so changing it doesn't rebuild the
+// ~50 tile sublayers every frame while the timeline plays.
+let terrainYear = 2026;
+
+export function terrainLayer(year: number, extent: [number, number, number, number], zoom = 13) {
+  terrainYear = year;
+  liveTiles = new TileLayer<TileContent>({
     id: 'terrain',
     minZoom: 8,
     maxZoom: TILE_ZOOM_DETAIL,
@@ -405,45 +492,21 @@ export function terrainLayer(year: number, extent: [number, number, number, numb
     maxRequests: 12,
     refinementStrategy: 'best-available',
     getTileData: ({index}: any) => loadTerrainTile(index.z, index.x, index.y),
-    updateTriggers: {renderSubLayers: [Math.round(year * 20) / 20]},
+    // decorations of the tiles in view are drawn together (deco-layer.ts)
+    onTileLoad: () => refreshDecoSoon(),
+    onViewportLoad: () => refreshDecoSoon(0),
     renderSubLayers: (props: any) => {
       const content = props.data as TileContent;
       if (!content) return null;
-      const {mesh, deco} = content;
-      const common = {coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS, coordinateOrigin: [mesh.origin[0], mesh.origin[1], 0]};
-      const layers: any[] = [
-        new TerrainMeshLayer({id: `${props.id}-mesh`, mesh, currentYear: year, exaggeration: 1, ...common} as any)
-      ];
-      for (const d of deco) {
-        layers.push(
-          new SimpleMeshLayer({
-            id: `${props.id}-deco-${d.kind}`,
-            data: d.data,
-            mesh: DECO_MESHES[d.kind],
-            ...common,
-            // SimpleMeshLayer builds its model matrix from accessors (binary getScale is ignored)
-            getScale: (_: any, {index, target}: any) => {
-              target[0] = d.scale[index * 3];
-              target[1] = d.scale[index * 3 + 1];
-              target[2] = d.scale[index * 3 + 2];
-              return target;
-            },
-            getOrientation: (_: any, {index, target}: any) => {
-              target[0] = 0;
-              target[1] = ((index * 2654435761) % 360) >>> 0;
-              target[2] = 0;
-              return target;
-            },
-            material: {ambient: 0.58, diffuse: 0.55, shininess: 4, specularColor: [20, 22, 18]},
-            pickable: false,
-            extensions: [decoTime],
-            currentYear: year,
-            growYears: d.kind === 4 ? 1.5 : 6,
-            shrinkYears: 1
-          } as any)
-        );
-      }
-      return layers;
+      const {mesh} = content;
+      return new TerrainMeshLayer({
+        id: `${props.id}-mesh`,
+        mesh,
+        exaggeration: 1,
+        coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+        coordinateOrigin: [mesh.origin[0], mesh.origin[1], 0]
+      } as any);
     }
   });
+  return [liveTiles, ...decoLayers(year, zoom)];
 }

@@ -5,13 +5,15 @@
  * ~1903, a few in the 1910s, full after the 1960s) and streetcars / cable cars
  * running on the lines that existed that year.
  */
-import {COORDINATE_SYSTEM} from '@deck.gl/core';
-import type {Layer} from '@deck.gl/core';
+import {COORDINATE_SYSTEM, Layer, project32, phongMaterial} from '@deck.gl/core';
+import type {LayerContext, UpdateParameters, DefaultProps} from '@deck.gl/core';
+import {Geometry, Model} from '@luma.gl/engine';
+import type {ShaderModule} from '@luma.gl/shadertools';
 import {PathLayer} from '@deck.gl/layers';
-import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {loadColumnar} from '../data/columnar';
 import {TimeExtension} from './time-extension';
 import {MeshBuilder} from '../landmarks/kit';
+import {DecoLayer} from './deco-layer';
 
 // kinds — keep in sync with pipeline/roads.py
 const K = {STREET: 0, MAJOR: 1, FREEWAY: 2, HIGHWAY: 3, CABLE: 4, STREETCAR: 5, RAIL: 6, KEY: 7, BART: 8, FERRY: 9, LIGHTRAIL: 10};
@@ -40,14 +42,18 @@ type PathSet = {
   width: Uint8Array;
   years: Float32Array;
   elevated: Uint8Array;
-  columns?: {data: any; scale: Float32Array; years: Float32Array};
+  columns?: {data: any};
   /** cumulative metres along each path (per vertex) for traffic */
   cum?: Float32Array;
+  /** lon/lat bounds (absolute) of the set — for culling chunks out of view */
+  bbox?: [number, number, number, number];
 };
 
+/** Whole sets (traffic) and what is drawn: the region's 124k roads are split into
+ *  map squares so that only the squares in view go through the GPU. */
 const sets: PathSet[] = [];
+const drawSets: PathSet[] = [];
 const fade = new TimeExtension({mode: 'fade'});
-const meshTime = new TimeExtension({mode: 'mesh-z'});
 
 const DEG = 111320;
 
@@ -70,6 +76,13 @@ async function loadSet(id: string, url: string) {
     elevated: c.elevated as Uint8Array,
     data: {length: n, startIndices: starts, attributes: {getPath: {value: pos, size: 3}}}
   };
+  // Ground-level paths were sampled bilinearly from the elevation grid, but the
+  // terrain is drawn as flat triangles between 30–60 m vertices, which can bulge
+  // above that on hills and cut roads into dashes: lift them a little.
+  for (let p = 0; p < n; p++) {
+    if (set.elevated[p] !== 0 || set.kind[p] === K.FERRY) continue;
+    for (let v = starts[p]; v < starts[p + 1]; v++) pos[v * 3 + 2] += 0.9;
+  }
   // cumulative distances for traffic
   const cum = new Float32Array(pos.length / 3);
   const kx = DEG * Math.cos((oy * Math.PI) / 180);
@@ -85,30 +98,118 @@ async function loadSet(id: string, url: string) {
     }
   }
   set.cum = cum;
-  // columns under elevated (viaduct) paths, every ~50 m
+  sets.push(set);
+  if (id === 'roads-region') for (const ch of splitSet(set, 8, 8)) drawSets.push(withColumns(ch));
+  else drawSets.push(withColumns(set));
+}
+
+/** Columns under elevated (viaduct) paths, every ~50 m. */
+function withColumns(set: PathSet) {
+  const {n, starts, pos} = set;
   const cols: number[] = [];
   const cyears: number[] = [];
   for (let p = 0; p < n; p++) {
     if (set.elevated[p] !== 2) continue;
     for (let v = starts[p]; v < starts[p + 1]; v += 2) {
-      cols.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]);
+      cols.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2] - 14);
       cyears.push(set.years[p * 2], set.years[p * 2 + 1]);
     }
   }
   if (cols.length) {
     const m = cols.length / 3;
-    const cp = new Float32Array(cols);
     const scale = new Float32Array(m * 3);
-    for (let i = 0; i < m; i++) {
-      scale[i * 3] = 2.2;
-      scale[i * 3 + 1] = 2.2;
-      scale[i * 3 + 2] = 14;
-      cp[i * 3 + 2] -= 14;
-    }
-    set.columns = {data: {length: m, attributes: {getPosition: {value: cp, size: 3}, getYears: {value: new Float32Array(cyears), size: 2}}}, scale, years: new Float32Array(cyears)};
+    for (let i = 0; i < m; i++) scale.set([2.2, 2.2, 14], i * 3);
+    set.columns = {
+      data: {
+        length: m,
+        attributes: {
+          getPosition: {value: new Float32Array(cols), size: 3},
+          getScale: {value: scale, size: 3},
+          getAngle: {value: new Float32Array(m), size: 1},
+          getYears: {value: new Float32Array(cyears), size: 2}
+        }
+      }
+    };
   }
-  sets.push(set);
+  return set;
 }
+
+/** Split a set into a grid of chunks by each path's bbox centre (bbox per chunk). */
+function splitSet(set: PathSet, nx: number, ny: number): PathSet[] {
+  const {n, starts, pos, origin} = set;
+  const bb = new Float64Array(n * 4);
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (let p = 0; p < n; p++) {
+    let a = Infinity, b = Infinity, c = -Infinity, d = -Infinity;
+    for (let v = starts[p]; v < starts[p + 1]; v++) {
+      const x = pos[v * 3] + origin[0];
+      const y = pos[v * 3 + 1] + origin[1];
+      if (x < a) a = x;
+      if (y < b) b = y;
+      if (x > c) c = x;
+      if (y > d) d = y;
+    }
+    bb.set([a, b, c, d], p * 4);
+    x0 = Math.min(x0, a);
+    y0 = Math.min(y0, b);
+    x1 = Math.max(x1, c);
+    y1 = Math.max(y1, d);
+  }
+  const cellOf = (p: number) => {
+    const cx = (bb[p * 4] + bb[p * 4 + 2]) / 2;
+    const cy = (bb[p * 4 + 1] + bb[p * 4 + 3]) / 2;
+    const i = Math.min(nx - 1, Math.floor(((cx - x0) / (x1 - x0 || 1)) * nx));
+    const j = Math.min(ny - 1, Math.floor(((cy - y0) / (y1 - y0 || 1)) * ny));
+    return j * nx + i;
+  };
+  const members: number[][] = Array.from({length: nx * ny}, () => []);
+  for (let p = 0; p < n; p++) members[cellOf(p)].push(p);
+  const out: PathSet[] = [];
+  members.forEach((paths, cell) => {
+    if (!paths.length) return;
+    const m = paths.length;
+    let nv = 0;
+    for (const p of paths) nv += starts[p + 1] - starts[p];
+    const cs = new Uint32Array(m + 1);
+    const cp = new Float32Array(nv * 3);
+    const kind = new Uint8Array(m);
+    const width = new Uint8Array(m);
+    const years = new Float32Array(m * 2);
+    const elevated = new Uint8Array(m);
+    const box: [number, number, number, number] = [Infinity, Infinity, -Infinity, -Infinity];
+    let o = 0;
+    paths.forEach((p, k) => {
+      cs[k] = o;
+      cp.set(pos.subarray(starts[p] * 3, starts[p + 1] * 3), o * 3);
+      o += starts[p + 1] - starts[p];
+      kind[k] = set.kind[p];
+      width[k] = set.width[p];
+      years[k * 2] = set.years[p * 2];
+      years[k * 2 + 1] = set.years[p * 2 + 1];
+      elevated[k] = set.elevated[p];
+      box[0] = Math.min(box[0], bb[p * 4]);
+      box[1] = Math.min(box[1], bb[p * 4 + 1]);
+      box[2] = Math.max(box[2], bb[p * 4 + 2]);
+      box[3] = Math.max(box[3], bb[p * 4 + 3]);
+    });
+    cs[m] = o;
+    out.push({
+      id: `${set.id}-${cell}`,
+      origin,
+      n: m,
+      starts: cs,
+      pos: cp,
+      kind,
+      width,
+      years,
+      elevated,
+      bbox: box,
+      data: {length: m, startIndices: cs, attributes: {getPath: {value: cp, size: 3}}}
+    });
+  });
+  return out;
+}
+
 
 export async function loadRoads() {
   await Promise.all([
@@ -126,10 +227,18 @@ function columnMesh() {
 }
 const COLUMN = columnMesh();
 
-export function roadLayers(year: number, zoom: number): Layer[] {
+/** bounds: the map's [west, south, east, north] — chunks outside it (with a margin) are skipped. */
+export function roadLayers(year: number, zoom: number, bounds?: [number, number, number, number]): Layer[] {
   const out: Layer[] = [];
-  for (const s of sets) {
-    if (s.id === 'roads-region' && zoom > 15.5) continue;
+  let view = bounds;
+  if (view) {
+    const mx = (view[2] - view[0]) * 0.5;
+    const my = (view[3] - view[1]) * 0.5;
+    view = [view[0] - mx, view[1] - my, view[2] + mx, view[3] + my];
+  }
+  for (const s of drawSets) {
+    if (s.id.startsWith('roads-region') && zoom > 15.5) continue;
+    if (view && s.bbox && (s.bbox[2] < view[0] || s.bbox[0] > view[2] || s.bbox[3] < view[1] || s.bbox[1] > view[3])) continue;
     out.push(
       new PathLayer({
         id: `paths-${s.id}`,
@@ -155,31 +264,23 @@ export function roadLayers(year: number, zoom: number): Layer[] {
         currentYear: year,
         growYears: 1.5,
         shrinkYears: 0.5,
-        parameters: {depthBias: -1} as any
+        // pull roads toward the camera in the depth test so they win over the terrain
+        parameters: {depthBias: -4, depthBiasSlopeScale: -2} as any
       } as any) as any
     );
     if (s.columns) {
-      const cs = s.columns;
       out.push(
-        new SimpleMeshLayer({
+        new DecoLayer({
           id: `columns-${s.id}`,
-          data: cs.data,
+          data: s.columns.data,
           mesh: COLUMN,
           coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
           coordinateOrigin: [s.origin[0], s.origin[1], 0],
-          getScale: (_: any, {index, target}: any) => {
-            target[0] = cs.scale[index * 3];
-            target[1] = cs.scale[index * 3 + 1];
-            target[2] = cs.scale[index * 3 + 2];
-            return target;
-          },
-          getColor: [255, 255, 255, 255],
           material: {ambient: 0.6, diffuse: 0.5, shininess: 4, specularColor: [20, 20, 20]},
-          extensions: [meshTime],
-          currentYear: year,
+          year,
           growYears: 1.5,
           shrinkYears: 0.5
-        } as any) as any
+        }) as any
       );
     }
   }
@@ -187,9 +288,25 @@ export function roadLayers(year: number, zoom: number): Layer[] {
 }
 
 // ------------------------------------------------------------------ traffic
+//
+// Vehicles are animated entirely on the GPU: each one is assigned a straight
+// "leg" of its road (≤ ~220 m between two path vertices, lane-offset to the
+// right) once at load; the vertex shader moves it along the leg from a time
+// uniform and hides it by year / era density. A frame of traffic therefore costs
+// one redraw — no layer rebuild, no attribute upload.
 
-type Vehicle = {set: PathSet; path: number; offset: number; speed: number; dir: number; lane: number; color: [number, number, number]; kind: 'car' | 'tram'};
-let vehicles: Vehicle[] = [];
+type Fleet = {
+  n: number;
+  a: Float32Array; // leg start (lng/lat offsets from ORIGIN, z metres)
+  b: Float32Array; // leg end
+  motion: Float32Array; // speed m/s, phase 0..1, leg length m, heading rad
+  rank: Float32Array; // density rank 0..1, size scale
+  years: Float32Array; // [start, end) of the road
+  colorIdx: Uint8Array;
+  fixedColor?: Uint8Array; // trams: one colour per line
+};
+let fleets: {car?: Fleet; tram?: Fleet} = {};
+let origin: [number, number] = [0, 0];
 
 function carMesh() {
   const b = new MeshBuilder();
@@ -207,28 +324,34 @@ function tramMesh() {
 const CAR = carMesh();
 const TRAM = tramMesh();
 
-const PALETTE_EARLY: [number, number, number][] = [
-  [30, 30, 32],
-  [40, 38, 36],
-  [60, 52, 44],
-  [34, 46, 40]
+const PALETTES: [number, number, number][][] = [
+  // before 1940: black and dark
+  [
+    [30, 30, 32],
+    [40, 38, 36],
+    [60, 52, 44],
+    [34, 46, 40]
+  ],
+  // 1940–1975
+  [
+    [200, 70, 60],
+    [90, 130, 170],
+    [230, 220, 190],
+    [120, 160, 120],
+    [60, 60, 70],
+    [210, 180, 90]
+  ],
+  // after 1975
+  [
+    [240, 240, 238],
+    [200, 202, 205],
+    [40, 42, 46],
+    [150, 30, 30],
+    [40, 70, 130],
+    [120, 120, 125]
+  ]
 ];
-const PALETTE_MID: [number, number, number][] = [
-  [200, 70, 60],
-  [90, 130, 170],
-  [230, 220, 190],
-  [120, 160, 120],
-  [60, 60, 70],
-  [210, 180, 90]
-];
-const PALETTE_LATE: [number, number, number][] = [
-  [240, 240, 238],
-  [200, 202, 205],
-  [40, 42, 46],
-  [150, 30, 30],
-  [40, 70, 130],
-  [120, 120, 125]
-];
+const eraOf = (year: number) => (year < 1940 ? 0 : year < 1975 ? 1 : 2);
 
 function rand(seed: number) {
   let s = seed >>> 0;
@@ -238,9 +361,77 @@ function rand(seed: number) {
   };
 }
 
+/** A straight leg of path p around vertex v: extend while the direction stays within ~18°. */
+function legOf(s: PathSet, p: number, v: number, maxLen: number): [number, number] {
+  const st = s.starts[p];
+  const en = s.starts[p + 1] - 1;
+  const kx = DEG * Math.cos((s.origin[1] * Math.PI) / 180);
+  const dir = (i: number): [number, number] => {
+    const dx = (s.pos[(i + 1) * 3] - s.pos[i * 3]) * kx;
+    const dy = (s.pos[(i + 1) * 3 + 1] - s.pos[i * 3 + 1]) * DEG;
+    const l = Math.hypot(dx, dy) || 1;
+    return [dx / l, dy / l];
+  };
+  let i = Math.min(Math.max(v, st), en - 1);
+  const d0 = dir(i);
+  let lo = i;
+  let hi = i + 1;
+  const cum = s.cum!;
+  while (hi < en && cum[hi + 1] - cum[lo] < maxLen) {
+    const d = dir(hi);
+    if (d[0] * d0[0] + d[1] * d0[1] < 0.95) break;
+    hi++;
+  }
+  while (lo > st && cum[hi] - cum[lo - 1] < maxLen) {
+    const d = dir(lo - 1);
+    if (d[0] * d0[0] + d[1] * d0[1] < 0.95) break;
+    lo--;
+  }
+  return [lo, hi];
+}
+
+function buildFleet(items: {s: PathSet; p: number; v: number; speed: number; dir: number; lane: number; rank: number; maxLen: number; color?: [number, number, number]}[]): Fleet {
+  const n = items.length;
+  const f: Fleet = {
+    n,
+    a: new Float32Array(n * 3),
+    b: new Float32Array(n * 3),
+    motion: new Float32Array(n * 4),
+    rank: new Float32Array(n * 2),
+    years: new Float32Array(n * 2),
+    colorIdx: new Uint8Array(n)
+  };
+  if (items.some(it => it.color)) f.fixedColor = new Uint8Array(n * 4);
+  let k = 0;
+  for (const it of items) {
+    const {s, p} = it;
+    const [lo, hi] = legOf(s, p, it.v, it.maxLen);
+    let i0 = lo;
+    let i1 = hi;
+    if (it.dir < 0) [i0, i1] = [i1, i0];
+    const kx = DEG * Math.cos((s.origin[1] * Math.PI) / 180);
+    const dx = (s.pos[i1 * 3] - s.pos[i0 * 3]) * kx;
+    const dy = (s.pos[i1 * 3 + 1] - s.pos[i0 * 3 + 1]) * DEG;
+    const L = Math.hypot(dx, dy);
+    if (L < 15) continue;
+    // keep right: offset to the right of the direction of travel
+    const ox = ((dy / L) * it.lane) / kx;
+    const oy = ((-dx / L) * it.lane) / DEG;
+    f.a.set([s.pos[i0 * 3] + ox, s.pos[i0 * 3 + 1] + oy, s.pos[i0 * 3 + 2] + 0.15], k * 3);
+    f.b.set([s.pos[i1 * 3] + ox, s.pos[i1 * 3 + 1] + oy, s.pos[i1 * 3 + 2] + 0.15], k * 3);
+    f.motion.set([it.speed, (k * 0.754877666) % 1, L, Math.atan2(dx, dy)], k * 4);
+    f.rank.set([it.rank, 1], k * 2);
+    f.years.set([s.years[p * 2], s.years[p * 2 + 1]], k * 2);
+    f.colorIdx[k] = (k * 2654435761) % 251;
+    if (it.color && f.fixedColor) f.fixedColor.set([...it.color, 255], k * 4);
+    k++;
+  }
+  f.n = k;
+  return f;
+}
+
 function setupTraffic() {
   const r = rand(1906);
-  vehicles = [];
   const weightOf = (s: PathSet, p: number) => {
     const k = s.kind[p];
     const len = s.cum![s.starts[p + 1] - 1] || 0;
@@ -250,51 +441,45 @@ function setupTraffic() {
     if (k === K.STREET) return len * (s.id === 'roads-sf' ? 1 : 0.15);
     return 0;
   };
+  const cars: Parameters<typeof buildFleet>[0] = [];
   for (const s of sets) {
     if (s.id === 'routes') continue;
-    const w: number[] = [];
+    origin = s.origin;
+    const w = new Float64Array(s.n);
     let tot = 0;
-    for (let p = 0; p < s.n; p++) {
-      tot += weightOf(s, p);
-      w.push(tot);
-    }
-    const count = s.id === 'roads-sf' ? 5000 : 4000;
+    for (let p = 0; p < s.n; p++) w[p] = tot += weightOf(s, p);
+    const count = s.id === 'roads-sf' ? 7000 : 5000;
     for (let i = 0; i < count; i++) {
       const x = r() * tot;
       let lo = 0;
-      let hi = w.length - 1;
+      let hi = s.n - 1;
       while (lo < hi) {
         const mid = (lo + hi) >> 1;
         if (w[mid] < x) lo = mid + 1;
         else hi = mid;
       }
       const fast = s.kind[lo] === K.FREEWAY || s.kind[lo] === K.HIGHWAY;
-      vehicles.push({
-        set: s,
-        path: lo,
-        offset: r() * 1e5,
-        speed: (fast ? 24 : 10) * (0.7 + 0.6 * r()),
-        dir: r() < 0.5 ? 1 : -1,
-        lane: 1.6 + r() * 1.4,
-        color: [0, 0, 0],
-        kind: 'car'
-      });
+      const v = s.starts[lo] + Math.floor(r() * (s.starts[lo + 1] - s.starts[lo]));
+      cars.push({s, p: lo, v, speed: (fast ? 26 : 10) * (0.7 + 0.6 * r()), dir: r() < 0.5 ? 1 : -1, lane: fast ? 2 + r() * 5 : 1.8 + r() * 1.2, rank: r(), maxLen: fast ? 400 : 220});
     }
   }
-  // trams on rail routes, a few per km
+  const trams: Parameters<typeof buildFleet>[0] = [];
   for (const s of sets) {
     if (s.id !== 'routes') continue;
+    origin = s.origin;
     for (let p = 0; p < s.n; p++) {
       const k = s.kind[p];
       if (k !== K.CABLE && k !== K.STREETCAR && k !== K.KEY && k !== K.LIGHTRAIL) continue;
       const len = s.cum![s.starts[p + 1] - 1] || 0;
-      const n = Math.max(1, Math.round(len / 700));
+      const n = Math.max(1, Math.round(len / 500));
       for (let i = 0; i < n; i++) {
-        vehicles.push({set: s, path: p, offset: r() * 1e5, speed: k === K.CABLE ? 4 : 7, dir: r() < 0.5 ? 1 : -1, lane: 1.2, color: k === K.CABLE ? [150, 60, 40] : k === K.KEY ? [230, 140, 50] : [200, 170, 90], kind: 'tram'});
+        const v = s.starts[p] + Math.floor(((i + 0.5) / n) * (s.starts[p + 1] - s.starts[p]));
+        const color: [number, number, number] = k === K.CABLE ? [150, 60, 40] : k === K.KEY ? [230, 140, 50] : [200, 170, 90];
+        trams.push({s, p, v, speed: k === K.CABLE ? 4.2 : 7, dir: i % 2 ? 1 : -1, lane: 1.3, rank: 0, maxLen: 300, color});
       }
     }
   }
-  for (const [i, v] of vehicles.entries()) v.color = (v.kind === 'tram' ? v.color : [i % 997, 0, 0]) as any;
+  fleets = {car: buildFleet(cars), tram: buildFleet(trams)};
 }
 
 /** Era factor: share of the car pool on the road in a given year. */
@@ -319,95 +504,198 @@ function carDensity(year: number) {
   return 1;
 }
 
-function carColor(i: number, year: number): [number, number, number] {
-  const pal = year < 1940 ? PALETTE_EARLY : year < 1975 ? PALETTE_MID : PALETTE_LATE;
-  return pal[(i * 2654435761) % pal.length >>> 0] ?? pal[0];
+// per-fleet, per-era binary data (stable objects: deck only re-uploads when the era changes)
+const dataCache = new Map<string, any>();
+function fleetData(kind: 'car' | 'tram', f: Fleet, era: number) {
+  const key = `${kind}-${kind === 'tram' ? 0 : era}`;
+  let d = dataCache.get(key);
+  if (d) return d;
+  let col = f.fixedColor;
+  if (!col) {
+    const pal = PALETTES[era];
+    col = new Uint8Array(f.n * 4);
+    for (let i = 0; i < f.n; i++) {
+      const c = pal[f.colorIdx[i] % pal.length];
+      col.set([c[0], c[1], c[2], 255], i * 4);
+    }
+  }
+  d = {
+    length: f.n,
+    attributes: {
+      getA: {value: f.a, size: 3},
+      getB: {value: f.b, size: 3},
+      getMotion: {value: f.motion, size: 4},
+      getRank: {value: f.rank, size: 2},
+      getYears: {value: f.years, size: 2},
+      getColor: {value: col, size: 4, normalized: true}
+    }
+  };
+  dataCache.set(key, d);
+  return d;
 }
 
-/** Vehicle positions at wall-clock time t (seconds) for the given year. */
-export function trafficLayers(year: number, zoom: number, t: number): Layer[] {
-  if (zoom < 12.5 || !vehicles.length) return [];
-  const dens = carDensity(year);
-  const groups: Record<'car' | 'tram', {pos: number[]; ang: number[]; col: number[]}> = {car: {pos: [], ang: [], col: []}, tram: {pos: [], ang: [], col: []}};
-  let carIdx = 0;
-  for (const v of vehicles) {
-    const s = v.set;
-    const p = v.path;
-    if (year < s.years[p * 2] || year >= s.years[p * 2 + 1]) continue;
-    if (v.kind === 'car') {
-      carIdx++;
-      if ((carIdx * 0.6180339887) % 1 > dens) continue;
-    }
-    const st = s.starts[p];
-    const en = s.starts[p + 1] - 1;
-    const L = s.cum![en];
-    if (L < 20) continue;
-    let d = (v.offset + t * v.speed) % (2 * L);
-    if (v.dir < 0) d = 2 * L - d;
-    const forward = d < L;
-    const along = forward ? d : 2 * L - d;
-    // binary search segment
-    let lo = st;
-    let hi = en;
-    while (lo < hi - 1) {
-      const mid = (lo + hi) >> 1;
-      if (s.cum![mid] <= along) lo = mid;
-      else hi = mid;
-    }
-    const seg = Math.max(s.cum![hi] - s.cum![lo], 1e-3);
-    const f = (along - s.cum![lo]) / seg;
-    const x0 = s.pos[lo * 3];
-    const y0 = s.pos[lo * 3 + 1];
-    const x1 = s.pos[hi * 3];
-    const y1 = s.pos[hi * 3 + 1];
-    const z = s.pos[lo * 3 + 2] + (s.pos[hi * 3 + 2] - s.pos[lo * 3 + 2]) * f;
-    const kx = DEG * Math.cos((s.origin[1] * Math.PI) / 180);
-    let dx = (x1 - x0) * kx;
-    let dy = (y1 - y0) * DEG;
-    if (!forward) {
-      dx = -dx;
-      dy = -dy;
-    }
-    const len = Math.hypot(dx, dy) || 1;
-    // keep right: offset to the right of travel direction
-    const ox = ((dy / len) * v.lane) / kx;
-    const oy = ((-dx / len) * v.lane) / DEG;
-    const g = groups[v.kind];
-    g.pos.push(x0 + (x1 - x0) * f + ox + s.origin[0], y0 + (y1 - y0) * f + oy + s.origin[1], z + 0.2);
-    g.ang.push((Math.atan2(dx, dy) * 180) / Math.PI);
-    const c = v.kind === 'tram' ? v.color : carColor(carIdx, year);
-    g.col.push(c[0], c[1], c[2], 255);
-  }
+let liveTraffic: Layer[] = [];
+
+export function trafficLayers(year: number, zoom: number): Layer[] {
   const out: Layer[] = [];
+  const visible = zoom >= 12.5;
   for (const kind of ['car', 'tram'] as const) {
-    const g = groups[kind];
-    const n = g.ang.length;
-    if (!n) continue;
-    const pos = new Float64Array(g.pos);
-    const col = new Uint8Array(g.col);
-    const ang = g.ang;
-    const k = kind === 'car' ? 1.7 : 1.15;
+    const f = fleets[kind];
+    if (!f || !f.n) continue;
     out.push(
-      new SimpleMeshLayer({
+      new TrafficLayer({
         id: `traffic-${kind}`,
-        data: {length: n, attributes: {getPosition: {value: pos, size: 3}, getColor: {value: col, size: 4, normalized: true}}},
+        data: fleetData(kind, f, eraOf(year)),
         mesh: kind === 'car' ? CAR : TRAM,
-        getScale: [k, k, k],
-        getOrientation: (_: any, {index, target}: any) => {
-          target[0] = 0;
-          target[1] = -ang[index];
-          target[2] = 0;
-          return target;
-        },
-        material: {ambient: 0.55, diffuse: 0.6, shininess: 24, specularColor: [60, 60, 60]},
-        pickable: false,
-        updateTriggers: {getOrientation: t}
-      } as any) as any
+        coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+        coordinateOrigin: [origin[0], origin[1], 0],
+        year,
+        density: kind === 'car' ? carDensity(year) : 1,
+        sizeScale: kind === 'car' ? 2.1 : 1.3,
+        visible
+      })
     );
   }
+  liveTraffic = out;
   return out;
 }
 
+/** Ask deck to redraw the traffic (call from an animation loop). */
+export function tickTraffic() {
+  for (const l of liveTraffic) if (l.props.visible) l.setNeedsRedraw();
+}
+
 export function hasTraffic() {
-  return vehicles.length > 0;
+  return !!fleets.car?.n;
+}
+
+// ------------------------------------------------------------------ GPU layer
+
+type TrafficUniforms = {time: number; year: number; density: number; sizeScale: number};
+const trafficModule: ShaderModule<TrafficUniforms> = {
+  name: 'traffic',
+  vs: `layout(std140) uniform trafficUniforms {
+  float time;
+  float year;
+  float density;
+  float sizeScale;
+} traffic;
+`,
+  uniformTypes: {time: 'f32', year: 'f32', density: 'f32', sizeScale: 'f32'}
+};
+
+const trafficVs = `#version 300 es
+#define SHADER_NAME traffic-vs
+in vec3 positions;
+in vec3 colors;
+in vec3 instanceA;
+in vec3 instanceB;
+in vec4 instanceMotion;
+in vec2 instanceRank;
+in vec2 instanceYears;
+in vec4 instanceColors;
+out vec3 vColor;
+out vec3 vCommon;
+out vec3 vCamera;
+void main(void) {
+  bool vis = traffic.year >= instanceYears.x && traffic.year < instanceYears.y && instanceRank.x < traffic.density;
+  float L = max(instanceMotion.z, 1.0);
+  float u = fract(instanceMotion.y + traffic.time * instanceMotion.x / L);
+  vec3 p = mix(instanceA, instanceB, u);
+  // appear / disappear at the ends of the leg
+  float s = smoothstep(0.0, 0.05, u) * (1.0 - smoothstep(0.95, 1.0, u));
+  float h = instanceMotion.w;
+  float c = cos(h);
+  float sn = sin(h);
+  vec3 m = positions * traffic.sizeScale * instanceRank.y * s;
+  vec3 r = vec3(m.x * c + m.y * sn, -m.x * sn + m.y * c, m.z);
+  vec4 commonPos;
+  gl_Position = project_position_to_clipspace(p, vec3(0.0), project_size(r), commonPos);
+  if (!vis) gl_Position = vec4(0.0);
+  vCommon = commonPos.xyz;
+  vCamera = project.cameraPosition;
+  vColor = colors * instanceColors.rgb;
+}
+`;
+
+const trafficFs = `#version 300 es
+#define SHADER_NAME traffic-fs
+precision highp float;
+in vec3 vColor;
+in vec3 vCommon;
+in vec3 vCamera;
+out vec4 fragColor;
+void main(void) {
+  vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
+  // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
+  fragColor = vec4(lighting_getLightColor(vColor, vCamera, vCommon, n), 1.0);
+}
+`;
+
+type TrafficLayerProps = {data: any; mesh: any; year: number; density: number; sizeScale: number; material: any};
+
+const trafficDefaults: DefaultProps<TrafficLayerProps> = {
+  mesh: {type: 'object', value: null as any, compare: true},
+  year: 2026,
+  density: 1,
+  sizeScale: 1,
+  material: {ambient: 0.55, diffuse: 0.6, shininess: 24, specularColor: [60, 60, 60]}
+};
+
+class TrafficLayer extends Layer<TrafficLayerProps> {
+  static layerName = 'TrafficLayer';
+  static defaultProps = trafficDefaults;
+  state!: {model?: Model};
+
+  getShaders() {
+    return super.getShaders({vs: trafficVs, fs: trafficFs, modules: [project32, phongMaterial, trafficModule]});
+  }
+
+  initializeState(_: LayerContext) {
+    this.getAttributeManager()!.addInstanced({
+      instanceA: {size: 3, accessor: 'getA'},
+      instanceB: {size: 3, accessor: 'getB'},
+      instanceMotion: {size: 4, accessor: 'getMotion'},
+      instanceRank: {size: 2, accessor: 'getRank'},
+      instanceYears: {size: 2, accessor: 'getYears'},
+      instanceColors: {size: 4, type: 'unorm8', accessor: 'getColor', defaultValue: [255, 255, 255, 255]}
+    });
+    this.setState({});
+  }
+
+  updateState(params: UpdateParameters<this>) {
+    super.updateState(params);
+    if (params.props.mesh !== params.oldProps.mesh || params.changeFlags.extensionsChanged) {
+      this.state.model?.destroy();
+      this.setState({model: this._getModel()});
+      this.getAttributeManager()!.invalidateAll();
+    }
+  }
+
+  finalizeState(context: LayerContext) {
+    super.finalizeState(context);
+    this.state.model?.destroy();
+  }
+
+  _getModel() {
+    const m = this.props.mesh;
+    return new Model(this.context.device, {
+      ...this.getShaders(),
+      id: this.props.id,
+      bufferLayout: this.getAttributeManager()!.getBufferLayouts(),
+      geometry: new Geometry({
+        topology: 'triangle-list',
+        attributes: {positions: m.positions, colors: m.colors}
+      }),
+      isInstanced: true
+    });
+  }
+
+  draw() {
+    const {model} = this.state;
+    if (!model) return;
+    const {year, density, sizeScale} = this.props;
+    model.shaderInputs.setProps({traffic: {time: (performance.now() / 1000) % 2000, year, density, sizeScale}});
+    model.draw(this.context.renderPass);
+  }
 }

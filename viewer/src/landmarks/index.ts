@@ -3,10 +3,9 @@
  * suppression of the generic footprint extrusions they replace.
  */
 import type {Layer, PickingInfo} from '@deck.gl/core';
-import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
-import {TimeExtension} from '../layers/time-extension';
 import {BUILDING_MATERIAL} from '../layers/buildings';
 import {MeshBuilder, localToLngLat, type V2} from './kit';
+import {LandmarkMeshLayer, LANDMARK_COORDS, type MergedLandmarks} from './merged-layer';
 import {elevationAt} from '../layers/elevation';
 import type {Landmark} from './types';
 import {goldenGateBridge} from './golden-gate-bridge';
@@ -32,19 +31,58 @@ export const LANDMARKS: Landmark[] = [
 ];
 
 export type LandmarkSet = {
-  items: {lm: Landmark; mesh: any; vertices: number; data: Landmark[]}[];
+  items: {lm: Landmark; vertices: number}[];
+  merged: MergedLandmarks;
   /** replaced-footprint polygons in lon/lat, with the landmark index */
   replaced: {poly: V2[]; bbox: [number, number, number, number]; idx: number}[];
 };
 
-const meshTime = new TimeExtension({mode: 'mesh-z'});
+const ORIGIN: [number, number] = [-122.42, 37.78];
+const M_PER_DEG_LAT = 110_574;
 
+/** Build every landmark mesh and merge them into one buffer. Call after elevation loads. */
 export async function loadLandmarks(): Promise<LandmarkSet> {
-  const items = LANDMARKS.map(lm => {
+  const meshes = LANDMARKS.map(lm => {
     const b = new MeshBuilder();
     lm.build(b);
-    return {lm, mesh: b.build(), vertices: b.vertexCount, data: [lm]};
+    return b.build();
   });
+  const total = meshes.reduce((a, m) => a + m.positions.value.length / 3, 0);
+  const merged: MergedLandmarks = {
+    origin: ORIGIN,
+    positions: new Float32Array(total * 3),
+    colors: new Float32Array(total * 3),
+    times: new Float32Array(total * 4),
+    pickingColors: new Float32Array(total * 3)
+  };
+  let o = 0;
+  LANDMARKS.forEach((lm, idx) => {
+    const m = meshes[idx];
+    const pos = m.positions.value;
+    const n = pos.length / 3;
+    // bridges are modelled from sea level; everything else stands on the terrain
+    const base = lm.kind === 'bridge' ? 0 : elevationAt(lm.anchor[0], lm.anchor[1]) - 0.5;
+    const kx = 111_320 * Math.cos((lm.anchor[1] * Math.PI) / 180);
+    const ax = lm.anchor[0] - ORIGIN[0];
+    const ay = lm.anchor[1] - ORIGIN[1];
+    const pc = [(idx + 1) % 256, Math.floor((idx + 1) / 256) % 256, Math.floor((idx + 1) / 65536) % 256];
+    for (let v = 0; v < n; v++) {
+      const k = o + v;
+      merged.positions[k * 3] = ax + pos[v * 3] / kx;
+      merged.positions[k * 3 + 1] = ay + pos[v * 3 + 1] / M_PER_DEG_LAT;
+      merged.positions[k * 3 + 2] = base + pos[v * 3 + 2];
+      merged.times[k * 4] = lm.built[0];
+      merged.times[k * 4 + 1] = lm.built[1];
+      merged.times[k * 4 + 2] = lm.end;
+      merged.times[k * 4 + 3] = base;
+      merged.pickingColors[k * 3] = pc[0];
+      merged.pickingColors[k * 3 + 1] = pc[1];
+      merged.pickingColors[k * 3 + 2] = pc[2];
+    }
+    merged.colors.set(m.colors.value, o * 3);
+    o += n;
+  });
+  const items = LANDMARKS.map((lm, i) => ({lm, vertices: meshes[i].positions.value.length / 3}));
   const replaced: LandmarkSet['replaced'] = [];
   LANDMARKS.forEach((lm, idx) => {
     // Only standing landmarks replace today's footprints: a demolished
@@ -57,39 +95,27 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
       replaced.push({poly: ll, bbox: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)], idx});
     }
   });
-  return {items, replaced};
+  return {items, merged, replaced};
 }
 
 export function landmarkLayers(set: LandmarkSet, year: number, quality: boolean): Layer[] {
-  return set.items
-    .filter(({lm}) => year >= lm.built[0] - 0.01 && year < lm.end + 1)
-    .map(
-      ({lm, mesh, data}) =>
-        new SimpleMeshLayer({
-          id: `landmark-${lm.id}`,
-          data,
-          mesh,
-          // bridges are modelled from sea level; everything else stands on the terrain
-          getPosition: (d: Landmark) => [d.anchor[0], d.anchor[1], d.kind === 'bridge' ? 0 : elevationAt(d.anchor[0], d.anchor[1]) - 0.5],
-          getColor: quality ? [214, 176, 52] : [255, 255, 255],
-          getOrientation: [0, 0, 0],
-          material: BUILDING_MATERIAL,
-          pickable: true,
-          // time
-          extensions: [meshTime],
-          getYears: (d: Landmark) => [d.built[0], d.end],
-          currentYear: year,
-          growYears: Math.max(0.5, lm.built[1] - lm.built[0]),
-          shrinkYears: 0.8,
-          endTint: [0.42, 0.3, 0.24, 0.5],
-          updateTriggers: {getColor: quality}
-        } as any)
-    );
+  return [
+    new LandmarkMeshLayer({
+      id: 'landmarks',
+      data: LANDMARKS,
+      merged: set.merged,
+      ...LANDMARK_COORDS,
+      coordinateOrigin: [ORIGIN[0], ORIGIN[1], 0],
+      year,
+      quality,
+      material: BUILDING_MATERIAL,
+      pickable: true
+    }) as any
+  ];
 }
 
 export function landmarkInfo(set: LandmarkSet, info: PickingInfo) {
-  const id = info.layer?.id.replace(/^landmark-/, '');
-  const item = set.items.find(i => i.lm.id === id);
+  const item = set.items[info.index];
   if (!item) return null;
   const {lm} = item;
   const rows: Record<string, string | number> = {...lm.facts};

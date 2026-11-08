@@ -5,20 +5,18 @@
  */
 import {COORDINATE_SYSTEM} from '@deck.gl/core';
 import type {Layer} from '@deck.gl/core';
-import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {loadColumnar} from '../data/columnar';
 import {MeshBuilder, circle} from '../landmarks/kit';
-import {TimeExtension} from './time-extension';
 import {elevationAt} from './elevation';
+import {DecoLayer} from './deco-layer';
+import {broadleafLow, coniferLow, palmLow, treeLod} from './decoration-meshes';
 
 export type TreeSet = {
   id: string;
   origin: [number, number];
   growYears: number;
-  forms: {data: any; count: number; scale: Float32Array}[];
+  forms: {data: any; count: number}[];
 };
-
-const treeTime = new TimeExtension({mode: 'mesh'});
 
 // Unit meshes; each instance is scaled by [crown radius, crown radius, height].
 function broadleaf() {
@@ -48,6 +46,7 @@ function palm() {
   return b.build();
 }
 const MESHES = [broadleaf(), conifer(), palm()];
+const MESHES_LOW = [broadleafLow(), coniferLow(), palmLow()];
 const GREENS: [number, number, number][][] = [
   [
     [122, 158, 92],
@@ -75,6 +74,7 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
     const pos = new Float32Array(m * 3);
     const scl = new Float32Array(m * 3);
     const years = new Float32Array(m * 2);
+    const ang = new Float32Array(m);
     const col = new Uint8Array(m * 4);
     let j = 0;
     for (let i = 0; i < n; i++) {
@@ -88,6 +88,7 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
       scl[j * 3 + 2] = (c.height as Float32Array)[i] * 1.45;
       years[j * 2] = (c.start_year as Float32Array)[i];
       years[j * 2 + 1] = 9999;
+      ang[j] = ((((i * 2654435761) >>> 0) % 360) * Math.PI) / 180;
       const g = GREENS[k][(i * 2654435761) % GREENS[k].length >>> 0] ?? GREENS[k][0];
       col.set(g, j * 4);
       col[j * 4 + 3] = 255;
@@ -95,11 +96,12 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
     }
     return {
       count: m,
-      scale: scl,
       data: {
         length: m,
         attributes: {
           getPosition: {value: pos, size: 3},
+          getScale: {value: scl, size: 3},
+          getAngle: {value: ang, size: 1},
           getYears: {value: years, size: 2},
           getColor: {value: col, size: 4, normalized: true}
         }
@@ -109,33 +111,21 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
   return {id, origin: f.header.origin, growYears, forms};
 }
 
-export function treesLayer(trees: TreeSet, year: number): Layer[] {
+export function treesLayer(trees: TreeSet, year: number, zoom = 16): Layer[] {
+  const lod = treeLod(zoom);
   return trees.forms.map(
     (f, k) =>
-      new SimpleMeshLayer({
+      new DecoLayer({
         id: `trees-${trees.id}-${k}`,
         data: f.data,
-        mesh: MESHES[k],
-        getScale: (_: any, {index, target}: any) => {
-          target[0] = f.scale[index * 3];
-          target[1] = f.scale[index * 3 + 1];
-          target[2] = f.scale[index * 3 + 2];
-          return target;
-        },
-        getOrientation: (_: any, {index, target}: any) => {
-          target[0] = 0;
-          target[1] = ((index * 2654435761) % 360) >>> 0;
-          target[2] = 0;
-          return target;
-        },
+        mesh: (lod.low ? MESHES_LOW : MESHES)[k],
+        keep: lod.keep,
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [trees.origin[0], trees.origin[1], 0],
         material: {ambient: 0.55, diffuse: 0.55, shininess: 4, specularColor: [20, 24, 18]},
-        pickable: false,
-        extensions: [treeTime],
-        currentYear: year,
+        year,
         growYears: trees.growYears,
         shrinkYears: 0.5
-      } as any)
+      }) as any
   );
 }

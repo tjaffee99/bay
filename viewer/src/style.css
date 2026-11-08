@@ -216,3 +216,11 @@ html, body {
   #info { left: 12px; right: 12px; max-width: none; top: auto; bottom: 150px; }
 }
 [hidden] { display: none !important; }
+
+#gpu-warning {
+  position: absolute; z-index: 5; top: 12px; left: 50%; transform: translateX(-50%);
+  max-width: min(640px, calc(100vw - 32px)); padding: 10px 14px;
+  background: rgba(250, 246, 238, 0.96); color: #3a3229; border: 1px solid #c9b79c; border-radius: 6px;
+  font: 14px/1.4 'EB Garamond', Georgia, serif; box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+#gpu-warning button { border: none; background: none; cursor: pointer; font-size: 14px; color: #7a6a58; }

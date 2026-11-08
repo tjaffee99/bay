@@ -11,13 +11,14 @@ import {AmbientLight, DirectionalLight, LightingEffect} from '@deck.gl/core';
 import type {Layer, PickingInfo} from '@deck.gl/core';
 
 import {WATER} from './palette';
-import {terrainLayer} from './layers/terrain';
+import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/terrain';
 import {loadElevation} from './layers/elevation';
-import {labelLayers, loadPlaces, placeLabelsOnTerrain} from './layers/labels';
+import {labelLayers, labelZoomKey, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
-import {loadRoads, roadLayers, trafficLayers, hasTraffic} from './layers/roads';
+import {treeLod} from './layers/decoration-meshes';
+import {loadRoads, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
 import {events, eventTime, populationLabelAt} from './data/tables';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
@@ -54,10 +55,13 @@ const map = new maplibregl.Map({
   maxPitch: 80,
   minZoom: 9,
   maxZoom: 19,
+  // MapLibre only paints the flat water background here: no need for retina pixels
+  pixelRatio: 1,
   attributionControl: false,
   canvasContextAttributes: {antialias: true}
 });
 installCameraControls(map);
+setTerrainChangeCallback(() => render());
 
 const lighting = new LightingEffect({
   ambient: new AmbientLight({color: [255, 250, 242], intensity: 1.0}),
@@ -72,10 +76,21 @@ const overlay = new MapboxOverlay({
   effects: [lighting],
   layers: [],
   getTooltip: null as any,
-  onClick: (info: PickingInfo) => showInfo(info),
-  getCursor: ({isHovering}: {isHovering: boolean}) => (isHovering ? 'pointer' : 'grab')
-});
+  // No hover picking: it re-renders every pickable layer (220k buildings) into a
+  // picking buffer on each mouse move and at the start of every drag, then stalls
+  // the GPU to read it back. Objects are picked on click only (below).
+  pickAsync: false,
+  // full resolution up to 2× (3× phone screens would cost 9× the pixels of 1×)
+  useDevicePixels: Math.min(2, window.devicePixelRatio || 1),
+  getCursor: ({isDragging}: {isDragging: boolean}) => (isDragging ? 'grabbing' : 'grab'),
+  // ask for the discrete GPU on dual-GPU laptops; MSAA on
+  deviceProps: {powerPreference: 'high-performance', webgl: {antialias: true}}
+} as any);
 map.addControl(overlay as any);
+map.on('click', e => {
+  const info = overlay.pickObject({x: e.point.x, y: e.point.y, radius: 3});
+  showInfo((info ?? {picked: false, index: -1}) as PickingInfo);
+});
 
 /** Extent of the terrain tiles (Sonoma/Napa to Santa Cruz). */
 const REGION: [number, number, number, number] = [-123.2, 36.85, -121.2, 38.9];
@@ -83,12 +98,13 @@ const REGION: [number, number, number, number] = [-123.2, 36.85, -121.2, 38.9];
 function render() {
   const layers: Layer[] = [];
   const zoom = map.getZoom();
-  layers.push(terrainLayer(state.year, REGION) as any);
-  layers.push(...roadLayers(state.year, zoom));
-  for (const t of trees) layers.push(...treesLayer(t, state.year));
+  layers.push(...(terrainLayer(state.year, REGION, zoom) as any[]));
+  const b = map.getBounds();
+  layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
+  for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
-  layers.push(...trafficLayers(state.year, zoom, performance.now() / 1000));
+  layers.push(...trafficLayers(state.year, zoom));
   layers.push(...(labelLayers(state.year, zoom) as any));
   overlay.setProps({layers});
   updateOverlays();
@@ -260,25 +276,40 @@ function scheduleHash() {
   hashTimer = window.setTimeout(() => writeHash(map, state.year), 400);
 }
 map.on('moveend', scheduleHash);
-// labels fade by zoom band: re-render when the zoom changes (once per frame at most)
-let zoomPending = false;
+// labels are decluttered for the camera at rest
+function updateLabelProjector() {
+  const c = map.getCanvas();
+  setLabelProjector((lon, lat) => {
+    const p = map.project([lon, lat]);
+    return [p.x, p.y];
+  }, [c.clientWidth, c.clientHeight]);
+}
+map.on('moveend', () => {
+  refreshDecoSoon();
+  updateLabelProjector();
+  if (!state.playing) render();
+});
+map.on('load', updateLabelProjector);
+// labels fade by zoom band, traffic and region roads switch by zoom: re-render only
+// when one of those actually changes (not on every zoom frame)
+let zoomKey = '';
 map.on('zoom', () => {
-  if (zoomPending) return;
-  zoomPending = true;
-  requestAnimationFrame(() => {
-    zoomPending = false;
-    if (!state.playing) render();
-  });
+  const z = map.getZoom();
+  const lod = treeLod(z);
+  const key = `${labelZoomKey(z)}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}`;
+  if (key === zoomKey || state.playing) return;
+  zoomKey = key;
+  render();
 });
 
-// traffic moves continuously when zoomed in close enough to see it (~30 fps)
+// traffic moves on the GPU: just ask for a redraw (~30 fps) when it is visible
 let lastTraffic = 0;
 function trafficLoop(t: number) {
   requestAnimationFrame(trafficLoop);
-  if (state.playing || !hasTraffic() || map.getZoom() < 12.5 || document.hidden) return;
+  if (!hasTraffic() || map.getZoom() < 12.5 || document.hidden) return;
   if (t - lastTraffic < 33) return;
   lastTraffic = t;
-  render();
+  tickTraffic();
 }
 if (!new URLSearchParams(location.search).has('notraffic')) requestAnimationFrame(trafficLoop);
 
@@ -297,8 +328,10 @@ async function boot() {
     placeLabelsOnTerrain();
     render();
   });
-  const lmP = Promise.all([loadLandmarks(), elevP])
-    .then(([l]) => {
+  // landmark meshes are merged with their ground elevation baked in: after elevation
+  const lmP = elevP
+    .then(() => loadLandmarks())
+    .then(l => {
       landmarks = l;
       render();
     })
@@ -325,9 +358,29 @@ async function boot() {
     render();
   }
   loading.classList.add('done');
+  warnIfSoftwareRendering();
   (window as any).__ready = true;
 }
 boot();
+
+/** Browsers with hardware acceleration off (or a blocklisted GPU) draw WebGL on the CPU. */
+function warnIfSoftwareRendering() {
+  const gl = (overlay as any)._deck?.device?.gl as WebGL2RenderingContext | undefined;
+  if (!gl) return;
+  const ext = gl.getExtension('WEBGL_debug_renderer_info');
+  const renderer = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+  (window as any).__renderer = renderer;
+  if (!/swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer) || new URLSearchParams(location.search).has('nobanner')) return;
+  const el = document.createElement('div');
+  el.id = 'gpu-warning';
+  el.innerHTML =
+    'Your browser is drawing this map <b>without the graphics card</b> (' +
+    escapeHtml((renderer.match(/swiftshader|llvmpipe|softpipe|basic render[a-z ]*/i) ?? [renderer])[0]) +
+    '), so it will be slow. Turn on hardware acceleration in the browser settings and reload.' +
+    ' <button aria-label="Dismiss">✕</button>';
+  el.querySelector('button')!.addEventListener('click', () => el.remove());
+  document.body.appendChild(el);
+}
 
 // For automated screenshots / debugging.
 (window as any).__setYear = (y: number) => {
@@ -335,3 +388,4 @@ boot();
   render();
 };
 (window as any).__map = map;
+(window as any).__overlay = overlay;
