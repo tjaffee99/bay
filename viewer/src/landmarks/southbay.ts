@@ -1513,7 +1513,7 @@ const MCC_ROOF = '#4E8FCB'; // bright blue roof (Olgivanna Lloyd Wright)
  * Barrel-vaulted roof over two office ranges and the skylit mall between them; the roof stays level
  * while the wing bridges the valley, its walls reach down to the lowest ground under it.
  */
-function mccWing(b: MeshBuilder, x0: number, y0: number, brg: number, len: number, w: number, minEave: number) {
+function mccWing(b: MeshBuilder, x0: number, y0: number, brg: number, len: number, w: number, minEave: number): number {
   let lo = 0;
   let hi = 0;
   for (let t = 0; t <= len; t += len / 8) {
@@ -1552,6 +1552,7 @@ function mccWing(b: MeshBuilder, x0: number, y0: number, brg: number, len: numbe
     b.color(MCC_ROOF).cap(arcPts(0, len, hw, 270, 450, 10), eave + 0.1);
     b.color(MCC_WALL).prism(arcPts(0, len, hw, 270, 450, 10), lo, eave, {top: false});
   });
+  return eave;
 }
 
 const marinAdmin = landmark(
@@ -1563,10 +1564,10 @@ const marinAdmin = landmark(
   MARIN_CC,
   b => {
     b.frame(0, 0, 0, MCC_BRG, () => {
-      mccWing(b, -40, 52, 26.9, 155, 34.4, 15);
+      const eave = mccWing(b, -40, 52, 26.9, 155, 34.4, 15);
       // library dome over the junction, and the 172 ft gold-anodised spire beside it
-      b.color(MCC_WALL).cylinder(-29.5, 58, 19, 0, 15, 20);
-      b.color(MCC_ROOF).dome(-29.5, 58, 19.5, 15, 7, 20, 4);
+      b.color(MCC_WALL).cylinder(-29.5, 58, 19, Math.min(0, groundDz(MARIN_CC, MCC_BRG, -29.5, 58)), eave, 20);
+      b.color(MCC_ROOF).dome(-29.5, 58, 19.5, eave, 7, 20, 4);
       b.color('#D7B24A');
       b.pyramid([[-58.4, 57], [-53.7, 52], [-55.4, 58]], 0, [-55.8, 55.7, 172 * FT]);
     });

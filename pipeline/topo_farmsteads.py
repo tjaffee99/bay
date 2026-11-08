@@ -486,12 +486,13 @@ def detect_symbols(img, g, debug=None):
                     if not both.any():
                         continue
                     offs = np.nonzero(both)[0] - off
-                    if np.abs(offs).min() < line_band:
-                        on_line = True          # a line straight through the blob
-                        break
-                    if (offs < -1.5).any() and (offs > 1.5).any():
+                    through = np.abs(offs) < line_band
+                    if (offs < -line_band).any() and (offs > line_band).any():
                         on_line = True          # between two parallel lines: inside a road
                         break
+                    if through.any() and not (np.abs(offs) >= 0.15 * ppm).any():
+                        on_line = True          # on a single line (rail, boundary): no
+                        break                   # partner casing, so not a house on a road
         # holes (letter counters) near the blob, for glyphs not attached to lines
         holes = 0
         if not touches:

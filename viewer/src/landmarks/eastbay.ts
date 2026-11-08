@@ -1216,7 +1216,7 @@ const millsHall: Landmark = {
     Style: 'Second Empire, painted wood, mansard roofs; National Register of Historic Places',
     Model: OSM_NOTE + '; storey and mansard heights estimated from the photo; construction start estimated'
   },
-  sources: [WIKI + 'Mills_College', 'https://npgallery.nps.gov/AssetDetail/NRIS/71000135']
+  sources: [WIKI + 'Mills_College']
 };
 
 // ------------------------------------------------------------ Mission San José
@@ -1234,7 +1234,6 @@ function adobeChurch(b: MeshBuilder) {
   b.frame(0, 0, 0, 261, () => {
     b.color('#8F8576').box(-1.2, 0, -3, 15.6, 51.4, 4); // fieldstone base / floor platform
     b.color(white).box(-1.2, -0.6, 1, 14.6, 50.4, 8.5);
-    b.color(white).prism([[-8.5, 24.6], [6.1, 24.6], [-1.2, 24.6]], 9.5, 9.5);
     b.color(tile).gable(-1.2, -0.6, 16.0, 51.8, 9.3, 3.6, true);
     b.color(white).tri([-8.5, 24.65, 9.5], [6.1, 24.65, 9.5], [-1.2, 24.65, 13.1]); // front gable
     // bell tower (two bell openings, tiled cap, cross)
