@@ -54,12 +54,14 @@ META_CACHE = TOPO_RAW / "meta"
 PROJ_DIR = RAW / "proj"
 TOPO_INTERIM = INTERIM / "topo"
 MAP_CACHE = TOPO_INTERIM / "maps"
+INK_CACHE = TOPO_INTERIM / "ink"          # low-resolution black-ink image per sheet (for alignment)
+ROADS = RAW / "overture" / "2026-10-21.0" / "roads_region.parquet"   # download_overture.py
 DEBUG_DIR = TOPO_INTERIM / "debug"
 OUT_DIR = MANUAL / "farmsteads"
 
 TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
 LINE_BAND = 0.10        # mm: a line passing this close to a blob's centre runs through it
-DETECTOR_VERSION = 1
+DETECTOR_VERSION = 2
 
 # Farming districts of the five modelled counties (W, S, E, N in degrees). Quads are
 # selected when their footprint overlaps one of these boxes.
@@ -287,7 +289,7 @@ class GeoPDF:
             return a * x + c * y + e, b * x + d * y + f
 
         nl = np.array(neat).reshape(-1, 2)
-        self.g = {"px_to_proj": px_to_proj, "neat_px": np.column_stack([nl[:, 0] * s, (page_h - nl[:, 1]) * s]),
+        self.g = {"px_to_proj": px_to_proj, "georef": {"ctm": list(ctm), "s": s, "page_h": page_h}, "neat_px": np.column_stack([nl[:, 0] * s, (page_h - nl[:, 1]) * s]),
                   "proj": proj, "px_per_mm": s * 72 / 25.4, "m_per_px": abs(a) / s, "W": self.W, "H": self.H}
 
     def _tile(self, xref):
@@ -827,19 +829,178 @@ def detect_symbols(pdf: "GeoPDF", debug=None, tile=3000):
     return keep, stats
 
 
+# ----------------------------------------------------------------------------- alignment
+def px_to_proj_fn(georef):
+    a, b, c, d, e, f = georef["ctm"]
+    s, page_h = georef["s"], georef["page_h"]
+
+    def px_to_proj(col, row):
+        x = np.asarray(col, float) / s
+        y = page_h - np.asarray(row, float) / s
+        return a * x + c * y + e, b * x + d * y + f
+    return px_to_proj
+
+
+_ROADS = None
+
+
+def modern_roads(bbox):
+    """Overture road centrelines (OpenStreetMap) inside bbox, or None if not downloaded."""
+    global _ROADS
+    if _ROADS is None:
+        if not ROADS.exists():
+            return None
+        import geopandas as gpd
+        r = gpd.read_parquet(ROADS, columns=["class", "geometry"])
+        _ROADS = r[r["class"].isin(["primary", "secondary", "tertiary", "residential", "unclassified", "trunk"])]
+    m = 0.02
+    return _ROADS.cx[bbox[0] - m:bbox[2] + m, bbox[1] - m:bbox[3] + m]
+
+
+def road_alignment(res, ink_small):
+    """Local offset of the map against today's roads (OpenStreetMap via Overture).
+
+    Many of the valley's county roads are where they were in the 1890s, so the black ink
+    of the map (roads, buildings) is cross-correlated with the rasterised modern road
+    centrelines in 2.5 km windows; the window shifts are fitted with a robust affine model
+    (outlier windows: changed roads, the repeating road grid). The early 15' surveys are
+    off by 100-250 m this way (not on NAD27 control), the 1940s-50s maps by ~5 m.
+    -> dict with the model in metres (shift = map - modern, image axes x east / y south)."""
+    import cv2
+    import pyproj
+    from pyproj.transformer import TransformerGroup
+    step = res["ink_step"]
+    px_to_proj = px_to_proj_fn(res["georef"])
+    mpp = res["m_per_px"] * step
+    roads = modern_roads(res["bbox"])
+    if roads is None or not len(roads):
+        return {"aligned": False, "reason": "no modern roads"}
+    crs = crs_for(res["proj"])
+    pyproj.datadir.append_data_dir(str(PROJ_DIR))
+    tg = TransformerGroup("EPSG:4326", crs.geodetic_crs, always_xy=True,
+                          area_of_interest=pyproj.aoi.AreaOfInterest(-123.5, 36.5, -121.0, 38.8))
+    t1 = tg.transformers[0]
+    t2 = pyproj.Transformer.from_crs(crs.geodetic_crs, crs, always_xy=True)
+    X0, Y0 = px_to_proj(0, 0)
+    X1, Y1 = px_to_proj(1, 0)
+    X2, Y2 = px_to_proj(0, 1)
+    Ai = np.linalg.inv(np.array([[X1 - X0, X2 - X0], [Y1 - Y0, Y2 - Y0]]))
+    rr = np.zeros(ink_small.shape, np.uint8)
+    for geom in roads.geometry:
+        for line in getattr(geom, "geoms", [geom]):
+            c = np.asarray(line.coords)
+            lo, la = t1.transform(c[:, 0], c[:, 1])
+            x, y = t2.transform(lo, la)
+            px = Ai @ np.vstack([np.asarray(x) - X0, np.asarray(y) - Y0])
+            cv2.polylines(rr, [np.round(px.T / step).astype(np.int32)], False, 1, 1)
+    Rb = cv2.GaussianBlur(rr.astype(np.float32), (0, 0), 1.5)
+    Ib = cv2.GaussianBlur((ink_small > 0).astype(np.float32), (0, 0), 1.5)
+    win = int(2500 / mpp)
+    S = int((450 if res.get("edition") == "early" else 150) / mpp)
+    sup = max(2, int(60 / mpp))
+    rows = []
+    for y in range(S, Ib.shape[0] - win - S, win // 2):
+        for x in range(S, Ib.shape[1] - win - S, win // 2):
+            tpl = Rb[y:y + win, x:x + win]
+            if tpl.sum() < 3 * win or Ib[y:y + win, x:x + win].sum() < 3 * win:
+                continue
+            cc = cv2.matchTemplate(Ib[y - S:y + win + S, x - S:x + win + S], tpl, cv2.TM_CCOEFF_NORMED)
+            _, r1, _, (lx, ly) = cv2.minMaxLoc(cc)
+            cc2 = cc.copy()
+            cc2[max(ly - sup, 0):ly + sup + 1, max(lx - sup, 0):lx + sup + 1] = -1
+            r2 = cc2.max()
+            if r1 >= 0.15 and r1 - r2 >= 0.02:
+                rows.append(((x + win / 2) * mpp, (y + win / 2) * mpp, (lx - S) * mpp, (ly - S) * mpp, r1))
+    if len(rows) < 3:
+        return {"aligned": False, "reason": f"{len(rows)} usable windows", "n_windows": len(rows)}
+    A = np.array(rows)
+    xc, yc = A[:, 0].mean(), A[:, 1].mean()
+    X = np.column_stack([np.ones(len(A)), (A[:, 0] - xc) / 1000, (A[:, 1] - yc) / 1000])
+    use = np.ones(len(A), bool)
+    affine = len(A) >= 8
+    for _ in range(5):
+        if affine and use.sum() >= 8:
+            cx_, *_ = np.linalg.lstsq(X[use], A[use, 2], rcond=None)
+            cy_, *_ = np.linalg.lstsq(X[use], A[use, 3], rcond=None)
+        else:
+            affine = False
+            cx_ = np.array([np.median(A[use, 2]), 0, 0]); cy_ = np.array([np.median(A[use, 3]), 0, 0])
+        resid = np.hypot(A[:, 2] - X @ cx_, A[:, 3] - X @ cy_)
+        mad = np.median(resid[use]) * 1.4826
+        new = resid <= max(3 * mad, 25.0)
+        if (new == use).all():
+            break
+        use = new
+    if use.sum() < 3:
+        return {"aligned": False, "reason": "no consistent shift", "n_windows": len(rows)}
+    rms = float(np.sqrt(np.mean(resid[use] ** 2)))
+    shift = np.hypot(X[use] @ cx_, X[use] @ cy_)
+    return {"aligned": True, "model": "affine" if affine else "constant", "xc_m": float(xc), "yc_m": float(yc),
+            "cx": [float(v) for v in cx_], "cy": [float(v) for v in cy_], "n_windows": len(rows),
+            "n_used": int(use.sum()), "rms_m": round(rms, 1), "median_shift_m": round(float(np.median(shift)), 1)}
+
+
+def apply_alignment(res, cols, rows):
+    """Pixel coordinates of the map -> pixel coordinates in today's frame."""
+    al = res.get("align") or {}
+    cols = np.asarray(cols, float); rows = np.asarray(rows, float)
+    if not al.get("aligned"):
+        return cols, rows
+    late = res.get("edition") != "early"
+    if late and al["median_shift_m"] < 10:
+        return cols, rows                    # accurate 1:24,000 sheets: leave as published
+    m = res["m_per_px"]
+    xk = (cols * m - al["xc_m"]) / 1000
+    yk = (rows * m - al["yc_m"]) / 1000
+    dx = al["cx"][0] + al["cx"][1] * xk + al["cx"][2] * yk
+    dy = al["cy"][0] + al["cy"][1] * xk + al["cy"][2] * yk
+    return cols - dx / m, rows - dy / m
+
+
+def georeference(res):
+    """(Re)compute lon/lat of a processed sheet's symbols, urban outlines and neat line
+    from its pixel coordinates, the GeoPDF registration and the road alignment."""
+    import cv2
+    crs = crs_for(res["proj"])
+    p2p = px_to_proj_fn(res["georef"])
+    ink_png = INK_CACHE / f"{res['id']}.png"
+    if ink_png.exists() and ROADS.exists():
+        res["align"] = road_alignment(res, cv2.imread(str(ink_png), cv2.IMREAD_GRAYSCALE))
+    if res["symbols"]:
+        c, r = apply_alignment(res, [s_["px"][0] for s_ in res["symbols"]], [s_["px"][1] for s_ in res["symbols"]])
+        lon, lat = to_wgs84(crs, *p2p(c, r))
+        for s_, a, b in zip(res["symbols"], lon, lat):
+            s_["lon"], s_["lat"] = round(float(a), 7), round(float(b), 7)
+    res["urban_tint"] = []
+    for ring in res.get("urban_px", []):
+        ring = np.asarray(ring, float)
+        c, r = apply_alignment(res, ring[:, 0], ring[:, 1])
+        lon, lat = to_wgs84(crs, *p2p(c, r))
+        res["urban_tint"].append([[round(float(a), 6), round(float(b), 6)] for a, b in zip(lon, lat)])
+    # the neat line stays where the sheet was registered (coverage); shift it with the map
+    nl = np.asarray(res["neat_px"], float)
+    c, r = apply_alignment(res, nl[:, 0], nl[:, 1])
+    lon, lat = to_wgs84(crs, *p2p(c, r))
+    res["neatline"] = [[round(float(a), 7), round(float(b), 7)] for a, b in zip(lon, lat)]
+    return res
+
+
 # ----------------------------------------------------------------------------- per sheet
 def sheet_path(m) -> Path:
     return MAP_CACHE / f"{m['id']}.json"
 
 
 def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
-    """Download, detect, georeference one sheet; cache the result as JSON."""
+    """Download, detect, align and georeference one sheet; cache the result as JSON
+    (pixel coordinates + registration, so it can be re-georeferenced without the PDF)
+    and a low-resolution ink image for the road alignment."""
+    import cv2
+    import pyproj
     out = sheet_path(m)
     if out.exists():
         res = json.loads(out.read_text())
         if res.get("detector_version") == DETECTOR_VERSION:
             return res
-    import pyproj
     TOPO_RAW.mkdir(parents=True, exist_ok=True)
     pdf = TOPO_RAW / Path(m["pdf_url"].replace("%20", "_")).name
     download_file(m["pdf_url"], pdf)
@@ -848,42 +1009,38 @@ def process_sheet(m: dict, keep_raw=False, debug_crops=0) -> dict:
     log(f"{m['quad']} {m['edition_year']} 1:{m['scale']}: {sheet.W}x{sheet.H} px, "
         f"{g['px_per_mm'] * 25.4:.0f} ppi, {g['m_per_px']:.2f} m/px")
     keep, stats = detect_symbols(sheet)
-    crs = crs_for(g["proj"], m["bbox"])
-    if keep:
-        X, Y = g["px_to_proj"]([r["x"] for r in keep], [r["y"] for r in keep])
-        lon, lat = to_wgs84(crs, X, Y)
-    else:
-        lon, lat = [], []
-    nx, ny = g["px_to_proj"](g["neat_px"][:, 0], g["neat_px"][:, 1])
-    nlon, nlat = to_wgs84(crs, nx, ny)
+    # low-resolution black ink (~8 m/px) for the alignment against today's roads
+    step = max(1, int(round(8.0 / g["m_per_px"])))
+    sm = sheet.read(0, sheet.H, 0, sheet.W, step=step)
+    mx_, hue_ = _colour_tests(sm)[:2]
+    ins = np.zeros(sm.shape[:2], np.uint8)
+    cv2.fillPoly(ins, [np.round(g["neat_px"] / step).astype(np.int32)], 1)
+    INK_CACHE.mkdir(parents=True, exist_ok=True)
+    cv2.imwrite(str(INK_CACHE / f"{m['id']}.png"), (((mx_ < 0.6 * stats["paper"]) & hue_ & (ins > 0)) * 255).astype(np.uint8))
+    del sm, mx_, hue_, ins
     # registration check: neat line corners (NAD27) against the quadrangle footprint
-    import pyproj
+    crs = crs_for(g["proj"])
+    nx, ny = g["px_to_proj"](g["neat_px"][:, 0], g["neat_px"][:, 1])
     glon, glat = pyproj.Transformer.from_crs(crs, crs.geodetic_crs, always_xy=True).transform(nx, ny)
     bb = m["bbox"]
     err = max(min(abs(glon[i] - bb[0]), abs(glon[i] - bb[2])) * 88000 + min(abs(glat[i] - bb[1]), abs(glat[i] - bb[3])) * 111000
               for i in range(len(glon)) if i % 3 == 0)
-    syms = [{"lon": round(float(a), 7), "lat": round(float(b), 7), "px": [round(r["x"], 1), round(r["y"], 1)],
-             "area_mm2": round(r["area_mm2"], 4), "score": round(r["score"], 3), "open": bool(r["open"])}
-            for r, a, b in zip(keep, lon, lat)]
-    # urban tint outlines (towns on the 1940s-50s maps) in lon/lat
-    urban = []
-    for ring in stats.pop("urban_rings_px", []):
-        ring = np.asarray(ring, float)
-        ux, uy = g["px_to_proj"](ring[:, 0], ring[:, 1])
-        ulon, ulat = to_wgs84(crs, ux, uy)
-        urban.append([[round(float(a), 6), round(float(b), 6)] for a, b in zip(ulon, ulat)])
+    syms = [{"px": [round(r["x"], 1), round(r["y"], 1)], "area_mm2": round(r["area_mm2"], 4),
+             "score": round(r["score"], 3), "open": bool(r["open"])} for r in keep]
     meta = m.get("meta") or fetch_meta(m)
     res = {"detector_version": DETECTOR_VERSION, "id": m["id"], "quad": m["quad"], "scale": m["scale"],
-           "edition_year": m["edition_year"], "survey_year": meta.get("survey_year"),
+           "bbox": m["bbox"], "edition_year": m["edition_year"], "survey_year": meta.get("survey_year"),
            "date_on_map": meta.get("date_on_map"), "edit_year": meta.get("edit_year"),
            "imprint_year": meta.get("imprint_year"),
            "photo_year": meta.get("aerial_photo_year") or meta.get("photo_year"),
            "field_check_year": meta.get("field_check_year"),
            "scan_quality": meta.get("scan_quality"), "woodland_tint": meta.get("woodland_tint"),
            "edition": m.get("edition"), "source_url": m["pdf_url"], "metadata_url": m.get("meta_url"),
-           "m_per_mm": g["m_per_px"] * g["px_per_mm"], "stats": stats, "corner_error_m": round(float(err), 1),
-           "neatline": [[round(float(a), 7), round(float(b), 7)] for a, b in zip(nlon, nlat)],
-           "urban_tint": urban, "symbols": syms}
+           "m_per_px": g["m_per_px"], "m_per_mm": g["m_per_px"] * g["px_per_mm"], "ink_step": step,
+           "georef": g["georef"], "proj": g["proj"],
+           "neat_px": np.round(g["neat_px"], 2).tolist(), "urban_px": stats.pop("urban_rings_px", []),
+           "stats": stats, "corner_error_m": round(float(err), 1), "symbols": syms}
+    georeference(res)
     MAP_CACHE.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res))
     if debug_crops:

@@ -66,14 +66,28 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - **Marin County Civic Center** — wings from the OSM outlines: Administration Building centre line from (−40, 52)
   at 26.9° (frame 164.8°), 155 m, 34.4 m wide; Hall of Justice from (−27.6, 38) at 165°, 246 m, 40.8 m wide; library
   dome r 19 m at (−29.5, 58) from the orthophoto; spire 172 ft at the OSM spire node.
+- **Shoreline Amphitheatre** — canopy outline (4-pointed star) and heights from OSM (fabric anchored at 4 m, 18 m
+  overall); 85,000 sq ft of fabric (Wikipedia). Two masts are assumed (positions estimated from the orthophoto); the
+  red reserved-seat fan NW of the stage matches the orthophoto; the 16,000-place lawn is the terrain.
+- **Google campuses** — Buildings 40–43 (former SGI campus, 1994–97; county roll 1997) as OSM massing (18 m);
+  Bay View (May 2022) and Charleston East / Gradient Canopy (Oct 2023): OSM outlines with a lattice of tents turned 45°
+  (orthophoto: diamond pattern ~32 m) over glazed walls; eave and peak heights estimated (OSM gives 41.3 m for the north
+  Bay View building, which does not fit two storeys under a tent roof, so it was not used). Construction starts from the
+  county roll (2019) / estimated.
+- **Malls** — faithful massing only (OSM outlines / 3D parts and heights) with dates from Wikipedia and the Santa Clara
+  County roll (`data/interim/region5_footprint_years.parquet`): Valley Fair main mall 1985–86 (roll 1985; today's outline,
+  so the 2002 additions inside it appear in 1986; the 1958 open-air centre has no plan), the 2020 expansion (roll 2020);
+  Santana Row = Hotel Valencia (roll 2003) and the two blocks opposite (roll 2002) — the row's 2006/2013/2016 buildings are
+  left generic; Stanford Shopping Center = the three anchors with documented years (Macy's 1961, Neiman Marcus 1985,
+  Bloomingdale's 2014); the open-air store blocks (1955–56 onwards, rebuilt piecemeal) are left to the generic footprints.
 - **NASA Ames NFAC** — OSM gives 54.9 m (180 ft) for the whole complex; only the 80 × 120 ft inlet is drawn that tall;
   the 40 × 80 ft circuit heights are estimates (**LOW CONFIDENCE**).
 
 ## Not modelled (and why)
 - **San Quentin** — cell-block dates conflict between sources (South Block 1913; West Block 1913–25 or by 1934; East
   Block 1927; North-Seg 1934) and no heights are published; the old 1854 "Stones" has no OSM footprint.
-- **Fairmont San José** (1987/2002), **Googleplex / Bay View** (2022), **Oracle HQ**, **Shoreline Amphitheatre**,
-  **Cantor Arts Center**, the **Oval / Palm Drive** palms (no surveyed palm positions; the Oval lawn is ground detail),
+- **Fairmont San José** (1987/2002), **Oracle HQ**, **Cantor Arts Center**, the Googleplex's other buildings,
+  the **1958 open-air Valley Fair**, the Stanford Shopping Center store blocks, the **Oval / Palm Drive** palms (no surveyed palm positions; the Oval lawn is ground detail),
   the **1855 Point Bonita tower** (site on the headland not located) and the **Point Bonita suspension bridge**
   (1954/2012), **San José City Hall of 1889–1958** (Market Plaza; no footprint), **Moffett Hangars 2 and 3** (1943),
   **Pigeon Point fog-signal building / keepers' houses** (left to the generic footprints).
@@ -470,3 +484,94 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 - Model: outline and height (54.9 m) from OpenStreetMap (© OSM contributors, ODbL); the sloping screened inlet face from the orthophoto; diffuser height estimated (LOW CONFIDENCE)
 - Sources: https://en.wikipedia.org/wiki/Ames_Research_Center
 - Photo: `data/raw/reference_photos/nasa_ames_40x80_wind_tunnel/Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg` — [File:Aerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg](https://commons.wikimedia.org/wiki/File%3AAerial_View_of_the_NASA_Ames_Research_Center_-_GPN-2000-001560.jpg) — author on file page; Public domain
+
+### Shoreline Amphitheatre (`shoreline_amphitheatre`)
+
+- Model years: construction 1985.5 → 1986.45, end standing; anchor 37.426788, -122.080733; 124 triangles; model top 19.5 m.
+- Built: 1985–86 by the city of Mountain View with promoter Bill Graham as part of Shoreline Park, on the city landfill; opened summer 1986
+- Capacity: 22,500: 6,500 reserved seats under and beside the canopy, 16,000 on the lawn
+- Canopy: 85,000 sq ft (7,900 m²) tensile fabric tent; Graham shaped the amphitheatre after the Grateful Dead's "steal your face" logo seen from above
+- Model: canopy outline and heights from OpenStreetMap (© OSM contributors, ODbL: 4 m at the anchor points, 18 m overall); mast positions, seat fan and stage estimated from the orthophoto
+- Sources: https://en.wikipedia.org/wiki/Shoreline_Amphitheatre
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Googleplex (Buildings 40–43, the former Silicon Graphics campus) (`googleplex_sgi_campus`)
+
+- Model years: construction 1994.5 → 1997.5, end standing; anchor 37.422000, -122.084800; 385 triangles; model top 18.0 m.
+- Built: 1994–97 for Silicon Graphics (SGI) on a 26-acre site with Charleston Park (landscape: SWA Group); county roll: 1997
+- Google: leased by Google from 2003 (interiors by Clive Wilkinson Architects, 2005); bought in June 2006 for $319 million
+- Model: massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; 18 m, 3 storeys); facades not detailed; the campus's other buildings are left to the generic footprints
+- Sources: https://en.wikipedia.org/wiki/Googleplex
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Google Bay View (`google_bay_view`)
+
+- Model years: construction 2019 → 2022.37, end standing; anchor 37.422800, -122.066800; 178 triangles; model top 19.0 m.
+- Opened: May 2022 on 42 acres leased from NASA Ames beside Moffett Field; two office buildings, an events centre and 240 short-stay units; 1.1 million sq ft
+- Architects: BIG (Bjarke Ingels Group) and Heatherwick Studio
+- Roof: "dragonscale" solar skin of some 50,000 silver panels (≈ 7 MW) over tented canopies with clerestories
+- Model: outlines from OpenStreetMap (© OSM contributors, ODbL) and the orthophoto (diamond lattice of tents); eave (two storeys, 10 m), tent peaks (19 m) and tent spacing estimated; construction start from the county roll (2019); the events centre is not modelled
+- Sources: https://en.wikipedia.org/wiki/Googleplex, https://www.dezeen.com/2022/05/18/google-bay-view-campus-big-heatherwick-studio/
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Google Charleston East (Gradient Canopy) (`google_charleston_east`)
+
+- Model years: construction 2019 → 2023.78, end standing; anchor 37.421968, -122.079598; 186 triangles; model top 13.2 m.
+- Built: opened Oct 12, 2023 with the Google Visitor Experience; county roll year 2023 (construction start estimated)
+- Design: BIG and Heatherwick Studio; a single large building under a tented canopy roof
+- Model: outline and height from OpenStreetMap (© OSM contributors, ODbL; 13.2 m); eave height and tent lattice estimated after Bay View
+- Sources: https://en.wikipedia.org/wiki/Googleplex
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Valley Fair (enclosed mall) (`valley_fair_1986`)
+
+- Model years: construction 1985 → 1986.7, end standing; anchor 37.325100, -121.945100; 359 triangles; model top 20.6 m.
+- Built: the open-air Valley Fair (opened 1958, Macy's) on the San José side and Stevens Creek Plaza (Emporium, I. Magnin) on the Santa Clara side were merged by the Hahn Company into one two-level enclosed mall in 1986; county roll: 1985
+- Later: 2001–02 expansion (dining terrace, 80 stores, three garages, Nordstrom relocated); remodel from 2013
+- Model: massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; 14.1 / 20.6 m) — today's outline, so the 2002 additions inside it stand from 1986; the 1958 open-air centre is not modelled (no plan found)
+- Sources: https://en.wikipedia.org/wiki/Westfield_Valley_Fair
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Westfield Valley Fair — 2020 expansion (Bloomingdale's) (`valley_fair_2020`)
+
+- Model years: construction 2017.5 → 2020.18, end standing; anchor 37.325100, -121.945100; 104 triangles; model top 19.5 m.
+- Opened: grand opening Mar 5, 2020 with Bloomingdale's; county roll: 2020
+- Model: massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; the garage at 3 floors ≈ 10.5 m); construction start estimated
+- Sources: https://en.wikipedia.org/wiki/Westfield_Valley_Fair
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Santana Row (Hotel Valencia and the row) (`santana_row`)
+
+- Model years: construction 2001 → 2002.85, end standing; anchor 37.320400, -121.947900; 672 triangles; model top 31.0 m.
+- Built: 2001–02 by Federal Realty Investment Trust on the site of the Town and Country Village shopping centre — a $450 million "village within a city" (SB Architects, BAR Architects, Steinberg Architects; landscape SWA Group)
+- Fire: Aug 19, 2002: Building 7 ("Santana Heights"), the largest on the site, burned while under construction — San José's largest structure fire
+- Model: massing from the OpenStreetMap outlines and 3D parts (© OSM contributors, ODbL) of Hotel Valencia (county roll 2003) and the two blocks opposite (roll 2002); later buildings on the row (2006, 2013, 2016) are left to the generic footprints; colours (stucco, clay tile) estimated
+- Sources: https://en.wikipedia.org/wiki/Santana_Row
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Stanford Shopping Center — Macy's (`stanford_shopping_center_macys`)
+
+- Model years: construction 1960.3 → 1961.5, end standing; anchor 37.442198, -122.171653; 25 triangles; model top 15.8 m.
+- Center: Stanford Shopping Center opened in Sep 1955 (Roos Brothers) and was completed Oct 22, 1956, an open-air centre on Stanford land anchored by the Emporium and I. Magnin
+- Store: Macy's joined in 1961 (Macy's California)
+- Model: massing from the OpenStreetMap outline and height (© OSM contributors, ODbL); the open-air store blocks are left to the generic footprints because their individual build and rebuild years are not documented; construction start estimated
+- Sources: https://en.wikipedia.org/wiki/Stanford_Shopping_Center
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Stanford Shopping Center — Neiman Marcus (`stanford_shopping_center_neiman_marcus`)
+
+- Model years: construction 1984.4 → 1985.6, end standing; anchor 37.441209, -122.172657; 46 triangles; model top 12.0 m.
+- Center: Stanford Shopping Center opened in Sep 1955 (Roos Brothers) and was completed Oct 22, 1956, an open-air centre on Stanford land anchored by the Emporium and I. Magnin
+- Store: Neiman Marcus became the sixth anchor in Aug 1985
+- Model: massing from the OpenStreetMap outline and height (© OSM contributors, ODbL); the open-air store blocks are left to the generic footprints because their individual build and rebuild years are not documented; construction start estimated
+- Sources: https://en.wikipedia.org/wiki/Stanford_Shopping_Center
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo
+
+### Stanford Shopping Center — Bloomingdale's (2014) (`stanford_shopping_center_bloomingdales`)
+
+- Model years: construction 2012.9 → 2014.6, end standing; anchor 37.443859, -122.169617; 10 triangles; model top 10.0 m.
+- Center: Stanford Shopping Center opened in Sep 1955 (Roos Brothers) and was completed Oct 22, 1956, an open-air centre on Stanford land anchored by the Emporium and I. Magnin
+- Store: the Emporium store was rebranded Bloomingdale's in Nov 1996; this new three-level, 120,000 sq ft store opened in 2014 (the old building was demolished for the 2016 wing)
+- Model: massing from the OpenStreetMap outline and height (© OSM contributors, ODbL); the open-air store blocks are left to the generic footprints because their individual build and rebuild years are not documented; construction start estimated
+- Sources: https://en.wikipedia.org/wiki/Stanford_Shopping_Center
+- Photo: none downloaded (Wikimedia rate-limited this session); see the Wikipedia article's infobox photo

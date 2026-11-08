@@ -1882,6 +1882,333 @@ const nfac80x120 = landmark(
   [[[-49.2, 78.7], [-47.7, 133.3], [-112.5, 261.2], [-123.4, 268.5], [-211.4, 181.0], [-90.9, 120.7]]]
 );
 
+// =================================================================== MOUNTAIN VIEW, SANTA CLARA AND SAN JOSÉ: AMPHITHEATRE, CAMPUSES AND MALLS
+
+/** Even–odd point-in-polygon test. */
+function inPoly(x: number, y: number, poly: V2[]) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i];
+    const [xj, yj] = poly[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/** Extruded footprints / building parts (massing from OSM outlines and heights). */
+function massing(b: MeshBuilder, parts: {o: V2[]; h: number; z0?: number}[], wall: string, roof: string) {
+  for (const p of parts) {
+    b.color(wall).prism(p.o, p.z0 ?? 0, p.h, {top: false});
+    b.color(roof).cap(p.o, p.h);
+  }
+}
+
+/**
+ * Tented "dragonscale" roof: glazed walls to `eave`, then a lattice of four-sided tents (grid `s` m, turned 45°)
+ * peaking at `peak` wherever a whole tent fits inside the outline; the rest of the roof is flat at the eave.
+ */
+function tentRoof(b: MeshBuilder, ring: V2[], eave: number, peak: number, s: number, skin: string) {
+  b.color('#9FB2BC').prism(ring, 0, eave, {top: false});
+  b.color('#B9BEC0').cap(ring, eave);
+  const xs = ring.map(p => p[0]);
+  const ys = ring.map(p => p[1]);
+  const R = Math.max(...xs.map(Math.abs), ...ys.map(Math.abs)) + s;
+  const c = Math.SQRT1_2;
+  b.color(skin);
+  for (let i = -R; i <= R; i += s) {
+    for (let j = -R; j <= R; j += s) {
+      const cx = (i - j) * c;
+      const cy = (i + j) * c;
+      const h = s * c;
+      const corners: V2[] = [[cx + h, cy], [cx, cy + h], [cx - h, cy], [cx, cy - h]];
+      if (!corners.every(([x, y]) => inPoly(x, y, ring)) || !inPoly(cx, cy, ring)) continue;
+      b.pyramid(corners, eave + 0.05, [cx, cy, peak]);
+    }
+  }
+}
+
+// ---- Shoreline Amphitheatre (1986): tensile canopy over the stage and reserved seats (OSM outline, 4-pointed)
+const SHORELINE: V2 = [-122.080733, 37.426788];
+const SHORELINE_CANOPY: V2[] = [[-56.9, -23.7], [-75.2, -32.4], [-55.4, -31.4], [-45.6, -32.4], [-23.5, -37.9], [-9.7, -47.2], [1.5, -57.5], [6.2, -63.0], [7.5, -46.0], [11.2, -29.5], [20.5, -13.8], [31.8, 0.7], [38.5, 5.8], [53.8, 14.6], [62.0, 17.9], [54.5, 19.6], [47.4, 22.7], [39.8, 26.8], [26.6, 36.2], [20.0, 44.1], [13.7, 53.8], [8.9, 63.4], [2.8, 82.0], [1.6, 62.8], [-3.9, 38.9], [-7.5, 27.9], [-17.2, 11.8], [-28.7, -2.9], [-38.2, -11.3]];
+const shorelineAmphitheatre = landmark(
+  'shoreline_amphitheatre',
+  'Shoreline Amphitheatre',
+  'stadium',
+  [1985.5, 1986.45],
+  9999,
+  SHORELINE,
+  b => {
+    // reserved seats (red, photo) in a fan facing the stage, north-west of it; the lawn bowl is the terrain
+    const st: V2 = [9, -12];
+    b.color('#A9473E');
+    const inner: V3[] = [];
+    const outer: V3[] = [];
+    for (let a = 262; a <= 368; a += 6) {
+      const r = (a * Math.PI) / 180;
+      inner.push([st[0] + Math.sin(r) * 20, st[1] + Math.cos(r) * 20, 0.8]);
+      outer.push([st[0] + Math.sin(r) * 72, st[1] + Math.cos(r) * 72, 9]);
+    }
+    b.ribbon(inner, outer);
+    b.color('#8F8A80').wallProfile(outer.map(p => [p[0], p[1]] as V2), 0, 9);
+    // stage
+    b.color('#4A4744').prism(
+      [[st[0] - 14, st[1] + 6], [st[0] + 6, st[1] + 14], [st[0] + 16, st[1] - 6], [st[0] - 4, st[1] - 14]],
+      0,
+      2
+    );
+    // canopy: fabric anchored at the four points (4 m, OSM min height) and lifted by two masts to 18 m (OSM height)
+    const masts: V2[] = [[-6, 6], [10, -10]];
+    const tips: V2[] = [[-75.2, -32.4], [6.2, -63.0], [62.0, 17.9], [2.8, 82.0]];
+    const zb = (p: V2) => 4 + Math.min(6, Math.min(...tips.map(t => Math.hypot(p[0] - t[0], p[1] - t[1]))) * 0.12);
+    const ring = SHORELINE_CANOPY;
+    const near = (p: V2) => (Math.hypot(p[0] - masts[0][0], p[1] - masts[0][1]) < Math.hypot(p[0] - masts[1][0], p[1] - masts[1][1]) ? 0 : 1);
+    b.color('#F2F2EE');
+    for (let i = 0; i < ring.length; i++) {
+      const p = ring[i];
+      const q = ring[(i + 1) % ring.length];
+      const m = near([(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]);
+      const M: V3 = [masts[m][0], masts[m][1], 18];
+      b.tri([p[0], p[1], zb(p)], [q[0], q[1], zb(q)], M);
+      const mq = near(q);
+      if (mq !== m) b.tri([q[0], q[1], zb(q)], M, [masts[mq][0], masts[mq][1], 18]);
+    }
+    b.color('#8E9396');
+    for (const [x, y] of masts) b.beam([x, y, 0], [x, y, 19.5], 0.6);
+  },
+  {
+    Built: '1985–86 by the city of Mountain View with promoter Bill Graham as part of Shoreline Park, on the city landfill; opened summer 1986',
+    Capacity: '22,500: 6,500 reserved seats under and beside the canopy, 16,000 on the lawn',
+    Canopy: '85,000 sq ft (7,900 m²) tensile fabric tent; Graham shaped the amphitheatre after the Grateful Dead\'s "steal your face" logo seen from above',
+    Model:
+      'canopy outline and heights from OpenStreetMap (© OSM contributors, ODbL: 4 m at the anchor points, 18 m overall); mast positions, seat fan and stage estimated from the orthophoto'
+  },
+  [WIKI + 'Shoreline_Amphitheatre'],
+  [circle(0, 0, 30, 12)]
+);
+
+// ---- Googleplex: the Silicon Graphics campus at 1600 Amphitheatre Parkway (Buildings 40–43)
+const GOOGLEPLEX: V2 = [-122.0848, 37.422];
+const GOOGLEPLEX_SGI: {o: V2[]; h: number}[] = [
+  {o: [[-0.8,13.3],[19.6,15.6],[17.6,23.2],[26.2,25.4],[28.8,15.6],[39.3,18.3],[36.8,28.2],[48.8,31.3],[49.7,24.3],[44.0,17.4],[47.8,14.6],[52.5,19.5],[52.3,17.2],[72.6,15.5],[72.8,17.9],[88.2,16.7],[90.7,7.1],[122.9,15.4],[124.7,8.6],[134.4,11.3],[136.2,15.2],[151.7,18.4],[151.6,15.3],[155.5,16.4],[174.1,25.6],[180.5,31.0],[180.1,32.2],[159.9,25.5],[167.6,34.3],[167.1,41.3],[130.0,31.8],[127.9,39.5],[130.6,42.0],[113.6,54.1],[95.1,63.6],[65.3,72.8],[34.2,75.5],[13.5,73.7],[-7.9,69.1],[-13.1,42.1],[-13.3,15.9]], h: 18.0},
+  {o: [[-31.0,59.1],[-73.9,94.1],[-104.9,56.4],[-82.2,38.5],[-87.8,41.5],[-93.0,38.6],[-96.8,32.2],[-94.5,31.3],[-97.6,24.3],[-88.2,16.8],[-73.8,12.4],[-72.1,16.1],[-63.6,17.7],[-65.4,23.1],[-61.6,21.1],[-55.0,28.7],[-53.6,22.5],[-38.7,21.9],[-38.4,27.0],[-41.7,27.1],[-42.5,31.7],[-49.5,36.7]], h: 18.0},
+  {o: [[-64.6,-4.4],[-73.1,-6.3],[-74.2,-5.1],[-80.4,-10.4],[-103.9,-8.8],[-105.7,-29.7],[-101.7,-30.0],[-98.5,-48.4],[-100.0,-48.5],[-99.6,-56.6],[-96.2,-56.5],[-94.8,-62.1],[-88.6,-62.4],[-88.5,-57.9],[-77.4,-58.5],[-77.6,-63.5],[-47.0,-65.8],[-45.5,-40.0],[-49.1,-40.1],[-48.6,-30.7],[-47.1,-30.2],[-49.0,-22.6],[-51.9,-22.3],[-57.3,-5.1]], h: 18.0},
+  {o: [[108.1,-31.6],[108.4,-33.0],[106.5,-33.6],[105.5,-29.4],[82.6,-35.2],[81.1,-29.4],[71.8,-33.4],[71.2,-31.1],[60.5,-33.7],[62.1,-39.9],[57.6,-39.8],[58.9,-22.2],[48.1,-21.4],[30.6,-28.4],[27.1,-13.7],[-20.7,-26.5],[-22.7,-65.0],[-9.1,-67.5],[-9.2,-69.0],[48.6,-72.9],[49.3,-61.9],[60.6,-62.5],[70.2,-63.5],[76.3,-72.0],[84.3,-75.1],[84.9,-72.2],[86.2,-72.5],[85.9,-76.3],[130.7,-79.7],[131.3,-67.6],[153.6,-69.2],[156.6,-73.4],[162.8,-67.6],[170.0,-55.5],[170.7,-53.1],[162.5,-51.0],[163.3,-48.0],[170.5,-46.0],[168.6,-38.5],[164.8,-39.3],[166.9,-31.0],[151.7,-27.1],[133.1,-26.9],[132.9,-25.6]], h: 18.0}
+];
+const googleplexSGI = landmark(
+  'googleplex_sgi_campus',
+  'Googleplex (Buildings 40–43, the former Silicon Graphics campus)',
+  'building',
+  [1994.5, 1997.5],
+  9999,
+  GOOGLEPLEX,
+  b => massing(b, GOOGLEPLEX_SGI, '#B9C3CA', '#8D979E'),
+  {
+    Built: '1994–97 for Silicon Graphics (SGI) on a 26-acre site with Charleston Park (landscape: SWA Group); county roll: 1997',
+    Google: 'leased by Google from 2003 (interiors by Clive Wilkinson Architects, 2005); bought in June 2006 for $319 million',
+    Model: 'massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; 18 m, 3 storeys); facades not detailed; the campus\'s other buildings are left to the generic footprints'
+  },
+  [WIKI + 'Googleplex'],
+  GOOGLEPLEX_SGI.map(p => p.o)
+);
+
+// ---- Google Bay View (2022): BIG + Heatherwick, two buildings under tented "dragonscale" solar roofs
+const BAY_VIEW_A: V2 = [-122.0668, 37.4228];
+const BAY_VIEW: {o: V2[]; h: number}[] = [
+  {o: [[-68.1,113.5],[-63.3,62.5],[-50.7,11.3],[-39.2,-20.2],[-8.5,-20.2],[29.5,-15.8],[71.4,-8.0],[105.9,2.5],[123.5,-4.5],[133.5,23.0],[120.2,26.7],[114.7,91.0],[103.7,138.6],[91.1,166.6],[60.7,168.8],[9.3,164.4],[-39.2,151.1],[-67.1,138.1]], h: 41.3},
+  {o: [[-68.7,-118.6],[-67.9,-153.4],[-38.4,-168.8],[2.9,-178.9],[36.3,-179.6],[51.5,-150.8],[63.1,-105.9],[62.8,-75.6],[34.3,-57.8],[-7.5,-46.8],[-40.6,-48.5],[-58.3,-76.3]], h: 10.7}
+];
+const googleBayView = landmark(
+  'google_bay_view',
+  'Google Bay View',
+  'building',
+  [2019.0, 2022.37],
+  9999,
+  BAY_VIEW_A,
+  b => {
+    tentRoof(b, BAY_VIEW[0].o, 10, 19, 32, '#8C99A6');
+    tentRoof(b, BAY_VIEW[1].o, 10, 19, 32, '#8C99A6');
+  },
+  {
+    Opened: 'May 2022 on 42 acres leased from NASA Ames beside Moffett Field; two office buildings, an events centre and 240 short-stay units; 1.1 million sq ft',
+    Architects: 'BIG (Bjarke Ingels Group) and Heatherwick Studio',
+    Roof: '"dragonscale" solar skin of some 50,000 silver panels (≈ 7 MW) over tented canopies with clerestories',
+    Model:
+      'outlines from OpenStreetMap (© OSM contributors, ODbL) and the orthophoto (diamond lattice of tents); eave (two storeys, 10 m), tent peaks (19 m) and tent spacing estimated; construction start from the county roll (2019); the events centre is not modelled'
+  },
+  [WIKI + 'Googleplex', 'https://www.dezeen.com/2022/05/18/google-bay-view-campus-big-heatherwick-studio/'],
+  BAY_VIEW.map(p => p.o)
+);
+
+// ---- Google Charleston East / Gradient Canopy (2023)
+const CHARLESTON_EAST_A: V2 = [-122.079598, 37.421968];
+const CHARLESTON_EAST: {o: V2[]; h: number}[] = [
+  {o: [[-93.6,-45.8],[-65.4,-108.6],[3.5,-103.9],[46.1,-93.1],[109.0,-65.1],[104.1,3.6],[93.6,45.9],[65.5,108.8],[-3.5,104.1],[-46.0,93.5],[-109.0,65.3],[-104.2,-3.5]], h: 13.2}
+];
+const googleCharlestonEast = landmark(
+  'google_charleston_east',
+  'Google Charleston East (Gradient Canopy)',
+  'building',
+  [2019.0, 2023.78],
+  9999,
+  CHARLESTON_EAST_A,
+  b => tentRoof(b, CHARLESTON_EAST[0].o, 7, 13.2, 26, '#8C99A6'),
+  {
+    Built: 'opened Oct 12, 2023 with the Google Visitor Experience; county roll year 2023 (construction start estimated)',
+    Design: 'BIG and Heatherwick Studio; a single large building under a tented canopy roof',
+    Model:
+      'outline and height from OpenStreetMap (© OSM contributors, ODbL; 13.2 m); eave height and tent lattice estimated after Bay View'
+  },
+  [WIKI + 'Googleplex'],
+  CHARLESTON_EAST.map(p => p.o)
+);
+
+// ---- Westfield Valley Fair (1986 enclosed mall; 2020 expansion)
+const VALLEY_FAIR: V2 = [-121.9451, 37.3251];
+const VALLEY_FAIR_1986: {o: V2[]; h: number}[] = [
+  {o: [[-201.3,45.6],[-199.6,14.2],[-217.0,-3.4],[-219.2,-0.4],[-288.8,-1.0],[-288.5,-24.1],[-312.1,-23.8],[-311.4,-109.5],[-197.5,-109.4],[-196.6,-58.0],[-200.5,-58.0],[-200.5,-53.6],[-195.9,-48.9],[-197.5,-47.3],[-149.8,0.8],[-103.3,1.0],[-103.3,3.1],[-75.8,3.3],[-75.9,5.4],[-13.0,5.7],[-13.0,3.6],[14.4,3.8],[14.5,1.6],[64.5,1.8],[99.9,-33.3],[97.4,-35.8],[152.7,-89.0],[171.2,-70.5],[174.4,-68.5],[175.9,-70.0],[182.6,-63.4],[181.1,-61.9],[183.0,-58.8],[224.4,-16.6],[226.2,-18.4],[232.2,-12.4],[234.1,-14.3],[238.9,-11.4],[245.9,-4.6],[245.3,-1.5],[258.7,11.9],[135.0,135.3],[135.4,142.4],[129.5,142.8],[129.7,145.0],[123.0,147.2],[120.5,140.0],[117.4,140.2],[117.2,138.5],[76.3,142.8],[76.7,147.4],[60.1,148.7],[59.9,146.5],[54.7,146.9],[54.9,149.2],[45.2,150.0],[45.0,147.4],[35.6,148.1],[35.3,145.1],[22.1,146.1],[21.7,141.2],[10.0,140.3],[-8.1,142.1],[-7.9,144.9],[-17.8,143.4],[-59.1,149.7],[-69.1,152.0],[-69.1,157.1],[-78.4,157.1],[-78.4,154.5],[-84.3,154.5],[-84.3,158.9],[-179.5,158.7],[-178.7,93.0],[-189.0,93.0],[-192.5,89.6],[-183.5,77.6],[-180.2,83.2],[-177.5,82.7],[-177.5,62.3],[-192.0,48.0],[-195.4,51.5]], h: 14.1},
+  {o: [[-194.0,-48.3],[-194.0,-83.0],[-185.0,-83.3],[-169.1,-61.3],[-153.9,-64.4],[-153.9,-74.3],[-140.3,-79.2],[-118.2,-79.2],[-76.0,-71.9],[-68.2,-74.3],[-66.0,-68.2],[-51.3,-71.2],[-54.6,-79.2],[-40.8,-84.7],[-40.6,-58.0],[41.5,-56.6],[42.0,-78.3],[46.1,-78.3],[46.1,-66.5],[52.9,-66.5],[53.2,-64.1],[66.9,-64.1],[69.8,-58.3],[114.7,-58.5],[118.7,-55.2],[97.4,-35.8],[99.9,-33.3],[64.5,1.8],[14.5,1.6],[14.4,3.8],[-13.0,3.6],[-13.0,5.7],[-75.9,5.4],[-75.8,3.3],[-103.3,3.1],[-103.3,1.0],[-149.8,0.8],[-193.3,-43.0],[-190.4,-45.8]], h: 20.6}
+];
+const VALLEY_FAIR_2020: {o: V2[]; h: number}[] = [
+  {o: [[52.9,-66.5],[46.1,-66.5],[46.3,-114.9],[63.2,-131.4],[63.6,-164.9],[132.2,-164.1],[132.0,-132.1],[157.2,-131.6],[157.2,-112.7],[152.2,-93.9],[114.7,-58.5],[69.8,-58.3],[66.9,-64.1],[53.2,-64.1]], h: 19.5},
+  {o: [[231.6,196.8],[215.6,196.9],[151.1,131.6],[174.5,108.7],[170.5,105.0],[183.5,91.6],[185.1,92.8],[192.5,85.4],[195.1,88.6],[265.9,19.0],[323.5,77.5],[322.6,106.5],[318.7,110.7],[324.0,116.0],[320.3,119.6],[329.1,127.9],[328.0,168.8],[298.7,197.2],[261.7,197.4],[251.9,186.6],[247.9,190.4],[242.7,185.7]], h: 10.5}
+];
+const valleyFair1986 = landmark(
+  'valley_fair_1986',
+  'Valley Fair (enclosed mall)',
+  'building',
+  [1985.0, 1986.7],
+  9999,
+  VALLEY_FAIR,
+  b => massing(b, VALLEY_FAIR_1986, '#E2DACB', '#BDB6A8'),
+  {
+    Built: 'the open-air Valley Fair (opened 1958, Macy\'s) on the San José side and Stevens Creek Plaza (Emporium, I. Magnin) on the Santa Clara side were merged by the Hahn Company into one two-level enclosed mall in 1986; county roll: 1985',
+    Later: '2001–02 expansion (dining terrace, 80 stores, three garages, Nordstrom relocated); remodel from 2013',
+    Model:
+      'massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; 14.1 / 20.6 m) — today\'s outline, so the 2002 additions inside it stand from 1986; the 1958 open-air centre is not modelled (no plan found)'
+  },
+  [WIKI + 'Westfield_Valley_Fair'],
+  VALLEY_FAIR_1986.map(p => p.o)
+);
+const valleyFair2020 = landmark(
+  'valley_fair_2020',
+  'Westfield Valley Fair — 2020 expansion (Bloomingdale\'s)',
+  'building',
+  [2017.5, 2020.18],
+  9999,
+  VALLEY_FAIR,
+  b => massing(b, VALLEY_FAIR_2020, '#E6E1D8', '#B5B1A9'),
+  {
+    Opened: 'grand opening Mar 5, 2020 with Bloomingdale\'s; county roll: 2020',
+    Model: 'massing from the OpenStreetMap outlines and heights (© OSM contributors, ODbL; the garage at 3 floors ≈ 10.5 m); construction start estimated'
+  },
+  [WIKI + 'Westfield_Valley_Fair'],
+  VALLEY_FAIR_2020.map(p => p.o)
+);
+
+// ---- Santana Row (2002): Hotel Valencia and the mixed-use blocks along the row
+const SANTANA_ROW: V2 = [-121.9479, 37.3204];
+const SANTANA_ROW_PARTS: {o: V2[]; h: number; z0: number}[] = [
+  {o: [[-66.1,41.3],[-73.6,41.3],[-77.8,39.3],[-80.3,35.3],[-80.3,30.7],[-75.8,25.5],[-66.0,24.8]], h: 10.7, z0: 0},
+  {o: [[-54.1,41.6],[-54.1,35.3],[-44.8,35.3],[-44.8,41.6]], h: 31.0, z0: 0},
+  {o: [[-44.8,39.8],[-44.8,35.3],[-54.1,35.3],[-54.1,39.7],[-59.7,39.7],[-59.7,29.4],[-27.8,29.5],[-27.8,39.9]], h: 25.7, z0: 0},
+  {o: [[-22.0,72.3],[-22.0,69.6],[-24.2,69.6],[-24.1,46.1],[-13.1,46.1],[-11.5,61.9],[-13.4,67.7],[-13.5,72.4]], h: 18.2, z0: 0},
+  {o: [[-22.0,72.3],[-43.8,72.2],[-43.7,46.0],[-24.1,46.1],[-24.2,69.6],[-22.0,69.6]], h: 13.7, z0: 0},
+  {o: [[-26.9,46.8],[-27.0,71.1],[-42.6,71.0],[-42.4,46.7]], h: 9.3, z0: 0},
+  {o: [[-13.4,67.7],[-16.1,67.0],[-14.8,61.2],[-15.9,51.8],[-12.7,51.2],[-11.5,61.9]], h: 18.3, z0: 0},
+  {o: [[-43.8,72.2],[-11.5,72.4],[-11.6,94.7],[-66.4,94.4],[-65.5,68.4],[-57.9,68.4],[-57.2,72.1],[-57.1,65.9],[-61.2,65.9],[-61.1,51.9],[-57.1,52.0],[-57.0,45.7],[-57.8,49.5],[-65.4,49.4],[-66.0,23.4],[-11.2,23.7],[-11.4,46.1],[-43.7,46.0]], h: 27.1, z0: 0},
+  {o: [[-64.4,68.4],[-64.3,49.4],[-57.8,49.5],[-57.0,45.7],[-57.1,52.0],[-61.1,51.9],[-61.2,65.9],[-57.1,65.9],[-57.2,72.1],[-57.9,68.4]], h: 23.0, z0: 0},
+  {o: [[-65.5,71.0],[-67.1,71.0],[-66.8,51.9],[-70.6,41.3],[-66.1,41.3],[-65.4,49.4],[-64.3,49.4],[-64.4,68.4],[-65.5,68.4]], h: 19.9, z0: 0},
+  {o: [[-54.2,79.3],[-54.1,73.6],[-47.7,73.7],[-47.7,77.4],[-49.6,77.3],[-49.7,79.3]], h: 30.9, z0: 0},
+  {o: [[-54.2,78.4],[-54.2,79.3],[-49.7,79.3],[-49.6,78.4],[-28.0,78.5],[-28.1,88.5],[-60.0,88.4],[-59.9,78.3]], h: 26.8, z0: 0},
+  {o: [[13.1,31.4],[15.5,32.6],[15.4,49.1],[13.1,49.1]], h: 10.2, z0: 0},
+  {o: [[27.4,29.6],[29.9,30.3],[29.9,37.0],[36.6,37.0],[36.6,42.4],[48.8,42.4],[48.8,44.7],[37.8,44.7],[37.8,57.5],[44.3,57.5],[44.3,61.4],[37.8,61.4],[37.8,73.8],[48.8,74.5],[48.8,76.4],[36.6,76.4],[36.6,81.8],[29.9,81.7],[29.5,88.8],[27.4,88.8],[27.4,81.0],[30.8,81.0],[29.6,50.6],[30.8,50.6],[30.8,37.9],[27.4,37.9]], h: 9.9, z0: 0},
+  {o: [[12.0,89.2],[15.4,86.2],[15.4,69.7],[11.9,69.7],[12.0,49.1],[15.4,49.1],[15.5,32.6],[13.1,31.4],[12.0,28.8],[13.2,25.4],[16.5,24.1],[34.0,24.4],[34.0,27.8],[55.5,27.8],[55.9,42.4],[51.8,42.4],[51.8,43.5],[55.5,43.5],[55.5,45.4],[52.4,45.4],[52.4,56.8],[56.1,56.8],[55.5,73.4],[51.8,73.4],[51.8,76.4],[55.9,76.4],[55.5,91.1],[34.0,91.1],[34.0,94.4],[15.9,94.7],[12.7,92.9]], h: 21.0, z0: 0},
+  {o: [[13.0,87.6],[13.0,69.7],[15.4,69.7],[15.4,86.2]], h: 10.5, z0: 0},
+  {o: [[55.3,94.0],[34.0,94.0],[34.0,91.1],[55.3,91.1]], h: 9.9, z0: 0},
+  {o: [[55.3,24.9],[55.3,27.8],[34.0,27.8],[34.0,24.9]], h: 10.1, z0: 0},
+  {o: [[34.1,6.5],[35.2,-76.1],[34.0,-81.6],[34.0,-98.2],[35.3,-98.2],[36.1,-108.9],[33.9,-108.9],[34.2,-116.6],[34.6,-122.1],[40.7,-122.1],[40.7,-110.2],[63.5,-110.1],[63.3,-61.6],[50.3,-61.6],[50.3,-63.4],[40.5,-63.4],[40.5,-52.4],[50.3,-52.4],[50.3,-54.4],[63.3,-54.3],[63.1,-5.7],[53.6,-6.4],[53.6,-4.4],[45.6,-6.5],[40.3,-5.7],[40.3,6.5]], h: 8.7, z0: 0},
+  {o: [[50.3,-63.4],[50.3,-52.4],[40.5,-52.4],[40.5,-63.4]], h: 12.7, z0: 0},
+  {o: [[34.6,-122.1],[33.9,-108.9],[36.1,-108.9],[35.3,-98.2],[34.0,-98.2],[34.0,-81.6],[35.2,-76.1],[34.1,6.5],[20.4,6.8],[21.6,-44.8],[20.6,-64.1],[21.7,-68.1],[20.8,-122.7]], h: 17.4, z0: 0},
+  {o: [[53.9,-110.7],[55.4,-110.7],[55.4,-122.8],[63.8,-122.7],[63.8,-110.1],[53.9,-109.5]], h: 17.0, z0: 0},
+  {o: [[40.7,-122.1],[49.6,-122.6],[49.5,-110.7],[51.3,-110.7],[51.3,-109.8],[40.7,-110.2]], h: 16.5, z0: 0},
+  {o: [[55.4,-110.7],[49.5,-110.7],[49.6,-123.1],[55.4,-123.1]], h: 20.5, z0: 0},
+  {o: [[49.1,7.0],[49.1,-4.4],[55.0,-4.5],[54.9,7.2]], h: 21.8, z0: 0},
+  {o: [[40.3,6.9],[40.3,-5.7],[50.9,-5.8],[50.9,-4.4],[49.1,-4.4],[49.1,7.0]], h: 16.5, z0: 0},
+  {o: [[54.9,7.0],[55.0,-4.5],[53.6,-4.5],[53.6,-6.4],[63.4,-5.7],[63.6,7.0]], h: 17.5, z0: 0}
+];
+const santanaRow = landmark(
+  'santana_row',
+  'Santana Row (Hotel Valencia and the row)',
+  'building',
+  [2001.0, 2002.85],
+  9999,
+  SANTANA_ROW,
+  b => massing(b, SANTANA_ROW_PARTS, '#E7D8BC', '#B4664C'),
+  {
+    Built: '2001–02 by Federal Realty Investment Trust on the site of the Town and Country Village shopping centre — a $450 million "village within a city" (SB Architects, BAR Architects, Steinberg Architects; landscape SWA Group)',
+    Fire: 'Aug 19, 2002: Building 7 ("Santana Heights"), the largest on the site, burned while under construction — San José\'s largest structure fire',
+    Model:
+      'massing from the OpenStreetMap outlines and 3D parts (© OSM contributors, ODbL) of Hotel Valencia (county roll 2003) and the two blocks opposite (roll 2002); later buildings on the row (2006, 2013, 2016) are left to the generic footprints; colours (stucco, clay tile) estimated'
+  },
+  [WIKI + 'Santana_Row'],
+  SANTANA_ROW_PARTS.map(p => p.o)
+);
+
+// ---- Stanford Shopping Center: the dated anchor stores
+const STANFORD_SC_MACYS: {o: V2[]; h: number; z0: number}[] = [
+  {o: [[60.8,-2.8],[-8.0,59.4],[-17.5,47.4],[-59.7,3.6],[-56.9,0.7],[-58.8,-0.8],[-33.7,-24.2],[-32.0,-22.7],[6.6,-59.8]], h: 15.8, z0: 0}
+];
+const STANFORD_SC_NEIMAN: {o: V2[]; h: number; z0: number}[] = [
+  {o: [[12.5,35.3],[-13.9,34.5],[-35.7,11.9],[-34.7,-14.7],[-27.5,-21.3],[-26.2,-19.9],[-18.3,-27.8],[-20.2,-29.3],[-12.7,-35.4],[14.3,-34.4],[27.3,-18.2],[28.6,-19.5],[35.9,-11.9],[34.8,14.0],[18.3,27.0],[19.6,28.6]], h: 12.0, z0: 0}
+];
+const STANFORD_SC_BLOOMINGDALES: {o: V2[]; h: number; z0: number}[] = [
+  {o: [[-6.9,44.3],[-43.9,2.9],[5.0,-43.3],[43.9,-2.8]], h: 10.0, z0: 0}
+];
+const SSC_FACT =
+  'Stanford Shopping Center opened in Sep 1955 (Roos Brothers) and was completed Oct 22, 1956, an open-air centre on Stanford land anchored by the Emporium and I. Magnin';
+const SSC_MODEL =
+  'massing from the OpenStreetMap outline and height (© OSM contributors, ODbL); the open-air store blocks are left to the generic footprints because their individual build and rebuild years are not documented';
+const stanfordSCMacys = landmark(
+  'stanford_shopping_center_macys',
+  "Stanford Shopping Center — Macy's",
+  'building',
+  [1960.3, 1961.5],
+  9999,
+  [-122.171653, 37.442198],
+  b => massing(b, STANFORD_SC_MACYS, '#E4DED2', '#B8B1A5'),
+  {Center: SSC_FACT, Store: "Macy's joined in 1961 (Macy's California)", Model: SSC_MODEL + '; construction start estimated'},
+  [WIKI + 'Stanford_Shopping_Center'],
+  STANFORD_SC_MACYS.map(p => p.o)
+);
+const stanfordSCNeiman = landmark(
+  'stanford_shopping_center_neiman_marcus',
+  'Stanford Shopping Center — Neiman Marcus',
+  'building',
+  [1984.4, 1985.6],
+  9999,
+  [-122.172657, 37.441209],
+  b => massing(b, STANFORD_SC_NEIMAN, '#E8E4DC', '#BDB8AE'),
+  {Center: SSC_FACT, Store: 'Neiman Marcus became the sixth anchor in Aug 1985', Model: SSC_MODEL + '; construction start estimated'},
+  [WIKI + 'Stanford_Shopping_Center'],
+  STANFORD_SC_NEIMAN.map(p => p.o)
+);
+const stanfordSCBloomingdales = landmark(
+  'stanford_shopping_center_bloomingdales',
+  "Stanford Shopping Center — Bloomingdale's (2014)",
+  'building',
+  [2012.9, 2014.6],
+  9999,
+  [-122.169617, 37.443859],
+  b => massing(b, STANFORD_SC_BLOOMINGDALES, '#E9E6E0', '#BBB7B0'),
+  {
+    Center: SSC_FACT,
+    Store: "the Emporium store was rebranded Bloomingdale's in Nov 1996; this new three-level, 120,000 sq ft store opened in 2014 (the old building was demolished for the 2016 wing)",
+    Model: SSC_MODEL + '; construction start estimated'
+  },
+  [WIKI + 'Stanford_Shopping_Center'],
+  STANFORD_SC_BLOOMINGDALES.map(p => p.o)
+);
+
 export const SOUTHBAY: Landmark[] = [
   appleRing,
   steveJobsTheater,
@@ -1923,5 +2250,15 @@ export const SOUTHBAY: Landmark[] = [
   stanfordDish,
   slacGallery,
   nfac40x80,
-  nfac80x120
+  nfac80x120,
+  shorelineAmphitheatre,
+  googleplexSGI,
+  googleBayView,
+  googleCharlestonEast,
+  valleyFair1986,
+  valleyFair2020,
+  santanaRow,
+  stanfordSCMacys,
+  stanfordSCNeiman,
+  stanfordSCBloomingdales
 ];
