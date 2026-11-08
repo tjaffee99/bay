@@ -1,0 +1,71 @@
+[
+ {
+  "name": "U.S. Steel Products Co. sheet & tin plate warehouse (corr. iron on steel frame)",
+  "cls": "iron",
+  "clip": [
+   [
+    690,
+    733
+   ],
+   [
+    936,
+    733
+   ],
+   [
+    936,
+    1094
+   ],
+   [
+    690,
+    1094
+   ]
+  ],
+  "trace": "rect"
+ },
+ {
+  "name": "U.S. Steel Products Co. new structural warehouse (steel frame, steel truss roof)",
+  "cls": "iron",
+  "clip": [
+   [
+    930,
+    1088
+   ],
+   [
+    1508,
+    1088
+   ],
+   [
+    1508,
+    1370
+   ],
+   [
+    930,
+    1370
+   ]
+  ],
+  "trace": "rect"
+ },
+ {
+  "name": "U.S. Steel Products Co. machine shop & transformer house",
+  "cls": "iron",
+  "clip": [
+   [
+    535,
+    742
+   ],
+   [
+    694,
+    742
+   ],
+   [
+    694,
+    876
+   ],
+   [
+    535,
+    876
+   ]
+  ],
+  "trace": "rect"
+ }
+]

@@ -587,6 +587,15 @@ def wharves(key):
             cv2.fillPoly(cm, [np.array(w["clip"], np.int32)], 1)
             cm = cm.astype(bool)
             allowed &= cm
+        if w.get("trace") == "rect":  # a drawn rectangle: corners snapped to the nearest outline lines (no flood fill)
+            masks = line_masks(gray.astype(np.float32))
+            q = np.array([refine_corner(masks, x, y, win=8, span=40) for x, y in w["clip"]], float)
+            poly = Polygon(q)
+            ext = warp_px(G, q) if G.get("zones_only") else apply(M, q)
+            out.append({"id": f"{key}_m{k + 1}", "cls": w.get("cls", "frame"), "zone": "sheet", "name": w["name"], "confidence": w.get("confidence", "medium"),
+                        "px_centroid": [round(poly.centroid.x, 1), round(poly.centroid.y, 1)], "px_ring": q.round(1).tolist(),
+                        "area_m2": round(float(Polygon(ext).area), 1), "ring_utm": np.round(ext, 2).tolist(), "holes_utm": []})
+            continue
         lab, _ = ndi.label(allowed)
         seeds = list(w.get("seeds", []))
         if w.get("seed_grid") and cm is not None:
@@ -874,6 +883,8 @@ def assemble():
                 conf = conf_of(fitq)
                 if kcfg.get("confidence_cap") and rank_c[conf] < rank_c[kcfg["confidence_cap"]]:
                     conf = kcfg["confidence_cap"]  # e.g. scale only from the prior, or control from street labels
+                if r.get("confidence") == "medium" and conf == "high":
+                    conf = "medium"  # hand-placed outline (wharf deck clip, snapped rectangle)
                 if r.get("confidence") == "low" or (G.get("zones_only") and zone == "sheet") or (map_year < 1900 and cls == "fireproof"):
                     conf = "low"
                 feats.append((g, {"id": r["id"], "map_year": map_year, "volume": f"sanborn00813_{vol}", "volume_label": vlabel,

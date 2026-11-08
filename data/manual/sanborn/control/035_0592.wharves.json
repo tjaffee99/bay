@@ -1,0 +1,71 @@
+[
+ {
+  "name": "pipe shop, brazing room, copper shop, furnaces, marine machinery tool room, marine electrical shop (steel frame, reinforced concrete)",
+  "cls": "stone",
+  "clip": [
+   [
+    298,
+    1208
+   ],
+   [
+    522,
+    1208
+   ],
+   [
+    522,
+    1402
+   ],
+   [
+    298,
+    1402
+   ]
+  ],
+  "trace": "rect"
+ },
+ {
+  "name": "warehouse (fire-proof construction)",
+  "cls": "fireproof",
+  "clip": [
+   [
+    546,
+    1118
+   ],
+   [
+    640,
+    1118
+   ],
+   [
+    640,
+    1408
+   ],
+   [
+    546,
+    1408
+   ]
+  ],
+  "trace": "rect"
+ },
+ {
+  "name": "mould loft and warehouse (corr. iron on steel frame, steel truss roof)",
+  "cls": "iron",
+  "clip": [
+   [
+    641,
+    1222
+   ],
+   [
+    793,
+    1222
+   ],
+   [
+    793,
+    1746
+   ],
+   [
+    641,
+    1746
+   ]
+  ],
+  "trace": "rect"
+ }
+]
