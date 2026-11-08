@@ -813,7 +813,7 @@ def assemble():
         if f.get("n", 0) >= 4 and f.get("rms", 9) <= 1.5 and f.get("max", 9) <= 3:
             return "high"
         return "medium" if f.get("n", 0) >= 3 and f.get("rms", 9) <= 3 else "low"
-    covers = {}
+    covers, named_before = {}, {}
     rank_c = {"high": 0, "medium": 1, "low": 2}
     for (area, year), keys in AREAS.items():
         feats, cover = [], []
@@ -893,6 +893,18 @@ def assemble():
                                   "use": use, "use_source": usrc, "name": att.get("name") or r.get("name") or None, "sanborn_colour": cls,
                                   "confidence": conf, "georef": f"block {zone}" if zone in blocks else "sheet",
                                   "georef_rms_m": round(float(fitq.get("rms", 0)), 2), "area_m2": round(float(g.area), 1), "modern_overlap": overlap(g)}))
+        if area in COVER_STREETS and area in named_before:  # names read on the earlier edition carry over to the same outline
+            for g, p in feats:
+                if p["name"] or p["sanborn_colour"] == "wharf":
+                    continue
+                for g0, p0 in named_before[area]:
+                    if g.intersects(g0):
+                        inter = g.intersection(g0).area
+                        if inter / g.area >= 0.6 and inter / g0.area >= 0.6:
+                            p["name"] = p0["name"]
+                            if p["use_source"] == "default":
+                                p["use"], p["use_source"] = p0["use"], "map (label on the earlier edition, same outline)"
+                            break
         rank = {"high": 0, "medium": 1, "low": 2}
         kept = []
         for i in sorted(range(len(feats)), key=lambda i: (rank[feats[i][1]["confidence"]], -feats[i][0].area)):
@@ -909,6 +921,7 @@ def assemble():
                     dup = []
             if not dup:
                 kept.append(i)
+        named_before[area] = [(feats[i][0], feats[i][1]) for i in kept if feats[i][1]["name"]]
         rnd = lambda gj: json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))
         fc = {"type": "FeatureCollection", "name": f"{area}_{year}", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
               "features": [{"type": "Feature", "properties": feats[i][1], "geometry": rnd(mapping(lonlat(feats[i][0])))}

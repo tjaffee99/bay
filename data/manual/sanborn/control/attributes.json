@@ -1026,5 +1026,330 @@
 "stories": 1,
 "use": "warehouse",
 "name": "Nash Motors auto parts warehouse; contractor's warehouse (reinf. concrete)"
+},
+"016_0217r_f68": {
+"stories": 1,
+"use": "warehouse",
+"name": "Mission Bay warehouses No. 1"
+},
+"016_0217r_f153": {
+"stories": 1,
+"use": "warehouse",
+"name": "Mission (Bay) warehouse No. 2, general storage"
+},
+"016_0216_f64": {
+"use": "rail",
+"name": "Southern Pacific R.R. freight house \"C\"",
+"src": "default"
+},
+"016_0215_f92": {
+"use": "warehouse",
+"name": "Olson-Mahony Lumber Co. lumber shed",
+"src": "default"
+},
+"016_0215_f106": {
+"use": "warehouse",
+"name": "Olson-Mahony Lumber Co. lumber shed",
+"src": "default"
+},
+"016_0221_f109": {
+"use": "rail",
+"name": "A.T.& S.F. Ry. freight warehouse",
+"src": "default"
+},
+"016_0221_f110": {
+"use": "rail",
+"name": "Atchison, Topeka & Santa Fe Railway freight warehouse",
+"src": "default"
+},
+"016_0221_f107": {
+"use": "rail",
+"name": "Atchison, Topeka & Santa Fe Railway freight warehouse (south part)",
+"src": "default"
+},
+"020_0545_f44": {
+"use": "factory",
+"name": "Pacific Rolling Mill Co. (rolling mill, machine shop, structural shed)",
+"src": "default"
+},
+"020_0545_b3": {
+"use": "factory",
+"name": "Pacific Refining & Roofing Co.",
+"src": "default"
+},
+"020_0559_f43": {
+"use": "factory",
+"name": "Pacific Rolling Mill Co. shops",
+"src": "default"
+},
+"020_0559_f44": {
+"use": "warehouse",
+"name": "Berger & Carter Co. heavy machinery warehouse",
+"src": "default"
+},
+"020_0560b_f103": {
+"use": "warehouse",
+"name": "The W. F. Boardman Co. stove & tinware warehouse",
+"src": "default"
+},
+"020_0560b_f124": {
+"use": "warehouse",
+"name": "Mangrum & Otter stove & tinware warehouse",
+"src": "default"
+},
+"020_0574_f54": {
+"use": "cannery",
+"name": "California Canneries Co. cannery",
+"src": "default"
+},
+"020_0574_f53": {
+"use": "factory",
+"name": "Herbert Vogel & Mark Co. cooperage & tank factory / Mortenson Construction Co. structural iron works",
+"src": "default"
+},
+"020_0574_f65": {
+"use": "warehouse",
+"name": "Taylor & Spotswood Co. warehouse",
+"src": "default"
+},
+"020_0574_f70": {
+"use": "warehouse",
+"name": "Geo. H. Tay & Co. plumbers' supplies warehouse",
+"src": "default"
+},
+"020_0574_f71": {
+"use": "warehouse",
+"name": "Geo. H. Tay & Co. plumbers' supplies warehouse",
+"src": "default"
+},
+"020_0574_f75": {
+"use": "warehouse",
+"name": "H. S. White Machinery Co. machinery storage",
+"src": "default"
+},
+"020_0574_f86": {
+"use": "warehouse",
+"name": "Geo. M. Clark & Co. stove warehouse",
+"src": "default"
+},
+"020_0575_b5": {
+"use": "factory",
+"name": "Hulme & Hart wool scourers",
+"src": "default"
+},
+"020_0589_f45": {
+"use": "factory",
+"name": "Ralston Iron Works",
+"src": "default"
+},
+"020_0589_f47": {
+"use": "factory",
+"name": "Acme White Lead & Color Works paint warehouse",
+"src": "default"
+},
+"020_0589_b2": {
+"use": "warehouse",
+"name": "C. Schilling & Co. wine cellars",
+"src": "default"
+},
+"020_0589_f96": {
+"use": "other",
+"name": "Irving M. Scott Grammar School",
+"src": "default"
+},
+"020_0591_f66": {
+"stories": 2,
+"use": "factory",
+"name": "Union Iron Works platers' shop (mould loft 2nd floor)"
+},
+"020_0591_f65": {
+"use": "factory",
+"name": "Union Iron Works press room",
+"src": "default"
+},
+"020_0591_f68": {
+"use": "factory",
+"name": "Union Iron Works flange shop",
+"src": "default"
+},
+"020_0591_f70": {
+"use": "factory",
+"name": "Union Iron Works flange shop",
+"src": "default"
+},
+"020_0591_b6": {
+"use": "factory",
+"name": "Union Iron Works boiler shop, boiler & flange shop, blacksmith shop",
+"src": "default"
+},
+"020_0591_f78": {
+"use": "factory",
+"name": "Union Iron Works blacksmith shop",
+"src": "default"
+},
+"020_0591_b7": {
+"use": "other",
+"name": "Union Iron Works offices, drafting room & warehouse",
+"src": "default"
+},
+"020_0592_f43": {
+"use": "factory",
+"name": "Union Iron Works pipe shop",
+"src": "default"
+},
+"020_0592_f57": {
+"use": "factory",
+"name": "Union Iron Works saw mill & joiner shops",
+"src": "default"
+},
+"020_0592_f59": {
+"use": "factory",
+"name": "Union Iron Works saw mill & joiner shops",
+"src": "default"
+},
+"020_0592_i802": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. bar warehouse",
+"src": "default"
+},
+"020_0593_b3": {
+"use": "factory",
+"name": "Union Iron Works machine shop and foundry & moulding shop",
+"src": "default"
+},
+"020_0593_b2": {
+"use": "factory",
+"name": "Union Iron Works boiler & rivet shop, erecting shop",
+"src": "default"
+},
+"020_0594_i354": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. nail & wire warehouse",
+"src": "default"
+},
+"020_0594_f63": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. wire fence warehouse",
+"src": "default"
+},
+"020_0594_f72": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. general warehouse",
+"src": "default"
+},
+"020_0594_f105": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. old structural warehouse (part)",
+"src": "default"
+},
+"020_0594_m1": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. sheet & tin plate warehouse",
+"src": "default"
+},
+"020_0594_m2": {
+"use": "warehouse",
+"name": "U.S. Steel Products Co. new structural warehouse",
+"src": "default"
+},
+"020_0594_m3": {
+"use": "factory",
+"name": "U.S. Steel Products Co. machine shop & transformer house",
+"src": "default"
+},
+"020_0607_b3": {
+"use": "warehouse",
+"name": "Tubbs Cordage Co. rope warehouse",
+"src": "default"
+},
+"020_0607_b4": {
+"use": "factory",
+"name": "Tubbs Cordage Co. mill building",
+"src": "default"
+},
+"020_0607_b5": {
+"use": "factory",
+"name": "Tubbs Cordage Co. mill building",
+"src": "default"
+},
+"020_0607_f56": {
+"use": "factory",
+"name": "Tubbs Cordage Co. rope walk",
+"src": "default"
+},
+"020_0607_b9": {
+"use": "warehouse",
+"name": "Tubbs Cordage Co. hemp warehouse",
+"src": "default"
+},
+"020_0609_b18": {
+"use": "factory",
+"name": "Pacific Gas & Electric Co. power house (Potrero)",
+"src": "default"
+},
+"020_0609_b15": {
+"use": "factory",
+"name": "Pacific Gas & Electric Co. purifier house (gas works)",
+"src": "default"
+},
+"020_0609_b28": {
+"use": "factory",
+"name": "Pacific Gas & Electric Co. purifying house (gas works)",
+"src": "default"
+},
+"020_0609_b23": {
+"use": "factory",
+"name": "Western Sugar Refining Co. refinery building",
+"src": "default"
+},
+"020_0609_b73": {
+"use": "warehouse",
+"name": "Western Sugar Refining Co. refined sugar warehouse",
+"src": "default"
+},
+"020_0610_b8": {
+"use": "warehouse",
+"name": "Western Sugar Refining Co. sugar warehouses Nos. 3, 4, 7, 8",
+"src": "default"
+},
+"020_0610_f77": {
+"use": "warehouse",
+"name": "Western Sugar Refining Co. warehouses Nos. 5, 6, 10",
+"src": "default"
+},
+"020_0610_b7": {
+"use": "factory",
+"name": "Western Sugar Refining Co. refinery building",
+"src": "default"
+},
+"020_0610_b6": {
+"use": "factory",
+"name": "Pacific Gas & Electric Co. gas generator house",
+"src": "default"
+},
+"020_0610_f66": {
+"use": "factory",
+"name": "Pacific Gas & Electric Co. lamp black shed",
+"src": "default"
+},
+"020_0626_f40": {
+"use": "rail",
+"name": "Kentucky St. car barns, United Railroads",
+"src": "default"
+},
+"035_0592_m1": {
+"use": "factory",
+"name": "Bethlehem (Union Iron Works) pipe shop, brazing room, copper shop, marine electrical shop",
+"src": "default"
+},
+"035_0592_m2": {
+"use": "warehouse",
+"name": "Bethlehem (Union Iron Works) warehouse, fire-proof construction",
+"src": "default"
+},
+"035_0592_m3": {
+"stories": 3,
+"use": "factory",
+"name": "Bethlehem (Union Iron Works) mould loft (3rd floor) and warehouse"
 }
 }
