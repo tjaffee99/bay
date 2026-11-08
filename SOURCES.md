@@ -177,6 +177,9 @@ Details, field names, coverage and licence notes: `data/research/region_building
 - `marin_county_footprints` — Marin County "Building Footprints" (113,271; outlines from the 2004 Vargis orthophoto, `SourceDateYear`; height fields empty), https://services6.arcgis.com/T8eS7sop5hLmgRRH/arcgis/rest/services/Building_Footprints/FeatureServer/0 — no licence stated; "stood by 2004" constraint.
 - `loc_sanborn_region` — Library of Congress Sanborn Fire Insurance Maps for the five counties (362 items, ids per city in the research note; public domain, "Library of Congress, Geography and Map Division, Sanborn Maps Collection") — listed only, not traced.
 
+### `known_building_dates_region` — researched construction years of institutional / landmark buildings (2026-11 audit)
+`data/tables/known_building_dates_region.csv` (371 rows, a source URL per row): Stanford University 2018 General Use Permit application, historic-resources inventory (`SU_2018GUP_App_Vol4_pt2.pdf`) and Stanford news / Stanford Daily / Wikipedia for post-1975 buildings; UC Berkeley Disability Access & Compliance building list (year built per building); Santa Clara University facilities "Building Information" pages (year constructed); Wikipedia (list of tallest buildings in Oakland, individual building articles); city / county / airport history pages. Facts only (years), used to override assessor / vendor years per footprint. Overture `land_use` (university, college, school, hospital, military outlines; ODbL) delimits campuses for `region_buildings.campus_impute`.
+
 ## Sources checked but not yet usable from the build environment
 - SFEI EcoAtlas web services (https://www.sfei.org/) — behind a bot check; the poster PDF was supplied by hand and the GIS compilation downloads directly.
 - OpenHistoricalMap (https://www.openhistoricalmap.org/) — API behind a bot check.

@@ -31,7 +31,7 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 from building_binary import write_buildings
-from common import INTERIM, RAW, VIEWER_DATA, log
+from common import INTERIM, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from sf_buildings import CONF, USE_CATEGORIES
 from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_EARLY, M_GLASS, M_INDUSTRIAL, M_MASONRY, M_MIDCENTURY,
@@ -111,6 +111,7 @@ def assign_years(g):
     round placeholder year (spike) is only an upper bound for the imputation."""
     year = np.full(len(g), np.nan)
     raw = np.zeros(len(g))
+    raw_vendor = np.zeros(len(g), bool)  # placeholder from the vendor copy: not a bound
     conf = np.array(["estimated"] * len(g), dtype=object)
     src = np.array([""] * len(g), dtype=object)
     for col in ("historic", "public", "third_party", "commercial"):
@@ -125,11 +126,22 @@ def assign_years(g):
         src[take] = g[f"src_{col}"].astype(str).values[take]
         ph = (raw == 0) & np.isfinite(y)
         raw[ph] = y[ph]
+        raw_vendor[ph] = col == "commercial"
     log(f"region: {np.isfinite(year).sum()} footprints with a recorded year "
         f"({pd.Series(src[np.isfinite(year)]).str.split(':').str[0].value_counts().head(8).to_dict()})")
-    # imputation from recorded neighbours (and the placeholder as an upper bound)
     u = g.to_crs(UTM).geometry.representative_point()
     xy = np.column_stack([u.x.values, u.y.values])
+    # researched dates of institutional / campus / landmark buildings (the rolls miss or
+    # misdate exempt property: Stanford's Main Quad read 1983, Hoover Tower 1977)
+    year, conf, src, end = known_dates(g, year, conf, src)
+    # an upper bound from the placeholder year of the roll (a vendor's campus-wide
+    # placeholder, e.g. UC Berkeley "1920", bounds nothing)
+    upper_all = np.where((raw > 0) & ~raw_vendor, raw, np.inf)
+    # campuses (universities, colleges, schools, hospitals, bases): estimated buildings
+    # take the years of dated buildings of the same campus, not of the tract houses
+    # across the street
+    year = campus_impute(g, xy, year, conf, upper_all)
+    # imputation from recorded neighbours (and the placeholder as an upper bound)
     have = np.isfinite(year)
     if have.any():
         tree = cKDTree(xy[have])
@@ -138,8 +150,7 @@ def assign_years(g):
         d, idx = tree.query(xy[need], k=12, distance_upper_bound=200)
         vals = np.where(np.isfinite(d), hy[np.minimum(idx, len(hy) - 1)], np.nan)
         med = np.nanmedian(np.where(np.isfinite(vals), vals, np.nan), axis=1)
-        upper = np.where(raw[need] > 0, raw[need], np.inf)
-        year[need] = np.minimum(med, upper)
+        year[need] = np.where(np.isfinite(med), np.minimum(med, upper_all[need]), np.nan)
     # HISDAC first built-up year of the 250 m cell (region grid), then a default
     miss = np.isnan(year)
     if miss.any():
@@ -159,8 +170,77 @@ def assign_years(g):
         hh = np.array([h01(f"r{k}") for k in range(len(g))])
         year[ok] = f[ok] + hh[ok] * np.clip(2020 - f[ok], 0, 25)
         year[np.isnan(year)] = 1975 + 20 * hh[np.isnan(year)]
+        # the placeholder still bounds these
+        year[miss] = np.minimum(year[miss], upper_all[miss])
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
-    return year, raw, conf
+    return year, raw, conf, end
+
+
+def known_dates(g, year, conf, src):
+    """data/tables/known_building_dates_region.csv (researched, one source per row): every
+    footprint containing a row's point takes its year (and end year)."""
+    end = np.full(len(g), 9999.0)
+    p = TABLES / "known_building_dates_region.csv"
+    if not p.exists():
+        return year, conf, src, end
+    k = pd.read_csv(p)
+    k = k[np.isfinite(pd.to_numeric(k.lat, errors="coerce")) & np.isfinite(pd.to_numeric(k.start_year, errors="coerce"))]
+    pts = gpd.GeoDataFrame(k[["id", "start_year", "end_year"]].reset_index(drop=True),
+                           geometry=gpd.points_from_xy(k.lon.astype(float), k.lat.astype(float)), crs=4326)
+    j = gpd.sjoin(pts, g[["geometry"]].set_crs(4326, allow_override=True), predicate="within", how="inner")
+    year = year.copy()
+    for fi, sy, ey, kid in zip(j.index_right.values, j.start_year.values, j.end_year.values, j.id.values):
+        year[fi] = float(sy)
+        conf[fi] = "exact"
+        src[fi] = f"known:{kid}"
+        e = pd.to_numeric(ey, errors="coerce")
+        if np.isfinite(e) and e < 9000:
+            end[fi] = float(e)
+    log(f"region: {len(j)} footprints dated from known_building_dates_region.csv ({len(k)} rows, "
+        f"{len(k) - j.id.nunique()} without a footprint)")
+    return year, conf, src, end
+
+
+CAMPUS_CLASSES = ("university", "college", "school", "hospital", "military")
+
+
+def campus_impute(g, xy, year, conf, upper):
+    """Estimated buildings on a campus (Overture land_use university / college / school /
+    hospital / military outlines, smallest containing one) take the median year of the 8
+    nearest dated buildings of that campus when it has at least 3."""
+    p = RAW / "overture" / RELEASE / "region5_land_use.parquet"
+    if not p.exists():
+        return year
+    d = pd.read_parquet(p)
+    d = d[d["class"].isin(CAMPUS_CLASSES)]
+    lu = gpd.GeoDataFrame(d[["class", "name"]], geometry=gpd.GeoSeries.from_wkb(d.geometry.values), crs=4326)
+    lu = lu[lu.geom_type.isin(["Polygon", "MultiPolygon"])].to_crs(UTM)
+    lu = lu.assign(area=lu.geometry.area.values)
+    lu = lu[lu.area > 5000].reset_index(drop=True)
+    pts = gpd.GeoDataFrame(geometry=gpd.points_from_xy(xy[:, 0], xy[:, 1]), crs=UTM)
+    j = gpd.sjoin(pts, lu[["area", "geometry"]], predicate="within", how="inner")
+    j = j.sort_values("area").loc[lambda t: ~t.index.duplicated(keep="first")]
+    campus = np.full(len(g), -1)
+    campus[j.index.values] = j.index_right.values
+    year = year.copy()
+    n_done = 0
+    have = np.isfinite(year) & (conf == "exact")
+    for cid in np.unique(campus[campus >= 0]):
+        members = np.nonzero(campus == cid)[0]
+        donors = members[have[members]]
+        need = members[~have[members]]
+        if len(donors) < 3 or not len(need):
+            continue
+        t = cKDTree(xy[donors])
+        k = min(8, len(donors))
+        _, idx = t.query(xy[need], k=k)
+        idx = idx.reshape(len(need), k)
+        med = np.median(year[donors][idx], axis=1)
+        year[need] = np.minimum(med, upper[need])
+        n_done += len(need)
+    log(f"region: {n_done} undated campus buildings take their campus's years "
+        f"({int((campus >= 0).sum())} footprints on {len(np.unique(campus[campus >= 0]))} campuses)")
+    return year
 
 
 def land_check(g, year):
@@ -259,7 +339,7 @@ def use_codes(g, area):
 def main():
     from roads import Ground
     g = load_footprints()
-    year, raw, conf = assign_years(g)
+    year, raw, conf, end = assign_years(g)
     year = land_check(g, year)
     start = row_timing(g, year)
     H, stories, area = heights(g)
@@ -274,7 +354,7 @@ def main():
     splits = np.cumsum(counts)[:-1]
     gmin = np.array([a.min() for a in np.split(gz, splits)])
     gmean = np.array([a.mean() for a in np.split(gz, splits)])
-    g = g.assign(start_year=start, end_year=9999.0, height=H + (gmean - gmin) + 1.0, base=gmin - 1.0,
+    g = g.assign(start_year=start, end_year=end, height=H + (gmean - gmin) + 1.0, base=gmin - 1.0,
                  year_confidence=conf, use=use, raw_year=raw, stories=stories, mat=mat, roof=roof)
     g["fid_key"] = g["id"].astype(str) if "id" in g else g.index.astype(str)
     cols = ["start_year", "end_year", "height", "base", "year_confidence", "use", "raw_year", "stories", "mat",
