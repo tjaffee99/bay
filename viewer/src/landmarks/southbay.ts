@@ -1019,14 +1019,15 @@ function missionSantaClara(b: MeshBuilder, variant: '1825' | '1861' | '1928') {
     for (const x of [-9.5, -5.2, 3.2]) b.box(x, 27.3, 2, 1.0, 0.2, 9.5); // painted pilasters
     b.color('#6E5A4A').box(-1.2, 27.3, 0, 3.2, 0.2, 5.5); // door
     if (variant === '1928') {
-      // bell tower: two stages and a domed lantern (photo estimate ≈ 22 m)
+      // bell tower (left of the facade): two stages, tiled pyramid roof and a small lantern (photo estimate ≈ 22 m)
       b.color(ADOBE);
       boxR(b, [8, 13.1, 22.6, 28], 0, 13);
       boxR(b, [8.5, 12.6, 23.1, 27.5], 13, 17.5);
       b.color('#5A5048');
       b.box(10.55, 25.3, 14, 4.2, 1.6, 2.6).box(10.55, 25.3, 14, 1.6, 4.2, 2.6);
-      b.color(ADOBE).cylinder(10.55, 25.3, 1.7, 17.5, 19.5, 8);
-      b.color(TILE).dome(10.55, 25.3, 1.9, 19.5, 2, 8, 2);
+      b.color(TILE).pyramid(rect(10.55, 25.3, 4.6, 4.6), 17.5, [10.55, 25.3, 20]);
+      b.color(ADOBE).cylinder(10.55, 25.3, 0.7, 19.6, 21, 8);
+      b.color(TILE).dome(10.55, 25.3, 0.8, 21, 0.8, 8, 2);
     }
   });
 }
@@ -1375,7 +1376,7 @@ const hotelDeAnza = landmark(
   DE_ANZA,
   b => {
     b.frame(0, 0, 0, 149, () => {
-      const WALL = '#E2BFA6';
+      const WALL = '#EBCBC0'; // pale pink stucco over a salmon-red ground storey (photo)
       b.color(WALL);
       b.prism([[16.1, 3.5], [16.1, 18.8], [6.6, 18.9], [6.6, 8.5], [2.7, 8.5], [2.7, 3.6]], 0, 30.9);
       b.prism([[-8.5, 3.7], [2.7, 3.6], [2.7, 8.5], [6.6, 8.5], [6.6, 18.9], [-5.6, 19.0], [-5.6, 14.3], [-8.5, 14.3]], 0, 36.3);
@@ -1384,18 +1385,21 @@ const hotelDeAnza = landmark(
       b.prism([[-6.6, -9.7], [-6.6, 3.7], [-15.3, 3.7], [-15.3, -9.6]], 0, 15.1);
       b.prism([[-6.6, -6.8], [-6.6, -9.7], [-15.6, -9.6], [-15.6, -22.4], [5.2, -22.5], [5.2, -6.9]], 0, 8.3);
       boxR(b, [-5.6, 6.6, 18.9, 22.2], 0, 4.5);
-      // Zig Zag Moderne crown: stepped piers and the rooftop sign
-      b.color('#C98C6E');
-      boxR(b, [-8.9, 7, 3.3, 19.3], 35.5, 37.6);
-      boxR(b, [-5, 3, 8, 15], 37.6, 39.2);
-      b.color('#2D5C7A');
-      boxR(b, [-4.5, 2.5, 18.6, 19.2], 39.2, 42.5);
+      b.color('#C77662');
+      boxR(b, [-15.8, 16.6, 3.2, 19.4], 0, 5.2, false);
+      // Zig Zag Moderne crown: stepped piers with teal accents and the lattice rooftop sign
+      b.color('#5E9C9A');
+      boxR(b, [-8.9, 7, 3.3, 19.3], 35.5, 36.6);
+      b.color(WALL);
+      boxR(b, [-5, 3, 8, 15], 36.3, 39.2);
+      b.color('#B5483D');
+      boxR(b, [-4.5, 2.5, 18.6, 19.2], 39.2, 44);
     });
   },
   {
     Built: 'groundbreaking Feb 27, 1931 (W. H. Weeks, architect; Carl Swenson, contractor); restored and reopened 1990',
     Style: 'Zig Zag Moderne (Art Deco) with Mission Revival touches: a ten-storey centre between nine-storey wings',
-    Model: 'massing from the OpenStreetMap 3D parts (© OSM contributors, ODbL; 36.3 / 30.9 / 31.2 m); crown, sign and colours estimated from photographs'
+    Model: 'massing from the OpenStreetMap 3D parts (© OSM contributors, ODbL; 36.3 / 30.9 / 31.2 m); crown, sign and colours from a photograph (pale pink over a salmon ground storey, teal accents); crown heights estimated'
   },
   [WIKI + 'Hotel_De_Anza'],
   [rotPoly(rect(-0.5, 0, 38, 45), 149)]

@@ -992,7 +992,7 @@ def assemble():
         return shapely.transform(g, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))
     attrs = json.load(open(CONTROL / "attributes.json")) if (CONTROL / "attributes.json").exists() else {}
     # names / uses read off the sheets, by pixel position (control/oakland/labels.json: {key: [[x, y, name, use], ...]}):
-    # the footprint containing the label point, else the nearest within 12 px
+    # the footprint containing the label point, else the nearest within 25 px
     labels = json.load(open(CONTROL / "labels.json")) if (CONTROL / "labels.json").exists() else {}
     for key, labs in labels.items():
         if not (INTERIM / f"{key}.json").exists():
@@ -1004,7 +1004,7 @@ def assemble():
             hit = [rid for rid, pg in polys if pg.contains(pt)]
             if not hit:
                 near = sorted((pg.distance(pt), rid) for rid, pg in polys)
-                hit = [near[0][1]] if near and near[0][0] <= 12 else []
+                hit = [near[0][1]] if near and near[0][0] <= 25 else []
             if hit:
                 attrs.setdefault(hit[0], {}).update({"name": name, **({"use": use} if use else {})})
             else:

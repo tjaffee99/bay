@@ -339,6 +339,16 @@ def urban_tint(img, inside, ppm):
     return m.astype(bool), rings
 
 
+def _colour_tests(blk):
+    """(darkest-channel max, black-ink hue ok, blue water, min channel) of an RGB block."""
+    b = blk.astype(np.int16)
+    R, G, B = b[:, :, 0], b[:, :, 1], b[:, :, 2]
+    mx = b.max(2)
+    hue = (R - G < 40) & (B - R < 15) & (G - R < 15)       # not red-brown, not blue-green
+    water = (B - R > 20) & (B > G - 10)
+    return mx, hue, water, b.min(2)
+
+
 def detect_symbols(img, g, debug=None):
     """Building symbols on one sheet -> (kept symbols, stats). Each symbol: pixel centroid,
     area (mm² on paper), shape / context features, rejection reasons, score 0..1."""
@@ -350,22 +360,17 @@ def detect_symbols(img, g, debug=None):
     inside = np.zeros((H, W), np.uint8)
     cv2.fillPoly(inside, [np.round(g["neat_px"]).astype(np.int32)], 1)
     inside = cv2.erode(inside, cv2.getStructuringElement(cv2.MORPH_RECT, (int(ppm * 2) | 1,) * 2))
-    mx = np.empty((H, W), np.uint8)
-    mn = np.empty((H, W), np.uint8)
-    hue_ok = np.empty((H, W), bool)          # black / grey ink: not red-brown, not blue-green
-    water = np.empty((H, W), bool)           # blue water lines / tint
-    for r in range(0, H, 2048):
-        blk = img[r:r + 2048].astype(np.int16)
-        mx[r:r + 2048] = blk.max(2)
-        mn[r:r + 2048] = blk.min(2)
-        R, G, B = blk[:, :, 0], blk[:, :, 1], blk[:, :, 2]
-        hue_ok[r:r + 2048] = (R - G < 40) & (B - R < 15) & (G - R < 15)
-        water[r:r + 2048] = (B - R > 20) & (B > G - 10)
-    hue_ok &= inside > 0
+    # (memory: a 1:24,000 sheet is ~18k x 15k px, so only uint8 / label images are kept
+    # at full resolution; colour tests are redone inside the small windows)
     urban_px = urban_tint(img, inside, ppm)
-    paper = float(np.percentile(mx[inside > 0][::97], 75))
+    samp = img[::37, ::37].max(2)[inside[::37, ::37] > 0]
+    paper = float(np.percentile(samp, 75))
     ink_t = 0.55 * paper
-    ink = ((mx < ink_t) & hue_ok).astype(np.uint8)
+    ink = np.empty((H, W), np.uint8)
+    for r in range(0, H, 1024):
+        mx_, hue_ = _colour_tests(img[r:r + 1024])[:2]
+        ink[r:r + 1024] = (mx_ < ink_t) & hue_
+    ink &= inside
     d_open = max(3, int(round(0.26 * ppm)) | 1)
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d_open, d_open))
     core = cv2.morphologyEx(ink, cv2.MORPH_OPEN, k)
@@ -404,7 +409,7 @@ def detect_symbols(img, g, debug=None):
         rect_fill = a / max((rw + 1) * (rh + 1), 1)
         tri_area, _ = cv2.minEnclosingTriangle(c.astype(np.float32))
         tri_fill = cv2.contourArea(c) / max(tri_area, 1)
-        dark = float(np.median(mn[y:y + h, x:x + w][sub > 0]))
+        dark = float(np.median(img[y:y + h, x:x + w].min(2)[sub > 0]))
         recs.append({"i": i, "x": cx, "y": cy, "area_mm2": float(area_mm2[i]), "elong": elong,
                      "solidity": float(solidity), "rect_fill": float(rect_fill), "tri_fill": float(tri_fill), "dark": dark,
                      "w": int(w), "h": int(h), "theta": theta})
@@ -423,7 +428,7 @@ def detect_symbols(img, g, debug=None):
     k_ring = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * ring_t + 1,) * 2)
     k_in = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     k_out = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * int(round(0.45 * ppm)) + 1,) * 2)
-    sq_ok = np.zeros(no, bool)
+    sqfill = np.zeros((H, W), np.uint8)       # accepted open squares, filled
     opens = []
     for i in range(1, no):
         x, y, w, h, a = ost[i]
@@ -451,16 +456,15 @@ def detect_symbols(img, g, debug=None):
         out_ink = float(inkw[outer].mean())
         if out_ink > 0.3:
             continue                          # outline is part of a heavy mass / a word
-        sq_ok[i] = True
         filled = (d1 > 0) & ((inkw > 0) | (hole > 0))
+        sqfill[y0:y1, x0:x1] |= filled.astype(np.uint8)
         fa = int(filled.sum())
-        opens.append({"oi": i, "x": x + ocen[i][0] - x, "y": ocen[i][1], "area_mm2": fa / ppm ** 2,
+        opens.append({"oi": i, "x": float(ocen[i][0]), "y": float(ocen[i][1]), "area_mm2": fa / ppm ** 2,
                       "hole_mm2": a / ppm ** 2, "elong": elong, "solidity": 1.0, "rect_fill": rect_fill,
-                      "tri_fill": 0.5, "dark": float(np.median(mn[y0:y1, x0:x1][ringm & (inkw > 0)])),
+                      "tri_fill": 0.5, "dark": float(np.median(img[y0:y1, x0:x1].min(2)[ringm & (inkw > 0)])),
                       "w": int(w + 2 * ring_t), "h": int(h + 2 * ring_t), "theta": 0.0, "shape_ok": True,
                       "ring_ink": ring_ink, "out_ink": out_ink, "open": True})
-    for r in opens:
-        r["x"] = float(ocen[r["oi"]][0])
+    del olab, inkc
     for r in recs:
         r["open"] = False
 
@@ -478,14 +482,15 @@ def detect_symbols(img, g, debug=None):
     side_min = int(0.35 * ppm * 2)          # ~0.35 mm of a 2 px line on each side
     # big lettering: thick (>= 0.34 mm) ink masses that are not symbols (stems, bowls of
     # large serif capitals); their hairlines are often too faint to connect the serifs
-    dtc = cv2.distanceTransform(core, cv2.DIST_L2, 3)
-    from scipy import ndimage
-    dmax = ndimage.maximum(dtc, lab, np.arange(n))
-    del dtc
+    er = int(round(0.17 * ppm))
+    eroded = cv2.erode(core, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * er + 1,) * 2))
+    deep = np.zeros(n, bool)
+    deep[np.unique(lab[eroded > 0])] = True
+    del eroded
     glyph_mass = np.zeros(n, bool)
     shp = {r["i"]: r for r in recs}
     for i in range(1, n):
-        if area_mm2[i] < 0.2 or dmax[i] < 0.17 * ppm:
+        if area_mm2[i] < 0.2 or not deep[i]:
             continue
         r = shp.get(i)
         if r is not None and r["shape_ok"]:
@@ -506,15 +511,19 @@ def detect_symbols(img, g, debug=None):
         cx, cy = int(round(r["x"])), int(round(r["y"]))
         y0, y1, x0, x1 = max(cy - R, 0), min(cy + R + 1, H), max(cx - R, 0), min(cx + R + 1, W)
         ccx, ccy = r["x"] - x0, r["y"] - y0
-        mxw = mx[y0:y1, x0:x1]
+        mxw, huew, waterw, _ = _colour_tests(img[y0:y1, x0:x1])
+        huew &= inside[y0:y1, x0:x1] > 0
         lp = max(float(np.percentile(mxw, 80)), 0.8 * paper)
         inkw = ink[y0:y1, x0:x1]
-        lightw = ((mxw < 0.80 * lp) & hue_ok[y0:y1, x0:x1]).astype(np.uint8) | inkw
+        lightw = ((mxw < 0.80 * lp) & huew).astype(np.uint8) | inkw
         labw = lab[y0:y1, x0:x1]
-        olw = olab[y0:y1, x0:x1]
-        sqw = cv2.dilate(sq_ok[olw].astype(np.uint8), k_ring)
+        sqw = sqfill[y0:y1, x0:x1]
         if r["open"]:
-            own = (cv2.dilate((olw == r["oi"]).astype(np.uint8), k_ring) > 0) & ((inkw > 0) | (olw == r["oi"]))
+            _, sl = cv2.connectedComponents(sqw, connectivity=8)
+            own = sl == sl[min(int(ccy), sl.shape[0] - 1), min(int(ccx), sl.shape[1] - 1)]
+            if not sqw[min(int(ccy), sl.shape[0] - 1), min(int(ccx), sl.shape[1] - 1)]:
+                own = np.zeros_like(own)
+                own[min(int(ccy), sl.shape[0] - 1), min(int(ccx), sl.shape[1] - 1)] = True
             lightw = lightw | own.astype(np.uint8)
         else:
             own = labw == r["i"]
@@ -605,7 +614,7 @@ def detect_symbols(img, g, debug=None):
                 continue                      # another building symbol
             letters += 1
         wr = int(round(0.6 * ppm))
-        wwin = water[max(cy - wr, 0):cy + wr + 1, max(cx - wr, 0):cx + wr + 1]
+        wwin = waterw[max(cy - y0 - wr, 0):cy - y0 + wr + 1, max(cx - x0 - wr, 0):cx - x0 + wr + 1]
         big_text = False
         if gm_tree is not None:
             dgm, _ = gm_tree.query([r["x"], r["y"]], distance_upper_bound=1.5 * ppm)
