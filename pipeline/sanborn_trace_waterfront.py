@@ -194,6 +194,74 @@ def world_of(c):
     raise ValueError(c)
 
 
+# ----------------------------------------------------------------------------------------------- pixel refinement
+def line_masks(g, L=35):
+    """long vertical / horizontal dark lines (block and kerb lines) of a grey image."""
+    dark = g < min(150, float(np.median(g)) - 40)
+    return ndi.binary_opening(dark, structure=np.ones((L, 1))), ndi.binary_opening(dark, structure=np.ones((1, L)))
+
+
+def _pick(prof, lo, centre, w, side=None, tol=0.22):
+    xs = np.arange(len(prof)) + lo
+    pk = [i for i in range(1, len(prof) - 1) if prof[i] >= prof[i - 1] and prof[i] >= prof[i + 1] and prof[i] > 0.1 * prof.max() and prof[i] > 5]
+    L = [i for i in pk if xs[i] < centre - 0.2 * w]
+    R = [i for i in pk if xs[i] > centre + 0.2 * w]
+    best = None
+    if side is None:
+        for i in L:
+            for j in R:
+                if abs(xs[j] - xs[i] - w) <= tol * w:
+                    sc = prof[i] + prof[j] - 0.5 * abs((xs[i] + xs[j]) / 2 - centre)
+                    if best is None or sc > best[0]:
+                        best = (sc, (xs[i] + xs[j]) / 2)
+    if best is None and side in (None, "L") and L:
+        i = max(L, key=lambda i: prof[i] - 2 * abs(xs[i] - (centre - w / 2)))
+        best = (0, xs[i] + w / 2)
+    if best is None and side in (None, "R") and R:
+        j = max(R, key=lambda j: prof[j] - 2 * abs(xs[j] - (centre + w / 2)))
+        best = (0, xs[j] - w / 2)
+    return best
+
+
+def refine_crossing(masks, x0, y0, wv=68.75, wh=68.75, scale=PXM, reach=320, sides=(None, None), only=None):
+    """centre of a street crossing from the two kerb lines of each street (approximate pixel in, refined pixel out)."""
+    v, h = masks
+    H, Wd = v.shape
+    wvp, whp = wv * FT / scale, wh * FT / scale
+    x, y = x0, y0
+    if only != "y":
+        rows = [r for r in range(int(y0 - reach), int(y0 + reach)) if abs(r - y0) > whp * 0.8 and 0 <= r < H]
+        lo, hi = int(max(0, x0 - wvp * 1.1)), int(min(Wd, x0 + wvp * 1.1))
+        b = _pick(v[rows, lo:hi].sum(axis=0).astype(float), lo, x0, wvp, sides[0])
+        x = b[1] if b else x0
+    if only != "x":
+        cols = [c for c in range(int(x0 - reach), int(x0 + reach)) if abs(c - x0) > wvp * 0.8 and 0 <= c < Wd]
+        lo, hi = int(max(0, y0 - whp * 1.1)), int(min(H, y0 + whp * 1.1))
+        b = _pick(h[lo:hi, cols].sum(axis=1).astype(float), lo, y0, whp, sides[1])
+        y = b[1] if b else y0
+    return float(x), float(y)
+
+
+def refine_corner(masks, x, y, win=14, span=70):
+    """snap a block-corner pixel to the strongest vertical and horizontal block line nearby."""
+    v, h = masks
+    H, Wd = v.shape
+    pv = v[int(max(0, y - span)):int(min(H, y + span)), int(max(0, x - win)):int(min(Wd, x + win))].sum(axis=0)
+    ph = h[int(max(0, y - win)):int(min(H, y + win)), int(max(0, x - span)):int(min(Wd, x + span))].sum(axis=1)
+    nx = int(max(0, x - win)) + int(np.argmax(pv)) if pv.max() > 10 else x
+    ny = int(max(0, y - win)) + int(np.argmax(ph)) if ph.max() > 10 else y
+    return float(nx), float(ny)
+
+
+def measured(c, masks):
+    """pixel of a control entry: as stored if `norefine`, else refined on the image (new sheets)."""
+    if c.get("norefine") or masks is None:
+        return c["x"], c["y"]
+    if "bc" in c or "bcs" in c:
+        return refine_corner(masks, c["x"], c["y"])
+    return refine_crossing(masks, c["x"], c["y"], c.get("wv", 68.75), c.get("wh", 68.75), sides=tuple(c.get("sides", [None, None])), only=c.get("only"))
+
+
 # ----------------------------------------------------------------------------------------------- fitting
 def apply(M, p):
     p = np.asarray(p, float)
@@ -264,10 +332,12 @@ def georef(key):
         json.dump(out, open(INTERIM / f"{key}.M.json", "w"), indent=1)
         log(key, "registered to", cfg["registered_to"], out["scale"], f"reg {cfg['reg_rms_px']:.2f} px")
         return
+    needs = [c for c in cfg.get("points", []) + [c for b in cfg.get("blocks", []) for c in b["corners"]] if not c.get("norefine")]
+    masks = line_masks(np.asarray(Image.open(img).convert("L"), dtype=np.float32)) if needs else None
     allpx, allw, alllab = [], [], []
     for c in cfg.get("points", []):
         w, lab = world_of(c)
-        allpx.append((c["x"], c["y"])); allw.append(w); alllab.append(lab)
+        allpx.append(measured(c, masks)); allw.append(w); alllab.append(lab)
     lines = []
     for ln in cfg.get("lines", []):
         p0, d = street_line(ln["street"], xing(*ln["near"])[0], ln.get("R", 300))
@@ -277,7 +347,7 @@ def georef(key):
         bpx, bw, bl = [], [], []
         for c in b["corners"]:
             w, lab = world_of(c)
-            bpx.append((c["x"], c["y"])); bw.append(w); bl.append(lab)
+            bpx.append(measured(c, masks)); bw.append(w); bl.append(lab)
         Mb, d = fit(bpx, bw, prior=cfg.get("scale_prior"))
         pa = np.array(bpx)
         rect = b.get("zone_px") or [float(pa[:, 0].min()), float(pa[:, 1].min()), float(pa[:, 0].max()), float(pa[:, 1].max())]
