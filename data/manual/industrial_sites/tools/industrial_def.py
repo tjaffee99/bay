@@ -147,13 +147,13 @@ SITES = [
          "exact", "https://www.contracosta.ca.gov/", "Opened 1992 (county-permitted canyon landfill near Bay Point).",
          "Contra Costa", [osm("5e6f81ab")], date=False),
     site("kaiser_yard3", "Kaiser Richmond Shipyard No. 3 (and No. 4), Point Potrero", "Kaiser Shipyard No. 3",
-         "shipyard", "industrial", 1942, 1946, "exact",
+         "shipyard", "industrial", 1942, 9999, "exact",
          "https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm",
          "Permanent yard with five graving basins built 1942 by Permanente Metals; Yard 4 (small craft) beside it; "
          "the yards closed 1945-46. Point Potrero then Port of Richmond terminals and the Navy's Richmond "
          "(reserve-fleet) annex - industrial ground continues (end = the shipyard). Outline: today's OSM industrial "
          "polygons on Point Potrero.", "Contra Costa",
-         [box(-122.3740, 37.9010, -122.3600, 37.9150, exclude=("4959cec7",))], date=True, founded=1942),
+         [box(-122.3740, 37.9010, -122.3600, 37.9150, exclude=("4959cec7",))], label_years=(1942, 1946), date=True, founded=1942),
     site("kaiser_yards_1_2", "Kaiser Richmond Shipyards No. 1 and 2", "Kaiser Shipyards 1 & 2", "shipyard",
          "industrial", 1941, 1946, "estimated", W + "Richmond_Shipyards",
          "Yard 1 (Todd-California, from Jan 1941) and Yard 2 (1941) on the Inner Harbor basin; 747 ships in the four "
@@ -193,7 +193,7 @@ SITES = [
          date=True, founded=1907),
     # ------------------------------------------------------------------ Alameda: Port of Oakland & military
     site("oakland_army_base", "Oakland Army Base (Oakland Sub-Port / Army Supply Base / Army Terminal)",
-         "Oakland Army Base", "military", "military", 1941.95, 1999.75, "estimated", W + "Oakland_Army_Base",
+         "Oakland Army Base", "military", "military", 1941.95, 9999, "estimated", W + "Oakland_Army_Base",
          "Construction from Dec 1941 as the Oakland Sub-Port of the SF Port of Embarkation; Oakland Army Base 1944, "
          "Army Terminal 1955; Port of Embarkation HQ from Fort Mason 1964; decommissioned 30 Sep 1999 (BRAC 1995). "
          "Warehouses demolished in waves (Port of Oakland / Oakland Global logistics centre 2010s; Gateway Park "
@@ -201,15 +201,15 @@ SITES = [
          "Alameda",
          [traced((-122.302, 37.805), [(-1950, 550), (-1450, 1250), (-1150, 1750), (-850, 1900), (-500, 2060),
                                       (300, 2150), (650, 2000), (150, 1300), (-300, 650), (-600, 520), (-1300, 470)],
-                 T + "CA_Oakland%20West_293623_1949_24000_geo.tif")], date=True, founded=1941.95),
+                 T + "CA_Oakland%20West_293623_1949_24000_geo.tif")], label_years=(1941.95, 1999.75), date=True, founded=1941.95),
     site("sp_oakland_mole", "Southern Pacific Oakland Mole (Oakland Pier)", "Oakland Mole", "rail_yard", "rail_yard",
-         1882, 1960, "estimated", W + "Oakland_Long_Wharf",
+         1882, 9999, "estimated", W + "Oakland_Long_Wharf",
          "Central Pacific's Oakland Long Wharf (1871) rebuilt 1882 as the rock-fill mole with the Oakland Pier train "
          "and ferry terminal; ferries ended 1958, the mole became the base of the Port's Seventh Street Terminal "
          "(fill 1967-71). Outline: the mole and yards of the 1946-photo Oakland West sheet; the end year marks the "
          "railway use (the ground stays port).", "Alameda",
          [traced((-122.338, 37.812), [(450, -520), (450, -160), (1150, -130), (1700, -120), (1700, -520)],
-                 T + "CA_Oakland%20West_293623_1949_24000_geo.tif")], date=False),
+                 T + "CA_Oakland%20West_293623_1949_24000_geo.tif")], label_years=(1882, 1960), date=False),
     site("sp_west_oakland_yard", "Southern Pacific West Oakland yards and shops (Desert Yard)",
          "West Oakland Rail Yards", "rail_yard", "rail_yard", 1879, 9999, "estimated",
          "https://www.oaklandlocalwiki.org/",
@@ -236,14 +236,14 @@ SITES = [
               note="intermodal / truck yards on former Army Base and SP ground (year estimated)")],
          date=False),
     site("moore_dry_dock", "Moore Dry Dock Co. (Moore & Scott Iron Works), Oakland", "Moore Dry Dock", "shipyard",
-         "industrial", 1909, 1961, "estimated", W + "Moore_Dry_Dock_Company",
+         "industrial", 1909, 9999, "estimated", W + "Moore_Dry_Dock_Company",
          "Moore & Scott bought W. A. Boole & Son's yard at the foot of Adeline St in 1909; Moore Shipbuilding 1917, "
          "Moore Dry Dock 1922; over 100 ships in WWII; closed 1961; site now Schnitzer Steel / Radius Recycling and "
          "the Howard Terminal edge. Outline: the yard's piers and shops on the 1946-photo Oakland West sheet "
          "(read +-40 m); the ground stays industrial after 1961.", "Alameda",
          [traced((-122.302, 37.805), [(500, -1030), (500, -800), (950, -760), (1150, -800), (1350, -900),
                                       (1350, -1050), (900, -1080)], T + "CA_Oakland%20West_293623_1949_24000_geo.tif")],
-         date=False),
+         label_years=(1909, 1961), date=False),
     site("bethlehem_alameda", "Bethlehem Steel Alameda Works shipyard (Union Iron Works Alameda)",
          "Bethlehem Shipyard", "shipyard", "industrial", 1916, 1956, "estimated", W + "Alameda_Works_Shipyard",
          "United Engineering Works yard bought 1916 by Union Iron Works (Bethlehem): the Alameda Works; Bethlehem "
@@ -376,14 +376,14 @@ SITES = [
          [osm("33cd62d9")], date=False),
     # ------------------------------------------------------------------ Marin
     site("marinship", "Marinship (Marin Shipbuilding Co.), Sausalito", "Marinship", "shipyard", "industrial", 1942,
-         1946, "exact", W + "Marinship",
+         9999, "exact", W + "Marinship",
          "Bechtel's Marinship built 93 Liberty ships and tankers, Mar 1942 - Sep 1945 (yard closed 1946); the Army "
          "Corps of Engineers' Bay Model is in its warehouse; the ground stays industrial (boatyards). Outline read on "
          "the San Francisco North 1:24k sheet (1946 photos): ways, outfitting docks, plate shop; NW end estimated "
          "(off the sheet).", "Marin",
          [traced((-122.497, 37.866), [(-700, 700), (-360, 560), (-60, 420), (40, 340), (430, 120), (520, -100),
                                       (330, -260), (100, -190), (-360, 80), (-700, 250)],
-                 T + "CA_San%20Francisco%20North_300059_1947_24000_geo.tif")], date=False),
+                 T + "CA_San%20Francisco%20North_300059_1947_24000_geo.tif")], label_years=(1942, 1946), date=False),
     site("san_rafael_quarry", "San Rafael Rock Quarry (McNear brickyard), Point San Pedro", "San Rafael Rock Quarry",
          "quarry", "quarry_pit", 1929, 9999, "exact", "https://sprcoalition.org/?p=1834",
          "McNear brickyard on Point San Pedro from the late 19th century (1870s-1900, sources differ); hard-rock "
@@ -392,33 +392,33 @@ SITES = [
          "estimated", "https://www.calrecycle.ca.gov/", "Bayside landfill on the Petaluma River marsh; opened "
          "late 1950s (estimated).", "Marin", [osm("249fd95a")], date=False),
     site("fort_baker", "Fort Baker (Lime Point Military Reservation)", "Fort Baker", "military", "military", 1897,
-         2000, "exact", W + "Fort_Baker",
+         9999, "exact", W + "Fort_Baker",
          "Lime Point reservation from 1866; named Fort Baker 1897; the post's barracks, officers' row and parade "
          "ground were built 1901-1910 (Colonial Revival); Army post until 2000 (to the NPS 2002; Cavallo Point "
          "lodge 2008). Outline: hull of the post's buildings.", "Marin",
-         [hull(-122.4775, 37.8355, 380)], date=True, founded=1901),
-    site("fort_barry", "Fort Barry", "Fort Barry", "military", "military", 1904, 1974, "exact",
+         [hull(-122.4775, 37.8355, 380)], label_years=(1897, 2000), date=True, founded=1901),
+    site("fort_barry", "Fort Barry", "Fort Barry", "military", "military", 1904, 9999, "exact",
          W + "Fort_Barry",
          "Named 1904 for the Marin Headlands batteries; the cantonment (barracks, officers' quarters, hospital) was "
          "built 1908-1912; Nike site SF-88 1954-74; to the NPS (GGNRA) 1972-74. Outline: hull of the post's "
-         "buildings.", "Marin", [hull(-122.5245, 37.8295, 420)], date=True, founded=1907),
-    site("fort_cronkhite", "Fort Cronkhite", "Fort Cronkhite", "military", "military", 1937, 1974, "exact",
+         "buildings.", "Marin", [hull(-122.5245, 37.8295, 420)], label_years=(1904, 1974), date=True, founded=1907),
+    site("fort_cronkhite", "Fort Cronkhite", "Fort Cronkhite", "military", "military", 1937, 9999, "exact",
          W + "Fort_Cronkhite",
          "Established 1937; the WWII wooden cantonment (barracks, mess halls) was built 1941; GGNRA since 1974. "
-         "Outline: hull of the post's buildings.", "Marin", [hull(-122.5375, 37.8325, 330)], date=True,
+         "Outline: hull of the post's buildings.", "Marin", [hull(-122.5375, 37.8325, 330)], label_years=(1937, 1974), date=True,
          founded=1941),
     site("fort_mcdowell", "Fort McDowell, Angel Island (East Garrison)", "Fort McDowell", "military", "military",
-         1900, 1946, "exact", W + "Angel_Island_(California)",
+         1900, 9999, "exact", W + "Angel_Island_(California)",
          "Camp Reynolds (West Garrison) 1863; Fort McDowell 1900; the East Garrison's concrete barracks, hospital and "
          "mess hall were built 1910-11 (recruit depot / Discharge Depot); closed 1946; state park since 1954-63. "
-         "Outline: hull of the East Garrison buildings.", "Marin", [hull(-122.4225, 37.8650, 300)], date=True,
+         "Outline: hull of the East Garrison buildings.", "Marin", [hull(-122.4225, 37.8650, 300)], label_years=(1900, 1946), date=True,
          founded=1909),
     site("hamilton_field", "Hamilton Field / Hamilton Air Force Base, Novato", "Hamilton Field", "military",
-         "military", 1932, 1988, "exact", W + "Hamilton_Army_Airfield",
+         "military", 1932, 9999, "exact", W + "Hamilton_Army_Airfield",
          "Construction from 1932 (dedicated May 1935) with Spanish-revival barracks, officers' housing and hangars "
          "(historic district); Hamilton AFB 1947-1974, Army airfield to 1988; housing (Hamilton, Novato) from the "
          "1990s. Outline: hull of the base's buildings (the airfield itself is not drawn here).", "Marin",
-         [hull(-122.5130, 38.0580, 1000, buffer_m=50)], date=True, founded=1932),
+         [hull(-122.5130, 38.0580, 1000, buffer_m=50)], label_years=(1932, 1988), date=True, founded=1932),
     # ------------------------------------------------------------------ Contra Costa quarries
     site("clayton_quarries", "Mitchell Canyon / Clayton quarries (Clayton Quarry, Hanson)", "Clayton Quarries",
          "quarry", "quarry_pit", 1956, 9999, "estimated", W + "Clayton,_California",
