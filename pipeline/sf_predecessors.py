@@ -253,90 +253,97 @@ def apply_sanborn(pred, today, fire, areas):
     t_start = today.start_year.values
     pred_sidx = pred.sindex
     rows, covered = [], []
+
+    def frac_covered(g, F, sidx):
+        tot = 0.0
+        for j in sidx.query(g, predicate="intersects"):
+            tot += g.intersection(F.geometry.values[j]).area
+        return tot / max(g.area, 1e-6)
+
     for area, A in sb.groupby("area"):
         years = sorted(A.map_year.unique())
         cov_file = MANUAL / "sanborn" / f"{area}_coverage.geojson"
+        cov_by_year = {}
         if cov_file.exists():
             cov = gpd.read_file(cov_file).to_crs(UTM)
-            covered.append((shapely.union_all(cov.geometry.values), years[0]))
-        else:
-            covered.append((shapely.union_all(A.geometry.buffer(15).values), years[0]))
-        # chain the same building across consecutive maps
-        A = A.reset_index(drop=True)
-        nxt = {}
-        for y0, y1 in zip(years[:-1], years[1:]):
-            a = A[A.map_year == y0]
-            b_ = A[A.map_year == y1]
-            sidx = b_.sindex
-            for i, g in zip(a.index, a.geometry.values):
-                best, bi = 0.0, None
-                for j in sidx.query(g, predicate="intersects"):
-                    h = b_.geometry.values[j]
-                    iou = g.intersection(h).area / max(g.union(h).area, 1e-6)
-                    if iou > best:
-                        best, bi = iou, b_.index[j]
-                if best >= 0.5:
-                    nxt[i] = bi
-        has_prev = set(nxt.values())
-        for i in A.index:
-            if i in has_prev:
-                continue  # part of a chain started on an earlier map
-            chain = [i]
-            while chain[-1] in nxt:
-                chain.append(nxt[chain[-1]])
-            first, last = A.loc[chain[0]], A.loc[chain[-1]]
-            g = first.geometry
-            key = f"{area}:{chain[0]}"
-            hk = h01(key)
-            fy, ly = first.map_year, last.map_year
-            # today's building on the spot
-            cand = today_sidx.query(g, predicate="intersects")
-            same, later = None, []
-            for j in cand:
-                tg = today.geometry.values[j]
-                inter = g.intersection(tg).area
-                iou = inter / max(g.union(tg).area, 1e-6)
-                if iou >= 0.5 and t_start[j] <= ly + 2:
-                    same = j
-                elif inter > 0.2 * g.area and t_start[j] > fy:
-                    later.append(t_start[j])
-            if same is not None:
-                continue  # the building still stands: the modern data has it
-            # start
-            if fy == years[0]:
-                near = pred_sidx.query(g.buffer(25), predicate="intersects")
-                st = [pred.start_year.values[j] for j in near if pred.start_year.values[j] < fy]
-                start = float(np.median(st)) + 2 * (hk - 0.5) if st else fy - 6 - 6 * hk
-                start = min(start, fy - 0.5)
-            else:
-                prev_y = years[years.index(fy) - 1]
-                start = prev_y + (fy - prev_y) * (0.2 + 0.7 * hk)
-            # end
-            if ly != years[-1]:
-                ny = years[years.index(ly) + 1]
-                if ly < 1906.29 < ny and g.centroid.within(burned_zone):
-                    end = 1906.29
+            if "map_year" in cov:
+                for y, cg in cov.groupby("map_year"):
+                    cov_by_year[float(y)] = shapely.union_all(cg.geometry.values)
+        for y in years:
+            if y not in cov_by_year:  # no sheet outlines: the traced buildings' surroundings
+                cov_by_year[y] = shapely.union_all(A[A.map_year == y].geometry.buffer(20).values)
+        covered.append((shapely.union_all(list(cov_by_year.values())), years[0]))
+        maps = {y: A[A.map_year == y].reset_index(drop=True) for y in years}
+        sidx = {y: maps[y].sindex for y in years}
+        # Tracings of the same street differ between map years (row houses drawn merged
+        # on one map, separate on the other), so buildings are matched by area: a
+        # footprint is still there on another map when that map's footprints cover most
+        # of it. Each structure is emitted once, with its latest outline, and starts on
+        # the first map in an unbroken run of maps that show it.
+        for k, y in enumerate(years):
+            M = maps[y]
+            for i, g in enumerate(M.geometry.values):
+                c = g.representative_point()
+                if k + 1 < len(years):
+                    y2 = years[k + 1]
+                    if c.within(cov_by_year[y2]) and frac_covered(g, maps[y2], sidx[y2]) >= 0.4:
+                        continue  # still there on the next map: that outline represents it
+                first = y
+                for kk in range(k - 1, -1, -1):
+                    yp = years[kk]
+                    if c.within(cov_by_year[yp]) and frac_covered(g, maps[yp], sidx[yp]) >= 0.4:
+                        first = yp
+                    else:
+                        break
+                kf = years.index(first)
+                prev_cov = kf > 0 and c.within(cov_by_year[years[kf - 1]])
+                key = f"{area}:{int(y)}:{i}"
+                hk = h01(key)
+                # today's building on the spot
+                same, later = False, []
+                for j in today_sidx.query(g, predicate="intersects"):
+                    tg = today.geometry.values[j]
+                    inter = g.intersection(tg).area
+                    iou = inter / max(g.union(tg).area, 1e-6)
+                    if (iou >= 0.5 or inter >= 0.7 * g.area) and t_start[j] <= y + 2:
+                        same = True
+                    elif inter > 0.2 * g.area and t_start[j] > first:
+                        later.append(t_start[j])
+                if same:
+                    continue  # still standing: the modern data has it
+                if prev_cov:
+                    yp = years[kf - 1]
+                    start = yp + (first - yp) * (0.2 + 0.7 * hk)
                 else:
-                    end = ly + (ny - ly) * (0.25 + 0.6 * h01(key, "e"))
-            else:
-                ends = [x - 0.3 for x in later if x > ly]
-                c = g.centroid
-                for poly, cs, ce, _fab, _aid in areas:
-                    if c.within(poly) and cs > ly:
-                        ends.append(cs + (ce - cs) * h01(key, "c"))
-                end = min(ends) if ends else max(ly + 15, 1960.0)
-            if end <= start + 0.5:
-                continue
-            stories = float(first.stories) if pd.notna(first.stories) and first.stories > 0 else 2.0
-            use = str(first.use or "")
-            storey_h = 4.5 if use in ("warehouse", "factory", "rail") else 3.6
-            height = stories * storey_h + (1.6 if bool(first.get("half_storey", False)) else 0) + (1.2 if use in ("dwelling", "flats") else 0.6)
-            mat = str(first.material or "")
-            rows.append({"geometry": g, "start_year": float(start), "end_year": float(end), "height": height,
-                         "stories": stories, "kind": "building", "source": f"sanborn_{area}",
-                         "mapblklot": key, "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),
-                         "use_sanborn": use, "year_confidence": "estimated",
-                         "year_reason": f"sanborn_{int(fy)}_{int(ly)}"})
+                    near = pred_sidx.query(g.buffer(25), predicate="intersects")
+                    st = [pred.start_year.values[j] for j in near if pred.start_year.values[j] < first]
+                    start = float(np.median(st)) + 2 * (hk - 0.5) if st else first - 6 - 6 * hk
+                    start = min(start, first - 0.5)
+                if k + 1 < len(years) and c.within(cov_by_year[years[k + 1]]):
+                    ny = years[k + 1]  # gone by the next map
+                    if y < 1906.29 < ny and c.within(burned_zone):
+                        end = 1906.29
+                    else:
+                        end = y + (ny - y) * (0.25 + 0.6 * h01(key, "e"))
+                else:
+                    ends = [x - 0.3 for x in later if x > y]
+                    for poly, cs, ce, _fab, _aid in areas:
+                        if c.within(poly) and cs > y:
+                            ends.append(cs + (ce - cs) * h01(key, "c"))
+                    end = min(ends) if ends else max(y + 15, 1960.0)
+                if end <= start + 0.5:
+                    continue
+                r = M.iloc[i]
+                stories = float(r.stories) if pd.notna(r.stories) and r.stories > 0 else 2.0
+                use = str(r["use"] or "")
+                storey_h = 4.5 if use in ("warehouse", "factory", "rail") else 3.6
+                height = stories * storey_h + (1.6 if bool(r.get("half_storey", False)) else 0) + (1.2 if use in ("dwelling", "flats") else 0.6)
+                mat = str(r.material or "")
+                rows.append({"geometry": g, "start_year": float(start), "end_year": float(end), "height": height,
+                             "stories": stories, "kind": "building", "source": f"sanborn_{area}",
+                             "mapblklot": key, "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),
+                             "use_sanborn": use, "year_confidence": "estimated",
+                             "year_reason": f"sanborn_{int(first)}_{int(y)}"})
     new = gpd.GeoDataFrame(rows, crs=UTM)
     # the generated fabric gives way inside the mapped blocks (what vanished before the first map stays)
     c = pred.geometry.representative_point()

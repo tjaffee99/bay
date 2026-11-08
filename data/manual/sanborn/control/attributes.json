@@ -827,5 +827,93 @@
 "stories": 1,
 "use": "rail",
 "name": "Southern Pacific roundhouse (brick; closed 1960)"
+},
+"008_0074_f54": {
+"stories": 2,
+"use": "dwelling",
+"name": "flats and dwelling"
+},
+"008_0074_f179": {
+"stories": 1,
+"use": "other",
+"name": "Geo. W. Lucy (drying)"
+},
+"008_0074_f296": {
+"stories": 1,
+"use": "store",
+"name": "saloon & billiards, bowling alleys (North Beach bathing)"
+},
+"008_0088_f50": {
+"stories": 2,
+"use": "dwelling",
+"name": "flats"
+},
+"008_0088_f118": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings"
+},
+"008_0088_f136": {
+"stories": 1,
+"use": "dwelling",
+"name": "dwellings (1-1.5 storeys)"
+},
+"008_0088_f215": {
+"stories": 2,
+"use": "dwelling",
+"name": "store / saloon and dwellings"
+},
+"008_0088_f262": {
+"stories": 2,
+"use": "dwelling",
+"name": "dwellings"
+},
+"008_0088_f357": {
+"stories": 1,
+"use": "dwelling",
+"name": "dwelling and shed"
+},
+"008_0093_b2": {
+"stories": 1,
+"use": "factory",
+"name": "Equitable Gaslight Co. works (purifier house, retort house)",
+"src": "default"
+},
+"008_0111_f112": {
+"stories": 1,
+"use": "other",
+"name": "Black Point pump house of the Spring Valley Water Works"
+},
+"008_0111_f286": {
+"stories": 3,
+"use": "other",
+"name": "vacant building"
+},
+"008_0111_f516": {
+"stories": 2,
+"use": "warehouse",
+"name": "D. Ghirardelli Co.'s Chocolate Works - warehouse",
+"src": "default"
+},
+"008_0111_b3": {
+"stories": 4,
+"use": "warehouse",
+"name": "Fontana & Co. factory (San Francisco Woolen Factory) - canned fruit warehouse, box storage"
+},
+"008_0111_b15": {
+"stories": 3,
+"use": "factory",
+"name": "San Francisco Woolen Factory (Fontana & Co.), partly vacant",
+"src": "default"
+},
+"008_0111_b37": {
+"stories": 3,
+"use": "factory",
+"name": "D. Ghirardelli Co.'s Chocolate Works"
+},
+"008_0111_f252": {
+"stories": 4,
+"use": "warehouse",
+"name": "vacant 4-storey building with wooden posts (woolen mill block)"
 }
 }
