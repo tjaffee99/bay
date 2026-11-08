@@ -407,6 +407,8 @@ def detect_symbols(img, g, debug=None):
         r = shp.get(i)
         if r is not None and r["shape_ok"]:
             continue
+        if r is not None and r["solidity"] >= 0.7 and max(r["w"], r["h"]) < 1.2 * ppm:
+            continue                          # merged pair of symbols, a long barn
         if st[i, 2] > 6 * ppm or st[i, 3] > 6 * ppm:
             continue                          # town blocks, long heavy lines
         glyph_mass[i] = True
