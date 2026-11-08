@@ -274,7 +274,33 @@ def emeryville():
                    f"{note}; outline hand-traced, height ESTIMATE", src=SB50_3)
 
 
+# =====================================================================================
+# Downtown Oakland: the Trans Pacific Centre blocks (9th - 11th St, Broadway - Webster), cleared 1978-82
+# (data/manual/redevelopment_areas.csv rows oak_trans_pacific_*, oak_chinatown_franklin_webster_9th_11th)
+# =====================================================================================
+def oakland_trans_pacific():
+    S = Site("oakland_trans_pacific_lots", "Trans Pacific Centre site (redevelopment land, 9th - 11th St)", "redevelopment_lot",
+             -122.2722, 37.8015, "https://ceqanet.lci.ca.gov/1981120809")
+    B9, B10, B11 = (-122.2733460, 37.8008799), (-122.2729201, 37.8015670), (-122.2724916, 37.8022601)
+    F9, F10, F11 = (-122.2721278, 37.8004082), (-122.2717001, 37.8010914), (-122.2712690, 37.8017802)
+    W9, W11 = (-122.2709537, 37.7999454), (-122.2700900, 37.8013174)
+    blk = lambda pts: S.loc(Polygon(pts)).buffer(-8, join_style=2)      # centreline ring -> block (half street widths)
+    ev = ("1950 Sanborn (vol. 2 sheets 150/151): fully built; USGS Oakland West photorevision 1980 (1979 photos): the 10th-11th St "
+          "block untinted (cleared after the T & D Theatre was razed in 1978), the others still built up; Trans Pacific Center phase II "
+          "Draft EIR (Feb 1982): 'three of a four-block square site'. Surface use while vacant ESTIMATED as parking (in 2000 the "
+          "redevelopment agency bought back 135 public parking spaces when it sold the Franklin St lot, GlobeSt 30 Aug 2000)")
+    for pts, y0, y1, label in [([B10, B11, F11, F10], 1978.9, 1981.5, "10th-11th St block (Trans Pacific Centre phase I, 1982)"),
+                               ([B9, B10, F10, F9], 1982.0, 2001.0, "9th-10th St block (Courtyard by Marriott 2002, Franklin 88 2004)"),
+                               ([F9, F11, W11, W9], 1982.0, 1990.0, "Franklin-Webster double block (EBMUD 1991, Pacific Renaissance Plaza 1993)")]:
+        g = blk(pts)
+        S.part(g, "parking", y0, y1, "estimated", f"{label}: cleared redevelopment land, vacant / surface parking; {ev}; end = start of "
+               "the buildings standing there today (ESTIMATE)", surface="vacant lot / surface parking", name=f"Trans Pacific Centre site: {label}")
+        S.part(g, "urban", y1, 9999, "estimated", f"{label}: city ground again from the construction of today's buildings", surface="city block",
+               name=f"Trans Pacific Centre site: {label}")
+
+
 def build():
     idora_park()
     alameda_baths()
     emeryville()
+    oakland_trans_pacific()
