@@ -71,6 +71,24 @@ def main():
         dev_lo[new] = prev
         prev = year
     built = np.isfinite(dev_hi)
+    # Within a snapshot period, development spread outward from the previous built-up
+    # edge and went up a block at a time: lot year = growth front (distance from the
+    # earlier extent) blended with a per-block year, plus a little per-lot spread.
+    front = np.full(len(lots), 0.5)
+    prev_union = None
+    for f in files:
+        year = float(f.split("_")[-1].split(".")[0])
+        rings = intersection_rings(f, crs=UTM)
+        cur = shapely.union_all(list(rings.values())) if rings else None
+        sel = np.isfinite(dev_hi) & (dev_hi == year)
+        if prev_union is not None and sel.any():
+            dist = np.array([prev_union.distance(p) for p in cent.values[sel]])
+            front[sel] = dist / max(np.percentile(dist, 95), 1.0)
+        if cur is not None:
+            prev_union = cur if prev_union is None else shapely.union_all([prev_union, cur])
+    block = lots.mapblklot.astype(str).str[:4].values
+    blk_h = np.array([h01(b_, "blk") for b_ in block])
+    lot_t = np.clip(0.6 * np.clip(front, 0, 1) + 0.4 * blk_h, 0, 1)
     log(f"predecessors: {built.sum()} of {len(lots)} lots inside a pre-1906 extent")
 
     # today's buildings on each lot (earliest start)
@@ -112,7 +130,8 @@ def main():
     for i in np.nonzero(built)[0]:
         key = str(lots.mapblklot.iloc[i])
         h = h01(key)
-        dev = dev_lo[i] + (dev_hi[i] - dev_lo[i]) * h
+        dev = dev_lo[i] + (dev_hi[i] - dev_lo[i]) * lot_t[i] + 1.5 * (h - 0.5)
+        dev = float(np.clip(dev, dev_lo[i], dev_hi[i]))
         if dev < no_build_until[i]:
             continue  # a cemetery until then; today's buildings came after
         m = mod[i]

@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads dev build deploy shots clean-interim
+.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads transit ground-detail dev build deploy shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -12,7 +12,7 @@ setup:
 	cd viewer && npm install
 
 # ---- San Francisco ---------------------------------------------------------
-sf: download land fire overture join buildings predecessors export trees ground roads
+sf: download land fire overture join buildings predecessors export trees ground transit roads ground-detail
 
 download:
 	$(P) ../$(PY) download_sf.py
@@ -46,10 +46,20 @@ trees: buildings
 ground: download overture
 	$(P) ../$(PY) ground.py
 
+# BART + Muni: tracks (Overture rail), stations, service lines for the trains
+# (BART GTFS, SFMTA patterns/stops from DataSF); roads.py hands those lines over to it
+transit: overture grid
+	$(P) ../$(PY) transit.py
+
 # streets (DataSF centerlines dated by the extent snapshots / first buildings),
 # region roads (Overture), historic routes (data/manual/routes.csv)
-roads: download overture grid
+roads: download overture grid transit
 	$(P) ../$(PY) roads.py
+
+# golf fairways / greens / bunkers, pitches, tracks, playgrounds, gardens (Overture
+# land_use outlines draped on the terrain) + park labels
+ground-detail: export
+	$(P) ../$(PY) ground_detail.py
 
 # ---- terrain: elevation + time-varying land cover tiles (whole Bay Area) -----
 terrain: baylands grid tiles

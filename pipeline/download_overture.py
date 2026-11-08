@@ -103,7 +103,32 @@ def freeways():
     log(f"overture freeways: {n} segments -> {out}")
 
 
+def rail():
+    """Rail segments (subway = BART, light_rail = Muni Metro / VTA, tram = F line and
+    cable cars, standard_gauge …) with rail_flags (is_bridge / is_tunnel) and level_rules:
+    the real track geometry for transit.py."""
+    out = RAW / "overture" / RELEASE / "rail.parquet"
+    if out.exists():
+        log("overture rail: cached")
+        return
+    con = duckdb.connect()
+    con.execute("INSTALL httpfs; LOAD httpfs; INSTALL spatial; LOAD spatial;")
+    con.execute("CREATE OR REPLACE SECRET overture (TYPE s3, PROVIDER config, KEY_ID '', SECRET '', REGION 'us-west-2');")
+    xmin, ymin, xmax, ymax = REGION_BBOX
+    src = f"s3://overturemaps-us-west-2/release/{RELEASE}/theme=transportation/type=segment/*"
+    con.execute(f"""
+    COPY (
+      SELECT id, class, subclass, names.primary AS name, rail_flags, level_rules, connectors, geometry
+      FROM read_parquet('{src}', hive_partitioning=1)
+      WHERE bbox.xmin < {xmax} AND bbox.xmax > {xmin} AND bbox.ymin < {ymax} AND bbox.ymax > {ymin}
+        AND subtype = 'rail'
+    ) TO '{out}' (FORMAT parquet);""")
+    n = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
+    log(f"overture rail: {n} segments -> {out}")
+
+
 if __name__ == "__main__":
     main()
     base_theme()
     freeways()
+    rail()

@@ -13,7 +13,9 @@ import type {Layer, PickingInfo} from '@deck.gl/core';
 import {WATER} from './palette';
 import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/terrain';
 import {loadElevation} from './layers/elevation';
-import {labelLayers, labelZoomKey, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
+import {addStationLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
+import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
+import {groundDetailLayers, loadGroundDetail} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
@@ -63,13 +65,43 @@ const map = new maplibregl.Map({
 installCameraControls(map);
 setTerrainChangeCallback(() => render());
 
-const lighting = new LightingEffect({
-  ambient: new AmbientLight({color: [255, 250, 242], intensity: 1.0}),
-  // late-afternoon sun from the south-west
-  sun: new DirectionalLight({color: [255, 238, 214], intensity: 1.25, direction: [1.2, 1.6, -1.3]}),
-  // cool skylight fill from the north-east so shaded walls aren't flat grey
-  sky: new DirectionalLight({color: [200, 215, 255], intensity: 0.35, direction: [-1, -1.2, -0.6]})
-});
+// Sun from the south-west (late afternoon) + a cool sky ambient. Close in, the sun
+// casts shadows (deck's shadow map: one extra depth pass of the shadow-casting layers),
+// which is most of what makes a satellite view read as 3D; far out they would be
+// sub-pixel, so the cheaper unshadowed effect is used there. ?noshadow turns them off.
+const SUN = {color: [255, 238, 214] as [number, number, number], intensity: 1.3, direction: [1.2, 1.6, -1.3] as [number, number, number]};
+const AMBIENT = {color: [242, 244, 250] as [number, number, number], intensity: 1.1};
+const NO_SHADOW = new URLSearchParams(location.search).has('noshadow');
+/** LightingEffect that re-renders its shadow map only when the view or the layers'
+ *  data / year changed — not on the ~30 fps redraws that only move traffic and
+ *  trains (which cast no shadows). */
+const dataIds = new WeakMap<object, number>();
+let nextDataId = 1;
+const idOf = (o: any) => {
+  if (!o || typeof o !== 'object') return String(o);
+  let k = dataIds.get(o);
+  if (!k) dataIds.set(o, (k = nextDataId++));
+  return k;
+};
+class CachedShadowLighting extends LightingEffect {
+  private shadowKey = '';
+  preRender(opts: any) {
+    const vp = opts.viewports?.[0];
+    let key = vp ? `${vp.width}x${vp.height}|${Array.from(vp.viewProjectionMatrix as number[], v => v.toPrecision(7)).join(',')}` : '';
+    for (const l of opts.layers ?? []) {
+      if (l.props.shadowEnabled === false || !l.props.visible) continue;
+      key += `|${l.id}:${idOf(l.props.data)}:${l.props.year ?? l.props.currentYear ?? ''}:${idOf(l.props.merged)}`;
+    }
+    if (key && key === this.shadowKey) return;
+    this.shadowKey = key;
+    super.preRender(opts);
+  }
+}
+const lighting = new LightingEffect({ambient: new AmbientLight(AMBIENT), sun: new DirectionalLight(SUN)});
+const shadowLighting = new CachedShadowLighting({ambient: new AmbientLight(AMBIENT), sun: new DirectionalLight({...SUN, _shadow: true})});
+shadowLighting.shadowColor = [0.07, 0.09, 0.15, 0.45];
+const SHADOW_ZOOM = 13.5;
+const wantShadow = (z: number) => !NO_SHADOW && z >= SHADOW_ZOOM;
 
 const overlay = new MapboxOverlay({
   interleaved: false,
@@ -87,6 +119,14 @@ const overlay = new MapboxOverlay({
   deviceProps: {powerPreference: 'high-performance', webgl: {antialias: true}}
 } as any);
 map.addControl(overlay as any);
+let shadowsOn = false;
+function setShadows(z: number) {
+  const on = wantShadow(z);
+  if (on === shadowsOn) return;
+  shadowsOn = on;
+  overlay.setProps({effects: [on ? shadowLighting : lighting]});
+}
+setShadows(map.getZoom());
 map.on('click', e => {
   const info = overlay.pickObject({x: e.point.x, y: e.point.y, radius: 3});
   showInfo((info ?? {picked: false, index: -1}) as PickingInfo);
@@ -99,12 +139,14 @@ function render() {
   const layers: Layer[] = [];
   const zoom = map.getZoom();
   layers.push(...(terrainLayer(state.year, REGION, zoom) as any[]));
+  layers.push(...groundDetailLayers(state.year, zoom));
   const b = map.getBounds();
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   layers.push(...trafficLayers(state.year, zoom));
+  layers.push(...transitLayers(state.year, zoom));
   layers.push(...(labelLayers(state.year, zoom) as any));
   overlay.setProps({layers});
   updateOverlays();
@@ -296,20 +338,30 @@ let zoomKey = '';
 map.on('zoom', () => {
   const z = map.getZoom();
   const lod = treeLod(z);
-  const key = `${labelZoomKey(z)}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}`;
+  const key = `${labelZoomKey(z)}|${z >= 12.5}|${z > 15.5}|${lod.low}|${lod.keep}|${wantShadow(z)}`;
   if (key === zoomKey || state.playing) return;
   zoomKey = key;
+  setShadows(z);
   render();
 });
 
-// traffic moves on the GPU: just ask for a redraw (~30 fps) when it is visible
+// traffic and trains move on the GPU: just ask for a redraw when they are visible —
+// ~30 fps close in; trains seen from far away move under a pixel a second, so less often
 let lastTraffic = 0;
+let lastTrain = 0;
 function trafficLoop(t: number) {
   requestAnimationFrame(trafficLoop);
-  if (!hasTraffic() || map.getZoom() < 12.5 || document.hidden) return;
-  if (t - lastTraffic < 33) return;
-  lastTraffic = t;
-  tickTraffic();
+  const z = map.getZoom();
+  if (document.hidden || z < 11.5) return;
+  if (hasTraffic() && z >= 12.5 && t - lastTraffic >= 33) {
+    lastTraffic = t;
+    tickTraffic();
+  }
+  const trainEvery = z >= 14 ? 33 : z >= 13 ? 100 : 250;
+  if (hasTransit() && t - lastTrain >= trainEvery) {
+    lastTrain = t;
+    tickTransit();
+  }
 }
 if (!new URLSearchParams(location.search).has('notraffic')) requestAnimationFrame(trafficLoop);
 
@@ -324,10 +376,14 @@ const loading = $('loading');
 async function boot() {
   render();
   loadPlaces();
-  const elevP = Promise.all([loadElevation(), document.fonts.ready]).then(() => {
+  const transitP = loadTransit().then(() => addStationLabels(stations));
+  const elevP = Promise.all([loadElevation(), document.fonts.ready, loadParkLabels(), transitP]).then(() => {
     placeLabelsOnTerrain();
     render();
   });
+  const groundP = loadGroundDetail()
+    .then(render)
+    .catch(e => console.warn('ground detail', e));
   // landmark meshes are merged with their ground elevation baked in: after elevation
   const lmP = elevP
     .then(() => loadLandmarks())
@@ -352,7 +408,7 @@ async function boot() {
     buildings = await loadBuildings(f => (loading.textContent = `Loading San Francisco… ${Math.round(f * 100)}%`));
   }
   render();
-  await Promise.all([lmP, treeP, roadP]);
+  await Promise.all([lmP, treeP, roadP, groundP]);
   if (buildings && landmarks) {
     buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count);
     render();

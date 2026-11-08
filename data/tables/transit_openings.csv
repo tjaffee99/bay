@@ -1,0 +1,19 @@
+route_id,opened,note,source
+bart_fremont_macarthur,1972-09-11,first BART service,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_macarthur_richmond,1973-01-29,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_macarthur_concord,1973-05-21,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_montgomery_daly_city,1973-11-05,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_transbay,1974-09-16,Transbay Tube revenue service,https://en.wikipedia.org/wiki/Transbay_Tube
+bart_north_concord,1995-12-16,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_colma,1996-02-24,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_pittsburg,1996-12-07,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_dublin,1997-05-10,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_sfo,2003-06-22,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart_oak_connector,2014-11-22,cable-hauled people mover,https://en.wikipedia.org/wiki/Oakland_Airport_Connector
+bart_warm_springs,2017-03-25,,https://en.wikipedia.org/wiki/Warm_Springs/South_Fremont_station
+bart_ebart,2018-05-26,DMU,https://en.wikipedia.org/wiki/EBART
+bart_berryessa,2020-06-13,,https://en.wikipedia.org/wiki/Berryessa/North_San_Jos%C3%A9_station
+muni_metro_extension,1998-01-10,E shuttle Jan-Aug 1998; N Judah extended 1998-08-22,https://en.wikipedia.org/wiki/N_Judah
+muni_t_third,2007-04-07,limited service from 2007-01-13,https://en.wikipedia.org/wiki/T_Third_Street
+muni_central_subway,2022-11-19,weekend service; daily from 2023-01-07,https://en.wikipedia.org/wiki/Central_Subway
+sc_j_church,1991-07-01,J extension Church & 30th - Balboa Park (San Jose Ave): year researched; day estimated (mid-year),https://en.wikipedia.org/wiki/J_Church

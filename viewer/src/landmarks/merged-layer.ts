@@ -52,6 +52,8 @@ void main(void) {
   picking_setPickingColor(pickingColors);
   vec4 commonPos;
   gl_Position = project_position_to_clipspace(p, vec3(0.0), vec3(0.0), commonPos);
+  geometry.position = commonPos;
+  DECKGL_FILTER_GL_POSITION(gl_Position, geometry);
   if (!vis) gl_Position = vec4(0.0);
   vCommon = commonPos.xyz;
   vCamera = project.cameraPosition;
@@ -70,7 +72,8 @@ out vec4 fragColor;
 void main(void) {
   vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   // screen-space derivatives give a normal that always faces the camera (as in deck's SimpleMeshLayer)
-  fragColor = picking_filterColor(vec4(lighting_getLightColor(vColor, vCamera, vCommon, n), 1.0));
+  fragColor = vec4(lighting_getLightColor(vColor, vCamera, vCommon, n), 1.0);
+  DECKGL_FILTER_COLOR(fragColor, geometry);
 }
 `;
 

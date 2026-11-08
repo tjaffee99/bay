@@ -118,6 +118,22 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 ### `overture_freeways` — Overture transportation segments (motorway, trunk, links)
 - `theme=transportation/type=segment`, class motorway/trunk incl. `subclass = link`, with `road_flags` (is_bridge / is_tunnel), `level_rules` and `connectors` — ODbL 1.0, © OpenStreetMap contributors, Overture Maps Foundation. Use: freeway and ramp geometry and heights (`freeways.bin.gz`).
 
+### `overture_rail` — Overture transportation segments (rail)
+- `theme=transportation/type=segment`, `subtype = rail` (subway = BART, light_rail = Muni Metro, tram = F line / cable cars …) with `rail_flags` (is_bridge / is_tunnel / is_abandoned …) and `level_rules` — ODbL 1.0, © OpenStreetMap contributors, Overture Maps Foundation. Use: per-track BART and Muni geometry, aerial structures and tunnels (`transit.bin.gz`), and the track spacing trains follow.
+
+### `bart_gtfs` — BART GTFS feed
+- https://www.bart.gov/dev/schedules/google_transit.zip (BART developer licence; schedule data free to use with attribution). Use: line shapes, station positions and stop order (`transit-lines.json`, `transit-stations.json`). Trains are procedural (headway, speed profile), not the timetable.
+
+### `sfmta_patterns`, `sfmta_stops` — SFMTA route patterns and stops (DataSF)
+- https://data.sfgov.org/resource/9exe-acju (Muni route patterns), https://data.sfgov.org/resource/i28k-bkz6 (Muni stops) — PDDL. Use: Muni Metro J/K/L/M/N/T, F line and cable car centrelines and stops (`transit-lines.json`).
+
+### Transit dates
+- `data/tables/transit_stations.csv` (every BART and Muni Metro subway station with opening day) and `data/tables/transit_openings.csv` (opening day of each BART extension and Muni Metro segment) — Wikipedia "List of Bay Area Rapid Transit stations", station articles, "Muni Metro", "T Third Street", "Central Subway", "Oakland Airport Connector", "eBART"; source URL per row. Before 1980 Muni's streetcar and cable car history stays in `data/manual/routes.csv`.
+- Vehicle dimensions (BART 70–75 ft × 10.5 ft cars; Muni LRVs 75 ft × 9 ft; PCC 50 ft; Powell cable cars 27.5 ft) from the vehicles' Wikipedia articles. Liveries are approximate (`procedural`).
+
+### `overture_land_use` detail — golf, sport and park outlines
+- `theme=base/type=land_use`, classes fairway, green, tee, rough, bunker, driving_range, pitch, track, playground, dog_park, plaza, garden, grass — ODbL 1.0 (OpenStreetMap). Use: `ground-detail.bin.gz` (dated by golf course / RPD park / first buildings nearby) and park labels (DataSF RPD parks, `parks.csv`).
+
 ### `land_not_before` (manual)
 - File: `data/manual/land_not_before.geojson`
 - Treasure Island: built 1936–37 on the Yerba Buena Shoals for the 1939 Golden Gate International Exposition — https://en.wikipedia.org/wiki/Treasure_Island,_San_Francisco . Outline from TIGER.

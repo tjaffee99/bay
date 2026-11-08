@@ -100,15 +100,31 @@ def nearest_fill(a, valid):
 
 
 def sf_building_years(g):
-    b = gpd.read_parquet(INTERIM / "sf_buildings.parquet").to_crs(3857)
-    b = b.sort_values("start_year", ascending=False)  # earliest painted last -> wins
-    shapes = [(geom, float(y)) for geom, y in zip(b.geometry, b.start_year)]
-    yr = rasterize_on(g, shapes)
-    # spread to the street/yard cells around buildings (urban fabric), earliest neighbour
-    filled = np.isfinite(yr)
-    tmp = np.where(filled, yr, 9999.0)
-    tmp = ndimage.minimum_filter(tmp, size=3)
-    out = np.where(filled, yr, np.where(tmp < 9999, tmp, np.nan))
+    """Year each SF cell becomes city ground: when the 2nd building within ~45 m of it
+    stands (today's buildings and the vanished ones: pre-1906 city, replaced houses,
+    documented early structures). A neighbourhood's ground fills in with its houses
+    instead of appearing as a bare street grid years ahead of them."""
+    from scipy.spatial import cKDTree
+    frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "geometry"]]]
+    pred = INTERIM / "sf_predecessors.parquet"
+    if pred.exists():
+        frames.append(gpd.read_parquet(pred)[["start_year", "geometry"]])
+    b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), geometry="geometry", crs=4326).to_crs(3857)
+    c = b.geometry.representative_point()
+    tree = cKDTree(np.column_stack([c.x.values, c.y.values]))
+    yrs = b.start_year.values.astype(np.float32)
+    X = g["X0"] + np.arange(g["cols"]) * g["res"]
+    Y = g["Y0"] - np.arange(g["rows"]) * g["res"]
+    out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
+    # ground metres per mercator metre at SF's latitude ~0.79: 45 m ground ~ 57 merc
+    for r0 in range(0, g["rows"], 256):
+        rr = np.arange(r0, min(r0 + 256, g["rows"]))
+        xx, yy = np.meshgrid(X, Y[rr])
+        d, idx = tree.query(np.column_stack([xx.ravel(), yy.ravel()]), k=6, distance_upper_bound=57.0)
+        ny = np.where(np.isfinite(d), yrs[np.minimum(idx, len(yrs) - 1)], np.inf)
+        ny.sort(axis=1)
+        second = np.where(np.isfinite(ny[:, 1]), ny[:, 1], np.nan)
+        out[rr, :] = second.reshape(len(rr), -1)
     return out
 
 
@@ -253,9 +269,14 @@ def histories(name, g, d):
     lc_rows = polygon_table(TABLES / "landcover_history.csv", g)
     # researched open spaces inside the city (parade grounds, plazas...) override the
     # built-up snapshot outlines: their own rows say when they were grass / paved / lawn
+    # (only dated open-space rows, and natural rows sharing an outline with one — the
+    # natural grassland outlines of Bernal / Potrero / Twin Peaks must not block the city)
     open_override = np.zeros((rows, cols), bool)
+    open_kinds = ("grassland", "park", "lawn", "paved", "lake")
+    era_rings = {str(r.ring) for r, _ in lc_rows if str(r.get("region", "")) == "San Francisco"
+                 and str(r.cover).strip() in open_kinds and pd.to_numeric(r.year_start, errors="coerce") > 1800}
     for r, poly in lc_rows:
-        if str(r.get("region", "")) == "San Francisco" and str(r.cover).strip() in ("grassland", "park", "lawn", "paved", "lake"):
+        if str(r.get("region", "")) == "San Francisco" and str(r.cover).strip() in open_kinds and str(r.ring) in era_rings:
             open_override |= raster_mask(g, poly)
     for r, poly in lc_rows:
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
@@ -305,7 +326,7 @@ def histories(name, g, d):
         # open space, not city fabric
         green_now = np.isin(wc, [10, 30]) & ~np.isfinite(sfy)
         ext_green_y = np.where(has_ext & green_now, ext_y, np.nan)
-        urban_y = np.where(has_ext & ~green_now & (np.isnan(urban_y) | (ext_y < urban_y)), ext_y, urban_y)
+        urban_y = np.where(has_ext & ~green_now & np.isnan(urban_y), ext_y, urban_y)
     else:
         ext_green_y = np.full((rows, cols), np.nan, np.float32)
         sfy = np.full((rows, cols), np.nan, np.float32)

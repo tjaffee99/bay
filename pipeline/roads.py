@@ -42,6 +42,8 @@ K_STREET, K_MAJOR, K_FREEWAY, K_HIGHWAY, K_CABLE, K_STREETCAR, K_RAIL, K_KEY, K_
 MODE_KIND = {"freeway": K_FREEWAY, "highway": K_HIGHWAY, "cable_car": K_CABLE, "streetcar": K_STREETCAR,
              "horsecar": K_STREETCAR, "steam_railroad": K_RAIL, "interurban": K_RAIL, "key_system": K_KEY,
              "bart": K_BART, "ferry": K_FERRY, "light_rail": K_LIGHTRAIL}
+# BART and today's Muni lines come from transit.py (transit.bin.gz) when it has run
+TRANSIT_TAKES_OVER = True
 # routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
 LANDMARK_ROUTES = {"fwy_embarcadero"}
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
@@ -390,11 +392,15 @@ def main():
     mids = st.geometry.interpolate(0.5, normalized=True)
     ext = extent_year_of(gpd.GeoSeries(mids.values, crs=UTM))
     tree, byears = building_years()
-    d, idx = tree.query(np.column_stack([mids.x, mids.y]), k=6, distance_upper_bound=60)
-    near = np.where(np.isfinite(d), byears[np.minimum(idx, len(byears) - 1)], np.nan)
-    first_b = np.nanmin(np.where(np.isfinite(near), near, np.inf), axis=1)
+    # a street is cut / graded just before the first buildings along it go up (2nd earliest
+    # within 45 m of its middle, counting vanished buildings); the extent outlines only
+    # date streets with no buildings near them
+    d, idx = tree.query(np.column_stack([mids.x, mids.y]), k=8, distance_upper_bound=45)
+    near = np.where(np.isfinite(d), byears[np.minimum(idx, len(byears) - 1)], np.inf)
+    near.sort(axis=1)
+    first_b = np.where(np.isfinite(near[:, 1]), near[:, 1], near[:, 0])
     first_b[~np.isfinite(first_b)] = np.nan
-    y0 = np.where(np.isfinite(ext), ext, np.where(np.isfinite(first_b), first_b - 1, 1950.0))
+    y0 = np.where(np.isfinite(first_b), first_b - 1.0, np.where(np.isfinite(ext), ext, 1950.0))
     # streets across the 19th-century cemeteries were cut through after the graves were moved
     from sf_buildings import cemeteries
     for cpoly, cend, _ in cemeteries(UTM):
@@ -413,6 +419,8 @@ def main():
         k = MODE_KIND.get(str(r["mode"]).strip())
         if k is None:
             continue
+        if k == K_BART and TRANSIT_TAKES_OVER:
+            continue  # BART: real tracks, stations and trains from transit.py
         el = ELEV.get(str(r.elevated).strip(), 0)
         if el == ELEV["tunnel"]:
             continue  # underground: nothing to see
@@ -425,8 +433,18 @@ def main():
             continue
         y0r = pd.to_numeric(r.year_start, errors="coerce")
         y1r = pd.to_numeric(r.year_end, errors="coerce")
-        ritems.append((geom, k, WIDTH[k], float(y0r) if np.isfinite(y0r) else 1900.0, float(y1r) if np.isfinite(y1r) else 9999.0, el))
-        rids.append(str(r.route_id))
+        y0f = float(y0r) if np.isfinite(y0r) else 1900.0
+        y1f = float(y1r) if np.isfinite(y1r) else 9999.0
+        rid = str(r.route_id)
+        # (the E Embarcadero has no SFMTA pattern: it keeps its researched line and trams)
+        if k in (K_CABLE, K_STREETCAR, K_LIGHTRAIL) and y1f >= 9999 and TRANSIT_TAKES_OVER and rid != "sc_e_embarcadero":
+            # still running today: from 1980 (Muni Metro) these lines are drawn and run by
+            # transit.py with their real track geometry
+            y1f = 1980.0
+            if y1f <= y0f:
+                continue
+        ritems.append((geom, k, WIDTH[k], y0f, y1f, el))
+        rids.append(rid)
     # freeways / highways still standing are drawn from Overture's real geometry
     # (freeways.bin.gz); the researched lines only date them. Demolished ones stay here.
     draw_routes = [it for it, rid in zip(ritems, rids) if not (it[1] in (K_FREEWAY, K_HIGHWAY) and it[4] >= 9999)

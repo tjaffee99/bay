@@ -125,6 +125,8 @@ void main(void) {
   vec3 r = vec3(m.x * c - m.y * s, m.x * s + m.y * c, m.z);
   vec4 commonPos;
   gl_Position = project_position_to_clipspace(instancePositions, vec3(0.0), project_size(r), commonPos);
+  geometry.position = commonPos;
+  DECKGL_FILTER_GL_POSITION(gl_Position, geometry);
   if (!vis || grow <= 0.0) gl_Position = vec4(0.0);
   vCommon = commonPos.xyz;
   vCamera = project.cameraPosition;
@@ -142,6 +144,7 @@ out vec4 fragColor;
 void main(void) {
   vec3 n = normalize(cross(dFdx(vCommon), dFdy(vCommon)));
   fragColor = vec4(lighting_getLightColor(vColor, vCamera, vCommon, n), 1.0);
+  DECKGL_FILTER_COLOR(fragColor, geometry);
 }
 `;
 

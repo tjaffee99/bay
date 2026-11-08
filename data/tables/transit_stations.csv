@@ -1,0 +1,63 @@
+system,code,name,opened,closed,note,source
+bart,FRMT,Fremont,1972-09-11,,first day of BART service (Fremont - MacArthur),https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,UCTY,Union City,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,SHAY,South Hayward,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,HAYW,Hayward,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,BAYF,Bay Fair,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,SANL,San Leandro,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,COLS,Coliseum,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,FTVL,Fruitvale,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,LAKE,Lake Merritt,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,12TH,12th Street / Oakland City Center,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,19TH,19th Street Oakland,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,MCAR,MacArthur,1972-09-11,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,ASHB,Ashby,1973-01-29,,Richmond line,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,DBRK,Downtown Berkeley,1973-01-29,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,NBRK,North Berkeley,1973-01-29,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,PLZA,El Cerrito Plaza,1973-01-29,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,DELN,El Cerrito del Norte,1973-01-29,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,RICH,Richmond,1973-01-29,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,ROCK,Rockridge,1973-05-21,,Concord line,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,ORIN,Orinda,1973-05-21,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,LAFY,Lafayette,1973-05-21,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,WCRK,Walnut Creek,1973-05-21,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,PHIL,Pleasant Hill / Contra Costa Centre,1973-05-21,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,CONC,Concord,1973-05-21,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,MONT,Montgomery Street,1973-11-05,,West Bay line (Montgomery - Daly City),https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,POWL,Powell Street,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,CIVC,Civic Center / UN Plaza,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,16TH,16th Street Mission,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,24TH,24th Street Mission,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,GLEN,Glen Park,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,BALB,Balboa Park,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,DALY,Daly City,1973-11-05,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,WOAK,West Oakland,1974-09-16,,opened with the Transbay Tube,https://en.wikipedia.org/wiki/Transbay_Tube
+bart,EMBR,Embarcadero,1976-05-27,,infill station on the Market St subway,https://en.wikipedia.org/wiki/Embarcadero_station
+bart,NCON,North Concord / Martinez,1995-12-16,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,COLM,Colma,1996-02-24,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,PITT,Pittsburg / Bay Point,1996-12-07,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,CAST,Castro Valley,1997-05-10,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,DUBL,Dublin / Pleasanton,1997-05-10,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,SSAN,South San Francisco,2003-06-22,,SFO extension,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,SBRN,San Bruno,2003-06-22,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,SFIA,San Francisco International Airport,2003-06-22,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,MLBR,Millbrae,2003-06-22,,,https://en.wikipedia.org/wiki/List_of_Bay_Area_Rapid_Transit_stations
+bart,WDUB,West Dublin / Pleasanton,2011-02-19,,infill station,https://en.wikipedia.org/wiki/West_Dublin/Pleasanton_station
+bart,OAKL,Oakland International Airport,2014-11-22,,Oakland Airport Connector (cable people mover),https://en.wikipedia.org/wiki/Oakland_Airport_Connector
+bart,WARM,Warm Springs / South Fremont,2017-03-25,,,https://en.wikipedia.org/wiki/Warm_Springs/South_Fremont_station
+bart,PCTR,Pittsburg Center,2018-05-26,,eBART (DMU),https://en.wikipedia.org/wiki/EBART
+bart,ANTC,Antioch,2018-05-26,,eBART (DMU),https://en.wikipedia.org/wiki/EBART
+bart,MLPT,Milpitas,2020-06-13,,Silicon Valley phase I,https://en.wikipedia.org/wiki/Milpitas_station
+bart,BERY,Berryessa / North San Jose,2020-06-13,,Silicon Valley phase I,https://en.wikipedia.org/wiki/Berryessa/North_San_Jos%C3%A9_station
+muni,EMB,Embarcadero,1980-02-18,,Muni Metro level (shares the BART station),https://en.wikipedia.org/wiki/Muni_Metro
+muni,MON,Montgomery,1980-02-18,,Muni Metro level,https://en.wikipedia.org/wiki/Muni_Metro
+muni,POW,Powell,1980-02-18,,Muni Metro level,https://en.wikipedia.org/wiki/Muni_Metro
+muni,CIV,Civic Center,1980-02-18,,Muni Metro level,https://en.wikipedia.org/wiki/Muni_Metro
+muni,VNS,Van Ness,1980-02-18,,,https://en.wikipedia.org/wiki/Van_Ness_station_(Muni_Metro)
+muni,CHU,Church Street,1980-02-18,,,https://en.wikipedia.org/wiki/Church_Street_station
+muni,CAS,Castro,1980-06-11,,first served by the K (Muni Metro K 1980-06-11),https://en.wikipedia.org/wiki/Castro_station
+muni,FHL,Forest Hill,1918-02-03,,opened as Laguna Honda station with the Twin Peaks Tunnel,https://en.wikipedia.org/wiki/Forest_Hill_station
+muni,WPT,West Portal,1918-02-03,,west portal of the Twin Peaks Tunnel,https://en.wikipedia.org/wiki/West_Portal_station
+muni,YBM,Yerba Buena/Moscone,2022-11-19,,Central Subway (weekend service from 2022-11-19; daily 2023-01-07),https://en.wikipedia.org/wiki/Central_Subway
+muni,USQ,Union Square/Market Street,2022-11-19,,Central Subway,https://en.wikipedia.org/wiki/Central_Subway
+muni,CHI,Chinatown - Rose Pak,2022-11-19,,Central Subway,https://en.wikipedia.org/wiki/Central_Subway

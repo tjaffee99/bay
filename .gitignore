@@ -29,6 +29,11 @@ viewer/public/data/*
 !viewer/public/data/roads-region.bin.gz
 !viewer/public/data/routes.bin.gz
 !viewer/public/data/freeways.bin.gz
+!viewer/public/data/ground-detail.bin.gz
+!viewer/public/data/transit.bin.gz
+!viewer/public/data/transit-lines.json
+!viewer/public/data/transit-stations.json
+!viewer/public/data/park-labels.json
 # terrain tiles (~75 MB) are rebuilt by `make terrain` and shipped by `make deploy`
 viewer/public/tiles/
 

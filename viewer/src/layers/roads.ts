@@ -19,11 +19,12 @@ import {LandmarkMeshLayer, type MergedLandmarks} from '../landmarks/merged-layer
 
 // kinds — keep in sync with pipeline/roads.py
 const K = {STREET: 0, MAJOR: 1, FREEWAY: 2, HIGHWAY: 3, CABLE: 4, STREETCAR: 5, RAIL: 6, KEY: 7, BART: 8, FERRY: 9, LIGHTRAIL: 10};
+// asphalt (aerial-imagery greys); before ~1915 streets were dirt, macadam and cobbles
 const COLORS: Record<number, [number, number, number, number]> = {
-  [K.STREET]: [176, 170, 158, 255],
-  [K.MAJOR]: [160, 154, 144, 255],
-  [K.FREEWAY]: [138, 134, 128, 255],
-  [K.HIGHWAY]: [150, 145, 136, 255],
+  [K.STREET]: [98, 99, 103, 255],
+  [K.MAJOR]: [88, 89, 93, 255],
+  [K.FREEWAY]: [104, 105, 108, 255],
+  [K.HIGHWAY]: [96, 97, 101, 255],
   [K.CABLE]: [112, 74, 52, 255],
   [K.STREETCAR]: [104, 86, 70, 255],
   [K.RAIL]: [96, 84, 74, 255],
@@ -303,7 +304,9 @@ export async function loadRoads() {
     loadSet('roads-region', 'data/roads-region.bin.gz').catch(e => console.warn('roads-region', e)),
     loadSet('roads-sf', 'data/roads-sf.bin.gz').catch(e => console.warn('roads-sf', e)),
     loadSet('routes', 'data/routes.bin.gz').catch(e => console.warn('routes', e)),
-    loadSet('freeways', 'data/freeways.bin.gz').catch(e => console.warn('freeways', e))
+    loadSet('freeways', 'data/freeways.bin.gz').catch(e => console.warn('freeways', e)),
+    // BART / Muni tracks (pipeline/transit.py): real per-track geometry, aerial decks + bents
+    loadSet('transit', 'data/transit.bin.gz').catch(e => console.warn('transit', e))
   ]);
   setupTraffic();
 }
@@ -325,6 +328,35 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
     view = [view[0] - mx, view[1] - my, view[2] + mx, view[3] + my];
   }
   for (const s of drawSets) {
+    if (s.id === 'roads-sf' && zoom >= 14 && year >= 1895)
+      out.push(
+        new PathLayer({
+          id: 'sidewalks-sf',
+          data: s.data,
+          positionFormat: 'XYZ',
+          _pathType: 'open',
+          coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+          coordinateOrigin: [s.origin[0], s.origin[1], 0],
+          getWidth: (_: any, {index}: any) => s.width[index] + 6,
+          getColor: [176, 174, 168, 255],
+          shadowEnabled: false,
+          widthUnits: 'meters',
+          billboard: false,
+          jointRounded: false,
+          capRounded: false,
+          pickable: false,
+          extensions: [fade],
+          getYears: (_: any, {index, target}: any) => {
+            target[0] = Math.max(s.years[index * 2], 1895);
+            target[1] = s.years[index * 2 + 1];
+            return target;
+          },
+          currentYear: year,
+          growYears: 1.5,
+          shrinkYears: 0.5,
+          parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
+        } as any) as any
+      );
     if (s.id.startsWith('roads-region') && zoom > 15.5) continue;
     if (view && s.bbox && (s.bbox[2] < view[0] || s.bbox[0] > view[2] || s.bbox[3] < view[1] || s.bbox[1] > view[3])) continue;
     out.push(
@@ -335,10 +367,12 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
         _pathType: 'open',
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [s.origin[0], s.origin[1], 0],
-        getWidth: (_: any, {index}: any) => s.width[index] * (s.kind[index] === K.FERRY ? 0.6 : 1),
-        getColor: (_: any, {index}: any) => COLORS[s.kind[index]] ?? COLORS[0],
+        getWidth: (_: any, {index}: any) => s.width[index] * (s.kind[index] === K.FERRY ? 0.6 : s.id === 'transit' && s.elevated[index] === 4 ? 0.5 : 1),
+        getColor: (_: any, {index}: any) => (s.id === 'transit' ? trackColor(s.kind[index], s.elevated[index]) : roadColor(s.kind[index], year)),
         widthUnits: 'meters',
         widthMinPixels: s.id === 'routes' ? 1.5 : 0.8,
+        shadowEnabled: false,
+        updateTriggers: {getColor: roadEra(year)},
         billboard: false,
         jointRounded: true,
         capRounded: false,
@@ -387,6 +421,29 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
     }
   }
   return out;
+}
+
+/** Street surface by era: dirt / macadam / cobbles, then asphalt (from ~1915). */
+function roadEra(year: number) {
+  return year < 1890 ? 0 : year < 1915 ? 1 : 2;
+}
+/** Track beds as seen from the air: ballast / concrete for BART, rails set in the
+ *  street for Muni; tunnels as a faint line (not visible in reality, but they show
+ *  where the subway runs). */
+function trackColor(kind: number, elevated: number): [number, number, number, number] {
+  if (elevated === 4) return kind === K.BART ? [70, 92, 140, 70] : [140, 70, 60, 60];
+  if (kind === K.BART) return elevated === 2 ? [128, 124, 118, 255] : [140, 133, 123, 255];
+  if (kind === K.CABLE) return [78, 76, 74, 255];
+  return [86, 84, 82, 255];
+}
+
+function roadColor(kind: number, year: number): [number, number, number, number] {
+  const c = COLORS[kind] ?? COLORS[0];
+  if (kind > K.HIGHWAY) return c;
+  const era = roadEra(year);
+  if (era === 2) return c;
+  const dirt: [number, number, number] = era === 0 ? [158, 142, 118] : [140, 132, 120];
+  return [dirt[0], dirt[1], dirt[2], 255];
 }
 
 // ------------------------------------------------------------------ traffic
@@ -545,7 +602,7 @@ function setupTraffic() {
   };
   const cars: Parameters<typeof buildFleet>[0] = [];
   for (const s of sets) {
-    if (s.id === 'routes') continue;
+    if (s.id === 'routes' || s.id === 'transit') continue;
     origin = s.origin;
     const w = new Float64Array(s.n);
     let tot = 0;
@@ -654,8 +711,9 @@ export function trafficLayers(year: number, zoom: number): Layer[] {
         year,
         density: kind === 'car' ? carDensity(year) : 1,
         sizeScale: kind === 'car' ? 2.1 : 1.3,
+        shadowEnabled: false,
         visible
-      })
+      } as any)
     );
   }
   liveTraffic = out;

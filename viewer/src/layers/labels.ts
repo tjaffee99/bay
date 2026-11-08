@@ -27,7 +27,13 @@ const TIERS: Record<string, {zoom: [number, number, number, number]; size: numbe
   town: {zoom: [9.4, 10.2, 13.8, 14.8], size: 15, color: [50, 45, 39], priority: 4},
   landscape: {zoom: [11, 11.8, 16, 17], size: 14, color: [96, 76, 52], italic: true, priority: 2},
   neighborhood: {zoom: [12.2, 12.9, 16.2, 17.2], size: 15, color: [52, 47, 40], priority: 3, caps: true},
-  historic: {zoom: [12.8, 13.4, 16.5, 17.5], size: 14, color: [120, 64, 44], italic: true, priority: 1}
+  historic: {zoom: [12.8, 13.4, 16.5, 17.5], size: 14, color: [120, 64, 44], italic: true, priority: 1},
+  // city parks (pipeline/ground_detail.py -> park-labels.json): big ones earlier
+  park_major: {zoom: [12.3, 12.9, 16.5, 17.5], size: 14, color: [62, 104, 52], italic: true, priority: 3},
+  park: {zoom: [14.3, 14.9, 17.5, 18.5], size: 13, color: [62, 104, 52], italic: true, priority: 0},
+  // BART and Muni Metro stations (pipeline/transit.py -> transit-stations.json)
+  station: {zoom: [12.4, 13.0, 17.5, 18.5], size: 12, color: [32, 66, 128], priority: 1},
+  station_muni: {zoom: [14.3, 14.9, 17.5, 18.5], size: 12, color: [150, 40, 40], priority: 0}
 };
 
 let places: Place[] = [];
@@ -49,6 +55,35 @@ export function loadPlaces() {
       text: TIERS[r.tier]?.caps ? r.name.toUpperCase() : r.name
     }))
     .filter(p => p.name && Number.isFinite(p.lon) && Number.isFinite(p.lat) && TIERS[p.tier]);
+}
+
+/** City park labels (generated): park_major for parks of 8 ha or more. */
+export async function loadParkLabels() {
+  try {
+    const res = await fetch('data/park-labels.json');
+    if (!res.ok) return;
+    const rows = (await res.json()) as {name: string; lon: number; lat: number; start: number; ha: number}[];
+    const have = new Set(places.map(p => p.name));
+    for (const r of rows) {
+      if (have.has(r.name)) continue;
+      const tier = r.ha >= 8 ? 'park_major' : 'park';
+      places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
+    }
+    placedKey = '';
+  } catch (e) {
+    console.warn('park labels', e);
+  }
+}
+
+/** Station names, each from its opening year (a shared BART/Muni station is labelled once). */
+export function addStationLabels(rows: {name: string; system: string; lon: number; lat: number; start: number; end: number}[]) {
+  const bart = rows.filter(r => r.system === 'bart');
+  for (const r of rows) {
+    if (r.system !== 'bart' && bart.some(b => Math.hypot(b.lon - r.lon, b.lat - r.lat) < 0.0015)) continue;
+    const tier = r.system === 'bart' ? 'station' : 'station_muni';
+    places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
+  }
+  placedKey = '';
 }
 
 /** Call once elevation is loaded. */
@@ -154,6 +189,7 @@ export function labelLayers(year: number, zoom: number) {
         getAlignmentBaseline: 'center',
         characterSpacing: cfg.caps ? 0.08 : 0,
         pickable: false,
+        shadowEnabled: false,
         parameters: {depthCompare: 'always'} as any,
         updateTriggers: {getColor: [alpha], getPosition: [places.length && places[0].z]}
       } as any)
