@@ -23,7 +23,9 @@ const COLORS: [number, number, number][] = [
   [150, 166, 112], // 9 dog park
   [206, 202, 194], // 10 plaza / pedestrian paving
   [118, 152, 88], // 11 garden / flowerbed
-  [128, 166, 94] // 12 lawn
+  [128, 166, 94], // 12 lawn
+  [184, 156, 116], // 13 dirt track (racetrack ovals)
+  [150, 188, 204] // 14 water (ponds of vanished / landscaped sites)
 ];
 
 let data: any = null;

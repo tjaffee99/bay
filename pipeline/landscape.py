@@ -30,7 +30,8 @@ import pyproj
 import shapely
 from shapely.geometry import Polygon, box, mapping
 
-from common import INTERIM, MANUAL, RAW, log
+sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from common import INTERIM, MANUAL, RAW, log  # noqa: E402
 
 LRAW = RAW / "landscape"
 LINT = INTERIM / "landscape"
@@ -199,7 +200,9 @@ def dunes():
     # 2b. sand on the Colma Formation west of the Colma valley (Lake Merced east, Ingleside,
     #     Westlake): 'sand hills' before the tract builders levelled them (ESTIMATED extent)
     qc = b[b.PTYPE == "Qc"]
-    westbox = Polygon([(-122.51, 37.655), (-122.455, 37.655), (-122.455, 37.735), (-122.51, 37.735)])
+    # west of the Colma valley (roughly the Junipero Serra / I-280 corridor), south of the SFEI map
+    westbox = Polygon([(-122.515, 37.650), (-122.490, 37.650), (-122.478, 37.668), (-122.468, 37.690),
+                       (-122.458, 37.708), (-122.452, 37.725), (-122.455, 37.750), (-122.515, 37.750)])
     est = shapely.intersection(shapely.union_all(list(qc.geometry)), westbox)
     for p in explode_polys(est):
         pm = gpd.GeoSeries([p], crs=4326).to_crs(M)
@@ -212,7 +215,7 @@ def dunes():
                          note="ESTIMATED: the Colma Formation (Pleistocene beach / dune sand) west of the Colma valley "
                               "carried wind-blown sand hills with dune scrub before the tract builders (Parkside, "
                               "Ingleside Terraces 1910s, Stonestown / Parkmerced 1940s-50s, Doelger's Westlake 1949-) "
-                              "levelled them; the extent is the geologic unit clipped to lon < -122.455, lat 37.655-37.735.",
+                              "levelled them; the extent is the geologic unit clipped to the west side of the Colma valley (Junipero Serra / I-280 corridor) between Daly City (37.65) and the Sunset.",
                          geometry=p))
     bon_cover = shapely.union_all([r["geometry"] for r in rows])
     # 3. Witter 2006 (central Bay region): Merritt Sand (Alameda / Oakland / Bay Farm), coast

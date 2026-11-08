@@ -24,7 +24,7 @@ import pandas as pd
 import shapely
 from scipy.spatial import cKDTree
 
-from common import INTERIM, RAW, TABLES, VIEWER_DATA, log
+from common import MANUAL, INTERIM, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from export_columnar import write_columnar
 from roads import ORIGIN, Ground, UTM
@@ -116,13 +116,40 @@ def main():
             k = KINDS["playground"]
         kinds.append(k)
         years.extend((float(year[i]), 9999.0))
+    # vanished large sites (data/manual/vanished_sites/sites.geojson): racetrack ovals,
+    # turf courses, infields, parking — drawn for their years, smaller parts on top
+    sp = MANUAL / "vanished_sites" / "sites.geojson"
+    if sp.exists():
+        SITE_KIND = {"dirt_track": 13, "turf": 6, "grass": 12, "park": 12, "parking": 10, "water": 14}
+        st = gpd.read_file(sp)
+        st = st[st["cover"].isin(list(SITE_KIND))].explode(index_parts=False)
+        st = st[st.geometry.geom_type == "Polygon"].reset_index(drop=True)
+        su = st.to_crs(UTM)
+        n_site = 0
+        for rank, i in enumerate(np.argsort(-su.geometry.area.values)):
+            ring = su.geometry.values[i].exterior
+            if ring.length < 8:
+                continue
+            n = max(4, int(np.ceil(ring.length / 12.0)))
+            p_ = [ring.interpolate(t, normalized=True) for t in np.linspace(0, 1, n, endpoint=False)]
+            ll = gpd.GeoSeries(p_, crs=UTM).to_crs(4326)
+            lon, lat = np.append(ll.x.values, ll.x.values[0]), np.append(ll.y.values, ll.y.values[0])
+            z = ground(lon, lat) + 0.3 + 0.06 * min(rank, 20)
+            pos.append(np.column_stack([lon - ORIGIN[0], lat - ORIGIN[1], z]).ravel())
+            starts.append(starts[-1] + n + 1)
+            kinds.append(SITE_KIND[st["cover"].values[i]])
+            y0 = float(pd.to_numeric(st["year_start"].values[i], errors="coerce"))
+            y1 = pd.to_numeric(st["year_end"].values[i], errors="coerce")
+            years.extend((y0, float(y1) if np.isfinite(y1) else 9999.0))
+            n_site += 1
+        log(f"ground detail: {n_site} parts of vanished sites")
     write_columnar(VIEWER_DATA / "ground-detail.bin.gz", {
         "start_indices|shuffle": np.asarray(starts, np.uint32),
         "positions|shuffle": np.concatenate(pos).astype(np.float32),
         "kind": np.asarray(kinds, np.uint8),
         "years": np.asarray(years, np.float32),
     }, origin=ORIGIN, counts={"polygons": len(kinds), "vertices": starts[-1]})
-    log(f"ground detail: {len(kinds)} outlines ({np.bincount(kinds, minlength=13).tolist()})")
+    log(f"ground detail: {len(kinds)} outlines ({np.bincount(kinds, minlength=15).tolist()})")
 
     # labels for every city park (and the golf courses' parks), dated where known
     labels = []

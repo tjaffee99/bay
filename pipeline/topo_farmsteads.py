@@ -1313,8 +1313,7 @@ def farmsteads_of_sheet(res: dict, drop=None):
     from shapely.geometry import Point, Polygon
     from shapely.ops import unary_union
     syms = res["symbols"]
-    props0 = {"map_year": map_year(res), "edition_year": res["edition_year"], "survey_year": res.get("survey_year"),
-              "photo_year": res.get("photo_year"), "quad": res["quad"], "scale": res["scale"]}
+    props0 = {"map_year": map_year(res), "photo_year": res.get("photo_year"), "quad": res["quad"], "scale": res["scale"]}
     towns = []
     for ring in res.get("urban_tint", []):
         if len(ring) >= 4:

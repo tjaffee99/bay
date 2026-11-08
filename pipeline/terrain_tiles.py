@@ -540,6 +540,40 @@ def histories(name, g, d):
         spread = 0.5 if c in (PARK, URBAN, RESERVOIR) else 6.0
         event(m, c, ys + spread * h)
 
+    # ---- vanished large sites (data/manual/vanished_sites/sites.geojson): racetracks,
+    # office / industrial campuses, amusement parks… cover the ground over their years,
+    # then the site is cleared ground until whatever stands there today
+    sp = MANUAL / "vanished_sites" / "sites.geojson"
+    if sp.exists():
+        SITE_COVER = {"urban": URBAN, "parking": URBAN, "industrial": URBAN, "park": PARK, "grass": PARK,
+                      "turf": PARK, "dirt_track": PARK, "water": SHALLOW}
+        st = gpd.read_file(sp).to_crs(3857)
+        n_site = 0
+        for site_id, grp in st.groupby("site_id"):
+            spans = []
+            for geom, cov, y0, y1 in zip(grp.geometry, grp["cover"], grp["year_start"], grp["year_end"]):
+                c = SITE_COVER.get(str(cov))
+                y0 = pd.to_numeric(y0, errors="coerce")
+                y1 = pd.to_numeric(y1, errors="coerce")
+                if c is None or not np.isfinite(y0) or geom is None:
+                    continue
+                m = rasterize_on(g, [(geom, 1)], fill=0, dtype="uint8").astype(bool) & ~water_now
+                if not m.any():
+                    continue
+                event(m, c, float(y0) + 0.3 * h)
+                spans.append((m, float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                n_site += 1
+            # cleared at the end, unless another part of the site took over the ground
+            for m, y0, y1 in spans:
+                if y1 >= 9999:
+                    continue
+                later = np.zeros_like(m)
+                for m2, z0, _ in spans:
+                    if z0 >= y1 - 0.5:
+                        later |= m2
+                event(m & ~later, FILL, y1 + 0.3 * h)
+        log(f"terrain {name}: {n_site} parts of vanished sites")
+
     # ---- airports (airports.py): the field is airfield grass from its opening year
     # (after any fill), not city ground or orchard; runways / aprons are drawn on top
     ap_path = INTERIM / "airports.parquet"

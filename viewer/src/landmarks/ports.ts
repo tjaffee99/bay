@@ -419,8 +419,9 @@ const PITCH_W = 2.8; // 8 ft box (2.44 m) + gap
 
 type Stack = {s: number; n: number; along: boolean; color: number; h: number; si: number; ni: number};
 
-function decodeYard(cells: string): Stack[] {
-  const out: Stack[] = [];
+/** Runs of stacks (consecutive along s) decoded from the yard string. */
+function decodeYard(cells: string): Stack[][] {
+  const runs: Stack[][] = [];
   const v = (i: number, k: number) => {
     let x = 0;
     for (let j = 0; j < k; j++) x = x * 64 + B64.indexOf(cells[i + j]);
@@ -434,30 +435,34 @@ function decodeYard(cells: string): Stack[] {
     const along = c >= 32;
     const count = c % 32;
     i += 7;
+    const run: Stack[] = [];
     for (let k = 0; k < count; k++) {
       const code = v(i + k, 1);
-      const si = s0 + (along ? Math.round(k * PITCH_L * 10) : Math.round(k * PITCH_W * 10));
-      out.push({s: si / 10 - 1000, n: n0 / 10 - 1000, along, color: Math.floor(code / 6), h: code % 6, si, ni: n0});
+      const si = s0 + Math.round(k * (along ? PITCH_L : PITCH_W) * 10);
+      run.push({s: si / 10 - 1000, n: n0 / 10 - 1000, along, color: Math.floor(code / 6), h: code % 6, si, ni: n0});
     }
+    runs.push(run);
     i += count;
   }
-  return out;
+  return runs;
 }
 
+/** Colour family of a box colour for the merged side walls: reds, ochre, greens/blues, greys. */
+const FAMILY = [0, 0, 0, 1, 2, 2, 2, 2, 3, 3];
+const FAMILY_WALL = ['#874A3E', '#9C8853', '#52695E', '#A9A9A4'];
+
 /**
- * Container stacks of one terminal yard: each stack is a box over its pitch cell (so a block
- * reads as one mass), walls only where the neighbour across the block is lower; single boxes
- * (h = 1) stand on chassis.
+ * Container stacks of one terminal yard. Each stack fills its pitch cell so a block reads as one
+ * mass; tops keep each stack's colour (merged where neighbours match), side walls are merged
+ * along a run by colour family and drawn only where the next row of the block is lower; single
+ * boxes (h = 1) stand on chassis.
  */
 function stacks(b: MeshBuilder, key: string) {
   const y = YARDS[key];
   const w = wharf(y.A, y.B);
-  const cells = decodeYard(y.cells);
+  const runs = decodeYard(y.cells);
   const tall = new Map<string, number>();
-  for (const c of cells) tall.set(`${c.along ? 1 : 0}:${c.si}:${c.ni}`, c.h);
-  // neighbour across the block (the next row): same position along, one row pitch over
-  // runs go along s for both orientations (pitch 12.8 m for boxes lying along the wharf,
-  // 2.8 m for boxes lying across it); the next row of the block is one pitch over in n
+  for (const r of runs) for (const c of r) tall.set(`${c.along ? 1 : 0}:${c.si}:${c.ni}`, c.h);
   const look = (al: number, si: number, ni: number) => {
     for (const ds of [0, -1, 1]) for (const dn of [0, -1, 1]) {
       const h = tall.get(`${al}:${si + ds}:${ni + dn}`);
@@ -465,8 +470,9 @@ function stacks(b: MeshBuilder, key: string) {
     }
     return 0;
   };
-  const nb = (c: Stack, d: number) => look(c.along ? 1 : 0, c.si, c.ni + d * (c.along ? 28 : 128));
-  const nbRun = (c: Stack, d: number) => look(c.along ? 1 : 0, c.si + d * (c.along ? 128 : 28), c.ni);
+  // runs go along s for both orientations (pitch 12.8 m for boxes lying along the wharf, 2.8 m
+  // for boxes lying across it); the next row of the block is one row pitch over in n
+  const nb = (c: Stack, d: number) => (c.h === 1 ? 0 : look(c.along ? 1 : 0, c.si, c.ni + d * (c.along ? 28 : 128)));
   // one ground height per 100 m square (the yards are flat; keeps neighbouring rows level)
   const ground = new Map<string, number>();
   const gz = (s: number, n: number) => {
@@ -478,28 +484,67 @@ function stacks(b: MeshBuilder, key: string) {
     }
     return z;
   };
+  const geom = (c: Stack) => {
+    const ch = c.h === 1;
+    const z0 = gz(c.s, c.n) + (ch ? 1.25 : 0);
+    const lx = c.along ? (ch ? 12.19 : PITCH_L - 0.1) : ch ? 2.44 : PITCH_W - 0.1;
+    const ly = c.along ? (ch ? 2.44 : PITCH_W - 0.1) : ch ? 12.19 : PITCH_L - 0.1;
+    return {z0, z1: z0 + (ch ? 1 : c.h) * BOX_H, x0: c.s, x1: c.s + lx, y0: c.n, y1: c.n + ly};
+  };
   b.frame(0, 0, 0, w.brg - 90, () => {
     // local frame: x = s (along the wharf), y = n (inland)
-    for (const c of cells) {
-      const chassis = c.h === 1;
-      const z0 = gz(c.s, c.n) + (chassis ? 1.25 : 0);
-      const z1 = z0 + (chassis ? 1 : c.h) * BOX_H;
-      const lx = c.along ? (chassis ? 12.19 : PITCH_L - 0.1) : chassis ? 2.44 : PITCH_W - 0.1;
-      const ly = c.along ? (chassis ? 2.44 : PITCH_W - 0.1) : chassis ? 12.19 : PITCH_L - 0.1;
-      const x0 = c.s;
-      const y0 = c.n;
-      const x1 = x0 + lx;
-      const y1 = y0 + ly;
-      b.color(BOX_COLORS[c.color] ?? BOX_COLORS[8]);
-      b.quad([x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]);
-      // walls: [run direction -, run direction +, block direction -, block direction +]
-      const lows = chassis ? [0, 0, 0, 0] : [nbRun(c, -1), nbRun(c, 1), nb(c, -1), nb(c, 1)];
-      const wallsXY: [V2, V2][] = [[[x0, y1], [x0, y0]], [[x1, y0], [x1, y1]], [[x0, y0], [x1, y0]], [[x1, y1], [x0, y1]]];
-      for (let k = 0; k < 4; k++) {
-        const lo = chassis ? z0 : z0 + Math.min(lows[k], c.h) * BOX_H;
-        if (lo >= z1 - 0.01) continue;
-        const [p, q] = wallsXY[k];
-        b.quad([p[0], p[1], lo], [q[0], q[1], lo], [q[0], q[1], z1], [p[0], p[1], z1]);
+    for (const run of runs) {
+      const G = run.map(geom);
+      // tops, merged over neighbours of the same colour and height (chassis boxes stand apart)
+      for (let i = 0; i < run.length; ) {
+        let j = i;
+        while (j + 1 < run.length && run[j + 1].h === run[i].h && FAMILY[run[j + 1].color] === FAMILY[run[i].color] && run[i].h > 1 && Math.abs(G[j + 1].z0 - G[i].z0) < 0.01) j++;
+        const a = G[i];
+        const e = G[j];
+        b.color(BOX_COLORS[run[i].color] ?? BOX_COLORS[8]).quad([a.x0, a.y0, a.z1], [e.x1, a.y0, a.z1], [e.x1, a.y1, a.z1], [a.x0, a.y1, a.z1]);
+        i = j + 1;
+      }
+      // walls across the run (x = const): at the run ends, where the height steps, and around chassis boxes
+      for (let i = 0; i < run.length; i++) {
+        const c = run[i];
+        const g = G[i];
+        const pitch = c.along ? 128 : 28;
+        const al = c.along ? 1 : 0;
+        const prev = c.h > 1 ? (i > 0 ? run[i - 1].h : look(al, c.si - pitch, c.ni)) : 0;
+        const next = c.h > 1 ? (i + 1 < run.length ? run[i + 1].h : look(al, c.si + pitch, c.ni)) : 0;
+        b.color(FAMILY_WALL[FAMILY[c.color] ?? 3]);
+        // (a chassis box only shows its long sides: its ends are 2.4 m and the gaps in the parking rows are small)
+        if (c.h === 1 && !c.along) continue;
+        for (const [x, lowH] of [[g.x0, prev], [g.x1, next]] as [number, number][]) {
+          const lo = c.h === 1 ? g.z0 : g.z0 + Math.min(lowH, c.h) * BOX_H;
+          if (lo < g.z1 - 0.01) b.quad([x, g.y0, lo], [x, g.y1, lo], [x, g.y1, g.z1], [x, g.y0, g.z1]);
+        }
+      }
+      // long walls (y = const) on both sides of the run, merged by colour family and height range
+      for (const side of [-1, 1]) {
+        let seg: {x0: number; x1: number; lo: number; hi: number; f: number} | null = null;
+        const flush = () => {
+          if (!seg) return;
+          const yy = side < 0 ? G[0].y0 : G[0].y1;
+          b.color(FAMILY_WALL[seg.f]).quad([seg.x0, yy, seg.lo], [seg.x1, yy, seg.lo], [seg.x1, yy, seg.hi], [seg.x0, yy, seg.hi]);
+          seg = null;
+        };
+        for (let i = 0; i < run.length; i++) {
+          const c = run[i];
+          const g = G[i];
+          const lo = c.h === 1 ? g.z0 : g.z0 + Math.min(nb(c, side), c.h) * BOX_H;
+          const f = FAMILY[c.color] ?? 3;
+          if (lo >= g.z1 - 0.01 || (c.h === 1 && c.along)) {
+            flush();
+            continue;
+          }
+          if (seg && c.h > 1 && Math.abs(seg.lo - lo) < 0.01 && Math.abs(seg.hi - g.z1) < 0.01 && seg.f === f && Math.abs(seg.x1 + 0.1 - g.x0) < 0.3) seg.x1 = g.x1;
+          else {
+            flush();
+            seg = {x0: g.x0, x1: g.x1, lo, hi: g.z1, f};
+          }
+        }
+        flush();
       }
     }
   });

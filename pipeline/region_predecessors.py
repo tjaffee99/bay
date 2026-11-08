@@ -212,6 +212,35 @@ def region_predecessors(today):
     tu = today.to_crs(UTM).reset_index(drop=True)
     no_fire = gpd.GeoDataFrame(geometry=[], crs=UTM)
     pred = apply_sanborn(pred, tu, no_fire, areas, include=lambda area: area.startswith(REGION_SANBORN))
+    # buildings of vanished large sites (data/manual/vanished_sites/buildings.geojson:
+    # traced from aerials / topo maps — racetrack grandstands, office campuses, factories)
+    vb = INTERIM.parent / "manual" / "vanished_sites" / "buildings.geojson"
+    if vb.exists():
+        v = gpd.read_file(vb).to_crs(UTM)
+        v = v[v.geometry.notna() & v.geometry.geom_type.isin(["Polygon", "MultiPolygon"])].explode(index_parts=False)
+        USE = {"dwelling": "dwelling", "office": "office", "factory": "factory", "warehouse": "warehouse",
+               "grandstand": "hall", "hall": "hall", "other": "shed"}
+        rows = []
+        for k, r in enumerate(v.itertuples()):
+            y0 = pd.to_numeric(getattr(r, "start_year", np.nan), errors="coerce")
+            y1 = pd.to_numeric(getattr(r, "end_year", np.nan), errors="coerce")
+            if not np.isfinite(y0):
+                continue
+            hgt = pd.to_numeric(getattr(r, "height_m", np.nan), errors="coerce")
+            sto = pd.to_numeric(getattr(r, "storeys", np.nan), errors="coerce")
+            if not np.isfinite(hgt):
+                hgt = (sto if np.isfinite(sto) else 1) * 4.0 + 1.0
+            mat = str(getattr(r, "material", "") or "").lower()
+            rows.append({"geometry": r.geometry, "start_year": float(y0), "end_year": float(y1) if np.isfinite(y1) else 9999.0,
+                         "height": float(hgt), "stories": float(sto) if np.isfinite(sto) else np.nan, "kind": "building",
+                         "source": "vanished_site", "mapblklot": f"vs_{getattr(r, 'site_id', 'x')}_{k}",
+                         "material": "brick" if "brick" in mat else "",
+                         "use_sanborn": USE.get(str(getattr(r, "use", "other")), "shed"),
+                         "year_confidence": "estimated", "year_reason": f"vanished_site:{getattr(r, 'site_id', '')}"})
+        if rows:
+            pred = gpd.GeoDataFrame(pd.concat([pred, gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM)], ignore_index=True),
+                                    geometry="geometry", crs=UTM)
+            log(f"region predecessors: {len(rows)} buildings of vanished large sites")
     cf = clearance_fill(areas, tu, pred)
     if len(cf):
         pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)

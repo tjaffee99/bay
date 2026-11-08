@@ -154,6 +154,29 @@ def robust_smooth(xy: np.ndarray, window_m=70.0, spike_m=7.0, iters=3) -> np.nda
     return smooth(r[keep], window_m)
 
 
+def remove_loops(xy: np.ndarray, tol=12.0, min_loop=40.0) -> np.ndarray:
+    """Cut out-and-back excursions of a routed path (into a siding and back, round a wye)."""
+    from scipy.spatial import cKDTree
+    r = resample(xy, 4.0)
+    s_ = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(r, axis=0).T))])
+    t = cKDTree(r)
+    out = []
+    i = 0
+    n = len(r)
+    while i < n:
+        out.append(i)
+        # furthest later point that comes back within tol of point i (after a loop of >= min_loop)
+        cand = t.query_ball_point(r[i], tol)
+        later = [j for j in cand if j > i and s_[j] - s_[i] > min_loop]
+        if later:
+            j = max(later)
+            # only a real excursion if the straight gap is much shorter than the path between
+            i = j + 1 if s_[j] - s_[i] > 3 * np.hypot(*(r[j] - r[i])) + min_loop else i + 1
+        else:
+            i += 1
+    return r[out]
+
+
 def chaikin(xy: np.ndarray, n=3) -> np.ndarray:
     for _ in range(n):
         q = 0.75 * xy[:-1] + 0.25 * xy[1:]
@@ -539,12 +562,32 @@ def piece_geometry(p):
         gdf = rail_lines(bb, kinds=p.get("kinds", ("heavy",))) if meth == "rail" else road_lines(bb)
         if p.get("names"):
             gdf = gdf[gdf["name"].fillna("").str.contains("|".join(p["names"]))]
-        net = Network(lines_utm(gdf), join=p.get("join", 25.0 if meth == "rail" else 8.0))
-        xy, dmax = net.path(W, snap=p.get("snap", 150.0))
+        # only lines near the waypoint polyline (no detours through yards or parallel routes);
+        # widened when the network has a gap inside the corridor
+        from shapely.geometry import LineString as _LS
+        all_lines = [_LS(c) for c in lines_utm(gdf)]
+        base = p.get("corridor", 400.0 if meth == "rail" else 150.0)
+        for k, cw in enumerate((base, base * 3, base * 8)):
+            corr = _LS(densify(W, 50.0)).buffer(cw)
+            lines = []
+            for ln in all_lines:
+                if ln.intersects(corr):
+                    g2 = ln.intersection(corr)
+                    for q in getattr(g2, "geoms", [g2]):
+                        if q.geom_type == "LineString" and len(q.coords) > 1:
+                            lines.append(np.asarray(q.coords))
+            net = Network(lines, join=p.get("join", 25.0 if meth == "rail" else 8.0))
+            xy, dmax = net.path(W, snap=p.get("snap", 150.0))
+            if not getattr(net, "gaps", 0):
+                break
+            log(f"   ({net.gaps} gaps with corridor {cw:.0f} m)")
+        xy = remove_loops(xy)
         xy = simplify(xy, 0.3)
+        from shapely.geometry import LineString
+        dev = LineString(xy).hausdorff_distance(LineString(densify(W, 50.0))) if len(W) > 1 else 0
         if p.get("smooth"):
             xy = smooth(xy, p["smooth"])
-        return xy, f"{meth} (snap {dmax:.0f} m)"
+        return xy, f"{meth} (snap {dmax:.0f} m, dev {dev:.0f} m)"
     if meth == "topo":
         xy, on = trace_topo(p["sheet"], wps, corridor=p.get("corridor", 120.0), step=p.get("step", 1),
                             via=p.get("via"))
