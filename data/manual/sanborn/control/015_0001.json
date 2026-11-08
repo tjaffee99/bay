@@ -1,0 +1,69 @@
+{
+ "pct": 25,
+ "points": [
+  {
+   "a": "JEFFERSON ST",
+   "b": "TAYLOR ST",
+   "x": 122,
+   "y": 773,
+   "norefine": 1
+  },
+  {
+   "a": "JEFFERSON ST",
+   "b": "MASON ST",
+   "x": 847.5,
+   "y": 773,
+   "norefine": 1
+  },
+  {
+   "a": "JEFFERSON ST",
+   "b": "POWELL ST",
+   "x": 1568,
+   "y": 773,
+   "norefine": 1
+  },
+  {
+   "a": "BEACH ST",
+   "b": "TAYLOR ST",
+   "x": 122,
+   "y": 1293.5,
+   "norefine": 1
+  },
+  {
+   "a": "BEACH ST",
+   "b": "MASON ST",
+   "x": 847.5,
+   "y": 1293.5,
+   "norefine": 1
+  },
+  {
+   "a": "BEACH ST",
+   "b": "POWELL ST",
+   "x": 1568,
+   "y": 1293.5,
+   "norefine": 1
+  },
+  {
+   "a": "NORTH POINT ST",
+   "b": "TAYLOR ST",
+   "x": 122,
+   "y": 1811.5,
+   "norefine": 1
+  },
+  {
+   "a": "NORTH POINT ST",
+   "b": "MASON ST",
+   "x": 847.5,
+   "y": 1811.5,
+   "norefine": 1
+  },
+  {
+   "a": "NORTH POINT ST",
+   "b": "POWELL ST",
+   "x": 1568,
+   "y": 1811.5,
+   "norefine": 1
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)"
+}

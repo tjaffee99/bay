@@ -1,0 +1,98 @@
+{
+ "pct": 25,
+ "zones_only": true,
+ "blocks": [
+  {
+   "name": "31",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "POWELL ST"
+     ],
+     "q": "SW",
+     "x": 284,
+     "y": 192,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "POWELL ST"
+     ],
+     "q": "NW",
+     "x": 697,
+     "y": 192,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "MASON ST"
+     ],
+     "q": "SE",
+     "x": 284,
+     "y": 813,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "MASON ST"
+     ],
+     "q": "NE",
+     "x": 697,
+     "y": 813,
+     "norefine": 1
+    }
+   ]
+  },
+  {
+   "name": "30",
+   "corners": [
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "MASON ST"
+     ],
+     "q": "SW",
+     "x": 284,
+     "y": 1120,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "MASON ST"
+     ],
+     "q": "NW",
+     "x": 695,
+     "y": 1120,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "NORTH POINT ST",
+      "TAYLOR ST"
+     ],
+     "q": "SE",
+     "x": 284,
+     "y": 1740,
+     "norefine": 1
+    },
+    {
+     "bc": [
+      "BAY ST",
+      "TAYLOR ST"
+     ],
+     "q": "NE",
+     "x": 695,
+     "y": 1740,
+     "norefine": 1
+    }
+   ]
+  }
+ ],
+ "image": "IIIF pct:25 of LOC sheet (see README)",
+ "note": "only the two blocks north of Bay St are used"
+}
