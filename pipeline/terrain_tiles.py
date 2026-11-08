@@ -742,14 +742,19 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                 y_start = yv[e - 1][m]
                 y_end = yv[e][m] if e < 4 else np.full(m.sum(), np.nan)
                 if deco == D_ORCHARD:
-                    # rows of trees: a 3x3 block per lattice cell (≈20 m spacing in the region grid)
-                    # exact thirds: the viewer's orchard ground pattern (8.5 m grid) lines up
-                    oy, ox = np.meshgrid(np.array([-1, 0, 1]) / 3.0, np.array([-1, 0, 1]) / 3.0)
-                    fy = ((vy[:, None] + oy.ravel()[None]) + max(r0 // sub, 0)) * sub
-                    fx = ((vx[:, None] + ox.ravel()[None]) + max(c0 // sub, 0)) * sub
-                    kinds.append(np.full(fy.size, D_ORCHARD)); ys.append(fy.ravel()); xs.append(fx.ravel())
-                    sizes.append(rng.uniform(4, 6, fy.size)); starts.append(np.repeat(y_start, 9) + rng.uniform(0, 3, fy.size))
-                    ends.append(np.repeat(y_end, 9))
+                    # rows of trees: a 3x3 block per lattice cell (≈25 m spacing), on every
+                    # third crown of the viewer's orchard ground pattern (8.5 m grid at
+                    # (k + 0.5) / 9 cells) — clear of the lanes along the 4-cell block edges
+                    oy, ox = np.meshgrid(np.array([-1, 1, 3]) / 6.0, np.array([-1, 1, 3]) / 6.0)
+                    ly_ = (vy[:, None] + oy.ravel()[None]) + max(r0 // sub, 0)
+                    lx_ = (vx[:, None] + ox.ravel()[None]) + max(c0 // sub, 0)
+                    # not on the blocks the shader draws as other fields (block_hash)
+                    keep = block_hash(np.floor((lx_ + g["tx0"] * VERTS) / 4), np.floor((ly_ + g["ty0"] * VERTS) / 4)) >= 0.2
+                    fy, fx = ly_[keep] * sub, lx_[keep] * sub
+                    kinds.append(np.full(fy.size, D_ORCHARD)); ys.append(fy); xs.append(fx)
+                    sizes.append(rng.uniform(4, 6, fy.size))
+                    starts.append(np.repeat(y_start, 9)[keep.ravel()] + rng.uniform(0, 3, fy.size))
+                    ends.append(np.repeat(y_end, 9)[keep.ravel()])
                 else:
                     # one farmstead per ~25 lattice cells, on a hash — except where a
                     # historical map shows where the farmsteads really were
@@ -761,7 +766,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     fx = (vx[pick] + max(c0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
                     kinds.append(np.full(pick.sum(), D_FARMHOUSE)); ys.append(fy); xs.append(fx)
                     fs = y_start[pick] + rng.uniform(0, 8, pick.sum())
-                    sizes.append(rng.uniform(7, 10, pick.sum())); starts.append(fs)
+                    sizes.append(rng.uniform(11, 14, pick.sum())); starts.append(fs)
                     ends.append(y_end[pick])
                     wy, wx, ws, wst, wen = windbreaks(fy, fx, fs, y_end[pick], g["res"] / sub, rng)
                     kinds.append(np.full(len(wy), D_BROADLEAF)); ys.append(wy); xs.append(wx)
@@ -777,7 +782,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                 st = f.start.values
                 en = f.end.values
                 kinds.append(f.kind.values.astype(int)); ys.append(fy); xs.append(fx)
-                sizes.append(rng.uniform(7, 10, len(f))); starts.append(st); ends.append(en)
+                sizes.append(rng.uniform(11, 14, len(f))); starts.append(st); ends.append(en)
                 wy, wx, ws, wst, wen = windbreaks(fy, fx, st, en, g["res"] / sub, rng)
                 kinds.append(np.full(len(wy), D_BROADLEAF)); ys.append(wy); xs.append(wx)
                 sizes.append(ws); starts.append(wst); ends.append(wen)
@@ -800,6 +805,22 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
 
 
 FARM_COVERS = (FARM, ORCHARD, VINEYARD, PASTURE)
+
+
+def block_hash(bx, by):
+    """Integer hash of a 4x4-cell block of the z13 lattice in [0, 1] — the same as
+    blockHash() in the viewer's terrain shader (uint32 arithmetic): orchard blocks with
+    a hash < 0.2 are drawn as other fields there, so no orchard trees stand on them."""
+    v_x = np.asarray(bx, np.int64).astype(np.uint32)
+    v_y = np.asarray(by, np.int64).astype(np.uint32)
+    with np.errstate(over="ignore"):
+        h = v_x * np.uint32(1664525) + v_y * np.uint32(1013904223)
+        h ^= h >> np.uint32(16)
+        h *= np.uint32(2246822519)
+        h ^= h >> np.uint32(13)
+        h *= np.uint32(3266489917)
+        h ^= h >> np.uint32(16)
+    return (h & np.uint32(65535)).astype(np.float64) / 65535.0
 
 
 def real_farmsteads(g, covers, years):

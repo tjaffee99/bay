@@ -169,8 +169,20 @@ vec4 bspline(vec2 st, vec2 size) {
 }
 // ---- farm patterns (procedural; cover code in the texel alpha, see coverColors)
 // L = position in z13 lattice cells (76 m) local to the tile (precise), B = the tile's
-// lattice origin (integer, a multiple of 4) for field ids. Orchard trees stand on the
-// 1/9-cell grid (8.5 m); the 3D orchard trees (terrain_tiles.py) on every 3rd of them.
+// lattice origin (integer, a multiple of 4) for field ids. Orchard crowns stand on a
+// 1/9-cell grid (8.5 m) offset by half a step; the 3D orchard trees on every 3rd of them.
+// integer hash shared with pipeline/terrain_tiles.py (block_hash): which 4x4-cell
+// orchard blocks are other fields, so the 3D orchard trees skip the same blocks
+float blockHash(vec2 b) {
+  uvec2 v = uvec2(ivec2(b));
+  uint h = v.x * 1664525u + v.y * 1013904223u;
+  h ^= h >> 16;
+  h *= 2246822519u;
+  h ^= h >> 13;
+  h *= 3266489917u;
+  h ^= h >> 16;
+  return float(h & 65535u) / 65535.0;
+}
 float lineCover(float d, float halfW, float px) { return clamp((halfW - d) / max(px, 1e-5) + 0.5, 0.0, 1.0); }
 vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   vec2 blk = floor(L / 4.0);
@@ -188,6 +200,8 @@ vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   vec2 eb = min(bp, 1.0 - bp) * 4.0;
   float dEdge = min(min(eb.x, eb.y), abs((splitX ? bp.x : bp.y) - cut) * 4.0);
   float rowsAlongX = step(0.5, hr);
+  float hb = blockHash(bid);
+  if (code == 2 && hb < 0.2) code = 1;            // not every block of an orchard district is orchard
   if (code == 1) {
     // farmland: grain gold, green crop, ploughed, stubble, hay
     vec3 f = hf < 0.3 ? vec3(0.86, 0.77, 0.5) : hf < 0.5 ? vec3(0.63, 0.68, 0.43) : hf < 0.66 ? vec3(0.66, 0.56, 0.43)
@@ -202,16 +216,20 @@ vec3 farmPattern(vec3 base, int code, vec2 L, vec2 B, float px) {
   }
   if (code == 2) {
     // orchard: crowns on the 8.5 m grid over a grassy floor; blocks of different ages
-    vec3 crown = vec3(0.42, 0.56, 0.3) * (0.92 + 0.16 * hf);
-    vec3 soil = vec3(0.75, 0.79, 0.5) * (0.96 + 0.08 * hr);
-    float r = 0.33 + 0.08 * hf;                       // young blocks have smaller crowns
-    vec2 q = fract(L * 9.0) - 0.5;
+    // prunes (dark), apricots / cherries (lighter), walnuts (big crowns); tilled or grassy floor
+    vec3 crown = hb < 0.55 ? vec3(0.36, 0.5, 0.27) : hb < 0.85 ? vec3(0.46, 0.6, 0.31) : vec3(0.4, 0.53, 0.33);
+    crown *= 0.94 + 0.12 * hf;
+    vec3 soil = hr < 0.5 ? vec3(0.78, 0.74, 0.55) : vec3(0.72, 0.78, 0.5);
+    float r = hb >= 0.85 ? 0.43 : 0.3 + 0.1 * hf;   // young blocks have smaller crowns
+    // no trees on the lanes along the block edges
+    float lane = smoothstep(0.03, 0.06, dEdge);
+    vec2 q = fract(L * 9.0 + 0.5) - 0.5;          // crowns at (k + 0.5) / 9 cells
     float d = length(q);
     float aa = px * 9.0 * 0.75 + 1e-4;
-    float k = 1.0 - smoothstep(r - aa, r + aa, d);
+    float k = (1.0 - smoothstep(r - aa, r + aa, d)) * lane;
     float avg = 3.14159 * r * r;
     float vis = smoothstep(1.5, 4.0, 1.0 / (9.0 * px));
-    float cov = mix(avg, k, vis);
+    float cov = mix(avg * mix(1.0, lane, 0.5), k, vis);
     vec3 c = mix(soil, crown, cov);
     c = mix(base, c, 0.85);
     return mix(c, vec3(0.6, 0.58, 0.42), lineCover(dEdge, 0.015, px) * 0.6);
