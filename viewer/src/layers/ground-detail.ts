@@ -4,6 +4,7 @@
  * OpenStreetMap outlines draped on the terrain, each from its (estimated) year.
  */
 import {COORDINATE_SYSTEM} from '@deck.gl/core';
+import {Matrix4} from '@math.gl/core';
 import type {Layer} from '@deck.gl/core';
 import {PathLayer, SolidPolygonLayer} from '@deck.gl/layers';
 import {loadColumnar} from '../data/columnar';
@@ -29,6 +30,21 @@ const COLORS: [number, number, number][] = [
 ];
 
 type GD = {data: any; origin: [number, number]; colors: Uint8Array; years: Float32Array};
+
+/** Height above the terrain for things draped on it: 0.3 m close up, more when zoomed out,
+ * where the coarser terrain tiles and the depth buffer's precision would hide them
+ * (runways vanishing when zooming out). Invisible from above at those scales. */
+const lifts = new Map<number, Matrix4>();
+export function liftMatrix(zoom: number, base = 0.3): Matrix4 {
+  const dz = zoom >= 14.5 ? 0 : Math.min(60, 1.5 * 2 ** (14.5 - zoom));
+  const key = Math.round((dz + base) * 10);
+  let m = lifts.get(key);
+  if (!m) {
+    m = new Matrix4().translate([0, 0, dz]);
+    lifts.set(key, m);
+  }
+  return m;
+}
 let sf: GD | null = null;
 // the five counties (pipeline/ground_detail.py -> region-ground-detail.bin.gz, ~10x SF's):
 // loaded the first time the view comes close enough to draw it
@@ -65,7 +81,7 @@ export async function loadGroundDetail() {
   sf = await loadSet('data/ground-detail.bin.gz');
 }
 
-function gdLayer(id: string, d: GD, year: number): Layer {
+function gdLayer(id: string, d: GD, year: number, zoom: number): Layer {
   const col = d.colors;
   const yrs = d.years;
   return new SolidPolygonLayer({
@@ -75,6 +91,7 @@ function gdLayer(id: string, d: GD, year: number): Layer {
     _normalize: false,
     coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
     coordinateOrigin: [d.origin[0], d.origin[1], 0],
+    modelMatrix: liftMatrix(zoom),
     extruded: false,
     getFillColor: (_: any, {index, target}: any) => {
       target[0] = col[index * 4];
@@ -114,8 +131,8 @@ export function groundDetailLayers(year: number, zoom: number): Layer[] {
   }
   if (zoom < 13) return [];
   const out: Layer[] = [];
-  if (sf) out.push(gdLayer('ground-detail', sf, year));
-  if (region) out.push(gdLayer('ground-detail-region', region, year));
+  if (sf) out.push(gdLayer('ground-detail', sf, year, zoom));
+  if (region) out.push(gdLayer('ground-detail-region', region, year, zoom));
   return out;
 }
 
@@ -176,10 +193,11 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         _pathType: 'open',
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [L.origin[0], L.origin[1], 0],
+        modelMatrix: liftMatrix(zoom, 0.5),
         getWidth: (_: any, {index}: any) => L.width[index],
         getColor: (_: any, {index}: any) => (L.kind[index] === 0 ? [96, 98, 102, 255] : [128, 130, 132, 220]),
         widthUnits: 'meters',
-        widthMinPixels: zoom < 11 ? 1.6 : 1,
+        widthMinPixels: zoom < 11 ? 2 : 1.4,
         capRounded: false,
         billboard: false,
         pickable: false,
@@ -206,6 +224,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
       _normalize: false,
       coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
       coordinateOrigin: [apOrigin[0], apOrigin[1], 0],
+      modelMatrix: liftMatrix(zoom),
       extruded: false,
       getFillColor: (_: any, {index, target}: any) => {
         target[0] = col[index * 4];

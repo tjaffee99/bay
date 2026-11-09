@@ -817,9 +817,15 @@ def histories(name, g, d):
         Y = np.take_along_axis(Y, order, 0)
         n = np.zeros((r1 - r0, cols), np.int8)
         last = N[r0:r1].copy()
+        # collect up to 8 changes per cell, then keep the first and the LAST three: the
+        # farm eras of the Santa Clara Valley (grazing -> grain -> orchard …) used to fill
+        # the four slots and the airport / city that came after them was dropped
+        MAXC = 8
+        CC = np.full((MAXC, r1 - r0, cols), 255, np.uint8)
+        YY = np.full((MAXC, r1 - r0, cols), np.nan, np.float32)
         for e in range(C.shape[0]):
             ce, ye = C[e], Y[e]
-            ok = np.isfinite(ye) & (ce != last) & (n < 4)
+            ok = np.isfinite(ye) & (ce != last) & (n < MAXC)
             # agriculture can't come after urbanisation / fill
             ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, SUBURB, FILL, PARK]))
             # natural "fill" after the place is already urban is meaningless
@@ -832,10 +838,18 @@ def histories(name, g, d):
                 ok &= ~((ce == FILL) & nxt_urban)
             idx = n[ok]
             rr, cc = np.nonzero(ok)
-            covers[idx + 1, rr + r0, cc] = ce[ok]
-            years[idx, rr + r0, cc] = ye[ok]
+            CC[idx, rr, cc] = ce[ok]
+            YY[idx, rr, cc] = ye[ok]
             last = np.where(ok, ce, last)
             n = n + ok
+        # slots: changes 0..3 when n <= 4, else change 0 and changes n-3 .. n-1
+        for slot in range(4):
+            src = np.where(n <= 4, slot, np.where(slot == 0, 0, n - 4 + slot)).astype(np.int64)
+            take = slot < np.minimum(n, 4)
+            rr, cc = np.nonzero(take)
+            covers[slot + 1, rr + r0, cc] = CC[src[rr, cc], rr, cc]
+            years[slot, rr + r0, cc] = YY[src[rr, cc], rr, cc]
+        n = np.minimum(n, 4)
         n_all[r0:r1] = n
     n = n_all
     log(f"terrain {name}: changes per vertex " + str(np.bincount(n.ravel(), minlength=4).tolist()))
