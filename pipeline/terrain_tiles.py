@@ -390,6 +390,20 @@ def histories(name, g, d):
         ev_cover.append((idx, cv))
         ev_year.append(yv)
 
+    def site_cleared(spans, jit):
+        # a site part whose use ended is cleared ground from then on, unless a later part
+        # of the same site took over the ground (sparse cell indices, not full grids)
+        hv = h.ravel()
+        for idx, y0, y1 in spans:
+            if y1 >= 9999:
+                continue
+            later = [i2 for i2, z0, _ in spans if z0 >= y1 - 0.5]
+            if later:
+                idx = np.setdiff1d(idx, np.concatenate(later), assume_unique=False)
+            if len(idx):
+                ev_cover.append((idx, np.full(len(idx), FILL, np.uint8)))
+                ev_year.append((y1 + jit * hv[idx]).astype(np.float32))
+
     # ---- urban year
     urban_y = np.full((rows, cols), np.nan, np.float32)
     sfy, bcov = sf_building_years(g)
@@ -696,17 +710,11 @@ def histories(name, g, d):
                 if not m.any():
                     continue
                 event(m, c, float(y0) + 0.3 * h)
-                spans.append((m, float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                spans.append((np.flatnonzero(m), float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                del m
                 n_site += 1
             # cleared at the end, unless another part of the site took over the ground
-            for m, y0, y1 in spans:
-                if y1 >= 9999:
-                    continue
-                later = np.zeros_like(m)
-                for m2, z0, _ in spans:
-                    if z0 >= y1 - 0.5:
-                        later |= m2
-                event(m & ~later, FILL, y1 + 0.3 * h)
+            site_cleared(spans, 0.3)
         log(f"terrain {name}: {n_site} parts of vanished sites")
 
     # ---- military and industrial sites (data/manual/industrial_sites, audited against the
@@ -731,16 +739,10 @@ def histories(name, g, d):
                 if not m.any():
                     continue
                 event(m, c, float(y0) + 0.5 * h)
-                spans.append((m, float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                spans.append((np.flatnonzero(m), float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                del m
                 n_ind += 1
-            for m, y0, y1 in spans:
-                if y1 >= 9999:
-                    continue
-                later = np.zeros_like(m)
-                for m2, z0, _ in spans:
-                    if z0 >= y1 - 0.5:
-                        later |= m2
-                event(m & ~later, FILL, y1 + 0.5 * h)
+            site_cleared(spans, 0.5)
         log(f"terrain {name}: {n_ind} parts of military / industrial sites")
 
     # ---- airports (airports.py): the field is airfield grass from its opening year
