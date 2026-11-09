@@ -373,6 +373,22 @@ def storey_crops(ids, out, pct=60, margin=12, cols=3, width=520):
     return out
 
 
+def add_storeys(reads):
+    """scratch aid: {footprint id: stories} read off the crops -> storeys.json entries [x, y, stories] at a point inside
+    the footprint on its 25 % scan (pixels survive a re-extraction; ids may not)."""
+    from shapely.geometry import Polygon
+    p = E.CONTROL / "storeys.json"
+    st = json.load(open(p)) if p.exists() else {}
+    for fid, n in reads.items():
+        key = fid.rsplit("_", 1)[0]
+        r = [r for r in json.load(open(E.INTERIM / f"{key}.json")) if r["id"] == fid][0]
+        q = Polygon(r["px_ring"]).buffer(0).representative_point()
+        lst = st.setdefault(key, [])
+        lst[:] = [e for e in lst if Polygon(r["px_ring"]).buffer(0).distance(Polygon([(e[0] - 1, e[1] - 1), (e[0] + 1, e[1] - 1), (e[0] + 1, e[1] + 1)])) > 0.5]
+        lst.append([round(q.x, 1), round(q.y, 1), n])
+    json.dump(st, open(p, "w"), indent=1)
+
+
 def storeys_to_attributes():
     """control/<city>/storeys.json {key: [[x, y, stories], ...]} (storey numbers read off the scans by eye, pixel on the
     25 % scan inside the building) -> {footprint id: stories}: the footprint containing the pixel, else the nearest
