@@ -348,7 +348,7 @@ def row_timing(g, year):
     return yi + 0.9 * jit
 
 
-def lidar_parts_region(g):
+def lidar_parts_region(g, start=None):
     """Replace footprints by their LiDAR parts (data/interim/<job>_lidar_parts.parquet of
     the region jobs: Oakland, Berkeley, San José, … downtowns; 2020-21 USGS 3DEP surveys).
     Returns the new frame, the source row of each new row (None if nothing changed), the
@@ -356,7 +356,23 @@ def lidar_parts_region(g):
     import glob
     files = [f for f in sorted(glob.glob(str(INTERIM / "*_lidar_parts.parquet")))
              if not Path(f).name.startswith("sf")]
-    none = (g, None, np.full(len(g), np.nan), np.full(len(g), "", dtype=object))
+    hfiles = [f for f in sorted(glob.glob(str(INTERIM / "*_lidar_heights.parquet")))
+              if not Path(f).name.startswith("sf")]
+    # single-level footprints: the measured whole-footprint height (roof median minus the
+    # footprint's ground) where the building stood at the survey (Overture often has none)
+    single_h = np.full(len(g), np.nan)
+    if hfiles and "id" in g:
+        hh = pd.concat([pd.read_parquet(f, columns=["key", "status", "lidar_height_m", "lidar_year"]) for f in hfiles])
+        hh = hh[(hh.status == "single") & (pd.to_numeric(hh.lidar_height_m, errors="coerce") > 2.0)]
+        hmap = dict(zip(hh.key.astype(str), hh.lidar_height_m.astype(float)))
+        ymap = dict(zip(hh.key.astype(str), hh.lidar_year.astype(float)))
+        ids = g["id"].astype(str).values
+        single_h = np.array([hmap.get(k, np.nan) for k in ids])
+        if start is not None:
+            sy = np.array([ymap.get(k, np.nan) for k in ids])
+            single_h = np.where(np.asarray(start, float) <= sy + 0.5, single_h, np.nan)
+        log(f"region: {int(np.isfinite(single_h).sum())} footprints take their measured LiDAR height")
+    none = (g, None, single_h, np.full(len(g), "", dtype=object))
     if not files or "id" not in g:
         return none
     lp = pd.concat([gpd.read_parquet(f).to_crs(4326) for f in files], ignore_index=True)
@@ -387,7 +403,7 @@ def lidar_parts_region(g):
     new = g.iloc[rows].copy()
     new["geometry"] = list(g.geometry.values[keep]) + geoms
     new = gpd.GeoDataFrame(new.reset_index(drop=True), geometry="geometry", crs=g.crs)
-    lidar_h = np.concatenate([np.full(len(keep), np.nan), np.asarray(hs)])
+    lidar_h = np.concatenate([single_h[keep], np.asarray(hs)])
     lgroup = np.concatenate([np.full(len(keep), "", dtype=object), np.asarray(grp, dtype=object)])
     log(f"region: LiDAR stepped massing: {len(drop)} footprints -> {len(src_rows)} parts ({len(files)} areas)")
     return new, rows, lidar_h, lgroup
@@ -456,7 +472,7 @@ def main():
     start = row_timing(g, year)
     # stepped massing from airborne LiDAR in the downtowns (lidar_parts.py region jobs):
     # footprints with several roof levels become parts that keep their building's years
-    g, rows, lidar_h, lgroup = lidar_parts_region(g)
+    g, rows, lidar_h, lgroup = lidar_parts_region(g, start)
     if rows is not None:
         year, raw, conf, end, start, src = (np.asarray(a)[rows] for a in (year, raw, conf, end, start, src))
     H, stories, area = heights(g)
