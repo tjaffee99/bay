@@ -1,0 +1,1320 @@
+{
+ "residential": true,
+ "notes": "sheet 27 (May 1920): west of Laurel Av -> Railroad Av, 6th -> 9th Av; north = left. Railroad Av corners not used (blocks fitted with the blocks across B St).",
+ "blocks": [
+  {
+   "name": "224",
+   "streets": {
+    "N": "6th avenue",
+    "S": "7th avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     98.5,
+     420
+    ],
+    [
+     98.5,
+     73
+    ],
+    [
+     572.5,
+     73
+    ],
+    [
+     572.5,
+     420
+    ]
+   ],
+   "corners": [
+    {
+     "x": 99.4,
+     "y": 418.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "224"
+    },
+    {
+     "x": 572.5,
+     "y": 419.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "224"
+    },
+    {
+     "x": 99.4,
+     "y": 1098.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 98.1,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 573.5,
+     "y": 524.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 573.5,
+     "y": 1099.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "223"
+   ],
+   "px4": [
+    [
+     99.4,
+     418.1
+    ],
+    [
+     98.1,
+     71.6
+    ],
+    [
+     572.5,
+     72.9
+    ],
+    [
+     572.5,
+     419.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 99.4,
+     "y": 418.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 572.5,
+     "y": 419.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    98.08676231664435,
+    71.59095814544926,
+    572.5,
+    419.4078947368421
+   ]
+  },
+  {
+   "name": "239",
+   "streets": {
+    "N": "7th avenue",
+    "S": "8th avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     678.5,
+     421
+    ],
+    [
+     678.5,
+     73
+    ],
+    [
+     1016,
+     73
+    ],
+    [
+     1016,
+     421
+    ]
+   ],
+   "corners": [
+    {
+     "x": 678.5,
+     "y": 419.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "239"
+    },
+    {
+     "x": 1016.0,
+     "y": 421.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "239"
+    },
+    {
+     "x": 679.9,
+     "y": 1099.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 678.6,
+     "y": 525.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 1016.0,
+     "y": 526.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 1016.0,
+     "y": 1100.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "238"
+   ],
+   "px4": [
+    [
+     678.5,
+     419.2
+    ],
+    [
+     678.5,
+     73.2
+    ],
+    [
+     1016.0,
+     75.8
+    ],
+    [
+     1016.0,
+     421.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 678.5,
+     "y": 419.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1016.0,
+     "y": 421.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    678.5,
+    73.18421052631578,
+    1016.0,
+    421.8157894736842
+   ]
+  },
+  {
+   "name": "251",
+   "streets": {
+    "N": "8th avenue",
+    "S": "9th avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     1106.5,
+     423
+    ],
+    [
+     1106.5,
+     76
+    ],
+    [
+     1443.5,
+     76
+    ],
+    [
+     1443.5,
+     423
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1106.5,
+     "y": 421.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1442.3,
+     "y": 422.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1106.6,
+     "y": 1101.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1105.3,
+     "y": 527.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1444.5,
+     "y": 526.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1444.5,
+     "y": 1101.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "250"
+   ],
+   "px4": [
+    [
+     1106.5,
+     421.6
+    ],
+    [
+     1106.5,
+     76.1
+    ],
+    [
+     1446.2,
+     77.4
+    ],
+    [
+     1442.3,
+     422.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.95,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1106.5,
+     "y": 421.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1442.3,
+     "y": 422.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1106.5,
+    76.09210526315789,
+    1446.2075481631105,
+    422.90312126289655
+   ]
+  },
+  {
+   "name": "223",
+   "streets": {
+    "N": "6th avenue",
+    "S": "7th avenue",
+    "W": "laurel avenue",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     98.5,
+     1100
+    ],
+    [
+     98.5,
+     524.5
+    ],
+    [
+     573.5,
+     524.5
+    ],
+    [
+     573.5,
+     1100
+    ]
+   ],
+   "corners": [
+    {
+     "x": 99.4,
+     "y": 1098.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 98.1,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 573.5,
+     "y": 524.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 573.5,
+     "y": 1099.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     99.4,
+     1098.1
+    ],
+    [
+     98.1,
+     524.0
+    ],
+    [
+     573.5,
+     524.0
+    ],
+    [
+     573.5,
+     1099.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.82,
+    1.0,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 99.4,
+     "y": 1098.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 98.1,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 573.5,
+     "y": 524.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 573.5,
+     "y": 1099.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    98.09096209245965,
+    524.0,
+    573.5,
+    1099.407894736842
+   ]
+  },
+  {
+   "name": "238",
+   "streets": {
+    "N": "7th avenue",
+    "S": "8th avenue",
+    "W": "laurel avenue",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     679.5,
+     1100.5
+    ],
+    [
+     679.5,
+     526
+    ],
+    [
+     1016.5,
+     526
+    ],
+    [
+     1016.5,
+     1100.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 679.9,
+     "y": 1099.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 678.6,
+     "y": 525.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1016.0,
+     "y": 526.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1016.0,
+     "y": 1100.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     679.9,
+     1099.6
+    ],
+    [
+     678.6,
+     525.6
+    ],
+    [
+     1016.0,
+     526.9
+    ],
+    [
+     1016.0,
+     1100.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 679.9,
+     "y": 1099.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 678.6,
+     "y": 525.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1016.0,
+     "y": 526.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1016.0,
+     "y": 1100.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    678.5911629260723,
+    525.5885567816886,
+    1016.0,
+    1100.9059425269406
+   ]
+  },
+  {
+   "name": "250",
+   "streets": {
+    "N": "8th avenue",
+    "S": "9th avenue",
+    "W": "laurel avenue",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     1106.7,
+     1101
+    ],
+    [
+     1106.7,
+     527.5
+    ],
+    [
+     1444.5,
+     527.5
+    ],
+    [
+     1444.5,
+     1101
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1106.6,
+     "y": 1101.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1105.3,
+     "y": 527.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.5,
+     "y": 526.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.5,
+     "y": 1101.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1106.6,
+     1101.0
+    ],
+    [
+     1105.3,
+     527.9
+    ],
+    [
+     1444.5,
+     526.6
+    ],
+    [
+     1444.5,
+     1101.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1106.6,
+     "y": 1101.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1105.3,
+     "y": 527.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.5,
+     "y": 526.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.5,
+     "y": 1101.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1105.2930536755755,
+    526.5921052631579,
+    1444.5,
+    1101.0
+   ]
+  },
+  {
+   "name": "222",
+   "streets": {
+    "N": "6th avenue",
+    "S": "7th avenue",
+    "W": "x",
+    "E": "laurel avenue"
+   },
+   "px4_est": [
+    [
+     148,
+     1556
+    ],
+    [
+     148,
+     1205
+    ],
+    [
+     574.5,
+     1205
+    ],
+    [
+     574.5,
+     1556
+    ]
+   ],
+   "corners": [
+    {
+     "x": 99.4,
+     "y": 1098.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 98.1,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 573.5,
+     "y": 524.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    },
+    {
+     "x": 573.5,
+     "y": 1099.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "223"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW",
+    "NE"
+   ],
+   "with": [
+    "223"
+   ],
+   "px4": [
+    [
+     148.9,
+     1554.2
+    ],
+    [
+     147.6,
+     1204.6
+    ],
+    [
+     574.5,
+     1205.9
+    ],
+    [
+     574.5,
+     1556.8
+    ]
+   ],
+   "edge_q": [
+    0.61,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 574.5,
+     "y": 1205.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 11.9 184.5] at laurel avenue x 7th avenue NW"
+    }
+   ],
+   "zone_px": [
+    30.0,
+    1205.0,
+    574.5,
+    1900.0
+   ]
+  },
+  {
+   "name": "237",
+   "streets": {
+    "N": "7th avenue",
+    "S": "9th avenue",
+    "W": "x",
+    "E": "laurel avenue"
+   },
+   "px4_est": [
+    [
+     680.5,
+     1556
+    ],
+    [
+     680.5,
+     1207.5
+    ],
+    [
+     1445.2,
+     1207.5
+    ],
+    [
+     1445.2,
+     1556
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1445.2,
+     "y": 1208.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "237"
+    },
+    {
+     "x": 679.9,
+     "y": 1099.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 678.6,
+     "y": 525.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 1016.0,
+     "y": 526.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 1016.0,
+     "y": 1100.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "238"
+    },
+    {
+     "x": 1106.6,
+     "y": 1101.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "laurel avenue",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1105.3,
+     "y": 527.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "8th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1444.5,
+     "y": 1101.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "238",
+    "250"
+   ],
+   "px4": [
+    [
+     680.5,
+     1556.1
+    ],
+    [
+     680.5,
+     1206.2
+    ],
+    [
+     1445.2,
+     1208.8
+    ],
+    [
+     1445.2,
+     1557.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 680.5,
+     "y": 1206.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "laurel avenue",
+      "7th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 11.7 164.3] at laurel avenue x 7th avenue SW"
+    },
+    {
+     "x": 1445.2,
+     "y": 1208.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "laurel avenue",
+      "9th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    680.5,
+    1207.5,
+    1445.2,
+    1900.0
+   ]
+  }
+ ],
+ "pct": 25
+}
