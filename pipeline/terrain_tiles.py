@@ -364,6 +364,15 @@ def histories(name, g, d):
     # Yerba Buena Shoals under Treasure Island), whatever the coarser c.1800 layers say
     made_land = np.isin(b98, [12, 13]) & ~np.isin(N, list(WET))
     N[made_land] = SHALLOW
+    # inland water today that no c.1800 map shows (SFEI / Hidden Nature ponds, lagoons and
+    # lakes stay natural): reservoirs, gravel pits, park / golf lakes and stock ponds were
+    # dry ground in 1769. Researched ones are dated by water_history.csv below; the rest
+    # appear in the post-war decades (gravel pits, ponds)
+    later_water = water_now & (N == RESERVOIR) & (hist == 0) & (elev > 2)
+    if later_water.any():
+        land_ok = ~water_now & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
+        N[later_water] = nearest_fill(N, land_ok)[later_water]
+        log(f"terrain {name}: {int(later_water.sum())} cells of today's inland water were dry before their reservoir / pit / pond")
     # quarries and landfills (data/manual/industrial_sites) are WorldCover "bare", read as
     # natural rock above: before the digging / dumping the ground was the hillside around
     # them (Permanente, Selby, Stevens Creek, San Rafael rock quarry, the landfills)
@@ -597,6 +606,7 @@ def histories(name, g, d):
     event(np.isfinite(lake_y), RESERVOIR, lake_y)
     event(np.isfinite(shal_y), SHALLOW, shal_y)
     del lake_y, shal_y
+    event(later_water & ~researched_water, RESERVOIR, 1945.0 + 20.0 * h)
     event(broad & ~researched_water, SHALLOW, 1870.0 + 20.0 * h)
 
     # ---- agriculture (outside SF)
