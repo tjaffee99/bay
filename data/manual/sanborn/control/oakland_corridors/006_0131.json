@@ -1,6 +1,6 @@
 {
  "residential": true,
- "notes": "Broadway - Richmond Ave, Croxton Ave - Orchard St: the I-580 cut across Piedmont, Randwick and Richmond Ave; one zone drawn by hand over the sheet's blocks, placed by two street crossings (Piedmont Ave x Randwick Ave, Richmond Blvd x Randwick Ave; the chamfer match fails here: 14 % inliers)",
+ "notes": "Broadway - Richmond Ave, Croxton Ave - Orchard St: the I-580 cut across Piedmont, Randwick and Richmond Ave; one zone drawn by hand over the sheet's blocks, placed by two street crossings (Piedmont Ave x Randwick Ave, Richmond Blvd x Randwick Ave; the chamfer match fails here: 14 % inliers); NOT USED: the two-crossing fit leaves the houses ~15 deg off today's Brook St houses and the chamfer match fails (14 % inliers)",
  "mode": "chamfer_only",
  "predicted_from": [
   [
