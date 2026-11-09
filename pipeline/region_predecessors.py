@@ -124,7 +124,10 @@ def extent_fill(today, pred, areas, lots=None):
     alone; Sanborn tracings replace these inside their coverage. Procedural."""
     import glob
     from pathlib import Path
-    files = sorted(glob.glob(str(INTERIM.parent / "manual" / "region_extents" / "*.geojson")))
+    import re
+    # only the dated snapshots <town>_<year>.geojson (not coverage.geojson etc.)
+    files = sorted(f for f in glob.glob(str(INTERIM.parent / "manual" / "region_extents" / "*.geojson"))
+                   if re.fullmatch(r"[a-z_]+_\d{4}", Path(f).stem))
     empty = gpd.GeoDataFrame(geometry=[], crs=UTM)
     if not files:
         return empty
@@ -170,8 +173,10 @@ def extent_fill(today, pred, areas, lots=None):
             y1 = years[k1]
             y0 = years[k1 - 1] if k1 > 0 else y1 - 25.0
             m = lots.m.values[i]
-            if np.isfinite(m) and m <= y1 + 2:
-                continue          # today's building was already there: it is the original
+            # today's building already there (or put up within ~15 years: infill of a block
+            # that was mostly built, not a replacement): it is the lot's first building
+            if np.isfinite(m) and m <= y1 + 15:
+                continue
             lot = lots.geometry.values[i]
             if psidx is not None and len(psidx.query(lot.buffer(-1.0), predicate="intersects")):
                 continue          # already has a predecessor (generated / documented / corridor)
