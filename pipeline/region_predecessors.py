@@ -111,6 +111,112 @@ def generated(today, areas):
     return out
 
 
+def extent_fill(today, pred, areas, lots=None):
+    """Built-up extent snapshots (data/manual/region_extents/<town>_<year>.geojson: where a
+    town was built up at a map's date, digitised from USGS topo editions / Sanborn key maps;
+    README there). Inside a snapshot, a parcel whose building today is younger than the
+    snapshot had an older building: an era-typical predecessor (same massing rules as
+    pre-1906 SF) stands from when its block was built — between the previous snapshot that
+    didn't contain it and the first that does, one date per ~120 m block so whole blocks go
+    up together — until today's building replaced it (or a clearance). Vacant parcels inside
+    a snapshot keep their predecessor until 10 years after the last snapshot showing them
+    built. Parcels already carrying a predecessor (generated, documented, corridor) are left
+    alone; Sanborn tracings replace these inside their coverage. Procedural."""
+    import glob
+    from pathlib import Path
+    files = sorted(glob.glob(str(INTERIM.parent / "manual" / "region_extents" / "*.geojson")))
+    empty = gpd.GeoDataFrame(geometry=[], crs=UTM)
+    if not files:
+        return empty
+    snaps: dict = {}
+    for f in files:
+        g = gpd.read_file(f)
+        if not len(g) or "year" not in g:
+            continue
+        town = str(g["town"].iloc[0]) if "town" in g else Path(f).stem.rsplit("_", 1)[0]
+        y = float(pd.to_numeric(g["year"], errors="coerce").iloc[0])
+        if not np.isfinite(y):
+            continue
+        poly = shapely.union_all(g.to_crs(UTM).geometry.values)
+        snaps.setdefault(town, []).append((y, poly))
+    if not snaps:
+        return empty
+    lots = load_lots() if lots is None else lots
+    tu = today.to_crs(UTM)
+    tp = gpd.GeoDataFrame({"start": tu.start_year.values, "h": tu.height.values, "use": tu.use.values},
+                          geometry=tu.geometry.representative_point().values, crs=UTM)
+    j = gpd.sjoin(tp, lots[["geometry"]], predicate="within", how="inner")
+    per = j.groupby("index_right").agg(m=("start", "min"), use=("use", "max"))
+    lots = lots.join(per, how="left")
+    lc = lots.geometry.representative_point()
+    lxy = np.column_stack([lc.x.values, lc.y.values])
+    hs = tp.h.values
+    ttree = cKDTree(np.column_stack([tp.geometry.x.values, tp.geometry.y.values]))
+    psidx = pred.sindex if len(pred) else None
+    sidx = lots.sindex
+    rows = []
+    n_lots = 0
+    for town, lst in snaps.items():
+        lst.sort(key=lambda t: t[0])
+        years = [y for y, _ in lst]
+        inside = np.zeros((len(lst), len(lots)), bool)
+        for k, (_, poly) in enumerate(lst):
+            shapely.prepare(poly)
+            cand = sidx.query(poly, predicate="intersects")
+            inside[k, cand] = shapely.contains_xy(poly, lxy[cand, 0], lxy[cand, 1])
+        has = inside.any(axis=0)
+        for i in np.nonzero(has)[0]:
+            k1 = int(np.argmax(inside[:, i]))
+            y1 = years[k1]
+            y0 = years[k1 - 1] if k1 > 0 else y1 - 25.0
+            m = lots.m.values[i]
+            if np.isfinite(m) and m <= y1 + 2:
+                continue          # today's building was already there: it is the original
+            lot = lots.geometry.values[i]
+            if psidx is not None and len(psidx.query(lot.buffer(-1.0), predicate="intersects")):
+                continue          # already has a predecessor (generated / documented / corridor)
+            key = f"x{int(lxy[i, 0])}_{int(lxy[i, 1])}"
+            blk = f"b{int(lxy[i, 0] // 120)}_{int(lxy[i, 1] // 120)}"
+            start = y0 + (y1 - y0) * (0.25 + 0.65 * h01(blk, "grow")) + 1.5 * h01(key, "lot")
+            start = min(start, y1 - 0.3)
+            if np.isfinite(m):
+                end = m - 0.3
+            else:
+                last = max(years[k] for k in range(len(lst)) if inside[k, i])
+                end = min(last + 10.0, 2005.0)
+            c = lc.values[i]
+            for poly, cs, ce, fab, _aid in areas:
+                if cs > start + 2 and c.within(poly):
+                    end = min(end, cs + (ce - cs) * h01(key, "c"))
+            if end <= start + 3:
+                continue
+            d, idx = ttree.query(lxy[i], k=20, distance_upper_bound=150)
+            ok = np.isfinite(d)
+            med_h = float(np.median(hs[idx[ok]])) if ok.any() else 6.0
+            downtown = med_h > 11
+            industrial = int(np.nan_to_num(lots.use.values[i], nan=0)) == 5
+            n_lots += 1
+            if lot.area > 1500:
+                fab_ = "warehouses" if industrial else ("victorian_rows" if start < 1906 and not downtown else "mixed")
+                rows += strips_for_lot(lot, key, fab_, lambda hh, s0=start: s0 + 3 * hh, end, sidx, "region_procedural",
+                                       "predecessor_extent")
+                continue
+            fp = footprint(lot, downtown or industrial)
+            if fp is None:
+                continue
+            st, sh, base = massing(start, downtown, key)
+            if industrial:
+                st, sh, base = 1 + int(2 * h01(key)), 4.5, 0.8
+            rows.append({"geometry": fp, "start_year": start, "end_year": end, "height": st * sh + base, "stories": st,
+                         "kind": "building", "source": "region_procedural", "mapblklot": key,
+                         "use_sanborn": "warehouse" if industrial else "dwelling",
+                         "year_confidence": "procedural", "year_reason": f"predecessor_extent:{town}_{int(y1)}"})
+    out = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else empty
+    log(f"region predecessors: extents ({', '.join(f'{t} {len(v)}' for t, v in snaps.items())} snapshots): "
+        f"{len(out)} buildings on {n_lots} parcels built up before today's building")
+    return out
+
+
 _DEBUG: dict = {}
 
 
@@ -562,6 +668,9 @@ def region_predecessors(today):
     from sf_buildings import redevelopment_areas
     areas = redevelopment_areas()
     pred = generated(today, areas)
+    ex = extent_fill(today, pred, areas)
+    if len(ex):
+        pred = gpd.GeoDataFrame(pd.concat([pred, ex], ignore_index=True), geometry="geometry", crs=UTM)
     # documented demolished buildings (data/tables/notable_demolished_region.csv): on their
     # parcel, or their traced Sanborn outline when the row points at one (apply_sanborn)
     lots = load_lots()
