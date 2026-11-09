@@ -1,0 +1,753 @@
+{
+ "notes": "north up (rotated against the other sheets); Madison (left) -> Oak -> Lake Merritt; 13th St (bottom) -> 14th St -> the blocks running north to the lake (905 / 907, 906 = Lakeside Park: Oakland Public Museum, the high-pressure pumping station)",
+ "refine_R": 22,
+ "blocks": [
+  {
+   "name": "905",
+   "streets": {
+    "N": "17th street",
+    "S": "14th street",
+    "W": "madison street",
+    "E": "oak street"
+   },
+   "px4_est": [
+    [
+     165,
+     30
+    ],
+    [
+     620,
+     30
+    ],
+    [
+     620,
+     1400
+    ],
+    [
+     165,
+     1400
+    ]
+   ],
+   "corners": [
+    {
+     "x": 625.7,
+     "y": 1390.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 166.9,
+     "y": 1392.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 168.2,
+     "y": 1493.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 624.7,
+     "y": 1488.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 627.2,
+     "y": 1790.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 170.7,
+     "y": 1794.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 745.8,
+     "y": 1518.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    },
+    {
+     "x": 748.2,
+     "y": 1791.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "903",
+    "904",
+    "906"
+   ],
+   "px4": [
+    [
+     165.6,
+     8.5
+    ],
+    [
+     621.7,
+     8.5
+    ],
+    [
+     625.7,
+     1390.2
+    ],
+    [
+     166.9,
+     1392.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.55,
+    0.81,
+    0.86
+   ],
+   "corners_all": [
+    {
+     "x": 625.7,
+     "y": 1390.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 166.9,
+     "y": 1392.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    165.5714560122935,
+    8.5,
+    625.695307157036,
+    1392.8047947701334
+   ]
+  },
+  {
+   "name": "903",
+   "streets": {
+    "N": "14th street",
+    "S": "13th street",
+    "W": "madison street",
+    "E": "oak street"
+   },
+   "px4_est": [
+    [
+     165,
+     1490
+    ],
+    [
+     620,
+     1490
+    ],
+    [
+     620,
+     1810
+    ],
+    [
+     165,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 168.2,
+     "y": 1493.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 624.7,
+     "y": 1488.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 627.2,
+     "y": 1790.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 170.7,
+     "y": 1794.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "905",
+    "904",
+    "906"
+   ],
+   "px4": [
+    [
+     168.2,
+     1493.6
+    ],
+    [
+     624.7,
+     1488.3
+    ],
+    [
+     627.2,
+     1790.7
+    ],
+    [
+     170.7,
+     1794.7
+    ]
+   ],
+   "edge_q": [
+    0.69,
+    0.88,
+    0.74,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 168.2,
+     "y": 1493.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 624.7,
+     "y": 1488.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 627.2,
+     "y": 1790.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 170.7,
+     "y": 1794.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    168.21376977015822,
+    1488.3143973549745,
+    627.1571893367019,
+    1794.6743225337605
+   ]
+  },
+  {
+   "name": "904",
+   "streets": {
+    "N": "14th street",
+    "S": "13th street",
+    "W": "oak street",
+    "E": "lakeside drive"
+   },
+   "px4_est": [
+    [
+     745,
+     1500
+    ],
+    [
+     1150,
+     1500
+    ],
+    [
+     1150,
+     1810
+    ],
+    [
+     745,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 745.8,
+     "y": 1518.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    },
+    {
+     "x": 748.2,
+     "y": 1791.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    },
+    {
+     "x": 625.7,
+     "y": 1390.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 166.9,
+     "y": 1392.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 168.2,
+     "y": 1493.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 624.7,
+     "y": 1488.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 627.2,
+     "y": 1790.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 170.7,
+     "y": 1794.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "905",
+    "903",
+    "906"
+   ],
+   "px4": [
+    [
+     745.8,
+     1518.0
+    ],
+    [
+     1161.5,
+     1518.0
+    ],
+    [
+     1161.5,
+     1788.6
+    ],
+    [
+     748.2,
+     1791.3
+    ]
+   ],
+   "edge_q": [
+    0.02,
+    0.03,
+    0.81,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 745.8,
+     "y": 1518.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 748.2,
+     "y": 1791.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    745.8370118845501,
+    1518.0,
+    1161.5,
+    1791.2952761160525
+   ]
+  },
+  {
+   "name": "906",
+   "streets": {
+    "N": "17th street",
+    "S": "14th street",
+    "W": "oak street",
+    "E": "lakeside drive"
+   },
+   "px4_est": [
+    [
+     745,
+     30
+    ],
+    [
+     1300,
+     30
+    ],
+    [
+     1300,
+     1395
+    ],
+    [
+     745,
+     1395
+    ]
+   ],
+   "corners": [
+    {
+     "x": 625.7,
+     "y": 1390.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 166.9,
+     "y": 1392.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "905"
+    },
+    {
+     "x": 168.2,
+     "y": 1493.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 624.7,
+     "y": 1488.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 627.2,
+     "y": 1790.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 170.7,
+     "y": 1794.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "903"
+    },
+    {
+     "x": 745.8,
+     "y": 1518.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    },
+    {
+     "x": 748.2,
+     "y": 1791.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "oak street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "904"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "905",
+    "903",
+    "904"
+   ],
+   "px4": [
+    [
+     743.1,
+     8.5
+    ],
+    [
+     1321.1,
+     8.5
+    ],
+    [
+     1322.4,
+     1381.0
+    ],
+    [
+     745.8,
+     1381.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.0,
+    0.02,
+    0.59
+   ],
+   "corners_all": [
+    {
+     "x": 745.8,
+     "y": 1381.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "oak street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.1  1.1] at oak street x 14th street NE"
+    }
+   ],
+   "zone_px": [
+    743.1427607480239,
+    8.5,
+    1322.3943994601889,
+    1381.0
+   ]
+  }
+ ],
+ "pct": 25
+}

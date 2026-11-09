@@ -1,0 +1,654 @@
+{
+ "residential": true,
+ "refine_R": 30,
+ "predicted_from": [
+  [
+   1490,
+   1745,
+   "Telegraph",
+   "44th"
+  ],
+  [
+   1190,
+   564,
+   "Shattuck",
+   "47th"
+  ],
+  [
+   1060,
+   174,
+   "Shattuck",
+   "48th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5089",
+   "streets": {
+    "N": "48th",
+    "S": "47th",
+    "W": "Grove",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     10.0,
+     222.3
+    ],
+    [
+     1011.4,
+     222.3
+    ],
+    [
+     1100.8,
+     505.3
+    ],
+    [
+     10.0,
+     505.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1006.7,
+     "y": 214.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "48th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1100.5,
+     "y": 515.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1143.3,
+     "y": 606.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    },
+    {
+     "x": 1265.8,
+     "y": 998.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5088",
+    "5087"
+   ],
+   "px4": [
+    [
+     17.7,
+     214.3
+    ],
+    [
+     1006.7,
+     214.3
+    ],
+    [
+     1100.5,
+     515.8
+    ],
+    [
+     21.9,
+     515.8
+    ]
+   ],
+   "edge_q": [
+    0.15,
+    0.74,
+    0.23,
+    0.92
+   ],
+   "corners_all": [
+    {
+     "x": 1006.7,
+     "y": 214.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "48th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1100.5,
+     "y": 515.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    17.66472940301283,
+    214.3,
+    1100.4969394620698,
+    515.8
+   ]
+  },
+  {
+   "name": "5088",
+   "streets": {
+    "N": "47th",
+    "S": "46th",
+    "W": "Grove",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     10.0,
+     595.6
+    ],
+    [
+     1129.5,
+     595.6
+    ],
+    [
+     1190.9,
+     856.1
+    ],
+    [
+     10.0,
+     856.1
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1143.3,
+     "y": 606.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    },
+    {
+     "x": 1006.7,
+     "y": 214.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "48th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1100.5,
+     "y": 515.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1265.8,
+     "y": 998.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5089",
+    "5087"
+   ],
+   "px4": [
+    [
+     21.5,
+     606.1
+    ],
+    [
+     1143.3,
+     606.1
+    ],
+    [
+     1209.2,
+     885.6
+    ],
+    [
+     21.5,
+     885.6
+    ]
+   ],
+   "edge_q": [
+    0.21,
+    0.24,
+    0.1,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1143.3,
+     "y": 606.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1209.2,
+     "y": 885.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.3 1. ] at Shattuck x 46th NW"
+    }
+   ],
+   "zone_px": [
+    21.5,
+    606.1,
+    1209.1545884075283,
+    885.6
+   ]
+  },
+  {
+   "name": "5087",
+   "streets": {
+    "N": "46th",
+    "S": "45th",
+    "W": "Grove",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     10.0,
+     1013.1
+    ],
+    [
+     1261.6,
+     1013.1
+    ],
+    [
+     1313.0,
+     1232.1
+    ],
+    [
+     10.0,
+     1232.1
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1265.8,
+     "y": 998.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    },
+    {
+     "x": 1006.7,
+     "y": 214.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "48th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1100.5,
+     "y": 515.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1143.3,
+     "y": 606.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5089",
+    "5088"
+   ],
+   "px4": [
+    [
+     23.5,
+     998.1
+    ],
+    [
+     1265.8,
+     998.1
+    ],
+    [
+     1315.9,
+     1211.6
+    ],
+    [
+     26.1,
+     1211.6
+    ]
+   ],
+   "edge_q": [
+    0.27,
+    0.33,
+    0.14,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1265.8,
+     "y": 998.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1315.9,
+     "y": 1211.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.1 1.6] at Shattuck x 45th NW"
+    }
+   ],
+   "zone_px": [
+    23.50396539293439,
+    998.1,
+    1315.8923864231854,
+    1211.6
+   ]
+  },
+  {
+   "name": "5086",
+   "streets": {
+    "N": "45th",
+    "S": "44th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     10.0,
+     1325.6
+    ],
+    [
+     1379.8,
+     1325.6
+    ],
+    [
+     1379.8,
+     1676.0
+    ],
+    [
+     10.0,
+     1676.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1375.8,
+     "y": 1299.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5086"
+    },
+    {
+     "x": 1374.3,
+     "y": 1704.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "44th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5086"
+    },
+    {
+     "x": 1006.7,
+     "y": 214.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "48th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1100.5,
+     "y": 515.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5089"
+    },
+    {
+     "x": 1143.3,
+     "y": 606.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    },
+    {
+     "x": 1265.8,
+     "y": 998.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5089",
+    "5088",
+    "5087"
+   ],
+   "px4": [
+    [
+     27.5,
+     1299.6
+    ],
+    [
+     1375.8,
+     1299.6
+    ],
+    [
+     1374.3,
+     1704.2
+    ],
+    [
+     30.5,
+     1693.9
+    ]
+   ],
+   "edge_q": [
+    0.3,
+    0.19,
+    0.2,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1375.8,
+     "y": 1299.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1374.3,
+     "y": 1704.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "44th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    27.48894496515261,
+    1299.6,
+    1375.8055275174238,
+    1704.2207862322796
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.19773058468182278,
+    -0.036576398686667025,
+    564576.3325756438
+   ],
+   [
+    -0.036576398686667025,
+    -0.19773058468182278,
+    4187856.742304078
+   ]
+  ],
+  "dist_px": 2.59,
+  "inlier_share": 0.81,
+  "rms_m": 0.46,
+  "n_points": 2963
+ }
+}

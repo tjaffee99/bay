@@ -1,0 +1,531 @@
+{
+ "notes": "one part, north to the right: 19th St (left) -> 20th St; 20th St (today Thomas L. Berkley Way) bends north-east beyond Franklin, the block ends on it are rounded or oblique: control on 19th St + Broadway x 20th",
+ "refine_R": 22,
+ "blocks": [
+  {
+   "name": "1257",
+   "streets": {
+    "N": "thomas l berkley way",
+    "S": "19th street",
+    "W": "broadway",
+    "E": "franklin street"
+   },
+   "px4_est": [
+    [
+     904,
+     238
+    ],
+    [
+     904,
+     696
+    ],
+    [
+     205,
+     696
+    ],
+    [
+     205,
+     238
+    ]
+   ],
+   "corners": [
+    {
+     "x": 201.7,
+     "y": 694.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 204.3,
+     "y": 239.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 202.5,
+     "y": 1267.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    },
+    {
+     "x": 202.5,
+     "y": 815.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    },
+    {
+     "x": 202.5,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    },
+    {
+     "x": 202.5,
+     "y": 1388.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    }
+   ],
+   "skip": [
+    "NE"
+   ],
+   "with": [
+    "1259",
+    "2157"
+   ],
+   "px4": [
+    [
+     907.9,
+     239.5
+    ],
+    [
+     906.6,
+     693.1
+    ],
+    [
+     201.7,
+     694.4
+    ],
+    [
+     204.3,
+     239.5
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.75,
+    0.74,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 907.9,
+     "y": 239.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "thomas l berkley way"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 201.7,
+     "y": 694.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 204.3,
+     "y": 239.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    201.69332268910728,
+    239.5,
+    907.9035853826706,
+    694.4141191877699
+   ]
+  },
+  {
+   "name": "1259",
+   "streets": {
+    "N": "thomas l berkley way",
+    "S": "19th street",
+    "W": "franklin street",
+    "E": "webster street"
+   },
+   "px4_est": [
+    [
+     960,
+     805
+    ],
+    [
+     960,
+     1260
+    ],
+    [
+     205,
+     1260
+    ],
+    [
+     205,
+     805
+    ]
+   ],
+   "corners": [
+    {
+     "x": 202.5,
+     "y": 1267.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    },
+    {
+     "x": 202.5,
+     "y": 815.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    },
+    {
+     "x": 201.7,
+     "y": 694.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 204.3,
+     "y": 239.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 202.5,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    },
+    {
+     "x": 202.5,
+     "y": 1388.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "1257",
+    "2157"
+   ],
+   "px4": [
+    [
+     972.5,
+     815.0
+    ],
+    [
+     972.5,
+     1267.5
+    ],
+    [
+     202.5,
+     1267.5
+    ],
+    [
+     202.5,
+     815.0
+    ]
+   ],
+   "edge_q": [
+    0.19,
+    0.5,
+    0.97,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 202.5,
+     "y": 1267.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 202.5,
+     "y": 815.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    202.5,
+    815.0,
+    972.5,
+    1267.5
+   ]
+  },
+  {
+   "name": "2157",
+   "streets": {
+    "N": "thomas l berkley way",
+    "S": "19th street",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1000,
+     1390
+    ],
+    [
+     1000,
+     1845
+    ],
+    [
+     205,
+     1845
+    ],
+    [
+     205,
+     1390
+    ]
+   ],
+   "corners": [
+    {
+     "x": 202.5,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    },
+    {
+     "x": 202.5,
+     "y": 1388.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2157"
+    },
+    {
+     "x": 201.7,
+     "y": 694.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 204.3,
+     "y": 239.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1257"
+    },
+    {
+     "x": 202.5,
+     "y": 1267.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    },
+    {
+     "x": 202.5,
+     "y": 815.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1259"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "1257",
+    "1259"
+   ],
+   "px4": [
+    [
+     1006.0,
+     1388.0
+    ],
+    [
+     1006.0,
+     1839.0
+    ],
+    [
+     202.5,
+     1839.0
+    ],
+    [
+     202.5,
+     1388.0
+    ]
+   ],
+   "edge_q": [
+    0.05,
+    0.78,
+    0.84,
+    0.43
+   ],
+   "corners_all": [
+    {
+     "x": 202.5,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 202.5,
+     "y": 1388.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    202.5,
+    1388.0,
+    1006.0,
+    1839.0
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,1183 @@
+{
+ "notes": "one part, north to the right: 13th St (left) -> 14th St -> 15th St (Jackson-Madison); Harrison (top) -> Madison (bottom); the blocks east of 14th St between Harrison and Jackson run on past the sheet edge; the blocks east of 14th St are fitted on their own (14th St + 15th St corners): against the west-side fits their 14th St corners are 3.3 m off (14th St drawn ~3 m narrower than today's right of way)",
+ "refine_R": 22,
+ "blocks": [
+  {
+   "name": "194",
+   "streets": {
+    "N": "14th street",
+    "S": "13th street",
+    "W": "harrison street",
+    "E": "alice street"
+   },
+   "px4_est": [
+    [
+     702,
+     168
+    ],
+    [
+     702,
+     622
+    ],
+    [
+     398,
+     622
+    ],
+    [
+     398,
+     168
+    ]
+   ],
+   "corners": [
+    {
+     "x": 700.5,
+     "y": 173.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 700.5,
+     "y": 624.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 396.6,
+     "y": 625.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 397.9,
+     "y": 173.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "195",
+    "196"
+   ],
+   "px4": [
+    [
+     700.5,
+     173.5
+    ],
+    [
+     700.5,
+     624.6
+    ],
+    [
+     396.6,
+     625.9
+    ],
+    [
+     397.9,
+     173.5
+    ]
+   ],
+   "edge_q": [
+    0.94,
+    0.85,
+    0.79,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 700.5,
+     "y": 173.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 700.5,
+     "y": 624.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 396.6,
+     "y": 625.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 397.9,
+     "y": 173.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    396.5807615419587,
+    173.5,
+    700.5,
+    625.9140375625781
+   ]
+  },
+  {
+   "name": "195",
+   "streets": {
+    "N": "14th street",
+    "S": "13th street",
+    "W": "alice street",
+    "E": "jackson street"
+   },
+   "px4_est": [
+    [
+     700,
+     745
+    ],
+    [
+     700,
+     1200
+    ],
+    [
+     398,
+     1200
+    ],
+    [
+     398,
+     745
+    ]
+   ],
+   "corners": [
+    {
+     "x": 398.0,
+     "y": 1205.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "195"
+    },
+    {
+     "x": 398.0,
+     "y": 748.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "195"
+    },
+    {
+     "x": 700.5,
+     "y": 173.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "194"
+    },
+    {
+     "x": 700.5,
+     "y": 624.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "194"
+    },
+    {
+     "x": 396.6,
+     "y": 625.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "194"
+    },
+    {
+     "x": 397.9,
+     "y": 173.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "194"
+    },
+    {
+     "x": 701.2,
+     "y": 1326.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "196"
+    },
+    {
+     "x": 703.8,
+     "y": 1777.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "196"
+    },
+    {
+     "x": 400.4,
+     "y": 1778.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "196"
+    },
+    {
+     "x": 399.1,
+     "y": 1326.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "196"
+    }
+   ],
+   "with": [
+    "194",
+    "196"
+   ],
+   "px4": [
+    [
+     699.0,
+     747.6
+    ],
+    [
+     699.0,
+     1204.1
+    ],
+    [
+     398.0,
+     1205.4
+    ],
+    [
+     398.0,
+     748.9
+    ]
+   ],
+   "edge_q": [
+    0.0,
+    0.82,
+    0.77,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 699.0,
+     "y": 747.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 699.0,
+     "y": 1204.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 398.0,
+     "y": 1205.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 398.0,
+     "y": 748.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    398.0,
+    747.596462181945,
+    699.0,
+    1205.407894736842
+   ]
+  },
+  {
+   "name": "196",
+   "streets": {
+    "N": "14th street",
+    "S": "13th street",
+    "W": "jackson street",
+    "E": "madison street"
+   },
+   "px4_est": [
+    [
+     705,
+     1318
+    ],
+    [
+     705,
+     1785
+    ],
+    [
+     398,
+     1785
+    ],
+    [
+     398,
+     1318
+    ]
+   ],
+   "corners": [
+    {
+     "x": 701.2,
+     "y": 1326.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 703.8,
+     "y": 1777.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 400.4,
+     "y": 1778.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 399.1,
+     "y": 1326.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "194",
+    "195"
+   ],
+   "px4": [
+    [
+     701.2,
+     1326.0
+    ],
+    [
+     703.8,
+     1777.6
+    ],
+    [
+     400.4,
+     1778.9
+    ],
+    [
+     399.1,
+     1326.0
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.82,
+    0.79,
+    0.58
+   ],
+   "corners_all": [
+    {
+     "x": 701.2,
+     "y": 1326.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 703.8,
+     "y": 1777.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 400.4,
+     "y": 1778.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 399.1,
+     "y": 1326.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "13th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    399.11464555392763,
+    1326.0,
+    703.7740750565054,
+    1778.897648289306
+   ]
+  },
+  {
+   "name": "2008",
+   "streets": {
+    "N": "17th street",
+    "S": "14th street",
+    "W": "harrison street",
+    "E": "alice street"
+   },
+   "px4_est": [
+    [
+     1640,
+     168
+    ],
+    [
+     1640,
+     622
+    ],
+    [
+     800,
+     622
+    ],
+    [
+     800,
+     168
+    ]
+   ],
+   "corners": [
+    {
+     "x": 800.4,
+     "y": 624.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 799.1,
+     "y": 170.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 819.0,
+     "y": 1203.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    },
+    {
+     "x": 819.0,
+     "y": 748.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    },
+    {
+     "x": 1253.1,
+     "y": 1323.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 1254.4,
+     "y": 1776.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 799.9,
+     "y": 1779.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 798.6,
+     "y": 1319.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "2005",
+    "2002"
+   ],
+   "px4": [
+    [
+     1647.2,
+     174.8
+    ],
+    [
+     1649.8,
+     624.5
+    ],
+    [
+     800.4,
+     624.5
+    ],
+    [
+     799.1,
+     170.8
+    ]
+   ],
+   "edge_q": [
+    0.82,
+    0.87,
+    0.81,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 800.4,
+     "y": 624.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 799.1,
+     "y": 170.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    799.1001393668012,
+    170.7720871210846,
+    1649.8302805471828,
+    624.5
+   ]
+  },
+  {
+   "name": "2005",
+   "streets": {
+    "N": "17th street",
+    "S": "14th street",
+    "W": "alice street",
+    "E": "jackson street"
+   },
+   "px4_est": [
+    [
+     1640,
+     745
+    ],
+    [
+     1640,
+     1200
+    ],
+    [
+     813,
+     1200
+    ],
+    [
+     813,
+     745
+    ]
+   ],
+   "corners": [
+    {
+     "x": 819.0,
+     "y": 1203.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    },
+    {
+     "x": 819.0,
+     "y": 748.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    },
+    {
+     "x": 800.4,
+     "y": 624.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 799.1,
+     "y": 170.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 1253.1,
+     "y": 1323.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 1254.4,
+     "y": 1776.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 799.9,
+     "y": 1779.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 798.6,
+     "y": 1319.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "2008",
+    "2002"
+   ],
+   "px4": [
+    [
+     1648.8,
+     745.7
+    ],
+    [
+     1652.7,
+     1201.1
+    ],
+    [
+     819.0,
+     1203.8
+    ],
+    [
+     819.0,
+     748.3
+    ]
+   ],
+   "edge_q": [
+    0.9,
+    0.75,
+    0.79,
+    0.86
+   ],
+   "corners_all": [
+    {
+     "x": 819.0,
+     "y": 1203.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 819.0,
+     "y": 748.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    819.0,
+    745.6562654832188,
+    1652.7336063434723,
+    1203.796697002482
+   ]
+  },
+  {
+   "name": "2002",
+   "streets": {
+    "N": "15th street",
+    "S": "14th street",
+    "W": "jackson street",
+    "E": "madison street"
+   },
+   "px4_est": [
+    [
+     1275,
+     1318
+    ],
+    [
+     1275,
+     1785
+    ],
+    [
+     800,
+     1785
+    ],
+    [
+     800,
+     1318
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1253.1,
+     "y": 1323.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 1254.4,
+     "y": 1776.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 799.9,
+     "y": 1779.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 798.6,
+     "y": 1319.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2002"
+    },
+    {
+     "x": 800.4,
+     "y": 624.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 799.1,
+     "y": 170.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2008"
+    },
+    {
+     "x": 819.0,
+     "y": 1203.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    },
+    {
+     "x": 819.0,
+     "y": 748.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "alice street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2005"
+    }
+   ],
+   "with": [
+    "2008",
+    "2005"
+   ],
+   "px4": [
+    [
+     1253.1,
+     1323.5
+    ],
+    [
+     1254.4,
+     1776.8
+    ],
+    [
+     799.9,
+     1779.3
+    ],
+    [
+     798.6,
+     1319.8
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.88,
+    0.8,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 1253.1,
+     "y": 1323.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "jackson street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1254.4,
+     "y": 1776.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "madison street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 799.9,
+     "y": 1779.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "madison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 798.6,
+     "y": 1319.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "jackson street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    798.5970772488213,
+    1319.7646571516523,
+    1254.3847864933944,
+    1779.3163884711646
+   ]
+  }
+ ],
+ "pct": 25
+}

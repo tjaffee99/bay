@@ -1,0 +1,675 @@
+{
+ "residential": true,
+ "refine_R": 30,
+ "notes": "north to the right; 38th St of 1911 = today's West MacArthur Blvd",
+ "predicted_from": [
+  [
+   644,
+   90,
+   "Grove",
+   "Apgar"
+  ],
+  [
+   644,
+   1850,
+   "Telegraph",
+   "Apgar"
+  ],
+  [
+   1565,
+   90,
+   "Grove",
+   "40th"
+  ],
+  [
+   130,
+   1850,
+   "Telegraph",
+   "MacArthur Boulevard"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1154",
+   "streets": {
+    "N": "Apgar",
+    "S": "MacArthur Boulevard",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     610.6,
+     151.0
+    ],
+    [
+     610.6,
+     1775.7
+    ],
+    [
+     149.5,
+     1775.7
+    ],
+    [
+     149.5,
+     151.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 596.6,
+     "y": 151.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1154"
+    },
+    {
+     "x": 180.6,
+     "y": 150.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1154"
+    },
+    {
+     "x": 1103.8,
+     "y": 152.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 1103.8,
+     "y": 1784.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 686.7,
+     "y": 152.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 1483.3,
+     "y": 152.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1483.3,
+     "y": 1787.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1178.9,
+     "y": 1786.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1178.9,
+     "y": 152.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    }
+   ],
+   "with": [
+    "1155",
+    "1156"
+   ],
+   "px4": [
+    [
+     596.6,
+     151.4
+    ],
+    [
+     596.6,
+     1784.0
+    ],
+    [
+     175.4,
+     1778.0
+    ],
+    [
+     180.6,
+     150.2
+    ]
+   ],
+   "edge_q": [
+    0.22,
+    0.64,
+    0.34,
+    0.84
+   ],
+   "corners_all": [
+    {
+     "x": 596.6,
+     "y": 151.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 596.6,
+     "y": 1784.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [13.2  1. ] at Telegraph x Apgar SW"
+    },
+    {
+     "x": 175.4,
+     "y": 1778.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 180.6,
+     "y": 150.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    175.36087469512614,
+    150.18094953781065,
+    596.6,
+    1784.039722517093
+   ]
+  },
+  {
+   "name": "1155",
+   "streets": {
+    "N": "39th",
+    "S": "Apgar",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1099.3,
+     153.5
+    ],
+    [
+     1099.3,
+     1777.4
+    ],
+    [
+     715.7,
+     1777.4
+    ],
+    [
+     715.7,
+     153.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1103.8,
+     "y": 152.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 1103.8,
+     "y": 1784.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 686.7,
+     "y": 152.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1155"
+    },
+    {
+     "x": 596.6,
+     "y": 151.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1154"
+    },
+    {
+     "x": 180.6,
+     "y": 150.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1154"
+    },
+    {
+     "x": 1483.3,
+     "y": 152.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1483.3,
+     "y": 1787.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1178.9,
+     "y": 1786.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    },
+    {
+     "x": 1178.9,
+     "y": 152.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1156"
+    }
+   ],
+   "with": [
+    "1154",
+    "1156"
+   ],
+   "px4": [
+    [
+     1103.8,
+     152.5
+    ],
+    [
+     1103.8,
+     1784.3
+    ],
+    [
+     686.7,
+     1782.9
+    ],
+    [
+     686.7,
+     152.5
+    ]
+   ],
+   "edge_q": [
+    0.3,
+    0.73,
+    0.28,
+    0.91
+   ],
+   "corners_all": [
+    {
+     "x": 1103.8,
+     "y": 152.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1103.8,
+     "y": 1784.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 686.7,
+     "y": 1782.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.6  1. ] at Telegraph x Apgar NW"
+    },
+    {
+     "x": 686.7,
+     "y": 152.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Apgar"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    686.7,
+    152.5,
+    1103.8,
+    1784.3233302233687
+   ]
+  },
+  {
+   "name": "1156",
+   "streets": {
+    "N": "40th",
+    "S": "39th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1482.3,
+     150.0
+    ],
+    [
+     1482.3,
+     1770.7
+    ],
+    [
+     1182.9,
+     1770.7
+    ],
+    [
+     1182.9,
+     150.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1483.3,
+     "y": 152.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1483.3,
+     "y": 1787.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1178.9,
+     "y": 1786.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1178.9,
+     "y": 152.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "1154",
+    "1155"
+   ],
+   "px4": [
+    [
+     1483.3,
+     152.0
+    ],
+    [
+     1483.3,
+     1787.6
+    ],
+    [
+     1178.9,
+     1786.3
+    ],
+    [
+     1178.9,
+     152.0
+    ]
+   ],
+   "edge_q": [
+    0.18,
+    0.82,
+    0.25,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 1483.3,
+     "y": 152.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1483.3,
+     "y": 1787.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "40th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1178.9,
+     "y": 1786.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1178.9,
+     "y": 152.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "39th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1178.9,
+    152.0,
+    1483.3,
+    1787.6122894912633
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.037403139660454,
+    0.1967863897983178,
+    564301.7182133393
+   ],
+   [
+    0.1967863897983178,
+    -0.037403139660454,
+    4186876.5975873545
+   ]
+  ],
+  "dist_px": 2.92,
+  "inlier_share": 0.66,
+  "rms_m": 0.4,
+  "n_points": 2623
+ }
+}

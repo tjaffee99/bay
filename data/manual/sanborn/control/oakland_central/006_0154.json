@@ -1,0 +1,819 @@
+{
+ "notes": "one part, north to the right: the long blocks from sheet 153 (left) to 19th St; Broadway-Franklin also 17th St. Broadway (top) -> Harrison (bottom)",
+ "refine_R": 24,
+ "blocks": [
+  {
+   "name": "2016",
+   "streets": {
+    "N": "17th street",
+    "S": "15th street",
+    "W": "broadway",
+    "E": "franklin street"
+   },
+   "px4_est": [
+    [
+     690,
+     238
+    ],
+    [
+     690,
+     700
+    ],
+    [
+     30,
+     700
+    ],
+    [
+     30,
+     238
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1345.9,
+     "y": 240.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1344.6,
+     "y": 692.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 690.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 239.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1343.9,
+     "y": 813.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1342.6,
+     "y": 1266.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1343.3,
+     "y": 1384.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    },
+    {
+     "x": 1340.7,
+     "y": 1834.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "1256",
+    "2015",
+    "2014"
+   ],
+   "px4": [
+    [
+     697.8,
+     239.3
+    ],
+    [
+     695.2,
+     690.4
+    ],
+    [
+     16.2,
+     689.1
+    ],
+    [
+     18.8,
+     235.2
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.77,
+    0.16,
+    0.63
+   ],
+   "corners_all": [
+    {
+     "x": 697.8,
+     "y": 239.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 695.2,
+     "y": 690.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    16.246498712678203,
+    235.20951964241965,
+    697.8085532804499,
+    690.4183388919994
+   ]
+  },
+  {
+   "name": "1256",
+   "streets": {
+    "N": "19th street",
+    "S": "17th street",
+    "W": "broadway",
+    "E": "franklin street"
+   },
+   "px4_est": [
+    [
+     1347,
+     237
+    ],
+    [
+     1347,
+     700
+    ],
+    [
+     741,
+     700
+    ],
+    [
+     741,
+     237
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1345.9,
+     "y": 240.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1344.6,
+     "y": 692.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 690.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 239.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1343.9,
+     "y": 813.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1342.6,
+     "y": 1266.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1343.3,
+     "y": 1384.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    },
+    {
+     "x": 1340.7,
+     "y": 1834.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    }
+   ],
+   "with": [
+    "2016",
+    "2015",
+    "2014"
+   ],
+   "px4": [
+    [
+     1345.9,
+     240.9
+    ],
+    [
+     1344.6,
+     692.8
+    ],
+    [
+     741.0,
+     690.2
+    ],
+    [
+     741.0,
+     239.6
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.75,
+    0.75,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 1345.9,
+     "y": 240.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1344.6,
+     "y": 692.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 741.0,
+     "y": 690.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 741.0,
+     "y": 239.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    741.0,
+    239.59210526315792,
+    1345.896795784407,
+    692.8054218836885
+   ]
+  },
+  {
+   "name": "2015",
+   "streets": {
+    "N": "19th street",
+    "S": "14th street",
+    "W": "franklin street",
+    "E": "webster street"
+   },
+   "px4_est": [
+    [
+     1347,
+     798
+    ],
+    [
+     1347,
+     1265
+    ],
+    [
+     30,
+     1265
+    ],
+    [
+     30,
+     798
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1343.9,
+     "y": 813.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1342.6,
+     "y": 1266.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1345.9,
+     "y": 240.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1344.6,
+     "y": 692.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 690.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 239.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1343.3,
+     "y": 1384.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    },
+    {
+     "x": 1340.7,
+     "y": 1834.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "2016",
+    "1256",
+    "2014"
+   ],
+   "px4": [
+    [
+     1343.9,
+     813.6
+    ],
+    [
+     1342.6,
+     1266.6
+    ],
+    [
+     15.0,
+     1261.3
+    ],
+    [
+     15.0,
+     808.3
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.59,
+    0.28,
+    0.52
+   ],
+   "corners_all": [
+    {
+     "x": 1343.9,
+     "y": 813.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1342.6,
+     "y": 1266.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    15.0,
+    808.3084762018943,
+    1343.863887506966,
+    1266.6139454018835
+   ]
+  },
+  {
+   "name": "2014",
+   "streets": {
+    "N": "19th street",
+    "S": "14th street",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1346,
+     1384
+    ],
+    [
+     1346,
+     1840
+    ],
+    [
+     30,
+     1840
+    ],
+    [
+     30,
+     1384
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1343.3,
+     "y": 1384.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    },
+    {
+     "x": 1340.7,
+     "y": 1834.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2014"
+    },
+    {
+     "x": 1345.9,
+     "y": 240.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1344.6,
+     "y": 692.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 690.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 741.0,
+     "y": 239.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "17th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1256"
+    },
+    {
+     "x": 1343.9,
+     "y": 813.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "franklin street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    },
+    {
+     "x": 1342.6,
+     "y": 1266.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2015"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "2016",
+    "1256",
+    "2015"
+   ],
+   "px4": [
+    [
+     1343.3,
+     1384.3
+    ],
+    [
+     1340.7,
+     1834.8
+    ],
+    [
+     15.0,
+     1832.2
+    ],
+    [
+     15.0,
+     1381.7
+    ]
+   ],
+   "edge_q": [
+    0.87,
+    0.82,
+    0.5,
+    0.78
+   ],
+   "corners_all": [
+    {
+     "x": 1343.3,
+     "y": 1384.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1340.7,
+     "y": 1834.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "19th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    15.0,
+    1381.654215325548,
+    1343.3139980475003,
+    1834.8052195441487
+   ]
+  }
+ ],
+ "pct": 25
+}

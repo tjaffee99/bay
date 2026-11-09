@@ -1,0 +1,819 @@
+{
+ "notes": "one part, north to the right: 14th St (left) -> 15th St (Broadway-Franklin) and the long blocks east of Franklin that run on to 19th St (sheet 154); Broadway (top) -> Harrison (bottom). 15th St did not cross Franklin-Harrison in 1911",
+ "refine_R": 22,
+ "blocks": [
+  {
+   "name": "2011",
+   "streets": {
+    "N": "15th street",
+    "S": "14th street",
+    "W": "broadway",
+    "E": "franklin street"
+   },
+   "px4_est": [
+    [
+     862,
+     237
+    ],
+    [
+     862,
+     695
+    ],
+    [
+     345,
+     695
+    ],
+    [
+     345,
+     237
+    ]
+   ],
+   "corners": [
+    {
+     "x": 343.2,
+     "y": 693.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 345.8,
+     "y": 239.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 926.2,
+     "y": 693.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 928.8,
+     "y": 238.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 341.2,
+     "y": 1268.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.8,
+     "y": 814.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.7,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    },
+    {
+     "x": 341.2,
+     "y": 1387.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    }
+   ],
+   "with": [
+    "2016",
+    "2010",
+    "2009"
+   ],
+   "px4": [
+    [
+     844.2,
+     238.6
+    ],
+    [
+     846.8,
+     693.0
+    ],
+    [
+     343.2,
+     693.0
+    ],
+    [
+     345.8,
+     239.9
+    ]
+   ],
+   "edge_q": [
+    0.19,
+    0.75,
+    0.79,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 844.2,
+     "y": 238.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 846.8,
+     "y": 693.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 343.2,
+     "y": 693.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 345.8,
+     "y": 239.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    343.1957021374397,
+    238.6374233461201,
+    846.8042978625604,
+    693.0
+   ]
+  },
+  {
+   "name": "2016",
+   "streets": {
+    "N": "17th street",
+    "S": "15th street",
+    "W": "broadway",
+    "E": "franklin street"
+   },
+   "px4_est": [
+    [
+     1500,
+     237
+    ],
+    [
+     1500,
+     695
+    ],
+    [
+     935,
+     695
+    ],
+    [
+     935,
+     237
+    ]
+   ],
+   "corners": [
+    {
+     "x": 926.2,
+     "y": 693.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 928.8,
+     "y": 238.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 343.2,
+     "y": 693.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 345.8,
+     "y": 239.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 341.2,
+     "y": 1268.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.8,
+     "y": 814.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.7,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    },
+    {
+     "x": 341.2,
+     "y": 1387.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "2011",
+    "2010",
+    "2009"
+   ],
+   "px4": [
+    [
+     1491.5,
+     245.4
+    ],
+    [
+     1491.5,
+     695.8
+    ],
+    [
+     926.2,
+     693.1
+    ],
+    [
+     928.8,
+     238.9
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    0.75,
+    0.71,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 926.2,
+     "y": 693.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 928.8,
+     "y": 238.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    926.1948793423827,
+    238.88839006930044,
+    1491.5,
+    695.7761993479273
+   ]
+  },
+  {
+   "name": "2010",
+   "streets": {
+    "N": "19th street",
+    "S": "14th street",
+    "W": "franklin street",
+    "E": "webster street"
+   },
+   "px4_est": [
+    [
+     1500,
+     812
+    ],
+    [
+     1500,
+     1272
+    ],
+    [
+     342,
+     1272
+    ],
+    [
+     342,
+     812
+    ]
+   ],
+   "corners": [
+    {
+     "x": 341.2,
+     "y": 1268.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.8,
+     "y": 814.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.2,
+     "y": 693.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 345.8,
+     "y": 239.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 926.2,
+     "y": 693.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 928.8,
+     "y": 238.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 343.7,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    },
+    {
+     "x": 341.2,
+     "y": 1387.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "2011",
+    "2016",
+    "2009"
+   ],
+   "px4": [
+    [
+     1478.5,
+     816.8
+    ],
+    [
+     1478.5,
+     1269.9
+    ],
+    [
+     341.2,
+     1268.6
+    ],
+    [
+     343.8,
+     814.2
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    0.79,
+    0.7,
+    0.66
+   ],
+   "corners_all": [
+    {
+     "x": 341.2,
+     "y": 1268.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 343.8,
+     "y": 814.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    341.2037116677785,
+    814.1883084959239,
+    1478.5,
+    1269.8834651395327
+   ]
+  },
+  {
+   "name": "2009",
+   "streets": {
+    "N": "19th street",
+    "S": "14th street",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1500,
+     1388
+    ],
+    [
+     1500,
+     1857
+    ],
+    [
+     342,
+     1857
+    ],
+    [
+     342,
+     1388
+    ]
+   ],
+   "corners": [
+    {
+     "x": 343.7,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    },
+    {
+     "x": 341.2,
+     "y": 1387.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2009"
+    },
+    {
+     "x": 343.2,
+     "y": 693.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 345.8,
+     "y": 239.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2011"
+    },
+    {
+     "x": 926.2,
+     "y": 693.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "franklin street",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 928.8,
+     "y": 238.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "broadway",
+      "15th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2016"
+    },
+    {
+     "x": 341.2,
+     "y": 1268.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    },
+    {
+     "x": 343.8,
+     "y": 814.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "franklin street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2010"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "2011",
+    "2016",
+    "2010"
+   ],
+   "px4": [
+    [
+     1503.0,
+     1388.4
+    ],
+    [
+     1503.0,
+     1839.0
+    ],
+    [
+     343.7,
+     1839.0
+    ],
+    [
+     341.2,
+     1387.1
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    0.76,
+    0.73,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 343.7,
+     "y": 1839.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 341.2,
+     "y": 1387.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "14th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    341.17911105666934,
+    1387.091172519608,
+    1503.0,
+    1839.0
+   ]
+  }
+ ],
+ "pct": 25
+}

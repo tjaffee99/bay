@@ -1,0 +1,1189 @@
+{
+ "residential": true,
+ "refine_R": 30,
+ "predicted_from": [
+  [
+   67,
+   555,
+   "West",
+   "47th"
+  ],
+  [
+   1214,
+   555,
+   "Grove",
+   "47th"
+  ],
+  [
+   1214,
+   1745,
+   "Grove",
+   "44th"
+  ],
+  [
+   67,
+   1745,
+   "West",
+   "44th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5056",
+   "streets": {
+    "N": "47th",
+    "S": "46th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     114.4,
+     605.6
+    ],
+    [
+     1146.0,
+     605.6
+    ],
+    [
+     1146.0,
+     911.4
+    ],
+    [
+     114.4,
+     911.4
+    ]
+   ],
+   "corners": [
+    {
+     "x": 111.0,
+     "y": 603.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 1152.8,
+     "y": 913.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 112.3,
+     "y": 910.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 112.1,
+     "y": 999.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1005.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1308.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 114.7,
+     "y": 1305.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 115.5,
+     "y": 1398.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    },
+    {
+     "x": 1151.3,
+     "y": 1398.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    },
+    {
+     "x": 1273.7,
+     "y": 916.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    }
+   ],
+   "with": [
+    "5055",
+    "5054",
+    "5088"
+   ],
+   "px4": [
+    [
+     111.0,
+     603.1
+    ],
+    [
+     1150.2,
+     603.1
+    ],
+    [
+     1152.8,
+     913.2
+    ],
+    [
+     112.3,
+     910.6
+    ]
+   ],
+   "edge_q": [
+    0.37,
+    0.76,
+    0.41,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 111.0,
+     "y": 603.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.2,
+     "y": 603.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1152.8,
+     "y": 913.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 112.3,
+     "y": 910.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    110.98134831847442,
+    603.1,
+    1152.8315653211644,
+    913.233216580583
+   ]
+  },
+  {
+   "name": "5055",
+   "streets": {
+    "N": "46th",
+    "S": "45th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     113.4,
+     1003.0
+    ],
+    [
+     1147.8,
+     1003.0
+    ],
+    [
+     1147.8,
+     1308.2
+    ],
+    [
+     113.4,
+     1308.2
+    ]
+   ],
+   "corners": [
+    {
+     "x": 112.1,
+     "y": 999.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.8,
+     "y": 1005.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.8,
+     "y": 1308.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 114.7,
+     "y": 1305.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "5056",
+    "5054",
+    "5087"
+   ],
+   "px4": [
+    [
+     112.1,
+     999.9
+    ],
+    [
+     1150.8,
+     1005.1
+    ],
+    [
+     1150.8,
+     1308.9
+    ],
+    [
+     114.7,
+     1305.0
+    ]
+   ],
+   "edge_q": [
+    0.45,
+    0.68,
+    0.48,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 112.1,
+     "y": 999.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.8,
+     "y": 1005.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.8,
+     "y": 1308.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 114.7,
+     "y": 1305.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    112.05714965562197,
+    999.8615884604125,
+    1150.8,
+    1308.9351324948102
+   ]
+  },
+  {
+   "name": "5054",
+   "streets": {
+    "N": "45th",
+    "S": "44th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     112.6,
+     1399.8
+    ],
+    [
+     1150.6,
+     1399.8
+    ],
+    [
+     1150.6,
+     1705.6
+    ],
+    [
+     112.6,
+     1705.6
+    ]
+   ],
+   "corners": [
+    {
+     "x": 115.5,
+     "y": 1398.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    },
+    {
+     "x": 1151.3,
+     "y": 1398.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    },
+    {
+     "x": 111.0,
+     "y": 603.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 1152.8,
+     "y": 913.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 112.3,
+     "y": 910.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 112.1,
+     "y": 999.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1005.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1308.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 114.7,
+     "y": 1305.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1271.6,
+     "y": 1401.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5086"
+    }
+   ],
+   "with": [
+    "5056",
+    "5055",
+    "5086"
+   ],
+   "px4": [
+    [
+     115.5,
+     1398.8
+    ],
+    [
+     1151.3,
+     1398.8
+    ],
+    [
+     1147.4,
+     1701.5
+    ],
+    [
+     120.6,
+     1700.2
+    ]
+   ],
+   "edge_q": [
+    0.35,
+    0.67,
+    0.29,
+    0.61
+   ],
+   "corners_all": [
+    {
+     "x": 115.5,
+     "y": 1398.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1151.3,
+     "y": 1398.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1147.4,
+     "y": 1701.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "44th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 120.6,
+     "y": 1700.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "44th"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    115.45120994113799,
+    1398.8,
+    1151.3365925441462,
+    1701.5038753548486
+   ]
+  },
+  {
+   "name": "5088",
+   "streets": {
+    "N": "47th",
+    "S": "46th",
+    "W": "Grove",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     1285.2,
+     623.2
+    ],
+    [
+     1607.0,
+     623.2
+    ],
+    [
+     1607.0,
+     911.7
+    ],
+    [
+     1285.2,
+     911.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1273.7,
+     "y": 916.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    },
+    {
+     "x": 111.0,
+     "y": 603.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 1152.8,
+     "y": 913.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 112.3,
+     "y": 910.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5056"
+    },
+    {
+     "x": 1274.1,
+     "y": 1007.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    },
+    {
+     "x": 1272.8,
+     "y": 1308.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5056",
+    "5087"
+   ],
+   "px4": [
+    [
+     1273.7,
+     608.3
+    ],
+    [
+     1605.0,
+     611.0
+    ],
+    [
+     1605.0,
+     916.2
+    ],
+    [
+     1273.7,
+     916.2
+    ]
+   ],
+   "edge_q": [
+    0.63,
+    0.03,
+    0.73,
+    0.7
+   ],
+   "corners_all": [
+    {
+     "x": 1273.7,
+     "y": 608.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "47th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Grove x 47th"
+    },
+    {
+     "x": 1273.7,
+     "y": 916.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1273.7,
+    608.290167151876,
+    1605.0,
+    916.2
+   ]
+  },
+  {
+   "name": "5087",
+   "streets": {
+    "N": "46th",
+    "S": "45th",
+    "W": "Grove",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     1269.7,
+     1003.3
+    ],
+    [
+     1607.0,
+     1003.3
+    ],
+    [
+     1607.0,
+     1309.4
+    ],
+    [
+     1269.7,
+     1309.4
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1274.1,
+     "y": 1007.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    },
+    {
+     "x": 1272.8,
+     "y": 1308.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5087"
+    },
+    {
+     "x": 112.1,
+     "y": 999.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1005.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1150.8,
+     "y": 1308.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 114.7,
+     "y": 1305.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5055"
+    },
+    {
+     "x": 1273.7,
+     "y": 916.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5088"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5055",
+    "5088"
+   ],
+   "px4": [
+    [
+     1274.1,
+     1007.2
+    ],
+    [
+     1588.6,
+     1006.0
+    ],
+    [
+     1596.4,
+     1308.9
+    ],
+    [
+     1272.8,
+     1308.9
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.11,
+    0.65,
+    0.69
+   ],
+   "corners_all": [
+    {
+     "x": 1274.1,
+     "y": 1007.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "46th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1272.8,
+     "y": 1308.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1272.794254543579,
+    1005.963799465557,
+    1596.4344727385271,
+    1308.9
+   ]
+  },
+  {
+   "name": "5086",
+   "streets": {
+    "N": "45th",
+    "S": "44th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1271.3,
+     1401.1
+    ],
+    [
+     1607.0,
+     1401.1
+    ],
+    [
+     1607.0,
+     1691.3
+    ],
+    [
+     1271.3,
+     1691.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1271.6,
+     "y": 1401.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5086"
+    },
+    {
+     "x": 115.5,
+     "y": 1398.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    },
+    {
+     "x": 1151.3,
+     "y": 1398.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5054"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5054"
+   ],
+   "px4": [
+    [
+     1271.6,
+     1401.1
+    ],
+    [
+     1604.5,
+     1401.1
+    ],
+    [
+     1604.5,
+     1700.0
+    ],
+    [
+     1268.9,
+     1702.6
+    ]
+   ],
+   "edge_q": [
+    0.52,
+    0.0,
+    0.57,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 1271.6,
+     "y": 1401.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "45th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1268.9,
+     "y": 1702.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "44th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [12.8  0.9] at Grove x 44th NE"
+    }
+   ],
+   "zone_px": [
+    1268.8814252523384,
+    1401.1,
+    1604.5,
+    1702.634748873114
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.19710874996489847,
+    -0.036606331062106104,
+    564269.8657310831
+   ],
+   [
+    -0.036606331062106104,
+    -0.19710874996489847,
+    4187915.6125240857
+   ]
+  ],
+  "dist_px": 2.15,
+  "inlier_share": 0.8,
+  "rms_m": 0.32,
+  "n_points": 3362
+ }
+}
