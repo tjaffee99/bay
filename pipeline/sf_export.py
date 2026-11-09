@@ -171,7 +171,8 @@ def main():
         land = ly[r, c]
         early = np.isfinite(land) & (df.start_year.values < land - 0.5)
         soft = early & (df.year_confidence.values != "exact")
-        documented = df.source.fillna("").isin(["early_sf", "notable_pre1906"]).values  # wharves, piers, beached ships
+        # wharves, piers, beached ships, gold-rush buildings on piles over the cove (1852 chart)
+        documented = df.source.fillna("").isin(["early_sf", "notable_pre1906", "ohm_sf_goldrush"]).values
         fix = soft & ~documented
         df.loc[fix, "start_year"] = land[fix] + 0.5 + (df.index.values[fix] % 7) * 0.3
         drop = fix & (df.start_year.values >= df.end_year.values - 0.5)

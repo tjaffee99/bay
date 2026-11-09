@@ -174,8 +174,34 @@ def assign_years(g):
         # the placeholder still bounds these
         year[miss] = np.minimum(year[miss], upper_all[miss])
     year = site_bounds(g, year, conf, src)
+    year = ohm_bounds(g, year, conf, src)
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
     return year, raw, conf, end, src
+
+
+def ohm_bounds(g, year, conf, src):
+    """Stanford buildings dated by OpenHistoricalMap's map bins (data/manual/ohm/
+    stanford_bounds_ohm.csv: drawn on the old campus maps -> no later than 1962, first on
+    the 2000s maps -> no earlier than 2000, …): estimated years are clamped into them."""
+    p = MANUAL / "ohm" / "stanford_bounds_ohm.csv"
+    if not p.exists() or "id" not in g:
+        return year
+    b = pd.read_csv(p)
+    b = b[b.overture_id.notna()]
+    lo = dict(zip(b.overture_id.astype(str), pd.to_numeric(b.start_min, errors="coerce")))
+    hi = dict(zip(b.overture_id.astype(str), pd.to_numeric(b.start_max, errors="coerce")))
+    ids = g["id"].astype(str).values
+    L = np.array([lo.get(k, np.nan) for k in ids])
+    H = np.array([hi.get(k, np.nan) for k in ids])
+    known = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
+    year = year.copy()
+    up = np.isfinite(H) & (year > H + 0.99) & ~known
+    dn = np.isfinite(L) & (year < L) & ~known
+    year[up] = H[up] - 3.0 * np.array([h01(f"ob{k}") for k in np.nonzero(up)[0]])
+    year[dn] = L[dn] + 0.5
+    conf[up | dn] = "estimated"
+    log(f"region: {int(up.sum() + dn.sum())} Stanford footprints clamped into OpenHistoricalMap map bounds")
+    return year
 
 
 def site_bounds(g, year, conf, src):
@@ -213,7 +239,8 @@ def known_dates(g, year, conf, src):
     footprint containing a row's point takes its year (and end year)."""
     end = np.full(len(g), 9999.0)
     tabs = [pd.read_csv(p) for p in (TABLES / "known_building_dates_region.csv",
-                                    MANUAL / "industrial_sites" / "known_dates_industrial.csv") if p.exists()]
+                                    MANUAL / "industrial_sites" / "known_dates_industrial.csv",
+                                    MANUAL / "ohm" / "known_dates_ohm.csv") if p.exists()]
     if not tabs:
         return year, conf, src, end
     k = pd.concat(tabs, ignore_index=True)

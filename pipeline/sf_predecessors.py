@@ -247,7 +247,14 @@ def main():
         pred = pd.concat([pred, notable], ignore_index=True)
         log(f"predecessors: {len(notable)} documented buildings (pre-1906, early SF, demolished)")
     pred = gpd.GeoDataFrame(pred, geometry="geometry", crs=UTM)
-    pred = apply_sanborn(pred, b, fire, areas)
+    # the gold-rush city (OpenHistoricalMap tracings of the 1852 US Coast Survey chart, the
+    # 1851 Burnt District map and the 1887 Sanborn, re-dated: ohm_import.py) has its own
+    # merge: it only replaces the generated 1850s fabric it covers, not 1852-1906 wholesale
+    from region_predecessors import REGION_SANBORN
+    pred = apply_sanborn(pred, b, fire, areas,
+                         include=lambda a: not a.startswith(REGION_SANBORN) and not a.startswith("sf_goldrush"))
+    from ohm_import import apply_goldrush
+    pred = apply_goldrush(pred, b)
     pred = pred.to_crs(4326)
     pred["base"] = 0.0
     pred["use"] = pred["use_sanborn"].map(SANBORN_USE).fillna(0).astype(int) if "use_sanborn" in pred else 0

@@ -498,6 +498,13 @@ def region_predecessors(today):
     lots = load_lots()
     lots["mapblklot"] = [f"rl{i}" for i in range(len(lots))]
     doc = table_buildings(TABLES / "notable_demolished_region.csv", lots, "notable_demolished_region")
+    # OpenHistoricalMap's demolished civic buildings and estates (data/manual/ohm, CC0, cited)
+    ohm_p = INTERIM.parent / "manual" / "ohm" / "notable_demolished_ohm.csv"
+    if ohm_p.exists():
+        ohm_doc = table_buildings(ohm_p, lots, "notable_demolished_ohm")
+        if ohm_doc:
+            doc = list(doc) + ohm_doc
+            log(f"region predecessors: {len(ohm_doc)} demolished buildings from OpenHistoricalMap")
     # the region before the gold rush (data/tables/early_region.csv): missions, the San José
     # pueblo, rancho adobes, Ohlone / Miwok villages — adobes that still stand are today's
     # footprints (dated in region_buildings), not drawn twice
