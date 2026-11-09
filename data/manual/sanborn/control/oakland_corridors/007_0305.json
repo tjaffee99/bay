@@ -1,0 +1,598 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "56th St east of Telegraph and Vicente St between 56th and 57th St are gone (SR-24); 5265 / 5264 zones drawn by hand, fitted with 5255 / 5256 or the chamfer match; the inset (lower right) not used",
+ "predicted_from": [
+  [
+   131,
+   810,
+   "Telegraph",
+   "56th"
+  ],
+  [
+   131,
+   1300,
+   "Telegraph",
+   "55th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5256",
+   "streets": {
+    "N": "57th",
+    "S": "56th",
+    "W": "Telegraph",
+    "E": "Vicente"
+   },
+   "px4_est": [
+    [
+     205.8,
+     10.0
+    ],
+    [
+     662.0,
+     10.0
+    ],
+    [
+     662.0,
+     864.1
+    ],
+    [
+     205.8,
+     864.1
+    ]
+   ],
+   "corners": [
+    {
+     "x": 214.3,
+     "y": 991.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 761.4,
+     "y": 991.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente Way",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 661.9,
+     "y": 1296.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente Way",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 216.8,
+     "y": 1296.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "5255",
+    "5265",
+    "5264"
+   ],
+   "px4": [
+    [
+     210.9,
+     0.5
+    ],
+    [
+     667.2,
+     0.5
+    ],
+    [
+     671.2,
+     853.6
+    ],
+    [
+     212.2,
+     853.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.78,
+    0.76,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 671.2,
+     "y": 853.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NW of Vicente x 56th"
+    },
+    {
+     "x": 212.2,
+     "y": 853.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Telegraph x 56th"
+    }
+   ],
+   "zone_px": [
+    210.87746997455002,
+    0.5,
+    671.1751566746159,
+    853.6
+   ]
+  },
+  {
+   "name": "5255",
+   "streets": {
+    "N": "56th",
+    "S": "55th",
+    "W": "Telegraph",
+    "E": "Vicente Way"
+   },
+   "px4_est": [
+    [
+     224.5,
+     978.2
+    ],
+    [
+     765.5,
+     978.2
+    ],
+    [
+     649.9,
+     1302.7
+    ],
+    [
+     224.5,
+     1302.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 214.3,
+     "y": 991.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 761.4,
+     "y": 991.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente Way",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 661.9,
+     "y": 1296.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente Way",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 216.8,
+     "y": 1296.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    }
+   ],
+   "with": [
+    "5264"
+   ],
+   "px4": [
+    [
+     214.3,
+     991.2
+    ],
+    [
+     761.4,
+     991.2
+    ],
+    [
+     661.9,
+     1296.2
+    ],
+    [
+     216.8,
+     1296.2
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    0.09,
+    0.46,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 214.3,
+     "y": 991.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 761.4,
+     "y": 991.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente Way",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 661.9,
+     "y": 1296.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente Way",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 216.8,
+     "y": 1296.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    214.28963587705783,
+    991.2,
+    761.4090796273078,
+    1296.2
+   ]
+  },
+  {
+   "name": "5265",
+   "streets": {
+    "N": "Ayala",
+    "S": "56th",
+    "W": "Vicente",
+    "E": "Claremont"
+   },
+   "px4_est": [
+    [
+     1027,
+     27
+    ],
+    [
+     1545,
+     40
+    ],
+    [
+     1200,
+     936
+    ],
+    [
+     782,
+     764
+    ]
+   ],
+   "corners": [
+    {
+     "x": 214.3,
+     "y": 991.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 761.4,
+     "y": 991.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente Way",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 661.9,
+     "y": 1296.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente Way",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 216.8,
+     "y": 1296.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5256",
+    "5255"
+   ],
+   "px4": [
+    [
+     1027.0,
+     27.0
+    ],
+    [
+     1545.0,
+     40.0
+    ],
+    [
+     1200.0,
+     936.0
+    ],
+    [
+     782.0,
+     764.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    782.0,
+    27.0,
+    1545.0,
+    936.0
+   ]
+  },
+  {
+   "name": "5264",
+   "streets": {
+    "N": "56th",
+    "S": "55th",
+    "W": "Vicente Way",
+    "E": "Claremont"
+   },
+   "px4_est": [
+    [
+     755,
+     855
+    ],
+    [
+     1145,
+     982
+    ],
+    [
+     1064,
+     1400
+    ],
+    [
+     755,
+     1400
+    ]
+   ],
+   "corners": [
+    {
+     "x": 214.3,
+     "y": 991.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 761.4,
+     "y": 991.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente Way",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 661.9,
+     "y": 1296.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente Way",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    },
+    {
+     "x": 216.8,
+     "y": 1296.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5255"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5256",
+    "5255"
+   ],
+   "px4": [
+    [
+     755.0,
+     855.0
+    ],
+    [
+     1145.0,
+     982.0
+    ],
+    [
+     1064.0,
+     1400.0
+    ],
+    [
+     755.0,
+     1400.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    755.0,
+    855.0,
+    1145.0,
+    1400.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.2002032420251702,
+    -0.02203674845374645,
+    564943.6343485598
+   ],
+   [
+    -0.02203674845374645,
+    -0.2002032420251702,
+    4188612.591653329
+   ]
+  ],
+  "dist_px": 3.83,
+  "inlier_share": 0.47,
+  "rms_m": 0.42,
+  "n_points": 2925
+ }
+}

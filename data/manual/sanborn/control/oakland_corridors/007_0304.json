@@ -1,0 +1,1289 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the left",
+ "predicted_from": [
+  [
+   529,
+   683,
+   "Dover",
+   "54th"
+  ],
+  [
+   1005,
+   683,
+   "Dover",
+   "53rd"
+  ],
+  [
+   1500,
+   683,
+   "Dover",
+   "52nd"
+  ],
+  [
+   529,
+   1710,
+   "Grove",
+   "54th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5095",
+   "streets": {
+    "N": "55th",
+    "S": "54th",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     88.2,
+     631.5
+    ],
+    [
+     88.2,
+     10.0
+    ],
+    [
+     479.0,
+     10.0
+    ],
+    [
+     479.0,
+     631.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 89.4,
+     "y": 627.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 479.0,
+     "y": 633.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 568.0,
+     "y": 638.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 972.9,
+     "y": 642.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 1062.4,
+     "y": 643.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 1473.6,
+     "y": 646.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 76.3,
+     "y": 1669.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 85.5,
+     "y": 717.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5094",
+    "5093",
+    "5064"
+   ],
+   "px4": [
+    [
+     89.4,
+     627.0
+    ],
+    [
+     98.7,
+     0.5
+    ],
+    [
+     487.1,
+     0.5
+    ],
+    [
+     479.0,
+     633.5
+    ]
+   ],
+   "edge_q": [
+    0.51,
+    1.0,
+    0.42,
+    0.41
+   ],
+   "corners_all": [
+    {
+     "x": 89.4,
+     "y": 627.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 479.0,
+     "y": 633.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    89.41170878111438,
+    0.5,
+    487.06804420544523,
+    633.5399234871453
+   ]
+  },
+  {
+   "name": "5094",
+   "streets": {
+    "N": "54th",
+    "S": "53rd",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     569.3,
+     635.4
+    ],
+    [
+     569.3,
+     10.0
+    ],
+    [
+     972.4,
+     10.0
+    ],
+    [
+     972.4,
+     635.4
+    ]
+   ],
+   "corners": [
+    {
+     "x": 568.0,
+     "y": 638.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 972.9,
+     "y": 642.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 89.4,
+     "y": 627.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 479.0,
+     "y": 633.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 1062.4,
+     "y": 643.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 1473.6,
+     "y": 646.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 557.1,
+     "y": 728.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 962.0,
+     "y": 733.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5095",
+    "5093",
+    "5063"
+   ],
+   "px4": [
+    [
+     568.0,
+     638.2
+    ],
+    [
+     578.7,
+     0.5
+    ],
+    [
+     981.0,
+     0.5
+    ],
+    [
+     972.9,
+     642.1
+    ]
+   ],
+   "edge_q": [
+    0.42,
+    1.0,
+    0.43,
+    0.58
+   ],
+   "corners_all": [
+    {
+     "x": 568.0,
+     "y": 638.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 972.9,
+     "y": 642.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    567.9903288708359,
+    0.5,
+    980.9672916701732,
+    642.1282641502409
+   ]
+  },
+  {
+   "name": "5093",
+   "streets": {
+    "N": "53rd",
+    "S": "52nd",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     1065.8,
+     646.5
+    ],
+    [
+     1065.8,
+     10.0
+    ],
+    [
+     1473.8,
+     10.0
+    ],
+    [
+     1473.8,
+     646.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1062.4,
+     "y": 643.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 1473.6,
+     "y": 646.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 89.4,
+     "y": 627.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 479.0,
+     "y": 633.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 568.0,
+     "y": 638.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 972.9,
+     "y": 642.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 1057.4,
+     "y": 734.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5095",
+    "5094",
+    "5062"
+   ],
+   "px4": [
+    [
+     1062.4,
+     643.7
+    ],
+    [
+     1070.4,
+     0.5
+    ],
+    [
+     1477.6,
+     0.5
+    ],
+    [
+     1473.6,
+     646.3
+    ]
+   ],
+   "edge_q": [
+    0.47,
+    1.0,
+    0.62,
+    0.67
+   ],
+   "corners_all": [
+    {
+     "x": 1062.4,
+     "y": 643.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1473.6,
+     "y": 646.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1062.3878297985952,
+    0.5,
+    1477.582600157109,
+    646.3143541479965
+   ]
+  },
+  {
+   "name": "5064",
+   "streets": {
+    "N": "55th",
+    "S": "54th",
+    "W": "Grove",
+    "E": "Dover"
+   },
+   "px4_est": [
+    [
+     81.1,
+     1676.1
+    ],
+    [
+     81.1,
+     721.8
+    ],
+    [
+     462.7,
+     721.8
+    ],
+    [
+     462.7,
+     1676.1
+    ]
+   ],
+   "corners": [
+    {
+     "x": 76.3,
+     "y": 1669.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 85.5,
+     "y": 717.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 89.4,
+     "y": 627.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 479.0,
+     "y": 633.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 557.1,
+     "y": 728.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 962.0,
+     "y": 733.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 1057.4,
+     "y": 734.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    },
+    {
+     "x": 1471.7,
+     "y": 737.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    }
+   ],
+   "with": [
+    "5095",
+    "5063",
+    "5062"
+   ],
+   "px4": [
+    [
+     76.3,
+     1669.9
+    ],
+    [
+     85.5,
+     717.8
+    ],
+    [
+     475.1,
+     724.6
+    ],
+    [
+     467.3,
+     1667.3
+    ]
+   ],
+   "edge_q": [
+    0.38,
+    0.43,
+    0.34,
+    0.66
+   ],
+   "corners_all": [
+    {
+     "x": 76.3,
+     "y": 1669.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 85.5,
+     "y": 717.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 475.1,
+     "y": 724.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 467.3,
+     "y": 1667.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    76.30410518663564,
+    717.836272472707,
+    475.12458777530566,
+    1669.9488627855935
+   ]
+  },
+  {
+   "name": "5063",
+   "streets": {
+    "N": "54th",
+    "S": "53rd",
+    "W": "Grove",
+    "E": "Dover"
+   },
+   "px4_est": [
+    [
+     568.1,
+     1684.5
+    ],
+    [
+     568.1,
+     724.0
+    ],
+    [
+     958.5,
+     724.0
+    ],
+    [
+     958.5,
+     1626.6
+    ]
+   ],
+   "corners": [
+    {
+     "x": 557.1,
+     "y": 728.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 962.0,
+     "y": 733.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 568.0,
+     "y": 638.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 972.9,
+     "y": 642.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5094"
+    },
+    {
+     "x": 76.3,
+     "y": 1669.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 85.5,
+     "y": 717.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 1057.4,
+     "y": 734.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    },
+    {
+     "x": 1471.7,
+     "y": 737.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    }
+   ],
+   "with": [
+    "5094",
+    "5064",
+    "5062"
+   ],
+   "px4": [
+    [
+     557.1,
+     1690.2
+    ],
+    [
+     557.1,
+     728.2
+    ],
+    [
+     962.0,
+     733.7
+    ],
+    [
+     962.0,
+     1630.1
+    ]
+   ],
+   "edge_q": [
+    0.29,
+    0.54,
+    0.36,
+    0.15
+   ],
+   "corners_all": [
+    {
+     "x": 557.1,
+     "y": 1690.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [25.3  9.7] at Grove x 54th SE"
+    },
+    {
+     "x": 557.1,
+     "y": 728.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 962.0,
+     "y": 733.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 962.0,
+     "y": 1630.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [25.6  9.7] at Grove x 53rd NE"
+    }
+   ],
+   "zone_px": [
+    557.1,
+    728.2201251078516,
+    962.0,
+    1690.1751557796567
+   ]
+  },
+  {
+   "name": "5062",
+   "streets": {
+    "N": "53rd",
+    "S": "52nd",
+    "W": "Grove",
+    "E": "Dover"
+   },
+   "px4_est": [
+    [
+     1064.4,
+     1597.3
+    ],
+    [
+     1064.4,
+     728.0
+    ],
+    [
+     1451.4,
+     728.0
+    ],
+    [
+     1451.4,
+     1416.2
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1057.4,
+     "y": 734.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    },
+    {
+     "x": 1471.7,
+     "y": 737.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5062"
+    },
+    {
+     "x": 1062.4,
+     "y": 643.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 1473.6,
+     "y": 646.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 76.3,
+     "y": 1669.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 85.5,
+     "y": 717.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5064"
+    },
+    {
+     "x": 557.1,
+     "y": 728.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    },
+    {
+     "x": 962.0,
+     "y": 733.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5063"
+    }
+   ],
+   "with": [
+    "5093",
+    "5064",
+    "5063"
+   ],
+   "px4": [
+    [
+     1057.4,
+     1628.7
+    ],
+    [
+     1057.4,
+     734.1
+    ],
+    [
+     1471.7,
+     737.0
+    ],
+    [
+     1463.7,
+     1438.6
+    ]
+   ],
+   "edge_q": [
+    0.35,
+    0.78,
+    0.43,
+    0.09
+   ],
+   "corners_all": [
+    {
+     "x": 1057.4,
+     "y": 1628.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1057.4,
+     "y": 734.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dover",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1471.7,
+     "y": 737.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dover",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1463.7,
+     "y": 1438.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    1057.4,
+    734.1366109071128,
+    1471.7446504383297,
+    1628.7296658039952
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.03660014310779955,
+    -0.1991888105463682,
+    564608.4498765027
+   ],
+   [
+    -0.1991888105463682,
+    -0.03660014310779955,
+    4188358.6438245308
+   ]
+  ],
+  "dist_px": 2.48,
+  "inlier_share": 0.76,
+  "rms_m": 0.4,
+  "n_points": 3556
+ }
+}

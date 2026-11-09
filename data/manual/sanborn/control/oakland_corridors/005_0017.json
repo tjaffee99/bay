@@ -1,0 +1,602 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the right; 35th / 36th St between Grove and Telegraph gone (MacArthur Maze)",
+ "predicted_from": [
+  [
+   595,
+   1774,
+   "Telegraph",
+   "34th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1148",
+   "streets": {
+    "N": "34th",
+    "S": "33rd",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     576.1,
+     153.7
+    ],
+    [
+     576.1,
+     1727.8
+    ],
+    [
+     237.9,
+     1727.8
+    ],
+    [
+     237.9,
+     153.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 550.6,
+     "y": 153.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 550.6,
+     "y": 1731.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 253.4,
+     "y": 153.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 853.5,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 1733.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 151.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    }
+   ],
+   "with": [
+    "1149",
+    "1150"
+   ],
+   "px4": [
+    [
+     550.6,
+     153.2
+    ],
+    [
+     550.6,
+     1731.2
+    ],
+    [
+     253.4,
+     1727.8
+    ],
+    [
+     253.4,
+     153.2
+    ]
+   ],
+   "edge_q": [
+    0.15,
+    0.6,
+    0.1,
+    0.57
+   ],
+   "corners_all": [
+    {
+     "x": 550.6,
+     "y": 153.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 550.6,
+     "y": 1731.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 253.4,
+     "y": 1727.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 253.4,
+     "y": 153.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    253.4,
+    153.2,
+    550.6,
+    1731.2260558996545
+   ]
+  },
+  {
+   "name": "1149",
+   "streets": {
+    "N": "35th",
+    "S": "34th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1075.6,
+     151.5
+    ],
+    [
+     847.4,
+     1733.2
+    ],
+    [
+     667.0,
+     1733.2
+    ],
+    [
+     667.0,
+     151.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 853.5,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 1733.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 151.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 550.6,
+     "y": 153.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 550.6,
+     "y": 1731.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 253.4,
+     "y": 153.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    }
+   ],
+   "with": [
+    "1148",
+    "1150"
+   ],
+   "px4": [
+    [
+     1082.2,
+     151.0
+    ],
+    [
+     853.5,
+     1736.1
+    ],
+    [
+     655.0,
+     1733.2
+    ],
+    [
+     655.0,
+     151.0
+    ]
+   ],
+   "edge_q": [
+    0.12,
+    0.73,
+    0.07,
+    0.63
+   ],
+   "corners_all": [
+    {
+     "x": 1082.2,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [12.9 42.3] at Grove x 35th SE"
+    },
+    {
+     "x": 853.5,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 655.0,
+     "y": 1733.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 655.0,
+     "y": 151.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    655.0,
+    151.0,
+    1082.2394389360957,
+    1736.1054748737906
+   ]
+  },
+  {
+   "name": "1150",
+   "streets": {
+    "N": "36th",
+    "S": "35th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1621.6,
+     149.3
+    ],
+    [
+     1621.6,
+     1751.8
+    ],
+    [
+     1108.7,
+     1751.8
+    ],
+    [
+     1108.7,
+     149.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 550.6,
+     "y": 153.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 550.6,
+     "y": 1731.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 253.4,
+     "y": 153.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1148"
+    },
+    {
+     "x": 853.5,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 1733.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    },
+    {
+     "x": 655.0,
+     "y": 151.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "34th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1149"
+    }
+   ],
+   "skip": [
+    "NE"
+   ],
+   "with": [
+    "1148",
+    "1149"
+   ],
+   "px4": [
+    [
+     1647.1,
+     152.8
+    ],
+    [
+     1647.1,
+     1741.7
+    ],
+    [
+     1115.2,
+     1739.0
+    ],
+    [
+     1115.2,
+     151.4
+    ]
+   ],
+   "edge_q": [
+    0.69,
+    0.46,
+    0.08,
+    0.61
+   ],
+   "corners_all": [
+    {
+     "x": 1647.1,
+     "y": 152.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Grove x 36th"
+    },
+    {
+     "x": 1115.2,
+     "y": 1739.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NW of Telegraph x 35th"
+    },
+    {
+     "x": 1115.2,
+     "y": 151.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Grove x 35th"
+    }
+   ],
+   "zone_px": [
+    1115.2,
+    151.40878031010448,
+    1647.1,
+    1741.7466244574196
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.03815270616559078,
+    0.1983029798560711,
+    564196.850891889
+   ],
+   [
+    0.1983029798560711,
+    -0.03815270616559078,
+    4186334.9437637003
+   ]
+  ],
+  "dist_px": 2.49,
+  "inlier_share": 0.81,
+  "rms_m": 0.43,
+  "n_points": 2079
+ }
+}

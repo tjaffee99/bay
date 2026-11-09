@@ -1,0 +1,56 @@
+{
+ "residential": true,
+ "notes": "Shafter Ave (top) gone under SR-24; one zone drawn by hand (Shafter Ave - Bay View Ave east of College Ave), placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   90,
+   1405,
+   "College",
+   "Lawton"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.17772682729711117,
+    0.08835435962731449,
+    565715.0353571307
+   ],
+   [
+    0.08835435962731449,
+    -0.17772682729711117,
+    4188851.466070259
+   ]
+  ],
+  "dist_px": 3.49,
+  "inlier_share": 0.63,
+  "rms_m": 0.5,
+  "n_points": 3203
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "5621-5625",
+   "px4": [
+    [
+     607,
+     179
+    ],
+    [
+     1595,
+     179
+    ],
+    [
+     1595,
+     960
+    ],
+    [
+     286,
+     960
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

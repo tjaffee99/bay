@@ -1,0 +1,565 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the right",
+ "predicted_from": [
+  [
+   548,
+   1770,
+   "Telegraph",
+   "23rd"
+  ],
+  [
+   1048,
+   1770,
+   "Telegraph",
+   "24th"
+  ],
+  [
+   548,
+   140,
+   "Grove",
+   "23rd"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1206",
+   "streets": {
+    "N": "23rd",
+    "S": "22nd",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     450.0,
+     151.0
+    ],
+    [
+     450.0,
+     1719.8
+    ],
+    [
+     10.0,
+     1719.8
+    ],
+    [
+     10.0,
+     151.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 447.0,
+     "y": 157.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 447.0,
+     "y": 1727.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 1074.8,
+     "y": 1724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    },
+    {
+     "x": 546.5,
+     "y": 1727.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    },
+    {
+     "x": 1503.7,
+     "y": 168.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1515"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "1514",
+    "1515"
+   ],
+   "px4": [
+    [
+     447.0,
+     157.0
+    ],
+    [
+     447.0,
+     1727.8
+    ],
+    [
+     0.5,
+     1727.8
+    ],
+    [
+     0.5,
+     157.0
+    ]
+   ],
+   "edge_q": [
+    0.17,
+    0.42,
+    1.0,
+    0.33
+   ],
+   "corners_all": [
+    {
+     "x": 447.0,
+     "y": 157.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 447.0,
+     "y": 1727.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    0.5,
+    157.0,
+    447.0,
+    1727.8
+   ]
+  },
+  {
+   "name": "1514",
+   "streets": {
+    "N": "24th",
+    "S": "23rd",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1049.3,
+     142.0
+    ],
+    [
+     1049.3,
+     1719.7
+    ],
+    [
+     562.0,
+     1719.7
+    ],
+    [
+     562.0,
+     142.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1074.8,
+     "y": 1724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    },
+    {
+     "x": 546.5,
+     "y": 1727.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    },
+    {
+     "x": 447.0,
+     "y": 157.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 447.0,
+     "y": 1727.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 1503.7,
+     "y": 168.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1515"
+    }
+   ],
+   "with": [
+    "1206",
+    "1515"
+   ],
+   "px4": [
+    [
+     1074.8,
+     116.5
+    ],
+    [
+     1074.8,
+     1724.2
+    ],
+    [
+     546.5,
+     1727.1
+    ],
+    [
+     546.5,
+     116.5
+    ]
+   ],
+   "edge_q": [
+    0.06,
+    0.6,
+    0.25,
+    0.15
+   ],
+   "corners_all": [
+    {
+     "x": 1074.8,
+     "y": 116.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Grove x 24th"
+    },
+    {
+     "x": 1074.8,
+     "y": 1724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 546.5,
+     "y": 1727.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 546.5,
+     "y": 116.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Grove x 23rd"
+    }
+   ],
+   "zone_px": [
+    546.5,
+    116.5,
+    1074.8,
+    1727.0994945294697
+   ]
+  },
+  {
+   "name": "1515",
+   "streets": {
+    "N": "25th",
+    "S": "24th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1481.4,
+     143.2
+    ],
+    [
+     1481.4,
+     1736.8
+    ],
+    [
+     1173.9,
+     1736.8
+    ],
+    [
+     1173.9,
+     143.2
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1503.7,
+     "y": 168.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1515"
+    },
+    {
+     "x": 447.0,
+     "y": 157.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 447.0,
+     "y": 1727.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1206"
+    },
+    {
+     "x": 1074.8,
+     "y": 1724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    },
+    {
+     "x": 546.5,
+     "y": 1727.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1514"
+    }
+   ],
+   "with": [
+    "1206",
+    "1514"
+   ],
+   "px4": [
+    [
+     1503.7,
+     168.7
+    ],
+    [
+     1496.0,
+     1719.9
+    ],
+    [
+     1148.4,
+     1722.8
+    ],
+    [
+     1148.4,
+     168.7
+    ]
+   ],
+   "edge_q": [
+    0.3,
+    0.63,
+    0.12,
+    0.14
+   ],
+   "corners_all": [
+    {
+     "x": 1503.7,
+     "y": 168.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1496.0,
+     "y": 1719.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.4 31.7] at Telegraph x 25th SW"
+    },
+    {
+     "x": 1148.4,
+     "y": 1722.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.4 50.1] at Telegraph x 24th NW"
+    },
+    {
+     "x": 1148.4,
+     "y": 168.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [13.3 30.7] at Grove x 24th NE"
+    }
+   ],
+   "zone_px": [
+    1148.4,
+    168.7,
+    1503.7210407419152,
+    1722.8340179717586
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.03966953123779673,
+    0.19894087407295738,
+    563981.8575294057
+   ],
+   [
+    0.19894087407295738,
+    -0.03966953123779673,
+    4185251.44842762
+   ]
+  ],
+  "dist_px": 3.15,
+  "inlier_share": 0.66,
+  "rms_m": 0.48,
+  "n_points": 3646
+ }
+}

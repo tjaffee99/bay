@@ -1,0 +1,1821 @@
+{
+ "notes": "Eastlake, north up: Lake Shore Blvd (curved, left) -> 1st Ave -> 2nd Ave -> (3rd Ave); E 15th St (top) -> E 14th St (International Blvd) -> E 12th St -> E 11th St. The Lake Shore blocks 401 / 393 (houses and flats facing the lake) have no corners of their own: placed by the group fit (zones, no_refine). Control in the tool's compass frame (the grid is at ~45 deg: 'N' runs along the E-streets toward the NW, 'E' along the avenues toward the NE)",
+ "refine_R": 24,
+ "residential": true,
+ "blocks": [
+  {
+   "name": "402",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "international boulevard",
+    "E": "east 15th street"
+   },
+   "px4_est": [
+    [
+     800,
+     620
+    ],
+    [
+     800,
+     185
+    ],
+    [
+     1245,
+     185
+    ],
+    [
+     1245,
+     620
+    ]
+   ],
+   "corners": [
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "202",
+    "201",
+    "403",
+    "394",
+    "381",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     802.8,
+     618.3
+    ],
+    [
+     800.2,
+     179.7
+    ],
+    [
+     1241.1,
+     182.3
+    ],
+    [
+     1242.4,
+     622.2
+    ]
+   ],
+   "edge_q": [
+    0.72,
+    0.77,
+    0.85,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    800.1520575302053,
+    179.6851097429344,
+    1242.41455157294,
+    622.2007500139528
+   ]
+  },
+  {
+   "name": "202",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "east 12th street",
+    "E": "international boulevard"
+   },
+   "px4_est": [
+    [
+     800,
+     1180
+    ],
+    [
+     800,
+     735
+    ],
+    [
+     1245,
+     735
+    ],
+    [
+     1245,
+     1180
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "NE"
+   ],
+   "with": [
+    "402",
+    "201",
+    "403",
+    "394",
+    "381",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     802.5,
+     1180.5
+    ],
+    [
+     802.5,
+     737.1
+    ],
+    [
+     1244.0,
+     738.4
+    ],
+    [
+     1244.0,
+     1180.5
+    ]
+   ],
+   "edge_q": [
+    0.61,
+    0.48,
+    0.77,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 802.5,
+     "y": 1180.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 4.5 30.5] at east 12th street x 1st avenue SE"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    802.5,
+    737.0994973388528,
+    1244.0,
+    1180.5
+   ]
+  },
+  {
+   "name": "201",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "east 11th street",
+    "E": "east 12th street"
+   },
+   "px4_est": [
+    [
+     790,
+     1760
+    ],
+    [
+     790,
+     1300
+    ],
+    [
+     1245,
+     1300
+    ],
+    [
+     1245,
+     1760
+    ]
+   ],
+   "corners": [
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "SW",
+    "NW"
+   ],
+   "with": [
+    "402",
+    "202",
+    "403",
+    "394",
+    "381",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     788.5,
+     1753.9
+    ],
+    [
+     788.5,
+     1300.1
+    ],
+    [
+     1244.8,
+     1301.4
+    ],
+    [
+     1242.2,
+     1752.6
+    ]
+   ],
+   "edge_q": [
+    0.93,
+    0.83,
+    0.81,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 788.5,
+     "y": 1300.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [24.2 29.9] at east 12th street x 1st avenue SW"
+    },
+    {
+     "x": 1244.8,
+     "y": 1301.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    788.5,
+    1300.0877674956623,
+    1244.807738336694,
+    1753.9122325043377
+   ]
+  },
+  {
+   "name": "403",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "international boulevard",
+    "E": "east 15th street"
+   },
+   "px4_est": [
+    [
+     1330,
+     620
+    ],
+    [
+     1330,
+     185
+    ],
+    [
+     1640,
+     185
+    ],
+    [
+     1640,
+     620
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "402",
+    "202",
+    "201",
+    "394",
+    "381",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     1331.9,
+     622.5
+    ],
+    [
+     1330.6,
+     184.5
+    ],
+    [
+     1654.5,
+     184.5
+    ],
+    [
+     1654.5,
+     622.5
+    ]
+   ],
+   "edge_q": [
+    0.84,
+    1.0,
+    1.0,
+    0.93
+   ],
+   "corners_all": [
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1330.590592861464,
+    184.5,
+    1654.5,
+    622.5
+   ]
+  },
+  {
+   "name": "394",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "east 12th street",
+    "E": "international boulevard"
+   },
+   "px4_est": [
+    [
+     1330,
+     1180
+    ],
+    [
+     1330,
+     735
+    ],
+    [
+     1640,
+     735
+    ],
+    [
+     1640,
+     1180
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "402",
+    "202",
+    "201",
+    "403",
+    "381",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     1333.4,
+     1180.3
+    ],
+    [
+     1332.1,
+     739.6
+    ],
+    [
+     1654.5,
+     741.0
+    ],
+    [
+     1654.5,
+     1177.6
+    ]
+   ],
+   "edge_q": [
+    0.85,
+    0.83,
+    1.0,
+    0.87
+   ],
+   "corners_all": [
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1332.1057097661464,
+    739.6010429107222,
+    1654.5,
+    1180.28685277664
+   ]
+  },
+  {
+   "name": "381",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "east 11th street",
+    "E": "east 12th street"
+   },
+   "px4_est": [
+    [
+     1330,
+     1760
+    ],
+    [
+     1330,
+     1300
+    ],
+    [
+     1640,
+     1300
+    ],
+    [
+     1640,
+     1760
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    },
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW",
+    "NW"
+   ],
+   "with": [
+    "402",
+    "202",
+    "201",
+    "403",
+    "394",
+    "401",
+    "393"
+   ],
+   "px4": [
+    [
+     1330.2,
+     1751.8
+    ],
+    [
+     1332.8,
+     1300.8
+    ],
+    [
+     1654.5,
+     1298.1
+    ],
+    [
+     1654.5,
+     1749.1
+    ]
+   ],
+   "edge_q": [
+    0.69,
+    0.83,
+    1.0,
+    0.87
+   ],
+   "corners_all": [
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1330.2310421729696,
+    1298.0611205432938,
+    1654.5,
+    1751.8138281649153
+   ]
+  },
+  {
+   "name": "401",
+   "streets": {
+    "N": "lakeshore avenue",
+    "S": "1st avenue",
+    "W": "international boulevard",
+    "E": "east 15th street"
+   },
+   "px4_est": [
+    [
+     230,
+     650
+    ],
+    [
+     230,
+     30
+    ],
+    [
+     700,
+     30
+    ],
+    [
+     700,
+     650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW",
+    "NW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "402",
+    "202",
+    "201",
+    "403",
+    "394",
+    "381",
+    "393"
+   ],
+   "px4": [
+    [
+     230.0,
+     650.0
+    ],
+    [
+     230.0,
+     30.0
+    ],
+    [
+     700.0,
+     30.0
+    ],
+    [
+     700.0,
+     650.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    230.0,
+    30.0,
+    700.0,
+    650.0
+   ],
+   "confidence_cap": "medium"
+  },
+  {
+   "name": "393",
+   "streets": {
+    "N": "lakeshore avenue",
+    "S": "1st avenue",
+    "W": "east 12th street",
+    "E": "international boulevard"
+   },
+   "px4_est": [
+    [
+     160,
+     1300
+    ],
+    [
+     160,
+     650
+    ],
+    [
+     700,
+     650
+    ],
+    [
+     700,
+     1300
+    ]
+   ],
+   "corners": [
+    {
+     "x": 802.8,
+     "y": 618.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 800.2,
+     "y": 179.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1241.1,
+     "y": 182.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1242.4,
+     "y": 622.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "402"
+    },
+    {
+     "x": 1244.0,
+     "y": 738.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1244.0,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "202"
+    },
+    {
+     "x": 1331.9,
+     "y": 622.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1330.6,
+     "y": 184.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "403"
+    },
+    {
+     "x": 1333.4,
+     "y": 1180.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.1,
+     "y": 739.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "international boulevard",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "394"
+    },
+    {
+     "x": 1332.8,
+     "y": 1300.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 12th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "381"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW",
+    "NW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "402",
+    "202",
+    "201",
+    "403",
+    "394",
+    "381",
+    "401"
+   ],
+   "px4": [
+    [
+     160.0,
+     1300.0
+    ],
+    [
+     160.0,
+     650.0
+    ],
+    [
+     700.0,
+     650.0
+    ],
+    [
+     700.0,
+     1300.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    160.0,
+    650.0,
+    700.0,
+    1300.0
+   ],
+   "confidence_cap": "medium"
+  }
+ ],
+ "pct": 25
+}

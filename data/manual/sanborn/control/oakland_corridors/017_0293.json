@@ -1,0 +1,1276 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "new plate (Oct 1931: the Idora Park tract), georeferenced on its own (no SIFT registration onto the 1911 sheet)",
+ "predicted_from": [
+  [
+   107,
+   488,
+   "Shattuck",
+   "57th"
+  ],
+  [
+   107,
+   940,
+   "Shattuck",
+   "Aileen"
+  ],
+  [
+   107,
+   1393,
+   "Shattuck",
+   "56th"
+  ],
+  [
+   1071,
+   1024,
+   "Carberry",
+   "Aileen"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5143",
+   "streets": {
+    "N": "58th",
+    "S": "57th",
+    "W": "Shattuck",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     155.2,
+     78.6
+    ],
+    [
+     1568.3,
+     78.6
+    ],
+    [
+     1478.7,
+     469.6
+    ],
+    [
+     155.2,
+     469.6
+    ]
+   ],
+   "corners": [
+    {
+     "x": 157.6,
+     "y": 82.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 1569.2,
+     "y": 82.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 1482.3,
+     "y": 445.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 156.4,
+     "y": 445.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 148.5,
+     "y": 1372.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5140"
+    },
+    {
+     "x": 157.7,
+     "y": 1731.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5140"
+    }
+   ],
+   "with": [
+    "5140"
+   ],
+   "px4": [
+    [
+     157.6,
+     82.1
+    ],
+    [
+     1569.2,
+     82.1
+    ],
+    [
+     1482.3,
+     445.1
+    ],
+    [
+     156.4,
+     445.1
+    ]
+   ],
+   "edge_q": [
+    0.1,
+    0.36,
+    0.07,
+    0.46
+   ],
+   "corners_all": [
+    {
+     "x": 157.6,
+     "y": 82.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1569.2,
+     "y": 82.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1482.3,
+     "y": 445.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 156.4,
+     "y": 445.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    156.37455242966757,
+    82.09999999999997,
+    1569.233980976997,
+    445.1
+   ]
+  },
+  {
+   "name": "5142",
+   "streets": {
+    "N": "57th",
+    "S": "Aileen",
+    "W": "Shattuck",
+    "E": "Carberry"
+   },
+   "px4_est": [
+    [
+     156.7,
+     543.0
+    ],
+    [
+     1081.2,
+     543.0
+    ],
+    [
+     968.5,
+     1033.6
+    ],
+    [
+     156.7,
+     885.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 1025.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 160.6,
+     "y": 878.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 1167.2,
+     "y": 455.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1471.9,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1332.5,
+     "y": 1117.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1043.7,
+     "y": 1057.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 158.7,
+     "y": 941.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5141"
+    },
+    {
+     "x": 947.8,
+     "y": 1110.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5141"
+    },
+    {
+     "x": 875.6,
+     "y": 1426.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5141"
+    }
+   ],
+   "with": [
+    "5402",
+    "5141"
+   ],
+   "px4": [
+    [
+     159.2,
+     527.0
+    ],
+    [
+     1079.7,
+     527.0
+    ],
+    [
+     965.1,
+     1025.9
+    ],
+    [
+     160.6,
+     878.9
+    ]
+   ],
+   "edge_q": [
+    0.09,
+    0.63,
+    0.12,
+    0.5
+   ],
+   "corners_all": [
+    {
+     "x": 159.2,
+     "y": 527.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1079.7,
+     "y": 527.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Carberry",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 965.1,
+     "y": 1025.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 160.6,
+     "y": 878.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    159.23060181127664,
+    527.0,
+    1079.7452686759952,
+    1025.8712989766238
+   ]
+  },
+  {
+   "name": "5402",
+   "streets": {
+    "N": "57th",
+    "S": "Aileen",
+    "W": "Carberry",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1159.7,
+     472.3
+    ],
+    [
+     1458.7,
+     518.8
+    ],
+    [
+     1331.1,
+     1117.0
+    ],
+    [
+     1041.2,
+     1049.8
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1167.2,
+     "y": 455.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1471.9,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1332.5,
+     "y": 1117.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 1043.7,
+     "y": 1057.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5402"
+    },
+    {
+     "x": 965.1,
+     "y": 1025.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 160.6,
+     "y": 878.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 1017.7,
+     "y": 1141.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 1312.9,
+     "y": 1204.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 1242.5,
+     "y": 1525.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 943.1,
+     "y": 1460.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    }
+   ],
+   "with": [
+    "5142",
+    "5401"
+   ],
+   "px4": [
+    [
+     1167.2,
+     455.8
+    ],
+    [
+     1471.9,
+     503.1
+    ],
+    [
+     1332.5,
+     1117.8
+    ],
+    [
+     1043.7,
+     1057.5
+    ]
+   ],
+   "edge_q": [
+    0.21,
+    0.28,
+    0.46,
+    0.27
+   ],
+   "corners_all": [
+    {
+     "x": 1167.2,
+     "y": 455.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1471.9,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1332.5,
+     "y": 1117.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1043.7,
+     "y": 1057.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1043.7010692002752,
+    455.75272142407147,
+    1471.936991918763,
+    1117.7661901204435
+   ]
+  },
+  {
+   "name": "5141",
+   "streets": {
+    "N": "Aileen",
+    "S": "56th",
+    "W": "Shattuck",
+    "E": "Carberry"
+   },
+   "px4_est": [
+    [
+     158.3,
+     951.9
+    ],
+    [
+     949.8,
+     1121.2
+    ],
+    [
+     878.5,
+     1450.6
+    ],
+    [
+     158.3,
+     1271.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 158.7,
+     "y": 941.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5141"
+    },
+    {
+     "x": 947.8,
+     "y": 1110.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5141"
+    },
+    {
+     "x": 965.1,
+     "y": 1025.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 160.6,
+     "y": 878.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5142"
+    },
+    {
+     "x": 1017.7,
+     "y": 1141.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 1312.9,
+     "y": 1204.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 1242.5,
+     "y": 1525.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    },
+    {
+     "x": 943.1,
+     "y": 1460.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5401"
+    }
+   ],
+   "with": [
+    "5142",
+    "5401"
+   ],
+   "px4": [
+    [
+     158.7,
+     941.8
+    ],
+    [
+     947.8,
+     1110.6
+    ],
+    [
+     875.6,
+     1426.2
+    ],
+    [
+     157.5,
+     1247.1
+    ]
+   ],
+   "edge_q": [
+    0.21,
+    0.54,
+    0.22,
+    0.59
+   ],
+   "corners_all": [
+    {
+     "x": 158.7,
+     "y": 941.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 947.8,
+     "y": 1110.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 875.6,
+     "y": 1426.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 157.5,
+     "y": 1247.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [12.1  1.1] at Shattuck x 56th NE"
+    }
+   ],
+   "zone_px": [
+    157.49068102733509,
+    941.7699796800905,
+    947.8482356510648,
+    1426.1847513595512
+   ]
+  },
+  {
+   "name": "5401",
+   "streets": {
+    "N": "Aileen",
+    "S": "56th",
+    "W": "Carberry",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1022.6,
+     1137.1
+    ],
+    [
+     1312.0,
+     1204.3
+    ],
+    [
+     1242.5,
+     1526.9
+    ],
+    [
+     952.9,
+     1459.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1017.7,
+     "y": 1141.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1312.9,
+     "y": 1204.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1242.5,
+     "y": 1525.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 943.1,
+     "y": 1460.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "5402",
+    "5141"
+   ],
+   "px4": [
+    [
+     1017.7,
+     1141.3
+    ],
+    [
+     1312.9,
+     1204.4
+    ],
+    [
+     1242.5,
+     1525.2
+    ],
+    [
+     943.1,
+     1460.9
+    ]
+   ],
+   "edge_q": [
+    0.49,
+    0.45,
+    0.62,
+    0.48
+   ],
+   "corners_all": [
+    {
+     "x": 1017.7,
+     "y": 1141.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Carberry",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1312.9,
+     "y": 1204.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Aileen"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1242.5,
+     "y": 1525.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 943.1,
+     "y": 1460.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Carberry",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    943.1475213555744,
+    1141.28954055983,
+    1312.9160916700453,
+    1525.2209538327388
+   ]
+  },
+  {
+   "name": "5140",
+   "streets": {
+    "N": "56th",
+    "S": "55th",
+    "W": "Shattuck",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     154.3,
+     1390.9
+    ],
+    [
+     1230.6,
+     1643.1
+    ],
+    [
+     1624.0,
+     1747.8
+    ],
+    [
+     154.3,
+     1747.8
+    ]
+   ],
+   "corners": [
+    {
+     "x": 148.5,
+     "y": 1372.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5140"
+    },
+    {
+     "x": 157.7,
+     "y": 1731.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5140"
+    },
+    {
+     "x": 157.6,
+     "y": 82.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 1569.2,
+     "y": 82.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 1482.3,
+     "y": 445.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    },
+    {
+     "x": 156.4,
+     "y": 445.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5143"
+    }
+   ],
+   "skip": [
+    "SE"
+   ],
+   "with": [
+    "5143"
+   ],
+   "px4": [
+    [
+     148.5,
+     1372.4
+    ],
+    [
+     1057.5,
+     1576.3
+    ],
+    [
+     1674.2,
+     1740.5
+    ],
+    [
+     157.7,
+     1731.0
+    ]
+   ],
+   "edge_q": [
+    0.27,
+    0.0,
+    0.14,
+    0.43
+   ],
+   "corners_all": [
+    {
+     "x": 148.5,
+     "y": 1372.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1057.5,
+     "y": 1576.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "56th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Telegraph x 56th"
+    },
+    {
+     "x": 157.7,
+     "y": 1731.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    148.46834060152977,
+    1372.4400540173338,
+    1674.2221789457835,
+    1740.4700026971316
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.20330284901490042,
+    0.022302569104804902,
+    564651.0027743543
+   ],
+   [
+    0.022302569104804902,
+    -0.20330284901490042,
+    4188723.9235188155
+   ]
+  ],
+  "dist_px": 4.32,
+  "inlier_share": 0.4,
+  "rms_m": 0.5,
+  "n_points": 3932
+ }
+}

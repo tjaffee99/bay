@@ -1,0 +1,81 @@
+{
+ "residential": true,
+ "notes": "Oakgrove Ave (and the blocks along it) gone under SR-24; one zone drawn by hand (Claremont Ave - College Ave, 59th St - Forest St, without the inset); placed by three street crossings (Claremont x Forest, Miles x Forest, Miles x College; the chamfer match fails here: 20 % inliers)",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   71,
+   1852,
+   "Claremont",
+   "Forest"
+  ],
+  [
+   930,
+   1852,
+   "Miles",
+   "Forest"
+  ],
+  [
+   1571,
+   667,
+   "Miles",
+   "College"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.17306627855347065,
+    -0.10192994561233791,
+    565621.100764965
+   ],
+   [
+    -0.10192994561233791,
+    -0.17306627855347065,
+    4189166.9219579957
+   ]
+  ],
+  "dist_px": null,
+  "inlier_share": null,
+  "rms_m": 2.42,
+  "n_points": 0,
+  "from": "3 street crossings read by eye, RMS 2.42 m"
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "5573-5575",
+   "px4": [
+    [
+     110,
+     1830
+    ],
+    [
+     110,
+     930
+    ],
+    [
+     548,
+     400
+    ],
+    [
+     700,
+     30
+    ],
+    [
+     1150,
+     60
+    ],
+    [
+     1571,
+     640
+    ],
+    [
+     1571,
+     1833
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

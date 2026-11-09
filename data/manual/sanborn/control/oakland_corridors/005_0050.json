@@ -1,0 +1,1083 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "blocks west of Brush St control only; 1508 and 1516 (San Pablo Ave diagonal) drawn by hand",
+ "predicted_from": [
+  [
+   476,
+   1333,
+   "Brush",
+   "20th"
+  ],
+  [
+   1048,
+   1333,
+   "Castro",
+   "20th"
+  ],
+  [
+   476,
+   940,
+   "Brush",
+   "21st"
+  ],
+  [
+   1524,
+   1333,
+   "Grove",
+   "20th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "294",
+   "streets": {
+    "N": "20th",
+    "S": "19th",
+    "W": "Brush",
+    "E": "Castro"
+   },
+   "px4_est": [
+    [
+     510.6,
+     1396.0
+    ],
+    [
+     980.7,
+     1396.0
+    ],
+    [
+     980.7,
+     1656.9
+    ],
+    [
+     510.6,
+     1656.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1102.1,
+     "y": 1367.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Castro",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1578.6,
+     "y": 1367.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1100.7,
+     "y": 1672.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Castro",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 412.0,
+     "y": 1379.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    },
+    {
+     "x": 410.7,
+     "y": 1679.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    }
+   ],
+   "with": [
+    "295",
+    "293"
+   ],
+   "px4": [
+    [
+     530.6,
+     1379.8
+    ],
+    [
+     982.2,
+     1382.3
+    ],
+    [
+     980.7,
+     1683.2
+    ],
+    [
+     529.1,
+     1680.7
+    ]
+   ],
+   "edge_q": [
+    0.62,
+    0.82,
+    0.65,
+    0.71
+   ],
+   "corners_all": [
+    {
+     "x": 530.6,
+     "y": 1379.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Brush x 20th"
+    },
+    {
+     "x": 982.2,
+     "y": 1382.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Castro",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Castro x 20th"
+    },
+    {
+     "x": 980.7,
+     "y": 1683.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Castro",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NW of Castro x 19th"
+    },
+    {
+     "x": 529.1,
+     "y": 1680.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Brush x 19th"
+    }
+   ],
+   "zone_px": [
+    529.0721378631215,
+    1379.7961106558873,
+    982.176866228024,
+    1683.2155621354066
+   ]
+  },
+  {
+   "name": "295",
+   "streets": {
+    "N": "20th",
+    "S": "19th",
+    "W": "Castro",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     1115.2,
+     1371.0
+    ],
+    [
+     1555.6,
+     1371.0
+    ],
+    [
+     1658.0,
+     1661.4
+    ],
+    [
+     1115.2,
+     1661.4
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1102.1,
+     "y": 1367.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Castro",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1578.6,
+     "y": 1367.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1100.7,
+     "y": 1672.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Castro",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 412.0,
+     "y": 1379.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    },
+    {
+     "x": 410.7,
+     "y": 1679.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    }
+   ],
+   "skip": [
+    "SE"
+   ],
+   "with": [
+    "294",
+    "293"
+   ],
+   "px4": [
+    [
+     1102.1,
+     1367.0
+    ],
+    [
+     1578.6,
+     1367.0
+    ],
+    [
+     1686.8,
+     1673.9
+    ],
+    [
+     1100.7,
+     1672.5
+    ]
+   ],
+   "edge_q": [
+    0.26,
+    0.25,
+    0.61,
+    0.59
+   ],
+   "corners_all": [
+    {
+     "x": 1102.1,
+     "y": 1367.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Castro",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1578.6,
+     "y": 1367.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1100.7,
+     "y": 1672.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Castro",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1100.7420062257129,
+    1367.0,
+    1686.7878566627392,
+    1673.8776787434133
+   ]
+  },
+  {
+   "name": "297-298",
+   "streets": {
+    "N": "21st",
+    "S": "20th",
+    "W": "Brush",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     517.4,
+     968.4
+    ],
+    [
+     1572.6,
+     968.4
+    ],
+    [
+     1572.6,
+     1277.7
+    ],
+    [
+     517.4,
+     1277.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1552.6,
+     "y": 1292.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "297-298"
+    },
+    {
+     "x": 412.0,
+     "y": 987.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    },
+    {
+     "x": 412.0,
+     "y": 1289.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    }
+   ],
+   "with": [
+    "299"
+   ],
+   "px4": [
+    [
+     530.9,
+     989.9
+    ],
+    [
+     1552.6,
+     989.9
+    ],
+    [
+     1552.6,
+     1292.7
+    ],
+    [
+     530.9,
+     1292.7
+    ]
+   ],
+   "edge_q": [
+    0.09,
+    0.09,
+    0.26,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 530.9,
+     "y": 989.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Brush",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.8  1.2] at Brush x 21st SE"
+    },
+    {
+     "x": 1552.6,
+     "y": 989.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [30.3  1.2] at Grove x 21st SW"
+    },
+    {
+     "x": 1552.6,
+     "y": 1292.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 530.9,
+     "y": 1292.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.2 39.8] at Brush x 20th NE"
+    }
+   ],
+   "zone_px": [
+    530.9,
+    989.9,
+    1552.6,
+    1292.7
+   ]
+  },
+  {
+   "name": "1508",
+   "streets": {
+    "N": "22nd",
+    "S": "21st",
+    "W": "Brush",
+    "E": "San Pablo"
+   },
+   "px4_est": [
+    [
+     512,
+     238
+    ],
+    [
+     1000,
+     238
+    ],
+    [
+     680,
+     900
+    ],
+    [
+     512,
+     900
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1552.6,
+     "y": 1292.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "297-298"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "297-298",
+    "294"
+   ],
+   "px4": [
+    [
+     512.0,
+     238.0
+    ],
+    [
+     1000.0,
+     238.0
+    ],
+    [
+     680.0,
+     900.0
+    ],
+    [
+     512.0,
+     900.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    512.0,
+    238.0,
+    1000.0,
+    900.0
+   ]
+  },
+  {
+   "name": "299",
+   "streets": {
+    "N": "21st",
+    "S": "20th",
+    "W": "Curtis",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     10.0,
+     987.8
+    ],
+    [
+     412.0,
+     987.8
+    ],
+    [
+     412.0,
+     1288.0
+    ],
+    [
+     10.0,
+     1288.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 412.0,
+     "y": 987.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    },
+    {
+     "x": 412.0,
+     "y": 1289.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    },
+    {
+     "x": 1552.6,
+     "y": 1292.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "297-298"
+    },
+    {
+     "x": 412.0,
+     "y": 1379.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    },
+    {
+     "x": 410.7,
+     "y": 1679.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "297-298",
+    "293"
+   ],
+   "control_only": true,
+   "px4": [
+    [
+     0.5,
+     983.0
+    ],
+    [
+     412.0,
+     987.0
+    ],
+    [
+     412.0,
+     1289.7
+    ],
+    [
+     0.5,
+     1285.7
+    ]
+   ],
+   "edge_q": [
+    0.7,
+    0.76,
+    0.66,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 412.0,
+     "y": 987.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 412.0,
+     "y": 1289.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    0.5,
+    982.9830322073841,
+    412.0,
+    1289.7236842105262
+   ]
+  },
+  {
+   "name": "293",
+   "streets": {
+    "N": "20th",
+    "S": "19th",
+    "W": "Curtis",
+    "E": "Brush"
+   },
+   "px4_est": [
+    [
+     10.0,
+     1378.0
+    ],
+    [
+     408.6,
+     1378.0
+    ],
+    [
+     408.6,
+     1677.7
+    ],
+    [
+     10.0,
+     1677.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 412.0,
+     "y": 1379.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    },
+    {
+     "x": 410.7,
+     "y": 1679.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "293"
+    },
+    {
+     "x": 1578.6,
+     "y": 1367.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 412.0,
+     "y": 987.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "21st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    },
+    {
+     "x": 412.0,
+     "y": 1289.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "299"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "294",
+    "295",
+    "299"
+   ],
+   "control_only": true,
+   "px4": [
+    [
+     0.5,
+     1374.2
+    ],
+    [
+     412.0,
+     1379.7
+    ],
+    [
+     410.7,
+     1679.9
+    ],
+    [
+     0.5,
+     1675.9
+    ]
+   ],
+   "edge_q": [
+    0.72,
+    0.73,
+    0.74,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 412.0,
+     "y": 1379.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Brush",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 410.7,
+     "y": 1679.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Brush",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    0.5,
+    1374.2429820160035,
+    412.0005343941548,
+    1679.9443049221672
+   ]
+  },
+  {
+   "name": "1516",
+   "streets": {
+    "N": "22nd",
+    "S": "Jones",
+    "W": "San Pablo",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     1020,
+     200
+    ],
+    [
+     1400,
+     130
+    ],
+    [
+     1400,
+     480
+    ],
+    [
+     1200,
+     520
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1552.6,
+     "y": 1292.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "297-298"
+    },
+    {
+     "x": 1102.1,
+     "y": 1367.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Castro",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1578.6,
+     "y": 1367.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "20th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    },
+    {
+     "x": 1100.7,
+     "y": 1672.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Castro",
+      "19th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "295"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "297-298",
+    "295"
+   ],
+   "px4": [
+    [
+     1020.0,
+     200.0
+    ],
+    [
+     1400.0,
+     130.0
+    ],
+    [
+     1400.0,
+     480.0
+    ],
+    [
+     1200.0,
+     520.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1020.0,
+    130.0,
+    1400.0,
+    520.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.18335364368960186,
+    -0.08736518262324715,
+    563769.5971241763
+   ],
+   [
+    -0.08736518262324715,
+    -0.18335364368960186,
+    4185385.882148224
+   ]
+  ],
+  "dist_px": 2.93,
+  "inlier_share": 0.63,
+  "rms_m": 0.36,
+  "n_points": 3461
+ }
+}

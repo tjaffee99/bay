@@ -1,0 +1,269 @@
+{
+ "notes": "Eastlake, north up: Lake Shore Blvd / 1st Ave (left) -> 2nd Ave -> 3rd Ave (right edge); E 18th St (oblique, top) -> E 16th St -> E 15th St. Used: block 412 (2nd - 3rd Ave, E 15th - E 16th) and the Oakland Traction Co. car barn block 810 / 426 (2nd - 3rd Ave, E 16th - E 18th; E 16th St corners only). The Lake Shore / Athol Plaza blocks (425, 411) and the 3rd - 4th Ave blocks (on sheet 186) are not used here. Control in the tool's compass frame (the grid is at ~45 deg: 'N' runs along the E-streets toward the NW, 'E' along the avenues toward the NE)",
+ "refine_R": 24,
+ "residential": true,
+ "blocks": [
+  {
+   "name": "412",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "east 15th street",
+    "E": "east 16th street"
+   },
+   "px4_est": [
+    [
+     704,
+     1756
+    ],
+    [
+     704,
+     1286
+    ],
+    [
+     1164,
+     1286
+    ],
+    [
+     1164,
+     1756
+    ]
+   ],
+   "corners": [
+    {
+     "x": 710.5,
+     "y": 1743.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "412"
+    },
+    {
+     "x": 1165.0,
+     "y": 1742.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "412"
+    }
+   ],
+   "with": [
+    "810"
+   ],
+   "px4": [
+    [
+     710.5,
+     1743.4
+    ],
+    [
+     710.5,
+     1289.6
+    ],
+    [
+     1165.0,
+     1290.9
+    ],
+    [
+     1165.0,
+     1742.1
+    ]
+   ],
+   "edge_q": [
+    0.98,
+    0.83,
+    0.76,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 710.5,
+     "y": 1743.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 710.5,
+     "y": 1289.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 16th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [66.6  4.2] at east 16th street x 2nd avenue SW"
+    },
+    {
+     "x": 1165.0,
+     "y": 1290.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 16th street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [66.6  8.8] at east 16th street x 3rd avenue NW"
+    },
+    {
+     "x": 1165.0,
+     "y": 1742.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    710.5,
+    1289.6106979405035,
+    1165.0,
+    1743.3893020594965
+   ]
+  },
+  {
+   "name": "810",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "east 16th street",
+    "E": "east 18th street"
+   },
+   "px4_est": [
+    [
+     700,
+     1196
+    ],
+    [
+     600,
+     300
+    ],
+    [
+     1164,
+     300
+    ],
+    [
+     1164,
+     1196
+    ]
+   ],
+   "corners": [
+    {
+     "x": 710.5,
+     "y": 1743.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "412"
+    },
+    {
+     "x": 1165.0,
+     "y": 1742.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "412"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "412"
+   ],
+   "px4": [
+    [
+     700.0,
+     1196.0
+    ],
+    [
+     600.0,
+     300.0
+    ],
+    [
+     1164.0,
+     300.0
+    ],
+    [
+     1164.0,
+     1196.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 700.0,
+     "y": 1196.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 16th street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [24.5 11.4] at east 16th street x 2nd avenue SE"
+    },
+    {
+     "x": 1164.0,
+     "y": 1196.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 16th street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [24.5  8.8] at east 16th street x 3rd avenue NE"
+    }
+   ],
+   "zone_px": [
+    600.0,
+    300.0,
+    1164.0,
+    1196.0
+   ]
+  }
+ ],
+ "pct": 25
+}

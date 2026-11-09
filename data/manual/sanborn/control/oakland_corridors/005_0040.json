@@ -1,0 +1,814 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "the San Pablo Ave - Grove St blocks (I-980 / SR-24 junction)",
+ "predicted_from": [
+  [
+   1517,
+   457,
+   "Grove",
+   "25th"
+  ],
+  [
+   1517,
+   1238,
+   "Grove",
+   "23rd"
+  ],
+  [
+   583,
+   840,
+   "San Pablo Avenue",
+   "24th"
+  ],
+  [
+   750,
+   1238,
+   "San Pablo Avenue",
+   "23rd"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1510",
+   "streets": {
+    "N": "Sycamore",
+    "S": "25th",
+    "W": "San Pablo Avenue",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     228.7,
+     122.0
+    ],
+    [
+     1433.9,
+     122.0
+    ],
+    [
+     1433.9,
+     415.9
+    ],
+    [
+     337.8,
+     415.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1433.8,
+     "y": 116.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "Sycamore"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 1432.5,
+     "y": 421.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 396.7,
+     "y": 503.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 507.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 813.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 543.0,
+     "y": 805.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1432.7,
+     "y": 903.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1518"
+    }
+   ],
+   "with": [
+    "1519",
+    "1518",
+    "1517"
+   ],
+   "px4": [
+    [
+     230.6,
+     108.6
+    ],
+    [
+     1433.8,
+     116.4
+    ],
+    [
+     1432.5,
+     421.1
+    ],
+    [
+     342.8,
+     410.7
+    ]
+   ],
+   "edge_q": [
+    0.38,
+    0.74,
+    0.37,
+    0.19
+   ],
+   "corners_all": [
+    {
+     "x": 230.6,
+     "y": 108.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "Sycamore"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1433.8,
+     "y": 116.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "Sycamore"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1432.5,
+     "y": 421.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 342.8,
+     "y": 410.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    230.64627398257448,
+    108.56538076656358,
+    1433.8327558248693,
+    421.14941158521117
+   ]
+  },
+  {
+   "name": "1519",
+   "streets": {
+    "N": "25th",
+    "S": "24th",
+    "W": "San Pablo Avenue",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     397.0,
+     505.6
+    ],
+    [
+     1433.4,
+     505.6
+    ],
+    [
+     1433.4,
+     808.3
+    ],
+    [
+     540.5,
+     808.3
+    ]
+   ],
+   "corners": [
+    {
+     "x": 396.7,
+     "y": 503.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 507.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 813.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 543.0,
+     "y": 805.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    }
+   ],
+   "with": [
+    "1510",
+    "1518",
+    "1517"
+   ],
+   "px4": [
+    [
+     396.7,
+     503.4
+    ],
+    [
+     1433.4,
+     507.3
+    ],
+    [
+     1433.4,
+     813.7
+    ],
+    [
+     543.0,
+     805.9
+    ]
+   ],
+   "edge_q": [
+    0.43,
+    0.73,
+    0.51,
+    0.77
+   ],
+   "corners_all": [
+    {
+     "x": 396.7,
+     "y": 503.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1433.4,
+     "y": 507.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1433.4,
+     "y": 813.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 543.0,
+     "y": 805.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    396.6838005443793,
+    503.3751114709231,
+    1433.4,
+    813.7473684210526
+   ]
+  },
+  {
+   "name": "1518",
+   "streets": {
+    "N": "24th",
+    "S": "23rd",
+    "W": "San Pablo Avenue",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     585.2,
+     899.1
+    ],
+    [
+     1432.7,
+     899.1
+    ],
+    [
+     1432.7,
+     1227.1
+    ],
+    [
+     708.3,
+     1227.1
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1432.7,
+     "y": 903.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1518"
+    },
+    {
+     "x": 1433.8,
+     "y": 116.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "Sycamore"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 1432.5,
+     "y": 421.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 396.7,
+     "y": 503.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 507.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 813.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 543.0,
+     "y": 805.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    }
+   ],
+   "with": [
+    "1510",
+    "1519",
+    "1517"
+   ],
+   "px4": [
+    [
+     606.4,
+     897.2
+    ],
+    [
+     1432.7,
+     903.6
+    ],
+    [
+     1432.7,
+     1204.0
+    ],
+    [
+     721.0,
+     1202.7
+    ]
+   ],
+   "edge_q": [
+    0.53,
+    0.83,
+    0.83,
+    0.28
+   ],
+   "corners_all": [
+    {
+     "x": 606.4,
+     "y": 897.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1432.7,
+     "y": 903.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1432.7,
+     "y": 1204.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 721.0,
+     "y": 1202.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    606.392522888275,
+    897.2250389915253,
+    1432.7,
+    1204.007894736842
+   ]
+  },
+  {
+   "name": "1517",
+   "streets": {
+    "N": "23rd",
+    "S": "22nd",
+    "W": "San Pablo Avenue",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     776.3,
+     1297.3
+    ],
+    [
+     1427.9,
+     1395.3
+    ],
+    [
+     1427.9,
+     1939.0
+    ],
+    [
+     776.3,
+     1939.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1433.8,
+     "y": 116.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "Sycamore"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 1432.5,
+     "y": 421.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1510"
+    },
+    {
+     "x": 396.7,
+     "y": 503.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 507.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "25th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1433.4,
+     "y": 813.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 543.0,
+     "y": 805.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "San Pablo Avenue",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1519"
+    },
+    {
+     "x": 1432.7,
+     "y": 903.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "24th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1518"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "1510",
+    "1519",
+    "1518"
+   ],
+   "px4": [
+    [
+     800.8,
+     1324.7
+    ],
+    [
+     1431.6,
+     1419.6
+    ],
+    [
+     1429.0,
+     1947.5
+    ],
+    [
+     800.8,
+     1947.5
+    ]
+   ],
+   "edge_q": [
+    0.15,
+    0.6,
+    1.0,
+    0.09
+   ],
+   "corners_all": [
+    {
+     "x": 800.8,
+     "y": 1324.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "San Pablo Avenue",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1431.6,
+     "y": 1419.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "23rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [31.9  1. ] at Grove x 23rd SW"
+    }
+   ],
+   "zone_px": [
+    800.8,
+    1324.7490731107214,
+    1431.5980751573238,
+    1947.5
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.19812151811394374,
+    -0.037720358164375356,
+    563784.9589358161
+   ],
+   [
+    -0.037720358164375356,
+    -0.19812151811394374,
+    4185684.83657506
+   ]
+  ],
+  "dist_px": 2.98,
+  "inlier_share": 0.65,
+  "rms_m": 0.38,
+  "n_points": 4105
+ }
+}

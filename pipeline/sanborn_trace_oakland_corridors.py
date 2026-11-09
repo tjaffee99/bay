@@ -51,10 +51,11 @@ NAME = "oakland_corridors"
 OAK_ALIASES = dict(E.ALIASES)  # Grove St -> MLK Jr Way, Cypress St -> Mandela Pkwy, ordinal streets
 C.CITIES[NAME] = {
     "loc": "00727",
-    "volumes": {"005": (1912, "1911-1912 Vol. 1 (1912)"), "007": (1911, "1911-1912 Vol. 3 (1911)"),
+    "volumes": {"005": (1912, "1911-1912 Vol. 1 (1912)"), "006": (1911, "1911 Vol. 2"), "007": (1911, "1911-1912 Vol. 3 (1911)"),
                 "015": (1951, "1912-Nov 1951 Vol. 1 (corrected to Nov 1951)"),
+                "016": (1950, "1911-Nov 1950 Vol. 2 (corrected to Nov 1950)"),
                 "017": (1950, "1911-Oct 1950 Vol. 3 (corrected to Oct 1950)")},
-    "edition_1950": ("015", "017"),
+    "edition_1950": ("015", "016", "017"),
     "parcels": ROOT / "data/raw/region_years/alameda_county_2021/alameda_county_2021.parquet",
     "parcel_cols": ["APN"],
     "bbox": (-122.300, 37.795, -122.195, 37.862),
@@ -132,6 +133,9 @@ def predict(key, s, M=None):
     o = ("NW", "NE", "SE", "SW")
     est = {}
     for n, b in s["blocks"].items():
+        if "px" in b:  # outline drawn by hand (irregular block, zone only): passed through
+            est[n] = dict(b)
+            continue
         pts, kinds = {}, {}
         for cn in o:
             p, k = world_corner(b, cn)
@@ -184,7 +188,7 @@ def predict(key, s, M=None):
         skip = set(b.get("skip", [])) | set(missing) | set(off)
         if skip:
             e["skip"] = sorted(skip)
-        for k in ("w", "oc", "with", "near", "no_refine"):
+        for k in ("w", "oc", "with", "near", "no_refine", "control_only"):
             if k in b:
                 e[k] = b[k]
         est[n] = e
@@ -199,7 +203,19 @@ def predict(key, s, M=None):
             e["with"] = nb or [m for m in est if m != n]
     out["blocks"] = est
     E.spec(key, out)
+    mark_blocks(key, est)
     return out
+
+
+def mark_blocks(key, blocks, keys=("control_only", "confidence_cap")):
+    """per-block keys that E.spec does not carry into the control file (control_only, confidence_cap)."""
+    f = E.CONTROL / f"{key}.json"
+    cfg = json.load(open(f))
+    for b in cfg["blocks"]:
+        for k in keys:
+            if k in blocks.get(b["name"], {}):
+                b[k] = blocks[b["name"]][k]
+    json.dump(cfg, open(f, "w"), indent=1)
 
 
 def regroup(key, max_rms=1.0, max_scale_dev=0.025):
@@ -375,10 +391,16 @@ def math_hypot(a, b):
     return float(np.hypot(a, b))
 
 
-def store_chamfer(key):
-    """chamfer match from the current sheet fit; stored in the control file (`chamfer`: M, line distance, RMS)."""
+def store_chamfer(key, starts=()):
+    """chamfer match from the current sheet fit (and any other start, e.g. the match of the previous pass), the best
+    one stored in the control file (`chamfer`: M, line distance, RMS)."""
     G = json.load(open(E.INTERIM / f"{key}.M.json"))
-    A, info = chamfer(key, G["M"], shift=20, rot_span=1.0, out="info")
+    best = None
+    for M0 in [G["M"]] + [np.asarray(m).tolist() for m in starts]:
+        A, info = chamfer(key, M0, shift=20, rot_span=1.0, out="info")
+        if best is None or info["dist_px"] < best[1]["dist_px"]:
+            best = (A, info)
+    A, info = best
     f = E.CONTROL / f"{key}.json"
     cfg = json.load(open(f))
     cfg["chamfer"] = info
@@ -387,27 +409,102 @@ def store_chamfer(key):
 
 
 def apply_chamfer(key, max_rms=1.5, max_max=3.0):
-    """blocks without a good corner fit (fewer than 3 control corners, RMS > max_rms or max > max_max: control lost to
-    re-platted or widened streets, partial blocks on the sheet edge) take the sheet's chamfer match to today's
-    property lines (`chamfer` in the control file) instead; their `georef_rms_m` is its inlier RMS and their confidence
-    at most medium (n = 3, no collinearity test)."""
+    """after W.georef: (1) blocks marked control_only lose their zone; (2) every block zone is its outline (px4 of the
+    control file: the refined outline, or the polygon drawn by hand), not the bounding box of it (blocks on rotated
+    or diagonal streets); (3) blocks without a good corner fit (fewer than 3 control corners, RMS > max_rms or max >
+    max_max: control lost to re-platted or widened streets, partial blocks on the sheet edge) take the sheet's
+    chamfer match to today's property lines (`chamfer` in the control file) instead; their `georef_rms_m` is the
+    match's inlier RMS (at least 1 m) and their confidence at most medium (n = 3, no collinearity test). A sheet in
+    mode `chamfer_only` (hand-drawn zones, no usable corners) is placed by the chamfer match alone. Registered
+    (corrected-edition) sheets inherit all of it from their base plate; their zone outlines are mapped through the
+    registration."""
     cfg = json.load(open(E.CONTROL / f"{key}.json"))
-    ch = cfg.get("chamfer")
-    if not ch or "registered_to" in cfg:
-        return 0
     p = E.INTERIM / f"{key}.M.json"
-    G = json.load(open(p))
-    n = 0
-    for b in G.get("blocks", []):
-        if b["n"] < 3 or b["rms"] > max_rms or b["max"] > max_max or cfg.get("chamfer_all"):
-            b.update(M=ch["M"], rms=max(ch["rms_m"], 1.0), max=max(2.5 * ch["rms_m"], 2.5), n=3, points=[], fit="chamfer",
-                     corner_fit={"n": b["n"], "rms": round(b["rms"], 2), "max": round(b["max"], 2)})
-            n += 1
-    if n:
-        G["chamfer"] = {k: v for k, v in ch.items() if k != "M"}
+    if "registered_to" in cfg:
+        G = json.load(open(p))
+        T = np.vstack([np.array(cfg["T"]), [0, 0, 1]])
+        Ti = np.linalg.inv(T)[:2]
+        for bl in G.get("blocks", []):
+            if bl.get("px4_base"):
+                q = np.asarray(bl["px4_base"], float)
+                bl["px4"] = np.round(q @ Ti[:, :2].T + Ti[:, 2], 1).tolist()
         json.dump(G, open(p, "w"), indent=1)
-        E.log(key, n, "blocks take the chamfer match", {k: v for k, v in ch.items() if k != "M"})
+        return 0
+    if cfg.get("mode") == "chamfer_only":
+        ch = cfg["chamfer"]
+        from PIL import Image
+        img = E.image(key)
+        A = np.array(ch["M"])
+        rms = max(ch["rms_m"], 1.0)
+        blocks = []
+        for bl in cfg["blocks"]:
+            q = np.asarray(bl["px4"], float)
+            blocks.append({"name": bl["name"], "M": ch["M"], "rect_px": [float(q[:, 0].min()), float(q[:, 1].min()), float(q[:, 0].max()), float(q[:, 1].max())],
+                           "rms": rms, "max": 2.5 * rms, "n": 3, "points": [], "fit": "chamfer"})
+        json.dump({"M": ch["M"], "pct": 25, "img": str(img), "rms": rms, "max": 2.5 * rms, "n": 3, "scale": W.describe(A), "blocks": blocks,
+                   "zones_only": True, "valid_px": cfg.get("valid_px"), "valid_poly_px": cfg.get("valid_poly_px"), "tied_to": [], "tie_rms": 0.0,
+                   "points": [], "chamfer": {k: v for k, v in ch.items() if k != "M"}}, open(p, "w"), indent=1)
+    G = json.load(open(p))
+    co = {bl["name"] for bl in cfg.get("blocks", []) if bl.get("control_only")}
+    if co:
+        G["blocks"] = [bl for bl in G.get("blocks", []) if bl["name"] not in co]
+        G["control_only"] = sorted(co)
+    outl = {bl["name"]: bl.get("px4") or bl.get("px4_est") for bl in cfg.get("blocks", [])}
+    for bl in G.get("blocks", []):
+        if outl.get(bl["name"]):
+            bl["px4"] = bl["px4_base"] = outl[bl["name"]]
+    n = 0
+    ch = cfg.get("chamfer")
+    if ch and cfg.get("mode") != "chamfer_only":
+        good_match = (ch.get("inlier_share") or 0) >= 0.45
+        for bl in G.get("blocks", []):
+            sc_ok = abs(float(np.hypot(bl["M"][0][0], bl["M"][1][0])) / 0.2015 - 1) <= 0.025  # plate scale 50 ft = 1 in
+            good = bl["n"] >= 3 and bl["rms"] <= max_rms and bl["max"] <= max_max and sc_ok
+            fair = bl["n"] >= 3 and bl["rms"] <= 3.0 and sc_ok
+            if cfg.get("chamfer_all") or (not good and (good_match or not fair)):
+                # a weak match (< 45 % of today's property lines on drawn lines) is low confidence (RMS 3.5 m)
+                r = max(ch["rms_m"], 1.0) if good_match else 3.5
+                bl.update(M=ch["M"], rms=r, max=max(2.5 * r, 2.5), n=3, points=[], fit="chamfer",
+                          corner_fit={"n": bl["n"], "rms": round(bl["rms"], 2), "max": round(bl["max"], 2)})
+                n += 1
+        if n:
+            G["chamfer"] = {k: v for k, v in ch.items() if k != "M"}
+            E.log(key, n, "blocks take the chamfer match", {k: v for k, v in ch.items() if k != "M"})
+        if good_match and (G.get("rms", 9) > max_rms or G.get("max", 9) > max_max):
+            # the sheet-wide fit (footprints near no block zone) likewise
+            r = max(ch["rms_m"], 1.0)
+            G.update(M=ch["M"], rms=r, max=2.5 * r, n=3, sheet_fit="chamfer")
+    json.dump(G, open(p, "w"), indent=1)
     return n
+
+
+def zones(key, s):
+    """sheet in `chamfer_only` mode: s = {"xings": [[x, y, a, b], ...] (+ "rot" for a single crossing), "zones": {name:
+    [[x, y], ...] polygon drawn by hand on the 25 % scan}, other keys}: the chamfer match to today's property lines places
+    the sheet; the zones are the blocks."""
+    xs = s["xings"]
+    px = [(float(x[0]), float(x[1])) for x in xs]
+    wo = [E.xing(x[2], x[3], x[4] if len(x) > 4 else None)[0] for x in xs]
+    if len(px) >= 2:
+        M, d = W.fit(px, wo, prior=(s.get("scale", 0.2015), 0.0008))
+    else:
+        M = W.M_of([s.get("scale", 0.2015), np.radians(s["rot"]), 0, 0])
+        M[:, 2] = np.asarray(wo[0]) - W.apply(M, [px[0]])[0]
+        d = np.zeros(1)
+    E.log(key, "crossing fit", W.describe(M), "residuals (m):", np.round(d, 1).tolist())
+    if s.get("match", True):
+        M = chamfer(key, M, shift=s.get("match_shift", 60), rot_span=s.get("match_rot", 4.0))
+        A, info = chamfer(key, M, shift=20, rot_span=1.0, out="info")
+    else:  # the crossings read by eye are the control (the chamfer match fails where most property lines changed)
+        rms = float(np.sqrt((d ** 2).mean()))
+        info = {"M": np.asarray(M).tolist(), "dist_px": None, "inlier_share": None, "rms_m": round(max(rms, 1.5), 2),
+                "n_points": 0, "from": f"{len(px)} street crossings read by eye, RMS {rms:.2f} m"}
+    cfg = {k: v for k, v in s.items() if k not in ("xings", "zones", "scale", "match_shift", "match_rot", "rot", "match")}
+    cfg.update(mode="chamfer_only", predicted_from=[x[:4] for x in xs], chamfer=info, pct=25,
+               blocks=[{"name": n, "px4": q, "corners": []} for n, q in s["zones"].items()])
+    json.dump(cfg, open(E.CONTROL / f"{key}.json", "w"), indent=1)
+    apply_chamfer(key)
+    report(key)
 
 
 def auto(key, s):
@@ -418,11 +515,12 @@ def auto(key, s):
     regroup(key)
     W.georef(key)
     G = json.load(open(E.INTERIM / f"{key}.M.json"))
-    predict(key, s, M=chamfer(key, G["M"], shift=40, rot_span=2.0) if s.get("match", True) else G["M"])
+    M2 = chamfer(key, G["M"], shift=40, rot_span=2.0) if s.get("match", True) else np.asarray(G["M"])
+    predict(key, s, M=M2)
     E.refine(key, weak=s.get("weak", 0.35))
     regroup(key)
     W.georef(key)
-    store_chamfer(key)
+    store_chamfer(key, starts=[M2])
     apply_chamfer(key)
     report(key)
 
@@ -550,13 +648,14 @@ if __name__ == "__main__":
     if stage == "register":
         W.register(args[0], args[1])
         sys.exit()
-    if stage in ("spec", "predict", "auto"):
+    if stage in ("spec", "predict", "auto", "zones"):
         s = args[1]
         s = json.load(open(s)) if os.path.exists(s) else json.loads(s)
         if stage == "predict":
             predict(args[0], s)
         elif stage == "spec" and s.get("run"):  # hand-read block outlines: spec + refine + regroup + georef
             E.spec(args[0], {k: v for k, v in s.items() if k != "run"})
+            mark_blocks(args[0], s["blocks"])
             E.refine(args[0], weak=s.get("weak", 0.35))
             regroup(args[0])
             W.georef(args[0])
@@ -565,6 +664,8 @@ if __name__ == "__main__":
             report(args[0])
         elif stage == "auto":
             auto(args[0], s)
+        elif stage == "zones":
+            zones(args[0], s)
         else:
             E.spec(args[0], s)
         print("wrote", E.CONTROL / f"{args[0]}.json")
@@ -605,7 +706,8 @@ if __name__ == "__main__":
             regroup(k)
     if stage in ("all", "georef"):
         for k in E.base_first(keys):
-            W.georef(k)
+            if json.load(open(E.CONTROL / f"{k}.json")).get("mode") != "chamfer_only":
+                W.georef(k)
             apply_chamfer(k)
     if stage == "mosaic":
         for k in keys:

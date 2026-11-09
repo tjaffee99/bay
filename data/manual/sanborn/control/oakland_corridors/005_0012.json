@@ -1,0 +1,545 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "38th St of 1912 = today's West MacArthur Blvd; 1161 / 1162 one block",
+ "predicted_from": [
+  [
+   238,
+   662,
+   "West",
+   "37th"
+  ],
+  [
+   1381,
+   662,
+   "Grove",
+   "37th"
+  ],
+  [
+   238,
+   1250,
+   "West",
+   "36th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1160",
+   "streets": {
+    "N": "MacArthur Boulevard",
+    "S": "37th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     295.0,
+     250.1
+    ],
+    [
+     1325.8,
+     250.1
+    ],
+    [
+     1325.8,
+     618.5
+    ],
+    [
+     295.0,
+     618.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1325.3,
+     "y": 622.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    },
+    {
+     "x": 292.4,
+     "y": 613.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    },
+    {
+     "x": 292.1,
+     "y": 704.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    },
+    {
+     "x": 1323.8,
+     "y": 712.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    }
+   ],
+   "with": [
+    "1161-1162",
+    "1163"
+   ],
+   "px4": [
+    [
+     297.6,
+     254.6
+    ],
+    [
+     1325.3,
+     254.6
+    ],
+    [
+     1325.3,
+     622.4
+    ],
+    [
+     292.4,
+     613.1
+    ]
+   ],
+   "edge_q": [
+    0.15,
+    0.9,
+    0.47,
+    0.69
+   ],
+   "corners_all": [
+    {
+     "x": 297.6,
+     "y": 254.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1325.3,
+     "y": 254.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1325.3,
+     "y": 622.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 292.4,
+     "y": 613.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    292.44525530909493,
+    254.6,
+    1325.3,
+    622.3507954986419
+   ]
+  },
+  {
+   "name": "1161-1162",
+   "streets": {
+    "N": "37th",
+    "S": "36th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     292.6,
+     709.5
+    ],
+    [
+     1320.9,
+     709.5
+    ],
+    [
+     1320.9,
+     1256.6
+    ],
+    [
+     292.6,
+     1256.6
+    ]
+   ],
+   "corners": [
+    {
+     "x": 292.1,
+     "y": 704.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    },
+    {
+     "x": 1323.8,
+     "y": 712.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    },
+    {
+     "x": 1325.3,
+     "y": 622.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    },
+    {
+     "x": 292.4,
+     "y": 613.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    }
+   ],
+   "with": [
+    "1160",
+    "1163"
+   ],
+   "px4": [
+    [
+     292.1,
+     704.5
+    ],
+    [
+     1323.8,
+     712.5
+    ],
+    [
+     1322.5,
+     1243.6
+    ],
+    [
+     292.1,
+     1243.6
+    ]
+   ],
+   "edge_q": [
+    0.66,
+    0.7,
+    0.15,
+    0.84
+   ],
+   "corners_all": [
+    {
+     "x": 292.1,
+     "y": 704.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1323.8,
+     "y": 712.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1322.5,
+     "y": 1243.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 292.1,
+     "y": 1243.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    292.1,
+    704.5487928466503,
+    1323.8007526795664,
+    1243.6
+   ]
+  },
+  {
+   "name": "1163",
+   "streets": {
+    "N": "36th",
+    "S": "35th",
+    "W": "West",
+    "E": "Grove"
+   },
+   "px4_est": [
+    [
+     284.4,
+     1367.3
+    ],
+    [
+     1315.8,
+     1367.3
+    ],
+    [
+     1315.8,
+     1737.5
+    ],
+    [
+     284.4,
+     1737.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1325.3,
+     "y": 622.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    },
+    {
+     "x": 292.4,
+     "y": 613.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1160"
+    },
+    {
+     "x": 292.1,
+     "y": 704.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    },
+    {
+     "x": 1323.8,
+     "y": 712.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1161-1162"
+    }
+   ],
+   "with": [
+    "1160",
+    "1161-1162"
+   ],
+   "px4": [
+    [
+     291.4,
+     1378.3
+    ],
+    [
+     1322.2,
+     1378.3
+    ],
+    [
+     1320.9,
+     1749.0
+    ],
+    [
+     291.4,
+     1749.0
+    ]
+   ],
+   "edge_q": [
+    0.09,
+    0.65,
+    0.14,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 291.4,
+     "y": 1378.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "West",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of West x 36th"
+    },
+    {
+     "x": 1322.2,
+     "y": 1378.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Grove",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Grove x 36th"
+    },
+    {
+     "x": 1320.9,
+     "y": 1749.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Grove",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NW of Grove x 35th"
+    },
+    {
+     "x": 291.4,
+     "y": 1749.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "West",
+      "35th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of West x 35th"
+    }
+   ],
+   "zone_px": [
+    291.4,
+    1378.3,
+    1322.168797804885,
+    1749.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.1976143822661279,
+    -0.03664464182163471,
+    564054.6867801328
+   ],
+   [
+    -0.03664464182163471,
+    -0.1976143822661279,
+    4186976.7355153626
+   ]
+  ],
+  "dist_px": 1.46,
+  "inlier_share": 0.87,
+  "rms_m": 0.29,
+  "n_points": 2691
+ }
+}

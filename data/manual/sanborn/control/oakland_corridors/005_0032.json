@@ -1,0 +1,617 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the right",
+ "predicted_from": [
+  [
+   524,
+   1810,
+   "Telegraph",
+   "31st"
+  ],
+  [
+   1000,
+   1810,
+   "Telegraph",
+   "32nd"
+  ],
+  [
+   536,
+   131,
+   "Grove",
+   "31st"
+  ],
+  [
+   1012,
+   131,
+   "Grove",
+   "32nd"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1145",
+   "streets": {
+    "N": "31st",
+    "S": "30th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     415.3,
+     178.0
+    ],
+    [
+     415.3,
+     1740.6
+    ],
+    [
+     108.2,
+     1740.6
+    ],
+    [
+     108.2,
+     178.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 439.8,
+     "y": 179.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 439.8,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 497.3,
+     "y": 1737.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    },
+    {
+     "x": 501.2,
+     "y": 175.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    },
+    {
+     "x": 1039.5,
+     "y": 1743.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    },
+    {
+     "x": 1040.8,
+     "y": 177.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    }
+   ],
+   "skip": [
+    "SW"
+   ],
+   "with": [
+    "1146",
+    "1147"
+   ],
+   "px4": [
+    [
+     439.8,
+     179.0
+    ],
+    [
+     439.8,
+     1736.1
+    ],
+    [
+     100.7,
+     1733.2
+    ],
+    [
+     100.7,
+     174.7
+    ]
+   ],
+   "edge_q": [
+    0.12,
+    0.75,
+    0.27,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 439.8,
+     "y": 179.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 439.8,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 100.7,
+     "y": 1733.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "30th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.5 59.8] at Telegraph x 30th NW"
+    }
+   ],
+   "zone_px": [
+    100.69999999999999,
+    174.67991310905063,
+    439.8,
+    1736.1257330888275
+   ]
+  },
+  {
+   "name": "1146",
+   "streets": {
+    "N": "32nd",
+    "S": "31st",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     949.7,
+     177.0
+    ],
+    [
+     949.7,
+     1737.5
+    ],
+    [
+     519.5,
+     1737.5
+    ],
+    [
+     519.5,
+     177.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 497.3,
+     "y": 1737.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    },
+    {
+     "x": 501.2,
+     "y": 175.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    },
+    {
+     "x": 439.8,
+     "y": 179.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 439.8,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 1039.5,
+     "y": 1743.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    },
+    {
+     "x": 1040.8,
+     "y": 177.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    }
+   ],
+   "with": [
+    "1145",
+    "1147"
+   ],
+   "px4": [
+    [
+     951.8,
+     176.9
+    ],
+    [
+     946.6,
+     1742.6
+    ],
+    [
+     497.3,
+     1737.1
+    ],
+    [
+     501.2,
+     175.5
+    ]
+   ],
+   "edge_q": [
+    0.22,
+    0.65,
+    0.76,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 951.8,
+     "y": 176.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 946.6,
+     "y": 1742.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 497.3,
+     "y": 1737.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 501.2,
+     "y": 175.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    497.2773363523502,
+    175.53621750876823,
+    951.8318676026013,
+    1742.5930563936845
+   ]
+  },
+  {
+   "name": "1147",
+   "streets": {
+    "N": "33rd",
+    "S": "32nd",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1592.0,
+     177.0
+    ],
+    [
+     1369.0,
+     1745.6
+    ],
+    [
+     1040.4,
+     1745.6
+    ],
+    [
+     1040.4,
+     177.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1039.5,
+     "y": 1743.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    },
+    {
+     "x": 1040.8,
+     "y": 177.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1147"
+    },
+    {
+     "x": 439.8,
+     "y": 179.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 439.8,
+     "y": 1736.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1145"
+    },
+    {
+     "x": 497.3,
+     "y": 1737.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    },
+    {
+     "x": 501.2,
+     "y": 175.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "31st"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1146"
+    }
+   ],
+   "with": [
+    "1145",
+    "1146"
+   ],
+   "px4": [
+    [
+     1581.4,
+     177.0
+    ],
+    [
+     1358.2,
+     1747.2
+    ],
+    [
+     1039.5,
+     1743.4
+    ],
+    [
+     1040.8,
+     177.0
+    ]
+   ],
+   "edge_q": [
+    0.15,
+    0.61,
+    0.66,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 1581.4,
+     "y": 177.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1358.2,
+     "y": 1747.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "33rd"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1039.5,
+     "y": 1743.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1040.8,
+     "y": 177.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "32nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1039.4939796868375,
+    177.0,
+    1581.3944236395723,
+    1747.1935613009318
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.037893636793158575,
+    0.19821368498962405,
+    564141.7976744068
+   ],
+   [
+    0.19821368498962405,
+    -0.037893636793158575,
+    4186071.2759316145
+   ]
+  ],
+  "dist_px": 2.29,
+  "inlier_share": 0.77,
+  "rms_m": 0.37,
+  "n_points": 3050
+ }
+}

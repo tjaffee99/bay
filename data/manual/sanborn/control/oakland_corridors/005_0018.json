@@ -1,0 +1,391 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the right; 38th St of 1912 = today's West MacArthur Blvd; 1151 / 1152 one block (Industrial Home for the Adult Blind)",
+ "predicted_from": [
+  [
+   952,
+   1821,
+   "Telegraph",
+   "37th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "1151-1152",
+   "streets": {
+    "N": "37th",
+    "S": "36th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     910.9,
+     155.8
+    ],
+    [
+     910.9,
+     1769.6
+    ],
+    [
+     420.1,
+     1769.6
+    ],
+    [
+     420.1,
+     155.8
+    ]
+   ],
+   "corners": [
+    {
+     "x": 913.9,
+     "y": 157.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1151-1152"
+    },
+    {
+     "x": 1389.2,
+     "y": 159.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1394.4,
+     "y": 1766.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1041.3,
+     "y": 1761.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1041.3,
+     "y": 156.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    }
+   ],
+   "with": [
+    "1153"
+   ],
+   "px4": [
+    [
+     913.9,
+     157.7
+    ],
+    [
+     913.9,
+     1759.2
+    ],
+    [
+     445.6,
+     1752.9
+    ],
+    [
+     445.6,
+     156.5
+    ]
+   ],
+   "edge_q": [
+    0.21,
+    0.5,
+    0.07,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 913.9,
+     "y": 157.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 913.9,
+     "y": 1759.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.8  1. ] at Telegraph x 37th SW"
+    },
+    {
+     "x": 445.6,
+     "y": 1752.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [15.1 42.4] at Telegraph x 36th NW"
+    },
+    {
+     "x": 445.6,
+     "y": 156.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "36th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Grove x 36th"
+    }
+   ],
+   "zone_px": [
+    445.6,
+    156.46046840818417,
+    913.9,
+    1759.1796872989319
+   ]
+  },
+  {
+   "name": "1153",
+   "streets": {
+    "N": "MacArthur Boulevard",
+    "S": "37th",
+    "W": "Grove",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1381.3,
+     158.7
+    ],
+    [
+     1381.3,
+     1763.0
+    ],
+    [
+     1015.8,
+     1763.0
+    ],
+    [
+     1015.8,
+     158.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1389.2,
+     "y": 159.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1394.4,
+     "y": 1766.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1041.3,
+     "y": 1761.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 1041.3,
+     "y": 156.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1153"
+    },
+    {
+     "x": 913.9,
+     "y": 157.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1151-1152"
+    }
+   ],
+   "with": [
+    "1151-1152"
+   ],
+   "px4": [
+    [
+     1389.2,
+     159.1
+    ],
+    [
+     1394.4,
+     1766.8
+    ],
+    [
+     1041.3,
+     1761.7
+    ],
+    [
+     1041.3,
+     156.6
+    ]
+   ],
+   "edge_q": [
+    0.14,
+    0.43,
+    0.27,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 1389.2,
+     "y": 159.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1394.4,
+     "y": 1766.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "MacArthur Boulevard"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1041.3,
+     "y": 1761.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1041.3,
+     "y": 156.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "37th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1041.3,
+    156.56780905752748,
+    1394.4441138541245,
+    1766.820852672678
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.0374908422022695,
+    0.198292942482692,
+    564246.9415548462
+   ],
+   [
+    0.198292942482692,
+    -0.0374908422022695,
+    4186598.841302104
+   ]
+  ],
+  "dist_px": 2.41,
+  "inlier_share": 0.76,
+  "rms_m": 0.4,
+  "n_points": 2282
+ }
+}

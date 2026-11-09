@@ -1,0 +1,1959 @@
+{
+ "notes": "Eastlake, north up: 3rd Ave (left edge) -> 4th -> 5th -> 6th Ave; E 18th St (top) -> E 17th -> E 16th -> E 15th St (bottom). Control in the tool's compass frame (the grid is at ~45 deg: 'N' runs along the E-streets toward the NW, 'E' along the avenues toward the NE)",
+ "refine_R": 24,
+ "residential": true,
+ "blocks": [
+  {
+   "name": "811",
+   "streets": {
+    "N": "3rd avenue",
+    "S": "4th avenue",
+    "W": "east 17th street",
+    "E": "east 18th street"
+   },
+   "px4_est": [
+    [
+     40,
+     650
+    ],
+    [
+     40,
+     195
+    ],
+    [
+     420,
+     195
+    ],
+    [
+     420,
+     650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW",
+    "SE"
+   ],
+   "with": [
+    "812",
+    "813",
+    "427",
+    "428",
+    "429",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     16.5,
+     626.5
+    ],
+    [
+     16.5,
+     217.0
+    ],
+    [
+     418.5,
+     217.0
+    ],
+    [
+     418.5,
+     626.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.2,
+    1.0,
+    0.2
+   ],
+   "corners_all": [
+    {
+     "x": 418.5,
+     "y": 626.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 17th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    16.5,
+    217.0,
+    418.5,
+    626.5
+   ]
+  },
+  {
+   "name": "812",
+   "streets": {
+    "N": "4th avenue",
+    "S": "5th avenue",
+    "W": "east 17th street",
+    "E": "east 18th street"
+   },
+   "px4_est": [
+    [
+     505,
+     650
+    ],
+    [
+     505,
+     195
+    ],
+    [
+     965,
+     195
+    ],
+    [
+     965,
+     650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "with": [
+    "811",
+    "813",
+    "427",
+    "428",
+    "429",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     509.0,
+     652.1
+    ],
+    [
+     509.0,
+     197.0
+    ],
+    [
+     965.1,
+     197.0
+    ],
+    [
+     966.4,
+     653.4
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.74,
+    0.82,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 509.0,
+     "y": 652.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 17th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.4 1.2] at east 17th street x 4th avenue SE"
+    },
+    {
+     "x": 509.0,
+     "y": 197.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 966.4,
+     "y": 653.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 17th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.1 1.1] at east 17th street x 5th avenue NE"
+    }
+   ],
+   "zone_px": [
+    509.0,
+    197.0,
+    966.4177615677238,
+    653.4119501189008
+   ]
+  },
+  {
+   "name": "813",
+   "streets": {
+    "N": "5th avenue",
+    "S": "6th avenue",
+    "W": "east 17th street",
+    "E": "east 18th street"
+   },
+   "px4_est": [
+    [
+     1050,
+     650
+    ],
+    [
+     1050,
+     195
+    ],
+    [
+     1510,
+     195
+    ],
+    [
+     1510,
+     650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "with": [
+    "811",
+    "812",
+    "427",
+    "428",
+    "429",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     1055.4,
+     652.7
+    ],
+    [
+     1054.1,
+     198.2
+    ],
+    [
+     1512.1,
+     200.8
+    ],
+    [
+     1513.4,
+     655.3
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.86,
+    0.79,
+    0.71
+   ],
+   "corners_all": [
+    {
+     "x": 1055.4,
+     "y": 652.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 17th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1513.4,
+     "y": 655.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 17th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.4 1.1] at east 17th street x 6th avenue NE"
+    }
+   ],
+   "zone_px": [
+    1054.1013813586073,
+    198.20767380639938,
+    1513.4233238106015,
+    655.3353737060104
+   ]
+  },
+  {
+   "name": "427",
+   "streets": {
+    "N": "3rd avenue",
+    "S": "4th avenue",
+    "W": "east 16th street",
+    "E": "east 17th street"
+   },
+   "px4_est": [
+    [
+     40,
+     1195
+    ],
+    [
+     40,
+     745
+    ],
+    [
+     420,
+     745
+    ],
+    [
+     420,
+     1195
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "428",
+    "429",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     16.5,
+     1201.0
+    ],
+    [
+     16.5,
+     742.5
+    ],
+    [
+     419.0,
+     741.1
+    ],
+    [
+     419.0,
+     1199.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.78,
+    0.76,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 419.0,
+     "y": 741.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 17th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.7 1. ] at east 17th street x 4th avenue NW"
+    },
+    {
+     "x": 419.0,
+     "y": 1199.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 16th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [25.5  9. ] at east 16th street x 4th avenue NE"
+    }
+   ],
+   "zone_px": [
+    16.5,
+    741.095567867036,
+    419.0,
+    1200.9892659279778
+   ]
+  },
+  {
+   "name": "428",
+   "streets": {
+    "N": "4th avenue",
+    "S": "5th avenue",
+    "W": "east 16th street",
+    "E": "east 17th street"
+   },
+   "px4_est": [
+    [
+     505,
+     1195
+    ],
+    [
+     505,
+     745
+    ],
+    [
+     965,
+     745
+    ],
+    [
+     965,
+     1195
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "427",
+    "429",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     510.4,
+     1200.0
+    ],
+    [
+     509.1,
+     741.0
+    ],
+    [
+     965.0,
+     741.0
+    ],
+    [
+     965.0,
+     1200.0
+    ]
+   ],
+   "edge_q": [
+    0.82,
+    0.77,
+    0.76,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 510.4,
+     "y": 1200.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 16th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [26.5  9.3] at east 16th street x 4th avenue SE"
+    },
+    {
+     "x": 509.1,
+     "y": 741.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 17th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 965.0,
+     "y": 741.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 17th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 965.0,
+     "y": 1200.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 16th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [26.5  9.1] at east 16th street x 5th avenue NE"
+    }
+   ],
+   "zone_px": [
+    509.08040935672517,
+    741.0,
+    965.0,
+    1200.0
+   ]
+  },
+  {
+   "name": "429",
+   "streets": {
+    "N": "5th avenue",
+    "S": "6th avenue",
+    "W": "east 16th street",
+    "E": "east 17th street"
+   },
+   "px4_est": [
+    [
+     1050,
+     1195
+    ],
+    [
+     1050,
+     745
+    ],
+    [
+     1510,
+     745
+    ],
+    [
+     1510,
+     1195
+    ]
+   ],
+   "corners": [
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "427",
+    "428",
+    "413",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     1055.9,
+     1200.0
+    ],
+    [
+     1054.6,
+     743.1
+    ],
+    [
+     1512.5,
+     744.4
+    ],
+    [
+     1512.5,
+     1200.0
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.82,
+    0.84,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 1055.9,
+     "y": 1200.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 16th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [27.4  9.2] at east 16th street x 5th avenue SE"
+    },
+    {
+     "x": 1054.6,
+     "y": 743.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 17th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.2 1.1] at east 17th street x 5th avenue SW"
+    },
+    {
+     "x": 1512.5,
+     "y": 744.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 17th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1512.5,
+     "y": 1200.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 16th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.1 0.8] at east 16th street x 6th avenue NE"
+    }
+   ],
+   "zone_px": [
+    1054.5865649845855,
+    743.1052247282169,
+    1512.5,
+    1200.0
+   ]
+  },
+  {
+   "name": "413",
+   "streets": {
+    "N": "3rd avenue",
+    "S": "4th avenue",
+    "W": "east 15th street",
+    "E": "east 16th street"
+   },
+   "px4_est": [
+    [
+     40,
+     1750
+    ],
+    [
+     40,
+     1290
+    ],
+    [
+     420,
+     1290
+    ],
+    [
+     420,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "427",
+    "428",
+    "429",
+    "414",
+    "415"
+   ],
+   "px4": [
+    [
+     19.3,
+     1746.5
+    ],
+    [
+     16.7,
+     1293.5
+    ],
+    [
+     419.0,
+     1290.7
+    ],
+    [
+     419.0,
+     1743.7
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.79,
+    0.79,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 419.0,
+     "y": 1290.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 16th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [65.6  9.1] at east 16th street x 4th avenue NW"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    16.704102508030232,
+    1290.691135734072,
+    419.0,
+    1746.4591722089904
+   ]
+  },
+  {
+   "name": "414",
+   "streets": {
+    "N": "4th avenue",
+    "S": "5th avenue",
+    "W": "east 15th street",
+    "E": "east 16th street"
+   },
+   "px4_est": [
+    [
+     505,
+     1750
+    ],
+    [
+     505,
+     1290
+    ],
+    [
+     965,
+     1290
+    ],
+    [
+     965,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    }
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "427",
+    "428",
+    "429",
+    "413",
+    "415"
+   ],
+   "px4": [
+    [
+     510.5,
+     1745.0
+    ],
+    [
+     510.5,
+     1292.0
+    ],
+    [
+     964.9,
+     1292.0
+    ],
+    [
+     963.6,
+     1745.0
+    ]
+   ],
+   "edge_q": [
+    0.91,
+    0.79,
+    0.78,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 510.5,
+     "y": 1292.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 16th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [64.6  9.2] at east 16th street x 4th avenue SW"
+    },
+    {
+     "x": 964.9,
+     "y": 1292.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 16th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [64.5  8.9] at east 16th street x 5th avenue NW"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    510.5,
+    1292.0,
+    964.9021739130435,
+    1745.0
+   ]
+  },
+  {
+   "name": "415",
+   "streets": {
+    "N": "5th avenue",
+    "S": "6th avenue",
+    "W": "east 15th street",
+    "E": "east 16th street"
+   },
+   "px4_est": [
+    [
+     1050,
+     1750
+    ],
+    [
+     1050,
+     1290
+    ],
+    [
+     1510,
+     1290
+    ],
+    [
+     1510,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "415"
+    },
+    {
+     "x": 965.1,
+     "y": 197.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "812"
+    },
+    {
+     "x": 1054.1,
+     "y": 198.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 18th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 1512.1,
+     "y": 200.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 18th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "813"
+    },
+    {
+     "x": 419.0,
+     "y": 1743.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "413"
+    },
+    {
+     "x": 510.5,
+     "y": 1745.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    },
+    {
+     "x": 963.6,
+     "y": 1745.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "414"
+    }
+   ],
+   "with": [
+    "811",
+    "812",
+    "813",
+    "427",
+    "428",
+    "429",
+    "413",
+    "414"
+   ],
+   "px4": [
+    [
+     1055.4,
+     1744.9
+    ],
+    [
+     1054.1,
+     1291.0
+    ],
+    [
+     1512.9,
+     1291.0
+    ],
+    [
+     1511.6,
+     1743.6
+    ]
+   ],
+   "edge_q": [
+    0.79,
+    0.77,
+    0.82,
+    0.81
+   ],
+   "corners_all": [
+    {
+     "x": 1055.4,
+     "y": 1744.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "east 15th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1054.1,
+     "y": 1291.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "east 16th street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [63.7  9.4] at east 16th street x 5th avenue SW"
+    },
+    {
+     "x": 1512.9,
+     "y": 1291.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "east 16th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [0.9 1.2] at east 16th street x 6th avenue NW"
+    },
+    {
+     "x": 1511.6,
+     "y": 1743.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "east 15th street",
+      "6th avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1054.0949656750572,
+    1291.0,
+    1512.9050343249428,
+    1744.8924677199923
+   ]
+  }
+ ],
+ "pct": 25
+}

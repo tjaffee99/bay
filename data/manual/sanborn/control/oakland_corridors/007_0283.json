@@ -1,0 +1,62 @@
+{
+ "residential": true,
+ "notes": "Shafter Ave (top) and the 1911 Keith Ave gone under SR-24; one zone drawn by hand (Shafter Ave - Bayview Ave, the blocks the freeway cut), placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   512,
+   1405,
+   "McMillan",
+   "Lawton"
+  ],
+  [
+   512,
+   1814,
+   "McMillan",
+   "Taft"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.1804699178451383,
+    0.08970997888311713,
+    565949.0607641062
+   ],
+   [
+    0.08970997888311713,
+    -0.1804699178451383,
+    4188971.4995209808
+   ]
+  ],
+  "dist_px": 3.13,
+  "inlier_share": 0.63,
+  "rms_m": 0.42,
+  "n_points": 3241
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "5622-5627",
+   "px4": [
+    [
+     143,
+     180
+    ],
+    [
+     1595,
+     180
+    ],
+    [
+     1595,
+     940
+    ],
+    [
+     143,
+     940
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

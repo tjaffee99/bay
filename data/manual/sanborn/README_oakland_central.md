@@ -1,4 +1,4 @@
-# Sanborn tracing: central Oakland east of Broadway (Lakeside, Uptown, the Gold Coast, Adams Point)
+# Sanborn tracing: central Oakland east of Broadway (Lakeside, Uptown, the Gold Coast, Adams Point, Eastlake)
 
 Real building footprints of central Oakland **east of Broadway** — the Victorian houses, flats, churches, livery stables
 and early apartment and store blocks between Broadway and Lake Merritt that the 1920s–60s apartments, offices, garages
@@ -19,6 +19,7 @@ West of Broadway (vol. 1), the freeway corridors (SR-24, I-580, I-980) and their
 |---|---|
 | `oakland_lakeside_1911.geojson`, `oakland_lakeside_1950.geojson` | Broadway → Lake Merritt, 9th / 10th St → 20th St: Broadway – Harrison St 10th → 20th St (sheets 151–155: the Oakland Bank of Savings, the Union Savings Bank, the Macdonough Theatre, the SP depot block at 13th / Franklin, the 1st Presbyterian Church, the Liberty Theatre, City Hall Annex), Harrison – Madison St 9th → 19th St (162–166: Lincoln School and Square, Hotel Oakland, the Peralta Apartments, the Masonic Cathedral, the Gold Coast houses on Harrison / Alice / Jackson), Madison → Fallon / the lake 9th → 14th St and north of 14th (167, 168: Polytechnic College, the Oakland Public Museum in the Camron-Stanford house, the high-pressure pumping station) |
 | `oakland_adams_point_1911.geojson`, `oakland_adams_point_1950.geojson` | north of 20th St: Broadway – Webster 20th → 24th St (145: the Broadway store rows, Franklin / Webster houses), Webster – Harrison / the lake 20th → 22nd St (156: the College of the Holy Names and its chapel, the Little Sisters of the Poor home, the Laguna Vista Apartments — today Kaiser Center), Webster → Harrison 22nd → 24th St with Valdez / Waverly (157: St. Paul's, the 1st Christian Church, Oakland Maternity Hospital), Webster → Valdez 24th → 28th St (137: Providence Hospital, the Piedmont livery, the Merchants Express sheds — today Broadway's auto row), Adams Point: Lee / Perkins St Vernon → Palm Ave (141), Staten → Perry Pl Palm → Van Buren Ave (135), Park View Ter → Perkins St Van Buren → Grand Ave (144), Perkins → Bellevue Ave Van Buren → the lake (142) |
+| `oakland_eastlake_1911.geojson`, `oakland_eastlake_1950.geojson` | east of the lake (Clinton / Brooklyn, today Eastlake): the Lake Shore Blvd blocks and 1st → 7th Ave, E 11th / E 12th St → E 15th St (sheets 199, 200, 201: Clinton Square), 3rd → 6th Ave E 15th → E 18th St (186), 2nd → 3rd Ave E 15th → E 18th St (185: the Oakland Traction Co. car barn) |
 | `oakland_<area>_coverage.geojson` | one polygon per map year (`map_year` = the file year): the fitted block zones + 12 m (half the streets). Inside it an empty spot was empty on that map |
 | `control/oakland_central/<key>.json` | per sheet: blocks (`streets` N/S/W/E, `px4_est` estimates, refined `px4`, `edge_q`, corners used with their control type), `with` (blocks fitted together), `skip`, `refine_R`, `residential`, `notes`; registered 1950 sheets: the SIFT registration (`registered_to`, `T`) |
 | `control/oakland_central/areas.json` | which sheets make up each area and map year |
@@ -64,7 +65,7 @@ Maps Collection (public domain); IIIF images at 25 % (≈ 1670 × 1950 px, 0.20 
 
 | edition | LOC item | sheets used |
 |---|---|---|
-| 1911 vol. 2 | https://www.loc.gov/item/sanborn00727_006/ | Lakeside 151–155, 162–168; Adams Point 135, 137, 141, 142, 144, 145, 156, 157 |
+| 1911 vol. 2 | https://www.loc.gov/item/sanborn00727_006/ | Lakeside 151–155, 162–168; Adams Point 135, 137, 141, 142, 144, 145, 156, 157; Eastlake 185, 186, 199, 200, 201 |
 | 1911 – Nov 1950 vol. 2 | https://www.loc.gov/item/sanborn00727_016/ | the same sheet numbers |
 
 Volume 2 covers Oakland east of Broadway (key map sheet `0000`): Chinatown, Lakeside / the Gold Coast, Adams Point,
@@ -73,7 +74,7 @@ Eastlake (Brooklyn), the East Oakland waterfront. Item JSON in `data/raw/sanborn
 
 Control geometry (as `README_oakland.md`):
 * **Street centrelines**: Overture Maps transportation segments, release 2026-10-21.0, `roads_region.parquet` +
-  `roads_local.parquet` read within (-122.285, 37.795, -122.225, 37.835) (ODbL).
+  `roads_local.parquet` read within (-122.285, 37.785, -122.225, 37.835) (ODbL).
 * **Property lines**: Alameda County parcels (`data/raw/region_years/alameda_county_2021`, public copy, see
   `data/research/region_buildings.md`), dissolved into blocks.
 
@@ -105,7 +106,15 @@ or per group of blocks, outliers > 3 m and > 3 × the median dropped; colour seg
    prior, **confidence capped at `low`**; 156 (College of the Holy Names, today the Kaiser Center superblock) has 4
    corners at 2.5–4.6 m → `low`; 145's upper blocks (Franklin / Webster oblique, 20th St realigned at Franklin) 2.5 m
    RMS → `medium`.
-6. **Light outlines.** `extract_large` adds big solid fills whose outline the tool's 70 % dark-outline test rejects
+6. **Eastlake.** The Eastlake grid is at ~45° to north (avenues run NE, E-streets NW), so the tool's "more north-south
+   street" is the E-street: those control files name the block sides in the tool's frame (`N` = the avenue on the sheet's
+   left, `E` = the E-street at the top; written from sheet-frame specs by a 90° relabelling, noted in each file). Today's
+   names: E 14th St = International Blvd. E 11th St no longer crosses 3rd – 7th Ave (corners skipped); on 186 the E 16th
+   / E 17th St corners do not match today's parcels (dropped as outliers), the fit rests on E 15th and E 18th St (8
+   corners, 0.51 m); 185 rests on two E 15th St corners (exact fit, plate scale 0.1998 → `medium`). The Lake Shore Blvd
+   blocks of 199 (401, 393: houses and flats facing the lake, today 1920s–60s apartments) have no corners of their own
+   and are placed by the group fit 60–120 m away (block `confidence_cap` = `medium`).
+7. **Light outlines.** `extract_large` adds big solid fills whose outline the tool's 70 % dark-outline test rejects
    (thin outlines broken by lettering on the 1944–50 slips).
 
 ## Georeferencing per sheet
@@ -178,8 +187,11 @@ long blocks) caps a footprint at `medium`.
   138 (28th – 29th St, Grant School: SR-24 / I-580 corridor side), 139 (Piedmont Baths / Wheelman Athletic Club,
   Harrison – Oakland Ave), 140, 143 (Vernon – Montecito – Park View Ter: 3 corners only, 8–10 m off today's lines,
   Park View Ter realigned; not used), 134, 136 (Euclid / Grand Ave north arm), 129–133, the upper part of 144 (Staten /
-  Palm / Perkins / Van Buren), the inset of sheet 166 (Madison / Oak / Lake St, blocks 907, 910); Eastlake (east of the
-  lake, vols. 2–3) is not traced.
+  Palm / Perkins / Van Buren), the inset of sheet 166 (Madison / Oak / Lake St, blocks 907, 910); in Eastlake the
+  Lake Shore / Athol Plaza blocks of 185 (425, 411), E 18th – E 22nd St (175–177, 187–188), 7th Ave and east (187,
+  202–204), south of E 11th St (205–207: the estuary, East 7th St) and the Brooklyn / Clinton districts beyond.
+* **oakland_eastlake**: Lake Shore Blvd → 2nd Ave, E 11th → E 15th St and 2nd → 3rd Ave E 15th → E 18th St (199, 185),
+  2nd → 7th Ave E 11th / E 12th → E 15th St (200, 201), 3rd → 6th Ave E 15th → E 18th St (186).
 
 ## Reproduce
 

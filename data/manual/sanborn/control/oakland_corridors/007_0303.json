@@ -1,0 +1,818 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "north to the left; 54th St east of Shattuck Ave ends at the big lot (5138)",
+ "predicted_from": [
+  [
+   1202,
+   1207,
+   "Shattuck",
+   "53rd"
+  ],
+  [
+   614,
+   1207,
+   "Shattuck",
+   "54th"
+  ],
+  [
+   119,
+   1207,
+   "Shattuck",
+   "55th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5095",
+   "streets": {
+    "N": "55th",
+    "S": "54th",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     156.5,
+     1939.0
+    ],
+    [
+     156.5,
+     1240.4
+    ],
+    [
+     516.5,
+     1240.4
+    ],
+    [
+     516.5,
+     1939.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 167.3,
+     "y": 1227.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 1460.2,
+     "y": 1298.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5094",
+    "5093"
+   ],
+   "px4": [
+    [
+     174.1,
+     1947.5
+    ],
+    [
+     167.3,
+     1227.9
+    ],
+    [
+     533.6,
+     1227.9
+    ],
+    [
+     525.5,
+     1947.5
+    ]
+   ],
+   "edge_q": [
+    0.55,
+    0.18,
+    0.21,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 167.3,
+     "y": 1227.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 533.6,
+     "y": 1227.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.5 0.9] at Shattuck x 54th NW"
+    }
+   ],
+   "zone_px": [
+    167.3428096795094,
+    1227.9,
+    533.5886283845887,
+    1947.5
+   ]
+  },
+  {
+   "name": "5094",
+   "streets": {
+    "N": "54th",
+    "S": "53rd",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     640.1,
+     1939.0
+    ],
+    [
+     640.1,
+     1279.4
+    ],
+    [
+     1123.2,
+     1279.4
+    ],
+    [
+     1123.2,
+     1939.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 167.3,
+     "y": 1227.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 1460.2,
+     "y": 1298.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5095",
+    "5093"
+   ],
+   "px4": [
+    [
+     651.5,
+     1947.5
+    ],
+    [
+     650.1,
+     1256.4
+    ],
+    [
+     1145.6,
+     1256.4
+    ],
+    [
+     1142.9,
+     1947.5
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.15,
+    0.67,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 650.1,
+     "y": 1256.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "54th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SW of Shattuck x 54th"
+    },
+    {
+     "x": 1145.6,
+     "y": 1256.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NW of Shattuck x 53rd"
+    }
+   ],
+   "zone_px": [
+    650.1462241869076,
+    1256.4,
+    1145.6075516261849,
+    1947.5
+   ]
+  },
+  {
+   "name": "5093",
+   "streets": {
+    "N": "53rd",
+    "S": "52nd",
+    "W": "Dover",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     1245.9,
+     1939.0
+    ],
+    [
+     1245.9,
+     1302.1
+    ],
+    [
+     1481.7,
+     1302.1
+    ],
+    [
+     1481.7,
+     1939.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1460.2,
+     "y": 1298.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 167.3,
+     "y": 1227.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5095"
+    },
+    {
+     "x": 1239.4,
+     "y": 1201.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 447.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 1201.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "5095",
+    "5094",
+    "5137"
+   ],
+   "px4": [
+    [
+     1238.4,
+     1947.5
+    ],
+    [
+     1238.4,
+     1298.6
+    ],
+    [
+     1460.2,
+     1298.6
+    ],
+    [
+     1460.2,
+     1947.5
+    ]
+   ],
+   "edge_q": [
+    0.0,
+    0.26,
+    0.24,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1238.4,
+     "y": 1298.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.7 1.1] at Shattuck x 53rd SW"
+    },
+    {
+     "x": 1460.2,
+     "y": 1298.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1238.4,
+    1298.6,
+    1460.2,
+    1947.5
+   ]
+  },
+  {
+   "name": "5138",
+   "streets": {
+    "N": "55th",
+    "S": "53rd",
+    "W": "Shattuck",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     154.8,
+     1147.9
+    ],
+    [
+     428.4,
+     126.5
+    ],
+    [
+     1141.4,
+     314.3
+    ],
+    [
+     1141.4,
+     1147.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 427.9,
+     "y": 146.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5138"
+    },
+    {
+     "x": 1149.9,
+     "y": 1154.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5138"
+    },
+    {
+     "x": 1239.4,
+     "y": 1201.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 447.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 1201.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    }
+   ],
+   "with": [
+    "5137"
+   ],
+   "px4": [
+    [
+     152.4,
+     1154.4
+    ],
+    [
+     427.9,
+     146.0
+    ],
+    [
+     1149.9,
+     336.2
+    ],
+    [
+     1149.9,
+     1154.4
+    ]
+   ],
+   "edge_q": [
+    0.45,
+    0.31,
+    0.31,
+    0.09
+   ],
+   "corners_all": [
+    {
+     "x": 152.4,
+     "y": 1154.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant SE of Shattuck x 55th"
+    },
+    {
+     "x": 427.9,
+     "y": 146.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1149.9,
+     "y": 336.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.6  1.3] at Telegraph x 53rd NW"
+    },
+    {
+     "x": 1149.9,
+     "y": 1154.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    152.36942127312022,
+    146.00876641109846,
+    1149.9,
+    1154.4
+   ]
+  },
+  {
+   "name": "5137",
+   "streets": {
+    "N": "53rd",
+    "S": "52nd",
+    "W": "Shattuck",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     1238.8,
+     1194.7
+    ],
+    [
+     1238.8,
+     348.8
+    ],
+    [
+     1546.5,
+     447.7
+    ],
+    [
+     1546.5,
+     1194.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1239.4,
+     "y": 1201.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 447.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1547.5,
+     "y": 1201.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5137"
+    },
+    {
+     "x": 1460.2,
+     "y": 1298.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5093"
+    },
+    {
+     "x": 427.9,
+     "y": 146.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "55th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5138"
+    },
+    {
+     "x": 1149.9,
+     "y": 1154.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5138"
+    }
+   ],
+   "with": [
+    "5093",
+    "5138"
+   ],
+   "px4": [
+    [
+     1239.4,
+     1201.2
+    ],
+    [
+     1240.7,
+     359.5
+    ],
+    [
+     1547.5,
+     447.2
+    ],
+    [
+     1547.5,
+     1201.2
+    ]
+   ],
+   "edge_q": [
+    0.4,
+    0.31,
+    0.84,
+    0.29
+   ],
+   "corners_all": [
+    {
+     "x": 1239.4,
+     "y": 1201.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1240.7,
+     "y": 359.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "53rd"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [14.9  1. ] at Telegraph x 53rd SW"
+    },
+    {
+     "x": 1547.5,
+     "y": 447.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1547.5,
+     "y": 1201.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "52nd"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1239.3819945744488,
+    359.48946619288347,
+    1547.5,
+    1201.2
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.03260465114173647,
+    -0.19987417918529626,
+    564943.6190987667
+   ],
+   [
+    -0.19987417918529626,
+    -0.03260465114173647,
+    4188428.503895624
+   ]
+  ],
+  "dist_px": 3.9,
+  "inlier_share": 0.49,
+  "rms_m": 0.49,
+  "n_points": 2820
+ }
+}

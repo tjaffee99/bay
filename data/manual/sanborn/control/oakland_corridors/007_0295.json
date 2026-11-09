@@ -1,0 +1,679 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "Claremont Ave drawn vertical (up = north-east); Miranda St gone (SR-24): 5266 and 5566 zones drawn by hand",
+ "predicted_from": [
+  [
+   726,
+   769,
+   "Claremont",
+   "Martin Street"
+  ],
+  [
+   726,
+   1107,
+   "Claremont",
+   "Hudson"
+  ],
+  [
+   726,
+   1512,
+   "Claremont",
+   "Hardy"
+  ],
+  [
+   1536,
+   1107,
+   "Miles",
+   "Hudson"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5267",
+   "streets": {
+    "N": "Forest",
+    "S": "Martin Street",
+    "W": "Ayala",
+    "E": "Claremont"
+   },
+   "px4_est": [
+    [
+     233.9,
+     111.0
+    ],
+    [
+     675.6,
+     111.0
+    ],
+    [
+     675.6,
+     715.7
+    ],
+    [
+     233.9,
+     715.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 681.8,
+     "y": 106.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5267"
+    },
+    {
+     "x": 224.8,
+     "y": 730.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ayala",
+      "Martin Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5267"
+    }
+   ],
+   "with": [
+    "5266"
+   ],
+   "px4": [
+    [
+     222.1,
+     104.1
+    ],
+    [
+     681.8,
+     106.9
+    ],
+    [
+     684.5,
+     728.8
+    ],
+    [
+     224.8,
+     730.1
+    ]
+   ],
+   "edge_q": [
+    0.79,
+    0.66,
+    0.8,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 222.1,
+     "y": 104.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ayala",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  9.1] at Ayala x Forest SE"
+    },
+    {
+     "x": 681.8,
+     "y": 106.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 684.5,
+     "y": 728.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Claremont",
+      "Martin Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.3 0.9] at Claremont x Martin Street NW"
+    },
+    {
+     "x": 224.8,
+     "y": 730.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ayala",
+      "Martin Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    222.0542419266957,
+    104.11363536769835,
+    684.472649658114,
+    730.1350666411993
+   ]
+  },
+  {
+   "name": "5568",
+   "streets": {
+    "N": "Forest",
+    "S": "Hudson",
+    "W": "Claremont",
+    "E": "Miles"
+   },
+   "px4_est": [
+    [
+     786.8,
+     110.8
+    ],
+    [
+     1501.6,
+     110.8
+    ],
+    [
+     1501.6,
+     1102.0
+    ],
+    [
+     786.8,
+     1102.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 795.1,
+     "y": 106.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5568"
+    },
+    {
+     "x": 1500.7,
+     "y": 1475.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5567"
+    }
+   ],
+   "with": [
+    "5567",
+    "5566"
+   ],
+   "px4": [
+    [
+     795.1,
+     106.8
+    ],
+    [
+     1499.7,
+     106.8
+    ],
+    [
+     1501.0,
+     1114.4
+    ],
+    [
+     799.1,
+     1113.1
+    ]
+   ],
+   "edge_q": [
+    0.4,
+    0.64,
+    0.13,
+    0.5
+   ],
+   "corners_all": [
+    {
+     "x": 795.1,
+     "y": 106.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1499.7,
+     "y": 106.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Miles",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [40.5  8.7] at Miles x Forest SW"
+    },
+    {
+     "x": 1501.0,
+     "y": 1114.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hudson"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 799.1,
+     "y": 1113.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Hudson"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    795.0603861348286,
+    106.79999999999995,
+    1501.0243644533984,
+    1114.4068351184974
+   ]
+  },
+  {
+   "name": "5567",
+   "streets": {
+    "N": "Hudson",
+    "S": "Hardy",
+    "W": "Claremont",
+    "E": "Miles"
+   },
+   "px4_est": [
+    [
+     790.3,
+     1273.0
+    ],
+    [
+     1501.2,
+     1163.5
+    ],
+    [
+     1501.2,
+     1458.6
+    ],
+    [
+     790.3,
+     1458.6
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1500.7,
+     "y": 1475.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5567"
+    },
+    {
+     "x": 795.1,
+     "y": 106.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5568"
+    }
+   ],
+   "with": [
+    "5568",
+    "5566"
+   ],
+   "px4": [
+    [
+     790.4,
+     1278.5
+    ],
+    [
+     1502.1,
+     1168.9
+    ],
+    [
+     1500.7,
+     1475.0
+    ],
+    [
+     791.8,
+     1473.7
+    ]
+   ],
+   "edge_q": [
+    0.16,
+    0.9,
+    0.44,
+    0.65
+   ],
+   "corners_all": [
+    {
+     "x": 790.4,
+     "y": 1278.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Hudson"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1502.1,
+     "y": 1168.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Miles",
+      "Hudson"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1500.7,
+     "y": 1475.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 791.8,
+     "y": 1473.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no parcel block in quadrant NE of Claremont x Hardy"
+    }
+   ],
+   "zone_px": [
+    790.4314132007747,
+    1168.9287473171646,
+    1502.0836890825717,
+    1475.0070043714895
+   ]
+  },
+  {
+   "name": "5266",
+   "streets": {
+    "N": "Martin Street",
+    "S": "Miranda",
+    "W": "Ayala",
+    "E": "Claremont"
+   },
+   "px4_est": [
+    [
+     226,
+     810
+    ],
+    [
+     690,
+     810
+    ],
+    [
+     690,
+     1733
+    ],
+    [
+     226,
+     1733
+    ]
+   ],
+   "corners": [
+    {
+     "x": 681.8,
+     "y": 106.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5267"
+    },
+    {
+     "x": 224.8,
+     "y": 730.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ayala",
+      "Martin Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5267"
+    },
+    {
+     "x": 1500.7,
+     "y": 1475.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5567"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5267",
+    "5567"
+   ],
+   "px4": [
+    [
+     226.0,
+     810.0
+    ],
+    [
+     690.0,
+     810.0
+    ],
+    [
+     690.0,
+     1733.0
+    ],
+    [
+     226.0,
+     1733.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    226.0,
+    810.0,
+    690.0,
+    1733.0
+   ]
+  },
+  {
+   "name": "5566",
+   "streets": {
+    "N": "Hardy",
+    "S": "Clifton",
+    "W": "Claremont",
+    "E": "Miles"
+   },
+   "px4_est": [
+    [
+     786,
+     1548
+    ],
+    [
+     1500,
+     1548
+    ],
+    [
+     1500,
+     1880
+    ],
+    [
+     786,
+     1880
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1500.7,
+     "y": 1475.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Hardy"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5567"
+    },
+    {
+     "x": 795.1,
+     "y": 106.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Forest"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5568"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5567",
+    "5568"
+   ],
+   "px4": [
+    [
+     786.0,
+     1548.0
+    ],
+    [
+     1500.0,
+     1548.0
+    ],
+    [
+     1500.0,
+     1880.0
+    ],
+    [
+     786.0,
+     1880.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    786.0,
+    1548.0,
+    1500.0,
+    1880.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.16948322388739184,
+    -0.1067071146597301,
+    565329.4556027413
+   ],
+   [
+    -0.1067071146597301,
+    -0.16948322388739184,
+    4188928.2674020794
+   ]
+  ],
+  "dist_px": 3.33,
+  "inlier_share": 0.68,
+  "rms_m": 0.55,
+  "n_points": 3252
+ }
+}

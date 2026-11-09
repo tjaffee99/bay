@@ -49,7 +49,7 @@ C.CITIES[NAME] = {
     "edition_1950": ("016",),
     "parcels": ROOT / "data/raw/region_years/alameda_county_2021/alameda_county_2021.parquet",
     "parcel_cols": ["APN"],
-    "bbox": (-122.285, 37.795, -122.225, 37.835),
+    "bbox": (-122.285, 37.785, -122.225, 37.835),  # Broadway - Eastlake, the estuary - Piedmont Ave
     # street names on the 1911 / 1950 sheets -> today's names (Overture); more in control/oakland_central/aliases.json
     "aliases": {f"{w} street": f"{n} street" for w, n in ORDINAL.items()} | {
         "grove street": "martin luther king junior way", "grove": "martin luther king junior way",

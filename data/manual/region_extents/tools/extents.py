@@ -120,8 +120,8 @@ sheet("redwoodpoint1948", "CA_Redwood%20Point_294610_1948_24000_geo.tif", Q75(-1
       "tint", "1948 edition")
 sheet("sanmateo1896", "CA_San%20Mateo_298916_1896_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1896, 1892, "early",
       "surveyed 1892")
-sheet("sanmateo1915", "CA_San%20Mateo_298922_1915_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1915, 1915, "early",
-      "1915 edition of the 1892 survey")
+sheet("sanmateo1915", "CA_San%20Mateo_298922_1915_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1915, 1914, "early",
+      "1915 edition: surveyed 1892, culture revised in part in 1914 (collar note)")
 sheet("sanmateo1943", "CA_San%20Mateo_466324_1943_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1943, 1939, "tint",
       "aerial photographs 1939", tint="grey")
 sheet("sanmateo1947", "CA_San%20Mateo_300157_1947_24000_geo.tif", Q75(-122.375, 37.5), 24000, 1947, 1946, "tint",
@@ -136,6 +136,8 @@ sheet("karquines1898", "CA_Karquines_297860_1898_62500_geo.tif", Q15(-122.25, 38
       "surveyed 1896")
 sheet("carquinez1942", "CA_Carquinez_297034_1942_62500_geo.tif", Q15(-122.25, 38.0), 62500, 1942, 1937, "tint",
       "aerial photographs 1937", tint="grey")
+sheet("carquinezstrait1940", "CA_Carquinez%20Strait_297037_1940_62500_geo.tif", Q15(-122.25, 38.0), 62500, 1940, 1940,
+      "tint", "aerial photographs 1940 (1965 imprint)", tint="grey")
 sheet("benicia1950", "CA_Benicia_288319_1950_24000_geo.tif", Q75(-122.25, 38.0), 24000, 1950, 1948, "tint",
       "aerial photographs 1948, field check 1950")
 sheet("portchicago1951", "CA_Port%20Chicago_294325_1951_24000_geo.tif", Q75(-122.125, 38.0), 24000, 1951, 1948,
@@ -191,13 +193,13 @@ TOWNS = {
                                 1948: ["paloalto1953", "woodside1953", "redwoodpoint1948"]}),
     "san_mateo": dict(name="San Mateo (incl. Burlingame)", places=["0668252", "0609066"],
                       bbox=(-122.39, 37.52, -122.28, 37.60),
-                      snaps={1892: ["sanmateo1896"], 1915: ["sanmateo1915"], 1939: ["sanmateo1943"],
+                      snaps={1892: ["sanmateo1896"], 1914: ["sanmateo1915"], 1939: ["sanmateo1943"],
                              1946: ["sanmateo1947"]}),
     "san_rafael": dict(name="San Rafael", places=["0668364"], bbox=(-122.57, 37.95, -122.48, 38.01),
                        snaps={1895: ["tamalpais1897", "sf1895"], 1939: ["tamalpais1941"],
                               1952: ["sanrafael1954", "sanquentin1948"]}),
     "martinez": dict(name="Martinez", places=["0646114"], bbox=(-122.16, 37.99, -122.10, 38.03),
-                     snaps={1896: ["karquines1898"], 1937: ["carquinez1942"],
+                     snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940"],
                             1948: ["benicia1950", "briones1947", "portchicago1951"]}),
 }
 
@@ -575,6 +577,7 @@ def align(sh, grid, small, vs, bounds_ll):
 
 
 # --------------------------------------------------------------------------- per sheet
+TINT_OPEN_MM = 0.9
 NEAT_MM = 0.5      # ink this close to the quadrangle edge (neat line, ticks) is not read
 
 # mask codes (one uint8 PNG per town and sheet in data/interim): which pixels are what
@@ -708,10 +711,15 @@ def block_stats(town, key, preview=False):
     valid = cv2.erode(((code & M_VALID) > 0).astype(np.uint8),
                       cv2.getStructuringElement(cv2.MORPH_RECT, (2 * r + 1,) * 2)) > 0
     near = street_near(town, grid)       # building ink counts only near a street (not lettering in the hills)
+    tint = (code & M_TINT) > 0
+    if S[key]["style"] == "tint":        # tint narrower than ~0.9 mm is road casing / fill, not a tinted block
+        rt = max(1, int(round(TINT_OPEN_MM / 2 * S[key]["scale"] / 1000.0 / grid.res)))
+        tint = cv2.morphologyEx(tint.astype(np.uint8), cv2.MORPH_OPEN,
+                                cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * rt + 1,) * 2)) > 0
     cnt = lambda m: np.bincount(lab[m & valid], minlength=n)      # noqa: E731
     df = pd.DataFrame({"bid": bl.bid.values, "px": np.bincount(lab.ravel(), minlength=n)[1:],
                        "px_valid": cnt(np.ones_like(valid))[1:], "a_band": cnt(((code & M_BAND) > 0) & near)[1:],
-                       "a_heavy": cnt(((code & M_HEAVY) > 0) & near)[1:], "a_tint": cnt((code & M_TINT) > 0)[1:],
+                       "a_heavy": cnt(((code & M_HEAVY) > 0) & near)[1:], "a_tint": cnt(tint)[1:],
                        "n_sq": cnt(((code & M_SQ) > 0) & near)[1:], "skel": cnt(((code & M_SKEL) > 0) & near)[1:]})
     df["res"] = grid.res
     df.to_parquet(cache)
@@ -725,7 +733,7 @@ CELL_SHARE, CELL_HEAVY = 0.35, 0.20       # cells of big blocks
 MIN_COV = 0.3                             # a block is read when this share of it lies on the sheet(s)
 SQ_FRONT_M = 15.0                         # frontage credited to one house square
 HOLE_HA = 0.6                             # fill holes in the extent smaller than this
-MIN_HA = 0.8                              # drop isolated built specks smaller than this
+MIN_HA = 2.0                              # drop isolated built specks smaller than this (a farm group, one cell)
 
 
 def snapshot_stats(town, year):
@@ -1010,59 +1018,53 @@ def check(town):
 
 
 def plot(town, bl, pts, years):
+    """check/<town>.png: one panel per snapshot; each pixel (10 m) coloured by the earliest snapshot
+    (up to the panel's) whose extent contains it; dashed: area read; dots: buildings standing today
+    that predate the map."""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.collections import PatchCollection
     import shapely
+    from rasterio import features
+    from rasterio.transform import Affine
     clip = town_clip(town)
+    xmin, ymin, xmax, ymax = clip.bounds
+    r = 10.0
+    W, H = int((xmax - xmin) / r) + 1, int((ymax - ymin) / r) + 1
+    tr = Affine(r, 0, xmin, 0, -r, ymax)
+    cols = np.array([[122, 31, 31], [180, 71, 42], [217, 138, 61], [232, 191, 90], [156, 184, 107], [95, 158, 160]])
+    first = np.full((H, W), -1, np.int16)
+    town_m = features.rasterize([(clip, 1)], out_shape=(H, W), transform=tr, dtype="uint8")
     n = len(years)
     fig, axs = plt.subplots(1, n, figsize=(5.2 * n, 5.6), dpi=110)
     axs = np.atleast_1d(axs)
-    xmin, ymin, xmax, ymax = clip.bounds
-    cols = ["#7a1f1f", "#b4472a", "#d98a3d", "#e8bf5a", "#9cb86b", "#5f9ea0"]
-
-    def draw(ax, g, **kw):
-        for p in shapely.get_parts(g):
-            if p.is_empty or p.geom_type != "Polygon":
-                continue
-            x, y = p.exterior.xy
-            ax.fill(x, y, **kw)
-            for h in p.interiors:
-                hx, hy = h.xy
-                ax.fill(hx, hy, color="white", lw=0)
-    prev = []
     for k, (ax, year) in enumerate(zip(axs, years)):
-        bnd = shapely.union_all(list(bl.geometry.values))
-        for p in shapely.get_parts(clip):
-            if p.geom_type != "Polygon":
-                continue
-            x, y = p.exterior.xy
-            ax.plot(x, y, color="#888", lw=0.5)
-        for pe, (py_, pc) in enumerate(prev):
-            draw(ax, py_, color=pc, lw=0, alpha=0.9)
         ext = load_extent(town, year)
         cov = load_coverage(town, year)
-        new = ext.difference(shapely.union_all([p for p, _ in prev])) if prev else ext
-        draw(ax, new, color=cols[k % len(cols)], lw=0, alpha=0.9)
+        m = features.rasterize([(g, 1) for g in shapely.get_parts(ext) if not g.is_empty] or [(shapely.box(0, 0, 1, 1), 0)],
+                               out_shape=(H, W), transform=tr, dtype="uint8")
+        first[(m > 0) & (first < 0)] = k
+        img = np.full((H, W, 3), 255, np.uint8)
+        img[town_m > 0] = (246, 246, 242)
+        for j in range(k + 1):
+            img[first == j] = cols[j % len(cols)]
+        ax.imshow(img, extent=(xmin, xmin + W * r, ymax - H * r, ymax), interpolation="nearest")
         for p in shapely.get_parts(cov):
             if p.geom_type != "Polygon":
                 continue
             x, y = p.exterior.xy
-            ax.plot(x, y, color="#2b6cb0", lw=1.0, ls="--")
+            ax.plot(x, y, color="#2b6cb0", lw=0.9, ls="--")
         old = pts[(pts.start_year < year) & (pts.start_year > 1800)]
-        ax.scatter(old.x, old.y, s=0.4, c="k", lw=0)
-        prev.append((ext, cols[k % len(cols)]))
+        ax.scatter(old.x, old.y, s=0.3, c="k", lw=0)
         ax.set_xlim(xmin, xmax); ax.set_ylim(ymin, ymax); ax.set_aspect("equal")
         ax.set_xticks([]); ax.set_yticks([])
         keys = TOWNS[town]["snaps"][year]
-        ax.set_title(f"{year}  ({ext.area / 1e6:.1f} km²)\n" + ", ".join(k for k in keys), fontsize=8)
-    fig.suptitle(f"{TOWNS[town]['name']}: built-up extent by USGS topo snapshot (new area in colour, "
-                 f"earlier snapshots underneath; dashed = area read; dots = buildings standing today built before the map)",
-                 fontsize=8)
+        ax.set_title(f"{year}  ({ext.area / 1e6:.1f} km²)\n" + ", ".join(k_ for k_ in keys), fontsize=8)
+    fig.suptitle(f"{TOWNS[town]['name']}: built-up extent per USGS topo snapshot (colour = first snapshot showing it; "
+                 f"dashed = area read; dots = buildings standing today built before the map)", fontsize=8)
     fig.tight_layout()
-    OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / "check" / f"{town}.png" if (OUT / "check").exists() else INT / f"check_{town}.png")
+    (OUT / "check").mkdir(parents=True, exist_ok=True)
+    fig.savefig(OUT / "check" / f"{town}.png")
     plt.close(fig)
 
 

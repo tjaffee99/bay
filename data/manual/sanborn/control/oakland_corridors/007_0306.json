@@ -1,0 +1,1286 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "only the Hudson - Clifton St blocks (cut by SR-24); the Clifton - Cavour blocks are control only",
+ "predicted_from": [
+  [
+   805,
+   743,
+   "Miles",
+   "Clifton"
+  ],
+  [
+   1183,
+   743,
+   "Locksley",
+   "Clifton"
+  ],
+  [
+   805,
+   1786,
+   "Miles",
+   "Cavour"
+  ],
+  [
+   1183,
+   1786,
+   "Locksley",
+   "Cavour"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5566",
+   "streets": {
+    "N": "Hudson",
+    "S": "Clifton",
+    "W": "Claremont",
+    "E": "Miles"
+   },
+   "px4_est": [
+    [
+     49.3,
+     10.0
+    ],
+    [
+     745.5,
+     10.0
+    ],
+    [
+     745.5,
+     698.9
+    ],
+    [
+     49.3,
+     698.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 746.0,
+     "y": 701.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 48.0,
+     "y": 690.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 1138.6,
+     "y": 698.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 835.8,
+     "y": 698.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 1510.6,
+     "y": 698.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 1203.8,
+     "y": 698.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 746.0,
+     "y": 790.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5553"
+    },
+    {
+     "x": 747.3,
+     "y": 1766.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5553"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "5565",
+    "5564",
+    "5553"
+   ],
+   "px4": [
+    [
+     50.7,
+     0.5
+    ],
+    [
+     746.0,
+     0.5
+    ],
+    [
+     746.0,
+     701.2
+    ],
+    [
+     48.0,
+     690.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.76,
+    0.52,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 746.0,
+     "y": 701.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 48.0,
+     "y": 690.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    48.01584972926287,
+    0.5,
+    746.0,
+    701.1707177308396
+   ]
+  },
+  {
+   "name": "5565",
+   "streets": {
+    "N": "Hudson",
+    "S": "Clifton",
+    "W": "Miles",
+    "E": "Locksley"
+   },
+   "px4_est": [
+    [
+     836.7,
+     10.0
+    ],
+    [
+     1139.2,
+     10.0
+    ],
+    [
+     1139.2,
+     698.8
+    ],
+    [
+     836.7,
+     698.8
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1138.6,
+     "y": 698.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 835.8,
+     "y": 698.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 746.0,
+     "y": 701.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 48.0,
+     "y": 690.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 1510.6,
+     "y": 698.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 1203.8,
+     "y": 698.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 835.2,
+     "y": 790.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 1139.3,
+     "y": 790.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 1140.6,
+     "y": 1750.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 836.5,
+     "y": 1747.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "5566",
+    "5564",
+    "5554"
+   ],
+   "px4": [
+    [
+     837.1,
+     0.5
+    ],
+    [
+     1137.3,
+     0.5
+    ],
+    [
+     1138.6,
+     698.8
+    ],
+    [
+     835.8,
+     698.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.7,
+    0.65,
+    0.83
+   ],
+   "corners_all": [
+    {
+     "x": 1138.6,
+     "y": 698.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 835.8,
+     "y": 698.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    835.792105263158,
+    0.5,
+    1138.6078947368421,
+    698.8
+   ]
+  },
+  {
+   "name": "5564",
+   "streets": {
+    "N": "Hudson",
+    "S": "Clifton",
+    "W": "Locksley",
+    "E": "Shafter"
+   },
+   "px4_est": [
+    [
+     1204.5,
+     10.0
+    ],
+    [
+     1509.8,
+     10.0
+    ],
+    [
+     1509.8,
+     698.7
+    ],
+    [
+     1204.5,
+     698.7
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1510.6,
+     "y": 698.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 1203.8,
+     "y": 698.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5564"
+    },
+    {
+     "x": 746.0,
+     "y": 701.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 48.0,
+     "y": 690.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 1138.6,
+     "y": 698.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 835.8,
+     "y": 698.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5565"
+    },
+    {
+     "x": 1202.9,
+     "y": 790.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1511.6,
+     "y": 789.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1510.3,
+     "y": 1753.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1205.5,
+     "y": 1751.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    }
+   ],
+   "skip": [
+    "NE",
+    "NW"
+   ],
+   "with": [
+    "5566",
+    "5565",
+    "5555"
+   ],
+   "px4": [
+    [
+     1201.1,
+     0.5
+    ],
+    [
+     1507.9,
+     0.5
+    ],
+    [
+     1510.6,
+     698.7
+    ],
+    [
+     1203.8,
+     698.7
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.65,
+    0.95,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 1510.6,
+     "y": 698.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1203.8,
+     "y": 698.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1201.1479102504336,
+    0.5,
+    1510.6157894736841,
+    698.7
+   ]
+  },
+  {
+   "name": "5553",
+   "streets": {
+    "N": "Clifton",
+    "S": "Cavour",
+    "W": "Claremont",
+    "E": "Miles"
+   },
+   "px4_est": [
+    [
+     26.0,
+     788.6
+    ],
+    [
+     744.4,
+     788.6
+    ],
+    [
+     744.4,
+     1751.5
+    ],
+    [
+     26.0,
+     1939.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 746.0,
+     "y": 790.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5553"
+    },
+    {
+     "x": 747.3,
+     "y": 1766.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5553"
+    },
+    {
+     "x": 746.0,
+     "y": 701.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 48.0,
+     "y": 690.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5566"
+    },
+    {
+     "x": 835.2,
+     "y": 790.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 1139.3,
+     "y": 790.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 1140.6,
+     "y": 1750.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 836.5,
+     "y": 1747.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5554"
+    },
+    {
+     "x": 1202.9,
+     "y": 790.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1511.6,
+     "y": 789.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1510.3,
+     "y": 1753.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    },
+    {
+     "x": 1205.5,
+     "y": 1751.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5555"
+    }
+   ],
+   "skip": [
+    "SW"
+   ],
+   "with": [
+    "5566",
+    "5554",
+    "5555"
+   ],
+   "control_only": true,
+   "px4": [
+    [
+     49.2,
+     784.3
+    ],
+    [
+     746.0,
+     790.7
+    ],
+    [
+     747.3,
+     1766.8
+    ],
+    [
+     51.8,
+     1948.3
+    ]
+   ],
+   "edge_q": [
+    0.66,
+    0.8,
+    0.09,
+    0.31
+   ],
+   "corners_all": [
+    {
+     "x": 49.2,
+     "y": 784.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Claremont",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 746.0,
+     "y": 790.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 747.3,
+     "y": 1766.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    49.17431179888771,
+    784.27275150736,
+    747.3287402584932,
+    1948.2758546971024
+   ]
+  },
+  {
+   "name": "5554",
+   "streets": {
+    "N": "Clifton",
+    "S": "Cavour",
+    "W": "Miles",
+    "E": "Locksley"
+   },
+   "px4_est": [
+    [
+     835.6,
+     790.0
+    ],
+    [
+     1139.2,
+     790.0
+    ],
+    [
+     1139.2,
+     1750.2
+    ],
+    [
+     835.6,
+     1750.2
+    ]
+   ],
+   "corners": [
+    {
+     "x": 835.2,
+     "y": 790.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1139.3,
+     "y": 790.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1140.6,
+     "y": 1750.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 836.5,
+     "y": 1747.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "5565",
+    "5553",
+    "5555"
+   ],
+   "control_only": true,
+   "px4": [
+    [
+     835.2,
+     790.0
+    ],
+    [
+     1139.3,
+     790.0
+    ],
+    [
+     1140.6,
+     1750.9
+    ],
+    [
+     836.5,
+     1747.0
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.66,
+    0.69,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 835.2,
+     "y": 790.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Miles",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1139.3,
+     "y": 790.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1140.6,
+     "y": 1750.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 836.5,
+     "y": 1747.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Miles",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    835.1921052631579,
+    790.0,
+    1140.6089115243237,
+    1750.9420026982048
+   ]
+  },
+  {
+   "name": "5555",
+   "streets": {
+    "N": "Clifton",
+    "S": "Cavour",
+    "W": "Locksley",
+    "E": "Shafter"
+   },
+   "px4_est": [
+    [
+     1205.2,
+     790.0
+    ],
+    [
+     1509.7,
+     790.0
+    ],
+    [
+     1509.7,
+     1751.9
+    ],
+    [
+     1205.2,
+     1751.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1202.9,
+     "y": 790.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1511.6,
+     "y": 789.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1510.3,
+     "y": 1753.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1205.5,
+     "y": 1751.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "5564",
+    "5553",
+    "5554"
+   ],
+   "control_only": true,
+   "px4": [
+    [
+     1202.9,
+     790.9
+    ],
+    [
+     1511.6,
+     789.6
+    ],
+    [
+     1510.3,
+     1753.7
+    ],
+    [
+     1205.5,
+     1751.1
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.81,
+    0.76,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 1202.9,
+     "y": 790.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Locksley",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1511.6,
+     "y": 789.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shafter",
+      "Clifton"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1510.3,
+     "y": 1753.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shafter",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1205.5,
+     "y": 1751.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Locksley",
+      "Cavour"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1202.8867217041766,
+    789.5838585084281,
+    1511.608463979585,
+    1753.720885096035
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.16989643793217452,
+    -0.10651306745351245,
+    565277.4442431219
+   ],
+   [
+    -0.10651306745351245,
+    -0.16989643793217452,
+    4188561.680370993
+   ]
+  ],
+  "dist_px": 1.48,
+  "inlier_share": 0.92,
+  "rms_m": 0.33,
+  "n_points": 3806
+ }
+}

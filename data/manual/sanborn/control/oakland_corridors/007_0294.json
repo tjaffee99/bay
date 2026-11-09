@@ -1,0 +1,527 @@
+{
+ "residential": true,
+ "refine_R": 26,
+ "notes": "Miranda St gone (SR-24): 5269, 5268 and the north part of 5265 drawn by hand",
+ "predicted_from": [
+  [
+   29,
+   679,
+   "Telegraph",
+   "58th"
+  ],
+  [
+   536,
+   571,
+   "Vicente",
+   "58th"
+  ],
+  [
+   1107,
+   452,
+   "Hermann",
+   "58th"
+  ]
+ ],
+ "blocks": [
+  {
+   "name": "5257",
+   "streets": {
+    "N": "58th",
+    "S": "57th",
+    "W": "Telegraph",
+    "E": "Vicente"
+   },
+   "px4_est": [
+    [
+     45.6,
+     689.6
+    ],
+    [
+     514.7,
+     456.5
+    ],
+    [
+     514.7,
+     1252.9
+    ],
+    [
+     45.6,
+     1252.9
+    ]
+   ],
+   "corners": [
+    {
+     "x": 517.2,
+     "y": 457.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 510.8,
+     "y": 1235.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 64.0,
+     "y": 1233.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    }
+   ],
+   "with": [
+    "5269",
+    "5268",
+    "5265"
+   ],
+   "px4": [
+    [
+     67.9,
+     680.8
+    ],
+    [
+     517.2,
+     457.5
+    ],
+    [
+     510.8,
+     1235.7
+    ],
+    [
+     64.0,
+     1233.2
+    ]
+   ],
+   "edge_q": [
+    0.13,
+    0.3,
+    0.5,
+    0.58
+   ],
+   "corners_all": [
+    {
+     "x": 67.9,
+     "y": 680.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [16.2  1. ] at Telegraph x 58th SE"
+    },
+    {
+     "x": 517.2,
+     "y": 457.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 510.8,
+     "y": 1235.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 64.0,
+     "y": 1233.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    64.01445257194331,
+    457.4754268853586,
+    517.2314158211511,
+    1235.693926013144
+   ]
+  },
+  {
+   "name": "5269",
+   "streets": {
+    "N": "58th",
+    "S": "Miranda",
+    "W": "Vicente",
+    "E": "Hermann"
+   },
+   "px4_est": [
+    [
+     595,
+     571
+    ],
+    [
+     1060,
+     476
+    ],
+    [
+     1060,
+     1420
+    ],
+    [
+     595,
+     1369
+    ]
+   ],
+   "corners": [
+    {
+     "x": 517.2,
+     "y": 457.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 510.8,
+     "y": 1235.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 64.0,
+     "y": 1233.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5257"
+   ],
+   "px4": [
+    [
+     595.0,
+     571.0
+    ],
+    [
+     1060.0,
+     476.0
+    ],
+    [
+     1060.0,
+     1420.0
+    ],
+    [
+     595.0,
+     1369.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    595.0,
+    476.0,
+    1060.0,
+    1420.0
+   ]
+  },
+  {
+   "name": "5268",
+   "streets": {
+    "N": "Miranda",
+    "S": "56th",
+    "W": "Vicente",
+    "E": "Ayala"
+   },
+   "px4_est": [
+    [
+     595,
+     1520
+    ],
+    [
+     1000,
+     1520
+    ],
+    [
+     1140,
+     1880
+    ],
+    [
+     595,
+     1880
+    ]
+   ],
+   "corners": [
+    {
+     "x": 517.2,
+     "y": 457.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 510.8,
+     "y": 1235.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 64.0,
+     "y": 1233.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5257"
+   ],
+   "px4": [
+    [
+     595.0,
+     1520.0
+    ],
+    [
+     1000.0,
+     1520.0
+    ],
+    [
+     1140.0,
+     1880.0
+    ],
+    [
+     595.0,
+     1880.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    595.0,
+    1520.0,
+    1140.0,
+    1880.0
+   ]
+  },
+  {
+   "name": "5265",
+   "streets": {
+    "N": "Miranda",
+    "S": "56th",
+    "W": "Ayala",
+    "E": "Claremont"
+   },
+   "px4_est": [
+    [
+     1140,
+     1560
+    ],
+    [
+     1460,
+     1650
+    ],
+    [
+     1520,
+     1880
+    ],
+    [
+     1180,
+     1880
+    ]
+   ],
+   "corners": [
+    {
+     "x": 517.2,
+     "y": 457.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Vicente",
+      "58th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 510.8,
+     "y": 1235.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Vicente",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    },
+    {
+     "x": 64.0,
+     "y": 1233.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "57th"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5257"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": true,
+   "with": [
+    "5257"
+   ],
+   "px4": [
+    [
+     1140.0,
+     1560.0
+    ],
+    [
+     1460.0,
+     1650.0
+    ],
+    [
+     1520.0,
+     1880.0
+    ],
+    [
+     1180.0,
+     1880.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1140.0,
+    1560.0,
+    1520.0,
+    1880.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "chamfer": {
+  "M": [
+   [
+    0.19971545932109566,
+    -0.019175571128701274,
+    565003.9313304113
+   ],
+   [
+    -0.019175571128701274,
+    -0.19971545932109566,
+    4188908.2458571466
+   ]
+  ],
+  "dist_px": 4.53,
+  "inlier_share": 0.32,
+  "rms_m": 0.43,
+  "n_points": 3664
+ }
+}
