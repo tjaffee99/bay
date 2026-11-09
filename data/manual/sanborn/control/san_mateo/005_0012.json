@@ -1,4 +1,9 @@
 {
+ "residential_blocks": [
+  "146",
+  "119",
+  "114"
+ ],
  "notes": "sheet 12 (Apr 1908): B St -> D St, creek / Cypress Ct -> 2nd Av; north = up. B St lots (144, 139, 114) and the blocks north of 1st Av fitted with the blocks across the street (with).",
  "blocks": [
   {
@@ -854,6 +859,19 @@
    "corners": [
     {
      "x": 322.0,
+     "y": 1125.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 322.0,
      "y": 1230.0,
      "q": "SE",
      "corner": "NW",
@@ -975,8 +993,7 @@
       "1st avenue"
      ],
      "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [ 2.4 10. ] at b street x 1st avenue NE"
+     "weak": false
     }
    ],
    "zone_px": [

@@ -1,0 +1,467 @@
+{
+ "residential_blocks": [
+  "142",
+  "137"
+ ],
+ "scale_prior": [
+  0.2055,
+  0.002
+ ],
+ "notes": "sheet 11 (Apr 1908): west side of B St, creek -> 2nd Av (Buckman's Hotel, Hotel Wisnom), the public school and library west of it; north = up. Control only on B St (2 corners at 1st / 2nd Av + 1 across 1st Av); the inset (County Road x 3rd Av, top right) and the houses north of Baldwin Av / west of the creek not used.",
+ "blocks": [
+  {
+   "name": "143",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "x",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     1030,
+     1122
+    ],
+    [
+     1352,
+     1122
+    ],
+    [
+     1352,
+     1577
+    ],
+    [
+     1030,
+     1577
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1347.5,
+     "y": 1122.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1354.0,
+     "y": 1576.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     1033.5,
+     1124.8
+    ],
+    [
+     1347.5,
+     1122.2
+    ],
+    [
+     1354.0,
+     1576.7
+    ],
+    [
+     1033.5,
+     1579.3
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.84,
+    0.9,
+    0.12
+   ],
+   "corners_all": [
+    {
+     "x": 1347.5,
+     "y": 1122.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1354.0,
+     "y": 1576.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1033.5,
+    1122.2212837045877,
+    1354.0346671774769,
+    1579.287185354691
+   ]
+  },
+  {
+   "name": "138",
+   "streets": {
+    "N": "creek",
+    "S": "1st avenue",
+    "W": "x",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     1050,
+     780
+    ],
+    [
+     1346,
+     780
+    ],
+    [
+     1346,
+     1020
+    ],
+    [
+     1050,
+     1020
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1348.2,
+     "y": 1020.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    },
+    {
+     "x": 1347.5,
+     "y": 1122.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    },
+    {
+     "x": 1354.0,
+     "y": 1576.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "143"
+   ],
+   "px4": [
+    [
+     1048.5,
+     768.7
+    ],
+    [
+     1344.1,
+     771.3
+    ],
+    [
+     1348.2,
+     1020.6
+    ],
+    [
+     1048.5,
+     1021.9
+    ]
+   ],
+   "edge_q": [
+    0.42,
+    0.98,
+    0.72,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 1348.2,
+     "y": 1020.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1048.5,
+    768.6708748221906,
+    1348.2332595049422,
+    1021.9145625889047
+   ]
+  },
+  {
+   "name": "142",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "x",
+    "E": "y"
+   },
+   "px4_est": [
+    [
+     230,
+     1150
+    ],
+    [
+     1030,
+     1150
+    ],
+    [
+     1030,
+     1620
+    ],
+    [
+     230,
+     1620
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1347.5,
+     "y": 1122.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    },
+    {
+     "x": 1354.0,
+     "y": 1576.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    },
+    {
+     "x": 1348.2,
+     "y": 1020.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "143",
+    "138"
+   ],
+   "px4": [
+    [
+     230.0,
+     1150.0
+    ],
+    [
+     1030.0,
+     1150.0
+    ],
+    [
+     1030.0,
+     1620.0
+    ],
+    [
+     230.0,
+     1620.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    230.0,
+    1150.0,
+    1030.0,
+    1620.0
+   ]
+  },
+  {
+   "name": "137",
+   "streets": {
+    "N": "creek",
+    "S": "1st avenue",
+    "W": "x",
+    "E": "y"
+   },
+   "px4_est": [
+    [
+     650,
+     950
+    ],
+    [
+     1050,
+     950
+    ],
+    [
+     1050,
+     1180
+    ],
+    [
+     650,
+     1180
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1347.5,
+     "y": 1122.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    },
+    {
+     "x": 1354.0,
+     "y": 1576.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "143"
+    },
+    {
+     "x": 1348.2,
+     "y": 1020.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "143",
+    "138"
+   ],
+   "px4": [
+    [
+     650.0,
+     950.0
+    ],
+    [
+     1050.0,
+     950.0
+    ],
+    [
+     1050.0,
+     1180.0
+    ],
+    [
+     650.0,
+     1180.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    650.0,
+    950.0,
+    1050.0,
+    1180.0
+   ]
+  }
+ ],
+ "pct": 25
+}

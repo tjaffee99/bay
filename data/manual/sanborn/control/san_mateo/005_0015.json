@@ -1,4 +1,13 @@
 {
+ "residential_blocks": [
+  "156",
+  "177",
+  "194",
+  "155",
+  "176",
+  "193",
+  "191"
+ ],
  "notes": "sheet 15 (Apr 1908): B St -> E St, 2nd -> 5th Av; north = left",
  "blocks": [
   {
@@ -38,8 +47,19 @@
       "2nd avenue"
      ],
      "norefine": 1,
-     "weak": false,
-     "block": "156"
+     "weak": false
+    },
+    {
+     "x": 74.6,
+     "y": 163.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "e street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
     },
     {
      "x": 520.2,
@@ -51,8 +71,7 @@
       "3rd avenue"
      ],
      "norefine": 1,
-     "weak": false,
-     "block": "156"
+     "weak": false
     },
     {
      "x": 522.8,
@@ -64,112 +83,7 @@
       "3rd avenue"
      ],
      "norefine": 1,
-     "weak": false,
-     "block": "156"
-    },
-    {
-     "x": 80.8,
-     "y": 927.2,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "c street",
-      "2nd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "155"
-    },
-    {
-     "x": 76.9,
-     "y": 608.1,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "d street",
-      "2nd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "155"
-    },
-    {
-     "x": 524.7,
-     "y": 601.5,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "d street",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "155"
-    },
-    {
-     "x": 527.3,
-     "y": 923.3,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "c street",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "155"
-    },
-    {
-     "x": 625.8,
-     "y": 498.2,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "d street",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "177"
-    },
-    {
-     "x": 623.2,
-     "y": 159.6,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "e street",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "177"
-    },
-    {
-     "x": 1061.3,
-     "y": 153.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "e street",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "177"
-    },
-    {
-     "x": 1065.2,
-     "y": 494.3,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "d street",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "177"
+     "weak": false
     }
    ],
    "with": [
@@ -1492,7 +1406,7 @@
      ],
      "norefine": 1,
      "weak": false,
-     "drop": "implausible property-line offsets [25.5  9.2] at railroad avenue x 5th avenue NE"
+     "drop": "implausible property-line offsets [26.2  9.2] at railroad avenue x 5th avenue NE"
     }
    ],
    "zone_px": [
@@ -1693,6 +1607,19 @@
      "corner": "NW",
      "pc": [
       "b street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "191"
+    },
+    {
+     "x": 1173.0,
+     "y": 1489.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "railroad avenue",
       "4th avenue"
      ],
      "norefine": 1,

@@ -54,6 +54,7 @@ CITIES = {
         "volumes": {"004": (1901, "Jul 1901"), "005": (1908, "Apr 1908"), "006": (1920, "May 1920")},
         "parcels": ROOT / "data/raw/region_years/san_mateo_parcels/san_mateo_parcels.parquet",
         "bbox": (-122.345, 37.548, -122.300, 37.585),
+        "R": 80,  # street directions fitted within 80 m of a crossing: B St bends at 1st Av (-55 deg north of it, -49 south)
     },
     "palo_alto": {
         "loc": "00747", "area": "palo_alto_downtown",
@@ -147,6 +148,19 @@ def roads():
 
 E.norm_name = norm_name
 E.roads = roads
+_E_world_of = E.world_of
+
+
+def world_of(c):
+    """eastbay world_of with the town's default fitting radius for street directions at a crossing (CITIES[..]["R"])."""
+    R = CITIES[CITY_NAME].get("R") if CITY_NAME else None
+    if R and ("pc" in c or "oc" in c) and "R" not in c:
+        c = dict(c, R=R)
+    return _E_world_of(c)
+
+
+E.world_of = world_of
+W.world_of = world_of
 
 
 def refine_block(gray, px4, R=16, inset=0.12):
@@ -278,7 +292,7 @@ def extract(key):
     test, holes filled), with thresholds for these plates: the yellow frame wash is pale (saturation 60-95 on paper of
     ~12), the 'gray' iron wash is a grey-green (hue ~72, saturation 15-25, value 140-190), and the drawn lines are thin
     and light after JPEG blur (grey 100-200), so a line pixel is one 25+ levels darker than its 7-px median and below
-    grey 200 (or below 110). Classes (1901-1920 keys): yellow frame, red / pink brick, blue stone, gray iron, brown
+    grey 200 (or below 110); the blue stone wash is pale on some sheets (saturation 15-30). Classes (1901-1920 keys): yellow frame, red / pink brick, blue stone, gray iron, brown
     adobe (1908) / fire-proof (1920), green specials (rare; kept as `special`)."""
     import cv2
     from shapely.geometry import Polygon
@@ -294,9 +308,9 @@ def extract(key):
     classes = {
         "frame": (Hh >= 17) & (Hh <= 36) & (S >= max(40, pS + 28)) & (V >= 150),
         "brick": ((Hh >= 150) | (Hh <= 7)) & (S >= 35) & (V >= 100),
-        "stone": (Hh >= 85) & (Hh <= 130) & (S >= 30) & (V >= 90),
+        "stone": (Hh >= 85) & (Hh <= 130) & (S >= 15) & (V >= 90) & (V <= pV - 12),
         "fireproof": (Hh >= 8) & (Hh <= 16) & (S >= 70) & (V >= 80) & (V < 215),
-        "iron": (S <= pS + 16) & (V >= 105) & (V <= pV - 45) & (Hh >= 40) & (Hh <= 100),
+        "iron": (S <= pS + 16) & (V >= 105) & (V <= pV - 45) & (Hh >= 25) & (Hh <= 110),
         "special": (Hh >= 40) & (Hh <= 80) & (S >= 35) & (V >= 90),
     }
     del Hh, S, V
@@ -349,6 +363,8 @@ def extract(key):
             hullA = cv2.contourArea(cv2.convexHull(np.argwhere(sub)[:, ::-1].astype(np.int32)))
             solid = sizes[i] / hullA if hullA > 0 else 0
             if cls in ("iron", "special") and (sizes[i] < 300 or dist.max() < 5 or solid < 0.75):
+                continue
+            if cls == "stone" and sizes[i] > 2500 and solid < 0.6:  # a reach of creek between its drawn banks
                 continue
             ring_out = ndi.binary_dilation(np.pad(sub, 4), iterations=1) & ~np.pad(sub, 4)
             y0_, x0_ = max(0, sl[0].start - 4), max(0, sl[1].start - 4)
@@ -481,7 +497,8 @@ def assemble():
                 for name, ring in cfg["cover_extra_px"]:
                     cv = cv.union(Polygon(W.apply(np.array(blocks[name]["M"]), ring)))
             cover.append(cv)
-            residential = bool(cfg.get("residential"))
+            res_blocks = set(cfg.get("residential_blocks", []))
+            com_blocks = set(cfg.get("commercial_blocks", []))
             for r in rows:
                 g = make_valid(Polygon(r["ring_utm"], r.get("holes_utm") or []))
                 if g.geom_type != "Polygon":
@@ -492,6 +509,7 @@ def assemble():
                 if g.area < 6 or not cv.contains(g.representative_point()):
                     continue
                 zone = r.get("zone", "sheet")
+                residential = zone in res_blocks or (bool(cfg.get("residential")) and zone not in com_blocks)
                 fitq = dict(blocks[zone] if zone in blocks else {"rms": G.get("rms", 9), "n": G.get("n", 0), "max": G.get("max", 9)})
                 if zone in blocks:
                     fitq["collinear"] = E.collinear([W.apply(np.array(blocks[zone]["M"]), [q["px"]])[0] for q in blocks[zone].get("points", [])])
