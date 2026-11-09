@@ -319,10 +319,10 @@ source plan (`chk_center.png`, `chk_west.png`, `chk_zone.png`, `chk_ggie.png`).
 
 ### Oregon Building (PPIE 1915) (`ppie_oregon_building`)
 
-- Model years: construction 1914.3 → 1914.84, end 1916.3; anchor 37.805905, -122.449409; top 18.3 m; 612 triangles.
+- Model years: construction 1914.3 → 1914.84, end 1921.0 (LOW CONFIDENCE; audit 2026-11); anchor 37.805905, -122.449409; top 18.3 m; 612 triangles.
 - Built: a "Parthenon with the bark on" (Foulkes & Hogue), dedicated Halloween 1914
 - Colonnade: 48 Douglas-fir logs (one per state), 5 to 6½ ft through and 42 ft high, about 20 tons each; 150 × 250 ft over all (Todd 1921, vol. 3); 60 ft on the Sanborn map
-- Fate: given to the Presidio as an enlisted men's club after the Exposition
+- Fate: not demolished in 1916: it stood on Presidio ground and the Army kept it as a military clubhouse (NPS, https://www.nps.gov/goga/learn/historyculture/ppie-legacy.htm); torn down about 1921 (one photo caption; unverified)
 - Model: platform outline from the Sanborn map; column spacing (18 × 8) estimated
 - Sources: https://www.loc.gov/item/sanborn00813_025/, https://archive.org/details/storyofexpositio03todd
 
@@ -706,7 +706,7 @@ source plan (`chk_center.png`, `chk_west.png`, `chk_zone.png`, `chk_ggie.png`).
 
 - Model years: construction 1881.6 → 1882.6, end 1906.3; anchor 37.778096, -122.417312; top 30 m; 90 triangles.
 - Built: 1882, a vast wooden exhibition hall of the Mechanics' Institute filling the block of Larkin, Polk, Grove and Hayes Sts — San Francisco's first great indoor arena (~11,000 seats)
-- Fate: emergency hospital and morgue on Apr 18, 1906; burned the next day; the Exposition Auditorium (Civic Auditorium) took the site in 1915
+- Fate: emergency hospital and morgue on the morning of Apr 18, 1906; evacuated about noon and burned that afternoon (sfmuseum.org timeline, FoundSF); the Exposition Auditorium (Civic Auditorium) took the site in 1915
 - Model: block from DataSF centrelines (≈125 × 82 m); wall height, arched roof and towers ESTIMATED (LOW CONFIDENCE)
 - Sources: https://www.nesssoftware.com/www/sf/buildings.php?id=MechPav, https://en.wikipedia.org/wiki/1906_San_Francisco_earthquake
 

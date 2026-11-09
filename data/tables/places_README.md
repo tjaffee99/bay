@@ -1,6 +1,6 @@
 # places.csv — era-accurate place-name labels
 
-One row per **name period** of a place (462 rows). A label is shown iff
+One row per **name period** of a place (490 rows after the 2026-11 audit). A label is shown iff
 `year_start <= year < year_end` (same rule as features; `9999` = still in use).
 
 | column | meaning |
@@ -21,7 +21,7 @@ One row per **name period** of a place (462 rows). A label is shown iff
 * Towns that merged but whose name survives get two rows: `town` until the merger/annexation, then `neighborhood` (Fruitvale, Elmhurst, Temescal, Willow Glen, Alviso, Lorin). Fremont's five towns keep `town` tier to 9999.
 * **Missions** end at secularization (c. 1834–36) and hand over to the town that grew around them.
 * **Ranchos** (`historic`): `year_start` = grant year; `year_end` = 1852 (1853 where stated), the year the claim was filed with the US Public Land Commission under the Land Act of 1851 — a uniform cut-off for the rancho as a map label, cited in each rancho article.
-* **Ohlone villages** (Yelamu and Ramaytush villages, Pruristac, Timigtac): 1769–1800, locations approximate (Milliken 1995 via Wikipedia); 1800 = last baptism of a San Francisco-peninsula native recorded at Mission Dolores (NPS Golden Gate history, ch. 4) — estimated end.
+* **Native villages** are no longer rows here: their labels come from the village tables (`early_sf.csv`, `early_region.csv`, `data/manual/ohlone/villages.csv` → `park-labels.json`, tier `village`) and end when each village emptied (1776–1820), not at a uniform 1800. Local tribes (Yelamu, Urebure …) stay as `historic` rows.
 * **Natural features with no documented naming date** (Ocean Beach, Point Lobos, Candlestick Point, San Bruno Mountain, Carquinez Strait, Point Reyes, Farallones, Sweeney Ridge) use `year_start = 1769` so the landscape is labelled throughout; their notes say the first use is not established. Features with known naming dates use them (Golden Gate 1846, Tamalpais 1845, Mount Davidson 1911, Islais Creek 1834, …).
 * Cities: `year_start` = founding/settlement/naming; incorporation is in `note`.
 
@@ -38,3 +38,4 @@ Clinton, New Haven, Silveyville, villages) — their notes say so.
 * Conflicting sources, noted in `note`: Redwood City 1857 (county seat) vs 1867 (Britannica); Gilroy renamed 1868 vs incorporated 1870; Alvarado formed 1853 vs 1854; Yerba Buena 1834 (pueblo) vs 1835 (first dwelling, used here).
 * Sub-area names (Inner/Outer Richmond) reuse the parent district's year; Inner/Outer Sunset use estimated development years.
 * Research collected 2026-11 from web sources; verify before treating any single date as authoritative.
+* 2026-11 audit: 42 label anchors moved from Wikipedia's "city centre" coordinates (1–3 km off) to the historic core (old downtown, station or plaza; checked against the count of pre-1925 buildings around the point); the San Francisco label sits at Portsmouth Square until the new City Hall was begun (1871); successive sites of the Pueblo de San José and Misión Santa Clara have their own rows; name chains added for East Palo Alto (Ravenswood → Cooley's Landing → Runnymede → East Palo Alto 1925), Golden Gate (1888), Washington Corners, Potrero Point / Point San Quentin, Yerba Buena Island / Alcatraz, Blue Heron Lake (2024).

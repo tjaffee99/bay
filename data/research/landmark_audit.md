@@ -59,3 +59,61 @@ Method
 Remaining uncertainties: Seals / Ewing / Recreation Park home-plate positions are derived from street blocks and
 documented corner/orientation statements (no historic aerial was reachable from this session; the 1938
 Harrison Ryker mosaic would settle them); the Hamon Tower's total twist is extrapolated from the OSM floor plates up to 28 m.
+
+---
+
+# Data audit of the landmark reconstructions (2026-11-09)
+
+Scope: all 324 landmark models (`viewer/src/landmarks/*.ts`) and the four `data/tables/landmarks*.csv` tables —
+dates, anchors, key dimensions, popup facts and `replaces` polygons. Method: models dumped with esbuild (id, built,
+end, anchor, facts, bbox, top); CSV rows compared with the models; the viewer's `replacedMask` rule (centroid inside a
+`replaces` polygon, or taller than 60 m within ~12 m of it) replayed against the built `sf-buildings.bin.gz` and the
+z13 `region-buildings` tiles; dates and dimensions checked against Wikipedia / NPS / press.
+
+## Corrected
+
+| Item | Was | Now | Source |
+|---|---|---|---|
+| Bay Bridge 1936 east span — cantilever | gone 2014.6 | 2015.45 (dismantling complete 12 Jun 2015) | https://en.wikipedia.org/wiki/Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge |
+| — five 504 ft truss spans | gone 2015.9 | 2016.6 (lowered 4 Feb – Aug 2016) | https://abc7news.com/news/1464496 , cdrecycler.com |
+| — 288 ft causeway trusses | gone 2016.8 | 2017.2 (last truss 13 Mar 2017) | https://abc7news.com/demolition-of-old-span-bay-bridge-project/1799171/ |
+| Oregon Building (PPIE) | demolished with the fair, 1916.3 | stands to 1921.0 (LOW CONFIDENCE end) | NPS: kept by the Army as a clubhouse, https://www.nps.gov/goga/learn/historyculture/ppie-legacy.htm |
+| Embarcadero Center 1–4 facts | "Completed 1972 / 1975 / 1978 / 1983", EC2 / EC3 130 m, 31 floors | 1971 / 1974 / 1977 / 1982; EC2 / EC3 126 m (413 ft), EC2 30 floors | https://en.wikipedia.org/wiki/Embarcadero_Center |
+| Embarcadero Center 4 construction start | 1980.2 | 1979.0 (estimated; the footprint's assessor year is 1979 and stood finished before the frame) | — |
+| Palace Hotel (1909) construction start | 1907.0 | 1906.55 (estimated; the post-fire footprint, dated 1906.5, stood finished for half a year) | — |
+| Hotel De Anza construction start | 1931.16 | 1931.1 (same reason; groundbreaking 27 Feb 1931) | — |
+| Russ Building | 127.4 m, 31 floors | 132.6 m (435 ft) to the top, roof 127.4 m; 32 floors | https://en.wikipedia.org/wiki/Russ_Building |
+| Mechanics' Pavilion | "burned the next day" | evacuated about noon and burned on the afternoon of 18 Apr 1906 | https://sfmuseum.org/hist10/06timeline.html , https://foundsf.org/Mechanics_Pavilion |
+| Alcatraz lighthouse | "95 ft above mean sea level" | tower 84 ft (26 m), light 214 ft (65 m) above the water | https://en.wikipedia.org/wiki/Alcatraz_Island_Lighthouse |
+| Coit Tower, Sutro Tower | "not modelled: the map is flat"; Telegraph Hill ≈ 89 m | text removed (landmarks stand on the terrain); Telegraph Hill 275 ft (84 m); Sutro Tower top 1,811 ft above the sea | Wikipedia |
+| Candlestick Park capacity | ≈ 63,000 baseball | 58,000–62,000 baseball (1972–99), 61,000–70,000 football | https://en.wikipedia.org/wiki/Candlestick_Park |
+| Era names added | — | Oracle Park (Pacific Bell 2000–03, SBC 2004–05, AT&T 2006–18), Candlestick (3Com 1995–2002, SF Stadium at Candlestick Point 2002–04, Monster Park 2004–08), Oakland Coliseum (Network Associates 1998–2004, McAfee 2004–08, O.co 2011–16, RingCentral 2019–23), SAP Center (San Jose Arena 1993–2001, Compaq Center 2001–02, HP Pavilion 2002–13) | Wikipedia |
+| Transbay Terminal CSV row | placeholder position (81 m off), end 2010, 15 m | model anchor, end 2011 (demolished Dec 2010 – Sep 2011), 20.7 m | https://en.wikipedia.org/wiki/San_Francisco_Transbay_Terminal |
+
+## `replaces` polygons that hid neighbours (now the buildings' own outlines)
+
+| Landmark | Hidden by mistake | 
+|---|---|
+| SFMOMA (2016) | W San Francisco hotel (1999, 97 m), part of the St. Regis tower (2005, 125 m), 161 Natoma St — the polygon was a 90 × 110 m rectangle |
+| SFMOMA (1995) | had no `replaces`: the 1995-dated footprint with the 59 m Snøhetta wing (2016) stood beside the Botta model from 1995 to 2013 |
+| Cathedral of Christ the Light | Ordway Building (1970, 123 m, Oakland's tallest) and Lake Merritt Tower (1990) from 2005 on |
+| Paramount Theatre, Oakland | Forma apartment tower (2022, 74 m) |
+| Mills Building | 250 Montgomery St (1986, 68 m) |
+| Mills Tower | parts of 155 Sansome St and 115 Sansome St |
+| Shell Building | 130 Bush St (1910) |
+| Russ Building | podium parts of 350 Bush St / 500 Pine St (2018) |
+
+## Open (outside the landmark files)
+
+A *standing* landmark hides the plain footprints under it only from its own construction start, and an *ended*
+landmark hides nothing. Where an earlier phase is its own (ended) landmark, the footprint of today's building —
+dated by the roll or estimated — is drawn together with the earlier model. Seen in the built data: Hangar One
+(60 m box round the hangar, 1933–2010), California Memorial Stadium (10 m slab in the bowl, 1923–2010), Stanford
+Stadium (1921–2005), Oakland Coliseum (1980–95), Central Tower's 97 m footprint over the Call Building's dome
+(1898–1937), Palace of Fine Arts (1912–64), de Young (2005 outline from 1915), California Academy of Sciences (2008
+outline from 1915), Kezar's 1990 stands (from 1937), Alcatraz cellhouse (from 1905; built 1909–12), Mission San José
+(1890–1982), Stanford Shopping Center Macy's (from 1900; opened 1961) and Bloomingdale's (from 1975; built 2014),
+Mill Valley library (from 1909; 1966) and Our Lady of Mount Carmel (from 1913; 1968), Pacifica Taco Bell (from 1954;
+1972), Shoreline Amphitheatre (from 1980; 1986), USS Hornet (from 1992.9; 1998). Fix either by dating those footprints
+in `known_building_dates*.csv`, or by letting a standing landmark hide footprints from the earliest construction start
+of the landmarks on its site (`replacedMask` in `landmarks/index.ts`).

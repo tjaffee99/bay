@@ -62,7 +62,7 @@ Rows for every model below were appended to `data/tables/landmarks.csv`.
 
 ### Palace Hotel (`palace_hotel_1909`)
 
-- Model years: construction 1907 → 1909.97, end standing; anchor 37.787958, -122.401930; 122 triangles.
+- Model years: construction 1906.55 → 1909.97 (start estimated: ruins cleared from mid-1906; audit 2026-11), end standing; anchor 37.787958, -122.401930; 122 triangles.
 - Reopened: Dec 19, 1909 (Trowbridge & Livingston), rebuilt on the 1875 site
 - Height: 9 storeys, 35 m
 - Garden Court: glass-roofed dining room in the former carriage court
@@ -143,7 +143,7 @@ Rows for every model below were appended to `data/tables/landmarks.csv`.
 
 - Model years: construction 1926 → 1927.75, end standing; anchor 37.791419, -122.402862; 168 triangles.
 - Completed: 1927 (George W. Kelham), Gothic Revival
-- Height: 127.4 m — the city’s tallest until 1964
+- Height: 132.6 m (435 ft) to the top, roof 127.4 m (418 ft); 32 floors — the city’s tallest 1927–1964 (with the 435 ft Pacific Telephone Building) (Wikipedia; audit 2026-11)
 - Floors: 31
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); base height and crown estimated from photos
 - Sources: https://en.wikipedia.org/wiki/Russ_Building
@@ -192,7 +192,7 @@ Rows for every model below were appended to `data/tables/landmarks.csv`.
 ### Embarcadero Center 1 (`embarcadero_center_1`)
 
 - Model years: construction 1969.5 → 1971.6, end standing; anchor 37.794484, -122.399637; 192 triangles.
-- Completed: 1972 (John Portman & Associates)
+- Completed: 1971 (John Portman & Associates) — 173 m (568 ft), 45 floors (Wikipedia; audit 2026-11)
 - Height: 173 m, 45 floors (OSM / Wikipedia)
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); podium height estimated
 - Sources: https://en.wikipedia.org/wiki/Embarcadero_Center
@@ -201,8 +201,8 @@ Rows for every model below were appended to `data/tables/landmarks.csv`.
 ### Embarcadero Center 2 (`embarcadero_center_2`)
 
 - Model years: construction 1972.6 → 1974.5, end standing; anchor 37.794997, -122.398495; 138 triangles.
-- Completed: 1975 (John Portman & Associates)
-- Height: 130 m, 31 floors (OSM / Wikipedia)
+- Completed: 1974 (John Portman & Associates)
+- Height: 126 m (413 ft), 30 floors (Wikipedia; audit 2026-11 — OSM had 130 m)
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); podium height estimated
 - Sources: https://en.wikipedia.org/wiki/Embarcadero_Center
 - Photo: `data/raw/reference_photos/embarcadero_center/EmbarcaderoCenterHighlight.jpg` — [File:EmbarcaderoCenterHighlight.jpg](https://commons.wikimedia.org/wiki/File:EmbarcaderoCenterHighlight.jpg) — Leonard G.; Public domain
@@ -210,16 +210,16 @@ Rows for every model below were appended to `data/tables/landmarks.csv`.
 ### Embarcadero Center 3 (`embarcadero_center_3`)
 
 - Model years: construction 1975.5 → 1977.5, end standing; anchor 37.795125, -122.397373; 120 triangles.
-- Completed: 1978 (John Portman & Associates)
-- Height: 130 m, 31 floors (OSM / Wikipedia)
+- Completed: 1977 (John Portman & Associates)
+- Height: 126 m (413 ft), 31 floors (Wikipedia; audit 2026-11 — OSM had 130 m)
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); podium height estimated
 - Sources: https://en.wikipedia.org/wiki/Embarcadero_Center
 - Photo: `data/raw/reference_photos/embarcadero_center/EmbarcaderoCenterHighlight.jpg` — [File:EmbarcaderoCenterHighlight.jpg](https://commons.wikimedia.org/wiki/File:EmbarcaderoCenterHighlight.jpg) — Leonard G.; Public domain
 
 ### Embarcadero Center 4 (`embarcadero_center_4`)
 
-- Model years: construction 1980.2 → 1982.5, end standing; anchor 37.795297, -122.396205; 156 triangles.
-- Completed: 1983 (John Portman & Associates)
+- Model years: construction 1979.0 (estimated; assessor year of the footprint 1979) → 1982.5, end standing; anchor 37.795297, -122.396205; 156 triangles.
+- Completed: 1982 (John Portman & Associates) — 174 m (571 ft), 45 floors (Wikipedia; audit 2026-11)
 - Height: 174 m, 45 floors (OSM / Wikipedia)
 - Model: footprint from OpenStreetMap (© OSM contributors, ODbL); podium height estimated
 - Sources: https://en.wikipedia.org/wiki/Embarcadero_Center

@@ -388,7 +388,7 @@ The models are exported as `SOUTHBAY: Landmark[]`; registration in `landmarks/in
 
 ### Hotel De Anza (`hotel_de_anza`)
 
-- Model years: construction 1931.16 → 1931.9, end standing; anchor 37.334402, -121.895071; 144 triangles; model top 44.0 m.
+- Model years: construction 1931.1 → 1931.9 (groundbreaking Feb 27, 1931; start a few weeks early so the roll-dated 1931.0 footprint never shows), end standing; anchor 37.334402, -121.895071; 144 triangles; model top 44.0 m.
 - Built: groundbreaking Feb 27, 1931 (W. H. Weeks, architect; Carl Swenson, contractor); restored and reopened 1990
 - Style: Zig Zag Moderne (Art Deco) with Mission Revival touches: a ten-storey centre between nine-storey wings
 - Model: massing from the OpenStreetMap 3D parts (© OSM contributors, ODbL; 36.3 / 30.9 / 31.2 m); crown, sign and colours from a photograph (pale pink over a salmon ground storey, teal accents); crown heights estimated
