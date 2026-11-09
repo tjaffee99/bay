@@ -768,6 +768,8 @@ def block_stats(town, key, preview=False):
 THRESH = {"early": 0.35, "tint": 0.35}   # built frontage share (early) / share under the urban tint
 TINT_SHARE = 0.50
 CELL_SHARE, CELL_HEAVY = 0.35, 0.20       # cells of big blocks
+CELL_MIN_M2 = 3000.0
+MIN_WIDTH_M = 20.0                        # narrower units (area / perimeter < 10 m) are not read on their own
 MIN_COV = 0.3                             # a block is read when this share of it lies on the sheet(s)
 SQ_FRONT_M = 15.0                         # frontage credited to one house square
 HOLE_HA = 0.6                             # fill holes in the extent smaller than this
@@ -809,13 +811,19 @@ def snapshot_stats(town, year):
     tot["heavy_frac"] = tot.a_heavy / tot.px_valid.clip(lower=1)
     # street blocks: built frontage share; cells of big blocks (yards, wharves, hills): a rail line or
     # two is not built-up, so also a minimum share of heavy ink
-    built = (tot["cov"] >= MIN_COV) & (((tot.kind == "block") & (tot.share >= THRESH[style]))
-                                   | ((tot.share >= CELL_SHARE) & (tot.heavy_frac >= CELL_HEAVY)))
+    # (a cell must be at least CELL_MIN_M2: the slivers of cells along a road are all road casing)
+    cell_ok = (tot.kind == "cell") & (tot.px * res * res >= CELL_MIN_M2)
+    # strips (between a road and a parallel road or the city limit) hold road casing, not frontage
+    gg = bl.set_index("bid").geometry.reindex(tot.index)
+    wide = (shapely.area(gg.values) / np.maximum(shapely.length(gg.values), 1.0)) >= MIN_WIDTH_M / 2
+    built = (tot["cov"] >= MIN_COV) & wide & (((tot.kind == "block") & (tot.share >= THRESH[style]))
+                                          | (cell_ok & (tot.share >= CELL_SHARE) & (tot.heavy_frac >= CELL_HEAVY)))
     if style == "tint":
         built |= (tot["cov"] >= MIN_COV) & (tot.tint_share >= TINT_SHARE)
     tot["built"] = built
     # partly built: at least ~3-4 houses drawn on the block (or a short built frontage), not built up
-    tot["partial"] = (tot["cov"] >= MIN_COV) & ~built & (tot.share >= PARTIAL_SHARE)
+    tot["partial"] = ((tot["cov"] >= MIN_COV) & wide & ~built & (tot.share >= PARTIAL_SHARE)
+                      & ((tot.kind == "block") | cell_ok))
     tot.attrs["t_band"] = t_band
     return bl, tot
 
@@ -828,8 +836,8 @@ def extent_polys(bl, tot, clip, col="built", exclude=None):
         return shapely.MultiPolygon()
     u = shapely.union_all(sel).buffer(12, join_style="mitre").buffer(-12, join_style="mitre")
     if exclude is not None:
-        u = shapely.union_all([q for q in shapely.get_parts(u.difference(exclude)) if q.geom_type == "Polygon"]
-                              or [shapely.Polygon()])
+        d = shapely.difference(shapely.make_valid(u).buffer(0), shapely.make_valid(exclude).buffer(0))
+        u = shapely.union_all([q for q in shapely.get_parts(d) if q.geom_type == "Polygon"] or [shapely.Polygon()])
     parts = []
     for p in shapely.get_parts(u):
         if p.geom_type != "Polygon":

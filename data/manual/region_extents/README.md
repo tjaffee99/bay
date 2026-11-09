@@ -85,7 +85,9 @@ land (TIGER area water removed). Vallejo is outside the map.
    within 25 m of a freeway of today (the heavy highway symbol of the Bayshore). **Built frontage
    share** of a block = (band length + 15 m per square) / frontage (the perimeter 15 m inside the street
    centrelines). A block is **built up at share ≥ 0.35** (SF: "about a third of the frontage"); a 100 m
-   cell needs share ≥ 0.35 and ≥ 20 % heavy ink (a rail line or two is not built-up). **Partly built:**
+   cell needs share ≥ 0.35, ≥ 20 % heavy ink (a rail line or two is not built-up) and ≥ 0.3 ha (the
+   slivers of cells along a road hold nothing but its casing); units narrower than ~20 m (strips
+   between a road and a parallel road or the city limit) are not read on their own. **Partly built:**
    share ≥ 0.12.
 6. **Reading the 1939-53 sheets.** The 1:24,000 sheets tint the built-up area pink with a red dot
    screen and draw only landmark buildings inside it; the 1:62,500 editions of 1940-43 tint it
@@ -123,47 +125,47 @@ land (TIGER area water removed). Vallejo is outside the map.
 <!-- snapshots -->
 | town | year | sheets | built-up km² | partly built km² | area read km² | confidence | pre-map buildings standing today inside built-up (+ partly built) (n) | prev. snapshot kept | Sanborn built blocks inside / empty blocks inside |
 |---|---|---|---|---|---|---|---|---|---|
-| oakland | 1894 | sf1895, concord1897, haywards1899 | 11.06 | 9.8 | 134.7 | medium | 81.6% (91.7%) (2362) |  |  |
-| oakland | 1914 | sf1915, concord1915, hayward1915 | 28.35 | 14.63 | 134.7 | medium | 82.3% (93.8%) (23290) | 90.7% | downtown 1912: 97% of 30 / 100% of 2; west 1912: 89% of 71 / 33% of 12 |
-| oakland | 1939 | concord1942, hayward1942 | 41.91 | 4.05 | 89.19 | medium | 91.6% (93.5%) (53785) | 95.0% |  |
-| oakland | 1946 | oaklandwest1949, oaklandeast1947, sanleandro1947 | 71.91 | 6.23 | 134.7 | high | 95.7% (96.8%) (86788) | 93.4% | downtown 1951: 100% of 28 / 33% of 3; west 1951: 100% of 69 / 82% of 17 |
-| berkeley | 1894 | sf1895, concord1897 | 4.7 | 4.81 | 41.57 | medium | 62.5% (85.1%) (275) |  |  |
-| berkeley | 1914 | sf1915, concord1915 | 11.89 | 5.87 | 41.57 | medium | 88.0% (97.0%) (7619) | 82.8% | downtown 1911: 88% of 17 / 33% of 6; southside 1911: 77% of 30 / 0% of 5; west 1911: 22% of 9 / 13% of 30 |
-| berkeley | 1946 | richmond1947, oaklandwest1949, briones1947, oaklandeast1947 | 25.1 | 0.95 | 41.57 | high | 99.3% (99.7%) (30117) | 98.5% |  |
-| alameda | 1894 | sf1895, concord1897 | 4.04 | 1.76 | 35.67 | medium | 76.8% (90.3%) (967) |  | westend 1897: 100% of 3 / 10% of 30 |
-| alameda | 1914 | sf1915, concord1915 | 5.32 | 1.51 | 35.67 | medium | 87.5% (95.8%) (5936) | 85.8% |  |
-| alameda | 1946 | oaklandwest1949, oaklandeast1947 | 9.76 | 1.28 | 35.67 | high | 97.7% (98.3%) (12359) | 97.7% | westend 1948: 100% of 22 / 67% of 15 |
-| san_jose | 1885 | sanjose1889 | 5.73 | 10.2 | 184.6 | medium | 56.5% (72.1%) (154) |  |  |
-| san_jose | 1895 | sanjose1897 | 6.86 | 11.28 | 184.6 | medium | 55.1% (76.1%) (410) | 92.7% |  |
-| san_jose | 1939 | sanjose1943 | 33.73 | 10.83 | 184.6 | medium | 92.3% (94.3%) (22224) | 86.2% |  |
-| san_jose | 1948 | sanjosewest1953, sanjoseeast1953, milpitas1953 | 46.4 | 7.45 | 173.96 | high | 94.5% (96.8%) (28845) | 89.0% | jose_downtown 1950: 100% of 92 / 67% of 18 |
-| san_leandro | 1896 | haywards1899 | 0.66 | 1.39 | 39.77 | low | 16.7% (46.2%) (78) |  |  |
-| san_leandro | 1914 | hayward1915 | 1.24 | 2.53 | 39.77 | low | 24.3% (54.8%) (547) | 79.6% |  |
-| san_leandro | 1939 | hayward1942 | 5.88 | 0.68 | 39.77 | medium | 90.2% (91.4%) (4853) | 71.4% |  |
-| san_leandro | 1946 | sanleandro1947, hayward1947 | 8.66 | 2.1 | 39.77 | high | 94.4% (97.2%) (9993) | 93.6% |  |
-| hayward | 1896 | haywards1899 | 0.62 | 1.91 | 77.54 | low | 6.1% (38.8%) (49) |  |  |
-| hayward | 1914 | hayward1915 | 0.98 | 2.38 | 77.54 | low | 22.1% (44.6%) (399) | 98.4% |  |
-| hayward | 1939 | hayward1942 | 5.24 | 1.93 | 77.54 | medium | 58.3% (63.5%) (2471) | 68.6% |  |
-| hayward | 1946 | hayward1947, sanleandro1947, newark1947 | 5.02 | 4.67 | 73.86 | medium | 70.4% (86.2%) (3677) | 62.8% |  |
-| richmond | 1894 | sf1895 | 0.72 | 2.0 | 99.16 | low | 0.0% (7.7%) (13) |  |  |
-| richmond | 1914 | sf1915 | 3.9 | 5.02 | 99.16 | medium | 58.6% (79.4%) (2031) | 22.6% | downtown 1916: 100% of 9 / 27% of 11 |
-| richmond | 1946 | richmond1947, sanquentin1948 | 27.18 | 4.05 | 99.16 | high | 95.3% (96.7%) (19638) | 87.5% |  |
-| palo_alto | 1895 | paloalto1899 | 0.5 | 1.74 | 32.33 | low | 9.7% (45.2%) (31) |  | alto_downtown 1901: 75% of 4 / 0% of 7 |
-| palo_alto | 1940 | paloalto1943 | 7.1 | 1.07 | 32.33 | medium | 83.6% (86.4%) (4962) | 66.4% |  |
-| palo_alto | 1948 | paloalto1953, mountainview1953 | 12.92 | 1.45 | 32.33 | high | 95.7% (96.3%) (6476) | 89.8% |  |
-| redwood_city | 1895 | paloalto1899 | 0.37 | 0.66 | 18.99 | low | 56.8% (73.0%) (37) |  |  |
-| redwood_city | 1940 | paloalto1943 | 8.68 | 0.55 | 18.99 | medium | 93.1% (96.7%) (3470) | 97.3% |  |
-| redwood_city | 1948 | paloalto1953, woodside1953, redwoodpoint1948 | 13.15 | 0.88 | 27.78 | high | 97.3% (98.3%) (6342) | 93.0% |  |
-| san_mateo | 1892 | sanmateo1896 | 0.62 | 1.46 | 51.63 | low | 13.0% (26.1%) (23) |  |  |
-| san_mateo | 1914 | sanmateo1915 | 0.46 | 1.87 | 51.63 | low | 3.1% (20.0%) (1574) | 11.3% | mateo_downtown 1908: 58% of 12 / 0% of 9; mateo_downtown 1920: 57% of 14 / 0% of 12 |
-| san_mateo | 1939 | sanmateo1943 | 12.87 | 1.28 | 51.63 | medium | 93.4% (96.4%) (9751) | 63.1% |  |
-| san_mateo | 1946 | sanmateo1947 | 17.0 | 1.18 | 48.74 | high | 99.0% (99.4%) (12730) | 95.4% |  |
-| san_rafael | 1895 | tamalpais1897, sf1895 | 1.89 | 1.65 | 27.03 | medium | 62.4% (76.8%) (125) |  |  |
-| san_rafael | 1939 | tamalpais1941 | 2.04 | 1.54 | 18.56 | medium | 61.9% (76.0%) (2362) | 56.2% |  |
-| san_rafael | 1952 | sanrafael1954, sanquentin1948 | 5.87 | 1.71 | 27.03 | high | 88.6% (94.1%) (4540) | 94.3% |  |
-| martinez | 1896 | karquines1898 | 0.19 | 0.56 | 10.31 | low | 15.7% (76.5%) (51) |  |  |
-| martinez | 1940 | carquinezstrait1940 | 1.4 | 0.79 | 10.31 | medium | 80.7% (91.5%) (1677) | 68.2% |  |
-| martinez | 1948 | benicia1950, briones1947, portchicago1951 | 2.63 | 1.06 | 12.32 | high | 89.1% (96.3%) (2245) | 92.9% |  |
+| oakland | 1894 | sf1895, concord1897, haywards1899 | 10.93 | 9.23 | 134.7 | medium | 81.6% (91.6%) (2362) |  |  |
+| oakland | 1914 | sf1915, concord1915, hayward1915 | 27.86 | 14.03 | 134.7 | medium | 81.8% (93.2%) (23290) | 90.6% | downtown 1912: 97% of 30 / 100% of 2; west 1912: 84% of 71 / 8% of 12 |
+| oakland | 1939 | concord1942, hayward1942 | 41.76 | 3.62 | 89.19 | medium | 91.5% (93.2%) (53785) | 95.2% |  |
+| oakland | 1946 | oaklandwest1949, oaklandeast1947, sanleandro1947 | 71.77 | 5.61 | 134.7 | high | 95.7% (96.8%) (86788) | 93.4% | downtown 1951: 100% of 28 / 33% of 3; west 1951: 100% of 69 / 82% of 17 |
+| berkeley | 1894 | sf1895, concord1897 | 4.57 | 4.65 | 41.57 | medium | 62.5% (84.7%) (275) |  |  |
+| berkeley | 1914 | sf1915, concord1915 | 11.76 | 5.75 | 41.57 | medium | 87.7% (96.7%) (7619) | 83.7% | downtown 1911: 82% of 17 / 0% of 6; southside 1911: 73% of 30 / 0% of 5; west 1911: 22% of 9 / 3% of 30 |
+| berkeley | 1946 | richmond1947, oaklandwest1949, briones1947, oaklandeast1947 | 25.07 | 0.89 | 41.57 | high | 99.3% (99.7%) (30117) | 98.6% |  |
+| alameda | 1894 | sf1895, concord1897 | 4.01 | 1.69 | 35.67 | medium | 75.7% (89.2%) (967) |  | westend 1897: 100% of 3 / 10% of 30 |
+| alameda | 1914 | sf1915, concord1915 | 5.27 | 1.42 | 35.67 | medium | 87.1% (95.4%) (5936) | 86.0% |  |
+| alameda | 1946 | oaklandwest1949, oaklandeast1947 | 9.75 | 1.18 | 35.67 | high | 97.6% (98.3%) (12359) | 98.0% | westend 1948: 100% of 22 / 67% of 15 |
+| san_jose | 1885 | sanjose1889 | 5.56 | 9.5 | 184.6 | medium | 55.8% (71.4%) (154) |  |  |
+| san_jose | 1895 | sanjose1897 | 6.55 | 10.6 | 184.6 | medium | 54.9% (75.1%) (410) | 93.4% |  |
+| san_jose | 1939 | sanjose1943 | 32.68 | 8.73 | 184.6 | medium | 92.2% (94.0%) (22224) | 88.3% |  |
+| san_jose | 1948 | sanjosewest1953, sanjoseeast1953, milpitas1953 | 46.34 | 6.8 | 173.96 | high | 94.5% (96.6%) (28845) | 91.4% | jose_downtown 1950: 100% of 92 / 67% of 18 |
+| san_leandro | 1896 | haywards1899 | 0.61 | 1.24 | 39.77 | low | 14.1% (42.3%) (78) |  |  |
+| san_leandro | 1914 | hayward1915 | 1.17 | 2.37 | 39.77 | low | 24.3% (54.5%) (547) | 81.4% |  |
+| san_leandro | 1939 | hayward1942 | 5.79 | 0.61 | 39.77 | medium | 90.1% (91.1%) (4853) | 70.4% |  |
+| san_leandro | 1946 | sanleandro1947, hayward1947 | 8.58 | 1.93 | 39.77 | high | 94.4% (97.2%) (9993) | 94.0% |  |
+| hayward | 1896 | haywards1899 | 0.6 | 1.7 | 77.54 | low | 6.1% (38.8%) (49) |  |  |
+| hayward | 1914 | hayward1915 | 0.93 | 2.07 | 77.54 | low | 21.1% (42.4%) (399) | 98.5% |  |
+| hayward | 1939 | hayward1942 | 4.26 | 1.88 | 77.54 | medium | 57.0% (62.5%) (2471) | 71.4% |  |
+| hayward | 1946 | hayward1947, sanleandro1947, newark1947 | 5.02 | 3.99 | 73.86 | medium | 70.4% (85.0%) (3677) | 76.5% |  |
+| richmond | 1894 | sf1895 | 0.63 | 1.81 | 99.16 | low | 0.0% (7.7%) (13) |  |  |
+| richmond | 1914 | sf1915 | 3.74 | 4.67 | 99.16 | medium | 58.3% (79.0%) (2031) | 23.3% | downtown 1916: 100% of 9 / 9% of 11 |
+| richmond | 1946 | richmond1947, sanquentin1948 | 27.06 | 3.24 | 99.16 | high | 95.3% (96.5%) (19638) | 88.1% |  |
+| palo_alto | 1895 | paloalto1899 | 0.45 | 1.67 | 32.33 | low | 6.5% (45.2%) (31) |  | alto_downtown 1901: 75% of 4 / 0% of 7 |
+| palo_alto | 1940 | paloalto1943 | 6.88 | 0.87 | 32.33 | medium | 83.4% (86.2%) (4962) | 70.3% |  |
+| palo_alto | 1948 | paloalto1953, mountainview1953 | 12.91 | 1.26 | 32.33 | high | 95.7% (96.2%) (6476) | 91.9% |  |
+| redwood_city | 1895 | paloalto1899 | 0.37 | 0.65 | 18.99 | low | 56.8% (73.0%) (37) |  |  |
+| redwood_city | 1940 | paloalto1943 | 8.55 | 0.55 | 18.99 | medium | 93.1% (96.9%) (3470) | 97.3% |  |
+| redwood_city | 1948 | paloalto1953, woodside1953, redwoodpoint1948 | 13.15 | 0.84 | 27.78 | high | 97.3% (98.3%) (6342) | 93.8% |  |
+| san_mateo | 1892 | sanmateo1896 | 0.61 | 1.41 | 51.63 | low | 13.0% (26.1%) (23) |  |  |
+| san_mateo | 1914 | sanmateo1915 | 0.44 | 1.82 | 51.63 | low | 3.1% (20.1%) (1574) | 11.3% | mateo_downtown 1908: 58% of 12 / 0% of 9; mateo_downtown 1920: 57% of 14 / 0% of 12 |
+| san_mateo | 1939 | sanmateo1943 | 12.5 | 1.24 | 51.63 | medium | 93.3% (96.4%) (9751) | 64.2% |  |
+| san_mateo | 1946 | sanmateo1947 | 16.97 | 1.02 | 48.74 | high | 98.9% (99.3%) (12730) | 97.2% |  |
+| san_rafael | 1895 | tamalpais1897, sf1895 | 1.8 | 1.6 | 27.03 | medium | 58.4% (75.2%) (125) |  |  |
+| san_rafael | 1939 | tamalpais1941 | 1.98 | 1.4 | 18.56 | medium | 60.0% (74.3%) (2362) | 57.5% |  |
+| san_rafael | 1952 | sanrafael1954, sanquentin1948 | 5.85 | 1.63 | 27.03 | high | 88.5% (93.9%) (4540) | 94.5% |  |
+| martinez | 1896 | karquines1898 | 0.19 | 0.54 | 10.31 | low | 15.7% (76.5%) (51) |  |  |
+| martinez | 1940 | carquinezstrait1940 | 1.33 | 0.71 | 10.31 | medium | 75.8% (87.4%) (1677) | 69.5% |  |
+| martinez | 1948 | benicia1950, briones1947, portchicago1951 | 2.62 | 0.96 | 12.32 | high | 89.1% (95.7%) (2245) | 93.4% |  |
 <!-- /snapshots -->
 
 ### Probes and threshold sensitivity
@@ -172,12 +174,12 @@ land (TIGER area water removed). Vallejo is outside the map.
 | town | year | probe | share inside |
 |---|---|---|---|
 | oakland | 1894 | lakeside_uptown | 46.9% |
-| oakland | 1894 | west_oakland | 83.3% |
-| oakland | 1894 | temescal | 30.4% |
+| oakland | 1894 | west_oakland | 82.7% |
+| oakland | 1894 | temescal | 29.9% |
 | oakland | 1894 | block km² at share 0.25 / 0.35 / 0.45 | 12.9 / 10.2 / 8.0 |
 | oakland | 1914 | lakeside_uptown | 74.8% |
-| oakland | 1914 | west_oakland | 91.8% |
-| oakland | 1914 | temescal | 79.3% |
+| oakland | 1914 | west_oakland | 90.9% |
+| oakland | 1914 | temescal | 79.0% |
 | oakland | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 29.5 / 25.1 / 20.9 |
 | oakland | 1946 | lakeside_uptown | 78.2% |
 | oakland | 1946 | west_oakland | 94.1% |
