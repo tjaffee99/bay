@@ -248,7 +248,11 @@ def main():
         return
     feats.sort(key=lambda f: (f["properties"]["site_id"], f["properties"]["part_id"]))
     (OUTD / "sites.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
-    pd.DataFrame(NAMED + known).to_csv(OUTD / "known_dates_industrial.csv", index=False)
+    kd = pd.DataFrame(NAMED + known)
+    kd["id"] = kd["id"].str.replace(".0", "", regex=False)
+    dup = kd.groupby("id").cumcount()
+    kd.loc[dup > 0, "id"] = kd.loc[dup > 0, "id"] + "_" + dup[dup > 0].astype(str)  # parts of one building
+    kd.to_csv(OUTD / "known_dates_industrial.csv", index=False)
     pd.DataFrame(rules).to_csv(OUTD / "building_dates.csv", index=False)
     pd.DataFrame(audit).to_csv(OUTD / "traced" / "audit.csv", index=False)
     print(len(feats), "parts,", len(known), "dated footprints,", len(rules), "rules")

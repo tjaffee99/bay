@@ -32,7 +32,9 @@ cannery | power_plant | cement | chemical | salt_works | port_terminal | other),
 (added: a fenced works or reservation that stayed mostly open ground — powder-works buffer land,
 ammunition magazines, training areas, a tank hill: keep the natural / grass cover, show the label and the
 buildings, don't pave it),
-`year_start, year_end` (fractional; 9999 = still there), `name_label` (short map label), `confidence`
+`year_start, year_end` (fractional; 9999 = still there; the *ground* — e.g. a shipyard's ground stays
+industrial after the yard closed), `name_label` (short map label) with `label_start, label_end` (when the
+name applies: Moore Dry Dock 1909–1961 on ground that is still industrial), `confidence`
 (`exact` = outline and dates from the sources; `estimated` = traced but a date or outline approximate),
 `source_url`, `note` (incl. where the geometry comes from), `county`.
 
@@ -45,12 +47,13 @@ whatever came next (the terrain's own history, or another part).
 `site_id, ring_type, year, applies_to, max_year, evidence, source_url`
 * `ring_type = site`: the union of the site's parts.
 * `applies_to = all_pre`: no footprint inside can predate `year` (the site's founding): a live year
-  earlier than that is a wrong roll / imputation (Lockheed's Sunnyvale campus at 1900, a Clayton quarry
-  shed at 1890) and becomes `year`.
+  earlier than that is a wrong roll / imputation (Lockheed's Sunnyvale campus at 1900, Shell Martinez buildings
+  at 1910) and becomes `year`. Written only where the founding year is documented (`confidence = exact`).
 * `applies_to = named`: the site's footprints were checked against the USGS editions; use the rows of
   `known_dates_industrial.csv` (they already apply the founding-year floor).
 * `applies_to = tanks`: round footprints (circularity > 0.85, > 40 m²) inside whose live year is in
-  `(year, max_year]` take `year` (re-assessed tank farms where no edition could date them).
+  `(year, max_year]` take `year` (re-assessed tank farms where no edition could date them). Not used
+  in this pass: every refinery was dated by edition.
 * `max_year` (extra column): upper bound of the re-assessment window for `tanks` (blank = none).
 
 ### `known_dates_industrial.csv`
@@ -297,7 +300,7 @@ fill, which the fill history already dates.)
   (-122.39..-122.33 × 37.900..37.925) dated 1940.9–1943, so the land-year check pushes every building in
   it to 1941–43: the **Ford Assembly Plant (1931; roll 1931 → live 1941)**, the 1930–31 Ford Point
   buildings, a 1915–16 cluster at 37.924 N / -122.374 (Cutting Blvd) and others — 40 footprints whose roll
-  year is before 1940.5. The Ford Point fill is 1929–30; the zone should be cut to the shipyard basins
+  year is before 1940.5. Ford Point was filled before the 1930–31 plant; the zone should be cut to the shipyard basins
   (`kaiser_yards_1_2`, `kaiser_yard3` outlines) and the Inner Harbor fill.
 * **SF military posts** (Presidio, Fort Mason, Fort Miley, Fort Funston, Treasure Island, Hunters Point)
   are not repeated here: their buildings have researched years in `known_building_dates.csv` (Presidio
