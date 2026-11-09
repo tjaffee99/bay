@@ -19,7 +19,7 @@ Storeys read off the sheets by eye: control/oakland_central/storeys.json {key: [
 
 Usage:  python pipeline/sanborn_trace_oakland_central.py <stage> [keys]
   stages: fetch | grid <key> [x0 y0 x1 y1] | spec <key> <json> | respec <key> [json] | refine | georef | register <src> <dst>
-          | mosaic | extract | overlay | assemble | check | all
+          | mosaic | extract | large | overlay | assemble | check | all (= fetch + georef + extract + assemble)
 Keys are <LOC item suffix>_<sheet>: 006_0152 = sanborn00727_006 (1911 vol. 2) sheet 152; 016_0152 = the same plate in
 the 1911 - Nov 1950 corrected vol. 2.
 """
@@ -292,9 +292,6 @@ if __name__ == "__main__":
     if stage == "overlay":
         for k in keys:
             print(E.overlay(k, scale=float(os.environ.get("SCALE", 0.5))))
-    if stage in ("all", "tracks"):
-        for k in keys:
-            W.tracks(k)
     if stage in ("all", "assemble"):
         E.assemble()
         C.cap_blocks()
