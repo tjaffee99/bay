@@ -792,16 +792,25 @@ def histories(name, g, d):
     years = np.full((4, rows, cols), np.nan, np.float32)
     covers[0] = N
     n_all = np.zeros((rows, cols), np.int8)
-    for r0 in range(0, rows, 384):
-        r1 = min(rows, r0 + 384)
+    # only the events that touch a chunk are expanded there (dense arrays for every event
+    # of the region in every chunk ran out of memory once the site layers came in)
+    for r0 in range(0, rows, 192):
+        r1 = min(rows, r0 + 192)
         a0, a1 = r0 * cols, r1 * cols
-        C = np.full((len(ev_cover), r1 - r0, cols), 255, np.uint8)
-        Y = np.full((len(ev_cover), r1 - r0, cols), np.nan, np.float32)
-        for k, ((idx, cv), yv) in enumerate(zip(ev_cover, ev_year)):
+        act = []
+        for (idx, cv), yv in zip(ev_cover, ev_year):
             lo, hi = np.searchsorted(idx, [a0, a1])
             if hi > lo:
-                C[k].ravel()[idx[lo:hi] - a0] = cv[lo:hi]
-                Y[k].ravel()[idx[lo:hi] - a0] = yv[lo:hi]
+                act.append((idx[lo:hi] - a0, cv[lo:hi], yv[lo:hi]))
+        if not act:
+            n_all[r0:r1] = 0
+            continue
+        C = np.full((len(act), r1 - r0, cols), 255, np.uint8)
+        Y = np.full((len(act), r1 - r0, cols), np.nan, np.float32)
+        for k, (ii, cv, yv) in enumerate(act):
+            C[k].ravel()[ii] = cv
+            Y[k].ravel()[ii] = yv
+        del act
         Y = np.where(C == 255, np.nan, Y)
         order = np.argsort(np.where(np.isnan(Y), np.inf, Y), axis=0, kind="stable")
         C = np.take_along_axis(C, order, 0)
