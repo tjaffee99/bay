@@ -114,6 +114,12 @@ const bayBridgeWestSpan: Landmark = {
   end: 9999,
   anchor: BB_ANCHOR,
   build: bayBridgeWest,
+  // generic footprints of the towers / centre anchorage (OSM building parts, split by the
+  // 2023 LiDAR into 80-85 m prisms) stand inside the model: hide them
+  replaces: [BB_W.w2, BB_W.w3, BB_W.w4, BB_W.w5, BB_W.w6].map(p => {
+    const l = lngLatToLocal(BB_ANCHOR, p);
+    return rect(l[0], l[1], 90, 90);
+  }),
   facts: {
     Construction: 'Jul 9, 1933 – Nov 12, 1936',
     Form: 'two suspension bridges in series sharing a centre anchorage',
@@ -247,7 +253,8 @@ const sasSpan: Landmark = {
       }
     });
   },
-  replaces: [],
+  // the tower's generic footprint (OSM part, a 53 m LiDAR prism) stands inside the model
+  replaces: [rect(0, 0, 120, 120)],
   facts: {
     Opened: 'Sep 2, 2013',
     Form: 'single-tower self-anchored suspension span (world’s largest)',
