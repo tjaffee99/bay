@@ -27,6 +27,7 @@ import zlib
 
 import geopandas as gpd
 import numpy as np
+from pathlib import Path
 import pandas as pd
 from scipy.spatial import cKDTree
 
@@ -347,6 +348,51 @@ def row_timing(g, year):
     return yi + 0.9 * jit
 
 
+def lidar_parts_region(g):
+    """Replace footprints by their LiDAR parts (data/interim/<job>_lidar_parts.parquet of
+    the region jobs: Oakland, Berkeley, San José, … downtowns; 2020-21 USGS 3DEP surveys).
+    Returns the new frame, the source row of each new row (None if nothing changed), the
+    part heights (NaN elsewhere) and each row's part group ("" elsewhere)."""
+    import glob
+    files = [f for f in sorted(glob.glob(str(INTERIM / "*_lidar_parts.parquet")))
+             if not Path(f).name.startswith("sf")]
+    none = (g, None, np.full(len(g), np.nan), np.full(len(g), "", dtype=object))
+    if not files or "id" not in g:
+        return none
+    lp = pd.concat([gpd.read_parquet(f).to_crs(4326) for f in files], ignore_index=True)
+    lp = lp[lp.prefer_lidar.astype(bool) & (lp.height_m > 0.5)]
+    if not len(lp):
+        return none
+    pos: dict = {}
+    for i, k in enumerate(g["id"].astype(str).values):
+        pos.setdefault(k, []).append(i)
+    drop, src_rows, geoms, hs, grp = set(), [], [], [], []
+    for key, parts in lp.groupby("key"):
+        idx = [i for k in str(parts.replaces.iloc[0]).split("|") for i in pos.get(k, [])]
+        if not idx:
+            continue
+        donor = max(idx, key=lambda i: g.geometry.values[i].area)
+        for r in parts.itertuples():
+            if r.geometry is None or r.geometry.is_empty:
+                continue
+            for part in getattr(r.geometry, "geoms", [r.geometry]):
+                if part.geom_type == "Polygon" and part.area > 0:
+                    src_rows.append(donor); geoms.append(part); hs.append(float(r.height_m)); grp.append(str(key))
+        drop.update(idx)
+    if not src_rows:
+        return none
+    keep = np.array([i for i in range(len(g)) if i not in drop], dtype=np.int64)
+    src_rows = np.asarray(src_rows, dtype=np.int64)
+    rows = np.concatenate([keep, src_rows])
+    new = g.iloc[rows].copy()
+    new["geometry"] = list(g.geometry.values[keep]) + geoms
+    new = gpd.GeoDataFrame(new.reset_index(drop=True), geometry="geometry", crs=g.crs)
+    lidar_h = np.concatenate([np.full(len(keep), np.nan), np.asarray(hs)])
+    lgroup = np.concatenate([np.full(len(keep), "", dtype=object), np.asarray(grp, dtype=object)])
+    log(f"region: LiDAR stepped massing: {len(drop)} footprints -> {len(src_rows)} parts ({len(files)} areas)")
+    return new, rows, lidar_h, lgroup
+
+
 def heights(g):
     area = g.to_crs(UTM).geometry.area.values
     def num(col):
@@ -408,9 +454,25 @@ def main():
     known = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
     year = np.where(known, year, land_check(g, year))
     start = row_timing(g, year)
+    # stepped massing from airborne LiDAR in the downtowns (lidar_parts.py region jobs):
+    # footprints with several roof levels become parts that keep their building's years
+    g, rows, lidar_h, lgroup = lidar_parts_region(g)
+    if rows is not None:
+        year, raw, conf, end, start, src = (np.asarray(a)[rows] for a in (year, raw, conf, end, start, src))
     H, stories, area = heights(g)
+    H = np.where(np.isfinite(lidar_h), lidar_h, H)
+    stories = np.where(np.isfinite(lidar_h), np.maximum(1, np.round(lidar_h / 3.6)), stories)
     use = use_codes(g, area)
     mat, roof = materials(start, H, area, use)
+    if rows is not None:
+        # one building, one material and use: its largest part's
+        has = lgroup != ""
+        if has.any():
+            df = pd.DataFrame({"g": lgroup[has], "a": area[has], "i": np.nonzero(has)[0]})
+            big = df.sort_values("a").groupby("g").i.last()
+            pick = big.reindex(lgroup[has]).values
+            for arr in (mat, roof, use):
+                arr[has] = arr[pick]
     # foundation at the lowest corner, roof at mean ground + height
     ground = Ground()
     ext = [np.asarray(gm.exterior.coords)[:, :2] for gm in g.geometry.values]
@@ -420,6 +482,13 @@ def main():
     splits = np.cumsum(counts)[:-1]
     gmin = np.array([a.min() for a in np.split(gz, splits)])
     gmean = np.array([a.mean() for a in np.split(gz, splits)])
+    # LiDAR part heights are above their footprint's ground: all parts of one footprint
+    # stand on the group's (area-weighted) mean ground so the roofs stay where measured
+    if (lgroup != "").any():
+        has = lgroup != ""
+        t = pd.DataFrame({"g": lgroup[has], "m": gmean[has] * area[has], "a": area[has]}).groupby("g").sum()
+        gmean = gmean.copy()
+        gmean[has] = (t.m / t.a).reindex(lgroup[has]).values
     g = g.assign(start_year=start, end_year=end, height=H + (gmean - gmin) + 1.0, base=gmin - 1.0,
                  year_confidence=conf, use=use, raw_year=raw, stories=stories, mat=mat, roof=roof)
     g["fid_key"] = g["id"].astype(str) if "id" in g else g.index.astype(str)
