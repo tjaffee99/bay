@@ -55,18 +55,21 @@ CITIES = {
         "parcels": ROOT / "data/raw/region_years/san_mateo_parcels/san_mateo_parcels.parquet",
         "bbox": (-122.345, 37.548, -122.300, 37.585),
         "R": 80,  # street directions fitted within 80 m of a crossing: B St bends at 1st Av (-55 deg north of it, -49 south)
+        "plate_scale": 0.2030,  # m/px of the 25 % scans, median of the 4-corner block fits (1908: ~0.205, 1920: ~0.202)
     },
     "palo_alto": {
         "loc": "00747", "area": "palo_alto_downtown",
         "volumes": {"003": (1901, "Aug 1901"), "004": (1904, "Jun 1904"), "005": (1908, "May 1908")},
         "parcels": ROOT / "data/raw/region_years/santa_clara_county/santa_clara_county.parquet",
         "bbox": (-122.180, 37.432, -122.140, 37.456),
+        "plate_scale": 0.2045,
     },
     "mayfield": {
         "loc": "00677", "area": "palo_alto_mayfield",
         "volumes": {"004": (1904, "Jun 1904"), "005": (1908, "May 1908")},
         "parcels": ROOT / "data/raw/region_years/santa_clara_county/santa_clara_county.parquet",
         "bbox": (-122.160, 37.415, -122.130, 37.437),
+        "plate_scale": 0.2030,
     },
     "redwood_city": {
         "loc": "00783", "area": "redwood_city_downtown",
@@ -331,6 +334,42 @@ def solid_lines(key, minlen=120, box=None):
             if box and not (box[0] <= (a + b) / 2 <= box[2] if orient == "H" else box[1] <= (a + b) / 2 <= box[3]):
                 pass
             out.append((orient, round(c, 1), int(a), int(b)))
+    return out
+
+
+def storey_crops(ids, out, pct=60, margin=12, cols=3, width=520):
+    """scratch aid for reading storey marks: IIIF crops (pct of full resolution) around the given footprint ids,
+    labelled, in one mosaic; the read values go to storeys.json as [x, y, stories] on the 25 % scan."""
+    from PIL import Image, ImageDraw
+    rows = {}
+    for f in E.INTERIM.glob("*_*.json"):
+        if f.name.endswith(".M.json") or f.name.count("_") != 1:
+            continue
+        for r in json.load(open(f)):
+            rows[r["id"]] = r
+    tiles = []
+    for i in ids:
+        r = rows[i]
+        key = i.rsplit("_", 1)[0]
+        q = np.asarray(r["px_ring"])
+        x0, y0 = q.min(axis=0) - margin; x1, y1 = q.max(axis=0) + margin
+        rec = W.sheet_rec(key)
+        reg = f"{int(x0 * 4)},{int(y0 * 4)},{int((x1 - x0) * 4)},{int((y1 - y0) * 4)}"
+        p = E.RAW / "crops" / f"{i}_{pct}.jpg"
+        W.curl(rec["info"].replace("/info.json", f"/{reg}/pct:{pct}/0/default.jpg"), p, 1000)
+        im = Image.open(p).convert("RGB")
+        k = width / max(im.size)
+        im = im.resize((max(1, int(im.size[0] * k)), max(1, int(im.size[1] * k))))
+        d = ImageDraw.Draw(im)
+        d.rectangle([0, 0, 200, 14], fill=(255, 255, 255))
+        d.text((2, 1), f"{i} ({int(x0)},{int(y0)})", fill=(200, 0, 0))
+        tiles.append(im)
+    n = len(tiles)
+    rws = (n + cols - 1) // cols
+    M = Image.new("RGB", (cols * (width + 6), rws * (width + 6)), (255, 255, 255))
+    for j, t in enumerate(tiles):
+        M.paste(t, ((j % cols) * (width + 6), (j // cols) * (width + 6)))
+    M.save(out, quality=85)
     return out
 
 
