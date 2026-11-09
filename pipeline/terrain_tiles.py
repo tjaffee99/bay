@@ -112,6 +112,7 @@ def sf_building_years(g):
     if pred.exists():
         frames.append(gpd.read_parquet(pred)[["start_year", "end_year", "geometry"]])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), geometry="geometry", crs=4326).to_crs(3857)
+    b = b[b.start_year.values >= 1770]  # tule villages (from 1700) are not city ground
     c = b.geometry.representative_point()
     px, py, yl = [c.x.values], [c.y.values], [b.start_year.values]
     today_x, today_y, today_a = [c.x.values[b.end_year.values > 2025]], [c.y.values[b.end_year.values > 2025]], \
@@ -131,6 +132,7 @@ def sf_building_years(g):
     rpath = INTERIM / "region_building_points.parquet"
     if rpath.exists():
         r = pd.read_parquet(rpath)
+        r = r[r.start_year >= 1770]
         X = np.radians(r.lon.values) * 6378137.0
         Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(r.lat.values) / 2))
         px.append(X)
@@ -335,14 +337,14 @@ def histories(name, g, d):
     open_override = np.zeros((rows, cols), bool)
     open_kinds = ("grassland", "park", "lawn", "paved", "lake")
     era_rings = {str(r.ring) for r, _ in lc_rows if str(r.get("region", "")) == "San Francisco"
-                 and str(r.cover).strip() in open_kinds and pd.to_numeric(r.year_start, errors="coerce") > 1800}
+                 and str(r.cover).strip() in open_kinds and pd.to_numeric(r.year_start, errors="coerce") > 1769}
     for r, poly in lc_rows:
         if str(r.get("region", "")) == "San Francisco" and str(r.cover).strip() in open_kinds and str(r.ring) in era_rings:
             open_override |= raster_mask(g, poly)
     for r, poly in lc_rows:
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
-        if c is None or pd.notna(r.get("year_start")) and float(r.year_start) > 1800:
-            continue  # only natural (pre-1800) cover here; eras handled below
+        if c is None or pd.notna(r.get("year_start")) and float(r.year_start) > 1769:
+            continue  # only natural cover (before 1769) here; mission fields etc. are dated events below
         m = organic_mask(g, poly) & ~water_now & (d["hist"] == 0)
         if c in (FOREST, OAK):
             m &= trees_near
@@ -678,7 +680,7 @@ def histories(name, g, d):
     for r, poly in lc_rows:
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
         ys = pd.to_numeric(r.get("year_start"), errors="coerce")
-        if c is None or not np.isfinite(ys) or ys <= 1800:
+        if c is None or not np.isfinite(ys) or ys <= 1769:
             continue
         m = organic_mask(g, poly) & ~water_now & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH])
         if c in (FOREST, OAK):

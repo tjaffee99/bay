@@ -73,7 +73,8 @@ def main():
     # otherwise when the neighbourhood around it was built
     frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "geometry"]]]
     if (INTERIM / "sf_predecessors.parquet").exists():
-        frames.append(gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "geometry"]])
+        _p = gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "geometry"]]
+        frames.append(_p[_p.start_year >= 1770])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=4326).to_crs(UTM)
     bc = b.geometry.representative_point()
     tree = cKDTree(np.column_stack([bc.x, bc.y]))
@@ -232,6 +233,7 @@ def region_detail(golf_y):
     feats = lu[lu["class"].isin(KINDS)].explode(index_parts=False)
     feats = feats[feats.geometry.geom_type == "Polygon"].reset_index(drop=True)
     b = pd.read_parquet(bp, columns=["lon", "lat", "start_year"])
+    b = b[b.start_year >= 1770]
     bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
     tree = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
     by = b.start_year.values.astype(float)

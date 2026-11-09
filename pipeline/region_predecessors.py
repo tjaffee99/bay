@@ -716,6 +716,14 @@ def region_predecessors(today):
     ep = TABLES / "early_region.csv"
     if ep.exists():
         e = pd.read_csv(ep)
+        # contact-era Ohlone / Bay Miwok / Coast Miwok villages from the expedition diaries
+        # and Milliken's ethnohistory (data/manual/ohlone/villages.csv, README there)
+        vp = INTERIM.parent / "manual" / "ohlone" / "villages.csv"
+        if vp.exists():
+            v = pd.read_csv(vp)
+            v = v[~v["id"].isin(set(e["id"]))]
+            e = pd.concat([e, v[[c for c in e.columns if c in v.columns]]], ignore_index=True)
+            log(f"region predecessors: + {len(v)} contact-era villages (data/manual/ohlone)")
         keep = ~e.shape_note.fillna("").astype(str).str.upper().str.startswith("SURVIVES")
         tmp = INTERIM / "early_region_drawn.csv"
         e[keep].to_csv(tmp, index=False)

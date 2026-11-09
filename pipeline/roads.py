@@ -120,6 +120,7 @@ def building_years():
     if pred.exists():
         frames.append(gpd.read_parquet(pred).to_crs(UTM)[["start_year", "geometry"]])
     allb = pd.concat(frames, ignore_index=True)
+    allb = allb[allb.start_year.values >= 1770]  # Ohlone villages (from 1700) don't date streets
     c = allb.geometry.representative_point()
     return cKDTree(np.column_stack([c.x, c.y])), allb.start_year.values
 
@@ -926,7 +927,8 @@ def main():
     # buildings in the way (today's + vanished) and the streets ramps join
     bl = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "end_year", "height", "geometry"]]]
     if (INTERIM / "sf_predecessors.parquet").exists():
-        bl.append(gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "end_year", "height", "geometry"]])
+        _p = gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "end_year", "height", "geometry"]]
+        bl.append(_p[_p.start_year >= 1770])
     bdf = gpd.GeoDataFrame(pd.concat(bl, ignore_index=True), crs=4326).to_crs(UTM)
     bdf = bdf[bdf.geometry.notna() & bdf.geometry.is_valid]
     buildings = (bdf.geometry.values, bdf.start_year.values.astype(float), bdf.end_year.values.astype(float),
@@ -969,6 +971,7 @@ def date_by_buildings(lines_utm, mid_ll, default):
         py.append(shapely.get_y(pts))
     seg, px, py = np.concatenate(seg), np.concatenate(px), np.concatenate(py)
     b = pd.read_parquet(INTERIM / "region_building_points.parquet", columns=["lon", "lat", "start_year"])
+    b = b[b.start_year >= 1770]  # Ohlone villages (from 1700) don't date streets
     bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
     tree = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
     by = b.start_year.values.astype(float)

@@ -391,7 +391,8 @@ def apply_sanborn(pred, today, fire, areas, include=None):
                     start = yp + (first - yp) * (0.2 + 0.7 * hk)
                 else:
                     near = pred_sidx.query(g.buffer(25), predicate="intersects")
-                    st = [pred.start_year.values[j] for j in near if pred.start_year.values[j] < first]
+                    # (not the Ohlone village houses, which stand from 1700)
+                    st = [pred.start_year.values[j] for j in near if 1770 <= pred.start_year.values[j] < first]
                     start = float(np.median(st)) + 2 * (hk - 0.5) if st else first - 6 - 6 * hk
                     start = min(start, first - 0.5)
                 if k + 1 < len(years) and c.within(cov_by_year[years[k + 1]]):

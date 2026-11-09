@@ -755,6 +755,7 @@ def build():
 
     # the street: 2nd-earliest building within 45 m (today's and vanished), else HISDAC first built-up year
     b = pd.read_parquet(INTERIM / "region_building_points.parquet", columns=["lon", "lat", "start_year"])
+    b = b[b.start_year >= 1770]  # Ohlone villages (from 1700) don't date streets
     bt = cKDTree(np.column_stack(to_utm.transform(b.lon.values, b.lat.values)))
     by = b.start_year.to_numpy(float)
     dist, idx = bt.query(np.column_stack([d.x.values, d.y.values]), k=6, distance_upper_bound=45)
