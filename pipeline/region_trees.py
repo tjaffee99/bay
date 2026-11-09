@@ -390,20 +390,29 @@ def pick_curve(curves, gcurves, key: str, pred: str, order) -> tuple[np.ndarray 
 _NUM = re.compile(r"\d+(?:\.\d+)?")
 
 
-def num_or_range(v) -> np.ndarray:
+def num_range(v) -> tuple[np.ndarray, np.ndarray]:
     """Numbers and range classes as published ("12 to 18", '13"-18"', "30-45", "51 +",
-    "0-6") -> value or midpoint; "---" / blank / NA -> NaN. "51 +" (open top class) -> +10 %."""
+    "0-6") -> (low, high); a plain number -> (v, v); "51 +" (open top class) -> (51, 61);
+    "---" / blank / NA -> NaN."""
     s = pd.Series(v)
     if pd.api.types.is_numeric_dtype(s):
-        return pd.to_numeric(s, errors="coerce").to_numpy(float)
-    out = np.full(len(s), np.nan)
+        x = pd.to_numeric(s, errors="coerce").to_numpy(float)
+        return x, x.copy()
+    lo, hi = np.full(len(s), np.nan), np.full(len(s), np.nan)
     for i, t in enumerate(s.fillna("").astype(str).values):
         nums = _NUM.findall(t)
         if len(nums) >= 2:
-            out[i] = (float(nums[0]) + float(nums[1])) / 2
+            lo[i], hi[i] = float(nums[0]), float(nums[1])
         elif len(nums) == 1:
-            out[i] = float(nums[0]) * (1.1 if "+" in t else 1.0)
-    return out
+            lo[i] = float(nums[0])
+            hi[i] = lo[i] * (1.2 if "+" in t else 1.0)
+    return lo, hi
+
+
+def num_or_range(v) -> np.ndarray:
+    """num_range's midpoint."""
+    lo, hi = num_range(v)
+    return (lo + hi) / 2
 
 
 def year_of(v) -> np.ndarray:
@@ -431,66 +440,72 @@ NOT_TREE = re.compile(r"vacant|stump|asphalt|planting site|plant site|no tree|re
 def std(df, sp, common, dbh, height=None, crown=None, planted=None, asof=None, park=None, alive=None):
     """One normalised table per source."""
     n = len(df)
+    dbh_lo, dbh_hi = (dbh if isinstance(dbh, tuple) else (dbh, dbh))
     full = lambda v, d=np.nan: (np.full(n, d) if v is None else (np.full(n, v) if np.isscalar(v) else np.asarray(v)))
     out = pd.DataFrame({
         "lon": df.geometry.x.values, "lat": df.geometry.y.values,
         "species": pd.Series(sp, index=df.index).fillna("").astype(str).str.strip().values,
         "common": pd.Series(common, index=df.index).fillna("").astype(str).str.strip().values,
-        "dbh_in": full(dbh).astype(float), "height_ft": full(height).astype(float),
+        "dbh_lo": full(dbh_lo).astype(float), "dbh_hi": full(dbh_hi).astype(float), "height_ft": full(height).astype(float),
         "crown_ft": full(crown).astype(float), "planted": full(planted).astype(float),
         "measured": full(asof).astype(float), "park": full(park, False).astype(bool),
         "alive": full(alive, True).astype(bool),
     })
     out["alive"] &= ~(out.species.str.contains(NOT_TREE) | out.common.str.contains(NOT_TREE))
+    bad = ~(out.dbh_hi > 0)
+    out.loc[bad, ["dbh_lo", "dbh_hi"]] = np.nan
+    out["dbh_lo"] = np.fmax(out.dbh_lo, 0.5)
+    out["dbh_in"] = (out.dbh_lo + out.dbh_hi) / 2
     return out
 
 
 def park_of(v) -> np.ndarray:
-    return pd.Series(v).fillna("").astype(str).str.contains(r"park|open space|golf|campus|school|civic|facility",
+    return pd.Series(v).fillna("").astype(str).str.contains(r"\bpark\b|open space|golf|campus|school|civic|facility",
                                                              case=False, regex=True).values
 
 
 def _sj(d):
     # DIAMETER is the crown spread (ft) and TRUNKDIAM the DBH (in); dates: Davey 2014 inventory, updates since
-    return std(d, d.NAMESCIENTIFIC, "", num_or_range(d.TRUNKDIAM), d.HEIGHT, d.DIAMETER, year_of(d.INSTALLDATE),
+    return std(d, d.NAMESCIENTIFIC, "", num_range(d.TRUNKDIAM), d.HEIGHT, d.DIAMETER, year_of(d.INSTALLDATE),
                np.fmax(year_of(d.INVENTORYUPDATE), year_of(d.ORIGINALINVENTORYDATE)),
                park=park_of(d.MAINTBY), alive=d.VACANTSITE.astype(str).str.lower().ne("yes").values)
 
 
 def _oakland(d):
-    return std(d, d.Species___botanical, d.Species___common, num_or_range(d.DBH), asof=2020.0,
+    return std(d, d.Species___botanical, d.Species___common, num_range(d.DBH), asof=2020.0,
                park=park_of(d.SubArea), alive=d.Public_Tree.astype(str).ne("No").values)
 
 
 def _berkeley(d):
-    return std(d, d.SPECIES, d.Common_Nam, num_or_range(d.DBH_IN), num_or_range(d.HEIGHT_FT),
+    return std(d, d.SPECIES, d.Common_Nam, num_range(d.DBH_IN), num_or_range(d.HEIGHT_FT),
                num_or_range(d.SPREAD_FT), asof=year_of(d.GPS_Date),
                park=park_of(d.GROWSPACE), alive=d.ICON_TYPE.astype(str).eq("T").values)
 
 
 def _palo_alto(d):
-    return std(d, d.SPECIES, "", num_or_range(d.DIAMETERBREASTHEIGHT), num_or_range(d.HEIGHTCODE),
+    return std(d, d.SPECIES, "", num_range(d.DIAMETERBREASTHEIGHT), num_or_range(d.HEIGHTCODE),
                num_or_range(d.CANOPYWIDTH), year_of(d.INSTALLDATE), year_of(d.INVENTORYDATE),
                park=park_of(d.GROWSPACE), alive=pd.to_numeric(d.ACTIVE, errors="coerce").fillna(1).ne(0).values)
 
 
 def _mountain_view(d):
     # DIAMETER is the DBH in inches (Circumference / pi); HEIGHT mostly empty
-    return std(d, d.SPECIES, d.NAME, num_or_range(d.DIAMETER), num_or_range(d.HEIGHT),
+    return std(d, d.SPECIES, d.NAME, num_range(d.DIAMETER), num_or_range(d.HEIGHT),
                planted=year_of(d.INSTALLDATE), park=park_of(d.SPACETYPE))
 
 
 def _hayward(d):
-    return std(d, d.SPP, "", num_or_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
+    return std(d, d.SPP, "", num_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
                asof=np.fmax(year_of(d.Inv_Date), year_of(d.INSPECT_DT)), park=park_of(d.LANDUSE),
                alive=pd.to_numeric(d.Active, errors="coerce").fillna(1).ne(0).values)
 
 
 def _wca(d, sp, common, dbh, actual, height, asof=None, park=None):
     """West Coast Arborists exports: DBH class ('0-6', '13-18', '---') and, newer, the measured DBH."""
-    dbh_v = num_or_range(actual) if actual is not None else np.full(len(d), np.nan)
-    dbh_v = np.where(dbh_v > 0, dbh_v, num_or_range(dbh))
-    return std(d, sp, common, np.where(dbh_v > 0, dbh_v, np.nan), num_or_range(height), asof=asof, park=park)
+    a = num_or_range(actual) if actual is not None else np.full(len(d), np.nan)
+    lo, hi = num_range(dbh)
+    lo, hi = np.where(a > 0, a, lo), np.where(a > 0, a, hi)
+    return std(d, sp, common, (lo, hi), num_or_range(height), asof=asof, park=park)
 
 
 def _alameda(d):
@@ -521,13 +536,13 @@ def _milpitas(d):
 
 def _cupertino(d):
     st = d.Status.fillna("").astype(str)
-    return std(d, d.Species, d.SpeciesCommonName, num_or_range(d.DiameterBreastHieght), num_or_range(d.Height),
+    return std(d, d.Species, d.SpeciesCommonName, num_range(d.DiameterBreastHieght), num_or_range(d.Height),
                num_or_range(d.CanopyDiameter), year_of(d.PlantDate), year_of(d.LastInspectedDate),
                park=park_of(d.LocationType), alive=~st.str.contains("remov|dead|inactive|retired", case=False).values)
 
 
 def _san_mateo(d):
-    return std(d, d.SPP, "", num_or_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
+    return std(d, d.SPP, "", num_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
                asof=np.fmax(year_of(d.INV_DATE), year_of(d.INSPECT_DT)), park=park_of(d.LANDUSE),
                alive=pd.to_numeric(d.ACTIVE, errors="coerce").fillna(1).ne(0).values)
 
@@ -535,34 +550,34 @@ def _san_mateo(d):
 def _santa_clara(d):
     gone = d.SpeciesType.fillna("").astype(str).str.contains("remov", case=False) | \
         pd.to_numeric(d.StatusCode, errors="coerce").eq(999)
-    return std(d, "", d.SpeciesName, num_or_range(d.DBH), num_or_range(d.Height), num_or_range(d.Canopy),
+    return std(d, "", d.SpeciesName, num_range(d.DBH), num_or_range(d.Height), num_or_range(d.Canopy),
                asof=year_of(d.AssessmentDate), alive=~gone.values)  # LastModDate: a 2026 bulk edit
 
 
 def _emeryville(d):
-    return std(d, d.BOTANICAL, d.COMMON, num_or_range(d.DBH_RANGE), num_or_range(d.HEIGHT_RAN),
+    return std(d, d.BOTANICAL, d.COMMON, num_range(d.DBH_RANGE), num_or_range(d.HEIGHT_RAN),
                asof=year_of(d.DATE), park=park_of(d.PKWY_TYPE))
 
 
 def _los_gatos(d):
-    return std(d, d.Botanical, d.Common, num_or_range(d.DBH), num_or_range(d.Height), asof=year_of(d.Date))
+    return std(d, d.Botanical, d.Common, num_range(d.DBH), num_or_range(d.Height), asof=year_of(d.Date))
 
 
 def _sunnyvale(d):
-    return std(d, d.Species, "", num_or_range(d.DBH), num_or_range(d.Height))
+    return std(d, d.Species, "", num_range(d.DBH), num_or_range(d.Height))
 
 
 def _scc_county(d):
-    return std(d, d.Scientific, d.CommonName, num_or_range(d.DBH), num_or_range(d.TreeHeight),
+    return std(d, d.Scientific, d.CommonName, num_range(d.DBH), num_or_range(d.TreeHeight),
                num_or_range(d.CrownSprea), park=park_of(d.TreeType))
 
 
 def _stanford(d):
-    return std(d, d.BOTANICAL_, "", num_or_range(d.DBH_NUM), park=True)
+    return std(d, d.BOTANICAL_, "", num_range(d.DBH_NUM), park=True)
 
 
 def _scu(d):
-    return std(d, "", d.Tree_Species, num_or_range(d.Tree_Diameter_at_Breast_Height__in__),
+    return std(d, "", d.Tree_Species, num_range(d.Tree_Diameter_at_Breast_Height__in__),
                num_or_range(d.Tree_Height__ft__), asof=year_of(d.Timestamp), park=True)
 
 
@@ -670,7 +685,12 @@ def build():
     d["form"] = np.where(names.str.contains(PALM), 2, np.where(names.str.contains(CONIFER), 1, 0)).astype(np.uint8)
     curves, gcurves = growth_tables(load_utd())
 
-    dbh = d.dbh_in.where((d.dbh_in > 0) & (d.dbh_in < 120)).to_numpy(float)
+    # a DBH class ('13-18') is a range: each tree a stable point inside it, so a city's
+    # trees of one species and class aren't all planted in the same year
+    u = (pd.util.hash_pandas_object(d[["source", "lon", "lat"]], index=False).to_numpy() >> 16 & 0xFFFF) / 65535.0
+    dbh = (d.dbh_lo + (d.dbh_hi - d.dbh_lo) * u).to_numpy(float)
+    dbh = np.where((dbh > 0) & (dbh < 120), dbh, np.nan)
+    d["dbh_in"] = dbh
     dbh_cm = dbh * 2.54
     age = np.full(len(d), np.nan)
     hgt = np.full(len(d), np.nan)
