@@ -204,7 +204,661 @@ def year_of(s):
     return round(y, 3)
 
 
+# ================================================================== gold-rush San Francisco
+GR_AREA = "sf_goldrush"
+# the maps the OHM volunteers traced (cited on every OHM way), with the date the drawing shows
+GR_MAPS = {
+    1851: {"date": 1851.33, "label": "Map of the Burnt District of San Francisco (fire of 4 May 1851)",
+           "volume": "huntington_p9539coll1_23520", "volume_label": "1851 Burnt District map (Huntington)",
+           "url": "https://hdl.huntington.org/digital/collection/p9539coll1/id/23520"},
+    1852: {"date": 1852.3, "label": "U.S. Coast Survey, City of San Francisco and its Vicinity (survey completed "
+                                    "April 1852, publ. 1853; Rumsey 3463.000)",
+           "volume": "rumsey_3463000", "volume_label": "USCS 1853 chart (survey to April 1852)",
+           "url": "https://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~2210~180022"},
+    1887: {"date": 1887.0, "label": "Sanborn Map Company, San Francisco 1887, vol. 1 (LoC)",
+           "volume": "sanborn00813_1887_v1", "volume_label": "1887 Vol. 1",
+           "url": "https://www.loc.gov/resource/g4364sm.g4364sm_g00813188701/"},
+}
+OIM_PAGES = {"70216": "p13R", "70185": "p10R", "70189": "p15R", "70191": "p11L", "70181": "p15L", "70147": "p3L",
+             "70120": "p1R"}
+MAY_1851 = 1851.34    # fire of 3-4 May 1851 (began ~11 pm on 3 May)
+JUNE_1851 = 1851.47   # fire of 22 June 1851
+FIRE_1906 = 1906.29
+GOLD_RUSH = 1849.0    # the generated fabric and the extent snapshots start with the 1849 boom
+# 22 June 1851 fire: "Powell, Sansome, Clay and Broadway ... ten blocks and portions of six others"
+# (SFFD Guardians of the City, https://guardiansofthecity.org/sffd/fires/great_fires/june_22_1851.html)
+JUNE_1851_RING = "Powell St & Broadway; Sansome St & Broadway; Sansome St & Clay St; Powell St & Clay St"
+GR_HEADER = ["id", "map_year", "volume", "volume_label", "sheet", "sheet_no", "loc_url", "iiif", "stories",
+             "stories_source", "material", "use", "use_source", "name", "address", "sanborn_colour", "confidence",
+             "georef", "georef_rms_m", "extraction", "area_m2", "modern_overlap"]
+
+
+def gr_group(t):
+    s, u = t.get("source", "") or "", t.get("source:url", "") or ""
+    if "RUMSEY~8~1~2210~180022" in s or (t.get("source:1", "") or "").startswith("1853 USGS"):
+        return 1852, "rumsey"
+    if s == "1853 Coast Survey" and "pastmapper" in (t.get("source:1", "") or ""):
+        return 1852, "pastmapper"
+    if "Burnt District" in s:
+        return 1851, "burnt"
+    if "oldinsurancemaps.net/layer/70" in u or (t.get("start_date") == "1887" and not s):
+        return 1887, "sanborn"
+    return None, None
+
+
+def sf_blocks():
+    """Today's SF blocks (DataSF parcels dissolved by assessor block), UTM."""
+    lots = gpd.read_parquet(INTERIM / "sf_parcels_active.parquet", columns=["mapblklot", "geometry"]).to_crs(UTM)
+    lots["block"] = lots.mapblklot.astype(str).str[:4]
+    blk = lots.dissolve("block").reset_index()[["block", "geometry"]]
+    blk["geometry"] = blk.buffer(0.3)
+    return blk
+
+
+def fill_bands():
+    """SF bay-fill zones (data/manual/fill_zones.csv) as UTM polygons with their years."""
+    from geocode import ring_polygon
+    t = pd.read_csv(MANUAL / "fill_zones.csv")
+    t = t[t.region.astype(str).str.contains("San Francisco")]
+    rows = []
+    for r in t.itertuples():
+        try:
+            p = ring_polygon(r.ring, r.ring_type, crs=UTM)
+        except Exception:  # noqa: BLE001
+            p = None
+        if p is not None and not p.is_empty:
+            rows.append({"zone_id": r.zone_id, "kind": r.kind, "ys": float(r.year_start), "ye": float(r.year_end),
+                         "geometry": p})
+    return gpd.GeoDataFrame(rows, crs=UTM)
+
+
+def land_year_detail(lon, lat):
+    """Terrain land year (year the ground became dry land) from the SF detail grid; the live grid is
+    being rebuilt, so the last complete one (data/interim/bak_detail_grid) is preferred."""
+    for d in (INTERIM / "bak_detail_grid", INTERIM):
+        p, m = d / "grid_detail_landyear.npy", d / "grid_detail_meta.json"
+        if p.exists() and m.exists():
+            g = json.loads(m.read_text())
+            ly = np.load(p)
+            if ly.shape != (g["rows"], g["cols"]):
+                continue
+            X = np.radians(lon) * 6378137.0
+            Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(lat) / 2))
+            c = np.rint((X - g["X0"]) / g["res"]).astype(int)
+            r = np.rint((g["Y0"] - Y) / g["res"]).astype(int)
+            ok = (c >= 0) & (r >= 0) & (c < g["cols"]) & (r < g["rows"])
+            out = np.full(len(lon), np.nan)
+            out[ok] = ly[r[ok], c[ok]]
+            return out
+    return np.full(len(lon), np.nan)
+
+
+def frac_covered(g, F, sidx):
+    tot = 0.0
+    for j in sidx.query(g, predicate="intersects"):
+        tot += g.intersection(F.geometry.values[j]).area
+    return tot / max(g.area, 1e-6)
+
+
+def _material_1851(t):
+    m = (t.get("building:material") or t.get("material") or "").lower()
+    d = (t.get("description") or "").lower()
+    if "brick" in m or "brick" in d or m == "mixed":
+        return "brick", "OHM building:material / map key (brick, or brick and iron)"
+    if m == "metal" or "iron" in d:
+        return "iron", "OHM building:material / map key (iron building)"
+    if m == "wood" or "wood" in d:
+        return "frame", "OHM building:material / map key (wood building)"
+    return "frame", "default (gold-rush frame)"
+
+
+def _use_1851(t):
+    d = (t.get("description") or "").lower()
+    if "ship" in d:
+        return "storeship", "map key (grounded ship used as a storehouse)"
+    if t.get("building") == "warehouse":
+        return "warehouse", "OHM building=warehouse"
+    if t.get("tourism") == "hotel":
+        return "hotel", "OHM tourism=hotel"
+    if "store" in d:
+        return "store", "map key (store building)"
+    if "office" in (t.get("name") or "").lower():
+        return "office", "OHM name"
+    if "house" in d:
+        return "dwelling", "map key (house)"
+    return "", "not given"
+
+
+USE_1887 = {"house": "dwelling", "apartments": "flats", "commercial": "store", "warehouse": "warehouse",
+            "stable": "stable", "hotel": "hotel", "church": "church", "temple": "church", "shed": "shed",
+            "industrial": "factory", "construction": ""}
+
+
+def _stories_default(mapy, use, mat, area, key):
+    """Storeys where the map gives none (rules from data/manual/sf_extent_README.md: gold-rush frame 1-2
+    storeys; the brick and iron stores of the 1851 rebuild 2; Sanborn 1887 Chinatown / downtown 2-3)."""
+    if use in ("shed", "stable", "storeship") or area < 35:
+        return 1, f"default (rule: {use or 'small'} -> 1)"
+    if mapy <= 1852:
+        if mat == "brick":
+            return 2, "default (rule: gold-rush brick -> 2)"
+        if mat == "iron":
+            return (1 if area < 90 else 2), "default (rule: prefabricated iron store, 1 if < 90 m2)"
+        return (2 if h01(key, "st") < 0.4 else 1), "default (rule: gold-rush frame 1-2, 40 % two-storey)"
+    if use in ("flats", "hotel"):
+        return 3, f"default (rule: {use} -> 3)"
+    if use == "dwelling":
+        return 2, "default (rule: dwelling -> 2)"
+    return (3 if area > 250 else 2), "default (rule: commercial 2, 3 when > 250 m2)"
+
+
+def _window_pick(lo, hi, u0, u1, key, salt):
+    """A year inside [lo, hi], placed by the hash in the sub-range [u0, u1] of the window."""
+    u = u0 + (u1 - u0) * h01(key, salt)
+    return float(lo + (hi - lo) * u)
+
+
+def goldrush():
+    """Re-date OHM's gold-rush San Francisco tracings and write them in the Sanborn tracing format."""
+    from geocode import intersection_rings, ring_polygon
+    els = load_elements([OHM_RAW / "ohm_sf_buildings.json"])
+    g = to_gdf(els)
+    gg = g.tags.map(gr_group)
+    g["map_year"] = [a for a, _ in gg]
+    g["grp"] = [b for _, b in gg]
+    g = g[g.map_year.notna()].copy()
+    # Mission Dolores (1791) is a reconstructed landmark (viewer/src/landmarks/city.ts): not a predecessor
+    g = g[~g.tags.map(lambda t: t.get("place") == "mission" or "Mission Dolores" in (t.get("name") or ""))]
+    g = g.explode(index_parts=False)
+    g = g[g.geom_type == "Polygon"]
+    u = g.to_crs(UTM).reset_index(drop=True)
+    u["geometry"] = u.geometry.buffer(0)
+    u = u[u.geometry.area > 4].reset_index(drop=True)
+    u["key"] = [f"{t}{i}" for t, i in zip(u.osm_type.str[0], u.osm_id)]
+    # duplicate ways (a multipolygon and its outer way): keep one
+    u = u.drop_duplicates("key").reset_index(drop=True)
+    log(f"goldrush: {len(u)} traced footprints: " + ", ".join(f"{int(k)} map {v}" for k, v in u.map_year.value_counts().items()))
+    ll = u.to_crs(4326).geometry.representative_point()
+    rp = u.geometry.representative_point()
+
+    # ---- evidence layers
+    fire = gpd.read_file(INTERIM / "fire_1906.geojson").to_crs(UTM)
+    burned06 = rp.within(shapely.union_all(fire.geometry.values)).values
+    rings = {int(Path(f).stem.split("_")[-1]): shapely.union_all(list(intersection_rings(f, crs=UTM).values()))
+             for f in sorted(glob.glob(str(MANUAL / "sf_extent_*.csv")))}
+    ext_years = sorted(rings)
+    first_ring = np.full(len(u), np.nan)
+    for y in reversed(ext_years):
+        first_ring[rp.within(rings[y]).values] = y
+    in1849 = rp.within(rings[1849]).values
+    in1852 = rp.within(rings[1852]).values
+    bands = fill_bands()
+    ys_fill = np.full(len(u), np.nan)
+    ye_fill = np.full(len(u), np.nan)
+    band_id = np.array([""] * len(u), dtype=object)
+    for b in bands[(bands.kind == "fill") & ~bands.zone_id.str.startswith("fb_")].itertuples():
+        m = rp.within(b.geometry).values & (np.isnan(ys_fill) | (b.ys < ys_fill))
+        ys_fill[m], ye_fill[m], band_id[m] = b.ys, b.ye, b.zone_id
+    land = land_year_detail(ll.x.values, ll.y.values)
+    tagged51 = u.tags.map(lambda t: t.get("start_date:edtf") == "1851/").values
+    m51 = u[(u.map_year == 1851)]
+    burnt_may = shapely.union_all(list(m51.geometry.buffer(30).values) +
+                                  list(u[tagged51].geometry.buffer(30).values)).buffer(-18)
+    june = ring_polygon(JUNE_1851_RING, "streets", crs=UTM)
+    in_may = rp.within(burnt_may).values | tagged51
+    in_june_any = rp.within(june).values
+    in_june = in_june_any & ~in_may
+    blocks = sf_blocks()
+    bsidx = blocks.sindex
+    in_blocks = np.array([frac_covered(gm, blocks, bsidx) for gm in u.geometry.values])
+    today = gpd.read_parquet(INTERIM / "sf_buildings.parquet", columns=["start_year", "geometry"]).to_crs(UTM)
+    tsidx = today.sindex
+    t_start = today.start_year.values
+
+    u_area0 = u.geometry.area.values.copy()
+    maps = {y: u[u.map_year == y] for y in (1851, 1852, 1887)}
+    msidx = {y: maps[y].sindex for y in maps}
+    # ---- coverage per map
+    cov = {}
+    cov[1851] = burnt_may
+    blk_hit = gpd.sjoin(gpd.GeoDataFrame(geometry=maps[1852].geometry.representative_point(), crs=UTM),
+                        blocks, predicate="within").block.unique()
+    cov[1852] = shapely.union_all(list(blocks[blocks.block.isin(blk_hit)].geometry.values) +
+                                  list(maps[1852].geometry.buffer(10).values))
+    j87 = gpd.sjoin(maps[1887][["geometry"]], blocks, predicate="intersects")
+    share = {}
+    for b_, grp_ in j87.groupby("block"):
+        bg = blocks.geometry.values[blocks.index[blocks.block == b_][0]]
+        share[b_] = shapely.union_all(grp_.geometry.values).intersection(bg).area / max(bg.area, 1)
+    full87 = [b_ for b_, s in share.items() if s >= 0.3]
+    cov[1887] = shapely.union_all(list(blocks[blocks.block.isin(full87)].geometry.values) +
+                                  list(maps[1887].geometry.buffer(8).values))
+
+    # ---- chain the maps
+    # 1851 survivors: the 1852 chart draws whole block fronts as one black mass, so a survivor is "still
+    # there" when the 1852 footprints cover >= 40 % of it (as apply_sanborn); it then keeps its own, more
+    # detailed outline and is cut out of the 1852 masses. 1852 -> 1887 (35 years apart; the Sanborn draws
+    # every outbuilding): the same structure only when one 1887 footprint has about the same shape (IoU).
+    idx = {y: list(maps[y].index) for y in maps}
+    nxt = {}        # row -> row on the next map that represents it
+    continues = {}  # 1851 survivor row -> True when the 1852 chart still shows it
+    survivor = np.array([(m == 1851) and not t.get("end_date", "").startswith("1851-05-04")
+                         for m, t in zip(u.map_year.values, u.tags.values)])
+    for i in idx[1851]:
+        if survivor[i] and rp.values[i].within(cov[1852]):
+            continues[i] = frac_covered(u.geometry.values[i], maps[1852], msidx[1852]) >= 0.4
+    surv_geom = shapely.union_all([u.geometry.values[i] for i, c in continues.items() if c] or [Polygon()])
+    for i in idx[1852]:
+        gm = u.geometry.values[i]
+        if gm.intersects(surv_geom):
+            rest = gm.difference(surv_geom.buffer(0.2))
+            if rest.geom_type == "MultiPolygon":
+                rest = max(rest.geoms, key=lambda q: q.area)
+            u.loc[i, "geometry"] = rest if (not rest.is_empty and rest.area > 15 and rest.area > 0.2 * gm.area) else Polygon()
+    for i in idx[1852]:
+        gm = u.geometry.values[i]
+        if gm.is_empty or not rp.values[i].within(cov[1887]):
+            continue
+        best, biou = None, 0.0
+        for j in msidx[1887].query(gm, predicate="intersects"):
+            g2 = maps[1887].geometry.values[j]
+            iou = gm.intersection(g2).area / max(gm.union(g2).area, 1e-6)
+            if iou > biou:
+                best, biou = maps[1887].index[j], iou
+        if biou >= 0.45:
+            nxt[i] = best
+    for i, c in continues.items():  # a surviving 1851 building carried on to the 1887 Sanborn
+        if c and rp.values[i].within(cov[1887]):
+            gm = u.geometry.values[i]
+            for j in msidx[1887].query(gm, predicate="intersects"):
+                g2 = maps[1887].geometry.values[j]
+                if gm.intersection(g2).area / max(gm.union(g2).area, 1e-6) >= 0.45:
+                    nxt[i] = maps[1887].index[j]
+    prev = {}
+    for i, j in nxt.items():
+        prev.setdefault(j, []).append(i)
+
+    def root_rows(i):
+        out, stack = [], [i]
+        while stack:
+            k = stack.pop()
+            out.append(k)
+            stack += prev.get(k, [])
+        return out
+
+    rows = []
+    for i in range(len(u)):
+        t = u.tags.values[i]
+        y = int(u.map_year.values[i])
+        key = u.key.values[i]
+        gm = u.geometry.values[i]
+        area = gm.area
+        ev = []
+        # --- start window from the earliest map in the chain that shows this structure
+        chain = root_rows(i)
+        first = min(chain, key=lambda k: u.map_year.values[k])
+        fy = int(u.map_year.values[first])
+        fi = first
+        hi = GR_MAPS[fy]["date"]
+        if fy in (1851, 1852):
+            lo = GOLD_RUSH
+            ev.append(f"on the {GR_MAPS[fy]['label']} -> standing by {hi:.2f}")
+            if fy == 1852 and in_may[fi] and not any(u.map_year.values[k] == 1851 for k in chain):
+                lo = MAY_1851
+                ev.append("inside the district burned on 4 May 1851 (Burnt District map; OHM start 1851/) -> built after the fire")
+            elif fy == 1852 and in_june[fi]:
+                lo = JUNE_1851
+                ev.append("inside the 22 June 1851 fire area (Powell-Sansome-Clay-Broadway, SFFD) -> rebuilt after it (MEDIUM: ten of its sixteen blocks burned whole)")
+            if np.isfinite(ys_fill[fi]):
+                if ys_fill[fi] > lo:
+                    lo = min(ys_fill[fi], hi - 0.2)
+                ev.append(f"on Yerba Buena Cove fill band {band_id[fi]} ({ys_fill[fi]:g}-{ye_fill[fi]:g})")
+            if in1849[fi]:
+                u0, u1 = 0.0, 0.45
+                ev.append("inside the 1849 built-up extent (sf_extent_1849) -> early in the window")
+            elif in1852[fi]:
+                u0, u1 = 0.25, 0.85
+                ev.append("inside the 1852 extent, outside 1849 -> mid window")
+            else:
+                u0, u1 = 0.45, 1.0
+                ev.append("outside the 1852 built-up extent (scattered building) -> late in the window")
+            if lo >= MAY_1851 - 0.01:  # rebuilt after an 1851 fire: spread over the months to the survey
+                u0, u1 = 0.0, 1.0
+        else:  # first seen on the 1887 Sanborn
+            if rp.values[fi].within(cov[1852]):
+                lo, hi = GR_MAPS[1852]["date"], 1887.0
+                ev.append("on the 1887 Sanborn, not on the 1852 Coast Survey chart of the same block -> built 1852-1887")
+            else:
+                fr = first_ring[fi]
+                hi = min(fr, 1887.0) if np.isfinite(fr) else 1887.0
+                pe = [e for e in ext_years if e < hi]
+                lo = float(pe[-1]) if pe else GOLD_RUSH
+                ev.append(f"on the 1887 Sanborn; block first inside the {int(hi) if np.isfinite(fr) else 'none'} "
+                          f"built-up extent -> built {lo:g}-{hi:g}")
+            u0, u1 = 0.0, 1.0
+        start = _window_pick(lo, hi, u0, u1, u.key.values[fi], "s")
+        start_conf = "estimated"
+        # --- end
+        end_rule, end_min, end_max = "successor", np.nan, np.nan
+        represented_by = u.key.values[nxt[i]] if i in nxt else None
+        if gm.is_empty:
+            continue  # an 1852 mass that was all the outline of an 1851 survivor
+        if y == 1851 and t.get("end_date", "").startswith("1851-05-04"):
+            end, end_rule, end_min, end_max = MAY_1851, "exact", MAY_1851, MAY_1851
+            ev.append("destroyed in the fire of 4 May 1851 (Burnt District map)")
+        elif represented_by is not None:
+            end = np.nan
+            ev.append(f"still on the {int(u.map_year.values[nxt[i]])} map: carried by {represented_by}")
+        elif y == 1851 and i in continues and not continues[i]:
+            if in_june_any[i]:
+                end, end_rule, end_min, end_max = JUNE_1851, "exact", JUNE_1851, JUNE_1851
+                ev.append("survived 4 May 1851, not on the 1852 chart, inside the 22 June 1851 fire area -> burned 22 June 1851")
+            else:
+                end_min, end_max = GR_MAPS[1851]["date"] + 0.01, GR_MAPS[1852]["date"]
+                end = _window_pick(end_min, end_max, 0.15, 0.9, key, "e")
+                end_rule = "between_maps"
+                ev.append("survived 4 May 1851 but not on the 1852 chart of the same block -> gone 1851-52")
+        elif (y == 1852 or continues.get(i)) and rp.values[i].within(cov[1887]):
+            end_min, end_max = GR_MAPS[1852]["date"], 1887.0
+            end = _window_pick(end_min, end_max, 0.15, 0.9, key, "e")
+            end_rule = "between_maps"
+            ev.append("not on the 1887 Sanborn of the same block -> gone 1852-1887")
+        else:
+            end = np.nan
+            if burned06[i]:
+                end_max = FIRE_1906
+                ev.append("inside the 1906 burned area -> gone by 18 Apr 1906 at the latest")
+            later = []
+            for j in tsidx.query(gm, predicate="intersects"):
+                inter = gm.intersection(today.geometry.values[j]).area
+                if inter > 0.2 * area and t_start[j] > GR_MAPS[y]["date"] + 1:
+                    later.append(t_start[j])
+            if later and (not np.isfinite(end_max) or min(later) - 0.3 < end_max):
+                end_max = min(later) - 0.3
+                ev.append(f"today's building on the spot built {min(later):.0f} -> gone before then")
+            end = end_max
+            if in_blocks[i] < 0.4:
+                ev.append(f"{100 * (1 - in_blocks[i]):.0f} % of it lies in today's street right-of-way (wharf / "
+                          "pile building or a later street opening)")
+        # --- today's building that may be this one (left to the modern data, as apply_sanborn)
+        same, best_iou = False, 0.0
+        for j in tsidx.query(gm, predicate="intersects"):
+            tg = today.geometry.values[j]
+            inter = gm.intersection(tg).area
+            iou = inter / max(gm.union(tg).area, 1e-6)
+            best_iou = max(best_iou, iou)
+            if (iou >= 0.5 or inter >= 0.7 * area) and t_start[j] <= GR_MAPS[y]["date"] + 2:
+                same = True
+        # --- attributes
+        name = t.get("name") or t.get("owner")
+        if y == 1852 and gm.area < u_area0[i] - 1:
+            ev.append("outline cut around a surviving building of the 1851 Burnt District map")
+        if y == 1851:
+            mat, mat_src = _material_1851(t)
+            use, use_src = _use_1851(t)
+        elif y == 1887:
+            mat, mat_src = "", "not given in OHM (Sanborn colour not transcribed)"
+            use = USE_1887.get(t.get("building", ""), "")
+            if "boarding" in (t.get("description") or "").lower():
+                use = "flats"
+            use_src = f"OHM building={t.get('building')}" if use else "not given"
+        else:
+            mat, mat_src = "frame", "default (gold-rush frame; the chart does not distinguish brick)"
+            use, use_src = "", "not given (the chart draws no use)"
+        lv = pd.to_numeric(t.get("building:levels"), errors="coerce")
+        if np.isfinite(lv) and lv > 0:
+            stories, st_src = float(lv), "OHM building:levels"
+        else:
+            stories, st_src = _stories_default(y, use, mat, area, key)
+        page = ""
+        if y == 1887:
+            lay = re.search(r"layer/(\d+)", t.get("source:url", "") or "")
+            page = OIM_PAGES.get(lay.group(1), "") if lay else ""
+        lyv = land[i]
+        if np.isfinite(lyv) and lyv > GR_MAPS[fy]["date"] + 0.5 and y <= 1852:
+            ev.append(f"terrain land year here {lyv:.0f} is later than the map: on piles over the cove (or the fill band is dated too late)")
+        rows.append({
+            "id": f"ohm_{u.osm_type.values[i]}_{u.osm_id.values[i]}", "map_year": y,
+            "volume": GR_MAPS[y]["volume"], "volume_label": GR_MAPS[y]["volume_label"],
+            "sheet": page or None, "sheet_no": page or None,
+            "loc_url": GR_MAPS[y]["url"], "iiif": None, "stories": stories, "stories_source": st_src,
+            "material": mat, "use": use, "use_source": use_src, "name": name,
+            "address": " ".join(x for x in (t.get("addr:housenumber"), t.get("addr:street")) if x) or None,
+            "sanborn_colour": None, "confidence": "medium" if y != 1852 else "medium-high",
+            "georef": f"OpenHistoricalMap {u.osm_type.values[i]} {u.osm_id.values[i]}", "georef_rms_m": None,
+            "extraction": f"OpenHistoricalMap volunteer tracing (CC0) of the {GR_MAPS[y]['label']}; OHM dates "
+                          f"{t.get('start_date')} / {t.get('end_date')} ({t.get('start_date:source') or 'no date source'}) "
+                          "replaced by evidence-based dates",
+            "area_m2": round(area, 1), "modern_overlap": round(best_iou, 2),
+            "start_year": round(start, 2) if represented_by is None else None,
+            "start_min": round(lo, 2), "start_max": round(hi, 2),
+            "end_year": (round(end, 2) if np.isfinite(end) else None) if represented_by is None else None,
+            "end_min": round(end_min, 2) if np.isfinite(end_min) else None,
+            "end_max": round(end_max, 2) if np.isfinite(end_max) else None,
+            "end_rule": end_rule if represented_by is None else "represented",
+            "represented_by": represented_by, "modern_same": bool(same), "year_confidence": start_conf,
+            "date_evidence": "; ".join(ev), "land_year": round(float(lyv), 1) if np.isfinite(lyv) else None,
+            "fill_zone": band_id[i] or None, "in_street_row": round(1 - in_blocks[i], 2),
+            "burned_1906": bool(burned06[i]), "ohm_key": key, "ohm_url": ohm_url(u.osm_type.values[i], u.osm_id.values[i]),
+            "ohm_start_date": t.get("start_date"), "ohm_end_date": t.get("end_date"),
+            "geometry": gm})
+    out = gpd.GeoDataFrame(rows, crs=UTM)
+    keyrow = {k: n for n, k in enumerate(out.ohm_key)}
+    # docs: pre-gold-rush / notable buildings already in the tables
+    docs = []
+    for tab in ("early_sf.csv", "notable_pre1906.csv"):
+        d = pd.read_csv(TABLES / tab)
+        d = d[pd.to_numeric(d.lat, errors="coerce").notna()]
+        d = gpd.GeoDataFrame(d[["id", "name", "start_year", "end_year"]], crs=4326,
+                             geometry=gpd.points_from_xy(d.lon.astype(float), d.lat.astype(float))).to_crs(UTM)
+        docs.append(d)
+    docs = gpd.GeoDataFrame(pd.concat(docs, ignore_index=True), crs=UTM)
+    # a documented building (point) is the traced footprint nearest to it (within 12 m) on a map drawn
+    # while it stood; only footprints that are emitted (not carried by a later outline) are candidates
+    out["doc_match"] = None
+    emitted = out[out.represented_by.isna()]
+    for d in docs.itertuples():
+        s0, e0 = pd.to_numeric(d.start_year, errors="coerce"), pd.to_numeric(d.end_year, errors="coerce")
+        cand = emitted[(emitted.map_year >= s0 - 1) & (emitted.map_year <= e0 + 1)]
+        if not len(cand):
+            continue
+        dist = cand.geometry.distance(d.geometry)
+        k = dist.idxmin()
+        if dist[k] <= 12 and out.loc[k, "doc_match"] is None:
+            out.loc[k, "doc_match"] = str(d.id)
+    return out, cov, {"burnt_may": burnt_may, "june": june}
+
+
+def _write_geojson(gdf, path, name):
+    gdf = gdf.to_crs(4326)
+    for c in gdf.columns:
+        if c != "geometry" and gdf[c].dtype == object:
+            gdf[c] = gdf[c].where(gdf[c].notna(), None)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        path.unlink()
+    gdf.to_file(path, driver="GeoJSON", COORDINATE_PRECISION=7)
+    log(f"ohm: wrote {path.relative_to(MANUAL.parent.parent)} ({len(gdf)})")
+
+
+def write_goldrush():
+    out, cov, aux = goldrush()
+    out = out[out.geometry.notna() & ~out.geometry.is_empty]
+    extra = [c for c in out.columns if c not in GR_HEADER + ["geometry"]]
+    for y in (1851, 1852, 1887):
+        part = out[out.map_year == y][GR_HEADER + extra + ["geometry"]].reset_index(drop=True)
+        _write_geojson(part, SANBORN / f"{GR_AREA}_{y}.geojson", f"{GR_AREA}_{y}")
+    notes = {
+        1851: ("district burned on 4 May 1851: the traced buildings of the Burnt District map and the 1852-chart "
+               "buildings OHM tags as built after the fire (start 1851/), closed by 30 m; generated buildings that "
+               "start before the map date are replaced (apply_goldrush rule 'before_map')", ["Huntington p9539coll1/23520"]),
+        1852: ("today's blocks holding a traced building of the 1852 chart (DataSF parcels by assessor block) plus "
+               "10 m round each traced footprint (cove / wharf buildings); OHM traced the chart building by building "
+               "over North Beach, downtown, Happy Valley / Rincon and scattered houses out to Mission Dolores; "
+               "rule 'before_map'", ["Rumsey 3463.000 (USCS 1853, survey to April 1852)"]),
+        1887: ("blocks at least 30 % covered by OHM's 1887 Sanborn tracings (whole blocks traced) plus 8 m round each "
+               "traced building; rule 'after_1852': together with the 1852 chart these blocks are described by "
+               "traced buildings from 1852 to the 1906 fire", sorted(set(OIM_PAGES.values()))),
+    }
+    feats = []
+    for y in (1851, 1852, 1887):
+        n = int((out.map_year == y).sum())
+        feats.append({"area": GR_AREA, "map_year": y, "sheets": json.dumps(notes[y][1]), "features": n,
+                      "map_date": GR_MAPS[y]["date"], "generated_rule": "after_1852" if y == 1887 else "before_map",
+                      "note": notes[y][0], "geometry": cov[y]})
+    c = gpd.GeoDataFrame(feats, crs=UTM)
+    _write_geojson(c, SANBORN / f"{GR_AREA}_coverage.geojson", f"{GR_AREA}_coverage")
+    fires = gpd.GeoDataFrame([
+        {"fire": "4 May 1851", "year": MAY_1851, "confidence": "medium",
+         "note": "district burned on 3-4 May 1851 (~18 blocks, ~2,000 buildings): outline closed round the "
+                 "buildings of the Huntington 'Map of the Burnt District' and the 1852-chart buildings OHM tags "
+                 "as built after the fire (OHM, CC0)",
+         "source_url": GR_MAPS[1851]["url"], "geometry": aux["burnt_may"]},
+        {"fire": "22 June 1851", "year": JUNE_1851, "confidence": "medium-low",
+         "note": "bounded by Powell, Sansome, Clay and Broadway; 'ten blocks and portions of six others' "
+                 "(the whole rectangle is drawn; part of six blocks survived)",
+         "source_url": "https://guardiansofthecity.org/sffd/fires/great_fires/june_22_1851.html",
+         "geometry": aux["june"]}], crs=UTM)
+    _write_geojson(fires, OHM_OUT / "sf_fires_1851.geojson", "sf_fires_1851")
+    return out
+
+
+FIRST_DEV = ("predecessor", "predecessor_rows", "predecessor_industrial")  # a lot's first generated building
+
+
+def apply_goldrush(pred, today, include_years=(1851, 1852, 1887)):
+    """Integration for sf_predecessors.main (call it after apply_sanborn, with the sf_goldrush area left out
+    of apply_sanborn: include=lambda a: not a.startswith(REGION_SANBORN) and not a.startswith("sf_goldrush")).
+
+    pred:  the predecessors so far (generated, documented, other Sanborn areas), EPSG:32610
+    today: sf_buildings (start_year, geometry), EPSG:32610
+    The traced buildings carry their own evidence-based dates (start_year / end_year, windows and evidence
+    in the files). Inside the coverage of each map:
+      * 'before_map' (1851, 1852 maps): a lot's first generated building (year_reason predecessor /
+        predecessor_rows / predecessor_industrial, standing before 1906) that overlaps a traced building
+        (>= 20 % of the smaller) is its procedural stand-in and is dropped; any other generated building there
+        that starts before the map date (the map shows the lot empty, or it is the next generation such as the
+        1850s brick rebuild) starts after the map instead, 1852.3-1856.5 (the next extent snapshot);
+      * 'after_1852' (1887 Sanborn blocks): generated buildings standing after 1852.3 are dropped (the 1852
+        chart and the 1887 Sanborn describe these blocks to the 1906 fire);
+      * documented buildings (early_sf.csv, notable_pre1906.csv) whose point falls on a traced footprint drawn
+        while they stood take that outline (their researched dates win, as in apply_sanborn);
+      * a traced building whose end is an upper bound (end_rule 'successor': the 1906 fire, today's building)
+        ends when the first later building on its spot starts (a kept generated building, another area's
+        traced building, a documented one) - so the procedural brick rebuilding of the 1850s and the later
+        city follow the real 1851/52 town instead of overlapping it.
+    Returns pred with the traced buildings added (source 'ohm_sf_goldrush')."""
+    files = [SANBORN / f"{GR_AREA}_{y}.geojson" for y in include_years]
+    tr = pd.concat([gpd.read_file(f) for f in files if f.exists()], ignore_index=True)
+    tr = gpd.GeoDataFrame(tr, geometry="geometry", crs=4326).to_crs(UTM)
+    tr = tr[(tr.end_rule != "represented") & ~tr.modern_same.fillna(False).astype(bool)]
+    tr = tr[tr.geometry.notna() & tr.geometry.is_valid & (tr.geometry.area > 6)].reset_index(drop=True)
+    covf = gpd.read_file(SANBORN / f"{GR_AREA}_coverage.geojson").to_crs(UTM)
+    cov = {int(r.map_year): (r.geometry, r.generated_rule, float(r.map_date)) for r in covf.itertuples()}
+    pred = pred.reset_index(drop=True)
+    gen = pred.source.astype(str).str.endswith("_procedural").values
+    reason = pred.year_reason.astype(str).values
+    pc = pred.geometry.representative_point()
+    tsidx = tr.sindex
+    drop = np.zeros(len(pred), bool)
+    start = pred.start_year.values.astype(float).copy()
+    n_shift = 0
+    for y, (poly, rule, mdate) in cov.items():
+        inside = pc.within(poly).values & gen
+        if rule == "after_1852":
+            drop |= inside & (pred.end_year.values > GR_MAPS[1852]["date"])
+            continue
+        for k in np.nonzero(inside & (start < FIRE_1906))[0]:
+            g = pred.geometry.values[k]
+            hit = False
+            for j in tsidx.query(g, predicate="intersects"):
+                tg = tr.geometry.values[j]
+                if g.intersection(tg).area >= 0.2 * min(g.area, tg.area):
+                    hit = True
+                    break
+            first_dev = reason[k] in FIRST_DEV or pred.source.values[k] == "sf_redevelopment_procedural"
+            if hit and first_dev:
+                drop[k] = True  # the lot's first building: the traced one is the real thing
+            elif start[k] < mdate:
+                # the map shows the lot empty (or this is a later generation, e.g. the brick rebuild): after the map
+                s_new = GR_MAPS[1852]["date"] + (1856.5 - GR_MAPS[1852]["date"]) * h01(str(pred.mapblklot.values[k]), "gr")
+                if s_new >= pred.end_year.values[k] - 0.5:
+                    drop[k] = True
+                else:
+                    start[k] = max(start[k], s_new)
+                    n_shift += 1
+    pred = pred.assign(start_year=start)
+    # documented buildings on a traced footprint
+    doc_rows = pred.source.isin(["early_sf", "notable_pre1906"]).values & ~drop
+    t_start = tr.start_year.astype(float).values.copy()
+    t_end = tr.end_year.astype(float).values.copy()
+    t_reason = np.array([f"ohm_goldrush_{int(m)}" for m in tr.map_year.values], dtype=object)
+    n_doc = 0
+    if "doc_match" in tr:
+        docs = pred[doc_rows]
+        for j, did in enumerate(tr.doc_match.values):
+            if not isinstance(did, str) or not did:
+                continue
+            if "doc_id" in docs:
+                hit = docs[docs.doc_id.astype(str) == did]
+            else:  # sf_predecessors.parquet as written (doc_id dropped): the documented row nearest the footprint
+                hit = docs[docs.geometry.representative_point().distance(tr.geometry.values[j].centroid) < 15]
+            my = float(tr.map_year.values[j])
+            hit = hit[(hit.start_year <= my + 1) & (hit.end_year >= my - 1)]
+            if len(hit) != 1:
+                continue  # a group of structures (early_sf count > 1), not standing then, or nothing: leave both
+            if len(hit):
+                r = hit.iloc[0]
+                t_start[j] = min(t_start[j], float(r.start_year)) if np.isfinite(t_start[j]) else float(r.start_year)
+                if np.isfinite(r.end_year) and r.end_year < 9000:
+                    t_end[j] = float(r.end_year)
+                t_reason[j] = f"documented:{did}"
+                drop[hit.index.values] = True
+                n_doc += 1
+    pred = pred[~drop].reset_index(drop=True)
+    # successors
+    psidx = pred.sindex
+    ps = pred.start_year.values
+    n_succ = 0
+    for j in range(len(tr)):
+        if tr.end_rule.values[j] != "successor":
+            continue
+        g = tr.geometry.values[j]
+        cands = [ps[k] for k in psidx.query(g, predicate="intersects")
+                 if ps[k] > t_start[j] + 0.5 and g.intersection(pred.geometry.values[k]).area >= 0.2 * min(g.area, pred.geometry.values[k].area)]
+        for k in tsidx.query(g, predicate="intersects"):  # a later traced building on the spot (1887 map)
+            if k != j and t_start[k] > t_start[j] + 0.5 and g.intersection(tr.geometry.values[k]).area >= 0.2 * min(g.area, tr.geometry.values[k].area):
+                cands.append(t_start[k])
+        if cands and (not np.isfinite(t_end[j]) or min(cands) - 0.05 < t_end[j]):
+            t_end[j] = min(cands) - 0.05
+            n_succ += 1
+        if not np.isfinite(t_end[j]):
+            t_end[j] = max(float(tr.map_year.values[j]) + 15, 1960.0)  # as apply_sanborn
+    rows = []
+    for j in range(len(tr)):
+        if not (np.isfinite(t_start[j]) and t_end[j] > t_start[j] + 0.3):
+            continue
+        r = tr.iloc[j]
+        use = str(r["use"] or "")
+        stories = float(r.stories) if pd.notna(r.stories) and r.stories > 0 else 1.0
+        height = stories * 3.6 + (1.2 if use in ("dwelling", "flats") else 0.6)
+        if use == "storeship":
+            height = 4.0  # a hulk beached in the cove, used as a warehouse
+        mat = str(r.material or "")
+        rows.append({"geometry": r.geometry, "start_year": float(t_start[j]), "end_year": float(t_end[j]),
+                     "height": height, "stories": stories, "kind": "building", "source": "ohm_sf_goldrush",
+                     "mapblklot": f"{GR_AREA}:{r.id}", "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),
+                     "use_sanborn": use, "year_confidence": "estimated", "year_reason": t_reason[j]})
+    new = gpd.GeoDataFrame(rows, crs=UTM)
+    log(f"predecessors: OHM gold-rush maps: {len(new)} traced buildings; {int(drop.sum())} predecessors replaced "
+        f"({n_doc} documented ones take a traced outline), {n_shift} generated moved after the 1852 chart, "
+        f"{n_succ} traced buildings end at a later building on their spot")
+    return gpd.GeoDataFrame(pd.concat([pred, new], ignore_index=True), geometry="geometry", crs=UTM)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "all"
     if cmd in ("download", "all"):
         download()
+    if cmd in ("goldrush", "all"):
+        write_goldrush()
