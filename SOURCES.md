@@ -12,6 +12,7 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 | `viewer/public/data/sf-buildings.bin.gz` | DataSF (PDDL) + OpenStreetMap via Overture (ODbL) | **ODbL 1.0** (derived database incl. OSM) — © OpenStreetMap contributors, Overture Maps Foundation; DataSF |
 | `viewer/public/data/sf-land.json` | US Census TIGER/Line | public domain |
 | `viewer/public/data/sf-trees.bin.gz` | DataSF Street Tree List | PDDL |
+| `viewer/public/data/region-trees/**` | city / county / campus tree inventories (`region_trees`, below) + USFS Urban Tree Database growth equations | mixed: San José CC BY 4.0; the others published without a licence (public records) — attribute every source (list in `region-trees/index.json`) |
 | `viewer/public/data/sf-ground.json` | RPD Parks (PDDL) + OSM via Overture (ODbL) + `data/tables/parks.csv` | **ODbL 1.0** |
 | `viewer/public/data/sf-woods.bin.gz` | OSM wood extents via Overture (ODbL); positions procedural | **ODbL 1.0** |
 | `viewer/public/data/fire-1906.json` | hand-researched boundary (`data/manual/`) + DataSF streets | see `data/manual/fire_1906_README.md` |
@@ -48,6 +49,33 @@ the data they drive (`data/tables/*.csv` `source_url` columns, `data/manual/*`,
 - URL: https://data.sfgov.org/d/tkzw-k3nq
 - Licence: PDDL 1.0
 - Use: real positions (and planting dates where recorded) of SF street trees.
+
+### `region_trees` — street and park tree inventories of the five counties (2026-11)
+Built by `pipeline/region_trees.py` (raw layers: `data/raw/region_trees/<id>.parquet` + `<id>.source.json`, downloaded 2026-11-09). Positions, species, DBH and, where present, height, crown spread, planting and inventory dates; every record as published by the city. Licence: only San José states one; the others are public city / county / campus GIS services published without a licence or with a no-warranty disclaimer — used as public records with attribution.
+
+| id | publisher / attribution | layer | records → trees used | licence / terms |
+|---|---|---|---|---|
+| `san_jose` | City of San José, Dept. of Transportation (Davey 2014 inventory + updates) | https://geo.sanjoseca.gov/server/rest/services/OPN/OPN_OpenDataService/MapServer/510 (portal: https://data.sanjoseca.gov/dataset/street-tree) | 344,875 → 267,094 | **CC BY 4.0** |
+| `oakland` | City of Oakland, 2019–20 public tree inventory | https://services.arcgis.com/9tC74aDHuml0x5Yz/arcgis/rest/services/Oakland_Public_Tree_Inventory_/FeatureServer/0 (map: https://www.oaklandca.gov/resources/oakland-public-tree-map) | 70,420 → 68,297 | none stated |
+| `berkeley` | City of Berkeley Parks Division / Arborwell, 2013 urban forest inventory (archived by the UC Berkeley Library, rights "Public") | https://geodata.lib.berkeley.edu/catalog/berkeley-s7gq2s | 46,037 → 34,889 | public |
+| `palo_alto` | City of Palo Alto Public Works | https://gis.cityofpaloalto.org/server/rest/services/Parcel/ParcelReport/MapServer/2 | 39,629 → 33,348 | none stated |
+| `mountain_view` | City of Mountain View | https://maps.mountainview.gov/arcgis/rest/services/Public/Trees/FeatureServer/0 | 35,192 → 35,180 | none stated (no-warranty disclaimer) |
+| `hayward` | City of Hayward / Davey Resource Group (2010 inventory) | https://maps.hayward-ca.gov/arcgis/rest/services/MaintenanceServices/TreeInventory/MapServer/0 | 37,970 → 29,803 | none stated |
+| `alameda` | City of Alameda / West Coast Arborists | https://services9.arcgis.com/ucDLsG1EwPnOGY4c/arcgis/rest/services/City_Tree_view/FeatureServer/0 | 34,640 → 25,160 | none stated |
+| `pleasanton` | City of Pleasanton / West Coast Arborists | https://services2.arcgis.com/yrktbS5Xw87hJQvs/arcgis/rest/services/TreeInvPleasanton_Public/FeatureServer/0 | 28,744 → 23,960 | none stated |
+| `san_ramon` | City of San Ramon / West Coast Arborists (Feb 2017) | https://gis.sanramon.ca.gov/server/rest/services/Fieldwork/Trees/FeatureServer/0 | 50,975 → 44,515 | none stated |
+| `cupertino` | City of Cupertino Public Works / GIS | https://gis.cupertino.org/cupgis/rest/services/Public/AmazonData/MapServer/29 | 24,609 → 24,213 | none stated |
+| `san_mateo` | City of San Mateo Public Works / Davey (2009–12) | https://services2.arcgis.com/g26Y0m7OCdjU0ObA/arcgis/rest/services/Street_Trees/FeatureServer/0 | 24,045 → 23,360 | none stated |
+| `menlo_park` | City of Menlo Park / West Coast Arborists (2026) | https://gisweb.menlopark.gov/server/rest/services/GISWeb/Trees2026/FeatureServer/3 | 19,185 → 18,950 | none stated |
+| `milpitas` | City of Milpitas / West Coast Arborists (© City of Milpitas 2022) | https://services8.arcgis.com/OPmRdssd8jj0bT5H/arcgis/rest/services/Trees%20West%20Coast%20Arborist/FeatureServer/0 | 18,198 → 17,149 | none stated |
+| `santa_clara` | City of Santa Clara Public Works (Lucity) | https://map.santaclaraca.gov/maps/rest/services/Lucity/StreetTrees/MapServer/0 | 13,208 → 10,494 | none stated |
+| `emeryville` | City of Emeryville / West Coast Arborists (2004 survey) | https://services3.arcgis.com/ljOdqLVbHpS7dOJQ/arcgis/rest/services/Trees_Authoritative_view/FeatureServer/0 | 3,807 → 3,549 | none stated |
+| `los_gatos`, `sunnyvale`, `scc_county` | Town of Los Gatos, City of Sunnyvale (a 10,000-record part of the city's ~37,000 street trees), County of Santa Clara parks — compiled by the County of Santa Clara | https://services.arcgis.com/NkcnS0qk4w2wasOJ/arcgis/rest/services/Tree_Inventories_in_Santa_Clara_County_WFL1/FeatureServer (layers 3, 1, 0) | 13,207 → 12,139; 10,000 → 8,232; 19,103 → 15,515 (in the map extent) | none stated |
+| `stanford` | Stanford University campus tree database | https://services.arcgis.com/7CRlmWNEbeCqEJ6a/arcgis/rest/services/Stanford_Trees_Basic_WFL1/FeatureServer/1 | 13,364 → 13,344 | none stated |
+| `santa_clara_university` | Santa Clara University sustainability office tree survey (2025–26) | https://services9.arcgis.com/4mGCdwoq2Vacd9uM/arcgis/rest/services/Tree_Data_(Updated_11_21_2025)/FeatureServer/0 | 760 → 759 | none stated |
+- Checked, nothing public found (2026-11): Fremont (77k-tree 2020 inventory, report only), Sunnyvale's full TreeKeeper inventory, Redwood City, Walnut Creek, San Rafael, Richmond, Concord, Livermore (pruning-zone polygons only), Daly City, South San Francisco, Burlingame, San Leandro, Saratoga (empty layer). The USFS "Raw urban street tree inventory data for 49 California cities" (RDS-2017-0010) has addresses, not positions.
+- Growth: USDA Forest Service **Urban Tree Database** (McPherson, van Doorn & Peper 2016, RDS-2016-0005, https://doi.org/10.2737/RDS-2016-0005; public domain US government work): `TS6_Growth_coefficients.csv` age-from-DBH, height-from-DBH and crown-diameter-from-DBH equations for the Northern California Coast (reference city Berkeley), Inland Valleys (Modesto), Sacramento Valley, Southern California Coast and Inland Empire regions.
+- Use: real positions of ~710,000 street / park trees outside San Francisco; planting year from a recorded date (exact) or the DBH at the inventory date (estimated), bounded by the street and the ground (see the stage's docstring).
 
 ### `overture` / `osm_via_overture` / `osm_parts_via_overture` — Overture Maps buildings
 - URL: `s3://overturemaps-us-west-2/release/2026-10-21.0/theme=buildings/type={building,building_part}`

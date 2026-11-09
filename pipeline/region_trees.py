@@ -452,7 +452,11 @@ def std(df, sp, common, dbh, height=None, crown=None, planted=None, asof=None, p
         "alive": full(alive, True).astype(bool),
     })
     out["alive"] &= ~(out.species.str.contains(NOT_TREE) | out.common.str.contains(NOT_TREE))
-    bad = ~(out.dbh_hi > 0)
+    # a DBH recorded in whole inches stands for anything within half an inch of it
+    whole = (out.dbh_lo == out.dbh_hi) & (out.dbh_lo == np.round(out.dbh_lo))
+    out.loc[whole, "dbh_lo"] -= 0.5
+    out.loc[whole, "dbh_hi"] += 0.5
+    bad = ~(out.dbh_hi > 0.5)
     out.loc[bad, ["dbh_lo", "dbh_hi"]] = np.nan
     out["dbh_lo"] = np.fmax(out.dbh_lo, 0.5)
     out["dbh_in"] = (out.dbh_lo + out.dbh_hi) / 2
@@ -801,7 +805,23 @@ def build():
     d["bounded_by"] = np.select([on_fill, bounded], ["fill", "street"], "")
     d.drop(columns=["x", "y", "alive", "prio"]).to_parquet(INTERIM / "region_trees.parquet", compression="zstd")
     write_tiles(d)
+    coverage_grid(d, gR)
     report(d, n_bld, n_common, rec_ok)
+
+
+def coverage_grid(d: pd.DataFrame, gR):
+    """Inventory trees per terrain region-grid cell (~76 m), so the terrain's procedural
+    canopy trees on city ground can give way where real street trees are mapped:
+    data/interim/grid_region_streettrees.npy (uint16, same shape as grid_region_*.npy)."""
+    X = np.radians(d.lon.values) * 6378137.0
+    Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(d.lat.values) / 2))
+    c = np.rint((X - gR["X0"]) / gR["res"]).astype(int)
+    r = np.rint((gR["Y0"] - Y) / gR["res"]).astype(int)
+    ok = (c >= 0) & (r >= 0) & (c < gR["cols"]) & (r < gR["rows"])
+    cnt = np.zeros((gR["rows"], gR["cols"]), np.uint32)
+    np.add.at(cnt, (r[ok], c[ok]), 1)
+    np.save(INTERIM / "grid_region_streettrees.npy", np.minimum(cnt, 65535).astype(np.uint16))
+    log(f"region trees: {int((cnt > 0).sum())} region-grid cells hold inventory trees -> grid_region_streettrees.npy")
 
 
 def write_tiles(d: pd.DataFrame):
@@ -823,12 +843,14 @@ def write_tiles(d: pd.DataFrame):
         q = np.rint((np.column_stack([t.lon.values, t.lat.values]) - DECO_ORIGIN) * 1e7).astype(np.int32)
         cols = {
             "position_q|shuffle": q.ravel(),
-            "start_year": (np.floor(t.year.values) + 0.9 * h[idx]).astype(np.float32),
+            # the slider ends at CURRENT_YEAR: this year's plantings show (as saplings) at its end
+            "start_year": np.minimum(np.floor(t.year.values) + 0.9 * h[idx], CURRENT_YEAR - 0.05).astype(np.float32),
             "height": t.height_m.values.astype(np.float32),
             "crown": t.crown_m.values.astype(np.float32),
             "form": t.form.values.astype(np.uint8),
             "confidence": t.confidence.values.astype(np.uint8),
             "source": t.source.map(sources.index).values.astype(np.uint8),
+            "park": t.park.values.astype(np.uint8),
         }
         p = out / str(TILE_Z) / str(x) / f"{y}.bin.gz"
         _, gz = write_columnar(p, cols, origin=DECO_ORIGIN, counts={"features": int(len(t))},
