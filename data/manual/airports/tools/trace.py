@@ -1,7 +1,8 @@
 """Vanished airport buildings: building symbols traced in checked windows of one reference edition,
 dated by their presence on every edition (renders of render.py, same frame).
 
-  python -I tools/trace.py SCRATCH_DIR      (expects the renders sfoB_*, oak_*, sjc_*.npy there)
+  python -I tools/trace.py SCRATCH_DIR      (expects the renders sfoB_*, oak_*, sjc_*.npy there: render.py
+                                             --npy, frames / sheets as in README.md, HALF below, 2 m)
   -> vanished_buildings.geojson (+ SCRATCH_DIR/trace_<ap>.png QA overlays)
 
 Each target is a window (airport frame, local metres) on a reference edition, read by eye on the
@@ -120,6 +121,21 @@ CIRCLES = [
 ]
 
 
+def today_footprints(ap):
+    """Today's footprints around the airport with the pipeline's current start year (start_now)."""
+    import pandas as pd
+    from scipy.spatial import cKDTree
+    import buildings
+    fp = buildings.footprints(ap)
+    pts = pd.read_parquet(build.ROOT / "data/interim/region_building_points.parquet")
+    x0, y0, x1, y1 = buildings.BBOX[ap]
+    p = pts[(pts.lon > x0) & (pts.lon < x1) & (pts.lat > y0) & (pts.lat < y1)]
+    rp = fp.geometry.representative_point()
+    dd, ii = cKDTree(p[["lon", "lat"]].values).query(np.c_[rp.x, rp.y])
+    fp["start_now"] = np.where(dd < 2e-5, p.start_year.values[ii], 0.0)
+    return fp
+
+
 def ink(img):
     r, g, b = (img[:, :, i].astype(int) for i in range(3))
     dark = (r < 120) & (g < 120) & (b < 120) & (np.abs(r - g) < 45) & (np.abs(g - b) < 45)
@@ -143,7 +159,7 @@ def main():
         H = HALF[ap]
         imgs = {y: np.load(scratch / f"{n}.npy", mmap_mode="r") for y, n in EDS[ap]}
         years = [y for y, _ in EDS[ap]]
-        bl = gpd.read_file(scratch / f"{ap}_bldg.geojson")
+        bl = today_footprints(ap)
         n = imgs[years[0]].shape[0]
         P = lambda x, y: np.c_[(np.asarray(x) + H) / RES, (H - np.asarray(y)) / RES]
         for t in [t for t in TARGETS if t["ap"] == ap]:

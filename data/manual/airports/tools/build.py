@@ -379,11 +379,13 @@ OPENED = {"SFO": 1927, "OAK": 1927, "SJC": 1948}
 
 # ----------------------------------------------------------------------------------------- vanished pavement
 VANISHED = [
-    dict(airport="SFO", name="Mills Field / San Francisco Airport NNE runway (1930s)", kind="runway",
-         axis=[[-1012, 616], [-562, 1468]], width=45, start=1937, end=1962, conf="estimated", src="sfo_museum",
-         note="one of the three 1930s runways ('three by 1936, forming a triangle'; paved and widened by 1937), "
-              "north end marked '4 x' on the 1946 sheet; still drawn 1956, built over by the 1960s (taxiway grid / "
-              "North Terminal area) - end = 1956 -> 1968 midpoint. Axis read on the 1946 sheet (+-30 m)"),
+    dict(airport="SFO", name="Mills Field north-south runway (1927 strip, paved 1930s)", kind="runway",
+         axis=[[-338, 1400], [-372, 1000]], width=45, start=1927, end=1962, conf="estimated", src="sfo_museum",
+         note="the north end of the N-S runway marked '4' on the 1946-photo sheet, outside today's pavement "
+              "(a 1930s aerial film of Mills Field shows the 'original dirt-paved North-South runway'; paved and "
+              "widened by 1937). Only the part north of today's taxiway grid is given (its south part lies under "
+              "later pavement). Still drawn 1956, gone with the 1960s north-side works (end = 1956 -> 1968 "
+              "midpoint). Axis read on the 1946 sheet (+-20 m)"),
     dict(airport="OAK", name="NAS Oakland / North Field NW-SE diagonal runway", kind="runway",
          axis=[[-133, 1501], [595, 979]], width=45, start=1944, end=1986, conf="estimated", src="oak_nas",
          note="wartime runway ('four asphalt runways, the longest 6,500 ft'), on the 1947-1979 editions, gone on the "

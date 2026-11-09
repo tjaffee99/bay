@@ -1,0 +1,128 @@
+# Airport history: SFO, OAK, SJC (`data/manual/airports/`)
+
+`pipeline/airports.py` dates all of an airport's pavement by one opening year (`data/tables/airports.csv`),
+and the airport buildings carry roll or imputed years. This folder dates the pieces separately:
+each OSM runway / taxiway / apron (Overture 2026-10-21.0 `region_airports.parquet`) by the phase that
+built it, runway lengthenings as intervals along the runway, today's airport buildings with
+researched or map-edition years, and the buildings and runways that are gone.
+
+Evidence: **USGS historical topographic editions** (TNM Access / HTMC GeoTIFFs, resampled into one
+north-up metre frame per airport with the sheet registration + NADCON, quads clipped at their
+neatlines - `tools/render.py`), plus the documented dates below. Anything read off a map or inferred
+is `estimated`; a date stated by a source is `documented`.
+
+| airport | frame (lon, lat) | editions (aerial-photo / revision year) |
+|---|---|---|
+| SFO | -122.377, 37.617 | 1:24k Montara Mountain / San Mateo / San Francisco South / Hunters Point: 1946 photos (1947-50 eds.), 1956, 1968 PR, 1973 PR (Hunters Point: 1968 photos), 1979-80 PR, 1993; 1:62,500 San Mateo 1943 |
+| OAK | -122.222, 37.722 | 1:24k San Leandro: 1947 (1948 ed.), 1958 photos (1959 ed.), 1968 PR, 1973 PR, 1979 PR, 1993; Hayward 1:62,500 1942 (1939 photos) |
+| SJC | -121.930, 37.363 | 1:24k San Jose West + Milpitas: 1948 photos (1953 eds.), 1960 photos (1961 eds.), 1968 PR, 1973 PR, 1979 PR (no later 1:24k edition) |
+
+## Files
+
+### `pavement_dates.csv` (564 rows: 511 OSM features - SFO 275, OAK 159, SJC 77)
+One row per feature, or several when the feature spans construction phases:
+
+| column | meaning |
+|---|---|
+| `airport, feature_class, overture_id, name` | Overture id (match on this), class (runway / stopway / taxiway / taxilane / apron), OSM name / ref |
+| `runway` | runway designation for runway + stopway pieces |
+| `lon, lat` | a point on the feature (representative point) |
+| `part` | `whole` = the whole feature; `axis_interval` = the part of a runway / stopway line between `d0_m` and `d1_m` metres from `from_end` (end points `part_lon0/lat0` -> `part_lon1/lat1`); `zone_clip` = the part of the feature inside zone `clip_zone` of `pavement_zones.geojson` (taxiways / aprons crossing a phase boundary) |
+| `start_year, end_year` | when that part was built (end 9999 = still there) |
+| `confidence` | `documented` (year stated by a source) or `estimated` (map edition midpoints, inferred) |
+| `source_url, evidence` | source and the reading (`[zone id]` for zone-dated features) |
+
+### `pavement_zones.geojson`
+The dated zones (`kind = zone`, effective non-overlapping polygons; a later zone wins where drawn zones
+overlapped) and every runway phase as a polygon (`kind = runway_phase`, the axis interval buffered to
+the runway width). `zone_clip` rows refer to `zone`.
+
+### `vanished_pavement.geojson`
+Runways gone from today's map: the north end of Mills Field's original north-south runway (1927-1962,
+marked '4' on the 1946 sheet), OAK's NAS diagonal runway (1944-1986). Polygons at runway width, `start_year / end_year / width_m / confidence /
+source_url / note`.
+
+### `buildings.csv` (97 rows) - columns of `data/tables/known_building_dates_region.csv` + `overture_id, confidence`
+`lat / lon` is a point inside today's footprint (Overture `region5_building`), so the point-in-footprint
+join of `region_buildings.known_dates()` matches it. SFO rows are San Mateo County (region footprints).
+* 25 documented / identified buildings (terminals, towers, hangars, maintenance bases, Coast Guard air station);
+* 72 edition-dated footprints: **no roll year** (exempt airport property: the pipeline year was imputed from
+  neighbours) and drawn on a topo edition **earlier** than that imputed year; start = midpoint of the
+  last edition without it and the first with it (it must stay drawn on later editions). Only positive
+  evidence overrides (a footprint *missing* from an edition is not used: hatched terminal symbols are
+  missed by the detector). SJC's south-east GA area, rebuilt in the 2010s, is excluded.
+  Evidence per footprint and edition: `tools/evidence/footprint_editions_<AP>.csv` (`P`/`-` +
+  solid / raw ink shares).
+
+### `vanished_buildings.geojson` (64) - same properties as `data/manual/vanished_sites/buildings.geojson`
+`site_id` = `airport_sfo / airport_oak / airport_sjc`. Traced on a reference edition inside windows
+checked by eye (`tools/trace.py`), dated by presence on every edition: SFO's west-side buildings along
+the old Bayshore Highway (to 1961), a hangar NW of the Central Terminal, South Terminal rotundas
+(Rotunda A 1974-2007, Boarding Area B rotundas 1963-2017); OAK's NAS Oakland / North Field buildings that
+are gone; SJC Terminal C (1965-2010, outline from the 1979 PR), the south-east T-hangar rows (to 2000)
+and an early (1946-) building. Heights / storeys / material are estimates by use.
+
+## Key dates (sources in the rows)
+
+**SFO** - Mills Field dedicated 7 May 1927 (one dirt strip), runway C 1,900 -> 3,000 ft 1935, paved runways
+by 1937, three runways "forming a triangle" by 1936; Coast Guard Air Station 15 Nov 1940 / 15 Feb 1941;
+Army lease 5 Feb 1942, wartime hydraulic fill and "three hard-surfaced runways, the longest 8,000 ft"
+(USACE 1991 via militarymuseum.org) - the four-runway layout is on the 1946-photo sheets (core dated
+1944, estimated); Aug 1952 chart 1L 7,000 / 1R 7,750 / 28L 6,500 / 28R 8,870 ft; south ends of 1L/1R after
+1952 (1956 sheet); 28L lengthened 1961 (both ends, onto new fill); 28R extended 1968 (east, paved on the
+1973 PR -> 1969) and the west ends over the old highway / hangar row (1962); 1R north extension onto the
+NE fill (1962). Central Terminal 27 Aug 1954; South Terminal 15 Sep 1963; Superbay c.1970-71; North Terminal
+1979 / Boarding Area E 1981; International Terminal Dec 2000; BART 2003; Harvey Milk T1 2019-24.
+
+**OAK** - North Field: 7,020-ft runway built June 1927 (today's 10L/28R alignment, 1927), dedicated
+17 Sep 1927; five hangars, terminal and inn 1927-30; Boeing School 1929 (its hangar, Building 621, 1939-40);
+Navy (NAS Oakland) 1943-46: runway 15/33 and the diagonal, repaved taxiways (1944, estimated); 6,200-ft
+parallel runway 10R/28L 1945. South Field on the 1960-62 dike fill: 10,000-ft runway (now 12/30) and
+Terminal 1, 1962; World Air Center hangar 1973; FedEx Metroplex 1988; Terminal 2 1985 (concourse 2006);
+tower 2013.
+
+**SJC** - dirt runway 1945 (Nissen), first permanent runway 1948 (4,500 ft), dedicated 1 Feb 1949;
+1961: west runway +2,500 ft and a new 4,400-ft east runway (12L/30R); 12R 6,312 ft 1964, 7,787 ft 1965,
+8,900 ft late 1960s, 10,200 ft by 1996; 12L/30R extended to 11,000 ft Aug 2001, 12R/30L Oct 2004;
+GA runway 11/29 1970s (now Taxiway V, still drawn as taxiway in OSM: dated 1970); Terminal C 1965 (south
+concourse 1969) - 2010; Terminal A 1990; Terminal B + rental car garage 2010.
+
+## Integration (suggested)
+
+1. **Pavement** (`pipeline/airports.py`): after building `f` (and before the land-year check), join
+   `pavement_dates.csv` on `overture_id`:
+   * `part == whole`: the feature's `start/end` = the row's (instead of the airport's `opened`);
+   * `part == axis_interval` (runways / stopways): cut the buffered runway polygon into pieces with a
+     rectangle from (`part_lon0, part_lat0`) to (`part_lon1, part_lat1`) (wider than the runway), one
+     piece per row with its year; or clip with the matching `runway_phase` polygon of
+     `pavement_zones.geojson` (same interval);
+   * `part == zone_clip`: intersect the (buffered) feature with the `zone` polygon named `clip_zone`;
+   * keep `max(start, land_year + 0.5)`; centre lines (`airport-lines.bin.gz`) per piece the same way.
+   Add `vanished_pavement.geojson` like `airports_extra.geojson` (polygons with their own start / end).
+2. **Buildings**: add `data/manual/airports/buildings.csv` to the `tabs` list of
+   `region_buildings.known_dates()` (same columns; extra columns are ignored).
+3. **Vanished buildings**: read `vanished_buildings.geojson` like `vanished_sites/buildings.geojson` in
+   `region_predecessors.py` (same properties; `use` hall / dwelling / other).
+4. `data/tables/airports.csv` is consistent with these files (SFO 1927, OAK 1927; SJC 1945 = the dirt
+   strip, paved runway 1948) - no change needed. `airports_extra*.geojson` (NAS Alameda) is unrelated.
+
+## Limits
+
+* Runway interval ends are read to about +-75 m; the SJC 1953 sheets (1948 photos) are registered
+  to +-30 m. The 1927 Mills Field strip and the 1930s SFO field are not on any 1:24k edition: only the
+  north end of the N-S runway is drawn (vanished); the rest of the 1930s pavement is assumed under today's NW field
+  (dated with the 1946 field, 1944 - so SFO's pavement starts in the 1940s; the 1927-41 field is not modelled).
+* Topo editions draw buildings as symbols (solid, hatched, purple); footprints under 150 m2 are not dated.
+  Photorevisions seldom delete demolished buildings, so some ends are late. Identities of vanished
+  buildings are generic unless named.
+* OAK North Field taxiways are dated to the Navy era (1944, estimated) as a block; the 1927-40 North
+  Field taxiways under them are not separated.
+
+## Tools (`tools/`, scratch-level; renders go to a scratch folder)
+`render.py` (topo mosaic in a local frame, `--npy`), `gridview.py`, `crops.py`, `rwyticks.py`, `strip.py`,
+`montage_px.py`, `overlay.py` (reading aids), `presence.py` + `corridor.py` (pavement on each edition ->
+`evidence/pavement_editions_<AP>.csv`), `bpresence.py` + `bdate.py` (footprints on each edition ->
+`evidence/footprint_editions_<AP>.csv`), `zcheck.py`, `qa_build.py`, `qa_trace.py` (QA maps),
+**`build.py`** (runway phases, zones, feature overrides -> `pavement_dates.csv`, `pavement_zones.geojson`,
+`vanished_pavement.geojson`), **`buildings.py`** (-> `buildings.csv`), **`trace.py SCRATCH`** (->
+`vanished_buildings.geojson`; needs the `.npy` renders and `<AP>_bldg.geojson` in SCRATCH, see its header).
