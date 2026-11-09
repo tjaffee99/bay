@@ -1,0 +1,316 @@
+{
+ "notes": "Downtown, north to the left: Barrett - Macdonald Ave, 9th - 13th St (Richmond Club, Mt. Diablo garage, Elks Bldg, M.E. Church, Calvary Baptist). Control: the Nevin / Macdonald crossings of 9th, 11th and 13th St (10th and 12th St no longer cross them); the Barrett - Nevin blocks are placed by the same sheet fit.",
+ "blocks": [
+  {
+   "name": "Nevin-Macdonald/13th-11th",
+   "corners": [
+    {
+     "a": "Nevin",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Nevin x 13th",
+     "x": 900.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Macdonald x 13th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 1770.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    }
+   ],
+   "with": [
+    "Nevin-Macdonald/11th-9th"
+   ],
+   "zone_px": [
+    900.0,
+    124.0,
+    1545.0,
+    948.0
+   ]
+  },
+  {
+   "name": "Nevin-Macdonald/11th-9th",
+   "corners": [
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 1770.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Nevin",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Nevin x 13th",
+     "x": 900.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Macdonald x 13th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    }
+   ],
+   "with": [
+    "Nevin-Macdonald/13th-11th"
+   ],
+   "zone_px": [
+    900.0,
+    948.0,
+    1545.0,
+    1770.0
+   ]
+  },
+  {
+   "name": "Barrett-Nevin/13th-11th",
+   "corners": [
+    {
+     "a": "Nevin",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Nevin x 13th",
+     "x": 900.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Macdonald x 13th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 1770.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    }
+   ],
+   "with": [
+    "Nevin-Macdonald/13th-11th",
+    "Nevin-Macdonald/11th-9th"
+   ],
+   "zone_px": [
+    60,
+    124,
+    900,
+    948
+   ]
+  },
+  {
+   "name": "Barrett-Nevin/11th-9th",
+   "corners": [
+    {
+     "a": "Nevin",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Nevin x 13th",
+     "x": 900.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "13th",
+     "norefine": 1,
+     "corner": "Macdonald x 13th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/13th-11th"
+    },
+    {
+     "a": "Nevin",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Nevin x 11th",
+     "x": 900.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "11th",
+     "norefine": 1,
+     "corner": "Macdonald x 11th",
+     "x": 1545.0,
+     "y": 948.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 1770.0,
+     "block": "Nevin-Macdonald/11th-9th"
+    }
+   ],
+   "with": [
+    "Nevin-Macdonald/13th-11th",
+    "Nevin-Macdonald/11th-9th"
+   ],
+   "zone_px": [
+    60,
+    948,
+    900,
+    1770
+   ]
+  }
+ ],
+ "pct": 25
+}

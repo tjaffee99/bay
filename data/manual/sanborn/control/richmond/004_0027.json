@@ -1,0 +1,1042 @@
+{
+ "notes": "Downtown south of Macdonald: 4th - 7th St, Macdonald - Chanslor (Christian Church). Control: street-crossing centres.",
+ "blocks": [
+  {
+   "name": "4th-5th/Macdonald-Bissell",
+   "corners": [
+    {
+     "a": "4th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "4th x Macdonald",
+     "x": 190.0,
+     "y": 60.0
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0
+    }
+   ],
+   "with": [
+    "4th-5th/Bissell-Chanslor",
+    "5th-6th/Macdonald-Bissell",
+    "5th-6th/Bissell-Chanslor",
+    "6th-7th/Macdonald-Bissell",
+    "6th-7th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    190.0,
+    60.0,
+    614.0,
+    956.0
+   ]
+  },
+  {
+   "name": "4th-5th/Bissell-Chanslor",
+   "corners": [
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "4th x Chanslor",
+     "x": 190.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "4th x Macdonald",
+     "x": 190.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "7th x Macdonald",
+     "x": 1436.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "7th x Chanslor",
+     "x": 1436.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "4th-5th/Macdonald-Bissell",
+    "5th-6th/Macdonald-Bissell",
+    "5th-6th/Bissell-Chanslor",
+    "6th-7th/Macdonald-Bissell",
+    "6th-7th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    190.0,
+    956.0,
+    614.0,
+    1824.0
+   ]
+  },
+  {
+   "name": "5th-6th/Macdonald-Bissell",
+   "corners": [
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "4th x Macdonald",
+     "x": 190.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "4th x Chanslor",
+     "x": 190.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "7th x Macdonald",
+     "x": 1436.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "7th x Chanslor",
+     "x": 1436.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "4th-5th/Macdonald-Bissell",
+    "4th-5th/Bissell-Chanslor",
+    "5th-6th/Bissell-Chanslor",
+    "6th-7th/Macdonald-Bissell",
+    "6th-7th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    614.0,
+    60.0,
+    1012.0,
+    956.0
+   ]
+  },
+  {
+   "name": "5th-6th/Bissell-Chanslor",
+   "corners": [
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0
+    }
+   ],
+   "with": [
+    "4th-5th/Macdonald-Bissell",
+    "4th-5th/Bissell-Chanslor",
+    "5th-6th/Macdonald-Bissell",
+    "6th-7th/Macdonald-Bissell",
+    "6th-7th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    614.0,
+    956.0,
+    1012.0,
+    1824.0
+   ]
+  },
+  {
+   "name": "6th-7th/Macdonald-Bissell",
+   "corners": [
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "7th x Macdonald",
+     "x": 1436.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "4th x Macdonald",
+     "x": 190.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "4th x Chanslor",
+     "x": 190.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "7th x Chanslor",
+     "x": 1436.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "4th-5th/Macdonald-Bissell",
+    "4th-5th/Bissell-Chanslor",
+    "5th-6th/Macdonald-Bissell",
+    "5th-6th/Bissell-Chanslor",
+    "6th-7th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    1012.0,
+    60.0,
+    1436.0,
+    956.0
+   ]
+  },
+  {
+   "name": "6th-7th/Bissell-Chanslor",
+   "corners": [
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "7th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "7th x Chanslor",
+     "x": 1436.0,
+     "y": 1824.0,
+     "block": "6th-7th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "4th x Macdonald",
+     "x": 190.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Macdonald-Bissell"
+    },
+    {
+     "a": "4th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "4th x Bissell",
+     "x": 190.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "4th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "4th x Chanslor",
+     "x": 190.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "4th-5th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "5th x Macdonald",
+     "x": 614.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Macdonald-Bissell"
+    },
+    {
+     "a": "5th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "5th x Bissell",
+     "x": 614.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "5th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "5th x Chanslor",
+     "x": 614.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "6th x Chanslor",
+     "x": 1012.0,
+     "y": 1824.0,
+     "block": "5th-6th/Bissell-Chanslor"
+    },
+    {
+     "a": "6th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "6th x Macdonald",
+     "x": 1012.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "6th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "6th x Bissell",
+     "x": 1012.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "7th x Macdonald",
+     "x": 1436.0,
+     "y": 60.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    },
+    {
+     "a": "7th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "7th x Bissell",
+     "x": 1436.0,
+     "y": 956.0,
+     "block": "6th-7th/Macdonald-Bissell"
+    }
+   ],
+   "with": [
+    "4th-5th/Macdonald-Bissell",
+    "4th-5th/Bissell-Chanslor",
+    "5th-6th/Macdonald-Bissell",
+    "5th-6th/Bissell-Chanslor",
+    "6th-7th/Macdonald-Bissell"
+   ],
+   "zone_px": [
+    1012.0,
+    956.0,
+    1436.0,
+    1824.0
+   ]
+  }
+ ],
+ "pct": 25
+}

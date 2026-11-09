@@ -111,6 +111,10 @@ CITIES = {
             "barrett": "barrett avenue", "bissell": "bissell avenue", "ohio": "ohio avenue", "cutting": "cutting boulevard",
             "washington": "washington avenue", "park place": "park place", "richmond": "west richmond avenue",
         },
+        # the 1916 scans are pale (block lines at grey 100-125, frame yellow at saturation ~70): stretch value and
+        # saturation before the colour classes of the Oakland tool are applied (see enhance())
+        "enhance": {"v_lo": 90, "v_hi": 245, "s_gain": 1.8, "s_off": -25},
+        "no_reclass": True,  # the frame yellow is hue 21-22 on these plates: E.reclass would call it brown fire-proof
         "railroad_streets": [],
     },
 }
@@ -390,6 +394,28 @@ def drop_vanished_sites():
             json.dump(fc, open(p, "w"))
 
 
+def enhance(key):
+    """pale scans (CITIES[city]['enhance']): write a contrast / saturation stretched copy of the sheet image and point
+    the georeference (<key>.M.json 'img') at it, so the extraction thresholds of the Oakland tool apply. Value:
+    (V - v_lo) * 255 / (v_hi - v_lo); saturation: S * s_gain + s_off; hue unchanged."""
+    e = CITIES[CITY_NAME].get("enhance")
+    if not e:
+        return
+    import cv2
+    mp = E.INTERIM / f"{key}.M.json"
+    G = json.load(open(mp))
+    src = E.image(key)
+    out = E.INTERIM / f"{key}_enh.png"
+    rgb = np.asarray(Image.open(src).convert("RGB"))
+    hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV).astype(np.float32)
+    hsv[..., 2] = np.clip((hsv[..., 2] - e["v_lo"]) * 255.0 / (e["v_hi"] - e["v_lo"]), 0, 255)
+    hsv[..., 1] = np.clip(hsv[..., 1] * e["s_gain"] + e["s_off"], 0, 255)
+    Image.fromarray(cv2.cvtColor(hsv.astype(np.uint8), cv2.COLOR_HSV2RGB)).save(out)
+    del rgb, hsv
+    G["img"] = str(out)
+    json.dump(G, open(mp, "w"), indent=1)
+
+
 def cap_blocks():
     """per-block confidence caps: a block whose own corners are gone (campus, superblock) and that is placed by the fit
     of its neighbours ("with") carries `confidence_cap` in its control entry; lower the confidence of its footprints in
@@ -492,6 +518,27 @@ if __name__ == "__main__":
         E.spec(args[0], s)
         print("wrote", E.CONTROL / f"{args[0]}.json")
         sys.exit()
+    if stage == "gridspec":  # gridspec <key> <json>: control by street-crossing centres, for plates that draw the
+        # streets to scale but whose block lines are too faint to snap (Richmond 1916):
+        # {"cols": [[x, street], ...], "rows": [[y, street], ...], other top-level keys}. Each cell between two
+        # consecutive cols and rows is a block zone whose corners are the four crossings (Overture centrelines, `a`/`b`
+        # entries, pixels as read: norefine); all blocks are fitted together (one similarity for the sheet).
+        s = json.loads(args[1]) if not os.path.exists(args[1]) else json.load(open(args[1]))
+        cols, rows = sorted(s.pop("cols")), sorted(s.pop("rows"))
+        blocks = {}
+        for (x0, a0), (x1, a1) in zip(cols[:-1], cols[1:]):
+            for (y0, b0), (y1, b1) in zip(rows[:-1], rows[1:]):
+                name = f"{a0}-{a1}/{b0}-{b1}"
+                blocks[name] = [[x, y, {"a": a, "b": b, "norefine": 1, "corner": f"{a} x {b}"}]
+                                for x, a in ((x0, a0), (x1, a1)) for y, b in ((y0, b0), (y1, b1))]
+        cfg = E.compact(args[0], dict(s, blocks=blocks))
+        for b in cfg["blocks"]:
+            b["with"] = [o["name"] for o in cfg["blocks"] if o["name"] != b["name"]]
+            xs = [c["x"] for c in b["corners"]]; ys = [c["y"] for c in b["corners"]]
+            b["zone_px"] = [min(xs), min(ys), max(xs), max(ys)]
+        json.dump(cfg, open(E.CONTROL / f"{args[0]}.json", "w"), indent=1)
+        print("wrote", E.CONTROL / f"{args[0]}.json", len(blocks), "blocks")
+        sys.exit()
     if stage == "respec":  # respec <key> [json of top-level keys to set]: rebuild a control file from its own block
         # estimates (px4_est, streets, w, skip, oc, with, no_refine), e.g. after changing a threshold
         cfg = json.load(open(E.CONTROL / f"{args[0]}.json"))
@@ -522,8 +569,10 @@ if __name__ == "__main__":
             E.freeze(k)
     if stage in ("all", "extract"):
         for k in keys:
+            enhance(k)
             E.extract(k)
-            E.reclass(k)
+            if not CITIES[CITY_NAME].get("no_reclass"):
+                E.reclass(k)
             if k.split("_")[0] in E.EDITION_1950:
                 E.extract_regions(k)
     if stage == "overlay":

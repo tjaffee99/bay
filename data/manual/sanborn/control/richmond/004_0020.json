@@ -1,1174 +1,1820 @@
 {
- "refine_R": 20,
- "weak": 0.15,
- "notes": "Downtown, drawn with north to the left: Barrett - Macdonald Ave, 5th - 9th St",
+ "notes": "Downtown, drawn with north to the left: Barrett - Macdonald Ave, 5th - 9th St. Control: street-crossing centres (gap midpoints between the drawn blocks), one fit for the sheet.",
  "blocks": [
   {
-   "name": "596",
-   "streets": {
-    "N": "Barrett",
-    "S": "Nevin",
-    "W": "8th",
-    "E": "9th"
-   },
-   "px4_est": [
-    [
-     80,
-     492
-    ],
-    [
-     80,
-     156
-    ],
-    [
-     864,
-     156
-    ],
-    [
-     864,
-     492
-    ]
-   ],
+   "name": "Barrett-Nevin/9th-8th",
    "corners": [
     {
-     "x": 81.2,
-     "y": 492.2,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "8th",
-      "Barrett"
-     ],
+     "a": "Barrett",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
     },
     {
-     "x": 861.0,
-     "y": 165.6,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "9th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
     },
     {
-     "x": 871.4,
-     "y": 494.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
+     "a": "Barrett",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     81.2,
-     492.2
-    ],
-    [
-     83.8,
-     160.4
-    ],
-    [
-     861.0,
-     165.6
-    ],
-    [
-     871.4,
-     494.8
-    ]
-   ],
-   "edge_q": [
-    0.38,
-    0.18,
-    0.01,
-    0.09
-   ],
-   "corners_all": [
-    {
-     "x": 81.2,
-     "y": 492.2,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "8th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 83.8,
-     "y": 160.4,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "9th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [ 0.8 18.3] at 9th x Barrett SW"
-    },
-    {
-     "x": 861.0,
-     "y": 165.6,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "9th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 871.4,
-     "y": 494.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    81.18273668149186,
-    160.39380623543812,
-    871.3521449788899,
-    494.8404677261644
+    20.0,
+    124.0,
+    900.0,
+    528.0
    ]
   },
   {
-   "name": "595",
-   "streets": {
-    "N": "Barrett",
-    "S": "Nevin",
-    "W": "7th",
-    "E": "8th"
-   },
-   "px4_est": [
-    [
-     80,
-     910
-    ],
-    [
-     80,
-     564
-    ],
-    [
-     864,
-     564
-    ],
-    [
-     864,
-     910
-    ]
-   ],
+   "name": "Barrett-Nevin/8th-7th",
    "corners": [
     {
-     "x": 80.1,
-     "y": 903.3,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "7th",
-      "Barrett"
-     ],
+     "a": "Barrett",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
     },
     {
-     "x": 81.4,
-     "y": 565.3,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "8th",
-      "Barrett"
-     ],
+     "a": "Nevin",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
     },
     {
-     "x": 863.0,
-     "y": 569.2,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "7th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     80.1,
-     903.3
-    ],
-    [
-     81.4,
-     565.3
-    ],
-    [
-     863.0,
-     569.2
-    ],
-    [
-     863.0,
-     907.2
-    ]
-   ],
-   "edge_q": [
-    0.01,
-    0.04,
-    0.0,
-    0.01
-   ],
-   "corners_all": [
-    {
-     "x": 80.1,
-     "y": 903.3,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "7th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 81.4,
-     "y": 565.3,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "8th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 863.0,
-     "y": 569.2,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 863.0,
-     "y": 907.2,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [76.1  8.7] at 7th x Nevin NE"
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    80.11767223814093,
-    565.2833798379934,
-    863.0,
-    907.218649301826
+    20.0,
+    528.0,
+    900.0,
+    945.0
    ]
   },
   {
-   "name": "594",
-   "streets": {
-    "N": "Barrett",
-    "S": "Nevin",
-    "W": "6th",
-    "E": "7th"
-   },
-   "px4_est": [
-    [
-     80,
-     1320
-    ],
-    [
-     80,
-     980
-    ],
-    [
-     864,
-     980
-    ],
-    [
-     864,
-     1320
-    ]
-   ],
+   "name": "Barrett-Nevin/7th-6th",
    "corners": [
     {
-     "x": 79.9,
-     "y": 976.4,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "7th",
-      "Barrett"
-     ],
+     "a": "Nevin",
+     "b": "7th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
     },
     {
-     "x": 860.2,
-     "y": 1317.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "6th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     78.6,
-     1317.0
-    ],
-    [
-     79.9,
-     976.4
-    ],
-    [
-     862.8,
-     981.6
-    ],
-    [
-     860.2,
-     1317.0
-    ]
-   ],
-   "edge_q": [
-    0.23,
-    0.04,
-    0.02,
-    0.28
-   ],
-   "corners_all": [
-    {
-     "x": 78.6,
-     "y": 1317.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "6th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [ 1.  13.6] at 6th x Barrett SE"
-    },
-    {
-     "x": 79.9,
-     "y": 976.4,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "7th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 862.8,
-     "y": 981.6,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [76.1  8.4] at 7th x Nevin NW"
-    },
-    {
-     "x": 860.2,
-     "y": 1317.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    78.60371517027863,
-    976.3678970922573,
-    862.8032233379845,
-    1317.0
+    20.0,
+    945.0,
+    900.0,
+    1352.0
    ]
   },
   {
-   "name": "593",
-   "streets": {
-    "N": "Barrett",
-    "S": "Nevin",
-    "W": "5th",
-    "E": "6th"
-   },
-   "px4_est": [
-    [
-     80,
-     1750
-    ],
-    [
-     80,
-     1384
-    ],
-    [
-     864,
-     1384
-    ],
-    [
-     864,
-     1750
-    ]
-   ],
+   "name": "Barrett-Nevin/6th-5th",
    "corners": [
     {
-     "x": 78.8,
-     "y": 1730.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "5th",
-      "Barrett"
-     ],
+     "a": "Barrett",
+     "b": "5th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
     },
     {
-     "x": 860.8,
-     "y": 1392.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "6th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
     },
     {
-     "x": 858.3,
-     "y": 1730.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "5th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "5th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     78.8,
-     1730.0
-    ],
-    [
-     77.6,
-     1391.6
-    ],
-    [
-     860.8,
-     1392.9
-    ],
-    [
-     858.3,
-     1730.0
-    ]
-   ],
-   "edge_q": [
-    0.4,
-    0.02,
-    0.1,
-    0.09
-   ],
-   "corners_all": [
-    {
-     "x": 78.8,
-     "y": 1730.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "5th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 77.6,
-     "y": 1391.6,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "6th",
-      "Barrett"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [36.9  4.3] at 6th x Barrett SW"
-    },
-    {
-     "x": 860.8,
-     "y": 1392.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 858.3,
-     "y": 1730.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "5th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    77.61938492187937,
-    1391.5881098699683,
-    860.7517799594498,
-    1730.0
+    20.0,
+    1352.0,
+    900.0,
+    1776.0
    ]
   },
   {
-   "name": "661",
-   "streets": {
-    "N": "Nevin",
-    "S": "Macdonald",
-    "W": "8th",
-    "E": "9th"
-   },
-   "px4_est": [
-    [
-     936,
-     492
-    ],
-    [
-     936,
-     156
-    ],
-    [
-     1496,
-     156
-    ],
-    [
-     1496,
-     492
-    ]
-   ],
+   "name": "Nevin-Macdonald/9th-8th",
    "corners": [
     {
-     "x": 952.0,
-     "y": 495.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
     },
     {
-     "x": 1504.7,
-     "y": 166.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "9th",
-      "Macdonald"
-     ],
+     "a": "Macdonald",
+     "b": "9th",
      "norefine": 1,
-     "weak": false
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
     },
     {
-     "x": 1502.2,
-     "y": 495.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "8th",
-      "Macdonald"
-     ],
+     "a": "Macdonald",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     952.0,
-     495.0
-    ],
-    [
-     952.0,
-     164.3
-    ],
-    [
-     1504.7,
-     166.9
-    ],
-    [
-     1502.2,
-     495.0
-    ]
-   ],
-   "edge_q": [
-    0.49,
-    0.32,
-    0.16,
-    0.6
-   ],
-   "corners_all": [
-    {
-     "x": 952.0,
-     "y": 495.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 952.0,
-     "y": 164.3,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "9th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [1.1 7.7] at 9th x Nevin SW"
-    },
-    {
-     "x": 1504.7,
-     "y": 166.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "9th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1502.2,
-     "y": 495.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "8th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    952.0,
-    164.2593984962406,
-    1504.7307580085226,
-    495.0
+    900.0,
+    124.0,
+    1545.0,
+    528.0
    ]
   },
   {
-   "name": "660",
-   "streets": {
-    "N": "Nevin",
-    "S": "Macdonald",
-    "W": "7th",
-    "E": "8th"
-   },
-   "px4_est": [
-    [
-     936,
-     910
-    ],
-    [
-     936,
-     564
-    ],
-    [
-     1496,
-     564
-    ],
-    [
-     1496,
-     910
-    ]
-   ],
+   "name": "Nevin-Macdonald/8th-7th",
    "corners": [
     {
-     "x": 952.0,
-     "y": 906.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
     },
     {
-     "x": 952.0,
-     "y": 568.6,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "7th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
     },
     {
-     "x": 1503.5,
-     "y": 569.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "8th",
-      "Macdonald"
-     ],
+     "a": "Macdonald",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
     },
     {
-     "x": 1498.4,
-     "y": 906.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "7th",
-      "Macdonald"
-     ],
+     "a": "Barrett",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     952.0,
-     906.0
-    ],
-    [
-     952.0,
-     568.6
-    ],
-    [
-     1503.5,
-     569.9
-    ],
-    [
-     1498.4,
-     906.0
-    ]
-   ],
-   "edge_q": [
-    0.02,
-    0.14,
-    0.1,
-    0.08
-   ],
-   "corners_all": [
-    {
-     "x": 952.0,
-     "y": 906.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 952.0,
-     "y": 568.6,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "8th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1503.5,
-     "y": 569.9,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "8th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1498.4,
-     "y": 906.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "7th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/7th-6th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    952.0,
-    568.6296992481202,
-    1503.541441827046,
-    906.0
+    900.0,
+    528.0,
+    1545.0,
+    945.0
    ]
   },
   {
-   "name": "659",
-   "streets": {
-    "N": "Nevin",
-    "S": "Macdonald",
-    "W": "6th",
-    "E": "7th"
-   },
-   "px4_est": [
-    [
-     936,
-     1320
-    ],
-    [
-     936,
-     980
-    ],
-    [
-     1496,
-     980
-    ],
-    [
-     1496,
-     1320
-    ]
-   ],
+   "name": "Nevin-Macdonald/7th-6th",
    "corners": [
     {
-     "x": 951.8,
-     "y": 1314.8,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "7th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
     },
     {
-     "x": 949.2,
-     "y": 981.0,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "6th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
     },
     {
-     "x": 1499.2,
-     "y": 981.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "7th",
-      "Macdonald"
-     ],
+     "a": "Macdonald",
+     "b": "6th",
      "norefine": 1,
-     "weak": false
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
     },
     {
-     "x": 1501.8,
-     "y": 1322.5,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "6th",
-      "Macdonald"
-     ],
+     "a": "Barrett",
+     "b": "8th",
      "norefine": 1,
-     "weak": false
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
     }
    ],
-   "px4": [
-    [
-     951.8,
-     1314.8
-    ],
-    [
-     949.2,
-     981.0
-    ],
-    [
-     1499.2,
-     981.0
-    ],
-    [
-     1501.8,
-     1322.5
-    ]
-   ],
-   "edge_q": [
-    0.05,
-    0.19,
-    0.15,
-    0.09
-   ],
-   "corners_all": [
-    {
-     "x": 951.8,
-     "y": 1314.8,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 949.2,
-     "y": 981.0,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "7th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1499.2,
-     "y": 981.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "7th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1501.8,
-     "y": 1322.5,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "6th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/6th-5th"
    ],
    "zone_px": [
-    949.1919504643963,
-    981.0,
-    1501.8353686838777,
-    1322.5296339570095
+    900.0,
+    945.0,
+    1545.0,
+    1352.0
    ]
   },
   {
-   "name": "658",
-   "streets": {
-    "N": "Nevin",
-    "S": "Macdonald",
-    "W": "5th",
-    "E": "6th"
-   },
-   "px4_est": [
-    [
-     936,
-     1750
-    ],
-    [
-     936,
-     1384
-    ],
-    [
-     1496,
-     1384
-    ],
-    [
-     1496,
-     1750
-    ]
-   ],
+   "name": "Nevin-Macdonald/6th-5th",
    "corners": [
     {
-     "x": 950.0,
-     "y": 1392.9,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
+     "a": "Nevin",
+     "b": "6th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
     },
     {
-     "x": 1499.0,
-     "y": 1391.6,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "6th",
-      "Macdonald"
-     ],
+     "a": "Nevin",
+     "b": "5th",
      "norefine": 1,
-     "weak": false
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Macdonald x 5th",
+     "x": 1545.0,
+     "y": 1776.0,
+     "block": "Nevin-Macdonald/6th-5th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/9th-8th"
+    },
+    {
+     "a": "Barrett",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Barrett x 8th",
+     "x": 20.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/7th-6th"
+    },
+    {
+     "a": "Barrett",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Barrett x 5th",
+     "x": 20.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "5th",
+     "norefine": 1,
+     "corner": "Nevin x 5th",
+     "x": 900.0,
+     "y": 1776.0,
+     "block": "Barrett-Nevin/6th-5th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "9th",
+     "norefine": 1,
+     "corner": "Macdonald x 9th",
+     "x": 1545.0,
+     "y": 124.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/9th-8th"
+    },
+    {
+     "a": "Nevin",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Nevin x 8th",
+     "x": 900.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "8th",
+     "norefine": 1,
+     "corner": "Macdonald x 8th",
+     "x": 1545.0,
+     "y": 528.0,
+     "block": "Nevin-Macdonald/8th-7th"
+    },
+    {
+     "a": "Nevin",
+     "b": "7th",
+     "norefine": 1,
+     "corner": "Nevin x 7th",
+     "x": 900.0,
+     "y": 945.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Nevin",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Nevin x 6th",
+     "x": 900.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
+    },
+    {
+     "a": "Macdonald",
+     "b": "6th",
+     "norefine": 1,
+     "corner": "Macdonald x 6th",
+     "x": 1545.0,
+     "y": 1352.0,
+     "block": "Nevin-Macdonald/7th-6th"
     }
    ],
-   "px4": [
-    [
-     950.0,
-     1730.9
-    ],
-    [
-     950.0,
-     1392.9
-    ],
-    [
-     1499.0,
-     1391.6
-    ],
-    [
-     1499.0,
-     1729.6
-    ]
-   ],
-   "edge_q": [
-    0.1,
-    0.29,
-    0.13,
-    0.06
-   ],
-   "corners_all": [
-    {
-     "x": 950.0,
-     "y": 1730.9,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "5th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [75.5 10.1] at 5th x Nevin SE"
-    },
-    {
-     "x": 950.0,
-     "y": 1392.9,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "6th",
-      "Nevin"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1499.0,
-     "y": 1391.6,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "6th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1499.0,
-     "y": 1729.6,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "5th",
-      "Macdonald"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [75.9 12.2] at 5th x Macdonald NE"
-    }
+   "with": [
+    "Barrett-Nevin/9th-8th",
+    "Barrett-Nevin/8th-7th",
+    "Barrett-Nevin/7th-6th",
+    "Barrett-Nevin/6th-5th",
+    "Nevin-Macdonald/9th-8th",
+    "Nevin-Macdonald/8th-7th",
+    "Nevin-Macdonald/7th-6th"
    ],
    "zone_px": [
-    950.0,
-    1391.5850563909773,
-    1499.0,
-    1730.875
+    900.0,
+    1352.0,
+    1545.0,
+    1776.0
    ]
   }
  ],

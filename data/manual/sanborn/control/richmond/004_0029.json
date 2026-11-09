@@ -1,0 +1,312 @@
+{
+ "notes": "Downtown south of Macdonald: 10th - 13th St, Macdonald - Chanslor (Hotel Richmond, Methodist church). Control: the crossings of 11th and 13th St (10th St is gone downtown, 12th St is offset at Bissell); the 10th - 11th St blocks are placed by the same fit.",
+ "blocks": [
+  {
+   "name": "11th-13th/Macdonald-Bissell",
+   "corners": [
+    {
+     "a": "11th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "11th x Macdonald",
+     "x": 730.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "13th x Macdonald",
+     "x": 1536.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "11th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "11th x Chanslor",
+     "x": 730.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "13th x Chanslor",
+     "x": 1536.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "11th-13th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    730.0,
+    56.0,
+    1536.0,
+    956.0
+   ]
+  },
+  {
+   "name": "11th-13th/Bissell-Chanslor",
+   "corners": [
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0
+    },
+    {
+     "a": "11th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "11th x Chanslor",
+     "x": 730.0,
+     "y": 1824.0
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0
+    },
+    {
+     "a": "13th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "13th x Chanslor",
+     "x": 1536.0,
+     "y": 1824.0
+    }
+   ],
+   "with": [
+    "11th-13th/Macdonald-Bissell"
+   ],
+   "zone_px": [
+    730.0,
+    956.0,
+    1536.0,
+    1824.0
+   ]
+  },
+  {
+   "name": "10th-11th/Macdonald-Bissell",
+   "corners": [
+    {
+     "a": "11th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "11th x Macdonald",
+     "x": 730.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "13th x Macdonald",
+     "x": 1536.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "11th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "11th x Chanslor",
+     "x": 730.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "13th x Chanslor",
+     "x": 1536.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "11th-13th/Macdonald-Bissell",
+    "11th-13th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    300,
+    56,
+    730,
+    956
+   ]
+  },
+  {
+   "name": "10th-11th/Bissell-Chanslor",
+   "corners": [
+    {
+     "a": "11th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "11th x Macdonald",
+     "x": 730.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Macdonald",
+     "norefine": 1,
+     "corner": "13th x Macdonald",
+     "x": 1536.0,
+     "y": 56.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Macdonald-Bissell"
+    },
+    {
+     "a": "11th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "11th x Bissell",
+     "x": 730.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "11th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "11th x Chanslor",
+     "x": 730.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Bissell",
+     "norefine": 1,
+     "corner": "13th x Bissell",
+     "x": 1536.0,
+     "y": 956.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    },
+    {
+     "a": "13th",
+     "b": "Chanslor",
+     "norefine": 1,
+     "corner": "13th x Chanslor",
+     "x": 1536.0,
+     "y": 1824.0,
+     "block": "11th-13th/Bissell-Chanslor"
+    }
+   ],
+   "with": [
+    "11th-13th/Macdonald-Bissell",
+    "11th-13th/Bissell-Chanslor"
+   ],
+   "zone_px": [
+    300,
+    956,
+    730,
+    1824
+   ]
+  }
+ ],
+ "pct": 25
+}
