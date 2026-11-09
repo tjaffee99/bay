@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[4]
 OUT = Path(__file__).resolve().parents[1]
 
 
-def merc(x, y, z=None):
+def merc(x, y, z=None):  # noqa: ARG001
     x = np.asarray(x)
     y = np.asarray(y)
     return x * 20037508.342789244 / 180.0, np.log(np.tan(np.pi / 4 + np.radians(y) / 2)) * 6378137.0

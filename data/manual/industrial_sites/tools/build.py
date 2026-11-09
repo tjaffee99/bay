@@ -71,6 +71,7 @@ def part_geoms(p, lu):
         q = q[q["class"].isin(classes) | q.subtype.isin(classes)]
         rp = q.geometry.representative_point()
         q = q[(rp.x > w) & (rp.x < e) & (rp.y > s) & (rp.y < n) & ~q.pfx.isin(excl)]
+        q = q[~q["name"].fillna("").str.contains("Caltrans|Maintenance Station|School|Park", regex=True)]
         q = q[q.to_crs(UTM).area > 2000]
         for _, r in q.iterrows():
             out.append((r.geometry, f"osm:{r.id}" + (f" ({r['name']})" if isinstance(r["name"], str) else "")))
@@ -111,9 +112,13 @@ def dated_footprints(s, geom, redate=False):
     if pr is None:
         print(f"  dating {len(fps)} footprints on {len(eds)} editions")
         pr = presence(geom, fps, eds, max_half=3500.0, log=print)
-        pr["fid"] = fps.fid.values[pr.fi.values]
+        pr["fid"] = fps.fid.values[pr.fi.values.astype(int)] if len(pr) else pd.Series(dtype=str)
         pr["url"] = pr.sheet.map({e[1]: e[5] for e in eds})
         pr.to_parquet(cp)
+    if not len(pr):
+        for c in ("first_drawn", "last_absent", "est_start", "evidence", "first_url", "last_drawn"):
+            fps[c] = np.nan
+        return fps, pr
     fid_ix = {f: i for i, f in enumerate(fps.fid.values)}
     pr = pr[pr.fid.isin(fid_ix)].copy()
     pr["fi"] = pr.fid.map(fid_ix)
@@ -138,13 +143,24 @@ def main():
             for g, ref in part_geoms(p, lu):
                 parts.append((g, ref, p))
         geom = shapely.union_all([g for g, _, _ in parts]) if parts else None
+        # parts marked on_top (a plant inside a quarry outline) are cut out of the site's other parts
+        top = [g for g, _, p in parts if p.get("on_top")]
+        if top:
+            tu = shapely.union_all(top)
+            parts = [(g if p.get("on_top") else shapely.make_valid(g.difference(tu)), ref, p) for g, ref, p in parts]
         fps, pr = (dated_footprints(s, geom, redate) if (geom is not None and s.get("date")) else (None, None))
         # ---- footprints: evidence vs the live map
         if fps is not None and len(fps):
             f0 = s["founded"]
             drawn = fps.first_drawn.notna()
-            late = drawn & (fps.live_year > fps.first_drawn + 2)
-            early = fps.live_year < f0 - 1
+            # a real roll year later than the last edition that still draws the footprint means
+            # the building was (re)built after that map: a new house on the site of base housing,
+            # a rebuilt tank - trust the roll (1900 / 0 placeholders are not real years)
+            real_roll = np.isfinite(fps.roll_year) & (fps.roll_year > 1900) & (fps.roll_year != 1900)
+            rebuilt = real_roll & (fps.roll_year > fps.last_drawn + 2)
+            late = drawn & (fps.live_year > fps.first_drawn + 2) & ~rebuilt
+            # too early: only where the founding year is documented
+            early = (fps.live_year < f0 - 1) & (s["conf"] == "exact")
             fix = late | early
             new = np.where(late, fps.est_start, np.nan)
             new = np.where(early & drawn, np.maximum(fps.est_start, f0), new)
@@ -191,15 +207,20 @@ def main():
             y0 = p.get("start", s["start"])
             if p.get("auto") and fps is not None and len(fps):
                 inside = fps[shapely.contains(shapely.buffer(g, 0.0002), fps.geometry.representative_point().values)]
-                ests = inside.est_start.dropna()
-                if len(ests) >= 3:
-                    y0 = max(s["start"], float(np.percentile(ests, 20)))
-                    ref += f"; start from the editions ({len(ests)} footprints drawn)"
-            for gg in getattr(shapely.make_valid(g), "geoms", [g]):
-                if gg.geom_type not in ("Polygon", "MultiPolygon") or gg.is_empty:
-                    continue
+                ests = np.sort(inside.est_start.dropna().values)
+                at_founding = inside.evidence.fillna("").str.startswith("drawn on the first edition").sum()
+                if at_founding >= 3:
+                    y0 = s["start"]  # the part's tanks / buildings are on the first maps after the founding
+                    ref += f"; {at_founding} footprints drawn on the first edition after the founding"
+                elif len(ests) >= 3:
+                    y0 = max(s["start"], float(ests[2]))  # when its 3rd footprint first appears
+                    ref += f"; start = 3rd-earliest edition date of its {len(ests)} drawn footprints"
+            pieces = [gg for gg in getattr(shapely.make_valid(g), "geoms", [g])
+                      if gg.geom_type in ("Polygon", "MultiPolygon") and not gg.is_empty]
+            for m_, gg in enumerate(pieces):
+                pid = f"{s['site_id']}_{k + 1}" + (chr(97 + m_) if len(pieces) > 1 else "")
                 feats.append({"type": "Feature", "properties": {
-                    "site_id": s["site_id"], "part_id": f"{s['site_id']}_{k + 1}", "name": s["name"],
+                    "site_id": s["site_id"], "part_id": pid, "name": s["name"],
                     "kind": s["kind"], "cover": p.get("cover", s["cover"]),
                     "year_start": round(float(y0), 2), "year_end": p.get("end", s["end"]),
                     "name_label": s["label"],
@@ -211,16 +232,16 @@ def main():
                     "county": s["county"]},
                     "geometry": mapping(shapely.set_precision(gg, 1e-7))})
         # ---- site rules
-        if geom is not None:
+        if geom is not None and s["conf"] == "exact" and s.get("floor", True):
             rules.append(dict(site_id=s["site_id"], ring_type="site", year=s.get("founded", s["start"]),
                               applies_to="all_pre", max_year="",
                               evidence=f"{s['label']} founded {s.get('founded', s['start']):g}: no footprint inside "
                                        f"can be older", source_url=s["src"]))
-            if s.get("date"):
-                rules.append(dict(site_id=s["site_id"], ring_type="site", year=s.get("founded", s["start"]),
-                                  applies_to="named", max_year="",
-                                  evidence="footprints dated by the USGS editions that first draw them: "
-                                           "known_dates_industrial.csv", source_url=s["src"]))
+        if geom is not None and s.get("date"):
+            rules.append(dict(site_id=s["site_id"], ring_type="site", year=s.get("founded", s["start"]),
+                              applies_to="named", max_year="",
+                              evidence="footprints dated by the USGS editions that first draw them: "
+                                       "known_dates_industrial.csv", source_url=s["src"]))
     if args:
         print("partial run: not writing outputs")
         print(pd.DataFrame(audit).to_string())

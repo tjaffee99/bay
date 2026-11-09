@@ -1,0 +1,53 @@
+site_id,name,founded,footprints,live_median,live_p10,drawn_on_maps,corrected,too_late,too_early,median_shift_years,max_shift_years
+chevron_richmond,Chevron Richmond Refinery,1902.0,611,1984.0,1976.0,340.0,165,165,0,51.0,93.0
+shell_martinez,Shell Martinez Refinery,1915.0,488,1977.0,1960.0,182.0,142,136,6,28.0,77.0
+avon_refinery,Avon Refinery (Marathon),1913.0,327,1986.0,1977.0,123.0,119,119,0,34.0,80.0
+rodeo_refinery,Rodeo Refinery (Oleum),1896.0,287,1984.0,1976.0,117.0,108,108,0,33.0,88.0
+selby_smelter,Selby Smelter,1885.0,0,,,,0,0,0,0.0,0.0
+ch_crockett,C&H Sugar,1898.0,37,1929.0,1910.0,10.0,8,8,0,26.0,32.0
+hercules_powder,Hercules Powder Works,1881.0,1132,2004.0,1986.0,,0,0,0,0.0,0.0
+giant_powder,Giant Powder Works,1892.0,6,1986.0,1983.0,,0,0,0,0.0,0.0
+concord_nws,Concord Naval Weapons Station,1942.0,70,1984.0,1976.0,9.0,8,8,0,25.0,42.0
+acme_landfill,ACME Landfill,1949.0,5,1987.0,1984.0,,0,0,0,0.0,0.0
+keller_canyon_landfill,Keller Canyon Landfill,1992.0,8,1980.0,1976.0,,0,0,0,0.0,0.0
+kaiser_yard3,Kaiser Shipyard No. 3,1942.0,45,1963.0,1963.0,33.0,0,0,0,0.0,0.0
+kaiser_yards_1_2,Kaiser Shipyards 1 & 2,1941.0,680,1992.0,1990.0,,0,0,0,0.0,0.0
+santa_fe_richmond,Santa Fe Yard,1900.0,31,1983.0,1967.0,11.0,5,5,0,54.0,80.0
+pullman_richmond,Pullman Shops,1910.0,29,1971.0,1953.0,,0,0,0,0.0,0.0
+point_molate,Winehaven / Point Molate,1907.0,52,1984.0,1976.0,38.0,18,18,0,79.0,87.0
+oakland_army_base,Oakland Army Base,1941.95,84,1983.0,1977.0,21.0,13,13,0,25.0,52.0
+sp_oakland_mole,Oakland Mole,1882.0,21,1988.0,1979.0,,0,0,0,0.0,0.0
+sp_west_oakland_yard,West Oakland Rail Yards,1879.0,66,1980.0,1953.0,30.0,12,12,0,74.0,106.0
+oakland_port_terminals,Port of Oakland,1962.7,257,1990.0,1977.0,,0,0,0,0.0,0.0
+moore_dry_dock,Moore Dry Dock,1909.0,27,1992.0,1982.0,,0,0,0,0.0,0.0
+bethlehem_alameda,Bethlehem Shipyard,1916.0,36,1990.0,1987.0,,0,0,0,0.0,0.0
+alameda_coast_guard,Coast Guard Island,1942.0,80,1983.0,1977.0,22.0,15,15,0,39.0,44.0
+camp_parks,Camp Parks,1942.0,343,1990.0,1978.0,98.0,97,97,0,49.0,83.0
+llnl,Lawrence Livermore Lab,1942.0,421,1985.0,1978.0,101.0,89,89,0,25.0,49.0
+sandia_livermore,Sandia Livermore,1956.0,70,1983.0,1977.0,18.0,12,12,0,27.0,38.0
+gm_fremont,Tesla Factory (GM Fremont),1962.0,118,1962.0,1962.0,20.0,0,0,0,0.0,0.0
+livermore_gravel,Pleasanton Gravel Pits,1931.0,15,1971.0,1971.0,,0,0,0,0.0,0.0
+sunol_quarries,Sunol Quarries,1950.0,36,1980.0,1952.0,,0,0,0,0.0,0.0
+altamont_landfill,Altamont Landfill,1980.0,33,2014.0,1976.0,,0,0,0,0.0,0.0
+vasco_road_landfill,Vasco Road Landfill,1963.0,4,1966.0,1966.0,,0,0,0,0.0,0.0
+pier70_union_iron_works,Union Iron Works (Pier 70),1884.0,55,1897.0,1896.0,19.0,4,4,0,27.0,39.0
+potrero_power,Potrero Power Station,1890.0,68,1923.0,1923.0,6.0,5,5,0,33.0,40.0
+bayshore_yard,Bayshore Yard,1907.0,2,1983.0,1979.0,0.0,0,0,0,0.0,0.0
+schlage_lock,Schlage Lock,1926.0,2,1944.0,1943.0,,0,0,0,0.0,0.0
+ox_mountain_landfill,Ox Mountain Landfill,1976.0,19,1988.0,1981.0,,0,0,0,0.0,0.0
+guadalupe_valley_quarry,Brisbane Quarry,1950.0,18,1988.0,1977.0,,0,0,0,0.0,0.0
+permanente,Permanente Quarry,1939.5,48,1984.0,1978.0,29.0,12,12,0,39.0,50.0
+stevens_creek_quarry,Stevens Creek Quarry,1950.0,9,1986.0,1900.0,,0,0,0,0.0,0.0
+lockheed_sunnyvale,Lockheed Missiles & Space,1956.0,77,1901.0,1900.0,38.0,51,7,44,-56.0,85.0
+hendy_westinghouse,Hendy Iron Works (Westinghouse),1906.0,44,1907.0,1906.0,1.0,0,0,0,0.0,0.0
+newby_island_landfill,Newby Island Landfill,1938.0,7,1991.0,1987.0,,0,0,0,0.0,0.0
+guadalupe_landfill,Guadalupe Landfill,1930.0,23,1986.0,1977.0,,0,0,0,0.0,0.0
+marinship,Marinship,1942.0,242,1956.0,1943.0,,0,0,0,0.0,0.0
+san_rafael_quarry,San Rafael Rock Quarry,1929.0,17,1988.0,1981.0,,0,0,0,0.0,0.0
+redwood_landfill,Redwood Landfill,1958.0,24,1965.0,1965.0,,0,0,0,0.0,0.0
+fort_baker,Fort Baker,1901.0,77,1984.0,1976.0,31.0,14,14,0,53.0,79.0
+fort_barry,Fort Barry,1907.0,33,1985.0,1978.0,14.0,9,9,0,74.0,86.0
+fort_cronkhite,Fort Cronkhite,1941.0,43,1987.0,1978.0,33.0,26,26,0,42.0,52.0
+fort_mcdowell,Fort McDowell,1909.0,16,1983.0,1977.0,9.0,3,3,0,80.0,85.0
+hamilton_field,Hamilton Field,1932.0,1005,2000.0,1998.0,258.0,47,47,0,47.0,72.0
+clayton_quarries,Clayton Quarries,1956.0,16,1934.0,1890.0,0.0,0,0,0,0.0,0.0

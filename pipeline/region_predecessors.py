@@ -111,107 +111,381 @@ def generated(today, areas):
     return out
 
 
-def clearance_fill(areas, today_utm, pred_utm):
-    """Freeway corridors and renewal areas whose parcels are gone (I-980, the Cypress
-    viaduct, SR-87, I-280, Acorn, …) have no lots to stand predecessors on, and the
-    Sanborn tracing covers only part of them. Where neither today's buildings nor traced /
-    generated predecessors cover the ground, stand rows of houses on a block grid aligned
-    with the surrounding streets (lots 8 m wide, two 30 m rows back to back, 20 m
-    streets), from the neighbourhood's development year until the clearance. Procedural."""
+_DEBUG: dict = {}
+
+
+def _not_sf(x, y):
+    """UTM points outside San Francisco (its corridors have their own parcel predecessors)."""
+    import pyproj
+    lon, lat = pyproj.Transformer.from_crs(UTM, 4326, always_xy=True).transform(np.asarray(x), np.asarray(y))
+    return ~((lat > 37.7085) & (lon < -122.355) & (lon > -122.53))
+
+
+def corridor_fill(today_utm, pred_utm, areas):
+    """Ground cleared for freeways and renewal (I-980, the Cypress viaduct, SR-24 Grove-Shafter,
+    I-580 MacArthur, I-880 Nimitz, SR-87 / I-280 in San José, Acorn, City Center, …) has no
+    parcels and no streets on today's map, so it would be bare decades before the clearance.
+    The 1940s-50s USGS topo sheets and the Sanborn maps show the street grid running on
+    across, and today's streets still dead-end in pairs on both sides. Evidence used: a
+    street end (a dead end, or a T at a frontage street) pointing into a cleared zone,
+    matched with a collinear street end pointing back from the far side — or, failing one,
+    run on to the first street beyond the zone — is a street the clearance cut; it is
+    redrawn from the neighbourhood's development year until the clearance, never through a
+    building standing today. Rows of buildings (10 m lots: houses where the prior fabric was
+    Victorian rows, 2-3 storey row buildings where it was mixed) stand along the redrawn
+    streets and on the zone side of the streets beside it, from the development year (early
+    quartile of today's buildings within 150-300 m that predate the clearance) until the
+    clearance (researched dates in redevelopment_areas.csv; 1-3 years before a freeway
+    opened). Only where the neighbourhood predates the clearance by 12+ years, the ground
+    was dry land, and nothing real (today's buildings, traced / documented predecessors)
+    covers it. Freeways planned ahead of the tracts around them (SR-85, I-280 in Cupertino…)
+    have no cut streets and stay empty. Procedural."""
+    from audit_region_years import read_bayt
     from download_overture import RELEASE
-    from common import RAW
-    region_areas = [a for a in areas if a[4].startswith(("oak_", "sj_")) and a[3] not in ("vacant", "rail_yards")]
-    if not region_areas:
-        return gpd.GeoDataFrame(geometry=[], crs=UTM)
-    bb = shapely.union_all([a[0] for a in region_areas]).buffer(600)
+    from common import RAW, VIEWER_DATA
+    from airports import land_year
+    from shapely.strtree import STRtree
+    import pyproj
+    empty = gpd.GeoDataFrame(geometry=[], crs=UTM)
+    to_utm = pyproj.Transformer.from_crs(4326, UTM, always_xy=True)
+    to_ll = pyproj.Transformer.from_crs(UTM, 4326, always_xy=True)
+    # researched clearance areas (region ones: oak_, sj_)
+    zareas = [a for a in areas if a[4].startswith(("oak_", "sj_")) and a[3] not in ("vacant", "rail_yards")]
+    # freeway rights-of-way: every carriageway / ramp opened after 1940, buffered
+    bufs, byear = [], []
+    fp = VIEWER_DATA / "freeways.bin.gz"
+    if fp.exists():
+        h, c = read_bayt(fp)
+        si = c["start_indices"].astype(np.int64)
+        pos = c["positions"].reshape(-1, 3).astype(np.float64)
+        fy = c["years"].reshape(-1, 2)[:, 0]
+        fw = c["width"].astype(float)
+        o = h["origin"]
+        for i in range(len(c["kind"])):
+            if not (1940 < fy[i] < 2030):
+                continue
+            p = pos[si[i]:si[i + 1]]
+            if len(p) < 2:
+                continue
+            x, y = to_utm.transform(p[:, 0] + o[0], p[:, 1] + o[1])
+            half = fw[i] / 2 + (16.0 if fw[i] >= 11 else 10.0)   # carriageway, shoulders, embankment
+            bufs.append(shapely.LineString(np.column_stack([x, y])).buffer(half, cap_style="flat"))
+            byear.append(float(fy[i]))
+    if not bufs and not zareas:
+        return empty, []
+    byear = np.array(byear)
+    btree = STRtree(bufs) if bufs else None
+    aidx = STRtree([a[0] for a in zareas]) if zareas else None
+    zone = shapely.union_all(bufs + [a[0] for a in zareas])
+    shapely.prepare(zone)
+
+    def clear_at(geom):
+        """(clearance start, end, prior fabric) of the zone under geom: a researched area
+        (the smallest one) wins over a freeway right-of-way."""
+        if aidx is not None:
+            hit = aidx.query(geom, predicate="intersects")
+            if len(hit):
+                a = min((zareas[k] for k in hit), key=lambda a: a[0].area)
+                return a[1], a[2], a[3]
+        if btree is not None:
+            hit = btree.query(geom, predicate="intersects")
+            if len(hit):
+                f = float(byear[hit].min())
+                return f - 3.0, f - 1.0, "victorian_rows"
+        return None
+
+    # today's streets (not freeways, ramps or service roads) around the zones
     roads = []
-    for f in ("roads_local.parquet", "roads_region.parquet"):
+    for f, keep in (("roads_local.parquet", ("residential", "living_street", "unclassified")),
+                    ("roads_region.parquet", ("tertiary", "secondary", "primary"))):
         p = RAW / "overture" / RELEASE / f
         if p.exists():
-            r = gpd.read_parquet(p, columns=["geometry"])
+            r = gpd.read_parquet(p, columns=["class", "geometry"])
+            r = r[r["class"].isin(keep)]
             r = (r if r.crs else r.set_crs(4326)).to_crs(UTM)
-            roads.append(r[r.intersects(bb)])
-    roads = pd.concat(roads, ignore_index=True) if roads else gpd.GeoDataFrame(geometry=[], crs=UTM)
-    tg = today_utm.geometry.values
+            roads.append(r)
+    roads = pd.concat(roads, ignore_index=True)
+    roads = roads[roads.geometry.geom_type == "LineString"]
+    zparts = bufs + [a[0] for a in zareas]
+    near = np.unique(STRtree(zparts).query(roads.geometry.values, predicate="dwithin", distance=400)[0])
+    lines = list(roads.geometry.values[near])
+    ltree = STRtree(lines)
+    log(f"corridors: {len(bufs)} freeway paths after 1940 + {len(zareas)} clearance areas, {len(lines)} streets around")
+
+    # street ends pointing into a zone: dead ends, or T / L ends (no street carries on
+    # straight from them)
+    def end_dir(ln, at_end):
+        L = ln.length
+        if L < 12:
+            return None
+        a = ln.interpolate(max(0.0, L - 15.0)) if at_end else ln.interpolate(min(L, 15.0))
+        b = ln.coords[-1] if at_end else ln.coords[0]
+        d = np.array([b[0] - a.x, b[1] - a.y])
+        nd = np.hypot(*d)
+        return (np.array(b[:2]), d / nd) if nd > 1e-6 else None
+
+    ends = {}
+    for li, ln in enumerate(lines):
+        for at_end in (False, True):
+            e = end_dir(ln, at_end)
+            if e is not None:
+                ends.setdefault((int(round(e[0][0])), int(round(e[0][1]))), []).append((li, e[0], e[1]))
+    stubs = []
+    for lst in ends.values():
+        touch = ltree.query(shapely.Point(lst[0][1]).buffer(1.5), predicate="intersects")
+        for li, p, d in lst:
+            straight = False
+            for lj in touch:
+                if lj == li:
+                    continue
+                q = lines[lj]
+                t = q.project(shapely.Point(p))
+                for a in (q.interpolate(max(0.0, t - 15.0)), q.interpolate(min(q.length, t + 15.0))):
+                    v = np.array([a.x - p[0], a.y - p[1]])
+                    nv = np.hypot(*v)
+                    if nv > 3 and np.dot(v / nv, d) > 0.85:
+                        straight = True
+            if not straight and zone.intersects(shapely.LineString([p, p + d * 60.0])):
+                stubs.append((li, p, d))
+    log(f"corridors: {len(stubs)} street ends pointing into a cleared zone")
+    # bearings of the straight street pieces around (to keep redrawn streets on the grid)
+    gm, ga = [], []
+    for ln in lines:
+        cc = np.asarray(ln.coords)[:, :2]
+        dv = np.diff(cc, axis=0)
+        ll_ = np.hypot(dv[:, 0], dv[:, 1])
+        k = ll_ >= 25
+        gm.append((cc[:-1][k] + cc[1:][k]) / 2)
+        ga.append(np.degrees(np.arctan2(dv[k, 1], dv[k, 0])) % 180)
+    gm, ga = np.concatenate(gm), np.concatenate(ga)
+    gtree = cKDTree(gm)
+
+    def on_grid(seg, tol=8.0):
+        m = seg.interpolate(0.5, normalized=True)
+        u = _unit(seg)
+        a = np.degrees(np.arctan2(u[1], u[0])) % 180
+        idx = gtree.query_ball_point([m.x, m.y], 200)
+        if not idx:
+            return False
+        d = np.abs((ga[idx] - a + 90) % 180 - 90)
+        return int((d < tol).sum()) >= 2
+    _DEBUG["stubs"] = stubs
+    _DEBUG["zone"] = zone
+    if len(stubs) < 2:
+        return empty, []
     tsidx = today_utm.sindex
-    psidx = pred_utm.sindex if len(pred_utm) else None
-    ty = today_utm.start_year.values.astype(float)
-    tc = np.column_stack([today_utm.geometry.representative_point().x.values, today_utm.geometry.representative_point().y.values])
-    ttree = cKDTree(tc)
-    rows, streets = [], []
-    for poly, cs, ce, fab, aid in region_areas:
-        # dominant street direction around the area (bearings mod 90 deg, length-weighted)
-        near = roads[roads.intersects(poly.buffer(400))]
-        ang, wts = [], []
-        for g in near.geometry.values:
-            c = np.asarray(g.coords)
-            d = np.diff(c, axis=0)
-            ang += list(np.degrees(np.arctan2(d[:, 1], d[:, 0])) % 90)
-            wts += list(np.hypot(d[:, 0], d[:, 1]))
-        if not ang:
+    tgeo = today_utm.geometry.values
+
+    def blocked(seg):
+        # a street can't have run through what stands today outside the zone
+        rest = seg.difference(zone)
+        if rest.is_empty:
+            return False
+        hit = tsidx.query(rest, predicate="intersects")
+        return any(tgeo[k].buffer(-0.8).intersects(rest) for k in hit)
+
+    P = np.array([s[1] for s in stubs])
+    D = np.array([s[2] for s in stubs])
+    stree = cKDTree(P)
+    cand = []
+    for i in range(len(stubs)):
+        for j in stree.query_ball_point(P[i], 900):
+            if j <= i or stubs[j][0] == stubs[i][0]:
+                continue
+            v = P[j] - P[i]
+            L = np.hypot(*v)
+            if L < 20:
+                continue
+            lat = abs(v[0] * D[i][1] - v[1] * D[i][0])
+            if np.dot(v, D[i]) <= 0 or lat > max(10.0, min(0.08 * L, 25.0)) or np.dot(D[i], D[j]) > -0.93:
+                continue
+            seg = shapely.LineString([P[i], P[j]])
+            inside = seg.intersection(zone).length
+            if inside < max(15.0, 0.5 * L if L > 450 else 0.3 * L):
+                continue
+            cand.append((L + 4 * lat, i, j, seg))
+    cand.sort(key=lambda t: t[0])
+    used, links = set(), []
+
+    lgrid: dict = {}
+
+    def cells(seg):
+        x0, y0, x1, y1 = seg.bounds
+        return [(a, b) for a in range(int(x0 // 100), int(x1 // 100) + 1) for b in range(int(y0 // 100), int(y1 // 100) + 1)]
+
+    def crosses(seg):
+        # redrawn streets don't cross each other at a slant mid-block (one grid)
+        near_ = {k for c_ in cells(seg) for k in lgrid.get(c_, ())}
+        for k in near_:
+            o = links[k]
+            if not seg.crosses(o):
+                continue
+            x = seg.intersection(o)
+            if x.distance(shapely.Point(seg.coords[0])) > 12 and x.distance(shapely.Point(seg.coords[-1])) > 12 \
+                    and abs(np.dot(_unit(seg), _unit(o))) > 0.5:
+                return True
+        return False
+
+    def add_link(seg):
+        for c_ in cells(seg):
+            lgrid.setdefault(c_, []).append(len(links))
+        links.append(seg)
+
+    for _, i, j, seg in cand:
+        if i in used or j in used or blocked(seg) or crosses(seg):
             continue
-        hist, edges = np.histogram(ang, bins=90, range=(0, 90), weights=wts)
-        theta = np.radians(edges[np.argmax(hist)] + 0.5)
-        # development year: early quartile of the buildings around that predate the clearance
-        ctr = poly.representative_point()
-        idx = ttree.query_ball_point([ctr.x, ctr.y], 500)
-        yrs = ty[idx] if len(idx) else np.array([])
-        yrs = yrs[yrs < cs]
-        dev = float(np.percentile(yrs, 25)) if len(yrs) >= 10 else 1890.0
-        cu, su = np.cos(theta), np.sin(theta)
-        x0, y0, x1, y1 = poly.bounds
-        R = np.hypot(x1 - x0, y1 - y0) / 2 + 100
-        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
-        def to_xy(u, v):
-            return cx + u * cu - v * su, cy + u * su + v * cu
-        # the old street grid of the corridor: streets along the blocks (v = vb) and cross
-        # streets every 140 m, from the neighbourhood's development until the clearance
-        for vb in np.arange(-R, R, 80.0):
-            line = shapely.LineString([to_xy(-R, vb), to_xy(R, vb)]).intersection(poly)
-            for seg in getattr(line, "geoms", [line]):
-                if seg.length > 30:
-                    streets.append({"geometry": seg, "start_year": dev - 1.0, "end_year": cs + 0.2, "area": aid})
-        for ub in np.arange(-R, R, 140.0):
-            line = shapely.LineString([to_xy(ub - 6.0, -R), to_xy(ub - 6.0, R)]).intersection(poly)
-            for seg in getattr(line, "geoms", [line]):
-                if seg.length > 30:
-                    streets.append({"geometry": seg, "start_year": dev - 1.0, "end_year": cs + 0.2, "area": aid})
-        for vb in np.arange(-R, R, 80.0):                 # block bands across (v)
-            for front, sgn in ((vb + 10.0, 1), (vb + 70.0, -1)):
-                for ub in np.arange(-R, R, 140.0):        # blocks along (u), 20 m cross streets
-                    for k in range(12):                   # 10 m lots, houses ~6.5 m wide with side yards
-                        key = f"cf_{aid}_{int(vb)}_{int(front)}_{int(ub)}_{k}"
-                        depth = 11.0 + 5.0 * h01(key, "d")
-                        width = 6.0 + 1.6 * h01(key, "w")
-                        setback = 2.5 + 3.0 * h01(key, "b")
-                        u = ub + 9.0 + 10.0 * k
-                        v = front + sgn * (setback + depth / 2)
-                        px, py = to_xy(u, v)
-                        pt = shapely.Point(px, py)
-                        if not poly.contains(pt):
-                            continue
-                        rect = shapely.affinity.rotate(shapely.box(px - width / 2, py - depth / 2, px + width / 2, py + depth / 2),
-                                                       np.degrees(theta), origin=(px, py))
-                        if len(tsidx.query(rect.buffer(4.0), predicate="intersects")):
-                            continue
-                        if psidx is not None and len(psidx.query(rect.buffer(3.0), predicate="intersects")):
-                            continue
-                        h = h01(key)
-                        start = dev + 10.0 * h
-                        end = cs + (ce - cs) * h01(key, "c")
-                        if end <= start + 3:
-                            continue
-                        st = 1 + int(h01(key, "s") < 0.7)
-                        rows.append({"geometry": rect, "start_year": start, "end_year": end, "height": st * 3.4 + 2.2,
-                                     "stories": st, "kind": "building", "source": "region_procedural", "mapblklot": key,
-                                     "use_sanborn": "dwelling", "year_confidence": "procedural",
-                                     "year_reason": f"cleared_{aid}"})
-    out = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else gpd.GeoDataFrame(geometry=[], crs=UTM)
-    log(f"region predecessors: {len(out)} houses stood where clearances left no parcels")
-    if streets:
-        gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM).to_parquet(INTERIM / "clearance_streets.parquet")
-        log(f"region predecessors: {len(streets)} old streets of cleared corridors")
-    return out
+        used.update((i, j))
+        add_link(seg)
+    n_pair = len(links)
+    # ends without a partner: the street ran on across the zone to the first street beyond
+    for i in range(len(stubs)):
+        if i in used:
+            continue
+        li, p, d = stubs[i]
+        ray = shapely.LineString([p, p + d * 300.0])
+        hits = []
+        for k in ltree.query(ray, predicate="intersects"):
+            if k == li or lines[k].distance(shapely.Point(p)) < 2.0:
+                continue
+            x = lines[k].intersection(ray)
+            for q in getattr(x, "geoms", [x]):
+                if q.geom_type == "Point":
+                    t = float(np.dot([q.x - p[0], q.y - p[1]], d))
+                    if t > 8:
+                        hits.append(t)
+        seg = None
+        for t in sorted(hits):   # frontage streets inside the right-of-way are passed over
+            sg = shapely.LineString([p, p + d * t])
+            if sg.intersection(zone).length >= max(15.0, 0.3 * t):
+                seg = sg
+                break
+        if seg is None or not on_grid(seg) or blocked(seg) or crosses(seg):
+            continue
+        used.add(i)
+        add_link(seg)
+    log(f"corridors: {len(links)} cut streets redrawn ({n_pair} end to end, {len(links) - n_pair} to the street beyond)")
+
+    # neighbourhood ages from today's buildings
+    tc = today_utm.geometry.representative_point()
+    txy = np.column_stack([tc.x.values, tc.y.values])
+    ty = today_utm.start_year.values.astype(float)
+    ttree = cKDTree(txy)
+
+    def dev_year(x, y, cs):
+        for r, need in ((150.0, 10), (300.0, 20)):
+            idx = ttree.query_ball_point([x, y], r)
+            yrs = ty[idx] if len(idx) else np.array([])
+            yrs = yrs[yrs < cs - 2]
+            if len(yrs) >= need:
+                return float(np.percentile(yrs, 25))
+        return np.nan
+
+    streets, keep_links = [], []
+    for seg in links:
+        m = seg.interpolate(0.5, normalized=True)
+        cl = clear_at(seg)
+        if cl is None or not _not_sf([m.x], [m.y])[0]:
+            continue
+        dv = dev_year(m.x, m.y, cl[0])
+        if not np.isfinite(dv) or dv > cl[0] - 12:
+            continue
+        lon, lat = to_ll.transform(m.x, m.y)
+        ly = land_year(np.array([lon]), np.array([lat]))[0]
+        if np.isfinite(ly) and ly > dv:
+            continue
+        streets.append({"geometry": seg, "start_year": dv - 1.0, "end_year": cl[1], "area": "corridor"})
+        keep_links.append(seg)
+    log(f"corridors: {len(keep_links)} redrawn streets in neighbourhoods older than their clearance")
+    if not keep_links:
+        return empty, streets
+
+    # buildings: along the redrawn streets, and on the zone side of the streets beside the
+    # zone (within 150 m of a redrawn street)
+    near_links = shapely.union_all(keep_links).buffer(150)
+    side = [ln for ln in lines if ln.intersects(near_links) and ln.distance(zone) < 45
+            and ln.difference(zone).length > 0.5 * ln.length]
+    atree = STRtree(lines + keep_links)
+    # where they may stand: the zone, and the cleared ground along the redrawn streets
+    # between the zone and the streets beyond (landscaped right-of-way today)
+    place = shapely.union_all([zone.intersection(near_links)] + [ln.buffer(50) for ln in keep_links])
+    shapely.prepare(place)
+    psidx = pred_utm.sindex if len(pred_utm) else None
+    placed, rows = {}, []
+    for ln in keep_links + side:
+        L = ln.length
+        if L < 20:
+            continue
+        for s_ in np.arange(8.0, L - 8.0, 10.0):
+            a, b = ln.interpolate(max(0.0, s_ - 2.0)), ln.interpolate(min(L, s_ + 2.0))
+            t = np.array([b.x - a.x, b.y - a.y])
+            nt = np.hypot(*t)
+            if nt < 1e-6:
+                continue
+            t /= nt
+            nrm = np.array([-t[1], t[0]])
+            pm = ln.interpolate(s_)
+            for sgn in (1, -1):
+                key = f"cf_{int(pm.x)}_{int(pm.y)}_{sgn}"
+                cl0 = clear_at(shapely.Point(pm.x + sgn * nrm[0] * 15, pm.y + sgn * nrm[1] * 15))
+                rowb = cl0 is not None and cl0[2] == "mixed" and h01(key, "m") < 0.6
+                if rowb:   # brick / frame row buildings to the sidewalk
+                    depth, width, setback = 15.0 + 8.0 * h01(key, "d"), 9.4, 0.6
+                else:      # houses with side yards
+                    depth, width, setback = 11.0 + 5.0 * h01(key, "d"), 6.0 + 1.6 * h01(key, "w"), 2.5 + 3.0 * h01(key, "b")
+                cx, cy = np.array([pm.x, pm.y]) + sgn * nrm * (5.0 + setback + depth / 2)
+                pt = shapely.Point(cx, cy)
+                if not place.contains(pt):
+                    continue
+                gk = (int(cx // 20), int(cy // 20))
+                rect = shapely.Polygon([(cx + t[0] * dx - nrm[0] * dy * sgn, cy + t[1] * dx - nrm[1] * dy * sgn)
+                                        for dx, dy in ((-width / 2, -depth / 2), (width / 2, -depth / 2),
+                                                       (width / 2, depth / 2), (-width / 2, depth / 2))])
+                if len(tsidx.query(rect.buffer(3.5), predicate="intersects")):
+                    continue
+                if psidx is not None and len(psidx.query(rect.buffer(2.5), predicate="intersects")):
+                    continue
+                if len(atree.query(rect.buffer(4.5), predicate="intersects")):
+                    continue
+                if any(rect.intersects(q.buffer(0.8)) for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+                       for q in placed.get((gk[0] + dx, gk[1] + dy), [])):
+                    continue
+                cl = clear_at(pt)
+                if cl is None:
+                    continue
+                dv = dev_year(cx, cy, cl[0])
+                if not np.isfinite(dv) or dv > cl[0] - 12:
+                    continue
+                start = dv + 10.0 * h01(key)
+                end = cl[0] + (cl[1] - cl[0]) * h01(key, "c")
+                if end <= start + 3:
+                    continue
+                placed.setdefault(gk, []).append(rect)
+                if rowb:
+                    st = 2 + int(h01(key, "s") < 0.4)
+                    use, hgt = "store", st * 3.8 + 1.0
+                else:
+                    st = 1 + int(h01(key, "s") < 0.7)
+                    use, hgt = "dwelling", st * 3.4 + 2.2
+                rows.append({"geometry": rect, "start_year": start, "end_year": end, "height": hgt,
+                             "stories": st, "kind": "building", "source": "region_procedural", "mapblklot": key,
+                             "use_sanborn": use, "year_confidence": "procedural", "year_reason": "cleared_corridor"})
+    out = gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else empty
+    if len(out):
+        # nothing before its ground (bay fill under the Nimitz, the Eastshore…), nothing in SF
+        c_ = out.geometry.representative_point()
+        lon, lat = to_ll.transform(c_.x.values, c_.y.values)
+        ly = land_year(np.asarray(lon), np.asarray(lat))
+        ok = _not_sf(c_.x.values, c_.y.values) & ~(np.isfinite(ly) & (out.start_year.values < ly + 1))
+        out = out[ok].reset_index(drop=True)
+    log(f"corridors: {len(out)} buildings stood on ground later cleared for freeways and renewal")
+    return out, streets
+
+
+def _unit(ln):
+    c = np.asarray(ln.coords)
+    v = c[-1, :2] - c[0, :2]
+    return v / max(np.hypot(*v), 1e-9)
+
 
 
 def region_predecessors(today):
@@ -274,9 +548,14 @@ def region_predecessors(today):
             pred = gpd.GeoDataFrame(pd.concat([pred, gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM)], ignore_index=True),
                                     geometry="geometry", crs=UTM)
             log(f"region predecessors: {len(rows)} buildings of vanished large sites")
-    cf = clearance_fill(areas, tu, pred)
+    # freeway rights-of-way and renewal clearances: the streets they cut and the rows
+    # along them (corridor_fill), until the clearance
+    cf, streets = corridor_fill(tu, pred, areas)
     if len(cf):
         pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)
+    st = gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM) if streets else \
+        gpd.GeoDataFrame({"start_year": [], "end_year": []}, geometry=[], crs=UTM)
+    st.to_parquet(INTERIM / "clearance_streets.parquet")
     pred = pred.to_crs(4326)
     use_map = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
                "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}

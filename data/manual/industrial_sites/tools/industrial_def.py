@@ -158,9 +158,11 @@ SITES = [
          "industrial", 1941, 1946, "estimated", W + "Richmond_Shipyards",
          "Yard 1 (Todd-California, from Jan 1941) and Yard 2 (1941) on the Inner Harbor basin; 747 ships in the four "
          "yards; closed 1945-46; the ground became Marina Bay (housing from the 1980s). Outline read on the Richmond "
-         "1:24k sheet (1946 photos) - approximate (+-50 m).", "Contra Costa",
-         [traced((-122.355, 37.912), [(-150, -650), (-150, 50), (600, 100), (1300, 150), (1900, 50), (1900, -650),
-                                      (1200, -700), (600, -700)], T + "CA_Richmond_294667_1947_24000_geo.tif")],
+         "1:24k sheet (1946 photos): Yard 1 west of the Inner Harbor Basin next to the Ford plant (the plant itself "
+         "is left out), Yard 2's shops and outfitting piers east of it, the ways along the shore - +-50 m.", "Contra Costa",
+         [traced((-122.345, 37.910), [(-1100, -250), (-1100, 450), (-700, 520), (-250, 520), (0, 560), (350, 560),
+                                      (450, 300), (450, -100), (100, -270), (-400, -280), (-850, -220)],
+                 T + "CA_Richmond_294667_1947_24000_geo.tif")],
          date=False),
     site("ford_richmond", "Ford Richmond Assembly Plant (Ford Point / Craneway)", "Ford Assembly Plant", "factory",
          "industrial", 1931, 1956, "exact", W + "Ford_Assembly_Building_(Richmond,_California)",
@@ -175,8 +177,8 @@ SITES = [
     site("pullman_richmond", "Pullman Company shops, Richmond", "Pullman Shops", "factory", "industrial", 1910, 1959,
          "estimated", "https://www.richmondmuseumofhistory.org/",
          "Pullman car repair shops on the Santa Fe line ('Pullman Shops' on the 1946-photo Richmond sheet); "
-         "opened c.1910, closed late 1950s (years estimated). Outline read on the 1946 sheet.", "Contra Costa",
-         [traced((-122.355, 37.912), [(1250, 1650), (1600, 1650), (1600, 2050), (1250, 2050)],
+         "opened c.1910, closed late 1950s (years estimated). Outline: the shops building on the 1946 sheet.", "Contra Costa",
+         [traced((-122.355, 37.912), [(1300, 1700), (1450, 1700), (1450, 1920), (1300, 1920)],
                  T + "CA_Richmond_294667_1947_24000_geo.tif")], date=False),
     site("point_molate", "Winehaven (California Wine Association) / Naval Fuel Depot Point Molate",
          "Winehaven / Point Molate", "military", "industrial", 1907, 1995, "estimated", W + "Winehaven,_California",
@@ -297,15 +299,17 @@ SITES = [
          "Union Iron Works moved to Potrero Point in 1884; Bethlehem Shipbuilding from 1905; ship repair (Todd, BAE) "
          "to 2017; Pier 70 mixed-use redevelopment since 2018 (industrial ground continues).", "San Francisco",
          [osm("e99a6779", "e3364983", "b3d797ec")], date=True, founded=1884),
-    site("potrero_power", "Potrero Gas Works and Power Station (PG&E)", "Potrero Power Station", "power_plant",
-         "industrial", 1901, 2011, "estimated", W + "Potrero_Generating_Station",
-         "SF Gas & Electric's Potrero works (Station A, 1901; gas works on the point earlier); PG&E's Unit 3 1965; "
-         "closed 2011, demolished; Power Station development from 2020. Years of the earliest works estimated.",
-         "San Francisco", [osm("0a18c9f9")], date=True, founded=1901),
+    site("potrero_power", "Potrero Point gas works and power station (SF Gas & Electric / PG&E)",
+         "Potrero Power Station", "power_plant", "industrial", 1890, 2011, "estimated", W + "Potrero_Generating_Station",
+         "San Francisco Gas Light Co. built a small generating plant on Potrero Point c.1890 - the first power plant "
+         "of what became PG&E (Station A turbine hall later); Unit 3 (206 MW) Dec 1965, peakers 1976; closed "
+         "28 Feb 2011; site sold 2012/2017, Power Station redevelopment from 2020.", "San Francisco",
+         [osm("0a18c9f9")], date=True, founded=1890),
     site("bayshore_yard", "Southern Pacific Bayshore Yard and roundhouse", "Bayshore Yard", "rail_yard", "rail_yard",
          1907, 1982, "estimated", W + "Bayshore_Roundhouse",
-         "Yard, shops and roundhouse of the 1907 Bayshore Cutoff (roundhouse 1910 still stands); the yard closed in "
-         "the early 1980s (end estimated); Brisbane Baylands brownfield since.", "San Mateo",
+         "Yard, shops and roundhouse of the Bayshore Cutoff (opened 8 Dec 1907; roundhouse 1908-10 still stands; "
+         "yard complete by 1921); freight consolidated at Oakland 1964, dismantling from 1979, shops closed "
+         "25 Oct 1982; Brisbane Baylands brownfield since.", "San Mateo",
          [osm("0d7285fd", "d1c1adc7")], date=True, founded=1907),
     site("schlage_lock", "Schlage Lock factory, Visitacion Valley", "Schlage Lock", "factory", "industrial", 1926,
          1999, "estimated", W + "Visitacion_Valley,_San_Francisco",
@@ -332,7 +336,8 @@ SITES = [
                  conf="estimated", note="early limestone quarry at the quarry symbol of the 1939/1940 1:62,500 "
                                        "sheets; extent estimated"),
           traced((-122.104, 37.315), PERM_PLANT, T + "CA_Cupertino_289702_1953_24000_geo.tif", start=1939.5,
-                 cover="industrial", conf="exact", note="Permanente cement plant (1939), Cupertino 1953 sheet"),
+                 cover="industrial", conf="exact", on_top=True,
+                 note="Permanente cement plant (1939), Cupertino 1953 sheet (cut out of the pit stages)"),
           traced((-122.115, 37.317), PERM48, T + "CA_Cupertino_289702_1953_24000_geo.tif", start=1944,
                  note="pit on the 1948 photos (start = midpoint 1939.5-1948)"),
           files(["traced/permanente_1960.geojson"], start=1954,

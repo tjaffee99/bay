@@ -1,0 +1,55 @@
+site_id,ring_type,year,applies_to,max_year,evidence,source_url
+chevron_richmond,site,1902.0,all_pre,,Chevron Richmond Refinery founded 1902: no footprint inside can be older,https://en.wikipedia.org/wiki/Chevron_Richmond_Refinery
+chevron_richmond,site,1902.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Chevron_Richmond_Refinery
+shell_martinez,site,1915.0,all_pre,,Shell Martinez Refinery founded 1915: no footprint inside can be older,https://clui.org/ludb/site/martinez-refinery
+shell_martinez,site,1915.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://clui.org/ludb/site/martinez-refinery
+avon_refinery,site,1913.0,all_pre,,Avon Refinery (Marathon) founded 1913: no footprint inside can be older,https://en.wikipedia.org/wiki/Marathon_Martinez_Renewable_Fuels
+avon_refinery,site,1913.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Marathon_Martinez_Renewable_Fuels
+rodeo_refinery,site,1896.0,all_pre,,Rodeo Refinery (Oleum) founded 1896: no footprint inside can be older,https://archive.cocohistory.org/bulletin-oleum.html
+rodeo_refinery,site,1896.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://archive.cocohistory.org/bulletin-oleum.html
+selby_smelter,site,1885.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://oac.cdlib.org/findaid/ark:/13030/tf7h4nb206/entire_text/
+ch_crockett,site,1898.0,all_pre,,C&H Sugar founded 1898: no footprint inside can be older,https://en.wikipedia.org/wiki/C%26H_Sugar
+ch_crockett,site,1898.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/C%26H_Sugar
+concord_nws,site,1942.0,all_pre,,Concord Naval Weapons Station founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Concord_Naval_Weapons_Station
+concord_nws,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Concord_Naval_Weapons_Station
+keller_canyon_landfill,site,1992.0,all_pre,,Keller Canyon Landfill founded 1992: no footprint inside can be older,https://www.contracosta.ca.gov/
+kaiser_yard3,site,1942.0,all_pre,,Kaiser Shipyard No. 3 founded 1942: no footprint inside can be older,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
+kaiser_yard3,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
+santa_fe_richmond,site,1900.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Richmond,_California"
+point_molate,site,1907.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Winehaven,_California"
+oakland_army_base,site,1941.95,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Oakland_Army_Base
+sp_west_oakland_yard,site,1879.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://www.oaklandlocalwiki.org/
+oakland_port_terminals,site,1962.7,all_pre,,Port of Oakland founded 1962.7: no footprint inside can be older,https://www.oaklandca.gov/files/assets/city/v/1/public-meetings/landmarks-preservation-advisory-board/2021/er18-016-waterfront-ballpark-district-deir-landmarks-board-report.pdf
+alameda_coast_guard,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Coast_Guard_Island
+camp_parks,site,1942.0,all_pre,,Camp Parks founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Camp_Parks
+camp_parks,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Camp_Parks
+llnl,site,1942.0,all_pre,,Lawrence Livermore Lab founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Lawrence_Livermore_National_Laboratory
+llnl,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Lawrence_Livermore_National_Laboratory
+sandia_livermore,site,1956.0,all_pre,,Sandia Livermore founded 1956: no footprint inside can be older,https://en.wikipedia.org/wiki/Sandia_National_Laboratories
+sandia_livermore,site,1956.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Sandia_National_Laboratories
+gm_fremont,site,1962.0,all_pre,,Tesla Factory (GM Fremont) founded 1962: no footprint inside can be older,https://en.wikipedia.org/wiki/Tesla_Fremont_Factory
+gm_fremont,site,1962.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Tesla_Fremont_Factory
+altamont_landfill,site,1980.0,all_pre,,Altamont Landfill founded 1980: no footprint inside can be older,https://www.calrecycle.ca.gov/
+pier70_union_iron_works,site,1884.0,all_pre,,Union Iron Works (Pier 70) founded 1884: no footprint inside can be older,https://en.wikipedia.org/wiki/Pier_70
+pier70_union_iron_works,site,1884.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Pier_70
+potrero_power,site,1890.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Potrero_Generating_Station
+bayshore_yard,site,1907.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Bayshore_Roundhouse
+permanente,site,1939.5,all_pre,,Permanente Quarry founded 1939.5: no footprint inside can be older,https://en.wikipedia.org/wiki/Permanente_Quarry
+permanente,site,1939.5,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Permanente_Quarry
+lockheed_sunnyvale,site,1956.0,all_pre,,Lockheed Missiles & Space founded 1956: no footprint inside can be older,https://en.wikipedia.org/wiki/Lockheed_Martin_Space
+lockheed_sunnyvale,site,1956.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Lockheed_Martin_Space
+hendy_westinghouse,site,1906.0,all_pre,,Hendy Iron Works (Westinghouse) founded 1906: no footprint inside can be older,https://en.wikipedia.org/wiki/Joshua_Hendy_Iron_Works
+hendy_westinghouse,site,1906.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Joshua_Hendy_Iron_Works
+marinship,site,1942.0,all_pre,,Marinship founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Marinship
+san_rafael_quarry,site,1929.0,all_pre,,San Rafael Rock Quarry founded 1929: no footprint inside can be older,https://sprcoalition.org/?p=1834
+fort_baker,site,1901.0,all_pre,,Fort Baker founded 1901: no footprint inside can be older,https://en.wikipedia.org/wiki/Fort_Baker
+fort_baker,site,1901.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Fort_Baker
+fort_barry,site,1907.0,all_pre,,Fort Barry founded 1907: no footprint inside can be older,https://en.wikipedia.org/wiki/Fort_Barry
+fort_barry,site,1907.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Fort_Barry
+fort_cronkhite,site,1941.0,all_pre,,Fort Cronkhite founded 1941: no footprint inside can be older,https://en.wikipedia.org/wiki/Fort_Cronkhite
+fort_cronkhite,site,1941.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Fort_Cronkhite
+fort_mcdowell,site,1909.0,all_pre,,Fort McDowell founded 1909: no footprint inside can be older,https://en.wikipedia.org/wiki/Angel_Island_(California)
+fort_mcdowell,site,1909.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Angel_Island_(California)
+hamilton_field,site,1932.0,all_pre,,Hamilton Field founded 1932: no footprint inside can be older,https://en.wikipedia.org/wiki/Hamilton_Army_Airfield
+hamilton_field,site,1932.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Hamilton_Army_Airfield
+clayton_quarries,site,1956.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Clayton,_California"
