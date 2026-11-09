@@ -7,7 +7,7 @@ year,area,population,source_url,note
 1846,san_francisco,200,https://foundsf.org/Early_Social_Statistics_on_San_Francisco,estimate: Yerba Buena by mid-summer 1846 numbered upwards of two hundred (Annals of San Francisco)
 1847,san_francisco,459,https://sfmuseum.org/hist1/early.html,estimate: local census of June 1847 published in the California Star (459 souls); population was a little over 300 in Jan 1847
 1848,san_francisco,812,https://sfmuseum.org/hist1/early.html,"estimate: 1848 school census - 575 males, 177 females, 60 children (before the gold-rush influx); Wikipedia gives ~1,000 for Jan 1848"
-1849,san_francisco,25000,https://en.wikipedia.org/wiki/History_of_San_Francisco,"estimate: population reached ~25,000 by Dec 1849 (from ~1,000 in Jan 1848)"
+1849.92,san_francisco,25000,https://en.wikipedia.org/wiki/History_of_San_Francisco,"estimate: population reached ~25,000 by Dec 1849 (from ~1,000 in Jan 1848); dated December 1849 (1849.92) so that the counter does not show it from 1 Jan 1849"
 1850,san_francisco,34776,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab08.txt,"estimate: 1850 federal census returns for San Francisco were destroyed by fire; the commonly used substitute (footnoted by the Census Bureau) is the 1852 California state census count of 34,776"
 1860,san_francisco,56802,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab09.txt,decennial census (city and county coextensive since 1856)
 1870,san_francisco,149473,https://www2.census.gov/library/working-papers/1998/demo/pop-twps0027/tab10.txt,decennial census (city and county coextensive since 1856)

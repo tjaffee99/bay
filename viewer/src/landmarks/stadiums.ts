@@ -152,6 +152,7 @@ const oraclePark: Landmark = {
   facts: {
     Construction: 'Dec 1997 – Mar 2000',
     Opened: 'Mar 31, 2000 (as Pacific Bell Park)',
+    Names: 'Pacific Bell Park 2000–03 · SBC Park 2004–05 · AT&T Park 2006–18 · Oracle Park since 2019',
     Capacity: '≈ 41,900',
     Fences: 'LF 339 ft · CF 391 ft · RC 415 ft · RF 309 ft',
     Model: 'home plate and orientation measured on the orthophoto; fences from published distances; stand heights estimated'
@@ -353,6 +354,7 @@ const candlestick1971: Landmark = {
   facts: {
     Enclosed: '1971 (outfield stands added for the 49ers)',
     Capacity: '≈ 63,000 baseball / 69,732 football',
+    Names: 'Candlestick Park 1960–95 · 3Com Park 1995–2002 · San Francisco Stadium at Candlestick Point 2002–04 · Monster Park 2004–08 · Candlestick Park again 2008–14',
     'Last event': 'Aug 14, 2014',
     Demolished: 'Feb – Sep 2015',
     Model: 'outline ≈ 240 × 210 m and 30 m rim estimated from aerial photos'

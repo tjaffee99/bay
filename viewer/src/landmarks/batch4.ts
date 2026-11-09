@@ -1503,7 +1503,7 @@ const mechanicsPavilion = landmark(
   },
   {
     Built: '1882, a vast wooden exhibition hall of the Mechanics\' Institute filling the block of Larkin, Polk, Grove and Hayes Sts — San Francisco\'s first great indoor arena (~11,000 seats)',
-    Fate: 'emergency hospital and morgue on Apr 18, 1906; burned the next day; the Exposition Auditorium (Civic Auditorium) took the site in 1915',
+    Fate: 'emergency hospital and morgue on the morning of Apr 18, 1906; evacuated about noon and burned that afternoon; the Exposition Auditorium (Civic Auditorium) took the site in 1915',
     Model: 'block from DataSF centrelines (≈125 × 82 m); wall height, arched roof and towers ESTIMATED (LOW CONFIDENCE)'
   },
   ['https://www.nesssoftware.com/www/sf/buildings.php?id=MechPav', WIKI + '1906_San_Francisco_earthquake']

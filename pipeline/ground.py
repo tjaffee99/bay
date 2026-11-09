@@ -43,6 +43,8 @@ ORIGIN = (-122.44, 37.76)
 # Golden Gate Park planting front: (longitude, year) — research synthesis, medium confidence
 GGP_FRONT = [(-122.4545, 1872.0), (-122.4720, 1880.0), (-122.4920, 1895.0), (-122.5105, 1908.0)]
 LANDS_END = (-122.515, 37.776, -122.495, 37.792)
+# San Francisco proper (county line ~37.708 N; Treasure Island / Yerba Buena Island included)
+SF_BOX = (-122.52, 37.7081, -122.35, 37.84)
 
 
 def load_parks_table() -> dict[str, dict]:
@@ -95,9 +97,15 @@ def main():
     is_park = (land_use.subtype == "park") | ((land_use.subtype == "managed") & (land_use["class"] == "grass"))
     named = land_use[is_park & land_use.name.notna()].copy()
     named["key"] = named.name.str.strip().str.lower()
+    dated_keys = set(dated.key)
     for _, r in named.iterrows():
         t = table.get(r.key)
-        if t is None or r.key in set(dated.key):
+        if t is None or r.key in dated_keys:
+            continue
+        # parks.csv is San Francisco's table: a namesake outside the city (Daly City's own
+        # "Lincoln Park") must not take the San Francisco park's year
+        c = r.geometry.representative_point()
+        if not (SF_BOX[0] < c.x < SF_BOX[2] and SF_BOX[1] < c.y < SF_BOX[3]):
             continue
         add(r.geometry, {"kind": "park", "name": r["name"], "start_year": t["start"], "end_year": t["end"],
                          "year_confidence": t["confidence"], "source": "osm_via_overture+parks.csv"})

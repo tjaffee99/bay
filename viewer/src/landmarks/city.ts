@@ -130,7 +130,9 @@ const bayBridgeWestSpan: Landmark = {
   sources: [WIKI + 'San_Francisco%E2%80%93Oakland_Bay_Bridge']
 };
 
-// --- original east span (1936–2013), demolished in stages 2013–2017
+// --- original east span (1936–2013), dismantled in stages Nov 2013 – Mar 2017 (steel) and to Nov 2017 (piers):
+// cantilever gone by Jun 12, 2015 (Wikipedia); the five 504 ft trusses lowered Feb 4 – Aug 2016; the last of
+// the fourteen 288 ft causeway trusses removed Mar 13, 2017 (ABC7 / KTVU)
 const YBI_EAST: V2 = [-122.3607, 37.8152];
 const OAK_MOLE: V2 = [-122.3277, 37.8238];
 function eastOldPart(part: 'cantilever' | 'trusses' | 'causeway') {
@@ -207,16 +209,20 @@ function eastOldPart(part: 'cantilever' | 'trusses' | 'causeway') {
 }
 const eastFacts = {
   Opened: 'Nov 12, 1936',
-  'Main span': '427 m (1,400 ft) double balanced cantilever, then five 155 m through-trusses and a causeway',
+  'Main span': '427 m (1,400 ft) double balanced cantilever, then five 504 ft (154 m) through-trusses and a causeway of fourteen 288 ft deck trusses',
   '1989': 'a 15 m section of upper deck collapsed in the Loma Prieta quake',
-  Replaced: 'closed Aug 28, 2013; demolished 2013–2017',
+  Replaced: 'closed Aug 28, 2013; dismantled Nov 2013 – Nov 2017: cantilever gone by Jun 12, 2015, the five 504 ft trusses lowered Feb – Aug 2016, the last 288 ft truss removed Mar 2017, the piers imploded Nov 2015 – Nov 2017',
   Model: 'APPROXIMATE alignment (~100 m north of today’s skyway); truss heights estimated'
 };
-const eastSrc = [WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge', 'https://www.cbsnews.com/sanfrancisco/news/demolition-of-old-bay-bridge-to-take-years'];
+const eastSrc = [
+  WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge',
+  'https://www.cbsnews.com/sanfrancisco/news/demolition-of-old-bay-bridge-to-take-years',
+  'https://abc7news.com/demolition-of-old-span-bay-bridge-project/1799171/'
+];
 const bayBridgeEastOld: Landmark[] = [
-  {id: 'bay_bridge_east_1936_cantilever', name: 'Bay Bridge east span (1936) — cantilever', kind: 'bridge', built: [1933.52, 1936.87], end: 2014.6, anchor: YBI_EAST, build: eastOldPart('cantilever'), facts: eastFacts, sources: eastSrc},
-  {id: 'bay_bridge_east_1936_trusses', name: 'Bay Bridge east span (1936) — truss spans', kind: 'bridge', built: [1933.52, 1936.87], end: 2015.9, anchor: YBI_EAST, build: eastOldPart('trusses'), facts: eastFacts, sources: eastSrc},
-  {id: 'bay_bridge_east_1936_causeway', name: 'Bay Bridge east span (1936) — causeway', kind: 'bridge', built: [1933.52, 1936.87], end: 2016.8, anchor: YBI_EAST, build: eastOldPart('causeway'), facts: eastFacts, sources: eastSrc}
+  {id: 'bay_bridge_east_1936_cantilever', name: 'Bay Bridge east span (1936) — cantilever', kind: 'bridge', built: [1933.52, 1936.87], end: 2015.45, anchor: YBI_EAST, build: eastOldPart('cantilever'), facts: eastFacts, sources: eastSrc},
+  {id: 'bay_bridge_east_1936_trusses', name: 'Bay Bridge east span (1936) — truss spans', kind: 'bridge', built: [1933.52, 1936.87], end: 2016.6, anchor: YBI_EAST, build: eastOldPart('trusses'), facts: eastFacts, sources: eastSrc},
+  {id: 'bay_bridge_east_1936_causeway', name: 'Bay Bridge east span (1936) — causeway', kind: 'bridge', built: [1933.52, 1936.87], end: 2017.2, anchor: YBI_EAST, build: eastOldPart('causeway'), facts: eastFacts, sources: eastSrc}
 ];
 
 // --- new east span (2013): skyway (2002–2007) + self-anchored suspension span (2009–2013)
@@ -597,7 +603,7 @@ const coitTower: Landmark = {
   replaces: [rect(0, 0, 26, 26)],
   facts: {
     Dedicated: 'Oct 8, 1933 (Lillie Hitchcock Coit bequest)',
-    Height: '64 m (210 ft) — stands on Telegraph Hill (≈ 89 m), not modelled: the map is flat',
+    Height: '64 m (210 ft), on the summit of Telegraph Hill (≈ 84 m / 275 ft)',
     Murals: 'WPA / PWAP, 1934'
   },
   sources: [WIKI + 'Coit_Tower']
@@ -759,7 +765,7 @@ const sutroTower: Landmark = {
   replaces: [circle(0, 0, 35, 12)],
   facts: {
     Completed: 'Jul 4, 1973',
-    Height: '297.8 m (977 ft) — on a 254 m hill (not modelled: the map is flat)',
+    Height: '297.8 m (977 ft), on a 254 m (834 ft) hill — its top is 552 m (1,811 ft) above the sea',
     'Tallest structure in SF': 'until 2018'
   },
   sources: [WIKI + 'Sutro_Tower', 'https://www.sutrotower.com/faq']
@@ -828,7 +834,7 @@ const alcatrazLight1909: Landmark = {
     b.color('#2F3437').dome(0, 0, 2.2, 24, 2, 8, 2);
   },
   replaces: [circle(0, 0, 8, 8)],
-  facts: {Built: '1909, reinforced concrete', Automated: '1963', Height: '≈ 26 m (OSM); 95 ft above mean sea level'},
+  facts: {Built: '1909, reinforced concrete', Automated: '1963', Height: 'tower 84 ft (26 m); the light is 214 ft (65 m) above the water'},
   sources: [WIKI + 'Alcatraz_Island_Lighthouse']
 };
 const alcatrazWater: Landmark = {

@@ -721,7 +721,12 @@ const paramountOakland: Landmark = {
     });
   },
   // the OSM outline itself (a 2-storey neighbour lies 5 m off the south-east corner)
-  replaces: [rotRing(scaleRing([[-14.9, 35.9], [-24.2, 1.0], [-27.2, -12.2], [-24.6, -15.8], [-23.0, -47.8], [-8.5, -51.6], [-0.7, -23.4], [30.1, -21.3], [29.7, 35.7]], 1.04), 282.7)],
+  // the theatre's OSM outline drawn in ~4 m (local metres): the 74 m Forma apartment tower (2022) on the
+  // 21st St side is within the ~12 m "tall neighbour" reach of replacedMask and vanished with the full outline
+  replaces: [
+    [[-8.9, -17.5], [-33.7, -4.5], [-25.3, 31.9], [-17.6, 32.0], [-19.1, 23.9], [-12.7, 22.6], [-13.0, 18.9], [-0.3, 13.5], [1.0, 16.1], [12.7, 10.3],
+     [17.6, 22.7], [22.8, 21.5], [18.3, -8.0], [43.1, -21.3], [39.9, -27.6], [12.6, -13.7], [8.1, -22.5], [5.5, -22.4], [-8.2, -15.0]]
+  ],
   facts: {
     Opened: 'Dec 16, 1931 (premiere of The False Madonna); closed Jun 1932 – 1933',
     Design: 'Timothy Pflueger, Art Deco; facade mosaic by Gerald Fitzgerald; 3,476 seats (3,040 today)',
@@ -1020,6 +1025,7 @@ const coliseum1996: Landmark = {
   facts: {
     Renovation: 'Nov 1995 – Aug 1996 (HNTB) for the Raiders’ return: “Mount Davis”, a 10,000+-seat, 90-suite outfield grandstand, closes the bowl',
     Tenants: 'A’s until 2024, Raiders until 2019; cricket and soccer since 2025',
+    Names: 'Oakland–Alameda County Coliseum 1966–98, 2008–11 and 2016–19 · Network Associates Coliseum 1998–2004 · McAfee Coliseum 2004–08 · Overstock.com / O.co Coliseum 2011–16 · RingCentral Coliseum 2019–23 · Oakland Coliseum since 2023',
     Fences: 'LF 330 ft · LC 388 · CF 400 · RC 388 · RF 330',
     Model: 'Mount Davis outline from OSM; its height set to the existing upper deck (as specified in 1995); deck heights estimated'
   },
@@ -1573,7 +1579,12 @@ const cathedralChristTheLight: Landmark = {
       b.color('#A8A39A').box(-2, 34, -1.5, 20, 8, 3.5);
     });
   },
-  replaces: [rotRing(rect(18, 37, 140, 160), 162.7)],
+  // the cathedral centre's own OSM outline (local metres); the 140 × 160 m rectangle also took the Ordway
+  // Building (1970, 123 m — Oakland's tallest) and the Lake Merritt Tower (1990) on the same block
+  replaces: [
+    [[16.6, -35.6], [1.2, -111.2], [-4.7, -109.8], [-6.6, -118.8], [-55.0, -108.0], [-30.4, 5.6], [-28.5, 5.3], [-22.0, 27.5], [-19.2, 31.7], [-13.7, 34.7],
+     [-3.0, 37.3], [41.5, 27.0], [26.7, -26.1]]
+  ],
   facts: {
     Construction: 'groundbreaking May 21, 2005; consecrated and dedicated Sep 25, 2008',
     Design: 'Craig W. Hartman, Skidmore Owings & Merrill — a vesica piscis of glass and Douglas-fir louvres; Omega window with the image of Christ (from Chartres)',

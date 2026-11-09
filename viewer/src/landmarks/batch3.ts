@@ -106,7 +106,7 @@ const palace1909: Landmark = {
   id: 'palace_hotel_1909',
   name: 'Palace Hotel',
   kind: 'building',
-  built: [1907.0, 1909.97],
+  built: [1906.55, 1909.97], // ruins cleared from mid-1906 (start estimated); reopened Dec 19, 1909
   end: 9999,
   anchor: PALACE,
   build: b => {
@@ -220,7 +220,10 @@ const millsBuilding: Landmark = {
       b.color('#8A7F70').box(40.6, 0, 0, 1.4, 9, 12);
     });
   },
-  replaces: [rect(1.7, 1.2, 88, 50)],
+  replaces: [
+    // OSM / DataSF outline (220 Montgomery + 234 Bush) drawn in ~4 m: 250 Montgomery St (1986, 68 m) next door stays
+    [[-40.7, 14.6], [-25.6, 17.5], [-24.8, 12.7], [37.6, 22.5], [43.1, -12.2], [40.3, -12.6], [40.6, -14.1], [-34.3, -26.2]]
+  ],
   facts: {
     Completed: '1892 (Burnham & Root) — survived the 1906 earthquake, gutted by the fire, restored 1908',
     Height: '10 storeys, 46.9 m',
@@ -241,7 +244,10 @@ const millsTower: Landmark = {
       b.color('#D3C9B6').box(0, 0, 88, 14.2, 43.7, 1.5).box(0, 0, 89.5, 12, 41, 2.5);
     });
   },
-  replaces: [rect(0, 0, 16, 45)],
+  replaces: [
+    // tower outline, kept clear of 155 Sansome St (Stock Exchange Tower) and 115 Sansome St
+    [[-5.0, -23.5], [-11.1, 15.7], [-7.4, 16.2], [-7.8, 18.6], [1.8, 20.0], [8.6, -20.4]]
+  ],
   facts: {Built: '1931 (Lewis P. Hobart), 22 floors, matching the 1892 building', Height: '92 m', Model: OSM_NOTE},
   sources: [WIKI + 'Mills_Building_and_Tower']
 };
@@ -379,8 +385,11 @@ const russBuilding: Landmark = {
         b.color('#E6DECF').pyramid(rect(x, y, 2, 2), 118, [x, y, 126]);
     });
   },
-  replaces: [rect(-2, 0, 50, 86)],
-  facts: {Completed: '1927 (George W. Kelham), Gothic Revival', Height: '127.4 m — the city’s tallest until 1964', Floors: '31', Model: OSM_NOTE + '; base height and crown estimated from photos'},
+  replaces: [
+    // 235 Montgomery outline drawn in ~6 m: the 350 Bush St / 500 Pine St buildings (2018) behind it stay
+    [[-23.8, 30.1], [9.6, 35.5], [21.1, -34.1], [-5.3, -38.3], [-11.0, -3.4], [-13.8, 0.3], [-19.0, 0.8]]
+  ],
+  facts: {Completed: '1927 (George W. Kelham), Gothic Revival', Height: '132.6 m (435 ft) to the top, roof 127.4 m (418 ft) — the city’s tallest 1927–1964 (with the 435 ft Pacific Telephone Building)', Floors: '32', Model: OSM_NOTE + '; base height and crown estimated from photos'},
   sources: [WIKI + 'Russ_Building']
 };
 
@@ -401,7 +410,10 @@ const shellBuilding: Landmark = {
       b.color('#D6CBB2').prism(roundedRect(-5.1, 7.8, 20, 20, 3, 1), 106, 111).prism(roundedRect(-5.1, 7.8, 13, 13, 2, 1), 111, 115.2);
     });
   },
-  replaces: [rect(0, 0, 40, 44)],
+  replaces: [
+    // 100 Bush outline; 130 Bush St (1910, 20 ft wide) next door stays
+    [[-20.3, 17.0], [14.4, 22.1], [20.3, -17.0], [-12.0, -21.9], [-13.5, -2.0], [-18.8, -1.2]]
+  ],
   facts: {Completed: '1929 (George W. Kelham) for Shell Oil', Height: '115.2 m', Floors: '29', Model: OSM_NOTE + '; setback heights estimated from photo'},
   sources: [WIKI + 'Shell_Building_(San_Francisco)']
 };
@@ -551,7 +563,8 @@ const california555: Landmark = {
 };
 
 // =========================================================== Embarcadero Center 1–4 (1971–1982) + Hyatt Regency (1973)
-// Thin slab towers with serrated (setback) ends; OSM outlines, frame 171°.
+// Thin slab towers with serrated (setback) ends; OSM outlines, frame 171°. Completed 1971 / 1974 / 1977 /
+// 1982; 173 m (568 ft, 45 floors), 126 m (413 ft, 30), 126 m (413 ft, 31), 174 m (571 ft, 45) — Wikipedia.
 function ecTower(id: string, n: number, anchor: V2, ring: V2[], h: number, built: [number, number], floors: number): Landmark {
   return {
     id,
@@ -570,8 +583,8 @@ function ecTower(id: string, n: number, anchor: V2, ring: V2[], h: number, built
     },
     replaces: [rect(0, 0, 82, 38)],
     facts: {
-      Completed: `${Math.round(built[1])} (John Portman & Associates)`,
-      Height: `${h} m, ${floors} floors (OSM / Wikipedia)`,
+      Completed: `${Math.floor(built[1])} (John Portman & Associates)`,
+      Height: `${h} m (${Math.round(h / 0.3048)} ft), ${floors} floors (Wikipedia)`,
       Model: OSM_NOTE + '; podium height estimated'
     },
     sources: [WIKI + 'Embarcadero_Center']
@@ -596,9 +609,9 @@ const EC4: V2[] = [
 ];
 const EMBARCADERO_CENTER: Landmark[] = [
   ecTower('embarcadero_center_1', 1, [-122.399637, 37.794484], EC1, 173, [1969.5, 1971.6], 45),
-  ecTower('embarcadero_center_2', 2, [-122.398495, 37.794997], EC2, 130, [1972.6, 1974.5], 31),
-  ecTower('embarcadero_center_3', 3, [-122.397373, 37.795125], EC3, 130, [1975.5, 1977.5], 31),
-  ecTower('embarcadero_center_4', 4, [-122.396205, 37.795297], EC4, 174, [1980.2, 1982.5], 45)
+  ecTower('embarcadero_center_2', 2, [-122.398495, 37.794997], EC2, 126, [1972.6, 1974.5], 30),
+  ecTower('embarcadero_center_3', 3, [-122.397373, 37.795125], EC3, 126, [1975.5, 1977.5], 31),
+  ecTower('embarcadero_center_4', 4, [-122.396205, 37.795297], EC4, 174, [1979.0, 1982.5], 45) // start estimated (assessor year 1979)
 ];
 
 // Hyatt Regency: right-angled trapezoid; the long diagonal (south-east) face is
@@ -750,6 +763,8 @@ const fremont181: Landmark = {
 
 // =========================================================== SFMOMA (Botta 1995, Snøhetta 2016)
 const SFMOMA: V2 = [-122.40066, 37.785895];
+// museum outline (OSM, Botta building + Snøhetta wing) drawn in ~4 m
+const SFMOMA_SITE: V2[] = [[-16.4, -42.5], [-56.6, -2.0], [-2.5, 51.5], [26.7, 22.6], [23.4, 19.4], [63.1, -25.2], [48.9, -38.9], [19.3, -9.2]];
 const sfmoma1995: Landmark = {
   id: 'sfmoma_1995',
   name: 'San Francisco Museum of Modern Art (Mario Botta building)',
@@ -772,8 +787,9 @@ const sfmoma1995: Landmark = {
       b.color('#A9C0CC').loft([circle(cx, cy, 8.5, 16), circle(cx + 1.5, cy, 7.5, 16)], [39.6, 33], {top: true});
     });
   },
+  replaces: [SFMOMA_SITE],
   facts: {
-    Opened: 'January 1995 (Mario Botta)',
+    Opened: 'Jan 18, 1995 (Mario Botta)',
     Form: 'five-storey stepped brick building around a striped cylindrical oculus with a 130 ft (39.6 m) high sloping skylight',
     Model: 'site from the OSM building part; stepped volumes estimated from photos'
   },
@@ -800,7 +816,7 @@ const sfmoma2016: Landmark = {
       b.color('#D9DBDA').prism(scaleRing(ring, 0.9), 60, 62);
     });
   },
-  replaces: [rotRect(0, 0, 90, 110, 135)],
+  replaces: [SFMOMA_SITE],
   facts: {
     Opened: 'May 14, 2016 (Snøhetta)',
     Size: '7 gallery levels + 3 support floors, fibre-reinforced-plastic panels rippled after the bay fog',

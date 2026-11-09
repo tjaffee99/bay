@@ -42,7 +42,10 @@ UTM = "EPSG:32610"
 K_STREET, K_MAJOR, K_FREEWAY, K_HIGHWAY, K_CABLE, K_STREETCAR, K_RAIL, K_KEY, K_BART, K_FERRY, K_LIGHTRAIL = range(11)
 MODE_KIND = {"freeway": K_FREEWAY, "highway": K_HIGHWAY, "cable_car": K_CABLE, "streetcar": K_STREETCAR,
              "horsecar": K_STREETCAR, "steam_railroad": K_RAIL, "interurban": K_RAIL, "key_system": K_KEY,
-             "bart": K_BART, "ferry": K_FERRY, "light_rail": K_LIGHTRAIL}
+             "bart": K_BART, "ferry": K_FERRY, "light_rail": K_LIGHTRAIL,
+             # road bridges (San Mateo, Dumbarton, Carquinez, Richmond-San Rafael, Benicia…): the
+             # standing ones date Overture's geometry like any highway, the replaced ones are drawn
+             "bridge": K_HIGHWAY}
 # BART and today's Muni lines come from transit.py (transit.bin.gz) when it has run
 TRANSIT_TAKES_OVER = True
 # edge of the region extracts (download_overture.REGION_BBOX): freeway ends there are cuts
@@ -396,6 +399,12 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
             conn_count[cid] = conn_count.get(cid, 0) + 1
         segs.append({"i": i, "g": g, "f": f, "s": f * L, "h": h, "tn": tn, "tn_real": tn_real, "conns": conns,
                      "cls": row["class"], "sub": row.subclass, "bounds": row.geometry.bounds})
+    # the extract is wider than the map (decision 32): heights and junctions are worked out on
+    # the whole network, but only roads inside the map's extent (+ margin) are written
+    inside = in_extent(shapely.points([(sg["bounds"][0] + sg["bounds"][2]) / 2 for sg in segs],
+                                      [(sg["bounds"][1] + sg["bounds"][3]) / 2 for sg in segs]))
+    for sg, ok in zip(segs, inside):
+        sg["in"] = bool(ok)
 
     def dilate(seg):
         h, s_ = seg["h"], seg["s"]
@@ -537,8 +546,12 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
     fw_routes_tree = cKDTree(fw_routes[0]) if fw_routes is not None else None
     for sg in segs:
         sg["year"] = vote(sg) if sg["sub"] != "link" else None
-    # mainlines without a parallel route: nearest route within 60 m, else 1960
-    for sg in segs:
+    # mainlines without a parallel route: nearest route within 60 m, else 1960 (motorways;
+    # `estimated`) — trunk roads without a researched route are mostly old highways and
+    # arterials (Woodside Rd, Vallecitos Rd, Kirker Pass Rd, 19th Ave, Van Ness Ave…), dated
+    # like the other main roads: a year before the buildings along them (date_by_buildings)
+    undated, n_def = [], 0
+    for q, sg in enumerate(segs):
         if sg["sub"] != "link" and sg["year"] is None:
             sg["year"] = 1960.0
             if fw_routes_tree is not None:
@@ -546,6 +559,19 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
                 dd, ii = fw_routes_tree.query((m.x, m.y))
                 if dd < 60:
                     sg["year"] = float(fw_routes[2][ii])
+                    continue
+            if sg["cls"] == "trunk":
+                undated.append(q)
+            elif sg["in"]:
+                n_def += 1
+    if undated:
+        mids = gpd.GeoSeries([segs[q]["g"].interpolate(0.5, normalized=True) for q in undated], crs=UTM).to_crs(4326)
+        yrs, n_b = date_by_buildings([segs[q]["g"] for q in undated], mids, 1870.0)
+        for q, y in zip(undated, yrs):
+            segs[q]["year"] = float(y)
+        log(f"roads: {len(undated)} trunk road segments without a researched route dated like main roads "
+            f"({n_b} by the buildings along them)")
+    log(f"roads: {n_def} motorway segments inside the map left at the 1960 default (no researched route)")
     # ramps: connected components of link segments
     parent = list(range(len(segs)))
 
@@ -704,6 +730,8 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
 
     items = []
     for chain in chains:
+        if not any(segs[q]["in"] for q, _ in chain):
+            continue  # outside the map
         XY, Hh, TN = [], [], []
         for k_, (q, rev) in enumerate(chain):
             sg = segs[q]
@@ -855,7 +883,10 @@ def main():
     rr = rr.to_crs(UTM)
     rr = rr[rr.geometry.geom_type == "LineString"]
     rr = rr[~rr["class"].isin(["motorway", "trunk"])]  # drawn in 3D from freeways.bin.gz
-    fw = [it for it in ritems if it[1] in (K_FREEWAY, K_HIGHWAY)]
+    # only roads that still stand date today's geometry: a replaced road (Bayshore Highway
+    # 1929-47, Eastshore Highway, Doyle Drive, the 1929 San Mateo bridge, the Cypress viaduct)
+    # is drawn from its own line and must not hand its year to the freeway built over it
+    fw = [it for it in ritems if it[1] in (K_FREEWAY, K_HIGHWAY) and it[4] >= 9999]
     fw_tree = None
     if fw:
         pts, yrs = [], []

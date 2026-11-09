@@ -916,6 +916,7 @@ const sapCenter = landmark(
   {
     Built: 'groundbreaking Jun 28, 1990; opened Sep 7, 1993 (San Jose Sharks)',
     Architect: 'Sink Combs Dethlefs (Charles Sink); Prodis Associates',
+    Names: 'San Jose Arena 1993–2001 · Compaq Center at San Jose 2001–02 · HP Pavilion at San Jose 2002–13 · SAP Center at San Jose since 2013',
     Capacity: '17,435 (hockey) – 19,190 (concerts)',
     Model:
       'square roof (132 × 131 m), drum, diagonal skylight and corner glass atria measured on the orthophoto; height from OpenStreetMap (28.7 m, © OSM contributors, ODbL); facade bands estimated'
@@ -1371,7 +1372,7 @@ const hotelDeAnza = landmark(
   'hotel_de_anza',
   'Hotel De Anza',
   'building',
-  [1931.16, 1931.9],
+  [1931.1, 1931.9], // groundbreaking Feb 27, 1931
   9999,
   DE_ANZA,
   b => {
