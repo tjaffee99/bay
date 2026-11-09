@@ -1219,6 +1219,9 @@ def real_farmsteads(g, covers, years):
             st = min(farm_y + rng.uniform(0, 8), first - 0.5)
         else:
             st = first - rng.uniform(4, 15)
+        # no farmsteads before American settlement (the mission / rancho range was
+        # unfenced; the earliest maps are from 1885)
+        st = max(st, 1849 + rng.uniform(0, 8))
         if after:
             a = min(after)
             en = last + (a - last) * rng.uniform(0.2, 0.9)
@@ -1318,6 +1321,55 @@ def region_under_detail(g, elev):
     return out
 
 
+def merge_detail_deco():
+    """The z13 region tiles over the detail grid carry the detail grid's decorations (the
+    trees, orchards and farmsteads of their z14 children) instead of their own: the viewer
+    shows z13 tiles from zoom 11.5 and z14 tiles from 12.5, and two independently placed
+    sets would swap every tree in the urban bay plain at that zoom."""
+    from audit_region_years import read_bayt
+    kids = {}
+    for f in (TILES / "14").glob("*/*.bin.gz"):
+        x, y = int(f.parent.name), int(f.name.split(".")[0])
+        kids.setdefault((x >> 1, y >> 1), []).append((x, y, f))
+    n_par = n_add = 0
+    for (px, py), ch in kids.items():
+        pf = TILES / "13" / str(px) / f"{py}.bin.gz"
+        if not pf.exists():
+            continue
+        h, c = read_bayt(pf)
+        pos = c.get("deco_pos", np.zeros(0, np.uint16)).reshape(-1, 2)
+        kind = c.get("deco_kind", np.zeros(0, np.uint8))
+        size = c.get("deco_size", np.zeros(0, np.uint8))
+        yrs = c.get("deco_years", np.zeros(0, np.uint16)).reshape(-1, 2)
+        qx = (pos[:, 0] >= 32768).astype(int)
+        qy = (pos[:, 1] >= 32768).astype(int)
+        keep = np.ones(len(kind), bool)
+        P, K, S, Yr = [], [], [], []
+        for x, y, f in ch:
+            ox, oy = x - 2 * px, y - 2 * py
+            keep &= ~((qx == ox) & (qy == oy))
+            _, cc = read_bayt(f)
+            if "deco_kind" not in cc or not len(cc["deco_kind"]):
+                continue
+            cp = cc["deco_pos"].reshape(-1, 2).astype(np.float64)
+            P.append(np.column_stack([(ox * 65535 + cp[:, 0]) / 2, (oy * 65535 + cp[:, 1]) / 2]))
+            K.append(cc["deco_kind"]); S.append(cc["deco_size"]); Yr.append(cc["deco_years"].reshape(-1, 2))
+        P = np.concatenate([pos[keep].astype(np.float64)] + P) if P else pos[keep].astype(np.float64)
+        K = np.concatenate([kind[keep]] + K) if K else kind[keep]
+        S = np.concatenate([size[keep]] + S) if S else size[keep]
+        Yr = np.concatenate([yrs[keep]] + Yr) if Yr else yrs[keep]
+        cols = {k: c[k] for k in ("elev", "cover", "year")}
+        if len(K):
+            cols.update({"deco_pos": np.clip(np.rint(P), 0, 65535).astype(np.uint16).ravel(),
+                         "deco_kind": K.astype(np.uint8), "deco_size": S.astype(np.uint8),
+                         "deco_years": Yr.astype(np.uint16).ravel()})
+        counts = dict(h.get("counts", {}), deco=int(len(K)))
+        write_columnar(pf, cols, counts=counts)
+        n_par += 1
+        n_add += int(len(K)) - int(keep.sum())
+    log(f"terrain: {n_par} z13 tiles over the detail grid take its decorations ({n_add:+d} instances)")
+
+
 def main():
     meta = {}
     for name, zooms, step in (("region", [8, 9, 10, 11, 12, 13], 4), ("detail", [14], 2)):
@@ -1330,6 +1382,7 @@ def main():
         write_elevation_lookup(name, g, elev, step)
         np.save(INTERIM / f"grid_{name}_landyear.npy", land_year_of(covers, years))
         meta[name] = {"z": g["z"], "tx0": g["tx0"], "ty0": g["ty0"], "tx1": g["tx1"], "ty1": g["ty1"], "zooms": zooms}
+    merge_detail_deco()
     (VIEWER_DATA / "terrain.json").write_text(json.dumps({"grids": meta, "covers": COVER_NAMES,
                                                           "deco": ["broadleaf", "conifer", "palm", "orchard", "farmhouse", "shrub", "farmyard"]}, indent=1))
 

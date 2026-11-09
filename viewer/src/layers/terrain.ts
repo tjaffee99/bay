@@ -17,7 +17,7 @@ import {Geometry, Model} from '@luma.gl/engine';
 import type {ShaderModule} from '@luma.gl/shadertools';
 import {loadColumnar} from '../data/columnar';
 import {DECO_COLORS} from './decoration-meshes';
-import {DECO_ORIGIN, decoLayers, setVisibleDeco, type DecoBatch} from './deco-layer';
+import {DECO_ORIGIN, decoLayers, rankByte, setVisibleDeco, type DecoBatch} from './deco-layer';
 import {extentFade, extentReady} from './extent';
 
 // cover codes — keep in sync with pipeline/terrain_tiles.py
@@ -628,14 +628,26 @@ async function fetchTile(z: number, x: number, y: number) {
   }
 }
 
+// open water: the pipeline skips tiles that are deep water throughout (terrain_tiles.py
+// write_tiles); they are drawn as flat water here, with the map-edge fade, instead of
+// leaving the parchment background showing through as squares
+let oceanCols: Record<string, any> | null = null;
+function oceanTile() {
+  oceanCols ??= {
+    elev: new Int16Array(N * N).fill(-100),
+    cover: new Uint8Array(N * N * 5),
+    year: new Uint16Array(N * N * 4)
+  };
+  return {columns: oceanCols} as any;
+}
+
 /** Load a tile; z14 outside the San Francisco detail grid falls back to a quadrant of its z13 parent. */
 export async function loadTerrainTile(z: number, x: number, y: number): Promise<TileContent> {
   await extentReady;
   let f = await fetchTile(z, x, y);
   let sub = {r0: 0, c0: 0, step: 1, n: N, srcZ: z, srcX: x, srcY: y};
   if (!f && z === TILE_ZOOM_DETAIL) {
-    f = await fetchTile(z - 1, x >> 1, y >> 1);
-    if (!f) return null;
+    f = (await fetchTile(z - 1, x >> 1, y >> 1)) ?? oceanTile();
     sub = {
       r0: (y & 1) * 32,
       c0: (x & 1) * 32,
@@ -646,8 +658,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
       srcY: y >> 1
     };
   }
-  if (!f) return null;
-  const c = f.columns;
+  const c = (f ?? oceanTile()).columns;
   const elev = c.elev as Int16Array;
   const cov = c.cover as Uint8Array;
   const yrs = c.year as Uint16Array;
@@ -733,6 +744,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
     const sizes = c.deco_size as Uint8Array;
     const dy = c.deco_years as Uint16Array;
     const groups = new Map<number, number[]>();
+    const dense = kinds.length * (sub.srcZ === 14 ? 4 : 1) > 6000;
     for (let i = 0; i < kinds.length; i++) {
       let gx = (dpos[i * 2] / 65535) * (N - 1);
       let gy = (dpos[i * 2 + 1] / 65535) * (N - 1);
@@ -741,7 +753,12 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         gy -= sub.r0;
         if (gx < 0 || gy < 0 || gx > n - 1 || gy > n - 1) continue;
       }
-      if (kinds[i] <= 1 && kinds.length > 6000 && (i * 2654435761) % 5 >= 2) continue;
+      // thinning by the tree's rank (rankByte of its own position: a z13 tile and its z14
+      // children keep the same trees): dense natural forest keeps 40 % (density per
+      // z13-tile area); a z13 tile is only drawn below zoom 12.5, where the deco shader
+      // keeps at most 40 % of what can be thinned, so the rest isn't even loaded
+      const rk = rankByte(west + ((east - west) * gx) / (n - 1), tileLat(y + gy / (n - 1), z)) / 255;
+      if (rk > 0.4 && ((kinds[i] <= 1 && dense) || (z === 13 && kinds[i] !== 4 && kinds[i] !== 6))) continue;
       // nothing stands in the faded margin of the map
       if (extentFade(west + ((east - west) * (sub.n !== N ? gx : gx)) / (n - 1), tileLat(y + gy / (n - 1), z)) < 0.4) continue;
       const arr = groups.get(kinds[i]) ?? [];
@@ -784,7 +801,7 @@ export async function loadTerrainTile(z: number, x: number, y: number): Promise<
         yr[k * 2] = dy[i * 2] ? decodeYear(dy[i * 2]) : -10000;
         yr[k * 2 + 1] = dy[i * 2 + 1] ? decodeYear(dy[i * 2 + 1]) : 10000;
         col.set(pal[((i * 2654435761) % pal.length) >>> 0] ?? pal[0], k * 4);
-        col[k * 4 + 3] = 255;
+        col[k * 4 + 3] = rankByte(west + ((east - west) * lx) / (n - 1), tileLat(y + ly / (n - 1), z));
       });
       deco.push({
         kind,
@@ -842,7 +859,10 @@ export function terrainLayer(year: number, extent: [number, number, number, numb
     extent,
     zRange: [-80, 1300],
     maxRequests: 12,
-    refinementStrategy: 'best-available',
+    // while a zoom level loads, show the cached parent OR children, never both: opaque
+    // meshes of two zoom levels on top of each other z-fight (flicker) and double the
+    // decorations
+    refinementStrategy: 'no-overlap',
     getTileData: ({index}: any) => loadTerrainTile(index.z, index.x, index.y),
     // decorations of the tiles in view are drawn together (deco-layer.ts)
     onTileLoad: () => refreshDecoSoon(),

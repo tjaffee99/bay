@@ -129,10 +129,11 @@ export function groundDetailLayers(year: number, zoom: number): Layer[] {
         console.warn('region ground detail', e);
       });
   }
-  if (zoom < 13) return [];
+  // hidden, not removed, when zoomed out: a removed polygon layer would be tessellated
+  // again from scratch on the way back in (a stutter and a blink)
   const out: Layer[] = [];
-  if (sf) out.push(gdLayer('ground-detail', sf, year, zoom));
-  if (region) out.push(gdLayer('ground-detail-region', region, year, zoom));
+  if (sf) out.push(gdLayer('ground-detail', sf, year, zoom).clone({visible: zoom >= 13}));
+  if (region) out.push(gdLayer('ground-detail-region', region, year, zoom).clone({visible: zoom >= 13}));
   return out;
 }
 
@@ -183,7 +184,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
   const col = apColors!;
   const yrs = apYears!;
   const out: Layer[] = [];
-  if (apLines && zoom < 13.5) {
+  if (apLines) {
     const L = apLines;
     out.push(
       new PathLayer({
@@ -211,6 +212,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         currentYear: year,
         growYears: 1,
         shrinkYears: 0.5,
+        visible: zoom < 13.5,
         parameters: {depthBias: -3, depthBiasSlopeScale: -1.5} as any
       } as any) as any
     );

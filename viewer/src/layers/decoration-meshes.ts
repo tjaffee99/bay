@@ -107,10 +107,9 @@ export const DECO_MESHES_LOW = [broadleafLow(), coniferLow(), palmLow(), orchard
 
 /** Level of detail for all tree-like instances at a map zoom: low-poly below 15, thinned below 14. */
 export function treeLod(zoom: number): {low: boolean; keep: number} {
-  if (zoom >= 15) return {low: false, keep: 1};
-  if (zoom >= 14) return {low: true, keep: 1};
-  if (zoom >= 13) return {low: true, keep: 0.6};
-  return {low: true, keep: 0.4};
+  // keep = share of trees left when zoomed out; the shader (deco-layer.ts) thins
+  // continuously from zoom 14.3 down to 12.5
+  return {low: zoom < 15, keep: 0.4};
 }
 
 export const DECO_COLORS: [number, number, number][][] = [

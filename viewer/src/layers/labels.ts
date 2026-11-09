@@ -34,6 +34,8 @@ const TIERS: Record<string, {zoom: [number, number, number, number]; size: numbe
   // military / industrial and vanished large sites (refineries, shipyards, bases, quarries,
   // racetracks, amusement parks): over the years they stood
   site: {zoom: [11.8, 12.5, 16.5, 17.5], size: 13, color: [104, 80, 64], italic: true, priority: 2},
+  // contact-era Native villages (Ohlone, Bay and Coast Miwok), 1769 until they emptied
+  village: {zoom: [10.2, 10.9, 16.5, 17.5], size: 13, color: [120, 64, 44], italic: true, priority: 2},
   // BART and Muni Metro stations (pipeline/transit.py -> transit-stations.json)
   station: {zoom: [12.4, 13.0, 17.5, 18.5], size: 12, color: [32, 66, 128], priority: 1},
   station_muni: {zoom: [14.3, 14.9, 17.5, 18.5], size: 12, color: [150, 40, 40], priority: 0}
@@ -73,7 +75,7 @@ export async function loadParkLabels() {
       (byName.get(r.name) ?? []).some(p => Math.abs(p.lon - r.lon) < 0.02 && Math.abs(p.lat - r.lat) < 0.02);
     for (const r of rows) {
       if (near(r) || (keepFn && !keepFn(r.lon, r.lat))) continue;
-      const tier = r.tier === 'site' ? 'site' : r.ha >= 8 ? 'park_major' : 'park';
+      const tier = r.tier === 'site' || r.tier === 'village' ? r.tier : r.ha >= 8 ? 'park_major' : 'park';
       places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end ?? 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
       (byName.get(r.name) ?? byName.set(r.name, []).get(r.name)!).push(r);
     }

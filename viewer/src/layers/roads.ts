@@ -136,14 +136,28 @@ export async function loadLocalStreetIndex() {
   }
 }
 
-function streetTiles(id: string, z: number, have: Set<string>, zoomOffset: number, year: number, low: boolean) {
+function streetTiles(
+  id: string,
+  z: number,
+  have: Set<string>,
+  zoomOffset: number,
+  year: number,
+  low: boolean,
+  show = true,
+  loadFrom: number | null = null,
+  loadTo: number | null = null
+) {
   return new TileLayer<PathSet | null>({
     id,
     minZoom: z,
     maxZoom: z,
     tileSize: 256,
     zoomOffset,
-    maxCacheSize: 60,
+    // kept in the scene at every zoom and loading a little beyond where it is drawn (see
+    // region-buildings.ts): no reload, no blink when the view crosses the switch zoom
+    visibleMinZoom: loadFrom,
+    visibleMaxZoom: loadTo,
+    maxCacheSize: 400,
     extent: [-123.2, 36.85, -121.2, 38.9],
     getTileData: async ({index: t}: any) => {
       if (!have.has(`${t.x}/${t.y}`)) return null;
@@ -151,9 +165,9 @@ function streetTiles(id: string, z: number, have: Set<string>, zoomOffset: numbe
     },
     renderSubLayers: (props: any) => {
       const s = props.data as PathSet | null;
-      return s ? pathLayer(s, year, `${props.id}-p`, low) : null;
+      return s && show ? pathLayer(s, year, `${props.id}-p`, low) : null;
     },
-    updateTriggers: {renderSubLayers: [year]}
+    updateTriggers: {renderSubLayers: [year, show]}
   } as any) as any;
 }
 
@@ -161,8 +175,9 @@ function streetTiles(id: string, z: number, have: Set<string>, zoomOffset: numbe
  *  simplified grid further out. */
 export function localStreetLayers(year: number, zoom: number): Layer[] {
   if (!localIndex) return [];
-  if (zoom >= 11) return [streetTiles('region-streets', localZ, localIndex, 1, year, false)];
-  return localLow ? [streetTiles('region-streets-low', localLowZ, localLow, 1, year, false)] : [];
+  const out = [streetTiles('region-streets', localZ, localIndex, 1, year, false, zoom >= 11, 10.7, null)];
+  if (localLow) out.push(streetTiles('region-streets-low', localLowZ, localLow, 1, year, false, zoom < 11, null, 11.8));
+  return out;
 }
 
 /** Bents under elevated paths: a wall-like pier across the roadway every ~60 m,
@@ -408,6 +423,7 @@ export function roadLayers(year: number, zoom: number, bounds?: [number, number,
           id: `columns-${s.id}`,
           data: s.columns.data,
           mesh: COLUMN,
+          zoomIn: 0, // bents stand with their decks at every zoom (never thinned: keep 1)
           coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
           coordinateOrigin: [s.origin[0], s.origin[1], 0],
           material: {ambient: 0.6, diffuse: 0.5, shininess: 4, specularColor: [20, 20, 20]},

@@ -45,15 +45,31 @@ export async function loadRegionIndex() {
 // drawn): z13 tiles requested two levels up from zoom 11
 const FULL_FROM = 11;
 
-function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, year: number, quality: boolean, visible: boolean) {
+function tileLayer(
+  id: string,
+  z: number,
+  set: Set<string>,
+  zoomOffset: number,
+  year: number,
+  quality: boolean,
+  show: boolean,
+  loadFrom: number,
+  loadTo: number | null
+) {
   return new TileLayer<BuildingSet | null>({
     id,
     minZoom: z,
     maxZoom: z,
     tileSize: 256,
     zoomOffset,
-    maxCacheSize: 160,
-    visible,
+    // the layer stays in the scene at every zoom (removing it would throw its tiles
+    // away and zooming back would download and triangulate them again: buildings
+    // blinking out); it loads tiles over [loadFrom, loadTo] — a little beyond the zoom
+    // where it is drawn, so the set is ready when the view crosses over — and keeps a
+    // large cache
+    visibleMinZoom: loadFrom,
+    visibleMaxZoom: loadTo,
+    maxCacheSize: 900,
     extent: [-123.2, 36.85, -121.2, 38.9],
     getTileData: async ({index: t}: any) => {
       if (!set.has(`${t.x}/${t.y}`)) return null;
@@ -67,14 +83,14 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
     },
     renderSubLayers: (props: any) => {
       const s = props.data as (BuildingSet & {lmDone?: boolean}) | null;
-      if (!s) return null;
+      if (!s || !show) return null;
       if (landmarks && !s.lmDone) {
         s.replaced = replacedMask(landmarks, s.centroids, s.count, s.height);
         s.lmDone = true;
       }
       return buildingsLayer(s, year, quality, true, `${props.id}-b`) as any;
     },
-    updateTriggers: {renderSubLayers: [year, quality]}
+    updateTriggers: {renderSubLayers: [year, quality, show]}
   } as any);
 }
 
@@ -84,8 +100,8 @@ function tileLayer(id: string, z: number, set: Set<string>, zoomOffset: number, 
 export function regionBuildingLayers(year: number, zoom: number, quality: boolean): Layer[] {
   if (!index) return [];
   const out: Layer[] = [];
-  if (index.low && zoom >= 9 && zoom < FULL_FROM)
-    out.push(tileLayer('region-buildings-low', index.low.z, haveLow, 2, year, quality, true) as any);
-  if (zoom >= FULL_FROM) out.push(tileLayer('region-buildings', index.z, have, 2, year, quality, true) as any);
+  if (index.low)
+    out.push(tileLayer('region-buildings-low', index.low.z, haveLow, 2, year, quality, zoom >= 9 && zoom < FULL_FROM, 8.6, FULL_FROM + 0.8) as any);
+  out.push(tileLayer('region-buildings', index.z, have, 2, year, quality, zoom >= FULL_FROM, FULL_FROM - 0.3, null) as any);
   return out;
 }

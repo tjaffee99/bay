@@ -8,7 +8,7 @@ import type {Layer} from '@deck.gl/core';
 import {loadColumnar} from '../data/columnar';
 import {MeshBuilder, circle} from '../landmarks/kit';
 import {elevationAt} from './elevation';
-import {DecoLayer} from './deco-layer';
+import {DecoLayer, rankByte} from './deco-layer';
 import {broadleafLow, coniferLow, palmLow, treeLod} from './decoration-meshes';
 
 export type TreeSet = {
@@ -96,7 +96,7 @@ export function decodeTrees(f: {columns: any; header: any}): {data: any; count: 
       ang[j] = ((((i * 2654435761) >>> 0) % 360) * Math.PI) / 180;
       const g = GREENS[k][(i * 2654435761) % GREENS[k].length >>> 0] ?? GREENS[k][0];
       col.set(g, j * 4);
-      col[j * 4 + 3] = 255;
+      col[j * 4 + 3] = rankByte(f.header.origin[0] + pos[j * 3], f.header.origin[1] + pos[j * 3 + 1]);
       j++;
     }
     return {
@@ -116,7 +116,7 @@ export function decodeTrees(f: {columns: any; header: any}): {data: any; count: 
   return forms;
 }
 
-export function treesLayer(trees: TreeSet, year: number, zoom = 16): Layer[] {
+export function treesLayer(trees: TreeSet, year: number, zoom = 16, zoomIn = 11.6): Layer[] {
   const lod = treeLod(zoom);
   return trees.forms.map(
     (f, k) =>
@@ -125,6 +125,7 @@ export function treesLayer(trees: TreeSet, year: number, zoom = 16): Layer[] {
         data: f.data,
         mesh: (lod.low ? MESHES_LOW : MESHES)[k],
         keep: lod.keep,
+        zoomIn,
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [trees.origin[0], trees.origin[1], 0],
         material: {ambient: 0.55, diffuse: 0.55, shininess: 4, specularColor: [20, 24, 18]},

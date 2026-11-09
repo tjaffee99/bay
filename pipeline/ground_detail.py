@@ -189,9 +189,55 @@ def main():
             ha = float(gpd.GeoSeries([geom], crs=4326).to_crs(UTM).area.iloc[0]) / 1e4
             labels.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y0),
                            "end": float(y1) if np.isfinite(y1) else 9999.0, "ha": round(ha, 2), "tier": "site"})
+    labels += village_labels()
     labels += region_detail(golf_y)
     (VIEWER_DATA / "park-labels.json").write_text(json.dumps(labels))
     log(f"ground detail: {n_parks} dated SF park labels ({len(parks)} parks), {len(labels) - n_parks} site / region park labels")
+
+
+def village_labels():
+    """Names of the contact-era Native villages (data/manual/ohlone/villages.csv,
+    early_region.csv, early_sf.csv tule rows; mission neophyte huts and sweat houses are not
+    labelled): the village's own name where the sources give one (Pruristac, Petlenuc,
+    Olompali), else its local tribe's ('Huchiun village'), from 1769 until it emptied."""
+    import re
+    from extent import in_extent
+
+    def short(name, vid):
+        n = str(name)
+        if vid == "ohl_seunen_san_ramon":
+            return "Seunen village"
+        if re.search(r"neophyte|temescal|sweat house|\bhuts\b|^Second", n, re.I):
+            return ""
+        if ", " in n:
+            head = re.sub(r"\s*\([^)]*\)", "", n.split(", ")[0]).split(" / ")[0].strip()
+            if len(head.split()) <= 2 and "village" not in head.lower():
+                return head
+        m = re.match(r"^([A-Z][\w'-]+(?: [A-Z][\w'-]+)?)(?: \([^)]*\))? (?:(?:Ohlone|Bay Miwok|Coast Miwok) )?"
+                     r"(?:village|villages|rancheria|main town)", n)
+        if not m:
+            return ""
+        w = re.sub(r" (Ohlone|Bay|Coast)$", "", m.group(1))
+        return "Ohlone village" if w == "Ohlone" else f"{w} village"
+
+    out = []
+    for f in (MANUAL / "ohlone" / "villages.csv", TABLES / "early_region.csv", TABLES / "early_sf.csv"):
+        if not f.exists():
+            continue
+        t = pd.read_csv(f)
+        t = t[t.material.astype(str).str.contains("tule") & pd.to_numeric(t.lat, errors="coerce").notna()]
+        for r in t.itertuples():
+            nm = short(r.name, r.id)
+            y1 = pd.to_numeric(r.end_year, errors="coerce")
+            if not nm or not np.isfinite(y1) or y1 <= 1769:
+                continue
+            c = gpd.GeoSeries(gpd.points_from_xy([float(r.lon)], [float(r.lat)]), crs=4326)
+            if not in_extent(c)[0]:
+                continue
+            out.append({"name": nm, "lon": round(float(r.lon), 6), "lat": round(float(r.lat), 6),
+                        "start": max(1769.0, float(r.start_year)), "end": float(y1), "ha": 0.0, "tier": "village"})
+    log(f"ground detail: {len(out)} Native village labels")
+    return out
 
 
 def _outlines(fu, ground, kind_of, years_of, z_extra=0.0):

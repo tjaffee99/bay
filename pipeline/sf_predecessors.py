@@ -640,6 +640,8 @@ def table_buildings(path, lots, source, embarcadero=None):
         if not np.isfinite(height):
             height = (storeys * (4.5 if mat_key in ("brick", "stone") else 3.6) + 0.6) if np.isfinite(storeys) else (
                 {"tule": 2.5, "canvas tent": 2.8, "adobe": 4.5}.get(mat_key, 7.0))
+        if mat_key == "tule":
+            height = height * 1.6  # drawn at 2x plan size (above): keep the dome's proportions
         end = float(r.end_year) if pd.notna(r.end_year) else 9999.0
         rng = np.random.default_rng(zlib.crc32(str(r.id).encode()))
         for k in range(min(n, 1500)):
@@ -655,7 +657,9 @@ def table_buildings(path, lots, source, embarcadero=None):
             else:
                 a, b = dims or EARLY_DEFAULT_FP[mat_key]
                 # shapely rotates counter-clockwise; our bearing is clockwise from north for the long side
-                fp = _rect(cx, cy, b, a, -a_) if mat_key != "tule" else Point(cx, cy).buffer(a / 2, 4)
+                # tule houses (3-5 m across) are drawn at twice their size, like the trees
+                # (decision 13), so a village reads at map scale; confidence stays low
+                fp = _rect(cx, cy, b, a, -a_) if mat_key != "tule" else Point(cx, cy).buffer(a, 4)
             if fp is None or fp.is_empty:
                 continue
             rows.append({"geometry": fp, "start_year": float(r.start_year) + (rng.uniform(0, 0.8) if n > 1 else 0.0), "end_year": end,

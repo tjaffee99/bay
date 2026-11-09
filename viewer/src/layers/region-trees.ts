@@ -78,7 +78,9 @@ function merge(keys: string[]): TreeSet {
 }
 
 export function regionTreeLayers(year: number, zoom: number, bounds: [number, number, number, number]): Layer[] {
-  if (!index || !ready || zoom < 12.5) return [];
+  if (!index || !ready) return [];
+  // zoomed out: hidden but kept (the merged buffers stay on the GPU for the way back in)
+  if (zoom < 12.5) return merged ? treesLayer(merged, year, zoom, 12.5).map(l => l.clone({visible: false})) : [];
   const z = index.z;
   const [x0, y1] = tileXY(bounds[0], bounds[1], z);
   const [x1, y0] = tileXY(bounds[2], bounds[3], z);
@@ -91,7 +93,7 @@ export function regionTreeLayers(year: number, zoom: number, bounds: [number, nu
       if (extentDistance(lon, lat) < -8) continue;
       want.push(key);
     }
-  if (want.length > 24) return merged ? treesLayer(merged, year, zoom) : [];
+  if (want.length > 24) return merged ? treesLayer(merged, year, zoom, 12.5) : [];
   for (const key of want) {
     if (cache.has(key)) continue;
     cache.set(key, 'loading');
@@ -111,5 +113,6 @@ export function regionTreeLayers(year: number, zoom: number, bounds: [number, nu
     mergedKey = key;
     merged = loaded.length ? merge(loaded) : null;
   }
-  return merged ? treesLayer(merged, year, zoom) : [];
+  // (they fade in over 12.5-13.1: tiles load from 12.5)
+  return merged ? treesLayer(merged, year, zoom, 12.5) : [];
 }

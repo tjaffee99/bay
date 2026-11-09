@@ -94,6 +94,14 @@ def main():
     # ---------------------------------------------------------------- Overture gap fill
     df = pd.concat([df, overture_extras(df)], ignore_index=True)
     df = gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
+    # footprints that are not buildings above ground (plazas on underground garages:
+    # Portsmouth Square, St. Mary's Square): data/tables/not_buildings.csv
+    nb = TABLES / "not_buildings.csv"
+    if nb.exists():
+        t = pd.read_csv(nb, dtype={"mapblklot": str})
+        gone = df.mapblklot.astype(str).isin(set(t.mapblklot)) & df.source.eq("datasf_footprints_2016")
+        df = df[~gone].reset_index(drop=True)
+        log(f"footprints: dropped {int(gone.sum())} non-buildings ({', '.join(t.name.astype(str))})")
 
     raw = df.raw_year.fillna(0).astype(int)
     spikes = spike_years(raw)

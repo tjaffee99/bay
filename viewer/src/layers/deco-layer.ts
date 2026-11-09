@@ -88,7 +88,16 @@ export function decoLayers(year: number, zoom: number): Layer[] {
 
 // ------------------------------------------------------------------ layer
 
-type DecoUniforms = {year: number; growYears: number; shrinkYears: number; keep: number};
+/** Stable rank byte (0..255) of a position, ~3 m cells: stored in an instance's colour
+ *  alpha; the deco shader keeps an instance while rank / 255 <= the zoom's keep share. */
+export function rankByte(lon: number, lat: number) {
+  let h = Math.imul(Math.round(lon * 3.3e4) | 0, 73856093) ^ Math.imul(Math.round(lat * 3.3e4) | 0, 19349663);
+  h = Math.imul(h ^ (h >>> 13), 0x5bd1e995);
+  h ^= h >>> 15;
+  return (h >>> 0) % 256;
+}
+
+type DecoUniforms = {year: number; growYears: number; shrinkYears: number; keep: number; zoomIn: number};
 const decoModule: ShaderModule<DecoUniforms> = {
   name: 'deco',
   vs: `layout(std140) uniform decoUniforms {
@@ -96,9 +105,10 @@ const decoModule: ShaderModule<DecoUniforms> = {
   float growYears;
   float shrinkYears;
   float keep;
+  float zoomIn;
 } deco;
 `,
-  uniformTypes: {year: 'f32', growYears: 'f32', shrinkYears: 'f32', keep: 'f32'}
+  uniformTypes: {year: 'f32', growYears: 'f32', shrinkYears: 'f32', keep: 'f32', zoomIn: 'f32'}
 };
 
 const vs = `#version 300 es
@@ -115,8 +125,17 @@ out vec3 vCommon;
 out vec3 vCamera;
 void main(void) {
   float y = deco.year;
-  // thinning when zoomed out: a stable pseudo-random subset of instances
-  bool vis = y >= instanceYears.x && y < instanceYears.y && fract(float(gl_InstanceID) * 0.6180339887) < deco.keep;
+  // thinning when zoomed out: a stable subset of instances (by rank, not by instance
+  // index, which shifts whenever a tile joins the merged buffer), fading in continuously
+  // with the zoom read from the projection (no steps, no re-render): deco.keep is the
+  // share kept when zoomed out (1 = never thinned)
+  float zoomNow = log2(project.scale);
+  // ... and nothing below zoom deco.zoomIn (sub-pixel there): the instances thin out to
+  // none before the tiles that carry them are swapped for coarser ones
+  float keepNow = mix(deco.keep, 1.0, clamp((zoomNow - 12.5) / 1.8, 0.0, 1.0)) * smoothstep(deco.zoomIn, deco.zoomIn + 0.6, zoomNow);
+  // the instance's rank (0..1, colour alpha: rankByte() of its position) decides when it
+  // drops out; the same tree has the same rank in whichever tile it came from
+  bool vis = y >= instanceYears.x && y < instanceYears.y && instanceColors.a <= keepNow;
   float ending = smoothstep(instanceYears.y - deco.shrinkYears, instanceYears.y, y);
   float grow = smoothstep(instanceYears.x, instanceYears.x + deco.growYears, y) * (1.0 - ending);
   vec3 m = positions * instanceScale * grow;
@@ -148,7 +167,7 @@ void main(void) {
 }
 `;
 
-type Props = {data: any; mesh: any; year: number; growYears: number; shrinkYears: number; keep: number; material: any; getColor: any; getAngle: any};
+type Props = {data: any; mesh: any; year: number; growYears: number; shrinkYears: number; keep: number; zoomIn: number; material: any; getColor: any; getAngle: any};
 
 const defaults: DefaultProps<Props> = {
   mesh: {type: 'object', value: null as any, compare: true},
@@ -156,6 +175,7 @@ const defaults: DefaultProps<Props> = {
   growYears: 6,
   shrinkYears: 1,
   keep: 1,
+  zoomIn: 11.6,
   getColor: {type: 'accessor', value: [255, 255, 255, 255]},
   getAngle: {type: 'accessor', value: 0},
   material: {ambient: 0.58, diffuse: 0.55, shininess: 4, specularColor: [20, 22, 18]}
@@ -210,8 +230,8 @@ export class DecoLayer extends Layer<Props> {
   draw() {
     const {model} = this.state;
     if (!model) return;
-    const {year, growYears, shrinkYears, keep} = this.props;
-    model.shaderInputs.setProps({deco: {year, growYears, shrinkYears, keep}});
+    const {year, growYears, shrinkYears, keep, zoomIn} = this.props;
+    model.shaderInputs.setProps({deco: {year, growYears, shrinkYears, keep, zoomIn}});
     model.draw(this.context.renderPass);
   }
 }
