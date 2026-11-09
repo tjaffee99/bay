@@ -362,5 +362,127 @@
    "Boarding house",
    "flats"
   ]
+ ],
+ "006_0137": [
+  [
+   453.2,
+   710.7,
+   "Sisters of Providence Hospital",
+   "other"
+  ],
+  [
+   374.2,
+   1202.0,
+   "Piedmont Livery",
+   "stable"
+  ],
+  [
+   362.1,
+   1301.7,
+   "Veterinary hospital",
+   "other"
+  ],
+  [
+   1021.1,
+   1483.7,
+   "Merchants Express wagon shed",
+   "warehouse"
+  ],
+  [
+   644.9,
+   526.9,
+   "Steam laundry (Providence Hospital)",
+   "factory"
+  ]
+ ],
+ "006_0145": [
+  [
+   1419.8,
+   696.4,
+   "Apartments",
+   "flats"
+  ],
+  [
+   965.4,
+   1393.2,
+   "Chinese laundry",
+   "store"
+  ]
+ ],
+ "006_0156": [
+  [
+   918.6,
+   759.0,
+   "College of the Holy Names: chapel",
+   "church"
+  ],
+  [
+   962.4,
+   826.5,
+   "College of the Holy Names: Sisters' Home",
+   "school"
+  ],
+  [
+   602.9,
+   531.0,
+   "College of the Holy Names (R.C. school for girls)",
+   "school"
+  ],
+  [
+   643.8,
+   722.5,
+   "College of the Holy Names: laundry",
+   "school"
+  ],
+  [
+   1368.1,
+   1279.8,
+   "Laguna Vista Apartments (36 apartments)",
+   "flats"
+  ],
+  [
+   1462.7,
+   296.0,
+   "Home for the Aged of the Little Sisters of the Poor",
+   "other"
+  ]
+ ],
+ "006_0157": [
+  [
+   768.6,
+   542.4,
+   "8 Apartments",
+   "flats"
+  ],
+  [
+   386.5,
+   601.4,
+   "18 Apartments",
+   "flats"
+  ],
+  [
+   1486.3,
+   642.4,
+   "6 Apartments",
+   "flats"
+  ],
+  [
+   954.8,
+   1113.5,
+   "12 Apartments",
+   "flats"
+  ],
+  [
+   383.6,
+   204.8,
+   "1st Christian Church",
+   "church"
+  ],
+  [
+   730.0,
+   420.1,
+   "St. Paul's Church (Episcopal)",
+   "church"
+  ]
  ]
 }

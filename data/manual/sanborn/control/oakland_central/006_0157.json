@@ -1,0 +1,1177 @@
+{
+ "notes": "north to the right: Webster (top) -> Valdez -> Waverly -> Harrison Boulevard; 22nd St (left) -> W. Grand Ave (Blvd Ter., today Grand Ave) -> 23rd -> 24th St. West of 23rd St the blocks run Webster -> Harrison",
+ "refine_R": 24,
+ "residential": true,
+ "blocks": [
+  {
+   "name": "917",
+   "streets": {
+    "N": "grand avenue",
+    "S": "22nd street",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     480,
+     130
+    ],
+    [
+     480,
+     1340
+    ],
+    [
+     160,
+     1340
+    ],
+    [
+     160,
+     130
+    ]
+   ],
+   "corners": [
+    {
+     "x": 795.2,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 608.8,
+     "y": 1340.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 606.2,
+     "y": 129.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 1528.0,
+     "y": 126.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1528.0,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 895.4,
+     "y": 504.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 894.1,
+     "y": 127.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1529.0,
+     "y": 604.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 1529.0,
+     "y": 980.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 979.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 604.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 1530.8,
+     "y": 1079.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    },
+    {
+     "x": 894.6,
+     "y": 1080.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    }
+   ],
+   "with": [
+    "919",
+    "922",
+    "923",
+    "924"
+   ],
+   "px4": [
+    [
+     477.8,
+     129.0
+    ],
+    [
+     481.7,
+     1340.5
+    ],
+    [
+     163.4,
+     1340.5
+    ],
+    [
+     162.1,
+     129.0
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.26,
+    0.82,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 477.8,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 481.7,
+     "y": 1340.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 163.4,
+     "y": 1340.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "22nd street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 162.1,
+     "y": 129.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "22nd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    162.0910178338408,
+    129.0,
+    481.72531535450196,
+    1340.5
+   ]
+  },
+  {
+   "name": "919",
+   "streets": {
+    "N": "23rd street",
+    "S": "grand avenue",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     800,
+     130
+    ],
+    [
+     800,
+     1340
+    ],
+    [
+     600,
+     1340
+    ],
+    [
+     600,
+     130
+    ]
+   ],
+   "corners": [
+    {
+     "x": 795.2,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 608.8,
+     "y": 1340.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 606.2,
+     "y": 129.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 1528.0,
+     "y": 126.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1528.0,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 895.4,
+     "y": 504.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 894.1,
+     "y": 127.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1529.0,
+     "y": 604.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 1529.0,
+     "y": 980.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 979.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 604.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 1530.8,
+     "y": 1079.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    },
+    {
+     "x": 894.6,
+     "y": 1080.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    }
+   ],
+   "with": [
+    "917",
+    "922",
+    "923",
+    "924"
+   ],
+   "px4": [
+    [
+     795.2,
+     129.0
+    ],
+    [
+     797.8,
+     1340.0
+    ],
+    [
+     608.8,
+     1340.0
+    ],
+    [
+     606.2,
+     129.0
+    ]
+   ],
+   "edge_q": [
+    0.71,
+    0.62,
+    0.83,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 795.2,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 797.8,
+     "y": 1340.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 608.8,
+     "y": 1340.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 606.2,
+     "y": 129.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    606.1820356676816,
+    129.0,
+    797.8157894736842,
+    1340.0
+   ]
+  },
+  {
+   "name": "922",
+   "streets": {
+    "N": "24th street",
+    "S": "23rd street",
+    "W": "webster street",
+    "E": "valdez street"
+   },
+   "px4_est": [
+    [
+     1530,
+     130
+    ],
+    [
+     1530,
+     500
+    ],
+    [
+     895,
+     500
+    ],
+    [
+     895,
+     130
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1528.0,
+     "y": 126.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1528.0,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.4,
+     "y": 504.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 894.1,
+     "y": 127.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "917",
+    "919",
+    "923",
+    "924"
+   ],
+   "px4": [
+    [
+     1528.0,
+     126.1
+    ],
+    [
+     1528.0,
+     503.1
+    ],
+    [
+     895.4,
+     504.4
+    ],
+    [
+     894.1,
+     127.4
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.82,
+    0.8,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 1528.0,
+     "y": 126.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1528.0,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.4,
+     "y": 504.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 894.1,
+     "y": 127.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    894.0828940081109,
+    126.09624948197265,
+    1528.0,
+    504.4070170598487
+   ]
+  },
+  {
+   "name": "923",
+   "streets": {
+    "N": "24th street",
+    "S": "23rd street",
+    "W": "valdez street",
+    "E": "waverly street"
+   },
+   "px4_est": [
+    [
+     1530,
+     605
+    ],
+    [
+     1530,
+     980
+    ],
+    [
+     895,
+     980
+    ],
+    [
+     895,
+     605
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1529.0,
+     "y": 604.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1529.0,
+     "y": 980.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.0,
+     "y": 979.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.0,
+     "y": 604.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "with": [
+    "917",
+    "919",
+    "922",
+    "924"
+   ],
+   "px4": [
+    [
+     1529.0,
+     604.5
+    ],
+    [
+     1529.0,
+     980.9
+    ],
+    [
+     895.0,
+     979.6
+    ],
+    [
+     895.0,
+     604.5
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.76,
+    0.77,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 1529.0,
+     "y": 604.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1529.0,
+     "y": 980.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.0,
+     "y": 979.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 895.0,
+     "y": 604.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    895.0,
+    604.5,
+    1529.0,
+    980.9058226274346
+   ]
+  },
+  {
+   "name": "924",
+   "streets": {
+    "N": "24th street",
+    "S": "23rd street",
+    "W": "waverly street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1530,
+     1075
+    ],
+    [
+     1530,
+     1390
+    ],
+    [
+     895,
+     1390
+    ],
+    [
+     895,
+     1075
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1530.8,
+     "y": 1079.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    },
+    {
+     "x": 894.6,
+     "y": 1080.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "924"
+    },
+    {
+     "x": 795.2,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 608.8,
+     "y": 1340.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 606.2,
+     "y": 129.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "919"
+    },
+    {
+     "x": 1528.0,
+     "y": 126.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1528.0,
+     "y": 503.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 895.4,
+     "y": 504.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 894.1,
+     "y": 127.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "922"
+    },
+    {
+     "x": 1529.0,
+     "y": 604.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 1529.0,
+     "y": 980.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 979.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    },
+    {
+     "x": 895.0,
+     "y": 604.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "923"
+    }
+   ],
+   "skip": [
+    "NE"
+   ],
+   "with": [
+    "917",
+    "919",
+    "922",
+    "923"
+   ],
+   "px4": [
+    [
+     1530.8,
+     1079.1
+    ],
+    [
+     1528.0,
+     1412.5
+    ],
+    [
+     896.0,
+     1412.5
+    ],
+    [
+     894.6,
+     1080.4
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.07,
+    0.79,
+    0.74
+   ],
+   "corners_all": [
+    {
+     "x": 1530.8,
+     "y": 1079.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "waverly street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 896.0,
+     "y": 1412.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 894.6,
+     "y": 1080.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "waverly street",
+      "23rd street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    894.6146979662691,
+    1079.0904856679215,
+    1530.7816166610867,
+    1412.5
+   ]
+  }
+ ],
+ "pct": 25
+}

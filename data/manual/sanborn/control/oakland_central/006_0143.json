@@ -1,0 +1,503 @@
+{
+ "notes": "ATTEMPTED, NOT USED (not in areas.json): north up (Lee St top, Grand Ave bottom); Vernon St (left, curving) -> Montecito Ave -> Park View Ter (Edson Ter, oblique) -> 144; Lee St -> Lenox Ave (Miramar) -> Park View Ter -> Grand Ave. Control on the east side of Montecito Ave only (corners read on 3x zooms, no_refine): medium at best. Fit RMS 7.7 m: the Park View Ter corners are 8-10 m off today's lines (street realigned)",
+ "residential": true,
+ "scale_prior": [
+  0.2015,
+  0.003
+ ],
+ "blocks": [
+  {
+   "name": "946",
+   "streets": {
+    "N": "lee street",
+    "S": "lenox avenue",
+    "W": "montecito avenue",
+    "E": "vernon street"
+   },
+   "px4_est": [
+    [
+     817,
+     130
+    ],
+    [
+     1500,
+     130
+    ],
+    [
+     1500,
+     509
+    ],
+    [
+     817,
+     509
+    ]
+   ],
+   "corners": [
+    {
+     "x": 803.0,
+     "y": 597.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 752.0,
+     "y": 982.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 758.0,
+     "y": 1068.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "931"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "945",
+    "931",
+    "944"
+   ],
+   "px4": [
+    [
+     817.0,
+     130.0
+    ],
+    [
+     1500.0,
+     130.0
+    ],
+    [
+     1500.0,
+     509.0
+    ],
+    [
+     817.0,
+     509.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 817.0,
+     "y": 509.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [76.6  9.3] at montecito avenue x lenox avenue NE"
+    }
+   ],
+   "zone_px": [
+    817.0,
+    130.0,
+    1500.0,
+    509.0
+   ]
+  },
+  {
+   "name": "945",
+   "streets": {
+    "N": "lenox avenue",
+    "S": "park view terrace",
+    "W": "montecito avenue",
+    "E": "vernon street"
+   },
+   "px4_est": [
+    [
+     803,
+     597
+    ],
+    [
+     1290,
+     620
+    ],
+    [
+     1186,
+     1041
+    ],
+    [
+     752,
+     982
+    ]
+   ],
+   "corners": [
+    {
+     "x": 803.0,
+     "y": 597.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 752.0,
+     "y": 982.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 758.0,
+     "y": 1068.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "931"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "946",
+    "931",
+    "944"
+   ],
+   "px4": [
+    [
+     803.0,
+     597.0
+    ],
+    [
+     1290.0,
+     620.0
+    ],
+    [
+     1186.0,
+     1041.0
+    ],
+    [
+     752.0,
+     982.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 803.0,
+     "y": 597.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 752.0,
+     "y": 982.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    752.0,
+    597.0,
+    1290.0,
+    1041.0
+   ]
+  },
+  {
+   "name": "931",
+   "streets": {
+    "N": "park view terrace",
+    "S": "grand avenue",
+    "W": "montecito avenue",
+    "E": "vernon street"
+   },
+   "px4_est": [
+    [
+     758,
+     1068
+    ],
+    [
+     1185,
+     1080
+    ],
+    [
+     1450,
+     1780
+    ],
+    [
+     670,
+     1610
+    ]
+   ],
+   "corners": [
+    {
+     "x": 758.0,
+     "y": 1068.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "931"
+    },
+    {
+     "x": 803.0,
+     "y": 597.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 752.0,
+     "y": 982.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "946",
+    "945",
+    "944"
+   ],
+   "px4": [
+    [
+     758.0,
+     1068.0
+    ],
+    [
+     1185.0,
+     1080.0
+    ],
+    [
+     1450.0,
+     1780.0
+    ],
+    [
+     670.0,
+     1610.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 758.0,
+     "y": 1068.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    670.0,
+    1068.0,
+    1450.0,
+    1780.0
+   ]
+  },
+  {
+   "name": "944",
+   "streets": {
+    "N": "lee street",
+    "S": "bay place",
+    "W": "vernon street",
+    "E": "montecito avenue"
+   },
+   "px4_est": [
+    [
+     250,
+     140
+    ],
+    [
+     657,
+     140
+    ],
+    [
+     657,
+     1600
+    ],
+    [
+     150,
+     1420
+    ]
+   ],
+   "corners": [
+    {
+     "x": 803.0,
+     "y": 597.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "lenox avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 752.0,
+     "y": 982.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "945"
+    },
+    {
+     "x": 758.0,
+     "y": 1068.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "montecito avenue",
+      "park view terrace"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "931"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "946",
+    "945",
+    "931"
+   ],
+   "px4": [
+    [
+     250.0,
+     140.0
+    ],
+    [
+     657.0,
+     140.0
+    ],
+    [
+     657.0,
+     1600.0
+    ],
+    [
+     150.0,
+     1420.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    150.0,
+    140.0,
+    657.0,
+    1600.0
+   ]
+  }
+ ],
+ "pct": 25
+}

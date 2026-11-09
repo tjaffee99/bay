@@ -1,0 +1,716 @@
+{
+ "notes": "north up (approx.); Lee St (left, curving) -> Perkins St (oblique) -> the east ends of the blocks (oblique, sheet 134); Vernon St (top) -> Chetwood St (today Adams St) -> Jayne Ave -> Warwick Ave -> Palm Ave. Control on Lee St and Perkins St (corners read on 3x zooms, no_refine)",
+ "residential": true,
+ "blocks": [
+  {
+   "name": "953",
+   "streets": {
+    "N": "vernon street",
+    "S": "adams street",
+    "W": "lee street",
+    "E": "oakland avenue"
+   },
+   "px4_est": [
+    [
+     150,
+     60
+    ],
+    [
+     1530,
+     60
+    ],
+    [
+     1523,
+     437
+    ],
+    [
+     308,
+     438
+    ]
+   ],
+   "corners": [
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "954"
+    },
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "974"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "954",
+    "955",
+    "974",
+    "975"
+   ],
+   "px4": [
+    [
+     150.0,
+     60.0
+    ],
+    [
+     1530.0,
+     60.0
+    ],
+    [
+     1523.0,
+     437.0
+    ],
+    [
+     308.0,
+     438.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 308.0,
+     "y": 438.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "adams street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.2 8.3] at lee street x adams street NE"
+    }
+   ],
+   "zone_px": [
+    150.0,
+    60.0,
+    1530.0,
+    438.0
+   ]
+  },
+  {
+   "name": "954",
+   "streets": {
+    "N": "adams street",
+    "S": "jayne avenue",
+    "W": "lee street",
+    "E": "oakland avenue"
+   },
+   "px4_est": [
+    [
+     300,
+     528
+    ],
+    [
+     1517,
+     528
+    ],
+    [
+     1383,
+     896
+    ],
+    [
+     374,
+     911
+    ]
+   ],
+   "corners": [
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "954"
+    },
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "974"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "953",
+    "955",
+    "974",
+    "975"
+   ],
+   "px4": [
+    [
+     300.0,
+     528.0
+    ],
+    [
+     1517.0,
+     528.0
+    ],
+    [
+     1383.0,
+     896.0
+    ],
+    [
+     374.0,
+     911.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 300.0,
+     "y": 528.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "adams street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.3 10. ] at lee street x adams street SE"
+    },
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    300.0,
+    528.0,
+    1517.0,
+    911.0
+   ]
+  },
+  {
+   "name": "955",
+   "streets": {
+    "N": "jayne avenue",
+    "S": "palm avenue",
+    "W": "lee street",
+    "E": "perkins street"
+   },
+   "px4_est": [
+    [
+     405,
+     1001
+    ],
+    [
+     1307,
+     998
+    ],
+    [
+     800,
+     1900
+    ],
+    [
+     300,
+     1880
+    ]
+   ],
+   "corners": [
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "954"
+    },
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "974"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "953",
+    "954",
+    "974",
+    "975"
+   ],
+   "px4": [
+    [
+     405.0,
+     1001.0
+    ],
+    [
+     1307.0,
+     998.0
+    ],
+    [
+     800.0,
+     1900.0
+    ],
+    [
+     300.0,
+     1880.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    300.0,
+    998.0,
+    1307.0,
+    1900.0
+   ]
+  },
+  {
+   "name": "974",
+   "streets": {
+    "N": "jayne avenue",
+    "S": "warwick avenue",
+    "W": "perkins street",
+    "E": "oakland avenue"
+   },
+   "px4_est": [
+    [
+     1414,
+     998
+    ],
+    [
+     1600,
+     998
+    ],
+    [
+     1600,
+     1390
+    ],
+    [
+     982,
+     1390
+    ]
+   ],
+   "corners": [
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "974"
+    },
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "954"
+    },
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "953",
+    "954",
+    "955",
+    "975"
+   ],
+   "px4": [
+    [
+     1414.0,
+     998.0
+    ],
+    [
+     1600.0,
+     998.0
+    ],
+    [
+     1600.0,
+     1390.0
+    ],
+    [
+     982.0,
+     1390.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1414.0,
+     "y": 998.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.1 9.7] at perkins street x jayne avenue SE"
+    },
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    982.0,
+    998.0,
+    1600.0,
+    1390.0
+   ]
+  },
+  {
+   "name": "975",
+   "streets": {
+    "N": "warwick avenue",
+    "S": "palm avenue",
+    "W": "perkins street",
+    "E": "oakland avenue"
+   },
+   "px4_est": [
+    [
+     870,
+     1475
+    ],
+    [
+     1600,
+     1475
+    ],
+    [
+     1600,
+     1900
+    ],
+    [
+     800,
+     1900
+    ]
+   ],
+   "corners": [
+    {
+     "x": 374.0,
+     "y": 911.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "954"
+    },
+    {
+     "x": 405.0,
+     "y": 1001.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 1307.0,
+     "y": 998.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "jayne avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "955"
+    },
+    {
+     "x": 982.0,
+     "y": 1390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "perkins street",
+      "warwick avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "974"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "953",
+    "954",
+    "955",
+    "974"
+   ],
+   "px4": [
+    [
+     870.0,
+     1475.0
+    ],
+    [
+     1600.0,
+     1475.0
+    ],
+    [
+     1600.0,
+     1900.0
+    ],
+    [
+     800.0,
+     1900.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    800.0,
+    1475.0,
+    1600.0,
+    1900.0
+   ]
+  }
+ ],
+ "pct": 25
+}

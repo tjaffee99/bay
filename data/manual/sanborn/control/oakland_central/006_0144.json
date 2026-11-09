@@ -1,0 +1,545 @@
+{
+ "notes": "two parts; lower part only (north up): Park View Ter (Edson Ter, left) -> Lenox Ave (Miramar) -> Lee St -> Perkins St; Van Buren Ave (top) -> Grand Ave (bottom). The upper part (Staten / Palm / Perkins / Van Buren, blocks 978, 946, 956) is not used. Corners read on 3x zooms (no_refine)",
+ "residential": true,
+ "blocks": [
+  {
+   "name": "933",
+   "streets": {
+    "N": "van buren avenue",
+    "S": "grand avenue",
+    "W": "lenox avenue",
+    "E": "lee street"
+   },
+   "px4_est": [
+    [
+     623,
+     828
+    ],
+    [
+     1079,
+     834
+    ],
+    [
+     1074,
+     1796
+    ],
+    [
+     627,
+     1827
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1079.0,
+     "y": 834.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lee street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 1074.0,
+     "y": 1796.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 627.0,
+     "y": 1827.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 519.0,
+     "y": 1824.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "932"
+    },
+    {
+     "x": 1550.0,
+     "y": 830.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    },
+    {
+     "x": 1162.0,
+     "y": 1782.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    }
+   ],
+   "no_refine": 1,
+   "with": [
+    "932",
+    "934"
+   ],
+   "px4": [
+    [
+     623.0,
+     828.0
+    ],
+    [
+     1079.0,
+     834.0
+    ],
+    [
+     1074.0,
+     1796.0
+    ],
+    [
+     627.0,
+     1827.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 623.0,
+     "y": 828.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lenox avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  8.9] at lenox avenue x van buren avenue SE"
+    },
+    {
+     "x": 1079.0,
+     "y": 834.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lee street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1074.0,
+     "y": 1796.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 627.0,
+     "y": 1827.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    623.0,
+    828.0,
+    1079.0,
+    1827.0
+   ]
+  },
+  {
+   "name": "932",
+   "streets": {
+    "N": "van buren avenue",
+    "S": "grand avenue",
+    "W": "park view terrace",
+    "E": "lenox avenue"
+   },
+   "px4_est": [
+    [
+     150,
+     860
+    ],
+    [
+     518,
+     852
+    ],
+    [
+     519,
+     1824
+    ],
+    [
+     150,
+     1800
+    ]
+   ],
+   "corners": [
+    {
+     "x": 519.0,
+     "y": 1824.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "932"
+    },
+    {
+     "x": 1079.0,
+     "y": 834.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lee street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 1074.0,
+     "y": 1796.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 627.0,
+     "y": 1827.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 1550.0,
+     "y": 830.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    },
+    {
+     "x": 1162.0,
+     "y": 1782.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "933",
+    "934"
+   ],
+   "px4": [
+    [
+     150.0,
+     860.0
+    ],
+    [
+     518.0,
+     852.0
+    ],
+    [
+     519.0,
+     1824.0
+    ],
+    [
+     150.0,
+     1800.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 519.0,
+     "y": 1824.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    150.0,
+    852.0,
+    519.0,
+    1824.0
+   ]
+  },
+  {
+   "name": "934",
+   "streets": {
+    "N": "van buren avenue",
+    "S": "grand avenue",
+    "W": "lee street",
+    "E": "perkins street"
+   },
+   "px4_est": [
+    [
+     1172,
+     849
+    ],
+    [
+     1550,
+     830
+    ],
+    [
+     1550,
+     1790
+    ],
+    [
+     1162,
+     1782
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1550.0,
+     "y": 830.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    },
+    {
+     "x": 1162.0,
+     "y": 1782.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "934"
+    },
+    {
+     "x": 1079.0,
+     "y": 834.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lee street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 1074.0,
+     "y": 1796.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 627.0,
+     "y": 1827.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "933"
+    },
+    {
+     "x": 519.0,
+     "y": 1824.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lenox avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "932"
+    }
+   ],
+   "skip": [
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "933",
+    "932"
+   ],
+   "px4": [
+    [
+     1172.0,
+     849.0
+    ],
+    [
+     1550.0,
+     830.0
+    ],
+    [
+     1550.0,
+     1790.0
+    ],
+    [
+     1162.0,
+     1782.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1172.0,
+     "y": 849.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lee street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 10.8] at lee street x van buren avenue SE"
+    },
+    {
+     "x": 1550.0,
+     "y": 830.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "perkins street",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1162.0,
+     "y": 1782.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lee street",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1162.0,
+    830.0,
+    1550.0,
+    1790.0
+   ]
+  }
+ ],
+ "pct": 25
+}

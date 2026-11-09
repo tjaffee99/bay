@@ -1,0 +1,698 @@
+{
+ "notes": "north up; Staten Ave (left) -> Bellevue Ave -> Euclid Ave -> Perry Pl; Warwick Ave (top, oblique) -> Palm Ave -> Van Buren Ave (bottom). Corners read on 3x zooms (no_refine)",
+ "residential": true,
+ "blocks": [
+  {
+   "name": "977",
+   "streets": {
+    "N": "palm avenue",
+    "S": "van buren avenue",
+    "W": "staten avenue",
+    "E": "bellevue avenue"
+   },
+   "px4_est": [
+    [
+     108,
+     887
+    ],
+    [
+     491,
+     772
+    ],
+    [
+     489,
+     1832
+    ],
+    [
+     70,
+     1825
+    ]
+   ],
+   "corners": [
+    {
+     "x": 108.0,
+     "y": 887.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 491.0,
+     "y": 772.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 489.0,
+     "y": 1832.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 585.0,
+     "y": 770.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 962.0,
+     "y": 644.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "euclid avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 963.0,
+     "y": 1840.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    }
+   ],
+   "skip": [
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "976",
+    "992",
+    "975"
+   ],
+   "px4": [
+    [
+     108.0,
+     887.0
+    ],
+    [
+     491.0,
+     772.0
+    ],
+    [
+     489.0,
+     1832.0
+    ],
+    [
+     70.0,
+     1825.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 108.0,
+     "y": 887.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 491.0,
+     "y": 772.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 489.0,
+     "y": 1832.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    70.0,
+    772.0,
+    491.0,
+    1832.0
+   ]
+  },
+  {
+   "name": "976",
+   "streets": {
+    "N": "palm avenue",
+    "S": "van buren avenue",
+    "W": "bellevue avenue",
+    "E": "euclid avenue"
+   },
+   "px4_est": [
+    [
+     585,
+     770
+    ],
+    [
+     962,
+     644
+    ],
+    [
+     963,
+     1840
+    ],
+    [
+     583,
+     1828
+    ]
+   ],
+   "corners": [
+    {
+     "x": 585.0,
+     "y": 770.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 962.0,
+     "y": 644.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "euclid avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 963.0,
+     "y": 1840.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 108.0,
+     "y": 887.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 491.0,
+     "y": 772.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 489.0,
+     "y": 1832.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    }
+   ],
+   "no_refine": 1,
+   "with": [
+    "977",
+    "992",
+    "975"
+   ],
+   "px4": [
+    [
+     585.0,
+     770.0
+    ],
+    [
+     962.0,
+     644.0
+    ],
+    [
+     963.0,
+     1840.0
+    ],
+    [
+     583.0,
+     1828.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 585.0,
+     "y": 770.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 962.0,
+     "y": 644.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "euclid avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 963.0,
+     "y": 1840.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 583.0,
+     "y": 1828.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  15.2] at bellevue avenue x van buren avenue NE"
+    }
+   ],
+   "zone_px": [
+    583.0,
+    644.0,
+    963.0,
+    1840.0
+   ]
+  },
+  {
+   "name": "992",
+   "streets": {
+    "N": "warwick avenue",
+    "S": "van buren avenue",
+    "W": "euclid avenue",
+    "E": "perry place"
+   },
+   "px4_est": [
+    [
+     1048,
+     40
+    ],
+    [
+     1560,
+     40
+    ],
+    [
+     1560,
+     1853
+    ],
+    [
+     1052,
+     1853
+    ]
+   ],
+   "corners": [
+    {
+     "x": 108.0,
+     "y": 887.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 491.0,
+     "y": 772.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 489.0,
+     "y": 1832.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 585.0,
+     "y": 770.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 962.0,
+     "y": 644.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "euclid avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 963.0,
+     "y": 1840.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "977",
+    "976",
+    "975"
+   ],
+   "px4": [
+    [
+     1048.0,
+     40.0
+    ],
+    [
+     1560.0,
+     40.0
+    ],
+    [
+     1560.0,
+     1853.0
+    ],
+    [
+     1052.0,
+     1853.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1052.0,
+     "y": 1853.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.3 10.4] at euclid avenue x van buren avenue NE"
+    }
+   ],
+   "zone_px": [
+    1048.0,
+    40.0,
+    1560.0,
+    1853.0
+   ]
+  },
+  {
+   "name": "975",
+   "streets": {
+    "N": "warwick avenue",
+    "S": "palm avenue",
+    "W": "staten avenue",
+    "E": "euclid avenue"
+   },
+   "px4_est": [
+    [
+     60,
+     340
+    ],
+    [
+     980,
+     140
+    ],
+    [
+     960,
+     620
+    ],
+    [
+     60,
+     770
+    ]
+   ],
+   "corners": [
+    {
+     "x": 108.0,
+     "y": 887.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 491.0,
+     "y": 772.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 489.0,
+     "y": 1832.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "977"
+    },
+    {
+     "x": 585.0,
+     "y": 770.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "bellevue avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 962.0,
+     "y": 644.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "euclid avenue",
+      "palm avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    },
+    {
+     "x": 963.0,
+     "y": 1840.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "euclid avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "976"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "977",
+    "976",
+    "992"
+   ],
+   "px4": [
+    [
+     60.0,
+     340.0
+    ],
+    [
+     980.0,
+     140.0
+    ],
+    [
+     960.0,
+     620.0
+    ],
+    [
+     60.0,
+     770.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    60.0,
+    140.0,
+    980.0,
+    770.0
+   ]
+  }
+ ],
+ "pct": 25
+}

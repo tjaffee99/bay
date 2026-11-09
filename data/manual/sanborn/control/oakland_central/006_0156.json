@@ -1,0 +1,329 @@
+{
+ "notes": "north to the right: Webster (top) -> Harrison Boulevard and the lake shore (bottom), 20th St (left, oblique) -> 21st -> 22nd St. Block 913/914 = the College of the Holy Names (today the Kaiser Center superblock); its lake-side corner is a curve (skipped)",
+ "refine_R": 24,
+ "residential": true,
+ "blocks": [
+  {
+   "name": "913",
+   "streets": {
+    "N": "21st street",
+    "S": "thomas l berkley way",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1026,
+     176
+    ],
+    [
+     1028,
+     1347
+    ],
+    [
+     308,
+     1000
+    ],
+    [
+     337,
+     229
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1026.0,
+     "y": 176.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    },
+    {
+     "x": 1028.0,
+     "y": 1347.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    },
+    {
+     "x": 337.0,
+     "y": 229.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "thomas l berkley way"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    },
+    {
+     "x": 1116.2,
+     "y": 175.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "915"
+    }
+   ],
+   "skip": [
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "915"
+   ],
+   "px4": [
+    [
+     1026.0,
+     176.0
+    ],
+    [
+     1028.0,
+     1347.0
+    ],
+    [
+     308.0,
+     1000.0
+    ],
+    [
+     337.0,
+     229.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1026.0,
+     "y": 176.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1028.0,
+     "y": 1347.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 337.0,
+     "y": 229.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "thomas l berkley way"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    308.0,
+    176.0,
+    1028.0,
+    1347.0
+   ]
+  },
+  {
+   "name": "915",
+   "streets": {
+    "N": "22nd street",
+    "S": "21st street",
+    "W": "webster street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     1513,
+     175
+    ],
+    [
+     1513,
+     1358
+    ],
+    [
+     1113,
+     1350
+    ],
+    [
+     1113,
+     175
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1116.2,
+     "y": 175.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "915"
+    },
+    {
+     "x": 1026.0,
+     "y": 176.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    },
+    {
+     "x": 1028.0,
+     "y": 1347.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    },
+    {
+     "x": 337.0,
+     "y": 229.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "thomas l berkley way"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "913"
+    }
+   ],
+   "with": [
+    "913"
+   ],
+   "px4": [
+    [
+     1511.7,
+     176.9
+    ],
+    [
+     1514.3,
+     1345.0
+    ],
+    [
+     1118.8,
+     1337.1
+    ],
+    [
+     1116.2,
+     175.6
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.34,
+    0.73,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 1511.7,
+     "y": 176.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "webster street",
+      "22nd street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.6 1. ] at webster street x 22nd street SE"
+    },
+    {
+     "x": 1514.3,
+     "y": 1345.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "harrison street",
+      "22nd street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1118.8,
+     "y": 1337.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "harrison street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1116.2,
+     "y": 175.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "21st street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1116.1855600987217,
+    175.6025840792721,
+    1514.2869224956842,
+    1345.0231387098618
+   ]
+  }
+ ],
+ "pct": 25
+}

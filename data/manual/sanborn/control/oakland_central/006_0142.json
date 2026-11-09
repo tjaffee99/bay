@@ -1,0 +1,1290 @@
+{
+ "notes": "north up; Perkins St (left, oblique) -> Ellita Ave -> Staten Ave -> Bellevue Ave (right); Van Buren Ave (top) -> Belmont -> Grand Ave -> Bellevue Ave (bottom, along Lakeside Park). Corners read on 3x zooms (no_refine)",
+ "residential": true,
+ "blocks": [
+  {
+   "name": "935",
+   "streets": {
+    "N": "van buren avenue",
+    "S": "belmont street",
+    "W": "perkins street",
+    "E": "staten avenue"
+   },
+   "px4_est": [
+    [
+     320,
+     128
+    ],
+    [
+     1003,
+     128
+    ],
+    [
+     1003,
+     496
+    ],
+    [
+     230,
+     496
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    },
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "937",
+    "936",
+    "940",
+    "941",
+    "939"
+   ],
+   "px4": [
+    [
+     320.0,
+     128.0
+    ],
+    [
+     1003.0,
+     128.0
+    ],
+    [
+     1003.0,
+     496.0
+    ],
+    [
+     230.0,
+     496.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1003.0,
+     "y": 496.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    230.0,
+    128.0,
+    1003.0,
+    496.0
+   ]
+  },
+  {
+   "name": "937",
+   "streets": {
+    "N": "van buren avenue",
+    "S": "grand avenue",
+    "W": "staten avenue",
+    "E": "bellevue avenue"
+   },
+   "px4_est": [
+    [
+     1097,
+     129
+    ],
+    [
+     1473,
+     99
+    ],
+    [
+     1470,
+     973
+    ],
+    [
+     1096,
+     967
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    },
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    }
+   ],
+   "no_refine": 1,
+   "with": [
+    "935",
+    "936",
+    "940",
+    "941",
+    "939"
+   ],
+   "px4": [
+    [
+     1097.0,
+     129.0
+    ],
+    [
+     1473.0,
+     99.0
+    ],
+    [
+     1470.0,
+     973.0
+    ],
+    [
+     1096.0,
+     967.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1097.0,
+     "y": 129.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.1 11.6] at staten avenue x van buren avenue SE"
+    },
+    {
+     "x": 1473.0,
+     "y": 99.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "bellevue avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1096.0,
+    99.0,
+    1473.0,
+    973.0
+   ]
+  },
+  {
+   "name": "936",
+   "streets": {
+    "N": "belmont street",
+    "S": "grand avenue",
+    "W": "perkins street",
+    "E": "staten avenue"
+   },
+   "px4_est": [
+    [
+     195,
+     587
+    ],
+    [
+     1002,
+     587
+    ],
+    [
+     1003,
+     968
+    ],
+    [
+     100,
+     965
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    },
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "935",
+    "937",
+    "940",
+    "941",
+    "939"
+   ],
+   "px4": [
+    [
+     195.0,
+     587.0
+    ],
+    [
+     1002.0,
+     587.0
+    ],
+    [
+     1003.0,
+     968.0
+    ],
+    [
+     100.0,
+     965.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    100.0,
+    587.0,
+    1003.0,
+    968.0
+   ]
+  },
+  {
+   "name": "940",
+   "streets": {
+    "N": "grand avenue",
+    "S": "bellevue avenue",
+    "W": "ellita avenue",
+    "E": "staten avenue"
+   },
+   "px4_est": [
+    [
+     585,
+     1131
+    ],
+    [
+     1003,
+     1135
+    ],
+    [
+     1000,
+     1590
+    ],
+    [
+     580,
+     1610
+    ]
+   ],
+   "corners": [
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    },
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "935",
+    "937",
+    "936",
+    "941",
+    "939"
+   ],
+   "px4": [
+    [
+     585.0,
+     1131.0
+    ],
+    [
+     1003.0,
+     1135.0
+    ],
+    [
+     1000.0,
+     1590.0
+    ],
+    [
+     580.0,
+     1610.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    580.0,
+    1131.0,
+    1003.0,
+    1610.0
+   ]
+  },
+  {
+   "name": "941",
+   "streets": {
+    "N": "grand avenue",
+    "S": "bellevue avenue",
+    "W": "staten avenue",
+    "E": "bellevue avenue"
+   },
+   "px4_est": [
+    [
+     1090,
+     1136
+    ],
+    [
+     1470,
+     1136
+    ],
+    [
+     1470,
+     1580
+    ],
+    [
+     1090,
+     1580
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    },
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "935",
+    "937",
+    "936",
+    "940",
+    "939"
+   ],
+   "px4": [
+    [
+     1090.0,
+     1136.0
+    ],
+    [
+     1470.0,
+     1136.0
+    ],
+    [
+     1470.0,
+     1580.0
+    ],
+    [
+     1090.0,
+     1580.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1090.0,
+    1136.0,
+    1470.0,
+    1580.0
+   ]
+  },
+  {
+   "name": "939",
+   "streets": {
+    "N": "grand avenue",
+    "S": "bellevue avenue",
+    "W": "perkins street",
+    "E": "ellita avenue"
+   },
+   "px4_est": [
+    [
+     30,
+     1130
+    ],
+    [
+     490,
+     1132
+    ],
+    [
+     490,
+     1620
+    ],
+    [
+     60,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "939"
+    },
+    {
+     "x": 1003.0,
+     "y": 128.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "van buren avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "935"
+    },
+    {
+     "x": 1470.0,
+     "y": 973.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "bellevue avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1096.0,
+     "y": 967.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "937"
+    },
+    {
+     "x": 1002.0,
+     "y": 587.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "belmont street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 1003.0,
+     "y": 968.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "936"
+    },
+    {
+     "x": 585.0,
+     "y": 1131.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1003.0,
+     "y": 1135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "940"
+    },
+    {
+     "x": 1090.0,
+     "y": 1136.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "staten avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "941"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "935",
+    "937",
+    "936",
+    "940",
+    "941"
+   ],
+   "px4": [
+    [
+     30.0,
+     1130.0
+    ],
+    [
+     490.0,
+     1132.0
+    ],
+    [
+     490.0,
+     1620.0
+    ],
+    [
+     60.0,
+     1750.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 490.0,
+     "y": 1132.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "ellita avenue",
+      "grand avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    30.0,
+    1130.0,
+    490.0,
+    1750.0
+   ]
+  }
+ ],
+ "pct": 25
+}

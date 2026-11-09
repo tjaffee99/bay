@@ -1,0 +1,491 @@
+{
+ "notes": "north up; Broadway (left, oblique) -> Webster -> Valdez -> Glen Echo creek; 24th St (bottom) -> Bay Pl (today 26th St: 174 m north of 24th St on Valdez) -> 28th St (top). Corners read on 3x zooms (no_refine). Bay Pl / 26th St and 28th St were realigned (corners 4-14 m off today's property lines): only the 24th St corners (Webster, Valdez) are used, with the plate scale as prior (collinear control: medium at best)",
+ "residential": true,
+ "scale_prior": [
+  0.2015,
+  0.002
+ ],
+ "blocks": [
+  {
+   "name": "901",
+   "streets": {
+    "N": "26th street",
+    "S": "24th street",
+    "W": "webster street",
+    "E": "valdez street"
+   },
+   "px4_est": [
+    [
+     267,
+     1016
+    ],
+    [
+     667,
+     1015
+    ],
+    [
+     672,
+     1795
+    ],
+    [
+     268,
+     1797
+    ]
+   ],
+   "corners": [
+    {
+     "x": 672.0,
+     "y": 1795.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 268.0,
+     "y": 1797.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 733.0,
+     "y": 1793.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "900"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "900",
+    "926",
+    "927"
+   ],
+   "px4": [
+    [
+     267.0,
+     1016.0
+    ],
+    [
+     667.0,
+     1015.0
+    ],
+    [
+     672.0,
+     1795.0
+    ],
+    [
+     268.0,
+     1797.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 672.0,
+     "y": 1795.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 268.0,
+     "y": 1797.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    267.0,
+    1015.0,
+    672.0,
+    1797.0
+   ]
+  },
+  {
+   "name": "900",
+   "streets": {
+    "N": "26th street",
+    "S": "24th street",
+    "W": "valdez street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     750,
+     1027
+    ],
+    [
+     1500,
+     1027
+    ],
+    [
+     1500,
+     1793
+    ],
+    [
+     733,
+     1793
+    ]
+   ],
+   "corners": [
+    {
+     "x": 733.0,
+     "y": 1793.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "900"
+    },
+    {
+     "x": 672.0,
+     "y": 1795.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 268.0,
+     "y": 1797.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "901",
+    "926",
+    "927"
+   ],
+   "px4": [
+    [
+     750.0,
+     1027.0
+    ],
+    [
+     1500.0,
+     1027.0
+    ],
+    [
+     1500.0,
+     1793.0
+    ],
+    [
+     733.0,
+     1793.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 733.0,
+     "y": 1793.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    733.0,
+    1027.0,
+    1500.0,
+    1793.0
+   ]
+  },
+  {
+   "name": "926",
+   "streets": {
+    "N": "28th street",
+    "S": "26th street",
+    "W": "broadway",
+    "E": "valdez street"
+   },
+   "px4_est": [
+    [
+     430,
+     125
+    ],
+    [
+     697,
+     123
+    ],
+    [
+     693,
+     938
+    ],
+    [
+     290,
+     940
+    ]
+   ],
+   "corners": [
+    {
+     "x": 672.0,
+     "y": 1795.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 268.0,
+     "y": 1797.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 733.0,
+     "y": 1793.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "900"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "901",
+    "900",
+    "927"
+   ],
+   "px4": [
+    [
+     430.0,
+     125.0
+    ],
+    [
+     697.0,
+     123.0
+    ],
+    [
+     693.0,
+     938.0
+    ],
+    [
+     290.0,
+     940.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    290.0,
+    123.0,
+    697.0,
+    940.0
+   ]
+  },
+  {
+   "name": "927",
+   "streets": {
+    "N": "28th street",
+    "S": "26th street",
+    "W": "valdez street",
+    "E": "harrison street"
+   },
+   "px4_est": [
+    [
+     893,
+     125
+    ],
+    [
+     1300,
+     125
+    ],
+    [
+     1300,
+     937
+    ],
+    [
+     893,
+     937
+    ]
+   ],
+   "corners": [
+    {
+     "x": 672.0,
+     "y": 1795.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 268.0,
+     "y": 1797.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "webster street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "901"
+    },
+    {
+     "x": 733.0,
+     "y": 1793.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "valdez street",
+      "24th street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "900"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "901",
+    "900",
+    "926"
+   ],
+   "px4": [
+    [
+     893.0,
+     125.0
+    ],
+    [
+     1300.0,
+     125.0
+    ],
+    [
+     1300.0,
+     937.0
+    ],
+    [
+     893.0,
+     937.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    893.0,
+    125.0,
+    1300.0,
+    937.0
+   ]
+  }
+ ],
+ "pct": 25,
+ "confidence_cap": "low"
+}
