@@ -405,10 +405,63 @@
      "norefine": 1,
      "weak": false,
      "block": "3124"
+    },
+    {
+     "x": 618.0,
+     "y": 266.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
+    },
+    {
+     "x": 1514.5,
+     "y": 270.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
+    },
+    {
+     "x": 1502.7,
+     "y": 681.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
+    },
+    {
+     "x": 606.3,
+     "y": 678.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
     }
    ],
    "with": [
-    "3124"
+    "3124",
+    "3125"
    ],
    "px4": [
     [
@@ -491,8 +544,10 @@
     1256.3931182064234,
     1483.8344162066703,
     1666.16738343758
-   ]
+   ],
+   "confidence_cap": "medium"
   }
  ],
- "pct": 25
+ "pct": 25,
+ "residential": true
 }

@@ -350,6 +350,82 @@ def assemble_tracks():
         log(area, year, len(feats), "track lines", round(sum(f[0].length for f in feats)), "m")
 
 
+def cap_blocks():
+    """per-block confidence caps: a block whose own corners are gone (campus, superblock) and that is placed by the fit
+    of its neighbours ("with") carries `confidence_cap` in its control entry; lower the confidence of its footprints in
+    the assembled files (E.assemble applies only per-sheet caps)."""
+    rank = {"high": 0, "medium": 1, "low": 2}
+    caps = {}
+    for f in E.CONTROL.glob("[0-9][0-9][0-9]_[0-9][0-9][0-9][0-9]*.json"):
+        if f.name.endswith(".tracks.json"):
+            continue
+        cfg = json.load(open(f))
+        if "registered_to" in cfg:
+            cfg = json.load(open(E.CONTROL / f"{cfg['registered_to']}.json"))
+            base = f.stem
+        else:
+            base = f.stem
+        for b in cfg.get("blocks", []):
+            if b.get("confidence_cap"):
+                caps[(base, b["name"])] = b["confidence_cap"]
+    if not caps:
+        return
+    for (area, year) in E.AREAS:
+        p = E.OUT / f"{area}_{year}.geojson"
+        if not p.exists():
+            continue
+        fc = json.load(open(p))
+        n = 0
+        for ft in fc["features"]:
+            pr = ft["properties"]
+            key = f"{pr['volume'].split('_')[1]}_{pr['sheet_no']:04d}"
+            cap = caps.get((key, pr["georef"].replace("block ", "", 1)))
+            if cap and rank[pr["confidence"]] < rank[cap]:
+                pr["confidence"] = cap
+                n += 1
+        json.dump(fc, open(p, "w"))
+        if n:
+            log(area, year, n, "footprints capped by their block's confidence_cap")
+
+
+def check(areas=None, out=None, dpi=160):
+    """validation: geometries valid, footprints inside their coverage, and a PNG per area of the traced footprints
+    (by confidence) over today's Overture footprints (grey) and the coverage outline."""
+    import geopandas as gpd
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import shapely
+    fp = E.modern_footprints()
+    names = sorted({a for a, _ in E.AREAS}) if not areas else areas
+    outs = []
+    for area in names:
+        cov = gpd.read_file(E.OUT / f"{area}_coverage.geojson").to_crs(32610)
+        years = sorted(y for a, y in E.AREAS if a == area)
+        fig, axs = plt.subplots(1, len(years), figsize=(9 * len(years), 10), squeeze=False)
+        for ax, y in zip(axs[0], years):
+            g = gpd.read_file(E.OUT / f"{area}_{y}.geojson").to_crs(32610)
+            cv = shapely.union_all(cov[cov.map_year == y].geometry.values)
+            inside = g.geometry.representative_point().within(cv)
+            valid = g.geometry.is_valid
+            log(area, y, f"{len(g)} footprints, valid {int(valid.sum())}, inside coverage {int(inside.sum())},",
+                "confidence", g.confidence.value_counts().to_dict(), "modern_overlap>=0.5", int((g.modern_overlap >= 0.5).sum()))
+            x0, y0, x1, y1 = cv.bounds
+            m = fp.cx[x0 - 30:x1 + 30, y0 - 30:y1 + 30]
+            m.plot(ax=ax, color="#bbbbbb", edgecolor="none")
+            col = {"high": "#d62728", "medium": "#ff7f0e", "low": "#9467bd"}
+            for c, gg in g.groupby("confidence"):
+                gg.plot(ax=ax, facecolor="none", edgecolor=col[c], linewidth=0.6)
+            gpd.GeoSeries([cv], crs=32610).boundary.plot(ax=ax, color="#2ca02c", linewidth=0.8)
+            ax.set_title(f"{area} {y}: {len(g)} traced (red high / orange medium / purple low) over today's footprints (grey)")
+            ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
+        o = out or E.INTERIM / f"check_{area}.png"
+        fig.tight_layout(); fig.savefig(o, dpi=dpi); plt.close(fig)
+        outs.append(o)
+        print(o)
+    return outs
+
+
 # ----------------------------------------------------------------------------------------------- driver
 if __name__ == "__main__":
     city = sys.argv[1]
@@ -383,6 +459,9 @@ if __name__ == "__main__":
                               for b in cfg["blocks"]})
         E.spec(args[0], s)
         sys.exit()
+    if stage == "check":
+        check(args or None)
+        sys.exit()
     keys = args or E.all_keys()
     if stage in ("all", "fetch"):
         for k in keys:
@@ -413,4 +492,5 @@ if __name__ == "__main__":
             W.tracks(k)
     if stage in ("all", "assemble"):
         E.assemble()
+        cap_blocks()
         assemble_tracks()

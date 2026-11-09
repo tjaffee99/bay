@@ -1,0 +1,220 @@
+{
+ "002_0072": [
+  [
+   300,
+   1096,
+   "Berkeley Planing Mill",
+   "factory"
+  ],
+  [
+   940,
+   1030,
+   "Golden Sheaf Bakery",
+   "store"
+  ]
+ ],
+ "002_0084": [
+  [
+   1110,
+   830,
+   "Shattuck Hotel",
+   "hotel"
+  ],
+  [
+   1060,
+   1336,
+   "Berkeley Public Library (Carnegie)",
+   "hall"
+  ],
+  [
+   320,
+   600,
+   "Berkeley Y.M.C.A.",
+   "hall"
+  ],
+  [
+   560,
+   560,
+   "Dance hall",
+   "hall"
+  ],
+  [
+   920,
+   490,
+   "Livery",
+   "stable"
+  ]
+ ],
+ "002_0083": [
+  [
+   690,
+   960,
+   "Berkeley High School, main building",
+   "school"
+  ],
+  [
+   850,
+   830,
+   "Berkeley High School, auditorium",
+   "school"
+  ],
+  [
+   1040,
+   880,
+   "Berkeley High School, science building",
+   "school"
+  ],
+  [
+   1220,
+   1080,
+   "Berkeley High School, manual training building",
+   "school"
+  ],
+  [
+   1430,
+   840,
+   "Bay Cities Telephone Co.",
+   "office"
+  ]
+ ],
+ "002_0085": [
+  [
+   940,
+   1060,
+   "Masonic Temple",
+   "hall"
+  ],
+  [
+   1046,
+   1340,
+   "Pacific Telephone and Telegraph Co. exchange",
+   "office"
+  ]
+ ],
+ "002_0087": [
+  [
+   690,
+   1430,
+   "St. Mark's Church (Episcopal)",
+   "church"
+  ],
+  [
+   1410,
+   460,
+   "Stiles Hall",
+   "hall"
+  ],
+  [
+   1400,
+   1110,
+   "First Christian Church",
+   "church"
+  ]
+ ],
+ "002_0088": [
+  [
+   280,
+   1170,
+   "First Unitarian Church",
+   "church"
+  ]
+ ],
+ "002_0089": [
+  [
+   430,
+   1640,
+   "Epworth M. E. Church",
+   "church"
+  ]
+ ],
+ "002_0090": [
+  [
+   1200,
+   770,
+   "Hearst Hall",
+   "hall"
+  ],
+  [
+   500,
+   524,
+   "California Field, north grandstand",
+   "hall"
+  ],
+  [
+   180,
+   860,
+   "California Field, west grandstand",
+   "hall"
+  ],
+  [
+   770,
+   860,
+   "California Field, east grandstand",
+   "hall"
+  ]
+ ],
+ "002_0086": [
+  [
+   1340,
+   450,
+   "Trinity M. E. Church",
+   "church"
+  ],
+  [
+   1160,
+   820,
+   "Pacific Theological Seminary",
+   "school"
+  ]
+ ],
+ "002_0095": [
+  [
+   1340,
+   450,
+   "First Congregational Church",
+   "church"
+  ]
+ ],
+ "002_0096": [
+  [
+   280,
+   900,
+   "First Presbyterian Church",
+   "church"
+  ],
+  [
+   510,
+   1060,
+   "McKinley School, primary department",
+   "school"
+  ],
+  [
+   520,
+   1620,
+   "McKinley School",
+   "school"
+  ],
+  [
+   380,
+   1440,
+   "Wilkins Hall",
+   "hall"
+  ]
+ ],
+ "002_0098": [
+  [
+   230,
+   1560,
+   "First Church of Christ, Scientist",
+   "church"
+  ]
+ ],
+ "002_0093": [
+  [
+   1420,
+   860,
+   "Friends Church",
+   "church"
+  ]
+ ]
+}

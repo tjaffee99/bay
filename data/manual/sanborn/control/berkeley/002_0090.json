@@ -280,8 +280,10 @@
     400.0,
     1430.0,
     1290.0
-   ]
+   ],
+   "confidence_cap": "medium"
   }
  ],
- "pct": 25
+ "pct": 25,
+ "residential": true
 }
