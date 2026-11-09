@@ -563,6 +563,19 @@ def apply_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
             continue
         donor = max(cands, key=lambda c: df.geometry.iloc[c].area)
         row = df.iloc[donor]
+        # OSM often maps only some parts of a building (Westfield San Francisco Centre: one
+        # 780 m2 part, the dome, of a 24,000 m2 mall): what the parts don't cover keeps its
+        # own footprint, height and dates
+        covered = shapely.union_all(ps.geometry.values).buffer(0.3)
+        for c in cands:
+            rest = df.geometry.iloc[c].difference(covered)
+            for piece in getattr(rest, "geoms", [rest]):
+                # not the slivers left where parts and footprint are drawn a little apart
+                if piece.geom_type == "Polygon" and piece.area > 40 and piece.area > 0.08 * df.geometry.iloc[c].area \
+                        and not piece.buffer(-3.0).is_empty:
+                    r = df.iloc[c].copy()
+                    r["geometry"] = piece
+                    add.append(r)
         for _, p in ps.iterrows():
             h = p.height if pd.notna(p.height) else (outline.height if pd.notna(outline.height) else row.height)
             base = p.min_height if pd.notna(p.min_height) else 0.0
