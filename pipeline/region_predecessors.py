@@ -285,6 +285,12 @@ def corridor_fill(today_utm, pred_utm, areas):
     zone = shapely.union_all(bufs + [a[0] for a in zareas])
     shapely.prepare(zone)
 
+    def dev_limit(cl):
+        # the neighbourhood must predate the clearance; for freeways also 1955: tracts laid
+        # out after the state's freeway plans (1950s) were built around the reserved route
+        # (SR-85, I-280 in Cupertino), so their rights-of-way were never built on
+        return min(cl[0] - 12, 1955.0) if cl[3] else cl[0] - 12
+
     def clear_at(geom):
         """(clearance start, end, prior fabric) of the zone under geom: a researched area
         (the smallest one) wins over a freeway right-of-way."""
@@ -292,13 +298,13 @@ def corridor_fill(today_utm, pred_utm, areas):
             hit = aidx.query(geom, predicate="intersects")
             if len(hit):
                 a = min((zareas[k] for k in hit), key=lambda a: a[0].area)
-                return a[1], a[2], a[3]
+                return a[1], a[2], a[3], False
         if btree is not None:
             # the right-of-way reaches past the carriageways (widen_right_of_way)
             hit = btree.query(geom, predicate="dwithin", distance=130.0)
             if len(hit):
                 f = float(byear[hit].min())
-                return f - 3.0, f - 1.0, "victorian_rows"
+                return f - 3.0, f - 1.0, "victorian_rows", True
         return None
 
     # today's streets (not freeways, ramps or service roads) around the zones
@@ -501,7 +507,7 @@ def corridor_fill(today_utm, pred_utm, areas):
         if cl is None or not _not_sf([m.x], [m.y])[0]:
             continue
         dv = dev_year(m.x, m.y, cl[0])
-        if not np.isfinite(dv) or dv > cl[0] - 12:
+        if not np.isfinite(dv) or dv > dev_limit(cl):
             continue
         lon, lat = to_ll.transform(m.x, m.y)
         ly = land_year(np.array([lon]), np.array([lat]))[0]
@@ -571,7 +577,7 @@ def corridor_fill(today_utm, pred_utm, areas):
                 if cl is None:
                     continue
                 dv = dev_year(cx, cy, cl[0])
-                if not np.isfinite(dv) or dv > cl[0] - 12:
+                if not np.isfinite(dv) or dv > dev_limit(cl):
                     continue
                 start = dv + 10.0 * h01(key)
                 end = cl[0] + (cl[1] - cl[0]) * h01(key, "c")
