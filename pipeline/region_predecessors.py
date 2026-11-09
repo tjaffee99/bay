@@ -188,7 +188,8 @@ def corridor_fill(today_utm, pred_utm, areas):
                 a = min((zareas[k] for k in hit), key=lambda a: a[0].area)
                 return a[1], a[2], a[3]
         if btree is not None:
-            hit = btree.query(geom, predicate="intersects")
+            # the right-of-way reaches past the carriageways (widen_right_of_way)
+            hit = btree.query(geom, predicate="dwithin", distance=130.0)
             if len(hit):
                 f = float(byear[hit].min())
                 return f - 3.0, f - 1.0, "victorian_rows"
@@ -211,6 +212,12 @@ def corridor_fill(today_utm, pred_utm, areas):
     lines = list(roads.geometry.values[near])
     ltree = STRtree(lines)
     log(f"corridors: {len(bufs)} freeway paths after 1940 + {len(zareas)} clearance areas, {len(lines)} streets around")
+    tsidx = today_utm.sindex
+    tgeo = today_utm.geometry.values
+    tyear = today_utm.start_year.values.astype(float)
+    if bufs:
+        zone = widen_right_of_way(bufs, byear, btree, zone, lines, ltree, tsidx, tgeo, tyear)
+        shapely.prepare(zone)
 
     # street ends pointing into a zone: dead ends, or T / L ends (no street carries on
     # straight from them)
@@ -273,16 +280,17 @@ def corridor_fill(today_utm, pred_utm, areas):
     _DEBUG["zone"] = zone
     if len(stubs) < 2:
         return empty, []
-    tsidx = today_utm.sindex
-    tgeo = today_utm.geometry.values
-
     def blocked(seg):
-        # a street can't have run through what stands today outside the zone
+        # a street can't have run through a building that stood before the clearance
+        # (apartments put up on the leftover strips after the freeway don't count)
+        cl = clear_at(seg)
+        if cl is None:
+            return True
         rest = seg.difference(zone)
         if rest.is_empty:
             return False
         hit = tsidx.query(rest, predicate="intersects")
-        return any(tgeo[k].buffer(-0.8).intersects(rest) for k in hit)
+        return any(tyear[k] < cl[0] - 1 and tgeo[k].buffer(-0.8).intersects(rest) for k in hit)
 
     P = np.array([s[1] for s in stubs])
     D = np.array([s[2] for s in stubs])
@@ -342,7 +350,7 @@ def corridor_fill(today_utm, pred_utm, areas):
         if i in used:
             continue
         li, p, d = stubs[i]
-        ray = shapely.LineString([p, p + d * 300.0])
+        ray = shapely.LineString([p, p + d * 500.0])
         hits = []
         for k in ltree.query(ray, predicate="intersects"):
             if k == li or lines[k].distance(shapely.Point(p)) < 2.0:
@@ -440,7 +448,11 @@ def corridor_fill(today_utm, pred_utm, areas):
                 rect = shapely.Polygon([(cx + t[0] * dx - nrm[0] * dy * sgn, cy + t[1] * dx - nrm[1] * dy * sgn)
                                         for dx, dy in ((-width / 2, -depth / 2), (width / 2, -depth / 2),
                                                        (width / 2, depth / 2), (-width / 2, depth / 2))])
-                if len(tsidx.query(rect.buffer(3.5), predicate="intersects")):
+                cl_h = clear_at(pt)
+                if cl_h is None:
+                    continue
+                # only buildings that stood together with this house get in its way
+                if any(tyear[k] < cl_h[1] + 1 for k in tsidx.query(rect.buffer(3.5), predicate="intersects")):
                     continue
                 if psidx is not None and len(psidx.query(rect.buffer(2.5), predicate="intersects")):
                     continue
@@ -479,6 +491,63 @@ def corridor_fill(today_utm, pred_utm, areas):
         out = out[ok].reset_index(drop=True)
     log(f"corridors: {len(out)} buildings stood on ground later cleared for freeways and renewal")
     return out, streets
+
+
+def widen_right_of_way(bufs, byear, btree, zone, lines, ltree, tsidx, tgeo, tyear, step=3000.0, reach=110.0):
+    """The cleared right-of-way is wider than the carriageways: embankments, frontage
+    strips and the half-blocks between the freeway and the next street went too (SR-24 in
+    North Oakland took ~150 m on each side of the roadway). Beside each freeway, within
+    `reach` of its carriageways, the land counts as cleared where no building that predates
+    the freeway stands today (later infill doesn't count), that isn't a park, school,
+    cemetery, campus or sports ground (OSM land use), up to the nearest street — the
+    pieces touching the carriageways are added to the zone."""
+    from shapely.strtree import STRtree
+    from download_overture import RELEASE
+    from common import RAW
+    lu = []
+    for f in ("region5_land_use.parquet", "base_land_use.parquet"):
+        p = RAW / "overture" / RELEASE / f
+        if p.exists():
+            d = pd.read_parquet(p, columns=["class", "geometry"])
+            d = d[d["class"].isin(["park", "school", "cemetery", "golf_course", "recreation_ground", "pitch",
+                                   "playground", "college", "university", "hospital", "kindergarten", "schoolyard",
+                                   "religious", "grass", "village_green", "nature_reserve", "allotments"])]
+            lu.append(gpd.GeoSeries(gpd.GeoSeries.from_wkb(d.geometry.values), crs=4326).to_crs(UTM))
+    lu_geoms = list(pd.concat(lu, ignore_index=True).values) if lu else []
+    lu_tree = STRtree(lu_geoms) if lu_geoms else None
+    x0, y0, x1, y1 = shapely.union_all([b.envelope for b in bufs]).bounds
+    ext = []
+    for tx in np.arange(x0 - reach, x1 + reach, step):
+        for ty in np.arange(y0 - reach, y1 + reach, step):
+            tile = shapely.box(tx, ty, tx + step, ty + step)
+            bi = btree.query(tile.buffer(reach + 20), predicate="intersects")
+            if not len(bi):
+                continue
+            core = shapely.union_all([bufs[k] for k in bi])
+            wide = core.buffer(reach).intersection(tile)
+            if wide.is_empty:
+                continue
+            blockers = []
+            ti = tsidx.query(wide, predicate="intersects")
+            if len(ti):
+                pairs = btree.query(tgeo[ti], predicate="dwithin", distance=reach + 30)
+                fmin = np.full(len(ti), np.inf)
+                np.minimum.at(fmin, pairs[0], byear[pairs[1]])
+                old = ti[tyear[ti] < fmin - 1]
+                blockers += [tgeo[k].buffer(6.0) for k in old]
+            li = ltree.query(wide, predicate="intersects")
+            blockers += [lines[k].buffer(7.0) for k in li]
+            if lu_tree is not None:
+                blockers += [lu_geoms[k] for k in lu_tree.query(wide, predicate="intersects")]
+            free = wide.difference(shapely.union_all(blockers)) if blockers else wide
+            for part in getattr(free, "geoms", [free]):
+                if part.area > 300 and part.intersects(core):
+                    ext.append(part)
+    if not ext:
+        return zone
+    out = shapely.union_all([zone] + ext)
+    log(f"corridors: right-of-way widened by {shapely.union_all(ext).difference(zone).area / 1e6:.2f} km2 of cleared land beside the carriageways")
+    return out
 
 
 def _unit(ln):
@@ -558,6 +627,7 @@ def region_predecessors(today):
     # freeway rights-of-way and renewal clearances: the streets they cut and the rows
     # along them (corridor_fill), until the clearance
     cf, streets = corridor_fill(tu, pred, areas)
+    cf.to_parquet(INTERIM / "corridor_houses.parquet")  # for QA plots
     if len(cf):
         pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)
     st = gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM) if streets else \
