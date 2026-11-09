@@ -20,6 +20,7 @@ import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail, setGr
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
+import {loadRegionTreeIndex, regionTreeLayers, regionTreesReady} from './layers/region-trees';
 import {treeLod} from './layers/decoration-meshes';
 import {loadLocalStreetIndex, loadRoads, localStreetLayers, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
 import {events, eventTime, loadCities, localPopulationAt} from './data/tables';
@@ -157,6 +158,7 @@ function render() {
   layers.push(...localStreetLayers(state.year, zoom));
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
+  layers.push(...regionTreeLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
   if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
   layers.push(...regionBuildingLayers(state.year, zoom, state.quality));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
@@ -384,6 +386,7 @@ if (!new URLSearchParams(location.search).has('notraffic')) requestAnimationFram
 // ---------------------------------------------------------------- attribution
 $('attribution').innerHTML =
   'Buildings &amp; trees: <a href="https://datasf.org/opendata/" target="_blank" rel="noopener">DataSF</a> · ' +
+  'Street trees outside SF: city, county and campus inventories (San José CC BY 4.0, Oakland, Berkeley, Palo Alto, Mountain View and others) · ' +
   'Shoreline: US Census TIGER/Line · Landmarks reconstructed from cited references · ' +
   '<a href="https://github.com/tjaffee99/bay/blob/main/SOURCES.md" target="_blank" rel="noopener">Sources</a>';
 
@@ -407,8 +410,10 @@ async function boot() {
   loadLocalStreetIndex().then(render);
   const elevP = Promise.all([loadElevation(), document.fonts.ready, loadParkLabels(), transitP]).then(() => {
     placeLabelsOnTerrain();
+    regionTreesReady();
     render();
   });
+  loadRegionTreeIndex(render);
   loadAirports().then(render);
   setGroundDetailRedraw(render);
   const groundP = loadGroundDetail()

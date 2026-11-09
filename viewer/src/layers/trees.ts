@@ -63,6 +63,11 @@ const GREENS: [number, number, number][][] = [
 
 export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', growYears = 6): Promise<TreeSet> {
   const f = await loadColumnar(url);
+  return {id, origin: f.header.origin, growYears, forms: decodeTrees(f)};
+}
+
+/** Per-form instance buffers (broadleaf / conifer / palm) of a tree file or tile. */
+export function decodeTrees(f: {columns: any; header: any}): {data: any; count: number}[] {
   const c = f.columns;
   const n = f.header.counts.features;
   const scale = f.header.meta.position_scale ?? 1e-7;
@@ -108,7 +113,7 @@ export async function loadTrees(url = 'data/sf-trees.bin.gz', id = 'street', gro
       }
     };
   });
-  return {id, origin: f.header.origin, growYears, forms};
+  return forms;
 }
 
 export function treesLayer(trees: TreeSet, year: number, zoom = 16): Layer[] {
