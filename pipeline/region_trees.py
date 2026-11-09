@@ -425,7 +425,7 @@ def col(df, *names, default=np.nan):
 
 
 NOT_TREE = re.compile(r"vacant|stump|asphalt|planting site|plant site|no tree|removed|empty|future|proposed|"
-                      r"^\s*(n/?a|none|#n/a)\s*$", re.I)
+                      r"^\s*(?:n/?a|none|#n/a)\s*$", re.I)
 
 
 def std(df, sp, common, dbh, height=None, crown=None, planted=None, asof=None, park=None, alive=None):
@@ -438,7 +438,7 @@ def std(df, sp, common, dbh, height=None, crown=None, planted=None, asof=None, p
         "common": pd.Series(common, index=df.index).fillna("").astype(str).str.strip().values,
         "dbh_in": full(dbh).astype(float), "height_ft": full(height).astype(float),
         "crown_ft": full(crown).astype(float), "planted": full(planted).astype(float),
-        "asof": full(asof).astype(float), "park": full(park, False).astype(bool),
+        "measured": full(asof).astype(float), "park": full(park, False).astype(bool),
         "alive": full(alive, True).astype(bool),
     })
     out["alive"] &= ~(out.species.str.contains(NOT_TREE) | out.common.str.contains(NOT_TREE))
@@ -689,7 +689,7 @@ def build():
     age = np.minimum(age, np.where(remnant, 250.0, 150.0))
 
     # when the DBH was measured: the record's inventory date, else the source's survey year
-    asof = d.asof.to_numpy(float)
+    asof = d.measured.to_numpy(float)
     asof = np.where(np.isfinite(asof) & (asof > 1990) & (asof <= CURRENT_YEAR + 1), asof, np.nan)
     src_default = d.source.map({k: v.get("asof", 2022.0) for k, v in SOURCES.items()}).to_numpy(float)
     asof = np.where(np.isfinite(asof), asof, src_default)
@@ -827,7 +827,7 @@ def report(d, n_bld, n_common, rec_ok):
             "bounded_by": t.bounded_by.value_counts().to_dict(),
             "exact": int((t.confidence == 0).sum()),
             "year_quartiles": [round(float(v), 1) for v in np.percentile(t.year, [5, 25, 50, 75, 95])],
-            "asof_median": round(float(np.nanmedian(t.asof)), 1) if t.asof.notna().any() else None,
+            "measured_median": round(float(np.nanmedian(t.measured)), 1) if t.measured.notna().any() else None,
         }
     p = INTERIM / "reports" / "region_trees.json"
     p.parent.mkdir(parents=True, exist_ok=True)

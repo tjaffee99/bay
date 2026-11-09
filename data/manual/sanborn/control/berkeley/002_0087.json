@@ -1,0 +1,435 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Ellsworth - Dana, Allston - Durant (Chapel St, Stiles Hall, St Mark s Church). 5217 / 5218 north of Bancroft are campus today: fitted with 5244.",
+ "blocks": [
+  {
+   "name": "5244",
+   "streets": {
+    "N": "Bancroft",
+    "S": "Durant",
+    "W": "Ellsworth",
+    "E": "Dana"
+   },
+   "px4_est": [
+    [
+     580,
+     1366
+    ],
+    [
+     1496,
+     1366
+    ],
+    [
+     1496,
+     1770
+    ],
+    [
+     580,
+     1770
+    ]
+   ],
+   "corners": [
+    {
+     "x": 581.0,
+     "y": 1369.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1497.4,
+     "y": 1363.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1496.1,
+     "y": 1756.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 581.0,
+     "y": 1760.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     581.0,
+     1369.1
+    ],
+    [
+     1497.4,
+     1363.9
+    ],
+    [
+     1496.1,
+     1756.3
+    ],
+    [
+     581.0,
+     1760.2
+    ]
+   ],
+   "edge_q": [
+    0.39,
+    0.76,
+    0.47,
+    0.65
+   ],
+   "corners_all": [
+    {
+     "x": 581.0,
+     "y": 1369.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1497.4,
+     "y": 1363.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1496.1,
+     "y": 1756.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 581.0,
+     "y": 1760.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    581.0,
+    1363.8602915217002,
+    1497.4148635633087,
+    1760.2193748563548
+   ]
+  },
+  {
+   "name": "5217",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "Ellsworth",
+    "E": "Chapel"
+   },
+   "px4_est": [
+    [
+     576,
+     364
+    ],
+    [
+     984,
+     364
+    ],
+    [
+     984,
+     1280
+    ],
+    [
+     576,
+     1280
+    ]
+   ],
+   "corners": [
+    {
+     "x": 581.0,
+     "y": 1369.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 1497.4,
+     "y": 1363.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 1496.1,
+     "y": 1756.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 581.0,
+     "y": 1760.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5244",
+    "5218"
+   ],
+   "px4": [
+    [
+     569.7,
+     369.7
+    ],
+    [
+     984.8,
+     364.4
+    ],
+    [
+     988.7,
+     1276.2
+    ],
+    [
+     572.3,
+     1278.8
+    ]
+   ],
+   "edge_q": [
+    0.6,
+    0.57,
+    0.66,
+    0.7
+   ],
+   "corners_all": [
+    {
+     "x": 572.3,
+     "y": 1278.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1008.1   11.9] at Ellsworth x Bancroft NE"
+    }
+   ],
+   "zone_px": [
+    569.7006229609891,
+    364.3583867362635,
+    988.7071097875966,
+    1278.8395739442567
+   ]
+  },
+  {
+   "name": "5218",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "Chapel",
+    "E": "Dana"
+   },
+   "px4_est": [
+    [
+     1082,
+     364
+    ],
+    [
+     1496,
+     364
+    ],
+    [
+     1496,
+     1280
+    ],
+    [
+     1082,
+     1280
+    ]
+   ],
+   "corners": [
+    {
+     "x": 581.0,
+     "y": 1369.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 1497.4,
+     "y": 1363.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 1496.1,
+     "y": 1756.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    },
+    {
+     "x": 581.0,
+     "y": 1760.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5244"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "5244",
+    "5217"
+   ],
+   "px4": [
+    [
+     1078.6,
+     364.0
+    ],
+    [
+     1488.0,
+     364.0
+    ],
+    [
+     1488.0,
+     1272.2
+    ],
+    [
+     1079.9,
+     1274.8
+    ]
+   ],
+   "edge_q": [
+    0.06,
+    0.76,
+    0.7,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 1488.0,
+     "y": 1272.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [374.6  12.2] at Dana x Bancroft NW"
+    }
+   ],
+   "zone_px": [
+    1078.592105263158,
+    364.0,
+    1488.0,
+    1274.8291350938166
+   ]
+  }
+ ],
+ "pct": 25
+}

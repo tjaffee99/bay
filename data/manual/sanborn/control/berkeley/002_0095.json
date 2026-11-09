@@ -1,0 +1,479 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Ellsworth - Dana, Durant - Dwight (First Congregational Church)",
+ "blocks": [
+  {
+   "name": "5243",
+   "streets": {
+    "N": "Durant",
+    "S": "Channing",
+    "W": "Ellsworth",
+    "E": "Dana"
+   },
+   "px4_est": [
+    [
+     570,
+     360
+    ],
+    [
+     1486,
+     360
+    ],
+    [
+     1486,
+     756
+    ],
+    [
+     570,
+     756
+    ]
+   ],
+   "corners": [
+    {
+     "x": 570.8,
+     "y": 359.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1487.8,
+     "y": 360.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1485.2,
+     "y": 756.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 568.2,
+     "y": 750.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     570.8,
+     359.1
+    ],
+    [
+     1487.8,
+     360.4
+    ],
+    [
+     1485.2,
+     756.1
+    ],
+    [
+     568.2,
+     750.9
+    ]
+   ],
+   "edge_q": [
+    0.69,
+    0.79,
+    0.54,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 570.8,
+     "y": 359.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1487.8,
+     "y": 360.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1485.2,
+     "y": 756.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 568.2,
+     "y": 750.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    568.2183799560721,
+    359.0932857603909,
+    1487.8130615423206,
+    756.1268867347336
+   ]
+  },
+  {
+   "name": "5242",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Ellsworth",
+    "E": "Dana"
+   },
+   "px4_est": [
+    [
+     566,
+     840
+    ],
+    [
+     1486,
+     840
+    ],
+    [
+     1486,
+     1256
+    ],
+    [
+     566,
+     1256
+    ]
+   ],
+   "corners": [
+    {
+     "x": 567.7,
+     "y": 842.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1484.2,
+     "y": 846.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1480.3,
+     "y": 1255.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 563.8,
+     "y": 1253.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     567.7,
+     842.8
+    ],
+    [
+     1484.2,
+     846.7
+    ],
+    [
+     1480.3,
+     1255.8
+    ],
+    [
+     563.8,
+     1253.2
+    ]
+   ],
+   "edge_q": [
+    0.59,
+    0.6,
+    0.57,
+    0.56
+   ],
+   "corners_all": [
+    {
+     "x": 567.7,
+     "y": 842.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1484.2,
+     "y": 846.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1480.3,
+     "y": 1255.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 563.8,
+     "y": 1253.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    563.8030940681574,
+    842.7835981308056,
+    1484.1599589831317,
+    1255.7994228233397
+   ]
+  },
+  {
+   "name": "5241",
+   "streets": {
+    "N": "Haste",
+    "S": "Dwight",
+    "W": "Ellsworth",
+    "E": "Dana"
+   },
+   "px4_est": [
+    [
+     560,
+     1340
+    ],
+    [
+     1486,
+     1340
+    ],
+    [
+     1486,
+     1750
+    ],
+    [
+     560,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 564.8,
+     "y": 1344.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1479.0,
+     "y": 1348.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1473.8,
+     "y": 1754.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 562.2,
+     "y": 1752.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     564.8,
+     1344.8
+    ],
+    [
+     1479.0,
+     1348.7
+    ],
+    [
+     1473.8,
+     1754.8
+    ],
+    [
+     562.2,
+     1752.2
+    ]
+   ],
+   "edge_q": [
+    0.65,
+    0.55,
+    0.76,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 564.8,
+     "y": 1344.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1479.0,
+     "y": 1348.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Dana",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1473.8,
+     "y": 1754.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Dana",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 562.2,
+     "y": 1752.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Ellsworth",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    562.1701516185349,
+    1344.796713376036,
+    1479.0199752292274,
+    1754.7811385862162
+   ]
+  }
+ ],
+ "pct": 25
+}

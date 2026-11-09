@@ -1,0 +1,479 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Bowditch - College, Durant - Dwight (People s Park block 5351, First Church of Christ Scientist)",
+ "blocks": [
+  {
+   "name": "5353",
+   "streets": {
+    "N": "Durant",
+    "S": "Channing",
+    "W": "Bowditch",
+    "E": "College"
+   },
+   "px4_est": [
+    [
+     170,
+     290
+    ],
+    [
+     1090,
+     290
+    ],
+    [
+     1090,
+     684
+    ],
+    [
+     170,
+     684
+    ]
+   ],
+   "corners": [
+    {
+     "x": 168.0,
+     "y": 289.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1087.4,
+     "y": 288.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.1,
+     "y": 683.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 168.0,
+     "y": 683.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     168.0,
+     289.4
+    ],
+    [
+     1087.4,
+     288.1
+    ],
+    [
+     1086.1,
+     683.0
+    ],
+    [
+     168.0,
+     683.0
+    ]
+   ],
+   "edge_q": [
+    0.64,
+    0.75,
+    0.77,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 168.0,
+     "y": 289.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1087.4,
+     "y": 288.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.1,
+     "y": 683.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 168.0,
+     "y": 683.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    168.0,
+    288.09580341257254,
+    1087.4142539292927,
+    683.0
+   ]
+  },
+  {
+   "name": "5352",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Bowditch",
+    "E": "College"
+   },
+   "px4_est": [
+    [
+     170,
+     774
+    ],
+    [
+     1090,
+     774
+    ],
+    [
+     1090,
+     1184
+    ],
+    [
+     170,
+     1184
+    ]
+   ],
+   "corners": [
+    {
+     "x": 167.9,
+     "y": 775.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.8,
+     "y": 775.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1084.2,
+     "y": 1187.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 166.6,
+     "y": 1185.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     167.9,
+     775.0
+    ],
+    [
+     1086.8,
+     775.0
+    ],
+    [
+     1084.2,
+     1187.8
+    ],
+    [
+     166.6,
+     1185.2
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.75,
+    0.75,
+    0.69
+   ],
+   "corners_all": [
+    {
+     "x": 167.9,
+     "y": 775.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.8,
+     "y": 775.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1084.2,
+     "y": 1187.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 166.6,
+     "y": 1185.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    166.58833616250809,
+    775.0,
+    1086.8093709884467,
+    1187.7990841709402
+   ]
+  },
+  {
+   "name": "5351",
+   "streets": {
+    "N": "Haste",
+    "S": "Dwight",
+    "W": "Bowditch",
+    "E": "College"
+   },
+   "px4_est": [
+    [
+     170,
+     1272
+    ],
+    [
+     1090,
+     1272
+    ],
+    [
+     1090,
+     1686
+    ],
+    [
+     170,
+     1686
+    ]
+   ],
+   "corners": [
+    {
+     "x": 169.5,
+     "y": 1276.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.0,
+     "y": 1280.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.0,
+     "y": 1687.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 169.5,
+     "y": 1685.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     169.5,
+     1276.3
+    ],
+    [
+     1086.0,
+     1280.2
+    ],
+    [
+     1086.0,
+     1687.8
+    ],
+    [
+     169.5,
+     1685.2
+    ]
+   ],
+   "edge_q": [
+    0.65,
+    0.75,
+    0.78,
+    0.96
+   ],
+   "corners_all": [
+    {
+     "x": 169.5,
+     "y": 1276.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.0,
+     "y": 1280.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "College",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1086.0,
+     "y": 1687.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "College",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 169.5,
+     "y": 1685.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Bowditch",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    169.5,
+    1276.2741704805492,
+    1086.0,
+    1687.804347826087
+   ]
+  }
+ ],
+ "pct": 25
+}

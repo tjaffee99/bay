@@ -1,0 +1,636 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Fulton - Ellsworth, Durant - Dwight (Berkeley Preparatory School)",
+ "blocks": [
+  {
+   "name": "5213",
+   "streets": {
+    "N": "Durant",
+    "S": "Channing",
+    "W": "Fulton",
+    "E": "Ellsworth"
+   },
+   "px4_est": [
+    [
+     186,
+     260
+    ],
+    [
+     1096,
+     260
+    ],
+    [
+     1096,
+     654
+    ],
+    [
+     186,
+     654
+    ]
+   ],
+   "corners": [
+    {
+     "x": 183.5,
+     "y": 265.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1092.1,
+     "y": 257.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1093.4,
+     "y": 649.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 183.5,
+     "y": 653.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     183.5,
+     265.5
+    ],
+    [
+     1092.1,
+     257.6
+    ],
+    [
+     1093.4,
+     649.8
+    ],
+    [
+     183.5,
+     653.7
+    ]
+   ],
+   "edge_q": [
+    0.5,
+    0.62,
+    0.59,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 183.5,
+     "y": 265.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1092.1,
+     "y": 257.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1093.4,
+     "y": 649.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 183.5,
+     "y": 653.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    183.5,
+    257.5866045786554,
+    1093.393827213335,
+    653.7345286292655
+   ]
+  },
+  {
+   "name": "5211",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Fulton",
+    "E": "Atherton"
+   },
+   "px4_est": [
+    [
+     186,
+     744
+    ],
+    [
+     584,
+     744
+    ],
+    [
+     584,
+     1150
+    ],
+    [
+     186,
+     1150
+    ]
+   ],
+   "corners": [
+    {
+     "x": 184.6,
+     "y": 745.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 580.0,
+     "y": 744.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Atherton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 580.0,
+     "y": 1152.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Atherton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 185.9,
+     "y": 1153.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     184.6,
+     745.4
+    ],
+    [
+     580.0,
+     744.1
+    ],
+    [
+     580.0,
+     1152.1
+    ],
+    [
+     185.9,
+     1153.4
+    ]
+   ],
+   "edge_q": [
+    0.64,
+    0.71,
+    0.82,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 184.6,
+     "y": 745.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 580.0,
+     "y": 744.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Atherton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 580.0,
+     "y": 1152.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Atherton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 185.9,
+     "y": 1153.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    184.59668308953766,
+    744.1053292779687,
+    580.0,
+    1153.408162721113
+   ]
+  },
+  {
+   "name": "5212",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Atherton",
+    "E": "Ellsworth"
+   },
+   "px4_est": [
+    [
+     670,
+     744
+    ],
+    [
+     1096,
+     744
+    ],
+    [
+     1096,
+     1150
+    ],
+    [
+     670,
+     1150
+    ]
+   ],
+   "corners": [
+    {
+     "x": 669.1,
+     "y": 743.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Atherton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1094.0,
+     "y": 741.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1094.0,
+     "y": 1151.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.4,
+     "y": 1152.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Atherton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     669.1,
+     743.8
+    ],
+    [
+     1094.0,
+     741.2
+    ],
+    [
+     1094.0,
+     1151.1
+    ],
+    [
+     670.4,
+     1152.4
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.77,
+    0.75,
+    0.61
+   ],
+   "corners_all": [
+    {
+     "x": 669.1,
+     "y": 743.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Atherton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1094.0,
+     "y": 741.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1094.0,
+     "y": 1151.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.4,
+     "y": 1152.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Atherton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    669.0915264502597,
+    741.1965653570546,
+    1094.0,
+    1152.4066107788876
+   ]
+  },
+  {
+   "name": "5210",
+   "streets": {
+    "N": "Haste",
+    "S": "Dwight",
+    "W": "Fulton",
+    "E": "Ellsworth"
+   },
+   "px4_est": [
+    [
+     186,
+     1240
+    ],
+    [
+     1096,
+     1240
+    ],
+    [
+     1096,
+     1650
+    ],
+    [
+     186,
+     1650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 186.7,
+     "y": 1242.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1096.0,
+     "y": 1241.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1096.0,
+     "y": 1648.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 189.3,
+     "y": 1650.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     186.7,
+     1242.4
+    ],
+    [
+     1096.0,
+     1241.1
+    ],
+    [
+     1096.0,
+     1648.2
+    ],
+    [
+     189.3,
+     1650.8
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.75,
+    0.8,
+    0.59
+   ],
+   "corners_all": [
+    {
+     "x": 186.7,
+     "y": 1242.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1096.0,
+     "y": 1241.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Ellsworth",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1096.0,
+     "y": 1648.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Ellsworth",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 189.3,
+     "y": 1650.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Fulton",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    186.69965906985914,
+    1241.092105263158,
+    1096.0,
+    1650.8061857606563
+   ]
+  }
+ ],
+ "pct": 25
+}

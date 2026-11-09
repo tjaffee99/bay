@@ -1,0 +1,468 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Telegraph - Bowditch, Durant - Dwight (Miss Head s school)",
+ "blocks": [
+  {
+   "name": "5327",
+   "streets": {
+    "N": "Durant",
+    "S": "Channing",
+    "W": "Telegraph",
+    "E": "Bowditch"
+   },
+   "px4_est": [
+    [
+     556,
+     284
+    ],
+    [
+     1474,
+     284
+    ],
+    [
+     1474,
+     680
+    ],
+    [
+     556,
+     680
+    ]
+   ],
+   "corners": [
+    {
+     "x": 557.8,
+     "y": 285.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1465.2,
+     "y": 284.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1467.8,
+     "y": 679.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 555.2,
+     "y": 679.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     557.8,
+     285.4
+    ],
+    [
+     1465.2,
+     284.1
+    ],
+    [
+     1467.8,
+     679.0
+    ],
+    [
+     555.2,
+     679.0
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.79,
+    0.75,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 557.8,
+     "y": 285.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1465.2,
+     "y": 284.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1467.8,
+     "y": 679.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 555.2,
+     "y": 679.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    555.1908559276981,
+    284.1047401293336,
+    1467.809144072302,
+    679.0
+   ]
+  },
+  {
+   "name": "5326",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Telegraph",
+    "E": "Bowditch"
+   },
+   "px4_est": [
+    [
+     556,
+     766
+    ],
+    [
+     1474,
+     766
+    ],
+    [
+     1474,
+     1180
+    ],
+    [
+     556,
+     1180
+    ]
+   ],
+   "corners": [
+    {
+     "x": 555.9,
+     "y": 768.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1466.1,
+     "y": 771.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1467.4,
+     "y": 1180.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 554.6,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     555.9,
+     768.7
+    ],
+    [
+     1466.1,
+     771.3
+    ],
+    [
+     1467.4,
+     1180.5
+    ],
+    [
+     554.6,
+     1180.5
+    ]
+   ],
+   "edge_q": [
+    0.54,
+    0.83,
+    0.84,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 555.9,
+     "y": 768.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1466.1,
+     "y": 771.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1467.4,
+     "y": 1180.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 554.6,
+     "y": 1180.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    554.590516145436,
+    768.683922040479,
+    1467.4094838545639,
+    1180.5
+   ]
+  },
+  {
+   "name": "5325",
+   "streets": {
+    "N": "Haste",
+    "S": "Dwight",
+    "W": "Telegraph",
+    "E": "Bowditch"
+   },
+   "px4_est": [
+    [
+     556,
+     1266
+    ],
+    [
+     1474,
+     1266
+    ],
+    [
+     1474,
+     1676
+    ],
+    [
+     556,
+     1676
+    ]
+   ],
+   "corners": [
+    {
+     "x": 554.0,
+     "y": 1272.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.9,
+     "y": 1272.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1468.6,
+     "y": 1678.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     554.0,
+     1272.0
+    ],
+    [
+     1469.9,
+     1272.0
+    ],
+    [
+     1468.6,
+     1678.1
+    ],
+    [
+     554.0,
+     1679.4
+    ]
+   ],
+   "edge_q": [
+    0.79,
+    0.83,
+    0.81,
+    0.75
+   ],
+   "corners_all": [
+    {
+     "x": 554.0,
+     "y": 1272.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.9,
+     "y": 1272.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1468.6,
+     "y": 1678.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 554.0,
+     "y": 1679.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [29.7  9.5] at Telegraph x Dwight NE"
+    }
+   ],
+   "zone_px": [
+    554.0,
+    1272.0,
+    1469.8886392811296,
+    1679.4107613805757
+   ]
+  }
+ ],
+ "pct": 25
+}
