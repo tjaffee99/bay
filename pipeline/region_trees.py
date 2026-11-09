@@ -397,7 +397,7 @@ def num_or_range(v) -> np.ndarray:
     if pd.api.types.is_numeric_dtype(s):
         return pd.to_numeric(s, errors="coerce").to_numpy(float)
     out = np.full(len(s), np.nan)
-    for i, t in enumerate(s.astype(str).values):
+    for i, t in enumerate(s.fillna("").astype(str).values):
         nums = _NUM.findall(t)
         if len(nums) >= 2:
             out[i] = (float(nums[0]) + float(nums[1])) / 2
@@ -536,7 +536,7 @@ def _santa_clara(d):
     gone = d.SpeciesType.fillna("").astype(str).str.contains("remov", case=False) | \
         pd.to_numeric(d.StatusCode, errors="coerce").eq(999)
     return std(d, "", d.SpeciesName, num_or_range(d.DBH), num_or_range(d.Height), num_or_range(d.Canopy),
-               asof=np.fmax(year_of(d.AssessmentDate), year_of(d.LastModDate)), alive=~gone.values)
+               asof=year_of(d.AssessmentDate), alive=~gone.values)  # LastModDate: a 2026 bulk edit
 
 
 def _emeryville(d):
@@ -605,6 +605,10 @@ def load_sources() -> pd.DataFrame:
         d["source"], d["prio"], d["inland"] = sid, prio, bool(src.get("inland", False))
         n0 = len(d)
         d = d[d.alive & d.lon.between(-123.2, -121.2) & d.lat.between(36.8, 38.9)]
+        if sid != "scc_county":
+            # stray records far outside the city (bad coordinates): keep the city's own box + ~3 km
+            lo, hi = d[["lon", "lat"]].quantile(0.002), d[["lon", "lat"]].quantile(0.998)
+            d = d[d.lon.between(lo.lon - 0.03, hi.lon + 0.03) & d.lat.between(lo.lat - 0.03, hi.lat + 0.03)]
         d = d.drop_duplicates(["lon", "lat", "species"])
         log(f"{sid}: {n0} records, {len(d)} trees")
         parts.append(d)
@@ -621,6 +625,11 @@ def fill_species(d: pd.DataFrame):
     need = (key.str.len() < 4) | ~key.str.contains(" ")
     from_common = d.common.str.upper().str.strip().map(lut)
     key = key.where(~need | from_common.isna(), from_common)
+    # a bare genus as the common name ("Magnolia", "Liquidambar"): the genus
+    genera = {k.split()[0] for k in lut.values if k}
+    first = d.common.str.lower().str.extract(r"^\s*([a-z]+)\b", expand=False)
+    gen = need & key.isna() | need & (key.str.len() < 4)
+    key = key.where(~(gen & first.isin(genera)), first)
     return key.fillna(""), int((need & from_common.notna()).sum())
 
 

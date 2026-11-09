@@ -1,0 +1,479 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "notes": "Shattuck - Fulton, Durant - Dwight (Friends Church, garages)",
+ "blocks": [
+  {
+   "name": "5172",
+   "streets": {
+    "N": "Durant",
+    "S": "Channing",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     804,
+     260
+    ],
+    [
+     1490,
+     260
+    ],
+    [
+     1490,
+     656
+    ],
+    [
+     780,
+     656
+    ]
+   ],
+   "corners": [
+    {
+     "x": 822.3,
+     "y": 256.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1484.9,
+     "y": 262.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1483.6,
+     "y": 655.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 790.6,
+     "y": 649.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     822.3,
+     256.1
+    ],
+    [
+     1484.9,
+     262.5
+    ],
+    [
+     1483.6,
+     655.1
+    ],
+    [
+     790.6,
+     649.9
+    ]
+   ],
+   "edge_q": [
+    0.59,
+    0.77,
+    0.59,
+    0.49
+   ],
+   "corners_all": [
+    {
+     "x": 822.3,
+     "y": 256.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1484.9,
+     "y": 262.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1483.6,
+     "y": 655.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 790.6,
+     "y": 649.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    790.5711447465343,
+    256.1361578151722,
+    1484.8996193530966,
+    655.0841004338272
+   ]
+  },
+  {
+   "name": "5171",
+   "streets": {
+    "N": "Channing",
+    "S": "Haste",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     776,
+     740
+    ],
+    [
+     1490,
+     740
+    ],
+    [
+     1490,
+     1156
+    ],
+    [
+     750,
+     1156
+    ]
+   ],
+   "corners": [
+    {
+     "x": 784.8,
+     "y": 741.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1482.3,
+     "y": 746.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1479.7,
+     "y": 1157.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 750.0,
+     "y": 1151.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     784.8,
+     741.4
+    ],
+    [
+     1482.3,
+     746.6
+    ],
+    [
+     1479.7,
+     1157.1
+    ],
+    [
+     750.0,
+     1151.9
+    ]
+   ],
+   "edge_q": [
+    0.67,
+    0.63,
+    0.58,
+    0.48
+   ],
+   "corners_all": [
+    {
+     "x": 784.8,
+     "y": 741.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1482.3,
+     "y": 746.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Channing"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1479.7,
+     "y": 1157.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 750.0,
+     "y": 1151.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    749.99356016915,
+    741.4330194229003,
+    1482.274198954881,
+    1157.0581615696335
+   ]
+  },
+  {
+   "name": "5170",
+   "streets": {
+    "N": "Haste",
+    "S": "Dwight",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     744,
+     1240
+    ],
+    [
+     1490,
+     1240
+    ],
+    [
+     1490,
+     1656
+    ],
+    [
+     710,
+     1656
+    ]
+   ],
+   "corners": [
+    {
+     "x": 743.4,
+     "y": 1242.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1478.1,
+     "y": 1248.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1474.3,
+     "y": 1653.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 711.2,
+     "y": 1652.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     743.4,
+     1242.9
+    ],
+    [
+     1478.1,
+     1248.0
+    ],
+    [
+     1474.3,
+     1653.4
+    ],
+    [
+     711.2,
+     1652.1
+    ]
+   ],
+   "edge_q": [
+    0.59,
+    0.58,
+    0.65,
+    0.74
+   ],
+   "corners_all": [
+    {
+     "x": 743.4,
+     "y": 1242.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1478.1,
+     "y": 1248.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Haste"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1474.3,
+     "y": 1653.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 711.2,
+     "y": 1652.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Dwight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    711.2175227600839,
+    1242.8639471172344,
+    1478.1473182289465,
+    1653.3814122186557
+   ]
+  }
+ ],
+ "pct": 25
+}

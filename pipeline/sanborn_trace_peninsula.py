@@ -199,6 +199,17 @@ def refine_block(gray, px4, R=16, inset=0.12):
 E.refine_block = refine_block
 
 
+def set_zones(key, zones):
+    """after `refine`: widen block zones (pixel rectangles [x0, y0, x1, y1]) over parts of a block with no drawn
+    outline (private parks, plazas, yards), so their buildings take the block's fit and count as covered."""
+    f = E.CONTROL / f"{key}.json"
+    cfg = json.load(open(f))
+    for b in cfg["blocks"]:
+        if b["name"] in zones:
+            b["zone_px"] = [float(v) for v in zones[b["name"]]]
+    json.dump(cfg, open(f, "w"), indent=1)
+
+
 def solid_lines(key, minlen=120, box=None):
     """scratch aid for writing block specs: long solid axis-aligned dark lines of a sheet (block outlines) as
     ('H', y, x0, x1) / ('V', x, y0, y1) runs, merged across 1-3 px of thickness; dashed lines have gaps and drop out."""
@@ -235,14 +246,14 @@ def solid_lines(key, minlen=120, box=None):
 
 
 def storeys_to_attributes():
-    """control/<city>/storeys.json {key: [[x, y, stories], ...]} (storey numbers read off the 25 % scan by eye, pixel
-    inside the building) -> attributes.json {footprint id: {"stories": n}} for the eastbay assemble: the footprint
-    containing the pixel, else the nearest within 25 px."""
+    """control/<city>/storeys.json {key: [[x, y, stories], ...]} (storey numbers read off the scans by eye, pixel on the
+    25 % scan inside the building) -> {footprint id: stories}: the footprint containing the pixel, else the nearest
+    within 25 px."""
     from shapely.geometry import Point, Polygon
     p = E.CONTROL / "storeys.json"
+    out = {}
     if not p.exists():
-        return
-    attrs = {}
+        return out
     for key, marks in json.load(open(p)).items():
         f = E.INTERIM / f"{key}.json"
         if not f.exists():
@@ -255,16 +266,302 @@ def storeys_to_attributes():
                 near = sorted((pg.distance(pt), rid) for rid, pg in polys)
                 hit = [near[0][1]] if near and near[0][0] <= 25 else []
             if hit:
-                attrs.setdefault(hit[0], {})["stories"] = st
+                out[hit[0]] = st
             else:
                 E.log(key, "storey mark not placed:", x, y, st)
-    json.dump(attrs, open(E.CONTROL / "attributes.json", "w"), indent=1)
+    return out
 
 
+# ----------------------------------------------------------------------------------------------- footprints
+def extract(key):
+    """colour segmentation of the building fills, as the eastbay / South Bay extract (partition-wall splitting, outline
+    test, holes filled), with thresholds for these plates: the yellow frame wash is pale (saturation 60-95 on paper of
+    ~12), the 'gray' iron wash is a grey-green (hue ~72, saturation 15-25, value 140-190), and the drawn lines are thin
+    and light after JPEG blur (grey 100-200), so a line pixel is one 25+ levels darker than its 7-px median and below
+    grey 200 (or below 110). Classes (1901-1920 keys): yellow frame, red / pink brick, blue stone, gray iron, brown
+    adobe (1908) / fire-proof (1920), green specials (rare; kept as `special`)."""
+    import cv2
+    from shapely.geometry import Polygon
+    G = json.load(open(E.INTERIM / f"{key}.M.json"))
+    rgb = np.asarray(E.Image.open(G["img"]).convert("RGB"))
+    hsv = cv2.cvtColor(cv2.medianBlur(rgb, 3), cv2.COLOR_RGB2HSV).astype(np.int16)
+    Hh, S, V = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+    del hsv
+    pm = (V > np.percentile(V, 30)) & (S < np.percentile(S, 70))
+    pS, pV = int(np.median(S[pm])), int(np.median(V[pm]))
+    del pm
+    cfg = json.load(open(E.CONTROL / f"{key}.json"))
+    classes = {
+        "frame": (Hh >= 17) & (Hh <= 36) & (S >= max(40, pS + 28)) & (V >= 150),
+        "brick": ((Hh >= 150) | (Hh <= 7)) & (S >= 35) & (V >= 100),
+        "stone": (Hh >= 85) & (Hh <= 130) & (S >= 30) & (V >= 90),
+        "fireproof": (Hh >= 8) & (Hh <= 16) & (S >= 70) & (V >= 80) & (V < 215),
+        "iron": (S <= pS + 16) & (V >= 105) & (V <= pV - 45) & (Hh >= 40) & (Hh <= 100),
+        "special": (Hh >= 40) & (Hh <= 80) & (S >= 35) & (V >= 90),
+    }
+    del Hh, S, V
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.int16)
+    med = cv2.medianBlur(gray.astype(np.uint8), 7).astype(np.int16)
+    line = ((gray < med - 25) & (gray < 200)) | (gray < 110)
+    del med
+    L = int(cfg.get("wall_len", 14))
+    part = E.ndi.binary_opening(line, structure=np.ones((L, 1))) | E.ndi.binary_opening(line, structure=np.ones((1, L)))
+    part = E.ndi.binary_dilation(part, structure=np.ones((2, 2)))
+    darkd = E.ndi.binary_dilation(line | (gray < 150), iterations=3)
+    del gray
+    M = np.array(G["M"]); blocks = G.get("blocks", []); zones_only = G.get("zones_only", False)
+
+    def transform_for(cx, cy):
+        best, bd = None, 1e9
+        for b in blocks:
+            x0, y0, x1, y1 = b["rect_px"]
+            d = max(x0 - cx, 0, cx - x1) + max(y0 - cy, 0, cy - y1)
+            if d < bd:
+                best, bd = b, d
+        if best is not None and bd <= 40:
+            return np.array(best["M"]), best["name"]
+        return (None, None) if zones_only else (M, "sheet")
+    feats = []
+    ndi = E.ndi
+    for cls, m in classes.items():
+        m = ndi.binary_opening(m, structure=np.ones((2, 2)))
+        m = (ndi.binary_closing(m, structure=np.ones((3, 3))) | m) & ~part
+        holes = ndi.binary_fill_holes(m) & ~m
+        hl, hn = ndi.label(holes)
+        if hn:
+            hs = ndi.sum(holes, hl, range(1, hn + 1))
+            m = m | np.isin(hl, np.nonzero(hs < 2500)[0] + 1)
+        m = m & ~part
+        lab, n = ndi.label(m)
+        if not n:
+            continue
+        sizes = ndi.sum(m, lab, range(1, n + 1)); objs = ndi.find_objects(lab)
+        for i in range(n):
+            sl = objs[i]
+            if sizes[i] < 90 or sl[0].start < 12 or sl[1].start < 12 or sl[0].stop > m.shape[0] - 12 or sl[1].stop > m.shape[1] - 12:
+                continue
+            if min(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) < 6:
+                continue
+            sub = lab[sl] == i + 1
+            dist = ndi.distance_transform_edt(np.pad(sub, 1))
+            if dist.max() < 3.5:
+                continue
+            hullA = cv2.contourArea(cv2.convexHull(np.argwhere(sub)[:, ::-1].astype(np.int32)))
+            solid = sizes[i] / hullA if hullA > 0 else 0
+            if cls in ("iron", "special") and (sizes[i] < 300 or dist.max() < 5 or solid < 0.75):
+                continue
+            ring_out = ndi.binary_dilation(np.pad(sub, 4), iterations=1) & ~np.pad(sub, 4)
+            y0_, x0_ = max(0, sl[0].start - 4), max(0, sl[1].start - 4)
+            dd = darkd[y0_:sl[0].stop + 4, x0_:sl[1].stop + 4]
+            oy, ox = 4 - (sl[0].start - y0_), 4 - (sl[1].start - x0_)
+            dd = np.pad(dd, ((oy, max(0, ring_out.shape[0] - dd.shape[0] - oy)), (ox, max(0, ring_out.shape[1] - dd.shape[1] - ox))))
+            dd = dd[:ring_out.shape[0], :ring_out.shape[1]]
+            edge_dark = float(dd[ring_out].mean()) if ring_out.any() else 0
+            if edge_dark < (0.6 if cls == "iron" else 0.7) or (solid < 0.5 and edge_dark < 0.85):
+                continue
+            cs, _ = cv2.findContours(np.pad(sub, 2).astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+            rings = []
+            for c in cs:
+                c = c[:, 0, :].astype(float)
+                if len(c) >= 4:
+                    c[:, 0] += sl[1].start - 2; c[:, 1] += sl[0].start - 2
+                    rings.append(c)
+            if not rings:
+                continue
+            rings.sort(key=lambda c: -Polygon(c).area)
+            outer = Polygon(rings[0]).buffer(1.2, join_style=2).simplify(1.0)  # half the partition wall back
+            if outer.geom_type != "Polygon":
+                outer = max(outer.geoms, key=lambda p: p.area)
+            hol = [Polygon(r).buffer(-0.8, join_style=2).simplify(1.0) for r in rings[1:] if Polygon(r).area > 400]
+            hol = [h for h in hol if h.geom_type == "Polygon" and outer.contains(h)]
+            poly = Polygon(outer.exterior.coords, [h.exterior.coords for h in hol])
+            cx, cy = poly.centroid.x, poly.centroid.y
+            vp = G.get("valid_px")
+            if vp and not (vp[0] <= cx <= vp[2] and vp[1] <= cy <= vp[3]):
+                continue
+            if G.get("valid_poly_px") and not Polygon(G["valid_poly_px"]).contains(poly.centroid):
+                continue
+            T, zone = transform_for(cx, cy)
+            if T is None:
+                continue
+            ext = W.apply(T, np.asarray(poly.exterior.coords))
+            hw = [W.apply(T, np.asarray(h.coords)) for h in poly.interiors]
+            feats.append({"id": f"{key}_{cls[:2] if cls == 'special' else cls[0]}{i + 1}", "cls": cls, "zone": zone,
+                          "px_centroid": [round(cx, 1), round(cy, 1)],
+                          "px_ring": np.round(np.asarray(poly.exterior.coords), 1).tolist(), "area_m2": round(float(Polygon(ext, hw).area), 1),
+                          "ring_utm": np.round(ext, 2).tolist(), "holes_utm": [np.round(h, 2).tolist() for h in hw]})
+        del m, lab
+    # one building can be caught by two classes (a yellow frame wing beside a grey iron shed overlapping at the wall):
+    # drop the smaller of two footprints overlapping by more than half
+    from shapely.strtree import STRtree
+    pg = [Polygon(f["px_ring"]).buffer(0) for f in feats]
+    tree = STRtree(pg) if pg else None
+    drop = set()
+    for i in sorted(range(len(feats)), key=lambda i: -pg[i].area):
+        if i in drop:
+            continue
+        for j in tree.query(pg[i]):
+            if j != i and j not in drop and pg[j].area <= pg[i].area and pg[i].intersection(pg[j]).area > 0.5 * pg[j].area:
+                drop.add(j)
+    feats = [f for k, f in enumerate(feats) if k not in drop]
+    json.dump(feats, open(E.INTERIM / f"{key}.json", "w"))
+    E.log(key, len(feats), "footprints", {c: sum(f["cls"] == c for f in feats) for c in classes})
+
+
+# ----------------------------------------------------------------------------------------------- outputs
 def assemble():
-    """eastbay assemble (names / uses from labels.json, storeys via attributes.json)."""
-    storeys_to_attributes()
-    E.assemble()
+    """the eastbay assemble (block zones as coverage, overlap between sheets, confidence by fit) with the town's plate
+    scale for 2-corner fits, the small-town storey defaults and storeys read off the sheets (storeys.json)."""
+    import math
+    import shapely
+    from pyproj import Transformer
+    from shapely import make_valid
+    from shapely.geometry import Point, Polygon, mapping
+    from shapely.ops import unary_union
+    from shapely.strtree import STRtree
+    to_ll = Transformer.from_crs(32610, 4326, always_xy=True)
+
+    def lonlat(g):
+        return shapely.transform(g, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))
+    c = CITIES[CITY_NAME]
+    plate = c.get("plate_scale", 0.2060)
+    storeys = storeys_to_attributes()
+    attrs = {}
+    labels = json.load(open(E.CONTROL / "labels.json")) if (E.CONTROL / "labels.json").exists() else {}
+    for key, labs in labels.items():
+        if not (E.INTERIM / f"{key}.json").exists():
+            continue
+        rows = json.load(open(E.INTERIM / f"{key}.json"))
+        polys = [(r["id"], Polygon(r["px_ring"]).buffer(0)) for r in rows]
+        for x, y, name, use in labs:
+            pt = Point(x, y)
+            hit = [rid for rid, pg in polys if pg.contains(pt)]
+            if not hit:
+                near = sorted((pg.distance(pt), rid) for rid, pg in polys)
+                hit = [near[0][1]] if near and near[0][0] <= 25 else []
+            if hit:
+                attrs.setdefault(hit[0], {}).update({"name": name, **({"use": use} if use else {})})
+            else:
+                E.log(key, "label not placed:", name)
+    fp = E.modern_footprints()
+    fpg = list(fp.geometry.values)
+    tree = STRtree(fpg)
+
+    def overlap(g):
+        parts = [fpg[i].intersection(g) for i in tree.query(g) if fpg[i].intersects(g)]
+        return round(float(unary_union(parts).area / g.area), 2) if parts and g.area > 0 else 0.0
+    rank = {"high": 0, "medium": 1, "low": 2}
+
+    def conf_of(f):
+        if f.get("n", 0) >= 4 and f.get("rms", 9) <= 1.5 and f.get("max", 9) <= 3:
+            q = "high"
+        elif f.get("n", 0) >= 3 and f.get("rms", 9) <= 3:
+            q = "medium"
+        elif f.get("n", 0) == 2 and "M" in f and abs(math.hypot(f["M"][0][0], f["M"][1][0]) - plate) <= 0.015 * plate:
+            q = "medium"  # two corners: exact fit, checked only by the plate scale
+        else:
+            q = "low"
+        if q == "high" and f.get("collinear"):
+            q = "medium"
+        return q
+    covers = {}
+    for (area, year), keys in sorted(E.AREAS.items()):
+        feats, cover = [], []
+        for key in keys:
+            vol, sheet = key.split("_")
+            cfg = json.load(open(E.CONTROL / f"{key}.json"))
+            G = json.load(open(E.INTERIM / f"{key}.M.json"))
+            map_year, vlabel = E.VOLUMES[vol]
+            rec = W.sheet_rec(key)
+            rows = json.load(open(E.INTERIM / f"{key}.json"))
+            blocks = {b["name"]: b for b in G.get("blocks", [])}
+            bpolys = E.block_polys(G)
+            cv = unary_union([pg.buffer(12, join_style=2) for _, pg in bpolys]).buffer(15, join_style=2).buffer(-15, join_style=2)
+            if cfg.get("cover_extra_px"):  # parts of a block zone with no drawn outline (plazas, yards) - pixel polygons
+                for name, ring in cfg["cover_extra_px"]:
+                    cv = cv.union(Polygon(W.apply(np.array(blocks[name]["M"]), ring)))
+            cover.append(cv)
+            residential = bool(cfg.get("residential"))
+            for r in rows:
+                g = make_valid(Polygon(r["ring_utm"], r.get("holes_utm") or []))
+                if g.geom_type != "Polygon":
+                    polys = [q for q in getattr(g, "geoms", []) if q.geom_type == "Polygon"]
+                    if not polys:
+                        continue
+                    g = max(polys, key=lambda q: q.area)
+                if g.area < 6 or not cv.contains(g.representative_point()):
+                    continue
+                zone = r.get("zone", "sheet")
+                fitq = dict(blocks[zone] if zone in blocks else {"rms": G.get("rms", 9), "n": G.get("n", 0), "max": G.get("max", 9)})
+                if zone in blocks:
+                    fitq["collinear"] = E.collinear([W.apply(np.array(blocks[zone]["M"]), [q["px"]])[0] for q in blocks[zone].get("points", [])])
+                cls, a = r["cls"], r["area_m2"]
+                att = attrs.get(r["id"], {})
+                if att.get("drop"):
+                    continue
+                material = {"frame": "frame", "brick": "brick", "stone": "stone", "iron": "iron", "special": "unknown",
+                            "fireproof": "adobe" if map_year < 1915 else "concrete"}[cls]
+                # storeys not read: small-town defaults (rule documented in the README)
+                if cls == "frame":
+                    if a < 30:
+                        st, us = 1, "shed"
+                    elif residential:
+                        st, us = (1, "dwelling") if a < 110 else (2, "dwelling") if a <= 300 else (1, "warehouse")
+                    else:
+                        st, us = (1, "store") if a < 150 else (2, "store") if a < 400 else (1, "warehouse")
+                elif cls == "iron":
+                    st, us = 1, "shed"
+                elif cls == "special":
+                    st, us = 1, "other"
+                else:
+                    st, us = (1, "warehouse") if residential else (2, "store")
+                rule = "default (rule: material, size, district)"
+                if r["id"] in storeys:
+                    stories, ssrc = storeys[r["id"]], "map (read from the sheet)"
+                else:
+                    stories, ssrc = st, rule
+                use, usrc = (att["use"], "map (label)") if att.get("use") else (us, "default")
+                conf = conf_of(fitq)
+                if cfg.get("confidence_cap") and rank[conf] < rank[cfg["confidence_cap"]]:
+                    conf = cfg["confidence_cap"]
+                if G.get("zones_only") and zone == "sheet":
+                    conf = "low"
+                feats.append((g, {"id": r["id"], "map_year": map_year, "volume": f"sanborn{E.CITY}_{vol}", "volume_label": vlabel,
+                                  "sheet": rec["id"], "sheet_no": int(sheet[:4].lstrip("0") or 0), "loc_url": f"https://www.loc.gov/item/sanborn{E.CITY}_{vol}/",
+                                  "iiif": rec["info"].replace("/info.json", ""), "stories": stories, "stories_source": ssrc, "material": material,
+                                  "use": use, "use_source": usrc, "name": att.get("name"), "sanborn_colour": cls,
+                                  "confidence": conf, "georef": f"block {zone}" if zone in blocks else "sheet",
+                                  "georef_rms_m": round(float(fitq.get("rms", 0)), 2), "extraction": r.get("method", "colour class"),
+                                  "area_m2": round(float(g.area), 1), "modern_overlap": overlap(g)}))
+        kept = []
+        for i in sorted(range(len(feats)), key=lambda i: (rank[feats[i][1]["confidence"]], -feats[i][0].area)):
+            g, p = feats[i]
+            if not any(feats[j][1]["sheet"] != p["sheet"] and g.intersects(feats[j][0])
+                       and g.intersection(feats[j][0]).area / min(g.area, feats[j][0].area) > 0.5 for j in kept):
+                kept.append(i)
+
+        def rnd(gj):
+            from shapely.geometry import shape
+            out = json.loads(json.dumps(gj), parse_float=lambda s_: round(float(s_), 7))
+            g2 = shape(out)
+            if g2.geom_type in ("Polygon", "MultiPolygon") and not g2.is_valid:
+                g2 = shapely.set_precision(shape(gj), 1e-7)
+                if out["type"] == "Polygon" and g2.geom_type == "MultiPolygon":
+                    g2 = max(g2.geoms, key=lambda q: q.area)
+                out = json.loads(json.dumps(mapping(g2)), parse_float=lambda s_: round(float(s_), 7))
+            return out
+        cu = unary_union(cover)
+        crs = {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}
+        fc = {"type": "FeatureCollection", "name": f"{area}_{year}", "crs": crs,
+              "features": [{"type": "Feature", "properties": feats[i][1], "geometry": rnd(mapping(lonlat(feats[i][0])))}
+                           for i in sorted(kept, key=lambda i: feats[i][1]["id"])]}
+        json.dump(fc, open(E.OUT / f"{area}_{year}.geojson", "w"))
+        covers.setdefault(area, []).append({"type": "Feature", "properties": {"area": area, "map_year": year, "sheets": keys, "features": len(kept)},
+                                            "geometry": rnd(mapping(lonlat(cu)))})
+        E.log(area, year, len(kept), "features")
+    for area, fs in covers.items():
+        json.dump({"type": "FeatureCollection", "name": f"{area}_coverage", "features": sorted(fs, key=lambda f: f["properties"]["map_year"])},
+                  open(E.OUT / f"{area}_coverage.geojson", "w"))
 
 
 def main():
@@ -303,8 +600,7 @@ def main():
             print(E.corner_mosaic(k))
     if stage in ("all", "extract"):
         for k in keys:
-            E.extract(k)
-            E.reclass(k)
+            extract(k)
     if stage == "overlay":
         for k in keys:
             print(E.overlay(k, scale=float(os.environ.get("SCALE", 0.5))))

@@ -1,7 +1,11 @@
 {
  "refine_R": 12,
  "weak": 0.12,
- "notes": "Southside: Fulton - Ellsworth, Allston - Durant (Trinity M. E. Church, Pacific Theological Seminary); 5215 / 5216 north of Bancroft became Edwards Stadium (1932): fitted with 5214 where their own corners are gone. Ellsworth St carries a double streetcar track drawn next to the block line (refine_R 12 so the side does not snap onto it).",
+ "notes": "Southside: Fulton - Ellsworth, Allston - Durant (Trinity M. E. Church, Pacific Theological Seminary); 5215 / 5216 north of Bancroft became Edwards Stadium (1932): fitted with 5214 where their own corners are gone. Ellsworth St carries a double streetcar track drawn next to the block line (refine_R 12 so the side does not snap onto it). Today's Fulton St east property line between Bancroft and Durant lies 3-5 m east of its line elsewhere (block 176 m wide today vs 184 m drawn; sheet 94 south of Durant fits at plate scale): 5214 is controlled by its Ellsworth corners and the plate scale (prior 0.2015 m/px).",
+ "scale_prior": [
+  0.2015,
+  0.0008
+ ],
  "blocks": [
   {
    "name": "5214",
@@ -31,18 +35,6 @@
    ],
    "corners": [
     {
-     "x": 539.0,
-     "y": 1374.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 1456.1,
      "y": 1374.0,
      "q": "SW",
@@ -65,19 +57,11 @@
      ],
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 539.0,
-     "y": 1767.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
-      "Durant"
-     ],
-     "norefine": 1,
-     "weak": false
     }
+   ],
+   "skip": [
+    "NW",
+    "SW"
    ],
    "px4": [
     [
@@ -105,18 +89,6 @@
    ],
    "corners_all": [
     {
-     "x": 539.0,
-     "y": 1374.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 1456.1,
      "y": 1374.0,
      "q": "SW",
@@ -135,18 +107,6 @@
      "corner": "SE",
      "pc": [
       "Ellsworth",
-      "Durant"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 539.0,
-     "y": 1767.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
       "Durant"
      ],
      "norefine": 1,
@@ -188,32 +148,6 @@
    ],
    "corners": [
     {
-     "x": 539.6,
-     "y": 1283.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "5215"
-    },
-    {
-     "x": 539.0,
-     "y": 1374.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "5214"
-    },
-    {
      "x": 1456.1,
      "y": 1374.0,
      "q": "SW",
@@ -238,20 +172,13 @@
      "norefine": 1,
      "weak": false,
      "block": "5214"
-    },
-    {
-     "x": 539.0,
-     "y": 1767.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
-      "Durant"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "5214"
     }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
    ],
    "with": [
     "5214"
@@ -280,59 +207,7 @@
     0.75,
     0.78
    ],
-   "corners_all": [
-    {
-     "x": 540.9,
-     "y": 368.2,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Fulton",
-      "Allston"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [0.9 9.2] at Fulton x Allston SE"
-    },
-    {
-     "x": 984.5,
-     "y": 370.8,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "Atherton",
-      "Allston"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [43.2  1. ] at Atherton x Allston SW"
-    },
-    {
-     "x": 984.5,
-     "y": 1283.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "Atherton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [69.  13.1] at Atherton x Bancroft NW"
-    },
-    {
-     "x": 539.6,
-     "y": 1283.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false
-    }
-   ],
+   "corners_all": [],
    "zone_px": [
     539.587814645309,
     368.1895704662945,
@@ -368,19 +243,6 @@
    ],
    "corners": [
     {
-     "x": 539.0,
-     "y": 1374.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Fulton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "5214"
-    },
-    {
      "x": 1456.1,
      "y": 1374.0,
      "q": "SW",
@@ -405,20 +267,13 @@
      "norefine": 1,
      "weak": false,
      "block": "5214"
-    },
-    {
-     "x": 539.0,
-     "y": 1767.8,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Fulton",
-      "Durant"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "5214"
     }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
    ],
    "with": [
     "5214"
@@ -447,60 +302,7 @@
     0.75,
     0.77
    ],
-   "corners_all": [
-    {
-     "x": 1035.8,
-     "y": 369.3,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Atherton",
-      "Allston"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [1103.9  183.8] at Atherton x Allston SE"
-    },
-    {
-     "x": 1451.6,
-     "y": 371.8,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "Ellsworth",
-      "Allston"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [148.8 183.5] at Ellsworth x Allston SW"
-    },
-    {
-     "x": 1452.9,
-     "y": 1283.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "Ellsworth",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [173.9  12.5] at Ellsworth x Bancroft NW"
-    },
-    {
-     "x": 1033.2,
-     "y": 1283.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Atherton",
-      "Bancroft"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [1112.8   12.6] at Atherton x Bancroft NE"
-    }
-   ],
+   "corners_all": [],
    "zone_px": [
     1033.175629290618,
     369.2558606654899,

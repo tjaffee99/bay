@@ -1,0 +1,418 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "notes": "Grove St (Martin Luther King Jr Way) - Milvia, Center - Bancroft: the 1911 Berkeley High School buildings (3124), Civic Center Park block (3125).",
+ "blocks": [
+  {
+   "name": "3125",
+   "streets": {
+    "N": "Center",
+    "S": "Allston",
+    "W": "Grove",
+    "E": "Milvia"
+   },
+   "px4_est": [
+    [
+     600,
+     266
+    ],
+    [
+     1514,
+     270
+    ],
+    [
+     1500,
+     690
+    ],
+    [
+     584,
+     690
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1515.0,
+     "y": 270.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.3,
+     "y": 681.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     619.5,
+     266.1
+    ],
+    [
+     1515.0,
+     270.0
+    ],
+    [
+     1501.3,
+     681.7
+    ],
+    [
+     604.0,
+     677.9
+    ]
+   ],
+   "edge_q": [
+    0.57,
+    0.22,
+    0.48,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 619.5,
+     "y": 266.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1515.0,
+     "y": 270.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.3,
+     "y": 681.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 604.0,
+     "y": 677.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    603.971902333991,
+    266.08538580699957,
+    1515.000409462668,
+    681.7291840206301
+   ]
+  },
+  {
+   "name": "3124",
+   "streets": {
+    "N": "Allston",
+    "S": "Kittredge",
+    "W": "Grove",
+    "E": "Milvia"
+   },
+   "px4_est": [
+    [
+     594,
+     766
+    ],
+    [
+     1490,
+     770
+    ],
+    [
+     1480,
+     1166
+    ],
+    [
+     564,
+     1166
+    ]
+   ],
+   "corners": [
+    {
+     "x": 595.5,
+     "y": 766.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3124"
+    },
+    {
+     "x": 1480.9,
+     "y": 773.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3124"
+    },
+    {
+     "x": 1515.0,
+     "y": 270.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
+    },
+    {
+     "x": 1501.3,
+     "y": 681.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "3125"
+    }
+   ],
+   "with": [
+    "3125",
+    "3121"
+   ],
+   "px4": [
+    [
+     595.5,
+     766.7
+    ],
+    [
+     1480.9,
+     773.2
+    ],
+    [
+     1470.9,
+     1168.8
+    ],
+    [
+     565.5,
+     1166.2
+    ]
+   ],
+   "edge_q": [
+    0.47,
+    0.19,
+    0.61,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 595.5,
+     "y": 766.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1480.9,
+     "y": 773.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.9,
+     "y": 1168.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [10.4 89.8] at Milvia x Kittredge NW"
+    },
+    {
+     "x": 565.5,
+     "y": 1166.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [11.3 91.1] at Grove x Kittredge NE"
+    }
+   ],
+   "zone_px": [
+    565.4900759812788,
+    766.6949737892783,
+    1480.915094864215,
+    1168.7897227169296
+   ]
+  },
+  {
+   "name": "3121",
+   "streets": {
+    "N": "Kittredge",
+    "S": "Bancroft",
+    "W": "Grove",
+    "E": "Milvia"
+   },
+   "px4_est": [
+    [
+     550,
+     1256
+    ],
+    [
+     1470,
+     1256
+    ],
+    [
+     1454,
+     1666
+    ],
+    [
+     524,
+     1666
+    ]
+   ],
+   "corners": [],
+   "px4": [
+    [
+     560.3,
+     1255.8
+    ],
+    [
+     1450.3,
+     1259.6
+    ],
+    [
+     1434.5,
+     1665.8
+    ],
+    [
+     530.5,
+     1663.2
+    ]
+   ],
+   "edge_q": [
+    0.59,
+    0.0,
+    0.49,
+    0.56
+   ],
+   "corners_all": [
+    {
+     "x": 560.3,
+     "y": 1255.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Grove",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 11.2 290.1] at Grove x Kittredge SE"
+    },
+    {
+     "x": 1450.3,
+     "y": 1259.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1434.5,
+     "y": 1665.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Milvia",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 530.5,
+     "y": 1663.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Grove",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [11.1 87.9] at Grove x Bancroft NE"
+    }
+   ],
+   "zone_px": [
+    530.4971568403362,
+    1255.8203529429318,
+    1450.3431341594278,
+    1665.7605956421996
+   ]
+  }
+ ],
+ "pct": 25
+}

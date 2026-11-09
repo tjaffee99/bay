@@ -1,0 +1,514 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "notes": "downtown east of Shattuck: Shattuck - Fulton, Allston - Durant (Masonic Temple, Pacific Telephone exchange) 5175: Fulton corners have no property line today (Fulton / Oxford merge), fitted with 5174.",
+ "blocks": [
+  {
+   "name": "5175",
+   "streets": {
+    "N": "Allston",
+    "S": "Kittredge",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     910,
+     236
+    ],
+    [
+     1490,
+     236
+    ],
+    [
+     1490,
+     656
+    ],
+    [
+     890,
+     656
+    ]
+   ],
+   "corners": [
+    {
+     "x": 912.4,
+     "y": 237.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5175"
+    },
+    {
+     "x": 893.0,
+     "y": 645.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5175"
+    },
+    {
+     "x": 882.7,
+     "y": 737.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5174"
+    },
+    {
+     "x": 1470.9,
+     "y": 739.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5174"
+    },
+    {
+     "x": 1469.6,
+     "y": 1148.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5174"
+    },
+    {
+     "x": 848.6,
+     "y": 1147.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5174"
+    }
+   ],
+   "with": [
+    "5174"
+   ],
+   "px4": [
+    [
+     912.4,
+     237.2
+    ],
+    [
+     1471.0,
+     239.7
+    ],
+    [
+     1471.0,
+     650.5
+    ],
+    [
+     893.0,
+     645.4
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.78,
+    0.62,
+    0.44
+   ],
+   "corners_all": [
+    {
+     "x": 912.4,
+     "y": 237.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1471.0,
+     "y": 239.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.2 8.5] at Fulton x Allston SW"
+    },
+    {
+     "x": 1471.0,
+     "y": 650.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  9.5] at Fulton x Kittredge NW"
+    },
+    {
+     "x": 893.0,
+     "y": 645.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    893.0078421176888,
+    237.19530813714607,
+    1471.0,
+    650.4649122807018
+   ]
+  },
+  {
+   "name": "5174",
+   "streets": {
+    "N": "Kittredge",
+    "S": "Bancroft",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     880,
+     732
+    ],
+    [
+     1490,
+     732
+    ],
+    [
+     1490,
+     1156
+    ],
+    [
+     850,
+     1156
+    ]
+   ],
+   "corners": [
+    {
+     "x": 882.7,
+     "y": 737.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.9,
+     "y": 739.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.6,
+     "y": 1148.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 848.6,
+     "y": 1147.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     882.7,
+     737.2
+    ],
+    [
+     1470.9,
+     739.7
+    ],
+    [
+     1469.6,
+     1148.9
+    ],
+    [
+     848.6,
+     1147.6
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.31,
+    0.62,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 882.7,
+     "y": 737.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.9,
+     "y": 739.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.6,
+     "y": 1148.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 848.6,
+     "y": 1147.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    848.5610834930557,
+    737.1959008239264,
+    1470.8838960979986,
+    1148.8659832321007
+   ]
+  },
+  {
+   "name": "5173",
+   "streets": {
+    "N": "Bancroft",
+    "S": "Durant",
+    "W": "Shattuck",
+    "E": "Fulton"
+   },
+   "px4_est": [
+    [
+     836,
+     1240
+    ],
+    [
+     1490,
+     1240
+    ],
+    [
+     1490,
+     1650
+    ],
+    [
+     800,
+     1650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 841.2,
+     "y": 1236.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.0,
+     "y": 1241.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.0,
+     "y": 1633.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 811.6,
+     "y": 1631.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     841.2,
+     1236.4
+    ],
+    [
+     1501.0,
+     1241.7
+    ],
+    [
+     1501.0,
+     1633.9
+    ],
+    [
+     811.6,
+     1631.2
+    ]
+   ],
+   "edge_q": [
+    0.69,
+    0.14,
+    0.67,
+    0.61
+   ],
+   "corners_all": [
+    {
+     "x": 841.2,
+     "y": 1236.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.0,
+     "y": 1241.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Fulton",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1501.0,
+     "y": 1633.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Fulton",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 811.6,
+     "y": 1631.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    811.5657703481188,
+    1236.4098719597991,
+    1501.0,
+    1633.8577421815407
+   ]
+  }
+ ],
+ "pct": 25
+}
