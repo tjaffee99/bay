@@ -1,0 +1,1140 @@
+{
+ "notes": "sheet 12 (Apr 1908): B St -> D St, creek / Cypress Ct -> 2nd Av; north = up. B St lots (144, 139, 114) and the blocks north of 1st Av fitted with the blocks across the street (with).",
+ "blocks": [
+  {
+   "name": "145",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "railroad avenue",
+    "E": "c street"
+   },
+   "px4_est": [
+    [
+     799.5,
+     1237
+    ],
+    [
+     1123.5,
+     1237
+    ],
+    [
+     1123.5,
+     1788.5
+    ],
+    [
+     799.5,
+     1788.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     800.8,
+     1237.0
+    ],
+    [
+     1123.4,
+     1237.0
+    ],
+    [
+     1122.1,
+     1788.9
+    ],
+    [
+     798.2,
+     1787.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.75,
+    1.0,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    798.1885681183605,
+    1237.0,
+    1123.407894736842,
+    1788.9021732689368
+   ]
+  },
+  {
+   "name": "146",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "c street",
+    "E": "d street"
+   },
+   "px4_est": [
+    [
+     1224.5,
+     1237
+    ],
+    [
+     1547.5,
+     1237
+    ],
+    [
+     1547.5,
+     1789.5
+    ],
+    [
+     1224.5,
+     1789.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1224.9,
+     "y": 1237.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1548.4,
+     "y": 1235.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1547.1,
+     "y": 1789.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1223.6,
+     "y": 1789.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1224.9,
+     1237.8
+    ],
+    [
+     1548.4,
+     1235.2
+    ],
+    [
+     1547.1,
+     1789.5
+    ],
+    [
+     1223.6,
+     1789.5
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    0.83,
+    1.0,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 1224.9,
+     "y": 1237.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1548.4,
+     "y": 1235.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1547.1,
+     "y": 1789.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1223.6,
+     "y": 1789.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1223.592105263158,
+    1235.1767782566824,
+    1548.4122367748114,
+    1789.5
+   ]
+  },
+  {
+   "name": "118",
+   "streets": {
+    "N": "cypress court",
+    "S": "1st avenue",
+    "W": "railroad avenue",
+    "E": "c street"
+   },
+   "px4_est": [
+    [
+     801,
+     70.5
+    ],
+    [
+     1126,
+     70.5
+    ],
+    [
+     1126,
+     1133.5
+    ],
+    [
+     801,
+     1133.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1126.0,
+     "y": 1133.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 801.6,
+     "y": 1133.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "145"
+   ],
+   "px4": [
+    [
+     802.9,
+     70.9
+    ],
+    [
+     1126.0,
+     69.6
+    ],
+    [
+     1126.0,
+     1133.5
+    ],
+    [
+     801.6,
+     1133.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.55,
+    0.94,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1126.0,
+     "y": 1133.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 801.6,
+     "y": 1133.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    801.5921052631579,
+    69.59210526315789,
+    1126.0,
+    1133.5
+   ]
+  },
+  {
+   "name": "119",
+   "streets": {
+    "N": "cypress court",
+    "S": "1st avenue",
+    "W": "c street",
+    "E": "d street"
+   },
+   "px4_est": [
+    [
+     1226.5,
+     125.5
+    ],
+    [
+     1549,
+     125.5
+    ],
+    [
+     1549,
+     1133.5
+    ],
+    [
+     1226.5,
+     1133.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1549.8,
+     "y": 1133.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "119"
+    },
+    {
+     "x": 1210.6,
+     "y": 1132.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "119"
+    },
+    {
+     "x": 1224.9,
+     "y": 1237.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 1548.4,
+     "y": 1235.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 1547.1,
+     "y": 1789.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    },
+    {
+     "x": 1223.6,
+     "y": 1789.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "146"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "146"
+   ],
+   "px4": [
+    [
+     1211.9,
+     124.1
+    ],
+    [
+     1547.2,
+     126.8
+    ],
+    [
+     1549.8,
+     1133.9
+    ],
+    [
+     1210.6,
+     1132.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.67,
+    1.0,
+    0.54
+   ],
+   "corners_all": [
+    {
+     "x": 1549.8,
+     "y": 1133.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1210.6,
+     "y": 1132.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1210.593375095613,
+    124.0651551832459,
+    1549.8168630626344,
+    1133.9112275114753
+   ]
+  },
+  {
+   "name": "144",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     321,
+     1230
+    ],
+    [
+     690,
+     1230
+    ],
+    [
+     690,
+     1681
+    ],
+    [
+     321,
+     1681
+    ]
+   ],
+   "corners": [
+    {
+     "x": 322.0,
+     "y": 1230.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 322.0,
+     "y": 1681.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "145"
+   ],
+   "px4": [
+    [
+     322.0,
+     1230.0
+    ],
+    [
+     705.0,
+     1230.0
+    ],
+    [
+     705.0,
+     1677.1
+    ],
+    [
+     322.0,
+     1681.2
+    ]
+   ],
+   "edge_q": [
+    0.23,
+    1.0,
+    0.66,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 322.0,
+     "y": 1230.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 322.0,
+     "y": 1681.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    322.0,
+    1230.0,
+    705.0,
+    1681.2129867351305
+   ]
+  },
+  {
+   "name": "139",
+   "streets": {
+    "N": "cypress court",
+    "S": "1st avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     322,
+     795
+    ],
+    [
+     690,
+     795
+    ],
+    [
+     690,
+     1127
+    ],
+    [
+     322,
+     1127
+    ]
+   ],
+   "corners": [
+    {
+     "x": 322.0,
+     "y": 1230.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 322.0,
+     "y": 1681.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "144",
+    "145"
+   ],
+   "px4": [
+    [
+     322.0,
+     802.0
+    ],
+    [
+     704.0,
+     802.0
+    ],
+    [
+     704.0,
+     1127.9
+    ],
+    [
+     322.0,
+     1125.2
+    ]
+   ],
+   "edge_q": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 322.0,
+     "y": 1125.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 2.4 10. ] at b street x 1st avenue NE"
+    }
+   ],
+   "zone_px": [
+    322.0,
+    802.0,
+    704.0,
+    1127.9159038901603
+   ]
+  },
+  {
+   "name": "114",
+   "streets": {
+    "N": "cypress court",
+    "S": "1st avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     335,
+     20
+    ],
+    [
+     690,
+     20
+    ],
+    [
+     690,
+     790
+    ],
+    [
+     335,
+     790
+    ]
+   ],
+   "corners": [
+    {
+     "x": 322.0,
+     "y": 1230.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 322.0,
+     "y": 1681.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "144"
+    },
+    {
+     "x": 800.8,
+     "y": 1237.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1123.4,
+     "y": 1237.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 1122.1,
+     "y": 1788.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    },
+    {
+     "x": 798.2,
+     "y": 1787.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "145"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "144",
+    "145"
+   ],
+   "px4": [
+    [
+     335.0,
+     20.0
+    ],
+    [
+     690.0,
+     20.0
+    ],
+    [
+     690.0,
+     790.0
+    ],
+    [
+     335.0,
+     790.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    335.0,
+    20.0,
+    690.0,
+    790.0
+   ]
+  }
+ ],
+ "pct": 25
+}

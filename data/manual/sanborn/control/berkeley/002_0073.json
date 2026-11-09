@@ -1,0 +1,458 @@
+{
+ "refine_R": 24,
+ "notes": "downtown east of Shattuck (today Kala Bagai Way north of Center), University - Allston, to Oxford",
+ "weak": 0.12,
+ "blocks": [
+  {
+   "name": "5180",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "Kala Bagai Way",
+    "E": "Oxford"
+   },
+   "px4_est": [
+    [
+     690,
+     268
+    ],
+    [
+     1324,
+     238
+    ],
+    [
+     1324,
+     690
+    ],
+    [
+     690,
+     704
+    ]
+   ],
+   "corners": [
+    {
+     "x": 695.0,
+     "y": 274.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kala Bagai Way",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.4,
+     "y": 244.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1317.1,
+     "y": 680.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 695.0,
+     "y": 693.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kala Bagai Way",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     695.0,
+     274.3
+    ],
+    [
+     1318.4,
+     244.8
+    ],
+    [
+     1317.1,
+     680.1
+    ],
+    [
+     695.0,
+     693.9
+    ]
+   ],
+   "edge_q": [
+    0.27,
+    0.75,
+    0.18,
+    0.69
+   ],
+   "corners_all": [
+    {
+     "x": 695.0,
+     "y": 274.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kala Bagai Way",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.4,
+     "y": 244.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1317.1,
+     "y": 680.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 695.0,
+     "y": 693.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kala Bagai Way",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    695.0,
+    244.77281643669272,
+    1318.3881788063673,
+    693.8871521247019
+   ]
+  },
+  {
+   "name": "5177",
+   "streets": {
+    "N": "Addison",
+    "S": "Center",
+    "W": "Kala Bagai Way",
+    "E": "Oxford"
+   },
+   "px4_est": [
+    [
+     670,
+     780
+    ],
+    [
+     1324,
+     744
+    ],
+    [
+     1324,
+     1144
+    ],
+    [
+     636,
+     1194
+    ]
+   ],
+   "corners": [
+    {
+     "x": 676.7,
+     "y": 790.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kala Bagai Way",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.0,
+     "y": 755.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.0,
+     "y": 1126.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 645.1,
+     "y": 1175.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kala Bagai Way",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     676.7,
+     790.7
+    ],
+    [
+     1318.0,
+     755.3
+    ],
+    [
+     1318.0,
+     1126.4
+    ],
+    [
+     645.1,
+     1175.3
+    ]
+   ],
+   "edge_q": [
+    0.37,
+    0.75,
+    0.73,
+    0.39
+   ],
+   "corners_all": [
+    {
+     "x": 676.7,
+     "y": 790.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kala Bagai Way",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.0,
+     "y": 755.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1318.0,
+     "y": 1126.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 645.1,
+     "y": 1175.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kala Bagai Way",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    645.0614921870849,
+    755.3469278881768,
+    1318.0,
+    1175.2939897820722
+   ]
+  },
+  {
+   "name": "5176",
+   "streets": {
+    "N": "Center",
+    "S": "Allston",
+    "W": "Shattuck",
+    "E": "Oxford"
+   },
+   "px4_est": [
+    [
+     600,
+     1290
+    ],
+    [
+     1324,
+     1244
+    ],
+    [
+     1324,
+     1684
+    ],
+    [
+     540,
+     1704
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1318.9,
+     "y": 1249.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1317.6,
+     "y": 1677.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 539.6,
+     "y": 1697.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW"
+   ],
+   "px4": [
+    [
+     603.7,
+     1299.0
+    ],
+    [
+     1318.9,
+     1249.6
+    ],
+    [
+     1317.6,
+     1677.2
+    ],
+    [
+     539.6,
+     1697.0
+    ]
+   ],
+   "edge_q": [
+    0.61,
+    0.77,
+    0.2,
+    0.53
+   ],
+   "corners_all": [
+    {
+     "x": 1318.9,
+     "y": 1249.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Oxford",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1317.6,
+     "y": 1677.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Oxford",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 539.6,
+     "y": 1697.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    539.5666256245835,
+    1249.6413074008728,
+    1318.8910247984422,
+    1697.0087781424113
+   ]
+  }
+ ],
+ "pct": 25
+}

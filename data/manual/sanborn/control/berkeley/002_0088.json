@@ -1,0 +1,435 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Dana - Telegraph, Allston - Durant. 5219 / 5220 (Unitarian Church, Unity Hall; Sproul Hall and Sproul Plaza today) have only their Bancroft corners left: fitted with 5253.",
+ "blocks": [
+  {
+   "name": "5253",
+   "streets": {
+    "N": "Bancroft",
+    "S": "Durant",
+    "W": "Dana",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     190,
+     1366
+    ],
+    [
+     1096,
+     1356
+    ],
+    [
+     1096,
+     1756
+    ],
+    [
+     190,
+     1756
+    ]
+   ],
+   "corners": [
+    {
+     "x": 184.3,
+     "y": 1362.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1093.8,
+     "y": 1353.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1099.0,
+     "y": 1745.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 189.6,
+     "y": 1753.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     184.3,
+     1362.1
+    ],
+    [
+     1093.8,
+     1353.4
+    ],
+    [
+     1099.0,
+     1745.0
+    ],
+    [
+     189.6,
+     1753.0
+    ]
+   ],
+   "edge_q": [
+    0.67,
+    0.57,
+    0.44,
+    0.56
+   ],
+   "corners_all": [
+    {
+     "x": 184.3,
+     "y": 1362.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1093.8,
+     "y": 1353.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1099.0,
+     "y": 1745.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 189.6,
+     "y": 1753.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    184.31641576128592,
+    1353.4285342294127,
+    1098.9871921272625,
+    1752.950937338766
+   ]
+  },
+  {
+   "name": "5219",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "Dana",
+    "E": "Union"
+   },
+   "px4_est": [
+    [
+     186,
+     370
+    ],
+    [
+     670,
+     550
+    ],
+    [
+     670,
+     1260
+    ],
+    [
+     186,
+     1264
+    ]
+   ],
+   "corners": [
+    {
+     "x": 184.3,
+     "y": 1362.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 1093.8,
+     "y": 1353.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 1099.0,
+     "y": 1745.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 189.6,
+     "y": 1753.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5253",
+    "5220"
+   ],
+   "px4": [
+    [
+     177.1,
+     375.8
+    ],
+    [
+     667.9,
+     558.3
+    ],
+    [
+     673.2,
+     1266.0
+    ],
+    [
+     185.0,
+     1270.0
+    ]
+   ],
+   "edge_q": [
+    0.06,
+    0.43,
+    0.69,
+    0.51
+   ],
+   "corners_all": [
+    {
+     "x": 185.0,
+     "y": 1270.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [805.8   8.4] at Dana x Bancroft NE"
+    }
+   ],
+   "zone_px": [
+    177.1034985131698,
+    375.7601716313469,
+    673.1758632920421,
+    1270.008465826223
+   ]
+  },
+  {
+   "name": "5220",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "Union",
+    "E": "Telegraph"
+   },
+   "px4_est": [
+    [
+     760,
+     540
+    ],
+    [
+     1096,
+     530
+    ],
+    [
+     1096,
+     1256
+    ],
+    [
+     760,
+     1260
+    ]
+   ],
+   "corners": [
+    {
+     "x": 184.3,
+     "y": 1362.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Dana",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 1093.8,
+     "y": 1353.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 1099.0,
+     "y": 1745.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    },
+    {
+     "x": 189.6,
+     "y": 1753.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Dana",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5253"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "5253",
+    "5219"
+   ],
+   "px4": [
+    [
+     758.3,
+     541.1
+    ],
+    [
+     1087.1,
+     531.3
+    ],
+    [
+     1095.0,
+     1262.9
+    ],
+    [
+     762.3,
+     1265.6
+    ]
+   ],
+   "edge_q": [
+    0.08,
+    0.42,
+    0.71,
+    0.51
+   ],
+   "corners_all": [
+    {
+     "x": 1095.0,
+     "y": 1262.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [578.1  14.6] at Telegraph x Bancroft NW"
+    }
+   ],
+   "zone_px": [
+    758.2820809831668,
+    531.266323681686,
+    1095.022573624308,
+    1265.5742325061883
+   ]
+  }
+ ],
+ "pct": 25
+}

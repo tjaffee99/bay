@@ -1,0 +1,299 @@
+{
+ "refine_R": 22,
+ "weak": 0.12,
+ "notes": "Southside: Telegraph - Bowditch, Allston - Durant. 5221 (Student Union site today) has only its Telegraph x Bancroft corner left: fitted with 5328. 5222 (University tennis courts) not traced.",
+ "blocks": [
+  {
+   "name": "5328",
+   "streets": {
+    "N": "Bancroft",
+    "S": "Durant",
+    "W": "Telegraph",
+    "E": "Bowditch"
+   },
+   "px4_est": [
+    [
+     376,
+     1360
+    ],
+    [
+     1280,
+     1360
+    ],
+    [
+     1280,
+     1760
+    ],
+    [
+     376,
+     1760
+    ]
+   ],
+   "corners": [
+    {
+     "x": 378.7,
+     "y": 1383.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1283.0,
+     "y": 1375.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1283.0,
+     "y": 1769.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 380.0,
+     "y": 1775.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     378.7,
+     1383.4
+    ],
+    [
+     1283.0,
+     1375.5
+    ],
+    [
+     1283.0,
+     1769.9
+    ],
+    [
+     380.0,
+     1775.1
+    ]
+   ],
+   "edge_q": [
+    0.48,
+    0.75,
+    0.5,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 378.7,
+     "y": 1383.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1283.0,
+     "y": 1375.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1283.0,
+     "y": 1769.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 380.0,
+     "y": 1775.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    378.6691580866905,
+    1375.52643223102,
+    1283.0,
+    1775.1085375298471
+   ]
+  },
+  {
+   "name": "5221",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "Telegraph",
+    "E": "Barrow"
+   },
+   "px4_est": [
+    [
+     376,
+     524
+    ],
+    [
+     796,
+     524
+    ],
+    [
+     796,
+     1290
+    ],
+    [
+     376,
+     1296
+    ]
+   ],
+   "corners": [
+    {
+     "x": 378.7,
+     "y": 1383.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5328"
+    },
+    {
+     "x": 1283.0,
+     "y": 1375.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Bowditch",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5328"
+    },
+    {
+     "x": 1283.0,
+     "y": 1769.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Bowditch",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5328"
+    },
+    {
+     "x": 380.0,
+     "y": 1775.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Durant"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "5328"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "5328"
+   ],
+   "px4": [
+    [
+     376.2,
+     521.7
+    ],
+    [
+     793.2,
+     517.8
+    ],
+    [
+     797.2,
+     1288.6
+    ],
+    [
+     378.8,
+     1289.4
+    ]
+   ],
+   "edge_q": [
+    0.21,
+    0.27,
+    0.43,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 378.8,
+     "y": 1289.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Telegraph",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [603.    8.4] at Telegraph x Bancroft NE"
+    }
+   ],
+   "zone_px": [
+    376.1764454114023,
+    517.8022144997942,
+    797.216621969827,
+    1289.3640283716545
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,467 @@
+{
+ "notes": "downtown: Milvia - Shattuck, Berkeley Way - Center. 3159: east side drawn faint, corners read by eye (no_refine).",
+ "blocks": [
+  {
+   "name": "3159",
+   "streets": {
+    "N": "Berkeley Way",
+    "S": "University",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     357,
+     275
+    ],
+    [
+     1208,
+     268
+    ],
+    [
+     1222,
+     611
+    ],
+    [
+     355,
+     615
+    ]
+   ],
+   "corners": [
+    {
+     "x": 357.0,
+     "y": 275.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Berkeley Way"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1208.0,
+     "y": 268.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Berkeley Way"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1222.0,
+     "y": 611.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 355.0,
+     "y": 615.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "no_refine": 1,
+   "px4": [
+    [
+     357.0,
+     275.0
+    ],
+    [
+     1208.0,
+     268.0
+    ],
+    [
+     1222.0,
+     611.0
+    ],
+    [
+     355.0,
+     615.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 357.0,
+     "y": 275.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Berkeley Way"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1208.0,
+     "y": 268.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Berkeley Way"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1222.0,
+     "y": 611.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 355.0,
+     "y": 615.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    355.0,
+    268.0,
+    1222.0,
+    615.0
+   ]
+  },
+  {
+   "name": "3158",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     282,
+     765
+    ],
+    [
+     1203,
+     763
+    ],
+    [
+     1180,
+     1185
+    ],
+    [
+     255,
+     1183
+    ]
+   ],
+   "corners": [
+    {
+     "x": 282.4,
+     "y": 766.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1198.6,
+     "y": 761.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1169.4,
+     "y": 1178.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 255.6,
+     "y": 1182.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     282.4,
+     766.3
+    ],
+    [
+     1198.6,
+     761.7
+    ],
+    [
+     1169.4,
+     1178.9
+    ],
+    [
+     255.6,
+     1182.1
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.54,
+    0.55,
+    0.73
+   ],
+   "corners_all": [
+    {
+     "x": 282.4,
+     "y": 766.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1198.6,
+     "y": 761.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1169.4,
+     "y": 1178.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 255.6,
+     "y": 1182.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    255.55726259218022,
+    761.7062268197615,
+    1198.6197909244956,
+    1182.1296217560941
+   ]
+  },
+  {
+   "name": "3127",
+   "streets": {
+    "N": "Addison",
+    "S": "Center",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     241,
+     1270
+    ],
+    [
+     1160,
+     1268
+    ],
+    [
+     1140,
+     1685
+    ],
+    [
+     222,
+     1683
+    ]
+   ],
+   "corners": [
+    {
+     "x": 241.7,
+     "y": 1273.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1153.0,
+     "y": 1267.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 221.8,
+     "y": 1678.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     241.7,
+     1273.7
+    ],
+    [
+     1153.0,
+     1267.8
+    ],
+    [
+     1133.5,
+     1674.9
+    ],
+    [
+     221.8,
+     1678.1
+    ]
+   ],
+   "edge_q": [
+    0.71,
+    0.42,
+    0.53,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 241.7,
+     "y": 1273.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1153.0,
+     "y": 1267.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1133.5,
+     "y": 1674.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [24.6 10.9] at Shattuck x Center NW"
+    },
+    {
+     "x": 221.8,
+     "y": 1678.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    221.83108216952314,
+    1267.8216111812976,
+    1153.0005093302887,
+    1678.1322286351735
+   ]
+  }
+ ],
+ "pct": 25
+}

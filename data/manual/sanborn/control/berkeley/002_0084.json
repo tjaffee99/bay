@@ -1,0 +1,479 @@
+{
+ "refine_R": 24,
+ "notes": "downtown: Milvia - Shattuck, Center - Bancroft",
+ "weak": 0.12,
+ "blocks": [
+  {
+   "name": "3126",
+   "streets": {
+    "N": "Center",
+    "S": "Allston",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     280,
+     264
+    ],
+    [
+     1210,
+     256
+    ],
+    [
+     1210,
+     686
+    ],
+    [
+     270,
+     690
+    ]
+   ],
+   "corners": [
+    {
+     "x": 281.1,
+     "y": 280.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1207.5,
+     "y": 272.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1207.5,
+     "y": 687.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 271.5,
+     "y": 691.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     281.1,
+     280.5
+    ],
+    [
+     1207.5,
+     272.5
+    ],
+    [
+     1207.5,
+     687.0
+    ],
+    [
+     271.5,
+     691.0
+    ]
+   ],
+   "edge_q": [
+    0.3,
+    0.45,
+    0.3,
+    0.17
+   ],
+   "corners_all": [
+    {
+     "x": 281.1,
+     "y": 280.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1207.5,
+     "y": 272.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Center"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1207.5,
+     "y": 687.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 271.5,
+     "y": 691.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    271.4770863762734,
+    272.52211584025065,
+    1207.5,
+    690.993723579888
+   ]
+  },
+  {
+   "name": "3123",
+   "streets": {
+    "N": "Allston",
+    "S": "Kittredge",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     250,
+     770
+    ],
+    [
+     1180,
+     766
+    ],
+    [
+     1176,
+     1194
+    ],
+    [
+     230,
+     1190
+    ]
+   ],
+   "corners": [
+    {
+     "x": 248.0,
+     "y": 780.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1175.9,
+     "y": 776.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1172.2,
+     "y": 1174.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 229.6,
+     "y": 1166.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     248.0,
+     780.5
+    ],
+    [
+     1175.9,
+     776.5
+    ],
+    [
+     1172.2,
+     1174.2
+    ],
+    [
+     229.6,
+     1166.3
+    ]
+   ],
+   "edge_q": [
+    0.26,
+    0.15,
+    0.15,
+    0.27
+   ],
+   "corners_all": [
+    {
+     "x": 248.0,
+     "y": 780.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1175.9,
+     "y": 776.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1172.2,
+     "y": 1174.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 229.6,
+     "y": 1166.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    229.62817831062898,
+    776.5177249536325,
+    1175.901528821175,
+    1174.1911077877044
+   ]
+  },
+  {
+   "name": "3122",
+   "streets": {
+    "N": "Kittredge",
+    "S": "Bancroft",
+    "W": "Milvia",
+    "E": "Shattuck"
+   },
+   "px4_est": [
+    [
+     230,
+     1250
+    ],
+    [
+     1150,
+     1256
+    ],
+    [
+     1150,
+     1676
+    ],
+    [
+     210,
+     1676
+    ]
+   ],
+   "corners": [
+    {
+     "x": 216.7,
+     "y": 1257.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1126.5,
+     "y": 1264.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1126.5,
+     "y": 1671.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 197.5,
+     "y": 1665.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     216.7,
+     1257.0
+    ],
+    [
+     1126.5,
+     1264.2
+    ],
+    [
+     1126.5,
+     1671.9
+    ],
+    [
+     197.5,
+     1665.4
+    ]
+   ],
+   "edge_q": [
+    0.47,
+    0.2,
+    0.3,
+    0.23
+   ],
+   "corners_all": [
+    {
+     "x": 216.7,
+     "y": 1257.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Milvia",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1126.5,
+     "y": 1264.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Shattuck",
+      "Kittredge"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1126.5,
+     "y": 1671.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Shattuck",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 197.5,
+     "y": 1665.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Milvia",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    197.48460427661053,
+    1256.9862243310713,
+    1126.5,
+    1671.875
+   ]
+  }
+ ],
+ "pct": 25
+}
