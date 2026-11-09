@@ -1112,9 +1112,9 @@ def report():
         rd = "bands + squares" if sh["style"] == "early" else f"{sh['tint']} tint"
         L.append(f"| `{k}` | {quad} | 1:{sh['scale']:,} | {sh['edition']} | {sh['year']} ({sh['note']}) | {rd} | {a} | "
                  f"[{url.split('_')[-4]}]({url}) |")
-    T = ["| town | year | sheets | built-up km² | area read km² | confidence | pre-map buildings standing today inside (n) "
-         "| prev. snapshot kept | Sanborn built blocks inside / empty blocks inside |",
-         "|---|---|---|---|---|---|---|---|---|"]
+    T = ["| town | year | sheets | built-up km² | partly built km² | area read km² | confidence | pre-map buildings standing "
+         "today inside built-up (+ partly built) (n) | prev. snapshot kept | Sanborn built blocks inside / empty blocks inside |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
     for town in TOWNS:
         cp = INT / f"check_{town}.json"
         if not cp.exists():
@@ -1129,8 +1129,9 @@ def report():
             sb = "; ".join(f"{x['area'].split('_', 1)[-1]} {x['sanborn_year']}: {x['built_in_extent_pct']:.0f}% of "
                            f"{x['built_blocks']} / {x['empty_in_extent_pct']:.0f}% of {x['empty_blocks']}"
                            for x in r.get("sanborn", []) if x["blocks"])
-            T.append(f"| {town} | {y} | {', '.join(TOWNS[town]['snaps'][y])} | {r['area_km2']} | {r['coverage_km2']} | "
-                     f"{pr['confidence']} | {r['survivors_pre_inside_pct']}% ({r['survivors_pre']}) | "
+            T.append(f"| {town} | {y} | {', '.join(TOWNS[town]['snaps'][y])} | {r['area_km2']} | {r.get('partial_km2', '')} | "
+                     f"{r['coverage_km2']} | {pr['confidence']} | {r['survivors_pre_inside_pct']}% "
+                     f"({r.get('survivors_pre_inside_built_or_partial_pct', '')}%) ({r['survivors_pre']}) | "
                      f"{str(r.get('prev_kept_pct', '')) + '%' if 'prev_kept_pct' in r else ''} | {sb} |")
     P = ["| town | year | probe | share inside |", "|---|---|---|---|"]
     for town in TOWNS:
