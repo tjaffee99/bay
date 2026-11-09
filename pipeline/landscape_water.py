@@ -68,7 +68,6 @@ RESERVOIRS = [
     ("Clifton Court Forebay", 1969, "high", W + "Clifton_Court_Forebay", "State Water Project forebay 1969, on former Delta farmland."),
     ("Bethany Reservoir", 1967, "medium", W + "Bethany_Reservoir", "California Aqueduct reservoir, late 1960s."),
     ("Contra Loma Reservoir", 1967, "medium", W + "Contra_Loma_Regional_Park", "Bureau of Reclamation dam 1967."),
-    ("Lake Elizabeth", 1969, "low", W + "Lake_Elizabeth_(Fremont)", "Fremont Central Park lake, created c.1969 (date LOW)."),
     # Santa Clara (Santa Clara Valley Water Conservation District / San Jose Water)
     ("Searsville Lake", 1892, "high", W + "Searsville_Dam", "Searsville Dam 1890-92 (Spring Valley Water Co.), now Stanford's Jasper Ridge."),
     ("Felt Lake", 1930, "medium", W + "Felt_Lake", "Stanford off-stream reservoir, c.1930."),
@@ -286,6 +285,36 @@ def salt_rows(b18, b98):
     return rows
 
 
+# South Bay salt ponds / diked land: dated zones from the USGS topo editions 1896-1961 and the
+# salt-industry histories (data/manual/landscape/south_bay_salt_phases.geojson,
+# README_south_bay_baylands.md) replace the old complex-wide guesses
+SOUTH_BAY_OLD = {"salt_mt_eden_early", "salt_eden_landing_inner", "salt_eden_landing_outer", "salt_newark_north",
+                 "salt_newark_south", "salt_alviso_east", "salt_alviso_west", "salt_ravenswood", "diked_south_bay_ag"}
+SALT_AREAS = [a for a in SALT_AREAS if a["area_id"] not in SOUTH_BAY_OLD]
+
+
+def south_bay_rows(b18, b98):
+    ph = gpd.read_file(OUT / "south_bay_salt_phases.geojson")
+    U = lambda cls, b: shapely.union_all(list(b[b["class"].isin(cls)].geometry))  # noqa: E731
+    ponds = U(["salt_pond", "storage_pond", "diked_wetland", "agricultural_bayland"], b98)
+    storage = U(["storage_pond"], b98)
+    marsh18 = U(["tidal_marsh", "tidal_marsh_pan", "salt_pond"], b18)
+    bay98 = U(["deep_bay", "shallow_bay", "tidal_flat", "lagoon"], b98)
+    sew = {"sb_sj_wpcp_ponds", "sb_sunnyvale_wpcp_ponds"}
+    sew_all = shapely.union_all([shapely.intersection(g, storage) for g, p in zip(ph.geometry, ph.phase_id) if p in sew])
+    rows = []
+    for f in ph.itertuples():
+        base = dict(name=f.name, cover=f.cover, year_start=int(f.year_start), confidence=f.confidence,
+                    note=f.note, source_url=f.source_url)
+        today = (shapely.intersection(f.geometry, storage) if f.phase_id in sew
+                 else shapely.difference(shapely.intersection(f.geometry, ponds), sew_all))
+        rows.append(dict(base, area_id=f.phase_id, year_end=int(f.year_end), geometry=today))
+        if pd.notna(getattr(f, "abandoned_end", np.nan)):
+            gone = shapely.difference(shapely.difference(shapely.intersection(f.geometry, marsh18), ponds), bay98)
+            rows.append(dict(base, area_id=f.phase_id + "_abandoned", year_end=int(f.abandoned_end), geometry=gone))
+    return rows
+
+
 # --------------------------------------------------------------------------- build
 def water():
     ow = overture_water()
@@ -299,6 +328,7 @@ def water():
             geom = made_water(ow, b18, a["ring"])
         rows.append(dict(a, geometry=geom))
     rows += salt_rows(b18, b98)
+    rows += south_bay_rows(b18, b98)
     out = []
     for r in rows:
         parts = explode_polys(r["geometry"])

@@ -467,7 +467,13 @@ def histories(name, g, d):
     diked = np.isin(b18, [3, 4, 6]) & np.isin(b98, [9, 10])
     zones_fill = np.full((rows, cols), np.nan, np.float32)
     pier_y = np.full((rows, cols), np.nan, np.float32)
-    h = (np.add.outer(np.arange(rows) * 7919, np.arange(cols) * 104729) % 997) / 997.0
+    # per-cell spread of dated changes: field-sized patches of rank noise (the old hash
+    # ((r*7919 + c*104729) mod 997) / 997 was a smooth ramp that swept every spread year
+    # across the map in ~1 km diagonal stripes)
+    from scipy.special import ndtr
+    _rn = ndimage.gaussian_filter(np.random.default_rng(1769).standard_normal((rows, cols)).astype(np.float32), 4.0)
+    h = ndtr(_rn / (_rn.std() + 1e-9)).astype(np.float32)
+    del _rn
     restored = []
     excavated = []
     was_wet0 = np.isin(N, list(WET))
@@ -517,6 +523,7 @@ def histories(name, g, d):
     # researched salt-pond / diking years by complex (data/manual/landscape/water_history.csv)
     wh_rows = polygon_table(MANUAL / "landscape" / "water_history.csv", g)
     water_rows = []
+    salt_end, old_works = [], []
     for r, poly in wh_rows:
         ys = pd.to_numeric(r.year_start, errors="coerce")
         if not np.isfinite(ys):
@@ -526,10 +533,24 @@ def histories(name, g, d):
         if cov in ("salt_pond", "diked"):
             sel = m & (salt | diked)
             dike_year[sel] = ys + 4.0 * h[sel]
+            ye = pd.to_numeric(r.get("year_end"), errors="coerce")
+            ended = bool(np.isfinite(ye) and ye < 9999)
+            if ended and sel.any():
+                salt_end.append((sel, float(ye)))      # works closed: levees round dry / overgrown beds
+            # 19th-century works that are marsh / fill today (the Hayward shore, Mt Eden)
+            gone = m & ~(salt | diked) & np.isin(b18, [3, 4, 6]) & ~water_now
+            if cov == "salt_pond" and gone.any():
+                old_works.append((gone, float(ys), float(ye) if ended else np.nan))
         elif cov in ("lake", "shallow_water"):
             water_rows.append((m, cov, float(ys)))
     event(salt, SALTPOND, dike_year)
     event(diked, DIKED, dike_year)
+    for sel, ye in salt_end:
+        event(sel, DIKED, ye + 2.0 * h)
+    for gone, ys, ye in old_works:
+        event(gone, SALTPOND, ys + 4.0 * h)
+        if np.isfinite(ye):
+            event(gone, MARSH, ye + 2.0 * h)   # later fill / city events win by date
 
     # bridge decks / causeways read as built-up over open bay (DEM at water level):
     # still water underneath — the bridges themselves are landmarks / road paths
@@ -584,6 +605,9 @@ def histories(name, g, d):
     # Merritt (dammed 1869), the Oakland estuary / tidal canal (1874-1902), dredged
     # harbours — water from c.1870-90 unless a researched row says when
     became = np.isin(N, [MARSH, FLAT]) & water_now & ~salt & ~diked
+    # flats / marsh that SFEI c.1998 still maps as flats / marsh stay so (WorldCover's image
+    # tide made them flicker between water and mud in the 1870s-80s)
+    became &= ~np.isin(b98, [3, 4])
     broad = ndimage.binary_opening(became, iterations=2)
     N[became & ~broad] = SHALLOW
     researched_water = np.zeros((rows, cols), bool)
