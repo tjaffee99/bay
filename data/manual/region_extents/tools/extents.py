@@ -667,17 +667,20 @@ def street_near(town, grid):
             c = np.asarray(line.coords)
             px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
             cv2.polylines(rl, [np.round(px).astype(np.int32)], False, 1, th)
-    # freeways: the heavy highway symbol of the 1930s-50s sheets (Bayshore, Eastshore) is not frontage
+    near &= rl == 0
+    del rl
+    rm = np.zeros((grid.H, grid.W), np.uint8)
+    # freeways: the heavy highway symbol of the 1930s-50s sheets (Bayshore, Eastshore) is not frontage;
+    # on the earlier sheets the ground under today's freeways was ordinary blocks, so they keep it
     thm = max(1, int(round(2 * MOTORWAY_M / grid.res)))
     for cls, g in modern_roads((w - .01, s - .01, e + .01, n + .01), {"motorway"}):
         g = to_utm(g)
         for line in getattr(g, "geoms", [g]):
             c = np.asarray(line.coords)
             px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
-            cv2.polylines(rl, [np.round(px).astype(np.int32)], False, 1, thm)
-    near &= rl == 0
-    _NEAR[town] = near
-    return near
+            cv2.polylines(rm, [np.round(px).astype(np.int32)], False, 1, thm)
+    _NEAR[town] = (near, near & (rm == 0))
+    return _NEAR[town]
 
 
 RAIL_M = 12.0
@@ -719,7 +722,7 @@ def block_stats(town, key, preview=False):
     r = max(1, int(round(NEAT_MM * S[key]["scale"] / 1000.0 / grid.res)))   # off the neat line and its ticks
     valid = cv2.erode(((code & M_VALID) > 0).astype(np.uint8),
                       cv2.getStructuringElement(cv2.MORPH_RECT, (2 * r + 1,) * 2)) > 0
-    near = street_near(town, grid)       # building ink counts only near a street (not lettering in the hills)
+    near = street_near(town, grid)[1 if S[key]["year"] >= 1925 else 0]   # ink near a street of today only
     tint = (code & M_TINT) > 0
     if S[key]["style"] == "tint":        # tint narrower than ~0.9 mm is road casing / fill, not a tinted block
         rt = max(1, int(round(TINT_OPEN_MM / 2 * S[key]["scale"] / 1000.0 / grid.res)))
@@ -799,9 +802,13 @@ def extent_polys(bl, tot, clip, col="built", exclude=None):
         return shapely.MultiPolygon()
     u = shapely.union_all(sel).buffer(12, join_style="mitre").buffer(-12, join_style="mitre")
     if exclude is not None:
-        u = u.difference(exclude)
+        u = shapely.union_all([q for q in shapely.get_parts(u.difference(exclude)) if q.geom_type == "Polygon"]
+                              or [shapely.Polygon()])
     parts = []
     for p in shapely.get_parts(u):
+        if p.geom_type != "Polygon":
+            continue
+
         def small(h):
             hp = shapely.Polygon(h)
             return hp.area < HOLE_HA * 1e4 or hp.area / max(hp.length, 1) < 10     # specks, street strips
