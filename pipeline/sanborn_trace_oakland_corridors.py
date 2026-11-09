@@ -8,10 +8,11 @@ Areas (data/manual/sanborn/README_oakland.md, section "Freeway corridors"):
   oakland_i580    I-580 MacArthur freeway (c.1963-66) east of the MacArthur Maze
   oakland_i980n   I-980 north of 11th St (Brush St -> Castro St, 11th -> 27th St) beyond oakland_west / oakland_downtown
 
-Volumes: Oakland 1911-12 vol. 1 (sanborn00727_005, West Oakland + downtown up to 38th St / Moss Ave) and vol. 3
-(sanborn00727_007, North Oakland and Emeryville: 36th St -> the Berkeley line), and their corrected editions: vol. 1
-1912 - Nov 1951 (_015) and vol. 3 1911 - Oct 1950 (_017), the same engraved plates with paste-over corrections,
-registered onto the 1911-12 scans by SIFT as in README_oakland.md.
+Volumes: Oakland 1911-12 vol. 1 (sanborn00727_005, West Oakland + downtown up to 38th St / Moss Ave), 1911 vol. 2
+(_006, east of Broadway) and 1911-12 vol. 3 (_007, North Oakland and Emeryville: 36th St -> the Berkeley line), and
+their corrected editions: vol. 1 1912 - Nov 1951 (_015), vol. 2 1911 - Nov 1950 (_016) and vol. 3 1911 - Oct 1950
+(_017), the same engraved plates with paste-over corrections, registered onto the 1911-12 scans by SIFT as in
+README_oakland.md (vol. 3 sheet 293 was re-drawn in 1931 and has its own control).
 
 This module only configures pipeline/sanborn_trace_eastbay.py (block specs, `refine`, property corners from today's
 parcels, offset corners, similarity fits, SIFT registration, colour segmentation with partition walls, assembly,

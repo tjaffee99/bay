@@ -245,3 +245,192 @@ python pipeline/sanborn_trace_eastbay.py assemble   # outputs only
 python pipeline/sanborn_trace_eastbay.py register 015_0095 005_0095   # redo one SIFT registration
 ```
 The control files hold the refined pixels (`norefine`), so a rerun reproduces the outputs.
+
+# Freeway corridors: SR-24, I-580, I-980 north of 11th St
+
+The rights-of-way of the 1960s freeways through North Oakland, traced from the same LOC Sanborn editions so that the
+cut blocks look like the neighbourhood they were (they replace the procedural corridor houses of
+`region_predecessors.corridor_fill` inside their coverage). Whole blocks the freeway cut are traced, not only the part
+under the road, so they join the surviving fabric; footprints that are today's buildings are left to the modern data
+by `apply_sanborn` (`modern_overlap`). Tool: `pipeline/sanborn_trace_oakland_corridors.py` (configures
+`sanborn_trace_eastbay.py` through `sanborn_trace_eastbay_cities.py`, like `sanborn_trace_oakland_central.py`);
+control: `control/oakland_corridors/` (`areas.json`, `aliases.json`, one file per sheet; the 1950/51 sheets hold their
+SIFT registration). Images and the LOC index are shared with `data/raw/sanborn_loc_oakland/`.
+
+Volumes: 1911-12 **vol. 1** (`sanborn00727_005`, West Oakland / downtown up to 38th St - Moss Ave) and **vol. 3**
+(`_007`, North Oakland and Emeryville: Moss Ave / 36th St to the Berkeley line), 1911 **vol. 2** (`_006`, east of
+Broadway), and their corrected states 1912 - Nov 1951 vol. 1 (`_015`), 1911 - Nov 1950 vol. 2 (`_016`) and
+1911 - Oct 1950 vol. 3 (`_017`): the same plates with paste-overs, registered onto the 1911-12 scans by SIFT. Sheet
+293 of vol. 3 was re-drawn for the Idora Park tract ("New sheet Oct 1931") and is georeferenced on its own. File years
+are 1912 / 1951 for all three areas (vol. 2 / 3 sheets are dated 1911 / 1950 in `map_year` / `volume_label`).
+
+| area | files | sheets (1911-12 key -> corrected) | extent |
+|---|---|---|---|
+| `oakland_sr24` | `oakland_sr24_1912.geojson`, `_1951.geojson`, `_coverage.geojson` | vol. 1: 31, 32, 17, 18, 12, 16; vol. 3: 359, 345, 346, 333, 334, 310, 304, 303, 293, 305, 294, 295, 296, 306, 281, 282, 283 | Grove St (MLK Jr Way) - Telegraph Ave Merrimac (27th) - 38th St and the MacArthur Maze (West - Grove St, 33rd - 38th St); West St - Telegraph 40th - 44th St, Grove - Shattuck 44th - 52nd St (Children's Hospital / Temescal Creek blocks); Dover - Shattuck - Telegraph 52nd - 55th St; Shattuck - Telegraph 55th - 58th (the Idora Park tract on the 1931 plate); Telegraph - Claremont Ave (Vicente / Ayala / Miranda St); Claremont - Shafter Ave, Forest - Clifton St (Hudson St); Claremont - College Ave (Oakgrove Ave); College Ave - McMillan Ave / Broadway (Shafter Ave - Bayview Ave) |
+| `oakland_i980n` | `oakland_i980n_1912.geojson`, `_1951.geojson`, `_coverage.geojson` | vol. 1: 75, 76, 62, 50, 40, 41, 42 | Brush - Castro St 11th - 19th St (and Castro - Grove 15th - 19th), Brush St - Grove St 19th - 22nd St (San Pablo Ave), San Pablo Ave - Grove 22nd - Sycamore St, Grove - Telegraph 22nd - Merrimac St. South of 11th St: `oakland_downtown` / `oakland_west` |
+| `oakland_i580` | `oakland_i580_1912.geojson`, `_1951.geojson`, `_coverage.geojson` | vol. 1: 19, 20; vol. 2: 126, 133, 127 | Telegraph Ave - Broadway 34th - 37th St (Edwards St, south of Mosswood Park); Richmond Ave / Kempton Ave - Fairmount Ave - Walsworth Ave, Moss Ave - Pearl St; Walsworth Ave - Vernon St, Perry St - Perkins St; Perry St - Santa Clara Ave - Moss Ave (MacArthur Blvd) to Vernon St |
+
+## Method (additions to the West Oakland method)
+
+* **`predict` / `auto`**: two to four street crossings read by eye on the 25 % scan give a first similarity; it is
+  refined by a **chamfer match** (below); every block corner of the spec (today's property corner, else the
+  centreline crossing offset by the printed widths) is projected onto the sheet as the estimate that `refine` snaps
+  onto the drawn block outline; a second pass repeats this from the first fit. Blocks cut by the sheet edge keep the
+  part on the sheet (their off-sheet corners are not control) and are fitted with the blocks of their row / column.
+* **Own fit kept** (`regroup`): a block with four good corners of its own (RMS <= 1 m, scale within 2.5 % of the plate
+  scale 0.2015 m/px) keeps its own fit even where it disagrees with its group (blocks are to scale, streets not
+  always).
+* **Chamfer match**: a similarity (scale within 1.5 % of the plate scale) minimising the distance from today's
+  property lines (boundaries of the Alameda County parcel blocks, sampled every 1 m) to the dark lines drawn on the
+  sheet (`chamfer` in each control file: M, mean distance, share of property-line points within 6 px = inliers,
+  their RMS). Along the freeways the corners of the cut blocks are mostly gone or re-platted (parcels running into the
+  old streets: "implausible property-line offsets"), so a block **without a good corner fit** (fewer than 3 corners,
+  RMS > 1.5 m or max > 3 m, or a scale > 2.5 % off the plate) takes the chamfer match when at least 45 % of the
+  property lines fall on drawn lines (`fit: chamfer`, `georef_rms_m` = max(inlier RMS, 1 m), confidence at most
+  medium); below 45 % it keeps a fair corner fit (n >= 3, RMS <= 3 m) or takes the match as **low** (RMS 3.5 m). The
+  chamfer match agrees with good 4-corner block fits to 0.1-1.4 m (sheets 345, 333).
+* **Zones by hand** (`zones`, `mode: chamfer_only`): where the 1911 streets are gone (Oakgrove Ave, the 1911 Shafter /
+  Keith Ave in Rockridge, Miranda St, Edwards St, 56th St east of Telegraph) the block zones are polygons drawn on the
+  scan and the sheet is placed by the chamfer match alone (281: by three street crossings, the match failing there).
+* **Control-only blocks**: blocks beside the corridor that were not cut (still standing) are fitted for their
+  neighbours' sake but emit no footprints and no coverage (`control_only`).
+* Zones are the block outlines (refined px4 or the drawn polygon), not their bounding boxes; the coverage of each map
+  year is extended to every footprint kept (a building drawn across a zone edge).
+* Street names: `aliases.json` (Forest = Forest St, the 1911/12 38th St and Moss Ave = today's (West) MacArthur Blvd
+  are written as `MacArthur Boulevard` in the specs).
+* Validation (`check`): all geometries valid, every footprint inside its coverage, a PNG per area with the traced 1951
+  footprints over today's Overture footprints and freeways (`data/interim/sanborn_oakland_corridors/check_<area>.png`),
+  and zoomed overlays: houses that still stand fall on today's footprints on 345, 333, 304, 296, 306, 293 (1931), 76,
+  62, 40, 126, 133, 127.
+
+## Counts
+
+| file | features | confidence high / medium / low | area (1000 m²) | modern_overlap ≥ 0.5 | materials |
+|---|---|---|---|---|---|
+| oakland_i580_1912 | 717 | 0 / 657 / 60 | 60.2 | 284 | frame 715, stone 1, brick 1 |
+| oakland_i580_1951 | 944 | 0 / 869 / 75 | 87.0 | 396 | frame 898, concrete 28, brick 17, iron 1 |
+| oakland_i980n_1912 | 1030 | 369 / 661 / 0 | 99.8 | 280 | frame 1018, iron 6, brick 5, concrete 1 |
+| oakland_i980n_1951 | 995 | 336 / 659 / 0 | 117.9 | 252 | frame 835, brick 99, concrete 56, iron 5 |
+| oakland_sr24_1912 | 3147 | 878 / 2222 / 47 | 239.9 | 1306 | frame 3136, brick 10, stone 1 |
+| oakland_sr24_1951 | 5435 | 1570 / 3748 / 117 | 450.9 | 2405 | frame 5214, brick 127, concrete 82, iron 12 |
+
+
+Storeys are **not read** on these sheets (the default rule: frame dwelling <= 300 m2 = 2 storeys, < 30 m2 shed 1,
+masonry 2; `stories_source = default`); most corridor houses are 1-2 storey frame cottages, so the 2-storey default
+overstates the 1-storey ones. `use` = store within 35 m of Telegraph, 40 m of Broadway, 30 m of College Ave.
+
+## Georeferencing per sheet
+
+Fits per block zone (corners n, RMS / max in m) or `chamfer` (with the rejected corner fit in brackets), the sheet's
+chamfer match and its scale / rotation (image x-axis vs east).
+
+| sheet | area | blocks / zones | fit per block: corners n, RMS / max (m) | chamfer match (inliers, inlier RMS) | scale, rotation |
+|---|---|---|---|---|---|
+| 005_0019 | oakland_i580 | 1 zones by hand | 1120-1129: chamfer | 60%, 0.54 m | 0.1991, -11.7° |
+| 005_0020 | oakland_i580 | 2 zones by hand | 1120-1127e: chamfer; 1124-1126: chamfer | 38%, 0.54 m | 0.2045, -11.5° |
+| 006_0126 | oakland_i580 | 1 zones by hand | 982-1033: chamfer | 76%, 0.40 m | 0.2012, -42.6° |
+| 006_0133 | oakland_i580 | 1 zones by hand | 960-987: chamfer | 79%, 0.44 m | 0.2008, -47.1° |
+| 006_0127 | oakland_i580 | 1 zones by hand | 1006-1036: chamfer | 69%, 0.42 m | 0.2006, 42.5° |
+| 005_0075 | oakland_i980n | 4, control only: 258 184 181 152 | 257: chamfer (corners 3, 1.4); 185: chamfer (corners 3, 3.7); 180: chamfer (corners 4, 1.6); 153: 3, 0.53 / 0.71 | 68%, 0.42 m | 0.2018, -25.9° |
+| 005_0076 | oakland_i980n | 4, control only: 256 186 179 154 | 257: 11, 0.91 / 1.95; 185: 9, 1.02 / 1.75; 180: 9, 0.92 / 1.51; 153: 11, 0.84 / 1.51 | 94%, 0.31 m | 0.2005, -26.0° |
+| 005_0062 | oakland_i980n | 8 | 287: chamfer (corners 9, 3.1); 280: chamfer (corners 8, 1.7); 273: 7, 0.80 / 1.08; 264: 9, 0.73 / 1.26; 286: 9, 0.77 / 1.50; 281: 12, 1.07 / 2.28; 272: 11, 0.98 / 1.93; 265: 4, 0.09 / 0.13 | 89%, 0.30 m | 0.2011, -25.9° |
+| 005_0050 | oakland_i980n | 5, control only: 299 293 | 294: chamfer (corners 5, 3.0); 295: chamfer (corners 5, 3.0); 297-298: 3, 0.72 / 0.88; 1508: chamfer; 1516: chamfer (corners 4, 2.5) | 63%, 0.36 m | 0.2031, -25.5° |
+| 005_0040 | oakland_i980n | 4 | 1510: 7, 0.46 / 0.71; 1519: 4, 0.34 / 0.42; 1518: 7, 0.46 / 0.71; 1517: 7, 0.46 / 0.71 | 65%, 0.38 m | 0.2017, -10.8° |
+| 005_0041 | oakland_i980n | 3 | 1206: chamfer (corners 5, 9.7); 1514: chamfer (corners 5, 9.7); 1515: chamfer (corners 5, 9.7) | 66%, 0.48 m | 0.2029, 78.7° |
+| 005_0042 | oakland_i980n | 3 | 1520: chamfer (corners 11, 10.0); 1521: chamfer (corners 11, 10.0); 1522: chamfer (corners 11, 10.0) | 69%, 0.43 m | 0.2020, 79.4° |
+| 005_0031 | oakland_sr24 | 3 | 1205: chamfer (corners 6, 7.9); 1524: chamfer (corners 6, 7.9); 1525: chamfer (corners 6, 7.9) | 47%, 0.51 m | 0.2045, 79.4° |
+| 005_0032 | oakland_sr24 | 3 | 1145: chamfer (corners 6, 3.8); 1146: chamfer (corners 6, 3.8); 1147: chamfer (corners 6, 3.8) | 77%, 0.37 m | 0.2018, 79.2° |
+| 005_0017 | oakland_sr24 | 3 | 1148: chamfer (corners 6, 4.5); 1149: chamfer (corners 6, 4.5); 1150: chamfer (corners 6, 4.5) | 81%, 0.43 m | 0.2019, 79.1° |
+| 005_0018 | oakland_sr24 | 2 | 1151-1152: chamfer (corners 5, 3.1); 1153: chamfer (corners 5, 3.1) | 76%, 0.40 m | 0.2018, 79.3° |
+| 005_0012 | oakland_sr24 | 3 | 1160: 4, 0.08 / 0.11; 1161-1162: 4, 0.08 / 0.11; 1163: 4, 0.08 / 0.11 | 87%, 0.29 m | 0.2007, -10.3° |
+| 005_0016 | oakland_sr24 | 2, control only: 1166 1167 | 1164: chamfer (corners 16, 4.2); 1165: chamfer (corners 16, 4.2) | 95%, 0.29 m | 0.2012, -16.4° |
+| 007_0359 | oakland_sr24 | 3 | 1154: chamfer (corners 9, 2.1); 1155: chamfer (corners 9, 2.1); 1156: 4, 0.46 / 0.65 | 66%, 0.40 m | 0.2003, 79.2° |
+| 007_0345 | oakland_sr24 | 8 | 5053: 4, 0.22 / 0.30; 5052: 4, 0.22 / 0.26; 5051: 14, 0.88 / 2.00; 5050: 14, 0.89 / 2.04; 5085: 11, 0.42 / 0.72; 5084: 11, 0.40 / 0.87; 5083: 9, 0.33 / 0.62; 5082: 9, 0.72 / 1.02 | 93%, 0.35 m | 0.2003, -11.1° |
+| 007_0346 | oakland_sr24 | 4 | 5085: chamfer (corners 6, 1.9); 5084: chamfer (corners 6, 1.9); 5083: chamfer (corners 6, 1.9); 5082: chamfer (corners 6, 1.9) | 87%, 0.43 m | 0.2009, -11.0° |
+| 007_0333 | oakland_sr24 | 6 | 5056: 10, 0.77 / 1.46; 5055: 4, 0.51 / 0.65; 5054: 10, 0.68 / 1.39; 5088: 6, 0.97 / 1.75; 5087: 7, 0.85 / 1.33; 5086: 3, 0.24 / 0.31 | 80%, 0.32 m | 0.1994, -10.7° |
+| 007_0334 | oakland_sr24 | 4 | 5089: chamfer (corners 4, 2.4); 5088: chamfer (corners 4, 2.4); 5087: chamfer (corners 4, 2.4); 5086: chamfer (corners 6, 2.9) | 81%, 0.46 m | 0.2011, -10.5° |
+| 007_0310 | oakland_sr24 | 3, control only: 5058 | 5061: chamfer (corners 3, 1.1); 5057: 4, 0.59 / 0.94; 5060: 3, 0.88 / 1.20 | 28%, 0.46 m | 0.1977, -79.7° |
+| 007_0304 | oakland_sr24 | 6 | 5095: 8, 1.37 / 2.45; 5094: 8, 1.47 / 2.84; 5093: 7, 1.26 / 2.11; 5064: chamfer (corners 8, 2.0); 5063: chamfer (corners 8, 1.9); 5062: chamfer (corners 8, 2.2) | 76%, 0.40 m | 0.2025, -79.6° |
+| 007_0303 | oakland_sr24 | 5 | 5095: chamfer; 5094: chamfer; 5093: chamfer (corners 5, 3.5); 5138: chamfer (corners 5, 3.2); 5137: chamfer (corners 6, 3.9) | 49%, 0.49 m | 0.2025, -80.7° |
+| 007_0293 | oakland_sr24 | 1 | 5140: chamfer | 26%, 0.45 m | 0.1907, 6.5° |
+| 007_0305 | oakland_sr24 | 4 | 5256: chamfer (corners 4, 4.0); 5255: chamfer (corners 4, 4.0); 5265: chamfer (corners 4, 4.0); 5264: chamfer (corners 4, 4.0) | 47%, 0.42 m | 0.2014, -6.3° |
+| 007_0294 | oakland_sr24 | 4 | 5257: 3, 1.74 / 2.14; 5269: 3, 1.74 / 2.14; 5268: 3, 1.74 / 2.14; 5265: 3, 1.74 / 2.14 | 32%, 0.43 m | 0.2057, -6.0° |
+| 007_0295 | oakland_sr24 | 5 | 5267: chamfer; 5568: chamfer; 5567: chamfer; 5266: 3, 0.33 / 0.40; 5566: chamfer | 68%, 0.55 m | 0.2010, -32.1° |
+| 007_0296 | oakland_sr24 | 8 | 5569: 14, 1.18 / 2.47; 5590: 14, 1.08 / 2.42; 5570: 4, 0.88 / 1.22; 5591: 14, 1.13 / 2.52; 5565: 10, 0.80 / 1.32; 5564: 11, 0.74 / 1.92; 5563: 12, 1.01 / 2.25; 5562: 11, 0.75 / 1.57 | 86%, 0.38 m | 0.2011, -32.1° |
+| 007_0306 | oakland_sr24 | 3, control only: 5553 5554 5555 | 5566: 8, 1.06 / 1.95; 5565: 10, 0.63 / 1.39; 5564: 10, 0.62 / 1.26 | 92%, 0.33 m | 0.2001, -32.1° |
+| 007_0282 | oakland_sr24 | 1 zones by hand | 5621-5625: chamfer | 63%, 0.50 m | 0.1985, 26.4° |
+| 007_0283 | oakland_sr24 | 1 zones by hand | 5622-5627: chamfer | 63%, 0.42 m | 0.2015, 26.4° |
+| 007_0281 | oakland_sr24 | 1 zones by hand | 5573-5575: chamfer | 3 street crossings read by eye, RMS 2.42 m | 0.2009, -30.5° |
+
+| corrected sheet | registered onto | SIFT inliers | RMS |
+|---|---|---|---|
+| 015_0019 | 005_0019 | 742 | 1.54 px = 0.31 m |
+| 015_0020 | 005_0020 | 866 | 1.51 px = 0.31 m |
+| 016_0126 | 006_0126 | 1185 | 1.58 px = 0.32 m |
+| 016_0133 | 006_0133 | 1760 | 1.41 px = 0.29 m |
+| 016_0127 | 006_0127 | 1111 | 1.73 px = 0.35 m |
+| 015_0075 | 005_0075 | 1683 | 1.34 px = 0.27 m |
+| 015_0076 | 005_0076 | 1668 | 1.6 px = 0.32 m |
+| 015_0062 | 005_0062 | 1679 | 1.32 px = 0.27 m |
+| 015_0050 | 005_0050 | 1270 | 1.45 px = 0.30 m |
+| 015_0040 | 005_0040 | 1169 | 1.55 px = 0.32 m |
+| 015_0041 | 005_0041 | 841 | 1.83 px = 0.38 m |
+| 015_0042 | 005_0042 | 782 | 1.71 px = 0.35 m |
+| 015_0031 | 005_0031 | 925 | 1.84 px = 0.38 m |
+| 015_0032 | 005_0032 | 1095 | 1.45 px = 0.30 m |
+| 015_0017 | 005_0017 | 969 | 1.45 px = 0.29 m |
+| 015_0018 | 005_0018 | 1023 | 1.35 px = 0.28 m |
+| 015_0012 | 005_0012 | 1443 | 1.78 px = 0.36 m |
+| 015_0016 | 005_0016 | 1286 | 1.39 px = 0.28 m |
+| 017_0359 | 007_0359 | 1107 | 1.57 px = 0.32 m |
+| 017_0345 | 007_0345 | 710 | 1.19 px = 0.24 m |
+| 017_0346 | 007_0346 | 765 | 1.58 px = 0.32 m |
+| 017_0333 | 007_0333 | 602 | 1.75 px = 0.36 m |
+| 017_0334 | 007_0334 | 644 | 1.64 px = 0.33 m |
+| 017_0310 | 007_0310 | 867 | 1.6 px = 0.32 m |
+| 017_0304 | 007_0304 | 770 | 1.59 px = 0.33 m |
+| 017_0303 | 007_0303 | 1048 | 1.77 px = 0.36 m |
+| 017_0293 | own control (new plate) | – | – |
+| 017_0305 | 007_0305 | 1351 | 1.59 px = 0.32 m |
+| 017_0294 | 007_0294 | 1276 | 1.44 px = 0.30 m |
+| 017_0295 | 007_0295 | 823 | 1.8 px = 0.37 m |
+| 017_0296 | 007_0296 | 505 | 1.53 px = 0.31 m |
+| 017_0306 | 007_0306 | 432 | 1.77 px = 0.36 m |
+| 017_0282 | 007_0282 | 402 | 1.5 px = 0.30 m |
+| 017_0283 | 007_0283 | 335 | 1.66 px = 0.34 m |
+| 017_0281 | 007_0281 | 670 | 1.69 px = 0.34 m |
+
+## Limits and open items
+
+* **I-580 is partial**: traced from Telegraph Ave to Broadway (34th - 37th St) and from Kempton / Fairmount Ave over
+  Santa Clara Ave to Vernon St. Not traced: vol. 2 sheet 131 (Broadway - Richmond Ave, Piedmont / Randwick / Croxton
+  Ave: tried, the fit left the houses ~15 deg off today's Brook St houses, not used), 132 (Glen Echo Creek / block 963,
+  weak match), 125 and the stretch south of Vernon St to Lakeshore Ave / Grand Ave (vol. 2 sheets 128-130, 134, next
+  to `oakland_adams_point` sheets 135 / 141 - check its coverage before tracing), and everything east of Grand Ave
+  (vol. 4: the 1911-12 plates `_008` and the 1928 re-survey `_010` corrected to 1950 `_018` are different plates, so
+  no SIFT shortcut).
+* SR-24: the Rockridge zones (281-283) are coarse polygons (all of the sheet between the old Shafter Ave and Bayview /
+  Forest St), 281 is placed by three crossings (RMS 2.4 m), 293 (1911, block 5140) and 310 (5061) are low confidence;
+  Idora Park itself (1911) is left to `data/manual/vanished_sites` (site `idora_park`); sheets 302 and 22 (west of
+  Grove St, not cut) are not traced.
+* Corner residuals near the freeways are large (re-platted parcels, MacArthur Blvd widened, 28th St / Merrimac St and
+  36th St re-aligned): the chamfer match carries most cut blocks (`fit: chamfer`, medium confidence).
+* **No clearance rows** for SR-24 / I-580 in `data/manual/redevelopment_areas.csv` (I-980 has `oak_i980`, 1966-74):
+  without one, a 1951-map building that nothing replaced ends at max(1951 + 15, 1960) = 1966 in `apply_sanborn`.
+  SR-24 (Grove-Shafter) opened in stages c.1968-70 and I-580 (MacArthur Freeway) c.1963-66, so rows with researched
+  clearance years would date the corridor houses better (not added here).
+* Storeys not read; names / labels not read; tracks not extracted on these sheets.
+
+## Reproduce
+
+```
+python pipeline/sanborn_trace_oakland_corridors.py georef            # all sheets in areas.json (control files are final)
+python pipeline/sanborn_trace_oakland_corridors.py extract
+python pipeline/sanborn_trace_oakland_corridors.py assemble
+python pipeline/sanborn_trace_oakland_corridors.py check [area]
+python pipeline/sanborn_trace_oakland_corridors.py auto 007_0296 <spec.json>    # new sheet: crossings + blocks -> control
+python pipeline/sanborn_trace_oakland_corridors.py zones 007_0283 <spec.json>   # new sheet: hand-drawn zones, chamfer only
+python pipeline/sanborn_trace_oakland_corridors.py register 017_0296 007_0296   # corrected plate onto the 1911-12 scan
+```
+`georef` re-fits the base sheets from their control files and re-applies the chamfer / control-only / zone-outline
+rules from the stored `chamfer` results, so a rerun reproduces the outputs.
