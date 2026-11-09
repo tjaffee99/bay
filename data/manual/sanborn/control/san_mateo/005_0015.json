@@ -984,18 +984,6 @@
    ],
    "corners": [
     {
-     "x": 82.9,
-     "y": 1345.1,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "2nd avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 81.6,
      "y": 1027.1,
      "q": "SW",
@@ -1005,7 +993,8 @@
       "2nd avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "154"
     },
     {
      "x": 528.2,
@@ -1017,20 +1006,68 @@
       "3rd avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "154"
     },
     {
-     "x": 530.8,
-     "y": 1339.9,
-     "q": "NE",
-     "corner": "SW",
+     "x": 80.8,
+     "y": 927.2,
+     "q": "SE",
+     "corner": "NW",
      "pc": [
-      "railroad avenue",
+      "c street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "155"
+    },
+    {
+     "x": 76.9,
+     "y": 608.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "155"
+    },
+    {
+     "x": 524.7,
+     "y": 601.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
       "3rd avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "155"
+    },
+    {
+     "x": 527.3,
+     "y": 923.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "155"
     }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "155"
    ],
    "px4": [
     [
@@ -1058,18 +1095,6 @@
    ],
    "corners_all": [
     {
-     "x": 82.9,
-     "y": 1345.1,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "2nd avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 81.6,
      "y": 1027.1,
      "q": "SW",
@@ -1088,18 +1113,6 @@
      "corner": "SE",
      "pc": [
       "c street",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 530.8,
-     "y": 1339.9,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "railroad avenue",
       "3rd avenue"
      ],
      "norefine": 1,
@@ -1141,18 +1154,6 @@
    ],
    "corners": [
     {
-     "x": 633.3,
-     "y": 1337.9,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 630.7,
      "y": 1021.1,
      "q": "SW",
@@ -1162,7 +1163,8 @@
       "3rd avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "175"
     },
     {
      "x": 1068.6,
@@ -1174,20 +1176,68 @@
       "4th avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "175"
     },
     {
-     "x": 1069.9,
-     "y": 1336.6,
-     "q": "NE",
-     "corner": "SW",
+     "x": 629.8,
+     "y": 920.3,
+     "q": "SE",
+     "corner": "NW",
      "pc": [
-      "railroad avenue",
+      "c street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "176"
+    },
+    {
+     "x": 627.2,
+     "y": 601.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "176"
+    },
+    {
+     "x": 1065.3,
+     "y": 595.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
       "4th avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "176"
+    },
+    {
+     "x": 1069.2,
+     "y": 917.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "176"
     }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "176"
    ],
    "px4": [
     [
@@ -1215,18 +1265,6 @@
    ],
    "corners_all": [
     {
-     "x": 633.3,
-     "y": 1337.9,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "3rd avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 630.7,
      "y": 1021.1,
      "q": "SW",
@@ -1245,18 +1283,6 @@
      "corner": "SE",
      "pc": [
       "c street",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1069.9,
-     "y": 1336.6,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "railroad avenue",
       "4th avenue"
      ],
      "norefine": 1,
@@ -1298,18 +1324,6 @@
    ],
    "corners": [
     {
-     "x": 1172.8,
-     "y": 1338.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 1170.2,
      "y": 1018.7,
      "q": "SW",
@@ -1319,7 +1333,8 @@
       "4th avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "192"
     },
     {
      "x": 1519.8,
@@ -1331,8 +1346,68 @@
       "5th avenue"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "192"
+    },
+    {
+     "x": 1170.0,
+     "y": 917.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "c street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "193"
+    },
+    {
+     "x": 1170.0,
+     "y": 596.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "d street",
+      "4th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "193"
+    },
+    {
+     "x": 1517.6,
+     "y": 590.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "d street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "193"
+    },
+    {
+     "x": 1520.3,
+     "y": 917.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "c street",
+      "5th avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "193"
     }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "193"
    ],
    "px4": [
     [
@@ -1360,18 +1435,6 @@
    ],
    "corners_all": [
     {
-     "x": 1172.8,
-     "y": 1338.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 1170.2,
      "y": 1018.7,
      "q": "SW",
@@ -1394,19 +1457,6 @@
      ],
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 1517.2,
-     "y": 1344.5,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "railroad avenue",
-      "5th avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [26.2  9.2] at railroad avenue x 5th avenue NE"
     }
    ],
    "zone_px": [
@@ -1703,19 +1753,6 @@
      "norefine": 1,
      "weak": false,
      "block": "174"
-    },
-    {
-     "x": 1172.8,
-     "y": 1338.0,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "railroad avenue",
-      "4th avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "block": "192"
     },
     {
      "x": 1170.2,
