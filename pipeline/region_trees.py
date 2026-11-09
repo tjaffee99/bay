@@ -16,6 +16,8 @@ Planting year, best first:
     Inland Valleys / Sacramento Valley / Southern California Coast sets for species the
     coast set lacks, or for the inland valleys first); genus median for other species
     of a covered genus; else San Francisco's rule (0.35 in of DBH a year)  -> estimated
+    A DBH class ('13-18', or a whole-inch reading) is a range: each tree takes a stable
+    point inside it, so one species' trees of one class aren't all planted in one year.
   * no usable DBH: ten years after the street (as trees.py)                  -> estimated
 Bounds (same rules as the streets, roads.date_by_buildings): a street tree isn't planted
 more than 3 years before the street it stands on was built up — the 2nd-earliest
@@ -30,9 +32,13 @@ ranges), else the Urban Tree Database's species DBH->height / crown-diameter equ
 else trees.py's generic allometry; clamped to trees.py's ranges so both sets look alike.
 Form: palm / conifer / broadleaf from the species name, with trees.py's patterns.
 
-Output: viewer/public/data/region-trees/12/<x>/<y>.bin.gz (BAYT, the columns of
-sf-trees.bin.gz) + index.json; data/interim/region_trees.parquet (one row per tree,
-for QGIS / audits); data/interim/reports/region_trees.json.
+Output: viewer/public/data/region-trees/12/<x>/<y>.bin.gz — BAYT, the columns of
+sf-trees.bin.gz (position_q relative to the deco-layer origin shared by all tiles,
+start_year, height, crown, form, confidence) plus `source` (index into index.json's
+sources) and `park` (1 = park / campus / open-space tree) — and index.json (tiles,
+sources, attribution); data/interim/region_trees.parquet (one row per tree, for QGIS /
+audits); data/interim/grid_region_streettrees.npy (inventory trees per terrain
+region-grid cell); data/interim/reports/region_trees.json.
 
 Usage: python region_trees.py [download|build|all]   (default: all)
 """
@@ -426,13 +432,6 @@ def year_of(v) -> np.ndarray:
     return y.to_numpy(float)
 
 
-def col(df, *names, default=np.nan):
-    for n in names:
-        if n in df.columns:
-            return df[n]
-    return pd.Series(default, index=df.index)
-
-
 NOT_TREE = re.compile(r"vacant|stump|asphalt|planting site|plant site|no tree|removed|empty|future|proposed|"
                       r"^\s*(?:n/?a|none|#n/a)\s*$", re.I)
 
@@ -657,7 +656,6 @@ def build():
     from scipy.spatial import cKDTree
 
     from airports import land_year
-    from export_columnar import write_columnar
     from extent import in_extent
     from terrain_grid import grid_def
 
@@ -674,7 +672,6 @@ def build():
     d["x"], d["y"] = pu.x.values, pu.y.values
 
     # the same tree in two inventories: the higher-priority source (city before compilation) wins
-    order = np.argsort(d.prio.values, kind="stable")
     tree = cKDTree(np.column_stack([d.x.values, d.y.values]))
     drop = np.zeros(len(d), bool)
     for i, j in tree.query_pairs(DEDUPE_M, output_type="ndarray"):
