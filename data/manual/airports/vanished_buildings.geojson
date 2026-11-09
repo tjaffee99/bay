@@ -1,0 +1,5066 @@
+{
+"type": "FeatureCollection",
+"name": "vanished_buildings",
+"features": [
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3930472,
+37.6269571
+],
+[
+-122.3930472,
+37.6270837
+],
+[
+-122.3928884,
+37.6270837
+],
+[
+-122.3928884,
+37.6269571
+],
+[
+-122.3930472,
+37.6269571
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (196 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3932286,
+37.6267039
+],
+[
+-122.3931379,
+37.6265592
+],
+[
+-122.3931379,
+37.6264145
+],
+[
+-122.3931152,
+37.6263964
+],
+[
+-122.3929564,
+37.6263964
+],
+[
+-122.3929338,
+37.6263783
+],
+[
+-122.3929338,
+37.626306
+],
+[
+-122.3930245,
+37.6262517
+],
+[
+-122.3930245,
+37.6262155
+],
+[
+-122.3929791,
+37.6261794
+],
+[
+-122.3927977,
+37.6262155
+],
+[
+-122.3927977,
+37.6263241
+],
+[
+-122.392843,
+37.6263964
+],
+[
+-122.392843,
+37.6264688
+],
+[
+-122.3927296,
+37.626523
+],
+[
+-122.3926162,
+37.626523
+],
+[
+-122.3925709,
+37.6264869
+],
+[
+-122.3926162,
+37.6263422
+],
+[
+-122.3924575,
+37.6262698
+],
+[
+-122.3924575,
+37.6261975
+],
+[
+-122.3926616,
+37.626107
+],
+[
+-122.3927296,
+37.626107
+],
+[
+-122.3927977,
+37.6260708
+],
+[
+-122.3929111,
+37.6260528
+],
+[
+-122.3930245,
+37.6259985
+],
+[
+-122.3931152,
+37.6259985
+],
+[
+-122.3932513,
+37.6262155
+],
+[
+-122.3932286,
+37.6263783
+],
+[
+-122.3933647,
+37.6264688
+],
+[
+-122.3933874,
+37.6265411
+],
+[
+-122.3934328,
+37.6265592
+],
+[
+-122.3934328,
+37.6266858
+],
+[
+-122.3932286,
+37.6267039
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1940.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (2880 m2); drawn on: 1946,1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3923214,
+37.6254559
+],
+[
+-122.392276,
+37.6254197
+],
+[
+-122.3921853,
+37.6254197
+],
+[
+-122.3920945,
+37.6254559
+],
+[
+-122.3920265,
+37.6254559
+],
+[
+-122.3919585,
+37.6254016
+],
+[
+-122.3918904,
+37.6252569
+],
+[
+-122.391777,
+37.6251665
+],
+[
+-122.3916863,
+37.6251484
+],
+[
+-122.3916863,
+37.625076
+],
+[
+-122.3915502,
+37.6250037
+],
+[
+-122.3915729,
+37.6249494
+],
+[
+-122.391709,
+37.6249675
+],
+[
+-122.3917316,
+37.6249494
+],
+[
+-122.3917316,
+37.6249133
+],
+[
+-122.3916409,
+37.624859
+],
+[
+-122.3915956,
+37.6247866
+],
+[
+-122.3916409,
+37.6246058
+],
+[
+-122.3918224,
+37.6245334
+],
+[
+-122.3919131,
+37.6245334
+],
+[
+-122.3919811,
+37.6245877
+],
+[
+-122.3920492,
+37.6247505
+],
+[
+-122.3921399,
+37.6248771
+],
+[
+-122.3921399,
+37.6249313
+],
+[
+-122.3922306,
+37.6249494
+],
+[
+-122.392208,
+37.625076
+],
+[
+-122.3922987,
+37.6252388
+],
+[
+-122.3923894,
+37.625275
+],
+[
+-122.3924575,
+37.6253474
+],
+[
+-122.3924575,
+37.6254197
+],
+[
+-122.3924121,
+37.6254559
+],
+[
+-122.3923214,
+37.6254559
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (4138 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3934328,
+37.6249494
+],
+[
+-122.3934328,
+37.6250218
+],
+[
+-122.3931606,
+37.6250218
+],
+[
+-122.3931606,
+37.6249494
+],
+[
+-122.3934328,
+37.6249494
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (192 m2); drawn on: 1956,1968,1973,1993. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3920617,
+37.6242733
+],
+[
+-122.3917058,
+37.624395
+],
+[
+-122.3916155,
+37.6242269
+],
+[
+-122.3919714,
+37.6241052
+],
+[
+-122.3920617,
+37.6242733
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (690 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3918904,
+37.6239546
+],
+[
+-122.3918904,
+37.6240993
+],
+[
+-122.3916636,
+37.6240993
+],
+[
+-122.3916636,
+37.6239546
+],
+[
+-122.3918904,
+37.6239546
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (320 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3914821,
+37.6239365
+],
+[
+-122.3914595,
+37.6239184
+],
+[
+-122.3913007,
+37.6235929
+],
+[
+-122.3912327,
+37.6235024
+],
+[
+-122.39121,
+37.623412
+],
+[
+-122.3910285,
+37.6231045
+],
+[
+-122.3910285,
+37.6230502
+],
+[
+-122.3910966,
+37.622996
+],
+[
+-122.3912553,
+37.6229417
+],
+[
+-122.3913234,
+37.6229417
+],
+[
+-122.3913687,
+37.6229779
+],
+[
+-122.3914595,
+37.6231226
+],
+[
+-122.3914821,
+37.623213
+],
+[
+-122.3915502,
+37.6232673
+],
+[
+-122.3916409,
+37.6232673
+],
+[
+-122.3916409,
+37.6233758
+],
+[
+-122.3916863,
+37.6233939
+],
+[
+-122.3916863,
+37.6234301
+],
+[
+-122.3916409,
+37.6234482
+],
+[
+-122.3916409,
+37.6235024
+],
+[
+-122.3917997,
+37.6237737
+],
+[
+-122.3917997,
+37.6238461
+],
+[
+-122.3915956,
+37.6239365
+],
+[
+-122.3914821,
+37.6239365
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (3754 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3920764,
+37.6234735
+],
+[
+-122.3919403,
+37.6235278
+],
+[
+-122.3918042,
+37.6233107
+],
+[
+-122.3919403,
+37.6232564
+],
+[
+-122.3920764,
+37.6234735
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (360 m2); drawn on: 1956. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3910966,
+37.6227428
+],
+[
+-122.3910966,
+37.6229417
+],
+[
+-122.3908924,
+37.6229417
+],
+[
+-122.3908924,
+37.6227428
+],
+[
+-122.3910966,
+37.6227428
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport west-side building (old Bayshore Highway frontage)",
+"start_year": 1951.0,
+"end_year": 1961.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "the pre-war / 1940s airport buildings on the west side of the field along the old Bayshore Highway (hangars, offices; the 1937 Administration and Terminal Building stood on this frontage - SFO Museum: 1937 building demolished 1966). Cleared for the 1961 west extension of 10R/28L ('Runway 28 Left was lengthened ... in 1961') and the 10L west end; none drawn on the 1968 photorevision. Individual identities not established. Symbol traced on the 1956 edition (396 m2); drawn on: 1956,1968,1973,1979. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3880572,
+37.6187454
+],
+[
+-122.3878576,
+37.6190638
+],
+[
+-122.3859161,
+37.6182896
+],
+[
+-122.3861157,
+37.6179713
+],
+[
+-122.3880572,
+37.6187454
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "San Francisco Airport hangar north-west of the Central Terminal",
+"start_year": 1951.0,
+"end_year": 1976.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Francisco%20South_363066_1956_24000_geo.tif",
+"note": "long building on the 1956 sheet (hangar row by the 1954 Central Terminal); gone on the 1979 photorevision - its site became the North Terminal area (North Terminal begun 1971, opened 1979). Symbol traced on the 1956 edition (7533 m2); drawn on: 1956,1968,1973,1993. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2164465,
+37.7414349
+],
+[
+-122.2159468,
+37.7414349
+],
+[
+-122.2159922,
+37.7413807
+],
+[
+-122.2162875,
+37.741236
+],
+[
+-122.2163784,
+37.7412541
+],
+[
+-122.2164692,
+37.7413626
+],
+[
+-122.2164465,
+37.7414349
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (648 m2); drawn on: 1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2130395,
+37.7413807
+],
+[
+-122.2130395,
+37.7413083
+],
+[
+-122.2130168,
+37.7412902
+],
+[
+-122.2130168,
+37.741236
+],
+[
+-122.2130622,
+37.7411998
+],
+[
+-122.2130622,
+37.7410189
+],
+[
+-122.2129713,
+37.7410009
+],
+[
+-122.212994,
+37.7409466
+],
+[
+-122.2130849,
+37.7409466
+],
+[
+-122.213153,
+37.7410189
+],
+[
+-122.2131758,
+37.7413083
+],
+[
+-122.2130849,
+37.7413807
+],
+[
+-122.2130395,
+37.7413807
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (480 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.215846,
+37.7412555
+],
+[
+-122.2156679,
+37.7413619
+],
+[
+-122.2155616,
+37.741249
+],
+[
+-122.2157397,
+37.7411427
+],
+[
+-122.215846,
+37.7412555
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (306 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2128578,
+37.7409647
+],
+[
+-122.2128578,
+37.7412902
+],
+[
+-122.2126988,
+37.7412902
+],
+[
+-122.2126988,
+37.7409647
+],
+[
+-122.2128578,
+37.7409647
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (504 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2145729,
+37.741026
+],
+[
+-122.21444,
+37.7411107
+],
+[
+-122.2142893,
+37.7409607
+],
+[
+-122.2144222,
+37.740876
+],
+[
+-122.2145729,
+37.741026
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (318 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2172642,
+37.7392645
+],
+[
+-122.2172642,
+37.7392102
+],
+[
+-122.2175368,
+37.7390836
+],
+[
+-122.2175822,
+37.7390474
+],
+[
+-122.2175822,
+37.7389931
+],
+[
+-122.2175368,
+37.738957
+],
+[
+-122.2174913,
+37.738957
+],
+[
+-122.2172869,
+37.7390655
+],
+[
+-122.2172415,
+37.7390655
+],
+[
+-122.2171961,
+37.7389751
+],
+[
+-122.2174005,
+37.7388484
+],
+[
+-122.2174005,
+37.7387942
+],
+[
+-122.2173323,
+37.7387761
+],
+[
+-122.2170825,
+37.7389027
+],
+[
+-122.2169916,
+37.7388846
+],
+[
+-122.2169916,
+37.7388123
+],
+[
+-122.2173778,
+37.7386133
+],
+[
+-122.2175141,
+37.7385771
+],
+[
+-122.2175595,
+37.7385952
+],
+[
+-122.2175368,
+37.7387218
+],
+[
+-122.2175822,
+37.738758
+],
+[
+-122.2176503,
+37.738758
+],
+[
+-122.2177185,
+37.7387942
+],
+[
+-122.2176958,
+37.7389208
+],
+[
+-122.2178548,
+37.7389751
+],
+[
+-122.2178548,
+37.7390474
+],
+[
+-122.2177639,
+37.7391198
+],
+[
+-122.2177639,
+37.7391559
+],
+[
+-122.2176958,
+37.7391559
+],
+[
+-122.2176276,
+37.7392283
+],
+[
+-122.2174232,
+37.7393006
+],
+[
+-122.2173096,
+37.7393006
+],
+[
+-122.2172642,
+37.7392645
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1976.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (2646 m2); drawn on: 1947,1958,1968,1973. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2167645,
+37.7390293
+],
+[
+-122.2165192,
+37.739127
+],
+[
+-122.2164465,
+37.7390112
+],
+[
+-122.2166918,
+37.7389136
+],
+[
+-122.2167645,
+37.7390293
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (346 m2); drawn on: 1947,1958,1968,1973. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2146024,
+37.7389545
+],
+[
+-122.2143667,
+37.7389858
+],
+[
+-122.2143458,
+37.7388861
+],
+[
+-122.2145815,
+37.7388548
+],
+[
+-122.2146024,
+37.7389545
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (235 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2163329,
+37.7384324
+],
+[
+-122.2161853,
+37.73855
+],
+[
+-122.216015,
+37.7384143
+],
+[
+-122.2161626,
+37.7382968
+],
+[
+-122.2163329,
+37.7384324
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1976.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (390 m2); drawn on: 1947,1958,1968,1973. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2130622,
+37.7382696
+],
+[
+-122.2130622,
+37.7383782
+],
+[
+-122.2126988,
+37.7383782
+],
+[
+-122.2126988,
+37.7382696
+],
+[
+-122.2130622,
+37.7382696
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (384 m2); drawn on: 1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2184226,
+37.738143
+],
+[
+-122.2183545,
+37.7380707
+],
+[
+-122.2182636,
+37.7380707
+],
+[
+-122.2182636,
+37.7379441
+],
+[
+-122.2182182,
+37.737926
+],
+[
+-122.2181955,
+37.7378536
+],
+[
+-122.2180819,
+37.737727
+],
+[
+-122.2180819,
+37.7376908
+],
+[
+-122.2181273,
+37.7376547
+],
+[
+-122.2182182,
+37.7376728
+],
+[
+-122.2184907,
+37.7380164
+],
+[
+-122.2185135,
+37.7381249
+],
+[
+-122.2184907,
+37.738143
+],
+[
+-122.2184226,
+37.738143
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (812 m2); drawn on: 1947,1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2147657,
+37.7377994
+],
+[
+-122.2147203,
+37.7377632
+],
+[
+-122.2142887,
+37.7372025
+],
+[
+-122.2139026,
+37.7367684
+],
+[
+-122.2139026,
+37.7367322
+],
+[
+-122.213948,
+37.7367322
+],
+[
+-122.2141297,
+37.7369312
+],
+[
+-122.2141752,
+37.7369312
+],
+[
+-122.2141752,
+37.7370035
+],
+[
+-122.2142887,
+37.7371301
+],
+[
+-122.2143569,
+37.7371663
+],
+[
+-122.214425,
+37.7372929
+],
+[
+-122.214584,
+37.7374195
+],
+[
+-122.2146294,
+37.73751
+],
+[
+-122.2147884,
+37.7376908
+],
+[
+-122.2148338,
+37.7377994
+],
+[
+-122.2147657,
+37.7377994
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (956 m2); drawn on: 1958,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2176417,
+37.7374787
+],
+[
+-122.2174527,
+37.7375862
+],
+[
+-122.2171933,
+37.7372971
+],
+[
+-122.2173824,
+37.7371895
+],
+[
+-122.2176417,
+37.7374787
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (804 m2); drawn on: 1947,1958,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2157424,
+37.7373653
+],
+[
+-122.2157424,
+37.7373291
+],
+[
+-122.2156743,
+37.7372929
+],
+[
+-122.2156743,
+37.7372568
+],
+[
+-122.2157424,
+37.7372387
+],
+[
+-122.2157424,
+37.7371844
+],
+[
+-122.2156515,
+37.7371482
+],
+[
+-122.2155607,
+37.7370216
+],
+[
+-122.2155607,
+37.7369493
+],
+[
+-122.215538,
+37.7369312
+],
+[
+-122.2154017,
+37.7369312
+],
+[
+-122.215379,
+37.7368588
+],
+[
+-122.215697,
+37.736696
+],
+[
+-122.215697,
+37.7366237
+],
+[
+-122.2157424,
+37.7365875
+],
+[
+-122.2157878,
+37.7365875
+],
+[
+-122.2158105,
+37.7366237
+],
+[
+-122.2159241,
+37.7366237
+],
+[
+-122.2159695,
+37.7367141
+],
+[
+-122.2160831,
+37.7367141
+],
+[
+-122.2161058,
+37.7367322
+],
+[
+-122.2160831,
+37.7368588
+],
+[
+-122.2161285,
+37.7368769
+],
+[
+-122.2161512,
+37.7369493
+],
+[
+-122.2162421,
+37.7370397
+],
+[
+-122.2162421,
+37.7371301
+],
+[
+-122.2158105,
+37.7373291
+],
+[
+-122.2157878,
+37.7373653
+],
+[
+-122.2157424,
+37.7373653
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (3450 m2); drawn on: 1947,1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2168099,
+37.736678
+],
+[
+-122.2168099,
+37.7368046
+],
+[
+-122.2166509,
+37.7368046
+],
+[
+-122.2166509,
+37.736678
+],
+[
+-122.2168099,
+37.736678
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (196 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2148793,
+37.7365875
+],
+[
+-122.2143615,
+37.7368349
+],
+[
+-122.2142433,
+37.736678
+],
+[
+-122.214761,
+37.7364306
+],
+[
+-122.2148793,
+37.7365875
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (1076 m2); drawn on: 1947,1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2146993,
+37.7363273
+],
+[
+-122.2141961,
+37.7365945
+],
+[
+-122.2140808,
+37.7364567
+],
+[
+-122.214584,
+37.7361896
+],
+[
+-122.2146993,
+37.7363273
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (975 m2); drawn on: 1947,1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2139253,
+37.7362077
+],
+[
+-122.2140616,
+37.7361172
+],
+[
+-122.2140616,
+37.7360811
+],
+[
+-122.2141524,
+37.7360811
+],
+[
+-122.2143569,
+37.7359725
+],
+[
+-122.2144704,
+37.7359906
+],
+[
+-122.2144704,
+37.7360811
+],
+[
+-122.2141297,
+37.73628
+],
+[
+-122.2139934,
+37.7363162
+],
+[
+-122.2139253,
+37.73628
+],
+[
+-122.2139253,
+37.7362077
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (872 m2); drawn on: 1947,1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2168099,
+37.7359002
+],
+[
+-122.2168099,
+37.7360087
+],
+[
+-122.2166509,
+37.7360087
+],
+[
+-122.2166509,
+37.7359002
+],
+[
+-122.2168099,
+37.7359002
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1970.5,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (168 m2); drawn on: 1958,1968. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2159582,
+37.7349144
+],
+[
+-122.2157878,
+37.7350501
+],
+[
+-122.2156856,
+37.7349687
+],
+[
+-122.215856,
+37.734833
+],
+[
+-122.2159582,
+37.7349144
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (270 m2); drawn on: 1958. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2154493,
+37.734788
+],
+[
+-122.2149812,
+37.7350396
+],
+[
+-122.2140724,
+37.7339676
+],
+[
+-122.2145406,
+37.733716
+],
+[
+-122.2154493,
+37.734788
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (7112 m2); drawn on: 1947,1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2127442,
+37.7346341
+],
+[
+-122.2126988,
+37.734616
+],
+[
+-122.2126988,
+37.7343447
+],
+[
+-122.2128123,
+37.7343628
+],
+[
+-122.2128805,
+37.7342723
+],
+[
+-122.2130622,
+37.7342361
+],
+[
+-122.213153,
+37.7343447
+],
+[
+-122.2132212,
+37.7345075
+],
+[
+-122.2132212,
+37.7346341
+],
+[
+-122.213153,
+37.7346341
+],
+[
+-122.2131076,
+37.7345979
+],
+[
+-122.2130168,
+37.7345979
+],
+[
+-122.2129032,
+37.7345617
+],
+[
+-122.2128805,
+37.7345798
+],
+[
+-122.2128805,
+37.7347245
+],
+[
+-122.2127896,
+37.7347426
+],
+[
+-122.2127442,
+37.7346341
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (1628 m2); drawn on: 1947,1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.215697,
+37.7345798
+],
+[
+-122.215697,
+37.7346883
+],
+[
+-122.215538,
+37.7346883
+],
+[
+-122.215538,
+37.7345798
+],
+[
+-122.215697,
+37.7345798
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1952.5,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (168 m2); drawn on: 1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2130917,
+37.7341439
+],
+[
+-122.2129009,
+37.7341945
+],
+[
+-122.2127238,
+37.7337713
+],
+[
+-122.2129145,
+37.7337207
+],
+[
+-122.2130917,
+37.7341439
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Naval Air Station Oakland building (North Field)",
+"start_year": 1943.0,
+"end_year": 1986.0,
+"height_m": 7.0,
+"storeys": 2,
+"material": "wood frame",
+"use": "dwelling",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "Navy buildings of NAS Oakland / the WWII base on North Field (Army 1942, Navy lease 1 Feb 1944; 'barracks housed 253 officers and 4,658 men'); drawn from the 1947 sheet on, gone on a later edition (end = midpoint). Symbol traced on the 1958 edition (874 m2); drawn on: 1947,1958,1968,1973,1979. Height / storeys / material ESTIMATED (barracks)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2131194,
+37.7321083
+],
+[
+-122.2129886,
+37.7321865
+],
+[
+-122.2128114,
+37.7319984
+],
+[
+-122.2129423,
+37.7319202
+],
+[
+-122.2131194,
+37.7321083
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1929.0,
+"end_year": 1970.5,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (374 m2); drawn on: 1947,1958,1968. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2127978,
+37.7309717
+],
+[
+-122.2125143,
+37.7312727
+],
+[
+-122.2123871,
+37.7311967
+],
+[
+-122.2126706,
+37.7308958
+],
+[
+-122.2127978,
+37.7309717
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1952.5,
+"end_year": 1986.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (582 m2); drawn on: 1958,1968,1973,1979. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2123948,
+37.7307828
+],
+[
+-122.2122096,
+37.7310041
+],
+[
+-122.2119317,
+37.7308566
+],
+[
+-122.212117,
+37.7306354
+],
+[
+-122.2123948,
+37.7307828
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1929.0,
+"end_year": 1986.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (864 m2); drawn on: 1947,1958,1968,1973,1979. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2112451,
+37.7295515
+],
+[
+-122.2112451,
+37.7297505
+],
+[
+-122.2111315,
+37.7297505
+],
+[
+-122.2111315,
+37.7295515
+],
+[
+-122.2112451,
+37.7295515
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (220 m2); drawn on: 1958. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.210695,
+37.7297472
+],
+[
+-122.2105893,
+37.7297557
+],
+[
+-122.2105572,
+37.7294996
+],
+[
+-122.2106629,
+37.7294912
+],
+[
+-122.210695,
+37.7297472
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (266 m2); drawn on: 1958. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2074257,
+37.7287237
+],
+[
+-122.2072894,
+37.7288864
+],
+[
+-122.207085,
+37.7287779
+],
+[
+-122.2072213,
+37.7286151
+],
+[
+-122.2074257,
+37.7287237
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1929.0,
+"end_year": 1976.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (468 m2); drawn on: 1947,1958,1968,1973. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2081878,
+37.7284156
+],
+[
+-122.2080288,
+37.7286688
+],
+[
+-122.2078562,
+37.7286001
+],
+[
+-122.2080152,
+37.7283469
+],
+[
+-122.2081878,
+37.7284156
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1929.0,
+"end_year": 1963.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (532 m2); drawn on: 1947,1958. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.207017,
+37.7284967
+],
+[
+-122.2069218,
+37.7285915
+],
+[
+-122.2066558,
+37.7284221
+],
+[
+-122.2067511,
+37.7283273
+],
+[
+-122.207017,
+37.7284967
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (403 m2); drawn on: 1958. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2119571,
+37.7274378
+],
+[
+-122.2118756,
+37.7275999
+],
+[
+-122.2117894,
+37.7275725
+],
+[
+-122.2118709,
+37.7274103
+],
+[
+-122.2119571,
+37.7274378
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_oak",
+"name": "Oakland Municipal Airport North Field building (Doolittle Drive / Earhart Road frontage)",
+"start_year": 1952.5,
+"end_year": 1963.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Leandro_300124_1959_24000_geo.tif",
+"note": "North Field buildings along the field's east frontage that are gone today (the 1927-29 airport had 'five hangars, passenger terminal / administrative offices and a restaurant', Port of Oakland; the Navy's 1944 lease lists '8 hangars'); first-edition buildings start 1929 (estimated). Symbol traced on the 1958 edition (158 m2); drawn on: 1958,1973,1979. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9227779,
+37.3641666
+],
+[
+-121.9227779,
+37.3641305
+],
+[
+-121.92271,
+37.3640943
+],
+[
+-121.9226196,
+37.3639858
+],
+[
+-121.9223484,
+37.3638049
+],
+[
+-121.9220093,
+37.3638049
+],
+[
+-121.9219641,
+37.3637145
+],
+[
+-121.9218963,
+37.3637325
+],
+[
+-121.9218963,
+37.363823
+],
+[
+-121.9216928,
+37.3638411
+],
+[
+-121.9216476,
+37.3637687
+],
+[
+-121.9214894,
+37.3637687
+],
+[
+-121.9214668,
+37.3637868
+],
+[
+-121.9214668,
+37.3638592
+],
+[
+-121.921399,
+37.3638592
+],
+[
+-121.9213312,
+37.3634974
+],
+[
+-121.9214894,
+37.3633708
+],
+[
+-121.9215346,
+37.3633527
+],
+[
+-121.9220771,
+37.3633527
+],
+[
+-121.9221449,
+37.363407
+],
+[
+-121.9223032,
+37.363407
+],
+[
+-121.9223484,
+37.3633708
+],
+[
+-121.9223484,
+37.3633346
+],
+[
+-121.9218963,
+37.3629005
+],
+[
+-121.9216476,
+37.3627016
+],
+[
+-121.9215572,
+37.3627196
+],
+[
+-121.9212407,
+37.3629367
+],
+[
+-121.9211277,
+37.3629548
+],
+[
+-121.9205174,
+37.3624302
+],
+[
+-121.9202235,
+37.3621408
+],
+[
+-121.9202235,
+37.3620504
+],
+[
+-121.9205852,
+37.3617972
+],
+[
+-121.9206756,
+37.3617972
+],
+[
+-121.9211955,
+37.3622675
+],
+[
+-121.9213086,
+37.3622494
+],
+[
+-121.921399,
+37.362177
+],
+[
+-121.921512,
+37.362177
+],
+[
+-121.9221449,
+37.3627377
+],
+[
+-121.9224162,
+37.363009
+],
+[
+-121.9225518,
+37.3630995
+],
+[
+-121.9225744,
+37.3631899
+],
+[
+-121.9226196,
+37.3632442
+],
+[
+-121.9226648,
+37.3632442
+],
+[
+-121.9228005,
+37.3631537
+],
+[
+-121.9230039,
+37.3631537
+],
+[
+-121.9230039,
+37.363208
+],
+[
+-121.9230943,
+37.3632442
+],
+[
+-121.9231621,
+37.3633165
+],
+[
+-121.9231621,
+37.3633527
+],
+[
+-121.9232526,
+37.3634251
+],
+[
+-121.9233204,
+37.3634431
+],
+[
+-121.9233204,
+37.3634793
+],
+[
+-121.9234334,
+37.3635517
+],
+[
+-121.9234334,
+37.3636783
+],
+[
+-121.9233882,
+37.3636783
+],
+[
+-121.9232526,
+37.3635698
+],
+[
+-121.9231847,
+37.3635698
+],
+[
+-121.9231395,
+37.3636059
+],
+[
+-121.9231395,
+37.3636602
+],
+[
+-121.923343,
+37.3638411
+],
+[
+-121.9234334,
+37.3638411
+],
+[
+-121.9234334,
+37.3641666
+],
+[
+-121.9227779,
+37.3641666
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose Municipal Airport Terminal C (1965)",
+"start_year": 1965.0,
+"end_year": 2010.0,
+"height_m": 10.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "opened 1965 (groundbreaking 27 Apr 1964; south concourse 1969); north end demolished Dec 2007 - Feb 2008, closed 30 Jun 2010 when Terminal B opened and torn down, site to parking (Wikipedia, SJC timeline). Outline = the purple photorevision symbols of the 1979 PR (1979 photos). Symbol traced on the 1979 edition (23914 m2); drawn on: 1973,1979. Height / storeys / material ESTIMATED (terminal)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9213153,
+37.3638935
+],
+[
+-121.9209491,
+37.3639912
+],
+[
+-121.9208881,
+37.3638447
+],
+[
+-121.9212543,
+37.363747
+],
+[
+-121.9213153,
+37.3638935
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose Municipal Airport Terminal C (1965)",
+"start_year": 1976.0,
+"end_year": 2010.0,
+"height_m": 10.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "opened 1965 (groundbreaking 27 Apr 1964; south concourse 1969); north end demolished Dec 2007 - Feb 2008, closed 30 Jun 2010 when Terminal B opened and torn down, site to parking (Wikipedia, SJC timeline). Outline = the purple photorevision symbols of the 1979 PR (1979 photos). Symbol traced on the 1979 edition (583 m2); drawn on: 1968,1979. Height / storeys / material ESTIMATED (terminal)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.920314,
+37.363009
+],
+[
+-121.920314,
+37.3631357
+],
+[
+-121.9201331,
+37.3631357
+],
+[
+-121.9201331,
+37.363009
+],
+[
+-121.920314,
+37.363009
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose Municipal Airport Terminal C (1965)",
+"start_year": 1970.5,
+"end_year": 2010.0,
+"height_m": 10.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "opened 1965 (groundbreaking 27 Apr 1964; south concourse 1969); north end demolished Dec 2007 - Feb 2008, closed 30 Jun 2010 when Terminal B opened and torn down, site to parking (Wikipedia, SJC timeline). Outline = the purple photorevision symbols of the 1979 PR (1979 photos). Symbol traced on the 1979 edition (224 m2); drawn on: 1973,1979. Height / storeys / material ESTIMATED (terminal)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9229135,
+37.361562
+],
+[
+-121.9229135,
+37.3616344
+],
+[
+-121.9226648,
+37.3616344
+],
+[
+-121.9226648,
+37.361562
+],
+[
+-121.9229135,
+37.361562
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose Municipal Airport Terminal C (1965)",
+"start_year": 1976.0,
+"end_year": 2010.0,
+"height_m": 10.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "opened 1965 (groundbreaking 27 Apr 1964; south concourse 1969); north end demolished Dec 2007 - Feb 2008, closed 30 Jun 2010 when Terminal B opened and torn down, site to parking (Wikipedia, SJC timeline). Outline = the purple photorevision symbols of the 1979 PR (1979 photos). Symbol traced on the 1979 edition (176 m2); drawn on: 1979. Height / storeys / material ESTIMATED (terminal)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9144142,
+37.3542909
+],
+[
+-121.9143238,
+37.3543632
+],
+[
+-121.9143238,
+37.3543994
+],
+[
+-121.9140299,
+37.3543994
+],
+[
+-121.9142786,
+37.3541824
+],
+[
+-121.9143238,
+37.3541824
+],
+[
+-121.9144142,
+37.3542547
+],
+[
+-121.9144142,
+37.3542909
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1955.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (456 m2); drawn on: 1960,1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9141429,
+37.3539653
+],
+[
+-121.9141429,
+37.3541824
+],
+[
+-121.9139621,
+37.3541824
+],
+[
+-121.9139621,
+37.3539653
+],
+[
+-121.9141429,
+37.3539653
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1955.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (384 m2); drawn on: 1960,1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9147533,
+37.3538387
+],
+[
+-121.9146063,
+37.3539563
+],
+[
+-121.9143125,
+37.3537211
+],
+[
+-121.9144594,
+37.3536036
+],
+[
+-121.9147533,
+37.3538387
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1955.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (676 m2); drawn on: 1948,1960,1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.91594,
+37.3534498
+],
+[
+-121.9155105,
+37.3537935
+],
+[
+-121.9152845,
+37.3536126
+],
+[
+-121.9157139,
+37.353269
+],
+[
+-121.91594,
+37.3534498
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1955.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (1520 m2); drawn on: 1960,1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9139621,
+37.3525002
+],
+[
+-121.9140073,
+37.3524822
+],
+[
+-121.9140073,
+37.352446
+],
+[
+-121.9139621,
+37.3524279
+],
+[
+-121.9139621,
+37.3523736
+],
+[
+-121.9140073,
+37.3523736
+],
+[
+-121.9140525,
+37.3523375
+],
+[
+-121.9141655,
+37.3523555
+],
+[
+-121.9141881,
+37.3523013
+],
+[
+-121.9141655,
+37.3522289
+],
+[
+-121.9143238,
+37.3521385
+],
+[
+-121.9145272,
+37.3519576
+],
+[
+-121.9147306,
+37.351831
+],
+[
+-121.9151827,
+37.3514693
+],
+[
+-121.9153636,
+37.3513607
+],
+[
+-121.9153862,
+37.3513246
+],
+[
+-121.9154314,
+37.3513246
+],
+[
+-121.915454,
+37.3512703
+],
+[
+-121.9155896,
+37.3511618
+],
+[
+-121.9156574,
+37.3511618
+],
+[
+-121.91568,
+37.3511979
+],
+[
+-121.9157252,
+37.3511979
+],
+[
+-121.9157705,
+37.3511618
+],
+[
+-121.9157705,
+37.3511256
+],
+[
+-121.9157252,
+37.3511075
+],
+[
+-121.9157252,
+37.3510713
+],
+[
+-121.9159513,
+37.3508905
+],
+[
+-121.9161321,
+37.3508
+],
+[
+-121.9161999,
+37.3508
+],
+[
+-121.9162451,
+37.3507458
+],
+[
+-121.9166294,
+37.3506192
+],
+[
+-121.916652,
+37.3507458
+],
+[
+-121.9166294,
+37.3507639
+],
+[
+-121.9165164,
+37.3507819
+],
+[
+-121.9164034,
+37.3508362
+],
+[
+-121.9163356,
+37.3508362
+],
+[
+-121.916313,
+37.3508
+],
+[
+-121.9162225,
+37.3508
+],
+[
+-121.9161999,
+37.3508543
+],
+[
+-121.9162451,
+37.3508724
+],
+[
+-121.9162451,
+37.3509085
+],
+[
+-121.9161547,
+37.3509447
+],
+[
+-121.9160869,
+37.3510171
+],
+[
+-121.9160191,
+37.3510171
+],
+[
+-121.9159739,
+37.3510532
+],
+[
+-121.9159739,
+37.3511075
+],
+[
+-121.9160191,
+37.3511256
+],
+[
+-121.9160417,
+37.3512341
+],
+[
+-121.916313,
+37.3514693
+],
+[
+-121.9164034,
+37.3515778
+],
+[
+-121.9166746,
+37.3517948
+],
+[
+-121.9166972,
+37.3518853
+],
+[
+-121.9166294,
+37.3519395
+],
+[
+-121.916539,
+37.3519395
+],
+[
+-121.9163808,
+37.3518129
+],
+[
+-121.9163356,
+37.3518129
+],
+[
+-121.916313,
+37.3518672
+],
+[
+-121.916426,
+37.3519576
+],
+[
+-121.9164486,
+37.3520661
+],
+[
+-121.9163808,
+37.3521204
+],
+[
+-121.916313,
+37.3521204
+],
+[
+-121.9156122,
+37.3514873
+],
+[
+-121.915567,
+37.3514873
+],
+[
+-121.9155444,
+37.3515416
+],
+[
+-121.915567,
+37.3515778
+],
+[
+-121.9162451,
+37.3521747
+],
+[
+-121.9162451,
+37.3522108
+],
+[
+-121.9161547,
+37.3522832
+],
+[
+-121.9160643,
+37.3522832
+],
+[
+-121.9159513,
+37.3521928
+],
+[
+-121.9159061,
+37.3521928
+],
+[
+-121.9158835,
+37.352247
+],
+[
+-121.9159965,
+37.3523375
+],
+[
+-121.9159965,
+37.3523917
+],
+[
+-121.9159287,
+37.352446
+],
+[
+-121.9158157,
+37.352446
+],
+[
+-121.915341,
+37.3520119
+],
+[
+-121.9152958,
+37.3520119
+],
+[
+-121.9152732,
+37.3520661
+],
+[
+-121.9157479,
+37.3525002
+],
+[
+-121.9157479,
+37.3525545
+],
+[
+-121.91568,
+37.3526269
+],
+[
+-121.9155896,
+37.3526269
+],
+[
+-121.9155218,
+37.3525726
+],
+[
+-121.9154766,
+37.3525726
+],
+[
+-121.915454,
+37.3526269
+],
+[
+-121.9154992,
+37.352663
+],
+[
+-121.9154992,
+37.3527535
+],
+[
+-121.915454,
+37.3527896
+],
+[
+-121.915341,
+37.3527896
+],
+[
+-121.9149115,
+37.3523917
+],
+[
+-121.9148663,
+37.3523917
+],
+[
+-121.9148437,
+37.352446
+],
+[
+-121.9152506,
+37.3528258
+],
+[
+-121.9152279,
+37.3529343
+],
+[
+-121.9150697,
+37.3529524
+],
+[
+-121.9150471,
+37.3529705
+],
+[
+-121.9150471,
+37.353079
+],
+[
+-121.9149567,
+37.3531333
+],
+[
+-121.9148889,
+37.3531333
+],
+[
+-121.9144594,
+37.3527354
+],
+[
+-121.9141881,
+37.3525364
+],
+[
+-121.9141203,
+37.3525364
+],
+[
+-121.9140073,
+37.3526269
+],
+[
+-121.9139621,
+37.3526269
+],
+[
+-121.9139621,
+37.3525002
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1964.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (24824 m2); drawn on: 1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9170137,
+37.3521566
+],
+[
+-121.9170137,
+37.3522832
+],
+[
+-121.9168329,
+37.3522832
+],
+[
+-121.9168329,
+37.3521566
+],
+[
+-121.9170137,
+37.3521566
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1970.5,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (224 m2); drawn on: 1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9186864,
+37.3520481
+],
+[
+-121.918596,
+37.3520119
+],
+[
+-121.9185508,
+37.3519576
+],
+[
+-121.9185734,
+37.3518491
+],
+[
+-121.9185508,
+37.351831
+],
+[
+-121.9185508,
+37.3517406
+],
+[
+-121.918596,
+37.3517406
+],
+[
+-121.918596,
+37.3517767
+],
+[
+-121.9186638,
+37.351831
+],
+[
+-121.9187769,
+37.351831
+],
+[
+-121.9188221,
+37.3517948
+],
+[
+-121.9188221,
+37.3517406
+],
+[
+-121.9187769,
+37.3517044
+],
+[
+-121.9186638,
+37.3517044
+],
+[
+-121.9186864,
+37.3516501
+],
+[
+-121.9187769,
+37.3516501
+],
+[
+-121.9188899,
+37.3517225
+],
+[
+-121.9188899,
+37.3519938
+],
+[
+-121.9188221,
+37.3520481
+],
+[
+-121.9186864,
+37.3520481
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1976.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (876 m2); drawn on: 1968,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9183474,
+37.35203
+],
+[
+-121.9183022,
+37.35203
+],
+[
+-121.9182343,
+37.3519214
+],
+[
+-121.9181891,
+37.3518853
+],
+[
+-121.9181439,
+37.3518853
+],
+[
+-121.9180535,
+37.3520119
+],
+[
+-121.9179857,
+37.35203
+],
+[
+-121.9179631,
+37.3519938
+],
+[
+-121.9179631,
+37.3517225
+],
+[
+-121.9180309,
+37.3517225
+],
+[
+-121.9180309,
+37.3517948
+],
+[
+-121.9180535,
+37.3518129
+],
+[
+-121.9180987,
+37.3518129
+],
+[
+-121.9181439,
+37.3517767
+],
+[
+-121.9182117,
+37.3517767
+],
+[
+-121.918257,
+37.351831
+],
+[
+-121.9183022,
+37.351831
+],
+[
+-121.9183248,
+37.3518129
+],
+[
+-121.9183248,
+37.3517044
+],
+[
+-121.91837,
+37.3517044
+],
+[
+-121.9183926,
+37.3517225
+],
+[
+-121.9183926,
+37.3519938
+],
+[
+-121.9183474,
+37.35203
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1964.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (824 m2); drawn on: 1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9139621,
+37.3517587
+],
+[
+-121.9141429,
+37.351632
+],
+[
+-121.9142333,
+37.3515959
+],
+[
+-121.9146402,
+37.3512522
+],
+[
+-121.9147306,
+37.351216
+],
+[
+-121.9150471,
+37.3509628
+],
+[
+-121.9152053,
+37.3508724
+],
+[
+-121.9153862,
+37.3507277
+],
+[
+-121.9154314,
+37.3506553
+],
+[
+-121.9155444,
+37.3506192
+],
+[
+-121.9156348,
+37.3505287
+],
+[
+-121.9159513,
+37.3505287
+],
+[
+-121.9159061,
+37.3506011
+],
+[
+-121.9157479,
+37.3506915
+],
+[
+-121.9155896,
+37.3508362
+],
+[
+-121.9154992,
+37.3508543
+],
+[
+-121.9153636,
+37.3509809
+],
+[
+-121.9149115,
+37.3512884
+],
+[
+-121.9145498,
+37.3515778
+],
+[
+-121.9144368,
+37.351632
+],
+[
+-121.914256,
+37.3517767
+],
+[
+-121.914256,
+37.351831
+],
+[
+-121.9141655,
+37.351831
+],
+[
+-121.9140525,
+37.3519214
+],
+[
+-121.9140073,
+37.35203
+],
+[
+-121.9139621,
+37.35203
+],
+[
+-121.9139621,
+37.3517587
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1964.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (4192 m2); drawn on: 1968,1973,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9167424,
+37.3509447
+],
+[
+-121.9167424,
+37.3512703
+],
+[
+-121.9166294,
+37.3512703
+],
+[
+-121.9166294,
+37.3509447
+],
+[
+-121.9167424,
+37.3509447
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1976.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (360 m2); drawn on: 1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9180535,
+37.3506372
+],
+[
+-121.9180535,
+37.3507639
+],
+[
+-121.9179179,
+37.3507639
+],
+[
+-121.9179179,
+37.3506372
+],
+[
+-121.9180535,
+37.3506372
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1976.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (168 m2); drawn on: 1968,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9178049,
+37.3506372
+],
+[
+-121.9178049,
+37.3506915
+],
+[
+-121.9176692,
+37.3506734
+],
+[
+-121.9176918,
+37.3505649
+],
+[
+-121.9176466,
+37.3505287
+],
+[
+-121.9178049,
+37.3505287
+],
+[
+-121.9178275,
+37.3505649
+],
+[
+-121.9178953,
+37.350583
+],
+[
+-121.9178953,
+37.3506192
+],
+[
+-121.9178049,
+37.3506372
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1976.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (246 m2); drawn on: 1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9169459,
+37.3505649
+],
+[
+-121.9169459,
+37.3506915
+],
+[
+-121.9167424,
+37.3506915
+],
+[
+-121.9167424,
+37.3505649
+],
+[
+-121.9169459,
+37.3505649
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose airport south-east T-hangar row",
+"start_year": 1976.0,
+"end_year": 2000.0,
+"height_m": 4.5,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300110_1961_24000_geo.tif",
+"note": "T-hangar / shelter rows at the south-east end, removed for the 12L/30R extension (2020 Master Plan: 'G-2. Remove southeast t-hangar facilities' and 'G-1. Remove south end tiedowns, shelters, and General Aviation Terminal facilities', complete; runway reopened Aug 2001) - end 2000 estimated. Symbol traced on the 1979 edition (252 m2); drawn on: 1968,1979. Height / storeys / material ESTIMATED (t-hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9212521,
+37.3524912
+],
+[
+-121.9209582,
+37.3527263
+],
+[
+-121.9207434,
+37.3525545
+],
+[
+-121.9210373,
+37.3523194
+],
+[
+-121.9212521,
+37.3524912
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sjc",
+"name": "San Jose Municipal Airport early building (south-east, Airport Blvd)",
+"start_year": 1946.0,
+"end_year": 1954.0,
+"height_m": 12.0,
+"storeys": 1,
+"material": "steel",
+"use": "other",
+"confidence": "estimated",
+"source_url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/CA_San%20Jose%20West_300105_1953_24000_geo.tif",
+"note": "buildings of the first airport at the south-east end (Nissen's flight school 1945-46, municipal airport dedicated 1 Feb 1949, first terminal 1950); drawn on the 1953 sheets (1948 photos). Symbol traced on the 1948 edition (988 m2); drawn on: 1948. Height / storeys / material ESTIMATED (hangar)"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3879337,
+37.6133087
+],
+[
+-122.3879373,
+37.6132894
+],
+[
+-122.3879432,
+37.6132705
+],
+[
+-122.3879515,
+37.6132521
+],
+[
+-122.387962,
+37.6132345
+],
+[
+-122.3879745,
+37.6132177
+],
+[
+-122.3879891,
+37.613202
+],
+[
+-122.3880056,
+37.6131876
+],
+[
+-122.3880237,
+37.6131745
+],
+[
+-122.3880434,
+37.6131628
+],
+[
+-122.3880644,
+37.6131528
+],
+[
+-122.3880865,
+37.6131444
+],
+[
+-122.3881096,
+37.6131379
+],
+[
+-122.3881333,
+37.6131331
+],
+[
+-122.3881575,
+37.6131302
+],
+[
+-122.388182,
+37.6131293
+],
+[
+-122.3882064,
+37.6131302
+],
+[
+-122.3882307,
+37.6131331
+],
+[
+-122.3882544,
+37.6131379
+],
+[
+-122.3882775,
+37.6131444
+],
+[
+-122.3882996,
+37.6131528
+],
+[
+-122.3883206,
+37.6131628
+],
+[
+-122.3883403,
+37.6131745
+],
+[
+-122.3883584,
+37.6131876
+],
+[
+-122.3883749,
+37.613202
+],
+[
+-122.3883894,
+37.6132177
+],
+[
+-122.388402,
+37.6132345
+],
+[
+-122.3884125,
+37.6132521
+],
+[
+-122.3884207,
+37.6132705
+],
+[
+-122.3884267,
+37.6132894
+],
+[
+-122.3884303,
+37.6133087
+],
+[
+-122.3884315,
+37.6133283
+],
+[
+-122.3884303,
+37.6133478
+],
+[
+-122.3884267,
+37.6133671
+],
+[
+-122.3884207,
+37.613386
+],
+[
+-122.3884125,
+37.6134044
+],
+[
+-122.388402,
+37.613422
+],
+[
+-122.3883894,
+37.6134388
+],
+[
+-122.3883749,
+37.6134545
+],
+[
+-122.3883584,
+37.6134689
+],
+[
+-122.3883403,
+37.6134821
+],
+[
+-122.3883206,
+37.6134937
+],
+[
+-122.3882996,
+37.6135037
+],
+[
+-122.3882775,
+37.6135121
+],
+[
+-122.3882544,
+37.6135186
+],
+[
+-122.3882307,
+37.6135234
+],
+[
+-122.3882064,
+37.6135263
+],
+[
+-122.388182,
+37.6135272
+],
+[
+-122.3881575,
+37.6135263
+],
+[
+-122.3881333,
+37.6135234
+],
+[
+-122.3881096,
+37.6135186
+],
+[
+-122.3880865,
+37.6135121
+],
+[
+-122.3880644,
+37.6135037
+],
+[
+-122.3880434,
+37.6134937
+],
+[
+-122.3880237,
+37.6134821
+],
+[
+-122.3880056,
+37.6134689
+],
+[
+-122.3879891,
+37.6134545
+],
+[
+-122.3879745,
+37.6134388
+],
+[
+-122.387962,
+37.613422
+],
+[
+-122.3879515,
+37.6134044
+],
+[
+-122.3879432,
+37.613386
+],
+[
+-122.3879373,
+37.6133671
+],
+[
+-122.3879337,
+37.6133478
+],
+[
+-122.3879325,
+37.6133283
+],
+[
+-122.3879337,
+37.6133087
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "SFO Rotunda A (South Terminal)",
+"start_year": 1974,
+"end_year": 2007,
+"height_m": 8.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+"note": "'Rotunda A was completed in 1974' and 'demolished in early 2007' (Wikipedia, Terminal 1 section); round gate building at the end of the south-west pier, position and size read on the 1993 sheet (+-10 m); identification by position (estimated); height / storeys / material ESTIMATED"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3854952,
+37.6124631
+],
+[
+-122.3854979,
+37.6124481
+],
+[
+-122.3855025,
+37.6124335
+],
+[
+-122.3855089,
+37.6124193
+],
+[
+-122.385517,
+37.6124057
+],
+[
+-122.3855267,
+37.6123927
+],
+[
+-122.385538,
+37.6123806
+],
+[
+-122.3855507,
+37.6123694
+],
+[
+-122.3855647,
+37.6123593
+],
+[
+-122.3855799,
+37.6123503
+],
+[
+-122.3855961,
+37.6123426
+],
+[
+-122.3856132,
+37.6123361
+],
+[
+-122.3856311,
+37.612331
+],
+[
+-122.3856494,
+37.6123274
+],
+[
+-122.3856681,
+37.6123251
+],
+[
+-122.385687,
+37.6123244
+],
+[
+-122.3857059,
+37.6123251
+],
+[
+-122.3857246,
+37.6123274
+],
+[
+-122.385743,
+37.612331
+],
+[
+-122.3857608,
+37.6123361
+],
+[
+-122.3857779,
+37.6123426
+],
+[
+-122.3857941,
+37.6123503
+],
+[
+-122.3858093,
+37.6123593
+],
+[
+-122.3858233,
+37.6123694
+],
+[
+-122.3858361,
+37.6123806
+],
+[
+-122.3858473,
+37.6123927
+],
+[
+-122.385857,
+37.6124057
+],
+[
+-122.3858651,
+37.6124193
+],
+[
+-122.3858715,
+37.6124335
+],
+[
+-122.3858761,
+37.6124481
+],
+[
+-122.3858789,
+37.6124631
+],
+[
+-122.3858798,
+37.6124781
+],
+[
+-122.3858789,
+37.6124932
+],
+[
+-122.3858761,
+37.6125081
+],
+[
+-122.3858715,
+37.6125228
+],
+[
+-122.3858651,
+37.612537
+],
+[
+-122.385857,
+37.6125506
+],
+[
+-122.3858473,
+37.6125636
+],
+[
+-122.3858361,
+37.6125757
+],
+[
+-122.3858233,
+37.6125869
+],
+[
+-122.3858093,
+37.612597
+],
+[
+-122.3857941,
+37.612606
+],
+[
+-122.3857779,
+37.6126137
+],
+[
+-122.3857608,
+37.6126202
+],
+[
+-122.385743,
+37.6126253
+],
+[
+-122.3857246,
+37.6126289
+],
+[
+-122.3857059,
+37.6126311
+],
+[
+-122.385687,
+37.6126319
+],
+[
+-122.3856681,
+37.6126311
+],
+[
+-122.3856494,
+37.6126289
+],
+[
+-122.3856311,
+37.6126253
+],
+[
+-122.3856132,
+37.6126202
+],
+[
+-122.3855961,
+37.6126137
+],
+[
+-122.3855799,
+37.612606
+],
+[
+-122.3855647,
+37.612597
+],
+[
+-122.3855507,
+37.6125869
+],
+[
+-122.385538,
+37.6125757
+],
+[
+-122.3855267,
+37.6125636
+],
+[
+-122.385517,
+37.6125506
+],
+[
+-122.3855089,
+37.612537
+],
+[
+-122.3855025,
+37.6125228
+],
+[
+-122.3854979,
+37.6125081
+],
+[
+-122.3854952,
+37.6124932
+],
+[
+-122.3854942,
+37.6124781
+],
+[
+-122.3854952,
+37.6124631
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "SFO South Terminal Boarding Area B rotunda (west)",
+"start_year": 1963,
+"end_year": 2017,
+"height_m": 8.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+"note": "one of the two rotundas of the 1963 South Terminal's Boarding Area B pier, demolished for Harvey Milk Terminal 1 ('demolishing the old TWA hangar and two rotundas'; groundbreaking 29 Jun 2016). Read on the 1979 PR / 1993 sheets (+-10 m); start = South Terminal dedication 15 Sep 1963 (estimated); height / storeys / material ESTIMATED"
+}
+},
+{
+"type": "Feature",
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3839075,
+37.6127706
+],
+[
+-122.3839102,
+37.6127556
+],
+[
+-122.3839148,
+37.612741
+],
+[
+-122.3839212,
+37.6127268
+],
+[
+-122.3839293,
+37.6127132
+],
+[
+-122.383939,
+37.6127002
+],
+[
+-122.3839503,
+37.6126881
+],
+[
+-122.383963,
+37.6126769
+],
+[
+-122.383977,
+37.6126668
+],
+[
+-122.3839922,
+37.6126578
+],
+[
+-122.3840084,
+37.61265
+],
+[
+-122.3840255,
+37.6126436
+],
+[
+-122.3840433,
+37.6126385
+],
+[
+-122.3840617,
+37.6126348
+],
+[
+-122.3840804,
+37.6126326
+],
+[
+-122.3840993,
+37.6126319
+],
+[
+-122.3841182,
+37.6126326
+],
+[
+-122.3841369,
+37.6126348
+],
+[
+-122.3841553,
+37.6126385
+],
+[
+-122.3841731,
+37.6126436
+],
+[
+-122.3841902,
+37.61265
+],
+[
+-122.3842064,
+37.6126578
+],
+[
+-122.3842216,
+37.6126668
+],
+[
+-122.3842356,
+37.6126769
+],
+[
+-122.3842483,
+37.6126881
+],
+[
+-122.3842596,
+37.6127002
+],
+[
+-122.3842693,
+37.6127132
+],
+[
+-122.3842774,
+37.6127268
+],
+[
+-122.3842838,
+37.612741
+],
+[
+-122.3842884,
+37.6127556
+],
+[
+-122.3842912,
+37.6127706
+],
+[
+-122.3842921,
+37.6127856
+],
+[
+-122.3842912,
+37.6128007
+],
+[
+-122.3842884,
+37.6128156
+],
+[
+-122.3842838,
+37.6128303
+],
+[
+-122.3842774,
+37.6128445
+],
+[
+-122.3842693,
+37.6128581
+],
+[
+-122.3842596,
+37.612871
+],
+[
+-122.3842483,
+37.6128832
+],
+[
+-122.3842356,
+37.6128943
+],
+[
+-122.3842216,
+37.6129045
+],
+[
+-122.3842064,
+37.6129135
+],
+[
+-122.3841902,
+37.6129212
+],
+[
+-122.3841731,
+37.6129277
+],
+[
+-122.3841553,
+37.6129328
+],
+[
+-122.3841369,
+37.6129364
+],
+[
+-122.3841182,
+37.6129386
+],
+[
+-122.3840993,
+37.6129394
+],
+[
+-122.3840804,
+37.6129386
+],
+[
+-122.3840617,
+37.6129364
+],
+[
+-122.3840433,
+37.6129328
+],
+[
+-122.3840255,
+37.6129277
+],
+[
+-122.3840084,
+37.6129212
+],
+[
+-122.3839922,
+37.6129135
+],
+[
+-122.383977,
+37.6129045
+],
+[
+-122.383963,
+37.6128943
+],
+[
+-122.3839503,
+37.6128832
+],
+[
+-122.383939,
+37.612871
+],
+[
+-122.3839293,
+37.6128581
+],
+[
+-122.3839212,
+37.6128445
+],
+[
+-122.3839148,
+37.6128303
+],
+[
+-122.3839102,
+37.6128156
+],
+[
+-122.3839075,
+37.6128007
+],
+[
+-122.3839065,
+37.6127856
+],
+[
+-122.3839075,
+37.6127706
+]
+]
+]
+},
+"properties": {
+"site_id": "airport_sfo",
+"name": "SFO South Terminal Boarding Area B rotunda (east)",
+"start_year": 1963,
+"end_year": 2017,
+"height_m": 8.0,
+"storeys": 2,
+"material": "concrete",
+"use": "hall",
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+"note": "see the west rotunda; height / storeys / material ESTIMATED"
+}
+}
+]
+}

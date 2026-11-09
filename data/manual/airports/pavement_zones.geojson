@@ -538,8 +538,12 @@
 "coordinates": [
 [
 [
--122.3872067,
-37.6328265
+-122.3866396,
+37.6319221
+],
+[
+-122.3866396,
+37.6325401
 ],
 [
 -122.3838045,
@@ -615,11 +619,11 @@
 ],
 [
 -122.3940111,
-37.6328265
+37.6319221
 ],
 [
--122.3872067,
-37.6328265
+-122.3866396,
+37.6319221
 ]
 ]
 ]
@@ -736,6 +740,46 @@
 [
 -122.3833508,
 37.606871
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-CGAS",
+"kind": "zone",
+"start_year": 1941,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.militarymuseum.org/cgassf.html",
+"evidence": "Coast Guard Air Station San Francisco (commissioned 15 Nov 1940, dedicated 15 Feb 1941), on the 1946-photo sheet"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3866396,
+37.6355396
+],
+[
+-122.3866396,
+37.6319221
+],
+[
+-122.3968463,
+37.6319221
+],
+[
+-122.3968463,
+37.6355396
+],
+[
+-122.3866396,
+37.6355396
 ]
 ]
 ]
@@ -1718,12 +1762,12 @@
 37.3641174
 ],
 [
--121.9279359,
-37.3650119
+-121.9269163,
+37.3657275
 ],
 [
--121.9324077,
-37.3690912
+-121.9313881,
+37.3698068
 ],
 [
 -121.9310483,
@@ -1839,24 +1883,48 @@
 [
 [
 [
--121.9310483,
-37.3700454
+-121.9342949,
+37.3730069
 ],
 [
--121.9324077,
-37.3690912
+-121.9342949,
+37.3724584
 ],
 [
--121.9361343,
-37.3724906
+-121.9351147,
+37.3732062
 ],
 [
 -121.9347748,
 37.3734447
 ],
 [
+-121.9342949,
+37.3730069
+]
+]
+],
+[
+[
+[
+-121.9313881,
+37.3698068
+],
+[
+-121.9323532,
+37.3706872
+],
+[
+-121.9317518,
+37.3706872
+],
+[
 -121.9310483,
 37.3700454
+],
+[
+-121.9313881,
+37.3698068
 ]
 ]
 ]
@@ -1898,6 +1966,50 @@
 [
 -121.9401768,
 37.3739839
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-NW-GA",
+"kind": "zone",
+"start_year": 2013,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "north-west general-aviation area (Signature FBO; 2020 Master Plan G-8): open land on the 1979 PR; '2011: the west-side long-term lot closed to prepare for general aviation redevelopment'"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9311302,
+37.3743046
+],
+[
+-121.9311302,
+37.3706872
+],
+[
+-121.9323532,
+37.3706872
+],
+[
+-121.9342949,
+37.3724584
+],
+[
+-121.9342949,
+37.3743046
+],
+[
+-121.9311302,
+37.3743046
 ]
 ]
 ]
@@ -1953,7 +2065,7 @@
 "end_year": 9999,
 "confidence": "documented",
 "source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
-"evidence": "12L extension NW part and new cross Taxiway N (Aug 2001)"
+"evidence": "12L extension NW part, extended parallel Taxiway Y and new cross Taxiway N (Aug 2001)"
 },
 "geometry": {
 "type": "Polygon",
@@ -1964,12 +2076,12 @@
 37.3760152
 ],
 [
--121.9409787,
-37.3769098
+-121.9399591,
+37.3776254
 ],
 [
--121.9279359,
-37.3650119
+-121.9269163,
+37.3657275
 ],
 [
 -121.9292104,
