@@ -67,6 +67,7 @@ CITIES = {
             "berkeley way": "berkeley way", "hearst": "hearst avenue", "delaware": "delaware street", "virginia": "virginia street",
             "university ave": "university avenue", "ellsworth": "ellsworth street", "fulton": "fulton street",
             "dana": "dana street", "bowditch": "bowditch street", "union": "union street",
+            "bristol": "hearst avenue",  # West Berkeley's Bristol St is today's Hearst Ave
         },
         "wide_streets": {"shattuck avenue": 32},
         "railroad_streets": [],

@@ -663,13 +663,16 @@ def build():
     log(f"region trees: {len(d)} inventory trees from {d.source.nunique()} sources")
 
     # San Francisco has its own street trees (trees.py); the map extent
-    counties = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
-    sf = counties[(counties.STATEFP == "06") & (counties.COUNTYFP == "075")].geometry.iloc[0]
-    pts = gpd.GeoSeries(gpd.points_from_xy(d.lon, d.lat), crs=4326)
-    keep = in_extent(pts) & ~pts.within(sf).values
-    d, pts = d[keep].reset_index(drop=True), pts[keep].reset_index(drop=True)
-    pu = pts.to_crs(UTM)
-    d["x"], d["y"] = pu.x.values, pu.y.values
+    import shapely
+    from pyproj import Transformer
+    sf = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}",
+                       where="STATEFP = '06' AND COUNTYFP = '075'").geometry.iloc[0]
+    pts = shapely.points(d.lon.values, d.lat.values)
+    keep = in_extent(pts) & ~shapely.contains_xy(sf, d.lon.values, d.lat.values)
+    del pts
+    d = d[keep].reset_index(drop=True)
+    to_utm = Transformer.from_crs(4326, UTM, always_xy=True)
+    d["x"], d["y"] = to_utm.transform(d.lon.values, d.lat.values)
 
     # the same tree in two inventories: the higher-priority source (city before compilation) wins
     tree = cKDTree(np.column_stack([d.x.values, d.y.values]))
@@ -752,15 +755,14 @@ def build():
 
     # the street: 2nd-earliest building within 45 m (today's and vanished), else HISDAC first built-up year
     b = pd.read_parquet(INTERIM / "region_building_points.parquet", columns=["lon", "lat", "start_year"])
-    bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
-    bt = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
+    bt = cKDTree(np.column_stack(to_utm.transform(b.lon.values, b.lat.values)))
     by = b.start_year.to_numpy(float)
     dist, idx = bt.query(np.column_stack([d.x.values, d.y.values]), k=6, distance_upper_bound=45)
     yrs = np.where(np.isfinite(dist), by[np.minimum(idx, len(by) - 1)], np.nan)
     yrs.sort(axis=1)
     street = np.where(np.isfinite(yrs[:, 1]), yrs[:, 1], yrs[:, 0])
     n_bld = int(np.isfinite(street).sum())
-    del b, bu, bt, by
+    del b, bt, by
     gR = grid_def("region")
     fb = np.load(INTERIM / "grid_region_fbuy.npy").astype(float)
     X = np.radians(d.lon.values) * 6378137.0

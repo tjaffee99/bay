@@ -1,0 +1,862 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "notes": "West Berkeley (Ocean View): 2nd - 5th St, Bristol (today Hearst Ave) - Addison (El Dorado Oil Works, Ebbing starch works, Ocean View Hotel, glass works); SP main line along 3rd St.",
+ "blocks": [
+  {
+   "name": "2592",
+   "streets": {
+    "N": "Bristol",
+    "S": "University",
+    "W": "2nd",
+    "E": "3rd"
+   },
+   "px4_est": [
+    [
+     136,
+     270
+    ],
+    [
+     540,
+     270
+    ],
+    [
+     540,
+     910
+    ],
+    [
+     136,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 138.0,
+     "y": 275.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 138.0,
+     "y": 914.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     138.0,
+     275.3
+    ],
+    [
+     541.0,
+     272.7
+    ],
+    [
+     541.0,
+     910.8
+    ],
+    [
+     138.0,
+     914.7
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.77,
+    0.7,
+    0.84
+   ],
+   "corners_all": [
+    {
+     "x": 138.0,
+     "y": 275.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 541.0,
+     "y": 272.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "3rd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 541.0,
+     "y": 910.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "3rd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 138.0,
+     "y": 914.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    138.0,
+    272.67769671704013,
+    541.0,
+    914.7041427826994
+   ]
+  },
+  {
+   "name": "2591",
+   "streets": {
+    "N": "Bristol",
+    "S": "University",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     694,
+     270
+    ],
+    [
+     1070,
+     270
+    ],
+    [
+     1070,
+     910
+    ],
+    [
+     694,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1069.9,
+     "y": 270.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1068.6,
+     "y": 907.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     695.9,
+     271.4
+    ],
+    [
+     1069.9,
+     270.1
+    ],
+    [
+     1068.6,
+     907.2
+    ],
+    [
+     694.6,
+     909.8
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.79,
+    0.81,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 695.9,
+     "y": 271.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 1069.9,
+     "y": 270.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1068.6,
+     "y": 907.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 694.6,
+     "y": 909.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    }
+   ],
+   "zone_px": [
+    694.5924925109177,
+    270.09242824498995,
+    1069.9077047116673,
+    909.8116426895932
+   ]
+  },
+  {
+   "name": "2590",
+   "streets": {
+    "N": "Bristol",
+    "S": "University",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     1160,
+     270
+    ],
+    [
+     1536,
+     270
+    ],
+    [
+     1536,
+     910
+    ],
+    [
+     1160,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1160.0,
+     "y": 269.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1539.0,
+     "y": 270.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1539.0,
+     "y": 905.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1160.0,
+     "y": 906.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1160.0,
+     269.1
+    ],
+    [
+     1539.0,
+     270.4
+    ],
+    [
+     1539.0,
+     905.1
+    ],
+    [
+     1160.0,
+     906.4
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.8,
+    0.8,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 1160.0,
+     "y": 269.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1539.0,
+     "y": 270.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1539.0,
+     "y": 905.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1160.0,
+     "y": 906.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1160.0,
+    269.0921052631579,
+    1539.0,
+    906.4078947368421
+   ]
+  },
+  {
+   "name": "2575",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "2nd",
+    "E": "3rd"
+   },
+   "px4_est": [
+    [
+     136,
+     1064
+    ],
+    [
+     540,
+     1064
+    ],
+    [
+     540,
+     1670
+    ],
+    [
+     136,
+     1670
+    ]
+   ],
+   "corners": [
+    {
+     "x": 138.6,
+     "y": 1066.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 139.9,
+     "y": 1671.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     138.6,
+     1066.4
+    ],
+    [
+     541.5,
+     1065.1
+    ],
+    [
+     541.5,
+     1671.0
+    ],
+    [
+     139.9,
+     1671.0
+    ]
+   ],
+   "edge_q": [
+    0.77,
+    0.86,
+    0.81,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 138.6,
+     "y": 1066.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 541.5,
+     "y": 1065.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "3rd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 541.5,
+     "y": 1671.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "3rd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 139.9,
+     "y": 1671.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    138.59731508496026,
+    1065.0872199062012,
+    541.5,
+    1671.0
+   ]
+  },
+  {
+   "name": "2576",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     694,
+     1064
+    ],
+    [
+     1070,
+     1064
+    ],
+    [
+     1070,
+     1670
+    ],
+    [
+     694,
+     1670
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1067.6,
+     "y": 1062.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1068.9,
+     "y": 1668.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     693.9,
+     1064.8
+    ],
+    [
+     1067.6,
+     1062.2
+    ],
+    [
+     1068.9,
+     1668.1
+    ],
+    [
+     692.6,
+     1669.4
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.82,
+    0.74,
+    0.57
+   ],
+   "corners_all": [
+    {
+     "x": 693.9,
+     "y": 1064.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 1067.6,
+     "y": 1062.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1068.9,
+     "y": 1668.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 692.6,
+     "y": 1669.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    }
+   ],
+   "zone_px": [
+    692.5933801955911,
+    1062.2010904301146,
+    1068.9037605121755,
+    1669.4128171185764
+   ]
+  },
+  {
+   "name": "2577",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     1160,
+     1064
+    ],
+    [
+     1536,
+     1064
+    ],
+    [
+     1536,
+     1670
+    ],
+    [
+     1160,
+     1670
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1159.8,
+     "y": 1060.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1538.4,
+     "y": 1058.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1537.1,
+     "y": 1662.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1157.2,
+     "y": 1667.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1159.8,
+     1060.8
+    ],
+    [
+     1538.4,
+     1058.2
+    ],
+    [
+     1537.1,
+     1662.4
+    ],
+    [
+     1157.2,
+     1667.7
+    ]
+   ],
+   "edge_q": [
+    0.81,
+    0.82,
+    0.64,
+    0.8
+   ],
+   "corners_all": [
+    {
+     "x": 1159.8,
+     "y": 1060.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1538.4,
+     "y": 1058.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1537.1,
+     "y": 1662.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1157.2,
+     "y": 1667.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1157.1943249430499,
+    1058.1672693227283,
+    1538.4205591685713,
+    1667.670852114459
+   ]
+  }
+ ],
+ "pct": 25
+}
