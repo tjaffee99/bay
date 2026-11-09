@@ -1,6 +1,6 @@
 """Render an airport on USGS topo editions (mosaic of 7.5' quads clipped at their neatlines).
 
-  python -I render.py CX CY HALF RES OUT.png SHEET[,SHEET...] [--grid 250] [--geojson F] [--label L]
+  python -I render.py CX CY HALF RES OUT.png "SHEET;SHEET..." [--grid 250] [--geojson F] [--label L]
 
 SHEET = a GeoTIFF file name under the HTMC staging folder (CA_..._geo.tif) or a full URL,
 followed by ':W,S' = the quad's SW corner in NAD27 degrees (7.5' quads: 0.125 deg; 15' quads
@@ -63,7 +63,7 @@ def main():
     ap.add_argument("--grid", type=float, default=250); ap.add_argument("--geojson", default="")
     ap.add_argument("--label", default=""); ap.add_argument("--npy", action="store_true")
     o = ap.parse_args()
-    img = render(o.cx, o.cy, o.half, o.res, o.sheets.split(","))
+    img = render(o.cx, o.cy, o.half, o.res, o.sheets.split(";"))
     if o.npy:
         np.save(o.out.replace(".png", ".npy"), img)
     polys = []
