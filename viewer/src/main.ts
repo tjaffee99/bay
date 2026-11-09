@@ -18,7 +18,7 @@ import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './l
 import {loadRegionIndex, regionBuildingLayers, setRegionLandmarks} from './layers/region-buildings';
 import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail, setGroundDetailRedraw} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
-import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
+import {landmarkLayers, landmarkInfo, loadLandmarks, occupiedMask, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
 import {loadRegionTreeIndex, regionTreeLayers, regionTreesReady} from './layers/region-trees';
 import {treeLod} from './layers/decoration-meshes';
@@ -448,6 +448,7 @@ async function boot() {
   await Promise.all([lmP, treeP, roadP, groundP]);
   if (buildings && landmarks) {
     buildings.replaced = replacedMask(landmarks, buildings.centroids, buildings.count, buildings.height);
+    buildings.occupied = occupiedMask(landmarks, buildings.centroids, buildings.count);
     render();
   }
   setRegionLandmarks(landmarks);

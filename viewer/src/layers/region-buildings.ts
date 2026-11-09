@@ -7,7 +7,7 @@
 import {TileLayer} from '@deck.gl/geo-layers';
 import type {Layer} from '@deck.gl/core';
 import {buildingsLayer, fromBinary, loadTileInWorker, type BuildingSet} from './buildings';
-import {replacedMask, type LandmarkSet} from '../landmarks';
+import {occupiedMask, replacedMask, type LandmarkSet} from '../landmarks';
 import {extentDistance} from './extent';
 
 // landmarks standing on region footprints (Apple Park, Stanford, stadiums…): the
@@ -86,6 +86,7 @@ function tileLayer(
       if (!s || !show) return null;
       if (landmarks && !s.lmDone) {
         s.replaced = replacedMask(landmarks, s.centroids, s.count, s.height);
+        s.occupied = occupiedMask(landmarks, s.centroids, s.count);
         s.lmDone = true;
       }
       return buildingsLayer(s, year, quality, true, `${props.id}-b`) as any;

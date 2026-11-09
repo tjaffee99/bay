@@ -43,6 +43,9 @@ export type LandmarkSet = {
   merged: MergedLandmarks;
   /** replaced-footprint polygons in lon/lat, with the landmark index */
   replaced: {poly: V2[]; bbox: [number, number, number, number]; idx: number}[];
+  /** outlines of landmarks that are gone (stadiums, expositions): nothing else stands
+   *  inside them while they stood */
+  occupied: {poly: V2[]; bbox: [number, number, number, number]; idx: number}[];
 };
 
 const ORIGIN: [number, number] = [-122.42, 37.78];
@@ -94,18 +97,19 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
   });
   const items = LANDMARKS.map((lm, i) => ({lm, vertices: meshes[i].positions.value.length / 3}));
   const replaced: LandmarkSet['replaced'] = [];
+  const occupied: LandmarkSet['occupied'] = [];
   LANDMARKS.forEach((lm, idx) => {
     // Only standing landmarks replace today's footprints: a demolished
-    // stadium's site holds later buildings that must stay visible.
-    if (lm.end < 9000) return;
+    // stadium's site holds later buildings that must stay visible — but not while
+    // the stadium stood (occupied)
     for (const poly of lm.replaces ?? []) {
       const ll = poly.map(p => localToLngLat(lm.anchor, p));
       const xs = ll.map(p => p[0]);
       const ys = ll.map(p => p[1]);
-      replaced.push({poly: ll, bbox: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)], idx});
+      (lm.end < 9000 ? occupied : replaced).push({poly: ll, bbox: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)], idx});
     }
   });
-  return {items, merged, replaced};
+  return {items, merged, replaced, occupied};
 }
 
 export function landmarkLayers(set: LandmarkSet, year: number, quality: boolean): Layer[] {
@@ -135,9 +139,11 @@ export function landmarkInfo(set: LandmarkSet, info: PickingInfo) {
 }
 
 /** Mark buildings whose centroid lies inside a landmark's replaced footprint. */
-/** Per building: the construction-start year of the landmark standing on it (NaN if none).
- *  Older buildings on the site stand until then; the footprint of the landmark itself
- *  (built at or after that year) is hidden. */
+/** Per building: the construction-start year of the landmark standing on it (NaN if none)
+ *  — of the first model of the site's run of landmark models (chainStart). Vanished
+ *  buildings on the site stand until then; a footprint that stands today inside the
+ *  outline IS the landmark and is hidden in every year, whatever year the roll gives it
+ *  (buildings.ts getYears). */
 export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: number, heights?: Float32Array): Float32Array {
   const mask = new Float32Array(n).fill(NaN);
   // tall slivers hugging a tower are parts of the same building (OSM maps towers as
@@ -146,7 +152,7 @@ export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: numbe
   const TOL_X = 0.00015;
   const TOL_Y = 0.00011;
   for (const r of set.replaced) {
-    const from = LANDMARKS[r.idx].built[0];
+    const from = chainStart(r.idx, r.poly);
     const [x0, y0, x1, y1] = r.bbox;
     for (let i = 0; i < n; i++) {
       const x = centroids[i * 2];
@@ -158,6 +164,51 @@ export function replacedMask(set: LandmarkSet, centroids: Float64Array, n: numbe
     }
   }
   return mask;
+}
+
+/** Per building [from, to] (NaN, NaN if none): the years a landmark that is gone today
+ *  occupied its site (Seals Stadium 1931–59, Ewing Field 1914–38, Recreation Park): the
+ *  generated houses on those lots stood inside the ballpark. A building there ends when
+ *  the landmark's construction starts, or starts when it is gone. */
+export function occupiedMask(set: LandmarkSet, centroids: Float64Array, n: number): Float32Array {
+  const mask = new Float32Array(n * 2).fill(NaN);
+  for (const r of set.occupied) {
+    const lm = LANDMARKS[r.idx];
+    const [x0, y0, x1, y1] = r.bbox;
+    for (let i = 0; i < n; i++) {
+      const x = centroids[i * 2];
+      const y = centroids[i * 2 + 1];
+      if (x < x0 || x > x1 || y < y0 || y > y1 || !pointInPolygon(x, y, r.poly)) continue;
+      mask[i * 2] = Number.isNaN(mask[i * 2]) ? lm.built[0] : Math.min(mask[i * 2], lm.built[0]);
+      mask[i * 2 + 1] = Number.isNaN(mask[i * 2 + 1]) ? lm.end : Math.max(mask[i * 2 + 1], lm.end);
+    }
+  }
+  return mask;
+}
+
+/** Construction start of the first model in the unbroken run of landmark models on a site
+ *  that ends with the standing landmark `idx` (Memorial Stadium 1923 → 2012, Hangar One
+ *  clad → re-skinned, Call Building → Central Tower, the Cliff Houses): the generated
+ *  buildings on the site give way to the first of them, not only to the last. An earlier
+ *  model belongs to the site when its anchor lies in the replaced outline (or within
+ *  ~90 m of the landmark's anchor) and it ended no more than 5 years before the next. */
+const chainCache = new Map<number, number>();
+function chainStart(idx: number, poly: V2[]): number {
+  const hit = chainCache.get(idx);
+  if (hit !== undefined) return hit;
+  const lm = LANDMARKS[idx];
+  let t = lm.built[0];
+  const near = LANDMARKS.filter((o, j) => {
+    if (j === idx || o.end >= 9000) return false;
+    const dx = (o.anchor[0] - lm.anchor[0]) * 88_000;
+    const dy = (o.anchor[1] - lm.anchor[1]) * 111_000;
+    return Math.hypot(dx, dy) < 90 || pointInPolygon(o.anchor[0], o.anchor[1], poly);
+  }).sort((a, b) => b.end - a.end);
+  for (const o of near) {
+    if (o.end >= t - 5 && o.built[0] < t) t = o.built[0];
+  }
+  chainCache.set(idx, t);
+  return t;
 }
 
 /** Distance from a point to a polygon's edges, in units of the ~12 m tolerance. */

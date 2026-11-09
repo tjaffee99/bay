@@ -831,7 +831,13 @@ def main():
         names = (st.street.fillna("").str.upper().str.strip() + " " + st.st_type.fillna("").str.upper().str.strip()).str.strip().values
         for r in t.itertuples():
             m = names == str(r.street).upper().strip()
-            y0 = np.where(m, np.maximum(y0, float(r.year_start)), y0)
+            # rule (optional column): blank = not before that year (a street cut through older
+            # blocks, a tunnel); `set` = the researched opening year replaces the estimate (a
+            # boulevard without buildings along it, which the building rule leaves at 1950)
+            if str(getattr(r, "rule", "")).strip().lower() == "set":
+                y0 = np.where(m, float(r.year_start), y0)
+            else:
+                y0 = np.where(m, np.maximum(y0, float(r.year_start)), y0)
             log(f"roads: {int(m.sum())} segments of {r.street} from {r.year_start}")
     cls = pd.to_numeric(st.classcode, errors="coerce").fillna(5).values
     kind = np.where(cls <= 3, K_MAJOR, K_STREET)

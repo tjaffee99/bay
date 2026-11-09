@@ -29,6 +29,8 @@ export type BuildingSet = {
   /** construction-start year of the landmark reconstruction on this footprint (NaN = none):
    *  while landmarks are shown the building ends then (or is hidden if it is the landmark) */
   replaced: Float32Array;
+  /** per building [from, to]: years a vanished landmark occupied its site (landmarks occupiedMask) */
+  occupied?: Float32Array;
   /** Extra per-feature info for the click popup. */
   info: (i: number) => Record<string, string | number>;
 };
@@ -218,9 +220,27 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean,
     getYears: (_: any, {index, target}: {index: number; target: number[]}) => {
       const lm = hideReplaced ? set.replaced[index] : NaN;
       const end = Number.isNaN(lm) ? set.end[index] : Math.min(set.end[index], lm);
-      const hidden = end <= set.start[index] + 0.1;
-      target[0] = hidden ? 1e5 : set.start[index];
-      target[1] = hidden ? 1e5 : end;
+      // under a standing landmark: a footprint that stands today is the landmark itself
+      // (hidden in every year — the roll dated Macy's at Stanford 1900 and it stood there
+      // as a block for 55 years before the model); vanished buildings stand until the
+      // landmark's construction starts
+      let hidden = end <= set.start[index] + 0.1 || (!Number.isNaN(lm) && set.end[index] >= 9000);
+      let start = set.start[index];
+      let stop = end;
+      // inside a landmark that is gone today (a ballpark, an exposition): not while it stood
+      const occ = hideReplaced ? set.occupied : undefined;
+      if (occ && !hidden && !Number.isNaN(occ[index * 2])) {
+        const from = occ[index * 2];
+        const to = occ[index * 2 + 1];
+        // (a building older than the landmark that outlived it was not on the site: the
+        // outline is generous — left alone)
+        if (start < from) {
+          if (stop <= to) stop = Math.min(stop, from);
+        } else if (start < to) start = to;
+        hidden = stop <= start + 0.1;
+      }
+      target[0] = hidden ? 1e5 : start;
+      target[1] = hidden ? 1e5 : stop;
       return target as any;
     },
     currentYear: year,
@@ -228,7 +248,7 @@ export function buildingsLayer(set: BuildingSet, year: number, quality: boolean,
     shrinkYears: 0.6,
     // Buildings destroyed in a year get a scorched tint as they sink.
     endTint: [0.42, 0.3, 0.24, 0.65],
-    updateTriggers: {getFillColor: quality, getYears: [hideReplaced, set.replaced]},
+    updateTriggers: {getFillColor: quality, getYears: [hideReplaced, set.replaced, set.occupied]},
     extensions: [polygonTime]
   };
   if (set.kind === 'binary') {

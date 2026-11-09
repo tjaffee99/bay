@@ -35,6 +35,7 @@ import zipfile
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+from scipy.ndimage import median_filter
 from scipy.spatial import cKDTree
 from shapely.geometry import LineString, Point
 from shapely.ops import linemerge
@@ -484,7 +485,9 @@ def main():
         if (vy >= 9999).any():
             _, ii = trees[li].query(sg["xy"])
             vy = np.where(vy >= 9999, lv_y[li][ii], vy)
-        vy = np.round(vy, 2)
+        # (median over ~120 m: no single-vertex flicker where two lines of different years
+        # run side by side, as at the Oakland Wye and Bay Fair)
+        vy = np.round(median_filter(vy, size=9, mode="nearest"), 2)
         lon, lat = to_ll(sg["xy"])
         z = ground(lon, lat) + sg["h"]
         kind = TRACK_KIND[sg["veh"]]

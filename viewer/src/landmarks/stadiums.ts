@@ -473,6 +473,8 @@ const ewingField: Landmark = {
       }
     });
   },
+  // the field stayed open ground until the houses of 1938 (the grandstand's outline)
+  replaces: [rect(0, 0, 200, 200)],
   facts: {Opened: 'May 16, 1914', 'After 1926': 'bleachers used for football (SF State 1931–35)', Demolished: '1938 (Ewing Terrace housing)'},
   sources: ['https://en.wikipedia.org/wiki/Ewing_Field']
 };
