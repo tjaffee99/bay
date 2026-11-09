@@ -1,0 +1,387 @@
+{
+ "notes": "sheet 21 (May 1920): A St -> C St, 1st -> 3rd Av (one block per quarter; streets not to scale); north = left. The B St lots of 144 / 153 fitted with the blocks across the tracks (with); their zones include the railroad strip (freight house, passenger station).",
+ "blocks": [
+  {
+   "name": "145",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "railroad avenue",
+    "E": "c street"
+   },
+   "px4_est": [
+    [
+     208,
+     516
+    ],
+    [
+     208,
+     185
+    ],
+    [
+     663,
+     185
+    ],
+    [
+     663,
+     516
+    ]
+   ],
+   "corners": [
+    {
+     "x": 208.0,
+     "y": 516.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "1st avenue"
+     ]
+    },
+    {
+     "x": 208.0,
+     "y": 185.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ]
+    },
+    {
+     "x": 663.0,
+     "y": 185.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 663.0,
+     "y": 516.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "154",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "railroad avenue",
+    "E": "c street"
+   },
+   "px4_est": [
+    [
+     962.5,
+     518
+    ],
+    [
+     962.5,
+     185
+    ],
+    [
+     1416,
+     185
+    ],
+    [
+     1416,
+     518
+    ]
+   ],
+   "corners": [
+    {
+     "x": 962.5,
+     "y": 518.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "railroad avenue",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 962.5,
+     "y": 185.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "c street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 1416.0,
+     "y": 185.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "3rd avenue"
+     ]
+    },
+    {
+     "x": 1416.0,
+     "y": 518.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "railroad avenue",
+      "3rd avenue"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "144",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     209,
+     997
+    ],
+    [
+     209,
+     832
+    ],
+    [
+     663,
+     832
+    ],
+    [
+     663,
+     997
+    ]
+   ],
+   "corners": [
+    {
+     "x": 209.0,
+     "y": 997.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ]
+    },
+    {
+     "x": 663.0,
+     "y": 997.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ]
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "145"
+   ]
+  },
+  {
+   "name": "153",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     963,
+     999
+    ],
+    [
+     963,
+     832
+    ],
+    [
+     1417,
+     832
+    ],
+    [
+     1417,
+     999
+    ]
+   ],
+   "corners": [
+    {
+     "x": 963.0,
+     "y": 999.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 1417.0,
+     "y": 999.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "3rd avenue"
+     ]
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "154"
+   ]
+  },
+  {
+   "name": "143",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "a street",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     210,
+     1741
+    ],
+    [
+     210,
+     1408
+    ],
+    [
+     664,
+     1408
+    ],
+    [
+     664,
+     1741
+    ]
+   ],
+   "corners": [
+    {
+     "x": 210.0,
+     "y": 1408.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ]
+    },
+    {
+     "x": 664.0,
+     "y": 1408.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 664.0,
+     "y": 1741.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "a street",
+      "2nd avenue"
+     ]
+    }
+   ],
+   "skip": [
+    "NW"
+   ]
+  },
+  {
+   "name": "152",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "a street",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     963,
+     1742
+    ],
+    [
+     963,
+     1409
+    ],
+    [
+     1415,
+     1409
+    ],
+    [
+     1415,
+     1742
+    ]
+   ],
+   "corners": [
+    {
+     "x": 963.0,
+     "y": 1742.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "a street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 963.0,
+     "y": 1409.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "b street",
+      "2nd avenue"
+     ]
+    },
+    {
+     "x": 1415.0,
+     "y": 1409.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "3rd avenue"
+     ]
+    },
+    {
+     "x": 1415.0,
+     "y": 1742.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "a street",
+      "3rd avenue"
+     ]
+    }
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,1345 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "residential": true,
+ "notes": "West Berkeley: 2nd - 5th St, Virginia - Bristol (Hotel Chicago, Carbonic Dioxide Corp., S.P.R.R. depot on 3rd St). 3rd St and Delaware St at 4th St have no road today: all blocks are fitted together (the plate is to scale).",
+ "blocks": [
+  {
+   "name": "2614",
+   "streets": {
+    "N": "Virginia",
+    "S": "Delaware",
+    "W": "2nd",
+    "E": "3rd"
+   },
+   "px4_est": [
+    [
+     110,
+     150
+    ],
+    [
+     516,
+     150
+    ],
+    [
+     516,
+     1050
+    ],
+    [
+     110,
+     1050
+    ]
+   ],
+   "corners": [
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    }
+   ],
+   "with": [
+    "2613",
+    "2612",
+    "2597",
+    "2598",
+    "2599"
+   ],
+   "px4": [
+    [
+     113.3,
+     151.0
+    ],
+    [
+     516.8,
+     151.0
+    ],
+    [
+     514.2,
+     1050.0
+    ],
+    [
+     110.7,
+     1050.0
+    ]
+   ],
+   "edge_q": [
+    0.8,
+    0.66,
+    0.74,
+    0.42
+   ],
+   "corners_all": [
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 516.8,
+     "y": 151.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "3rd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 514.2,
+     "y": 1050.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "3rd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 110.7,
+     "y": 1050.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  7.7 191.6] at 2nd x Delaware NE"
+    }
+   ],
+   "zone_px": [
+    110.68421052631578,
+    151.0,
+    516.812865497076,
+    1050.0
+   ]
+  },
+  {
+   "name": "2613",
+   "streets": {
+    "N": "Virginia",
+    "S": "Delaware",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     670,
+     150
+    ],
+    [
+     1040,
+     150
+    ],
+    [
+     1040,
+     1050
+    ],
+    [
+     670,
+     1050
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    }
+   ],
+   "with": [
+    "2614",
+    "2612",
+    "2597",
+    "2598",
+    "2599"
+   ],
+   "px4": [
+    [
+     669.5,
+     151.1
+    ],
+    [
+     1042.8,
+     152.4
+    ],
+    [
+     1040.2,
+     1050.0
+    ],
+    [
+     663.0,
+     1050.0
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.63,
+    0.75,
+    0.34
+   ],
+   "corners_all": [
+    {
+     "x": 669.5,
+     "y": 151.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1040.2,
+     "y": 1050.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  8.6 191.6] at 4th x Delaware NW"
+    },
+    {
+     "x": 663.0,
+     "y": 1050.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    }
+   ],
+   "zone_px": [
+    662.9605263157895,
+    151.09043919856845,
+    1042.8087196401425,
+    1050.0
+   ]
+  },
+  {
+   "name": "2612",
+   "streets": {
+    "N": "Virginia",
+    "S": "Delaware",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     1130,
+     150
+    ],
+    [
+     1510,
+     150
+    ],
+    [
+     1510,
+     1050
+    ],
+    [
+     1130,
+     1050
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    }
+   ],
+   "with": [
+    "2614",
+    "2613",
+    "2597",
+    "2598",
+    "2599"
+   ],
+   "px4": [
+    [
+     1133.9,
+     150.8
+    ],
+    [
+     1512.0,
+     154.7
+    ],
+    [
+     1512.0,
+     1050.0
+    ],
+    [
+     1132.6,
+     1050.0
+    ]
+   ],
+   "edge_q": [
+    0.61,
+    0.75,
+    0.76,
+    0.6
+   ],
+   "corners_all": [
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1512.0,
+     "y": 1050.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  8.7 192.2] at 5th x Delaware NW"
+    },
+    {
+     "x": 1132.6,
+     "y": 1050.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 10.3 192.1] at 4th x Delaware NE"
+    }
+   ],
+   "zone_px": [
+    1132.592105263158,
+    150.81689785777417,
+    1512.0,
+    1050.0
+   ]
+  },
+  {
+   "name": "2597",
+   "streets": {
+    "N": "Delaware",
+    "S": "Bristol",
+    "W": "2nd",
+    "E": "3rd"
+   },
+   "px4_est": [
+    [
+     110,
+     1170
+    ],
+    [
+     516,
+     1170
+    ],
+    [
+     516,
+     1776
+    ],
+    [
+     110,
+     1776
+    ]
+   ],
+   "corners": [
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    }
+   ],
+   "with": [
+    "2614",
+    "2613",
+    "2612",
+    "2598",
+    "2599"
+   ],
+   "px4": [
+    [
+     111.4,
+     1171.0
+    ],
+    [
+     515.1,
+     1171.0
+    ],
+    [
+     516.4,
+     1778.2
+    ],
+    [
+     116.6,
+     1774.3
+    ]
+   ],
+   "edge_q": [
+    0.67,
+    0.57,
+    0.65,
+    0.57
+   ],
+   "corners_all": [
+    {
+     "x": 111.4,
+     "y": 1171.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  7.7 134.9] at 2nd x Delaware SE"
+    },
+    {
+     "x": 515.1,
+     "y": 1171.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "3rd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 516.4,
+     "y": 1778.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "3rd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    111.3771061316658,
+    1171.0,
+    516.4127316680306,
+    1778.227697028144
+   ]
+  },
+  {
+   "name": "2598",
+   "streets": {
+    "N": "Delaware",
+    "S": "Bristol",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     670,
+     1170
+    ],
+    [
+     1040,
+     1170
+    ],
+    [
+     1040,
+     1776
+    ],
+    [
+     670,
+     1776
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    },
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    }
+   ],
+   "with": [
+    "2614",
+    "2613",
+    "2612",
+    "2597",
+    "2599"
+   ],
+   "px4": [
+    [
+     666.9,
+     1172.0
+    ],
+    [
+     1041.8,
+     1172.0
+    ],
+    [
+     1039.2,
+     1776.2
+    ],
+    [
+     665.6,
+     1778.8
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.75,
+    0.62,
+    0.5
+   ],
+   "corners_all": [
+    {
+     "x": 666.9,
+     "y": 1172.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    },
+    {
+     "x": 1041.8,
+     "y": 1172.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  8.9 134.2] at 4th x Delaware SW"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 665.6,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
+    }
+   ],
+   "zone_px": [
+    665.5859232585437,
+    1172.0,
+    1041.80710439465,
+    1778.8471840451027
+   ]
+  },
+  {
+   "name": "2599",
+   "streets": {
+    "N": "Delaware",
+    "S": "Bristol",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     1130,
+     1170
+    ],
+    [
+     1510,
+     1170
+    ],
+    [
+     1510,
+     1776
+    ],
+    [
+     1130,
+     1776
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2599"
+    },
+    {
+     "x": 113.3,
+     "y": 151.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2614"
+    },
+    {
+     "x": 1042.8,
+     "y": 152.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2613"
+    },
+    {
+     "x": 1133.9,
+     "y": 150.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 1512.0,
+     "y": 154.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Virginia"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2612"
+    },
+    {
+     "x": 116.6,
+     "y": 1774.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2597"
+    },
+    {
+     "x": 1039.2,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2598"
+    }
+   ],
+   "with": [
+    "2614",
+    "2613",
+    "2612",
+    "2597",
+    "2598"
+   ],
+   "px4": [
+    [
+     1132.8,
+     1172.0
+    ],
+    [
+     1510.7,
+     1172.0
+    ],
+    [
+     1506.8,
+     1776.2
+    ],
+    [
+     1130.2,
+     1778.8
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.53,
+    0.77,
+    0.68
+   ],
+   "corners_all": [
+    {
+     "x": 1132.8,
+     "y": 1172.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 10.4 134.4] at 4th x Delaware SE"
+    },
+    {
+     "x": 1510.7,
+     "y": 1172.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [  8.1 134.3] at 5th x Delaware SW"
+    },
+    {
+     "x": 1506.8,
+     "y": 1776.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1130.2,
+     "y": 1778.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1130.1719880214482,
+    1172.0,
+    1510.710656591975,
+    1778.814598420904
+   ]
+  }
+ ],
+ "pct": 25
+}

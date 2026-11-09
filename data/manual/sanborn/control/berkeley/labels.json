@@ -216,5 +216,155 @@
    "Friends Church",
    "church"
   ]
+ ],
+ "002_0061": [
+  [
+   430,
+   300,
+   "El Dorado Oil Works",
+   "factory"
+  ],
+  [
+   190,
+   560,
+   "Everding & Co. starch works",
+   "factory"
+  ],
+  [
+   480,
+   860,
+   "Ocean View Hotel",
+   "hotel"
+  ],
+  [
+   220,
+   1580,
+   "Glass works",
+   "factory"
+  ]
+ ],
+ "002_0062": [
+  [
+   300,
+   170,
+   "Ramona Candy Co., candy factory",
+   "factory"
+  ],
+  [
+   330,
+   560,
+   "Standard Soap Co.",
+   "factory"
+  ],
+  [
+   460,
+   800,
+   "Western Refining Co.",
+   "factory"
+  ],
+  [
+   460,
+   1500,
+   "Tillman & Bendel warehouse",
+   "warehouse"
+  ],
+  [
+   744,
+   1090,
+   "Van Emon Elevator Co., machine shop",
+   "factory"
+  ],
+  [
+   810,
+   1650,
+   "Century Mercantile Co.",
+   "warehouse"
+  ],
+  [
+   830,
+   1340,
+   "Van Emon Elevator Co., foundry",
+   "factory"
+  ]
+ ],
+ "002_0047": [
+  [
+   940,
+   210,
+   "Monarch Oil & Refining Co.",
+   "factory"
+  ],
+  [
+   1120,
+   660,
+   "West Berkeley Lumber Co., planing mill",
+   "factory"
+  ],
+  [
+   1480,
+   290,
+   "Everding & Co. starch works",
+   "factory"
+  ],
+  [
+   1360,
+   980,
+   "Eldorado Oil Works, coconut storage",
+   "warehouse"
+  ],
+  [
+   200,
+   860,
+   "Municipal wharf, general warehouse",
+   "warehouse"
+  ]
+ ],
+ "002_0063": [
+  [
+   200,
+   530,
+   "Imperial Match Co.",
+   "factory"
+  ],
+  [
+   980,
+   1260,
+   "M. E. Church",
+   "church"
+  ]
+ ],
+ "002_0075": [
+  [
+   240,
+   1180,
+   "West Berkeley Macaroni Factory",
+   "factory"
+  ],
+  [
+   1230,
+   790,
+   "Hygienic Health Food Co.",
+   "factory"
+  ]
+ ],
+ "002_0048": [
+  [
+   464,
+   990,
+   "Hotel Chicago",
+   "hotel"
+  ],
+  [
+   460,
+   240,
+   "Carbonic Dioxide Corp.",
+   "factory"
+  ],
+  [
+   710,
+   1240,
+   "Southern Pacific depot (West Berkeley)",
+   "rail"
+  ]
  ]
 }
