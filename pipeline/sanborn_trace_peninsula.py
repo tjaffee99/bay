@@ -695,6 +695,43 @@ def check(out=None):
     return out
 
 
+def tables():
+    """markdown tables for the README: per area / map year counts, and per sheet the fits (blocks, control corners,
+    RMS / max, scale, rotation) and footprints."""
+    import math
+    import geopandas as gpd
+    out = ["| file | features | high / medium / low | materials | uses | area (1000 m2) | modern_overlap >= 0.5 |",
+           "|---|---|---|---|---|---|---|"]
+    for (a, y) in sorted(E.AREAS):
+        g = gpd.read_file(E.OUT / f"{a}_{y}.geojson")
+        cf = g.confidence.value_counts()
+        out.append(f"| {a}_{y} | {len(g):,} | {cf.get('high', 0)} / {cf.get('medium', 0)} / {cf.get('low', 0)} | "
+                   + ", ".join(f"{k} {v}" for k, v in g.material.value_counts().items()) + " | "
+                   + ", ".join(f"{k} {v}" for k, v in g["use"].value_counts().items()) + f" | {g.area_m2.sum() / 1000:.1f} | "
+                   + f"{int((g.modern_overlap >= 0.5).sum())} |")
+    out += ["", "| sheet (key) | map year | fits | RMS / max (m) per fit | scale (m/px), rotation | footprints |", "|---|---|---|---|---|---|"]
+    for (a, y), keys in sorted(E.AREAS.items()):
+        g = gpd.read_file(E.OUT / f"{a}_{y}.geojson")
+        for k in keys:
+            G = json.load(open(E.INTERIM / f"{k}.M.json"))
+            n = int((g.id.str.startswith(k + "_")).sum())
+            if "registered_to" in G:
+                out.append(f"| {k} | {y} | registered onto {G['registered_to']} (SIFT, {G.get('reg_rms_px', 0)} px) | (base fits) | | {n} |")
+                continue
+            fits, seen = [], set()
+            for b in G.get("blocks", []):
+                key = tuple(sorted(q["label"] for q in b["points"]))
+                if key in seen:
+                    continue
+                seen.add(key)
+                M = b["M"]
+                fits.append((b["name"], b["n"], b["rms"], b["max"], math.hypot(M[0][0], M[1][0]), math.degrees(math.atan2(M[1][0], M[0][0]))))
+            out.append(f"| {k} | {y} | {len(fits)} fit(s), {len(G.get('blocks', []))} block zones | "
+                       + "; ".join(f"{nm}: {nn} pts {r:.2f}/{mx:.2f}" for nm, nn, r, mx, _, _ in fits[:6]) + (" ..." if len(fits) > 6 else "")
+                       + f" | {np.median([f[4] for f in fits]):.4f}, {np.median([f[5] for f in fits]):.1f} deg | {n} |")
+    return "\n".join(out)
+
+
 def main():
     city = sys.argv[1]
     setup(city)
@@ -708,6 +745,9 @@ def main():
     if stage == "lines":  # long solid block lines (for writing specs)
         for ln in solid_lines(sys.argv[3], int(os.environ.get("MINLEN", 120))):
             print(*ln)
+        return
+    if stage == "tables":
+        print(tables())
         return
     if stage == "sheets":  # list the sheets of each volume
         for vol, recs in E.index().items():
