@@ -1,0 +1,40 @@
+{
+ "005_0004": [
+  [
+   162.5,
+   872.6,
+   "Mayfield Brewery",
+   "factory"
+  ]
+ ],
+ "004_0003": [
+  [
+   157.0,
+   896.0,
+   "Mayfield Brewery",
+   "factory"
+  ]
+ ],
+ "005_0003": [
+  [
+   178.0,
+   834.9,
+   "Bank",
+   "bank"
+  ],
+  [
+   183.7,
+   990.4,
+   "General store and lodge hall",
+   "store"
+  ]
+ ],
+ "004_0002": [
+  [
+   166.8,
+   892.9,
+   "General store and lodge hall",
+   "store"
+  ]
+ ]
+}

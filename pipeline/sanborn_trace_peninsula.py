@@ -389,6 +389,22 @@ def add_storeys(reads):
     json.dump(st, open(p, "w"), indent=1)
 
 
+def add_labels(reads):
+    """scratch aid: {footprint id: (name, use or None)} read off the sheets -> labels.json [x, y, name, use] at a point
+    inside the footprint on its 25 % scan."""
+    from shapely.geometry import Polygon
+    p = E.CONTROL / "labels.json"
+    lab = json.load(open(p)) if p.exists() else {}
+    for fid, (name, use) in reads.items():
+        key = fid.rsplit("_", 1)[0]
+        r = [r for r in json.load(open(E.INTERIM / f"{key}.json")) if r["id"] == fid][0]
+        q = Polygon(r["px_ring"]).buffer(0).representative_point()
+        lst = [e for e in lab.setdefault(key, []) if e[2] != name]
+        lst.append([round(q.x, 1), round(q.y, 1), name, use])
+        lab[key] = lst
+    json.dump(lab, open(p, "w"), indent=1)
+
+
 def storeys_to_attributes():
     """control/<city>/storeys.json {key: [[x, y, stories], ...]} (storey numbers read off the scans by eye, pixel on the
     25 % scan inside the building) -> {footprint id: stories}: the footprint containing the pixel, else the nearest
@@ -640,6 +656,12 @@ def assemble():
                 for name, ring in cfg["cover_extra_px"]:
                     cv = cv.union(Polygon(W.apply(np.array(blocks[name]["M"]), ring)))
             cover.append(cv)
+            base = cfg
+            while "registered_to" in base:  # an earlier edition registered onto a later plate: the base sheet's flags
+                base = json.load(open(E.CONTROL / f"{base['registered_to']}.json"))
+            for k_ in ("residential", "residential_blocks", "commercial_blocks", "confidence_cap"):
+                if k_ in base and k_ not in cfg:
+                    cfg[k_] = base[k_]
             res_blocks = set(cfg.get("residential_blocks", []))
             com_blocks = set(cfg.get("commercial_blocks", []))
             for r in rows:

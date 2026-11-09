@@ -1,0 +1,100 @@
+{
+ "005_0018": [
+  [
+   973.0,
+   557.1,
+   "Times Publishing Co.",
+   "factory"
+  ],
+  [
+   973.4,
+   184.2,
+   "Public Library",
+   "library"
+  ],
+  [
+   315.1,
+   810.8,
+   "Mariposa Lodgings",
+   "hotel"
+  ],
+  [
+   274.0,
+   1532.8,
+   "Bank",
+   "bank"
+  ]
+ ],
+ "005_0017": [
+  [
+   1172.2,
+   360.9,
+   "City Hall and engine house",
+   "other"
+  ],
+  [
+   1356.9,
+   381.6,
+   "Bank, music store, telephone offices",
+   "bank"
+  ]
+ ],
+ "005_0011": [
+  [
+   882.0,
+   1296.5,
+   "Christian Church",
+   "church"
+  ]
+ ],
+ "005_0016": [
+  [
+   1020.5,
+   1392.5,
+   "Santa Clara Interurban R.R. Co. substation and power house",
+   "factory"
+  ]
+ ],
+ "004_0007": [
+  [
+   871.8,
+   1305.0,
+   "Christian Church",
+   "church"
+  ]
+ ],
+ "004_0014": [
+  [
+   998.5,
+   170.7,
+   "Public Library",
+   "library"
+  ],
+  [
+   356.3,
+   806.6,
+   "Mariposa Lodgings",
+   "hotel"
+  ],
+  [
+   294.1,
+   1533.3,
+   "Bank",
+   "bank"
+  ]
+ ],
+ "003_0012": [
+  [
+   354.0,
+   805.0,
+   "Mariposa Lodgings",
+   "hotel"
+  ],
+  [
+   289.0,
+   1511.0,
+   "Bank",
+   "bank"
+  ]
+ ]
+}

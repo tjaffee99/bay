@@ -1,0 +1,126 @@
+{
+ "005_0015": [
+  [
+   661.0,
+   1577.5,
+   "Union Hotel",
+   "hotel"
+  ],
+  [
+   198.7,
+   1731.5,
+   "Library Building (Free Library, hose company)",
+   "library"
+  ],
+  [
+   496.7,
+   1740.5,
+   "Bank and stores",
+   "bank"
+  ]
+ ],
+ "005_0014": [
+  [
+   862.5,
+   360.4,
+   "St. Matthew's Church (R.C.)",
+   "church"
+  ]
+ ],
+ "005_0012": [
+  [
+   380.7,
+   889.5,
+   "Pacific Telephone station and stores",
+   "store"
+  ],
+  [
+   422.6,
+   1303.5,
+   "Livery stable, hall and stores",
+   "store"
+  ]
+ ],
+ "005_0011": [
+  [
+   1067.7,
+   1519.8,
+   "Hotel Wisnom block (hardware, stores)",
+   "hotel"
+  ],
+  [
+   405.0,
+   1538.5,
+   "Public Library",
+   "library"
+  ]
+ ],
+ "006_0021": [
+  [
+   284.0,
+   911.0,
+   "I.O.O.F. Lodge Hall",
+   "hall"
+  ],
+  [
+   1051.0,
+   910.5,
+   "City Hall, Central Fire Station, court room",
+   "other"
+  ],
+  [
+   1150.5,
+   1461.0,
+   "Moving pictures (not in operation May 1920)",
+   "theatre"
+  ]
+ ],
+ "006_0020": [
+  [
+   748.7,
+   1764.7,
+   "Regent Theatre (moving pictures)",
+   "theatre"
+  ],
+  [
+   1079.3,
+   857.6,
+   "Telephone exchange and stores",
+   "store"
+  ]
+ ],
+ "006_0026": [
+  [
+   315.0,
+   605.2,
+   "B.P.O.E. lodge rooms and post office",
+   "hall"
+  ],
+  [
+   160.0,
+   333.5,
+   "Bank and offices",
+   "bank"
+  ]
+ ],
+ "006_0025": [
+  [
+   1163.3,
+   726.0,
+   "California Garage",
+   "garage"
+  ],
+  [
+   1382.7,
+   438.7,
+   "St. Matthew's R.C. Church",
+   "church"
+  ],
+  [
+   1490.2,
+   512.0,
+   "Priest's house",
+   "dwelling"
+  ]
+ ]
+}
