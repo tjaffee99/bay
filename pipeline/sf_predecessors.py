@@ -321,6 +321,9 @@ def consistency(pred, today, burned_zone):
         pred = pred[~drop].reset_index(drop=True)
     pred = resolve_overlaps(pred, today)
     bad = pred.start_year.values >= pred.end_year.values - 0.05
+    # generated fillers that last under three years (a house "built" for nine months between
+    # the City of Paris and Neiman Marcus) are artefacts of the lot's dates, not buildings
+    bad |= pred.source.astype(str).str.endswith("_procedural").values & (pred.end_year.values - pred.start_year.values < 3.0)
     log(f"predecessors: consistency: {n_surv} surviving documented buildings hand over to today's footprint "
         f"({n_dup} already there), {int(cross.sum())} generated buildings cut at the 1906 fire, "
         f"{int(bad.sum())} rows ending before they start dropped")

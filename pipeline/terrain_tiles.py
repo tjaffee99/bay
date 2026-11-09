@@ -111,7 +111,7 @@ def exact_building_evidence(g):
     p = INTERIM / "sf_buildings.parquet"
     if p.exists():
         b = gpd.read_parquet(p)[["start_year", "year_confidence", "year_reason", "geometry"]]
-        b = b[(b.year_confidence == "exact") & b.year_reason.isin(["ok", "ok_research", "ok_permit"]) & (b.start_year >= 1770)].to_crs(3857)
+        b = b[(b.year_confidence == "exact") & b.year_reason.isin(["ok", "ok_research", "ok_permit", "ok_survey"]) & (b.start_year >= 1770)].to_crs(3857)
         c = b.geometry.representative_point()
         xs.append(c.x.values); ys.append(c.y.values); yr.append(b.start_year.values)
     # (the counties: recorded years as written by region_buildings.py before its land

@@ -201,6 +201,20 @@ def main():
         src_year[use] = "dbi_permit"
         log(f"years: {use.sum()} buildings dated from completed new-construction permits")
 
+    # California OHP Built Environment Resource Directory (historic-resource surveys):
+    # the construction year of the surveyed building on parcels whose assessor year is a
+    # placeholder, missing or impossible (ranked source in the counties already)
+    oy = ohp_years()
+    if oy is not None:
+        oyr = df.mapblklot.map(oy).values.astype(float)
+        one = (df.groupby("mapblklot").mapblklot.transform("size").values <= 2) | (df.geometry.area.values > 150)
+        use = np.isin(reason, ["spike", "missing", "burned"]) & np.isfinite(oyr) & (oyr >= lower) & (oyr <= np.minimum(upper + 15, 2016)) & one
+        year[use] = oyr[use]
+        reason[use] = "ok_survey"
+        conf[use] = "exact"
+        src_year[use] = "ca_ohp_berd"
+        log(f"years: {use.sum()} buildings dated from the OHP historic-resources directory")
+
     # researched dates (federal / exempt land, public buildings) — point in footprint
     known_end = np.full(len(df), np.nan)
     kd = known_dates()
@@ -217,7 +231,7 @@ def main():
         log(f"years: {hit.index_right.nunique()} buildings dated from data/tables/known_building_dates.csv")
 
     # ---------------------------------------------------------------- imputation
-    good = np.isin(reason, ["ok", "ok_permit", "ok_research"])
+    good = np.isin(reason, ["ok", "ok_permit", "ok_research", "ok_survey"])
     xy = np.column_stack([cent.x.values, cent.y.values])
     tree = cKDTree(xy[good])
     good_years = year[good].astype(float)
@@ -298,7 +312,11 @@ def main():
         rows_ordered += len(idx)
     log(f"years: {rows_ordered} buildings timed as rows along their block")
     df["start_year"] = yi + 0.9 * jit
-    df.loc[df.start_year < lower, "start_year"] = lower[df.start_year < lower]
+    # (not the researched years: documented fire survivors — Merchants Exchange, Kohl,
+    # Old St. Mary's, the Jackson Square blocks — and buildings older than a cemetery's
+    # removal were clamped to 1906.5 / the removal year)
+    clamp = (df.start_year.values < lower) & (reason != "ok_research")
+    df.loc[clamp, "start_year"] = lower[clamp]
     df["end_year"] = np.where(np.isfinite(known_end), known_end, float(STILL_EXISTS))
     df["year_confidence"] = conf
     df["year_reason"] = reason
@@ -317,6 +335,7 @@ def main():
     df = apply_parts(df)
     # ---------------------------------------------------------------- LiDAR stepped massing
     df = apply_lidar_parts(df)
+    df = parts_years(df)
 
     validate(df)
     report(df, raw, spikes)
@@ -369,6 +388,19 @@ def overture_heights(df: gpd.GeoDataFrame) -> np.ndarray:
             best[i] = a
             out[i] = ov.height.iloc[j]
     return out
+
+
+def ohp_years():
+    """Construction year per map parcel from the California OHP Built Environment Resource
+    Directory, San Francisco county export of 2026-02-02 (https://ohp.parks.ca.gov/
+    ?page_id=30338), reduced to data/tables/ohp_sf_years.csv: parcels whose surveyed rows
+    agree on one year (within 3 years) — districts and campuses on one parcel carry many
+    buildings' years and are left out."""
+    path = TABLES / "ohp_sf_years.csv"
+    if not path.exists():
+        return None
+    t = pd.read_csv(path, dtype={"mapblklot": str})
+    return dict(zip(t.mapblklot, pd.to_numeric(t.year, errors="coerce").astype(float)))
 
 
 def permit_years():
@@ -656,6 +688,51 @@ def apply_lidar_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     return gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
 
 
+def parts_years(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Years of building parts (audit 2026-11). OSM and LiDAR parts copy the row of the
+    largest footprint they replace, so
+    * a researched row on another footprint of the group was lost (St. Francis Hotel 1904
+      and its 1972 tower, the Hilton's towers, One Rincon): every part containing a
+      researched point takes that row's year;
+    * a part far taller than anything the 2010 LiDAR saw on the footprint is an addition
+      built since (the 139 m 706 Mission tower stood on the Aronson Building's footprint
+      from 1906): it starts after 2010 (estimated midway to the 2023 survey) unless a
+      researched point dates the part itself."""
+    is_part = df.source.isin(["lidar_parts_3dep_2023", "osm_parts_via_overture"]).values
+    if not is_part.any():
+        return df
+    df = df.reset_index(drop=True)
+    start = df.start_year.values.astype(float).copy()
+    reason = df.year_reason.values.astype(object).copy()
+    conf = df.year_confidence.values.astype(object).copy()
+    dated = np.zeros(len(df), bool)
+    kd = known_dates()
+    n_known = 0
+    if kd is not None:
+        parts = gpd.GeoDataFrame({"i": np.flatnonzero(is_part)}, geometry=df.geometry.values[is_part], crs=UTM)
+        hit = gpd.sjoin(kd, parts, predicate="within", how="inner")
+        for _, r in hit.iterrows():   # table order: the last row wins, as for footprints
+            i = int(r.i)
+            if abs(start[i] - float(r.start_year)) > 0.95:
+                n_known += 1
+            start[i] = float(r.start_year) + (start[i] - np.floor(start[i]) if np.floor(start[i]) == np.floor(r.start_year) else 0.0)
+            reason[i] = "ok_research"
+            conf[i] = "exact"
+            dated[i] = True
+    hmax = pd.to_numeric(df.get("hgt_max_m"), errors="coerce").values if "hgt_max_m" in df else np.full(len(df), np.nan)
+    late = is_part & ~dated & (df.source.values == "lidar_parts_3dep_2023") & (df.height.values >= 40) \
+        & np.isfinite(hmax) & (df.height.values > hmax + 15.0) & (start < 2010)
+    start[late] = 2016.5
+    reason[late] = "lidar_new_part"
+    conf[late] = "estimated"
+    df["start_year"] = start
+    df["year_reason"] = reason
+    df["year_confidence"] = conf
+    log(f"parts: {n_known} parts re-dated by a researched row of their own; "
+        f"{int(late.sum())} LiDAR parts taller than the 2010 building start after 2010")
+    return df
+
+
 def validate(df: gpd.GeoDataFrame):
     problems = []
     if (df.start_year > CURRENT_YEAR + 1).any():
@@ -663,7 +740,9 @@ def validate(df: gpd.GeoDataFrame):
     if (df.start_year >= df.end_year).any():
         problems.append("start_year >= end_year")
     if df.in_fire_zone.any():
-        bad = df.in_fire_zone & (df.start_year < 1906.3)
+        # (researched rows may predate it: documented survivors inside the fire line —
+        # Merchants Exchange, Kohl, the Jackson Square blocks, Old St. Mary's)
+        bad = df.in_fire_zone & (df.start_year < 1906.3) & (df.year_reason != "ok_research")
         if bad.any():
             problems.append(f"{bad.sum()} buildings in the 1906 burned area predate the fire")
     if (df.height <= 0).any():

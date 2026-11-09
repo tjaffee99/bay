@@ -29,6 +29,7 @@ import geopandas as gpd
 import numpy as np
 from pathlib import Path
 import pandas as pd
+import shapely
 from scipy.spatial import cKDTree
 
 from building_binary import write_buildings
@@ -186,10 +187,38 @@ def assign_years(g):
         # the placeholder still bounds these (spread over the 8 years before it, as above)
         over = miss & (year > upper_all)
         year[over] = upper_all[over] - 8.0 * hh[over]
+    year = clearance_bounds(xy, year, conf)
     year = site_bounds(g, year, conf, src)
     year = ohm_bounds(g, year, conf, src)
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
     return year, raw, conf, end, src
+
+
+def clearance_bounds(xy, year, conf):
+    """Urban-renewal and freeway clearances (data/manual/redevelopment_areas.csv): a
+    building there whose year is estimated can't predate the clearance — the old fabric
+    was demolished first (as in San Francisco; the 1960s USPS distribution centre inside
+    Oakland's Main Post Office clearance was imputed to 1889 from the Victorians around)."""
+    from sf_buildings import redevelopment_areas
+    year = year.copy()
+    est = np.asarray(conf) != "exact"
+    pts = shapely.points(xy[:, 0], xy[:, 1])
+    n = 0
+    for poly, cs, ce, _fab, _aid in redevelopment_areas():
+        cand = np.nonzero(est & (year < ce))[0]
+        if not len(cand):
+            continue
+        minx, miny, maxx, maxy = poly.bounds
+        inb = (xy[cand, 0] >= minx) & (xy[cand, 0] <= maxx) & (xy[cand, 1] >= miny) & (xy[cand, 1] <= maxy)
+        cand = cand[inb]
+        if not len(cand):
+            continue
+        hit = cand[shapely.contains(poly, pts[cand])]
+        if len(hit):
+            year[hit] = ce + 0.5 + 3.0 * np.array([h01(f"cb{k}") for k in hit])
+            n += len(hit)
+    log(f"region: {n} estimated buildings inside clearance areas start after the clearance")
+    return year
 
 
 def deheap(g, xy, year, conf):
