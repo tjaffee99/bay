@@ -160,7 +160,8 @@ def element_geometry(e, area_hint=True):
         if t.get("type") in ("multipolygon", "boundary") or outer:
             return _rings_to_polys(outer or lines, inner)
         if lines:
-            return linemerge(unary_union([LineString(c) for c in lines]))
+            u_ = unary_union([LineString(c) for c in lines])
+            return linemerge(u_) if u_.geom_type == "MultiLineString" else u_
     return None
 
 
@@ -1100,6 +1101,513 @@ def write_stanford():
     print(g.kind.value_counts())
 
 
+# ================================================================== extras: railways, ferries
+def existing_routes():
+    """Our historic railways and routes (historic_rail.geojson + routes.csv) as one UTM geometry."""
+    from fire_1906 import intersection
+    from geocode import streets
+    geoms = list(gpd.read_file(MANUAL / "historic_rail.geojson").to_crs(UTM).geometry.values)
+    rt = pd.read_csv(MANUAL / "routes.csv")
+    st = None
+    for r in rt.itertuples():
+        try:
+            if str(r.geom_type).strip() == "lonlat":
+                pts = [tuple(map(float, q.split()[:2])) for q in str(r.geom).split(";") if q.strip()]
+                if len(pts) >= 2:
+                    geoms.append(gpd.GeoSeries([LineString(pts)], crs=4326).to_crs(UTM).iloc[0])
+            elif str(r.geom_type).strip() == "streets":
+                st = st if st is not None else streets()
+                nodes = []
+                for e in str(r.geom).split(";"):
+                    if "&" in e:
+                        a, b = (x.strip() for x in e.split("&", 1))
+                        q, _ = intersection(st, a, b)
+                        if q is not None:
+                            nodes.append((q.x, q.y))
+                if len(nodes) >= 2:
+                    geoms.append(LineString(nodes))
+        except Exception:  # noqa: BLE001
+            continue
+    return shapely.union_all(geoms)
+
+
+def rail_candidates():
+    from extent import POLY
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    keep = lambda t: (t.get("railway") in ("rail", "light_rail", "tram", "narrow_gauge", "disused", "abandoned")  # noqa: E731
+                      or t.get("route") == "ferry")
+    g = to_gdf({k: e for k, e in els.items() if k[0] == "way"}, keep=keep)
+    g = g[g.geom_type.isin(["LineString", "MultiLineString"])]
+    g = g[g.geometry.representative_point().within(POLY.buffer(0.02))].to_crs(UTM).reset_index(drop=True)
+    # route relations the ways belong to (names, operators, mode periods)
+    rel = {}
+    for (typ, i), e in els.items():
+        if typ != "relation":
+            continue
+        t = e.get("tags", {})
+        if t.get("type") != "route" and t.get("route") is None:
+            continue
+        for m in e.get("members", []):
+            if m.get("type") == "way":
+                rel.setdefault(m["ref"], []).append(t)
+    g["rels"] = [rel.get(i, []) for i in g.osm_id]
+    return g
+
+
+def write_rail():
+    g = rail_candidates()
+    ours = existing_routes().buffer(60)
+    g["overlap"] = [round(gm.intersection(ours).length / max(gm.length, 1), 2) for gm in g.geometry.values]
+    g["km"] = (g.length / 1000).round(2)
+    t = g.tags
+    g["name"] = [d.get("name") or next((r.get("name") for r in rr if r.get("name")), "") for d, rr in zip(t, g.rels)]
+    g["src"] = t.map(lambda d: d.get("source") or d.get("start_date:source") or d.get("source:name") or "")
+    g["sd"] = t.map(lambda d: d.get("start_date"))
+    g["ed"] = t.map(lambda d: d.get("end_date"))
+    review = g[(g.overlap < 0.3) & g.sd.notna()].copy()
+    review["ohm"] = [ohm_url("way", i) for i in review.osm_id]
+    review["kind"] = t[review.index].map(lambda d: d.get("railway") or d.get("route"))
+    review["operator"] = t[review.index].map(lambda d: d.get("operator", ""))
+    OHM_OUT.mkdir(parents=True, exist_ok=True)
+    review[["ohm", "kind", "name", "operator", "sd", "ed", "km", "overlap", "src"]].sort_values(["name", "sd"]).to_csv(
+        OHM_OUT / "rail_review_ohm.csv", index=False)
+    log(f"rail: {len(g)} OHM railway / tram / ferry ways in the extent, {len(review)} dated ones not in our data "
+        "(< 30 % within 60 m of historic_rail / routes) -> rail_review_ohm.csv")
+    return g
+
+
+# curated: OHM railways we lack, checked one by one (rail_review_ohm.csv lists every candidate)
+RAIL_PICK = [
+    # (way ids, route_id, name, mode, start, end, confidence, note)
+    ([200221495], "mt_tamalpais_muir_woods", "Mount Tamalpais and Muir Woods Railway (Mill Valley - summit)", "rail",
+     1896.6, 1930.5, "exact",
+     "'Crookedest railroad in the world': Mill Valley to the summit opened Aug 1896, Muir Woods branch 1907, "
+     "abandoned 1930 after the 1929 fire (NPS, 'The Crookedest Railroad - Early Travel to Muir Woods'). Geometry: "
+     "OHM, traced from the USGS Tamalpais 1897 sheet. Month of opening / closure ESTIMATED from the years."),
+    ([200655254], "sp_sj_4th_street", "SP 4th Street line through downtown San Jose", "rail", 1869.2, 1936.0, "exact",
+     "Southern Pacific (San Jose & Gilroy line, opened 13 Mar 1869) along 4th St; trains moved to the new Cahill "
+     "St (Diridon) line at the end of 1935 (San Jose Mercury Herald, 29 Dec 1935). Geometry: OHM."),
+    ([201228649], "sp_sj_4th_street", "SP 4th Street line, north part (industrial lead after 1935)", "rail", 1869.2,
+     1977.5, "estimated", "Same line; this part stayed as an industrial track, gone on the 1980 USGS San Jose West "
+     "quad (OHM: removed 1975-1980). Geometry: OHM."),
+    ([201228655], "sp_sj_4th_street", "SP 4th Street line, south part (industrial lead after 1935)", "rail", 1869.2,
+     1995.0, "estimated", "Same line; removed between 1980 and 2010 (OHM, Esri World Imagery Wayback). End year "
+     "ESTIMATED inside that window."),
+    ([201228651], "sp_sj_gilroy", "SP San Jose - Gilroy line, section south of downtown (removed)", "rail", 1869.2, 1995.0,
+     "estimated", "1869 track south of downtown San Jose, removed 1980-2010 (OHM, Esri Wayback); end ESTIMATED."),
+    ([201228652], "sp_sj_gilroy", "SP San Jose - Gilroy line, short section (removed)", "rail", 1869.2, 2013.0,
+     "estimated", "Removed 2010-2016 (OHM, Esri Wayback); end ESTIMATED."),
+    ([201228654], "sp_sj_gilroy", "SP San Jose - Gilroy line, short section (removed)", "rail", 1869.2, 2018.0,
+     "estimated", "Removed 2017-2019 (OHM, Esri Wayback); end ESTIMATED."),
+    ([199612534, 199612536, 199612537], "camp_fremont_spur", "Camp Fremont spur (US Army camp, Menlo Park)", "rail",
+     1917.5, 1920.0, "exact", "Spur from the SP main line into Camp Fremont, the WWI training camp (opened July 1917, "
+     "closed 1919-20); drawn on the 1917 Camp Fremont map (Stanford archive) traced in OHM."),
+    ([199600583, 199600584, 199867367, 199890065], "stanford_spur_1890s", "Spur from the SP main line at Palo Alto "
+     "toward the Stanford campus", "rail", 1891.0, 1897.5, "estimated",
+     "Drawn on the 1897 USGS Palo Alto sheet only (OHM: by 1894 - 1897; 'probably used' for campus construction). "
+     "Start ESTIMATED (campus opened 1891), end = the sheet year."),
+    ([200250635, 200250636], "california_nevada_rr", "California and Nevada Railroad (Emeryville - Berkeley - "
+     "Orinda), north of Blake St", "narrow_gauge", 1885.0, 1902.0, "estimated",
+     "3 ft gauge line (1884-1900s); track north of Blake St abandoned about 1902 (Pacific Narrow Gauge, "
+     "https://www.pacificng.com/template.php?page=roads/ca/cnr/index.htm). Geometry: OHM from the USGS San Francisco "
+     "1895 and Concord 1897 sheets. Start ESTIMATED (line built 1884-91)."),
+]
+ROUTE_PICK = [
+    ([199825842, 199825847, 199825848], "sj_santa_clara_horse", "San Jose & Santa Clara Horse Railroad (The Alameda)",
+     "horsecar", 1868.0, 1901.0,
+     "Horse railroad along The Alameda between San Jose and Santa Clara, 1868-1901 (History San Jose; "
+     "chicagorailfan.com San Jose streetcar dates); electrified 1901. Geometry: OHM.",
+     "https://web.archive.org/web/20160204195910/http://www.chicagorailfan.com/sjcdate.html"),
+    ([199825842, 199825847, 199825848], "sj_santa_clara_horse", "Santa Clara streetcar line (The Alameda)",
+     "streetcar", 1901.0, 1938.27, "Electric from 1901 (San Jose & Santa Clara County RR, San Jose Railroads from "
+     "1912); last car 10 Apr 1938. Geometry: OHM.",
+     "https://web.archive.org/web/20160204195910/http://www.chicagorailfan.com/sjcdate.html"),
+    ([199812812], "sj_north_side_horse", "North Side Horse Railroad (San Jose)", "horsecar", 1875.0, 1901.0,
+     "Horse railroad 1875-1901 (OHM; start cited to the NRHP nomination on NPGallery). Geometry: OHM.",
+     "https://npgallery.nps.gov/GetAsset/f0a732a6-9b37-4887-98b7-a355da88df8"),
+]
+
+
+def _line_of(ways, g):
+    parts = [g.geometry.values[k] for k in np.nonzero(g.osm_id.isin(ways).values)[0]]
+    if not parts:
+        return None
+    u_ = unary_union(parts)
+    return linemerge(u_) if u_.geom_type == "MultiLineString" else u_
+
+
+def write_rail_picks(g):
+    rows = []
+    for ways, rid, name, mode, y0, y1, conf, note in RAIL_PICK:
+        geom = _line_of(ways, g)
+        if geom is None:
+            continue
+        rows.append({"route_id": rid, "name": name, "mode": mode, "year_start": y0, "year_end": y1,
+                     "elevated": "ground", "confidence": conf,
+                     "source_url": " ".join(ohm_url("way", w) for w in ways), "note": note,
+                     "geometry_confidence": "medium", "geometry_source": "OpenHistoricalMap (CC0)", "geometry": geom})
+    rg = gpd.GeoDataFrame(rows, crs=UTM)
+    _write_geojson(rg, OHM_OUT / "historic_rail_ohm.geojson", "historic_rail_ohm")
+    out = []
+    for ways, rid, name, mode, y0, y1, note, url in ROUTE_PICK:
+        geom = _line_of(ways, g)
+        if geom is None:
+            continue
+        geom = gpd.GeoSeries([geom], crs=UTM).to_crs(4326).iloc[0].simplify(0.00002)
+        lines = list(geom.geoms) if geom.geom_type == "MultiLineString" else [geom]
+        for k, ln in enumerate(lines, 1):
+            out.append({"route_id": rid, "name": name, "mode": mode, "year_start": y0, "year_end": y1,
+                        "elevated": "ground", "segment_seq": k, "geom_type": "lonlat",
+                        "geom": "; ".join(f"{x:.6f} {y:.6f}" for x, y in ln.coords),
+                        "note": note + " " + " ".join(ohm_url("way", w) for w in ways), "source_url": url})
+    # Port Costa - Benicia train ferry (Central Pacific's Solano / Contra Costa), until the 1930 bridge
+    fe = g[g.tags.map(lambda t: t.get("route") == "ferry" and t.get("start_date") == "1879")]
+    for r in fe.itertuples():
+        ln = gpd.GeoSeries([r.geometry], crs=UTM).to_crs(4326).iloc[0]
+        out.append({"route_id": "fy_port_costa_benicia", "name": "Train ferry: Port Costa - Benicia (Solano, Contra Costa)",
+                    "mode": "ferry", "year_start": 1879.95, "year_end": 1930.79, "elevated": "ground", "segment_seq": 1,
+                    "geom_type": "lonlat", "geom": "; ".join(f"{x:.6f} {y:.6f}" for x, y in ln.coords),
+                    "note": "Central Pacific train ferry Solano (from Dec 1879; Contra Costa from 1914) across the "
+                            "Carquinez Strait until the Martinez-Benicia rail bridge opened 15 Oct 1930. Geometry: OHM "
+                            f"(USGS Karquines 1898 sheet) {ohm_url('way', r.osm_id)}",
+                    "source_url": "https://en.wikipedia.org/wiki/Solano_(ferry)"})
+    rt = pd.DataFrame(out, columns=["route_id", "name", "mode", "year_start", "year_end", "elevated", "segment_seq",
+                                    "geom_type", "geom", "note", "source_url"])
+    rt.to_csv(OHM_OUT / "routes_ohm.csv", index=False)
+    log(f"rail: {len(rg)} railway segments -> historic_rail_ohm.geojson, {len(rt)} route rows -> routes_ohm.csv")
+
+
+# ================================================================== extras: demolished buildings in the region
+# cities whose Sanborn maps other agents are tracing now (they may reuse OHM there): flagged, not dropped
+OTHER_AGENT_AREAS = {"palo_alto_menlo_park": (-122.22, 37.40, -122.10, 37.48), "san_mateo": (-122.36, 37.54, -122.28, 37.60),
+                     "berkeley": (-122.32, 37.845, -122.23, 37.90), "alameda": (-122.33, 37.75, -122.22, 37.79),
+                     "richmond": (-122.40, 37.90, -122.31, 37.96)}
+CAMP_FREMONT_BOX = gpd.GeoSeries([shapely.geometry.box(-122.205, 37.425, -122.170, 37.460)], crs=4326).to_crs(UTM).iloc[0]
+SKIP_BUILDING_SRC = ("Sanborn", "LSJUbldgs", "Campus of Leland Stanford", "Stanford Base Map", "SFO Museum")
+
+
+def _src_text(t):
+    return " ".join(str(v) for k, v in t.items() if k.startswith(("source", "import", "start_date:source",
+                                                                     "end_date:source", "note")))
+
+
+def write_region_demolished():
+    """OHM buildings with an end date (demolished, burned or moved) outside San Francisco and Stanford, and not
+    from a Sanborn tracing (Palo Alto, San Mateo, Berkeley are being traced by other agents)."""
+    import pyarrow.parquet as pq
+    from extent import POLY
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    g = to_gdf(els, keep=lambda t: "building" in t)
+    g = g[g.geom_type.isin(["Polygon", "MultiPolygon"])]
+    rp = g.geometry.representative_point()
+    s_, w_, n_, e_ = SF_BBOX
+    in_sf = (rp.y > s_) & (rp.y < n_) & (rp.x > w_) & (rp.x < e_)
+    g = g[rp.within(POLY.buffer(0.02)) & ~in_sf]
+    src = g.tags.map(_src_text)
+    g = g[~src.map(lambda x: any(k in x for k in SKIP_BUILDING_SRC))]
+    st = stanford_campus()
+    gu = g.to_crs(UTM)
+    gu = gu[~gu.geometry.representative_point().within(st)].reset_index(drop=True)
+    gu["sd"] = gu.tags.map(lambda t: year_of(t.get("start_date")))
+    gu["ed"] = gu.tags.map(lambda t: year_of(t.get("end_date")))
+    gu["name"] = gu.tags.map(lambda t: t.get("name") or "")
+    gu["key"] = [f"{a[0]}{b}" for a, b in zip(gu.osm_type, gu.osm_id)]
+    # versions of one structure (renamed, re-dated): same outline, one starting when the other ends
+    sidx = gu.sindex
+    nxt = {}
+    for i_, gm in enumerate(gu.geometry.values):
+        if not np.isfinite(gu.ed.values[i_]):
+            continue
+        for j in sidx.query(gm, predicate="intersects"):
+            if j == i_:
+                continue
+            g2 = gu.geometry.values[j]
+            iou = gm.intersection(g2).area / max(gm.union(g2).area, 1e-6)
+            if iou >= 0.8 and abs(gu.sd.values[j] - gu.ed.values[i_]) <= 1.0:
+                nxt[i_] = j
+    has_prev = set(nxt.values())
+    rows = []
+    for i_ in range(len(gu)):
+        if i_ in has_prev:
+            continue  # reported with the first version
+        chain = [i_]
+        while chain[-1] in nxt and nxt[chain[-1]] not in chain:
+            chain.append(nxt[chain[-1]])
+        last = chain[-1]
+        end = gu.ed.values[last]
+        if not (np.isfinite(end) and end < 2026):
+            continue
+        t0, tl = gu.tags.values[i_], gu.tags.values[last]
+        names = [gu.name.values[k] for k in chain if gu.name.values[k]]
+        srcs = []
+        for k in chain:
+            tk = gu.tags.values[k]
+            for kk in ("source", "start_date:source", "end_date:source", "source:start_date", "source:end_date",
+                       "end_date:source:url", "start_date:source:url"):
+                if tk.get(kk) and tk[kk] not in srcs:
+                    srcs.append(tk[kk])
+        lv = pd.to_numeric(tl.get("building:levels"), errors="coerce")
+        rows.append({"id": f"ohm_{gu.key.values[i_]}", "name": " / ".join(dict.fromkeys(names)) or None,
+                     "start_year": gu.sd.values[i_], "end_year": end,
+                     "versions": len(chain), "storeys": float(lv) if np.isfinite(lv) else None,
+                     "height_m": pd.to_numeric(tl.get("height"), errors="coerce"),
+                     "material": tl.get("building:material") or None, "building": tl.get("building"),
+                     "ohm_start_date": t0.get("start_date"), "ohm_end_date": tl.get("end_date"),
+                     "end_cause": tl.get("end_date:cause") or tl.get("end_date:note") or None,
+                     "description": (t0.get("description") or tl.get("description") or "")[:300] or None,
+                     "sources": " | ".join(srcs)[:600] or None,
+                     "cited": any("arbitrary" not in str(x).lower() and "derived" not in str(x).lower() for x in srcs),
+                     "ohm_url": ohm_url(gu.osm_type.values[i_], gu.osm_id.values[i_]),
+                     "geometry": gu.geometry.values[last]})
+    d = gpd.GeoDataFrame(rows, crs=UTM)
+    # today's footprints (Overture): a footprint of the same shape means it still stands (or moved back) / is stale
+    b = d.to_crs(4326).total_bounds
+    t = pq.read_table(RAW / "overture" / "2026-10-21.0" / "region5_building.parquet", columns=["id", "county", "geometry"],
+                      filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
+                               ("py", "<", b[3] + 0.01)]).to_pandas()
+    ov = gpd.GeoDataFrame(t, geometry=gpd.GeoSeries.from_wkb(t.geometry), crs=4326).to_crs(UTM)
+    osidx = ov.sindex
+    best, county = [], []
+    for gm in d.geometry.values:
+        bi, cty = 0.0, None
+        for j in osidx.query(gm, predicate="intersects"):
+            og = ov.geometry.values[j]
+            iou = gm.intersection(og).area / max(gm.union(og).area, 1e-6)
+            if iou > bi:
+                bi, cty = iou, ov.county.values[j]
+        best.append(round(bi, 2))
+        county.append(cty)
+    d["today_iou"] = best
+    d["county"] = county
+    # already traced elsewhere in the project (Sanborn areas, vanished sites)
+    traced = []
+    for f in glob.glob(str(SANBORN / "*_[12][0-9][0-9][0-9].geojson")) + [str(MANUAL / "vanished_sites" / "buildings.geojson")]:
+        try:
+            x = gpd.read_file(f).to_crs(UTM)
+            x["file"] = Path(f).stem
+            traced.append(x[["file", "geometry"]])
+        except Exception:  # noqa: BLE001
+            pass
+    tr = gpd.GeoDataFrame(pd.concat(traced, ignore_index=True), crs=UTM)
+    tsidx = tr.sindex
+    dup = []
+    for gm in d.geometry.values:
+        hit = None
+        for j in tsidx.query(gm, predicate="intersects"):
+            tg = tr.geometry.values[j]
+            if gm.intersection(tg).area / max(gm.union(tg).area, 1e-6) >= 0.4:
+                hit = tr.file.values[j]
+                break
+        dup.append(hit)
+    d["traced_in"] = dup
+    # county where no footprint overlaps: the nearest of today's footprints
+    miss = d.county.isna()
+    if miss.any():
+        near = gpd.sjoin_nearest(d[miss][["geometry"]], ov[["county", "geometry"]], how="left", max_distance=3000)
+        near = near[~near.index.duplicated()]
+        d.loc[miss, "county"] = near.county.reindex(d[miss].index).values
+    d["county"] = d.county.fillna("")
+    # on a vanished / industrial site already in data/manual (HP Cupertino, Bay Meadows...) or Camp Fremont
+    sites = []
+    for f in (MANUAL / "vanished_sites" / "sites.geojson", MANUAL / "industrial_sites" / "sites.geojson"):
+        if f.exists():
+            x = gpd.read_file(f).to_crs(UTM)
+            sites.append(x[["site_id", "geometry"]])
+    sites = gpd.GeoDataFrame(pd.concat(sites, ignore_index=True), crs=UTM)
+    js = gpd.sjoin(gpd.GeoDataFrame(geometry=d.geometry.representative_point(), crs=UTM), sites, predicate="within")
+    d["on_site"] = js.groupby(level=0).site_id.first().reindex(d.index).values
+    camp = d.geometry.representative_point().within(CAMP_FREMONT_BOX) & (d.start_year >= 1916) & (d.end_year <= 1921)
+    d.loc[camp.values, "on_site"] = "camp_fremont"
+    llp = d.to_crs(4326).geometry.representative_point()
+    d["other_agent_area"] = None
+    for nm, (x0, y0, x1, y1) in OTHER_AGENT_AREAS.items():
+        d.loc[((llp.x > x0) & (llp.x < x1) & (llp.y > y0) & (llp.y < y1)).values, "other_agent_area"] = nm
+    _write_geojson(d, OHM_OUT / "region_demolished_ohm.geojson", "region_demolished_ohm")
+    # the clean subset in the notable_demolished_region.csv format
+    ok = d[d.cited & np.isfinite(d.start_year) & (d.end_year > d.start_year) & (d.today_iou < 0.5) & d.traced_in.isna()
+           & d.on_site.isna() & (d.geometry.area >= 25)]
+    ll = ok.to_crs(4326).geometry.representative_point()
+    nd = pd.DataFrame({
+        "id": ok.id.values, "name": ok.name.fillna("").values,
+        "start_year": np.floor(ok.start_year.values).astype(int), "end_year": ok.end_year.round(2).values,
+        "lat": ll.y.round(6).values, "lon": ll.x.round(6).values,
+        "height_m": ok.height_m.values, "footprint_m": "", "storeys": ok.storeys.values, "material": ok.material.values,
+        "shape_note": [f"Footprint: OpenHistoricalMap {u} (CC0; region_demolished_ohm.geojson). OHM dates "
+                       f"{a} / {b_}" + (f"; end: {c}" if c else "") + (f"; {dsc}" if dsc else "")
+                       for u, a, b_, c, dsc in zip(ok.ohm_url, ok.ohm_start_date, ok.ohm_end_date, ok.end_cause,
+                                                    ok.description.fillna(""))],
+        "source_url": [s_.split(" | ")[0] if s_.split(" | ")[0].startswith("http") else
+                       next((x for x in s_.split(" | ") if x.startswith("http")), u)
+                       for s_, u in zip(ok.sources, ok.ohm_url)],
+        "county": ok.county.values, "other_agent_area": ok.other_agent_area.values})
+    nd.to_csv(OHM_OUT / "notable_demolished_ohm.csv", index=False)
+    log(f"region: {len(d)} OHM buildings with an end date (outside SF / Stanford / Sanborn tracings): "
+        f"{(d.today_iou >= 0.5).sum()} match a footprint standing today, {d.traced_in.notna().sum()} already traced; "
+        f"{len(nd)} cited, clean rows -> notable_demolished_ohm.csv")
+    return d
+
+
+# ================================================================== extras: Camp Fremont (vanished site)
+CAMP_SRC = ("Camp Fremont", "fb297sh0179")
+
+
+def write_camp_fremont(d=None):
+    """Camp Fremont, the WWI Army training camp in Menlo Park (July 1917 - Oct 1919), from OHM's tracing of the
+    1917 camp map (Stanford archive, purl.stanford.edu/fb297sh0179): outline, regiment plots, buildings, camp
+    roads and the rail spur. vanished_sites/README.md had no map of the camp."""
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    g = to_gdf(els)
+    g = g.to_crs(UTM)
+    inbox = g.geometry.representative_point().within(CAMP_FREMONT_BOX.buffer(800))
+    txt = g.tags.map(lambda t: " ".join(str(v) for v in t.values()))
+    sel = g[inbox & txt.map(lambda x: any(k in x for k in CAMP_SRC) or "Camp_Fremont" in x)].copy()
+    sel["sd"] = sel.tags.map(lambda t: year_of(t.get("start_date")))
+    sel["ed"] = sel.tags.map(lambda t: year_of(t.get("end_date")))
+    sel = sel[(sel.sd >= 1916) & (sel.ed <= 1921) | sel.tags.map(lambda t: t.get("landuse") == "military")]
+    src_of = lambda t: next((t[k] for k in ("source", "source:url") if str(t.get(k, "")).startswith("http")),  # noqa: E731
+                            "https://purl.stanford.edu/fb297sh0179") if t else ""
+    note_of = lambda t, i: (f"OpenHistoricalMap {ohm_url(*i)} (CC0), traced from the 1917 Camp Fremont map "  # noqa: E731
+                            f"(Stanford archive); OHM dates {t.get('start_date')} / {t.get('end_date')}"
+                            + (f"; {t.get('description')[:200]}" if t.get("description") else ""))
+    parts, blds, lines = [], [], []
+    for r in sel.itertuples():
+        t = r.tags
+        y0 = r.sd if np.isfinite(r.sd) else 1917.5
+        y1 = r.ed if np.isfinite(r.ed) else 1919.75
+        if r.geometry.geom_type in ("Polygon", "MultiPolygon") and "building" not in t:
+            kind = "outline" if t.get("landuse") == "military" else "plot"
+            parts.append({"site_id": "camp_fremont", "name": t.get("name") or ("Camp Fremont" if kind == "outline" else "camp plot"),
+                          "kind": "military", "cover": "grass" if kind == "outline" else "industrial",
+                          "surface": "army camp grounds" if kind == "outline" else f"regiment / camp area ({t.get('name') or 'unnamed'})",
+                          "year_start": y0, "year_end": y1, "confidence": "estimated", "source_url": src_of(t),
+                          "note": note_of(t, (r.osm_type, r.osm_id)), "geometry": r.geometry})
+        elif "building" in t and r.geometry.geom_type in ("Polygon", "MultiPolygon"):
+            nm = t.get("name") or ""
+            blds.append({"site_id": "camp_fremont", "name": nm or "Camp Fremont building", "start_year": y0, "end_year": y1,
+                         "height_m": 4.5, "storeys": 1, "material": "wood frame",
+                         "use": "hall" if nm in ("YMCA", "Knights of Columbus") or "Hall" in nm else "other",
+                         "confidence": "estimated", "source_url": src_of(t),
+                         "note": note_of(t, (r.osm_type, r.osm_id)) + "; height ESTIMATED (one-storey wartime frame building)",
+                         "geometry": r.geometry})
+        elif r.geometry.geom_type in ("LineString", "MultiLineString"):
+            lines.append({"site_id": "camp_fremont", "kind": t.get("highway") and "road" or t.get("railway") or
+                          t.get("barrier") or t.get("man_made") or "line", "name": t.get("name"),
+                          "year_start": y0, "year_end": y1, "source_url": src_of(t),
+                          "note": note_of(t, (r.osm_type, r.osm_id)), "geometry": r.geometry})
+    _write_geojson(gpd.GeoDataFrame(parts, crs=UTM), OHM_OUT / "vanished_sites_ohm.geojson", "vanished_sites_ohm")
+    _write_geojson(gpd.GeoDataFrame(blds, crs=UTM), OHM_OUT / "vanished_buildings_ohm.geojson", "vanished_buildings_ohm")
+    _write_geojson(gpd.GeoDataFrame(lines, crs=UTM), OHM_OUT / "camp_fremont_lines_ohm.geojson", "camp_fremont_lines_ohm")
+    log(f"camp fremont: {len(parts)} ground parts, {len(blds)} buildings, {len(lines)} roads / rail / fences / sewers")
+
+
+# ================================================================== extras: San Francisco (beyond the gold rush)
+def write_sf_extras():
+    """SF OHM buildings outside the gold-rush maps: cited construction years of standing buildings (SFPL branch
+    libraries, churches, schools...) in the format of data/tables/known_building_dates.csv; documented demolished
+    buildings in the notable_pre1906.csv format; the 1851 wharves of the Burnt District map."""
+    els = load_elements([OHM_RAW / "ohm_sf_buildings.json"])
+    g = to_gdf(els)
+    g = g[g.tags.map(lambda t: gr_group(t)[0] is None)]
+    g = g[g.geom_type.isin(["Polygon", "MultiPolygon"])].to_crs(UTM).reset_index(drop=True)
+    t = g.tags
+    cite = t.map(lambda d: next((d[k] for k in ("start_date:source", "source:start_date", "source", "source:url")
+                                 if str(d.get(k, "")).startswith("http")), ""))
+    skip = t.map(lambda d: "High Points on Four Great High Ways" in str(d.get("source", "")) or
+                 "oldinsurancemaps" in str(d.get("source:url", "")))
+    today = gpd.read_parquet(INTERIM / "sf_buildings.parquet", columns=["start_year", "year_reason", "geometry"]).to_crs(UTM)
+    tsidx = today.sindex
+    kb = pd.read_csv(TABLES / "known_building_dates.csv")
+    kbp = gpd.GeoDataFrame(kb, geometry=gpd.points_from_xy(kb.lon, kb.lat), crs=4326).to_crs(UTM)
+    rows, dem = [], []
+    for k in range(len(g)):
+        d = t.values[k]
+        if skip.values[k] or d.get("shop") or str(d.get("start_date:edtf", "")).endswith("/..") or \
+                (np.isfinite(year_of(d.get("end_date"))) and year_of(d.get("end_date")) < 2026 and
+                 any(abs(year_of(d.get("end_date")) - year_of(t2.get("start_date"))) < 0.5 and t2 is not d
+                     for t2 in t.values if (t2.get("addr:housenumber"), t2.get("addr:street")) ==
+                     (d.get("addr:housenumber"), d.get("addr:street")) and d.get("addr:street"))):
+            continue  # a business's founding year, or one version of a renamed / altered building
+        gm = g.geometry.values[k]
+        sd, ed = year_of(d.get("start_date")), year_of(d.get("end_date"))
+        name = d.get("name") or d.get("amenity") or "building"
+        if not np.isfinite(sd):
+            continue
+        if not np.isfinite(ed) and cite.values[k]:
+            best, bi = None, 0.0
+            for j in tsidx.query(gm, predicate="intersects"):
+                tg = today.geometry.values[j]
+                iou = gm.intersection(tg).area / max(gm.union(tg).area, 1e-6)
+                if iou > bi:
+                    best, bi = j, iou
+            if best is None or bi < 0.4:
+                continue
+            fp = today.geometry.values[best]
+            if kbp.within(fp).any():
+                continue  # already researched
+            if "eureka-valley" in cite.values[k]:
+                continue  # 1902 is the branch's founding; its present building is of 1961 (SFPL)
+            pt = gm.representative_point() if fp.contains(gm.representative_point()) else fp.representative_point()
+            ll = gpd.GeoSeries([pt], crs=UTM).to_crs(4326).iloc[0]
+            cy = float(today.start_year.values[best])
+            rows.append({"id": f"ohm_{g.osm_type.values[k][0]}{g.osm_id.values[k]}", "name": name,
+                         "lat": round(ll.y, 6), "lon": round(ll.x, 6), "start_year": int(np.floor(sd)), "end_year": 9999,
+                         "source_url": cite.values[k],
+                         "note": f"OpenHistoricalMap {ohm_url(g.osm_type.values[k], g.osm_id.values[k])} start_date "
+                                 f"{d.get('start_date')} cited to the source; footprint IoU {bi:.2f}; the pipeline's "
+                                 f"year now {cy:.0f} ({today.year_reason.values[best]}). CHECK: a branch's opening "
+                                 "year can predate its present building."})
+        elif np.isfinite(ed) and ed < 1990 and (cite.values[k] or d.get("name")) and d.get("name") != "City Hall":
+            ll = gpd.GeoSeries([gm.representative_point()], crs=UTM).to_crs(4326).iloc[0]
+            lv = pd.to_numeric(d.get("building:levels"), errors="coerce")
+            dem.append({"id": f"ohm_{g.osm_type.values[k][0]}{g.osm_id.values[k]}", "name": name,
+                        "start_year": int(np.floor(sd)), "end_year": round(ed, 2), "lat": round(ll.y, 6),
+                        "lon": round(ll.x, 6), "height_m": pd.to_numeric(d.get("height"), errors="coerce"),
+                        "footprint_m": "", "storeys": lv if np.isfinite(lv) else None,
+                        "material": d.get("building:material") or "",
+                        "shape_note": f"Footprint: OpenHistoricalMap {ohm_url(g.osm_type.values[k], g.osm_id.values[k])} "
+                                      f"(CC0), {gm.area:.0f} m2; OHM dates {d.get('start_date')} / {d.get('end_date')}",
+                        "source_url": cite.values[k] or ohm_url(g.osm_type.values[k], g.osm_id.values[k])})
+    ge = to_gdf(load_elements(glob.glob(str(OHM_RAW / "geom_*.json"))),
+                keep=lambda d: re.search(r"Ign?atius|Ingatius", str(d.get("name", ""))) is not None and d.get("amenity") == "school")
+    for r in ge.to_crs(UTM).itertuples():
+        d = r.tags
+        sd, ed = year_of(d.get("start_date")), year_of(d.get("end_date"))
+        if not (np.isfinite(sd) and np.isfinite(ed) and ed < 1880.5):
+            continue  # the 1880-1906 Hayes St church + college is notable_pre1906.csv st_ignatius_1880
+        ll = gpd.GeoSeries([r.geometry.representative_point()], crs=UTM).to_crs(4326).iloc[0]
+        dem.append({"id": f"ohm_w{r.osm_id}", "name": f"St. Ignatius Church and College (Market St, {int(sd)}-{int(ed)})",
+                    "start_year": int(sd), "end_year": float(ed), "lat": round(ll.y, 6), "lon": round(ll.x, 6),
+                    "height_m": None, "footprint_m": "", "storeys": None, "material": "",
+                    "shape_note": f"Footprint: OpenHistoricalMap {ohm_url('way', r.osm_id)} (CC0), {r.geometry.area:.0f} m2. "
+                                  "The Jesuits' first church and college on Market St between 4th and 5th (1855; a larger "
+                                  "building 1862) before the move to Hayes St / Van Ness in 1880. Dates from OHM (photo "
+                                  "source); heights not known.",
+                    "source_url": d.get("source") or ohm_url("way", r.osm_id)})
+    pd.DataFrame(rows).sort_values("id").to_csv(OHM_OUT / "known_dates_ohm_sf.csv", index=False)
+    pd.DataFrame(dem).sort_values("start_year").to_csv(OHM_OUT / "notable_sf_ohm.csv", index=False)
+    # the wharves of the 1851 Burnt District map (lines: wharf centrelines)
+    w = to_gdf(load_elements([OHM_RAW / "ohm_sf_wharves.json"]))
+    w = w[w.tags.map(lambda d: "Burnt District" in str(d.get("source", "")))].to_crs(UTM)
+    bands = fill_bands()
+    out = []
+    for r in w.itertuples():
+        d = r.tags
+        mid = r.geometry.interpolate(0.5, normalized=True)
+        band = bands[bands.contains(mid) & ~bands.zone_id.str.startswith("fb_")]
+        out.append({"name": d.get("name") or "wharf", "year_start": 1849.5, "year_end_fire": MAY_1851,
+                    "burned_1851": str(d.get("end_date", "")).startswith("1851-05-04"),
+                    "fill_zone": band.zone_id.iloc[0] if len(band) else None,
+                    "filled_by": float(band.ye.iloc[0]) if len(band) else None,
+                    "note": "Wharf centreline on the Burnt District map of the 4 May 1851 fire (OHM, CC0): burned "
+                            "where the map shows it; most were rebuilt at once and became streets as Yerba Buena Cove was "
+                            "filled (fill_zone / filled_by from data/manual/fill_zones.csv). Start ESTIMATED (the "
+                            "wharves were built 1848-50).",
+                    "source_url": GR_MAPS[1851]["url"], "ohm_url": ohm_url("way", r.osm_id), "geometry": r.geometry})
+    _write_geojson(gpd.GeoDataFrame(out, crs=UTM), OHM_OUT / "sf_wharves_1851_ohm.geojson", "sf_wharves_1851_ohm")
+    log(f"sf extras: {len(rows)} cited construction years (known_dates_ohm_sf.csv), {len(dem)} demolished "
+        f"(notable_sf_ohm.csv), {len(out)} 1851 wharves")
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "all"
     if cmd in ("download", "all"):
@@ -1108,3 +1616,11 @@ if __name__ == "__main__":
         write_goldrush()
     if cmd in ("stanford", "all"):
         write_stanford()
+    if cmd in ("rail", "extras", "all"):
+        write_rail_picks(write_rail())
+    if cmd in ("demolished", "extras", "all"):
+        write_region_demolished()
+    if cmd in ("camp", "extras", "all"):
+        write_camp_fremont()
+    if cmd in ("sf", "extras", "all"):
+        write_sf_extras()
