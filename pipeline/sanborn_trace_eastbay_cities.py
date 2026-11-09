@@ -91,6 +91,8 @@ CITIES = {
             "st charles": "saint charles street", "schiller": "schiller street", "morton": "morton street",
             "taylor": "taylor avenue", "railroad avenue": "lincoln avenue",
         },
+        "vanished_sites": ["sandy_beach_baths", "alameda_baths", "sunny_cove_baths", "green_arbor_baths", "cottage_baths",
+                           "terrace_baths", "neptune_gardens", "neptune_beach"],
         "railroad_streets": [],
     },
     "richmond": {
@@ -351,6 +353,43 @@ def assemble_tracks():
         log(area, year, len(feats), "track lines", round(sum(f[0].length for f in feats)), "m")
 
 
+VANISHED = ROOT / "data/manual/vanished_sites/buildings.geojson"
+
+
+def drop_vanished_sites():
+    """buildings of sites already traced in data/manual/vanished_sites (Alameda's west-end bath houses, Neptune
+    Beach / Gardens, the Terrace Baths: CITIES[city]['vanished_sites']) are not emitted twice: a traced footprint
+    within 3 m of one of their buildings is removed from the assembled files."""
+    sites = CITIES[CITY_NAME].get("vanished_sites")
+    if not sites or not VANISHED.exists():
+        return
+    import geopandas as gpd
+    import shapely
+    from shapely.geometry import shape
+    v = gpd.read_file(VANISHED)
+    v = v[v.site_id.isin(sites)].to_crs(32610)
+    if not len(v):
+        return
+    zone = shapely.union_all(v.geometry.buffer(3).values)
+    from pyproj import Transformer
+    to_utm = Transformer.from_crs(4326, 32610, always_xy=True)
+    for (area, year) in E.AREAS:
+        p = E.OUT / f"{area}_{year}.geojson"
+        if not p.exists():
+            continue
+        fc = json.load(open(p))
+        keep = []
+        for ft in fc["features"]:
+            g = shapely.transform(shape(ft["geometry"]), lambda c: np.column_stack(to_utm.transform(c[:, 0], c[:, 1])))
+            if g.intersects(zone) and g.intersection(zone).area > 0.3 * g.area:
+                continue
+            keep.append(ft)
+        if len(keep) < len(fc["features"]):
+            log(area, year, len(fc["features"]) - len(keep), "footprints dropped: already in vanished_sites", sites)
+            fc["features"] = keep
+            json.dump(fc, open(p, "w"))
+
+
 def cap_blocks():
     """per-block confidence caps: a block whose own corners are gone (campus, superblock) and that is placed by the fit
     of its neighbours ("with") carries `confidence_cap` in its control entry; lower the confidence of its footprints in
@@ -362,6 +401,8 @@ def cap_blocks():
             continue
         cfg = json.load(open(f))
         if "registered_to" in cfg:
+            if not (E.CONTROL / f"{cfg['registered_to']}.json").exists():
+                continue  # registered onto a plate not (yet) georeferenced
             cfg = json.load(open(E.CONTROL / f"{cfg['registered_to']}.json"))
             base = f.stem
         else:
@@ -494,4 +535,5 @@ if __name__ == "__main__":
     if stage in ("all", "assemble"):
         E.assemble()
         cap_blocks()
+        drop_vanished_sites()
         assemble_tracks()

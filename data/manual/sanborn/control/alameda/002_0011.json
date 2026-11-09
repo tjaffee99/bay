@@ -1,0 +1,458 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End: 4th - 5th St, Santa Clara - Central and the old shore south of Central (Sunny Cove Baths: traced separately in data/manual/vanished_sites, removed here)",
+ "blocks": [
+  {
+   "name": "425",
+   "streets": {
+    "N": "Santa Clara",
+    "S": "Taylor",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     200
+    ],
+    [
+     1600,
+     200
+    ],
+    [
+     1600,
+     620
+    ],
+    [
+     104,
+     620
+    ]
+   ],
+   "corners": [
+    {
+     "x": 122.1,
+     "y": 193.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.8,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 115.2,
+     "y": 634.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     122.1,
+     193.9
+    ],
+    [
+     1596.8,
+     204.2
+    ],
+    [
+     1594.1,
+     634.0
+    ],
+    [
+     115.2,
+     634.0
+    ]
+   ],
+   "edge_q": [
+    0.4,
+    0.46,
+    0.23,
+    0.62
+   ],
+   "corners_all": [
+    {
+     "x": 122.1,
+     "y": 193.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.8,
+     "y": 204.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1594.1,
+     "y": 634.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [10.  2.] at 5th x Taylor NW"
+    },
+    {
+     "x": 115.2,
+     "y": 634.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    115.24122807017545,
+    193.86444963361453,
+    1596.7892195121779,
+    634.0
+   ]
+  },
+  {
+   "name": "426",
+   "streets": {
+    "N": "Taylor",
+    "S": "Central",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     710
+    ],
+    [
+     1600,
+     710
+    ],
+    [
+     1600,
+     1140
+    ],
+    [
+     104,
+     1140
+    ]
+   ],
+   "corners": [
+    {
+     "x": 115.8,
+     "y": 713.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.2,
+     "y": 724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1588.6,
+     "y": 1139.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 113.3,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     115.8,
+     713.8
+    ],
+    [
+     1596.2,
+     724.2
+    ],
+    [
+     1588.6,
+     1139.2
+    ],
+    [
+     113.3,
+     1128.8
+    ]
+   ],
+   "edge_q": [
+    0.31,
+    0.43,
+    0.29,
+    0.63
+   ],
+   "corners_all": [
+    {
+     "x": 115.8,
+     "y": 713.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.2,
+     "y": 724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1588.6,
+     "y": 1139.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 113.3,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    113.25274206094127,
+    713.819817143117,
+    1596.1859916519013,
+    1139.182716273488
+   ]
+  },
+  {
+   "name": "427",
+   "streets": {
+    "N": "Central",
+    "S": "Shore",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     1224
+    ],
+    [
+     1600,
+     1224
+    ],
+    [
+     1600,
+     1900
+    ],
+    [
+     104,
+     1900
+    ]
+   ],
+   "corners": [
+    {
+     "x": 115.8,
+     "y": 713.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "426"
+    },
+    {
+     "x": 1596.2,
+     "y": 724.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "426"
+    },
+    {
+     "x": 1588.6,
+     "y": 1139.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "426"
+    },
+    {
+     "x": 113.3,
+     "y": 1128.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "426"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "426"
+   ],
+   "px4": [
+    [
+     83.6,
+     1204.3
+    ],
+    [
+     1593.5,
+     1209.6
+    ],
+    [
+     1593.5,
+     1920.0
+    ],
+    [
+     84.9,
+     1920.0
+    ]
+   ],
+   "edge_q": [
+    0.28,
+    0.14,
+    0.0,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 83.6,
+     "y": 1204.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [5008.3 4486.5] at 4th x Central SE"
+    },
+    {
+     "x": 1593.5,
+     "y": 1209.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [3494.9 6406.8] at 5th x Central SW"
+    }
+   ],
+   "zone_px": [
+    83.55375367489883,
+    1204.2964880160248,
+    1593.5,
+    1920.0
+   ]
+  }
+ ],
+ "pct": 25
+}

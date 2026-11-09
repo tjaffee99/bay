@@ -1,0 +1,531 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End: 5th - 6th St, Santa Clara - Central (St. Barnabas Church, Palace Court, Hoover Ct) and the old shore south of Central (Cottage Baths: traced separately in data/manual/vanished_sites, removed here)",
+ "blocks": [
+  {
+   "name": "464_465",
+   "streets": {
+    "N": "Santa Clara",
+    "S": "Taylor",
+    "W": "5th",
+    "E": "6th"
+   },
+   "px4_est": [
+    [
+     220,
+     170
+    ],
+    [
+     1436,
+     170
+    ],
+    [
+     1436,
+     524
+    ],
+    [
+     220,
+     524
+    ]
+   ],
+   "corners": [
+    {
+     "x": 224.6,
+     "y": 170.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1419.1,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1420.4,
+     "y": 514.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 219.5,
+     "y": 513.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     224.6,
+     170.4
+    ],
+    [
+     1419.1,
+     175.6
+    ],
+    [
+     1420.4,
+     514.9
+    ],
+    [
+     219.5,
+     513.6
+    ]
+   ],
+   "edge_q": [
+    0.38,
+    0.17,
+    0.39,
+    0.52
+   ],
+   "corners_all": [
+    {
+     "x": 224.6,
+     "y": 170.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1419.1,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1420.4,
+     "y": 514.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 219.5,
+     "y": 513.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    219.52316994792352,
+    170.3884427099479,
+    1420.3740372675052,
+    514.8909864496056
+   ]
+  },
+  {
+   "name": "462_463_429",
+   "streets": {
+    "N": "Taylor",
+    "S": "Central",
+    "W": "5th",
+    "E": "6th"
+   },
+   "px4_est": [
+    [
+     220,
+     574
+    ],
+    [
+     1436,
+     574
+    ],
+    [
+     1436,
+     1110
+    ],
+    [
+     220,
+     1110
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1416.0,
+     "y": 1103.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "462_463_429"
+    },
+    {
+     "x": 221.5,
+     "y": 1099.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "462_463_429"
+    },
+    {
+     "x": 224.6,
+     "y": 170.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 1419.1,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 1420.4,
+     "y": 514.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 219.5,
+     "y": 513.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    }
+   ],
+   "with": [
+    "464_465"
+   ],
+   "px4": [
+    [
+     221.5,
+     573.2
+    ],
+    [
+     1416.0,
+     575.8
+    ],
+    [
+     1416.0,
+     1103.2
+    ],
+    [
+     221.5,
+     1099.3
+    ]
+   ],
+   "edge_q": [
+    0.48,
+    0.29,
+    0.51,
+    0.53
+   ],
+   "corners_all": [
+    {
+     "x": 221.5,
+     "y": 573.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.7 1.1] at 5th x Taylor SE"
+    },
+    {
+     "x": 1416.0,
+     "y": 575.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.3 1.1] at 6th x Taylor SW"
+    },
+    {
+     "x": 1416.0,
+     "y": 1103.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 221.5,
+     "y": 1099.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    221.5,
+    573.1874567174516,
+    1416.0,
+    1103.1587603878115
+   ]
+  },
+  {
+   "name": "428",
+   "streets": {
+    "N": "Central",
+    "S": "Shore",
+    "W": "5th",
+    "E": "6th"
+   },
+   "px4_est": [
+    [
+     220,
+     1200
+    ],
+    [
+     1436,
+     1200
+    ],
+    [
+     1436,
+     1900
+    ],
+    [
+     220,
+     1900
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1416.0,
+     "y": 1103.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "462_463_429"
+    },
+    {
+     "x": 221.5,
+     "y": 1099.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "462_463_429"
+    },
+    {
+     "x": 224.6,
+     "y": 170.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 1419.1,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 1420.4,
+     "y": 514.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    },
+    {
+     "x": 219.5,
+     "y": 513.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "464_465"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "462_463_429",
+    "464_465"
+   ],
+   "px4": [
+    [
+     229.5,
+     1219.0
+    ],
+    [
+     1451.6,
+     1219.0
+    ],
+    [
+     1458.1,
+     1904.0
+    ],
+    [
+     229.5,
+     1904.0
+    ]
+   ],
+   "edge_q": [
+    0.04,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 229.5,
+     "y": 1219.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [4509.9 6578.7] at 5th x Central SE"
+    },
+    {
+     "x": 1451.6,
+     "y": 1219.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [3752.3 6867.7] at 6th x Central SW"
+    }
+   ],
+   "zone_px": [
+    229.5,
+    1219.0,
+    1458.077067669173,
+    1904.0
+   ]
+  }
+ ],
+ "pct": 25
+}

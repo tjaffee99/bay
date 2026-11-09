@@ -1,0 +1,480 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End: 6th St (formerly Third Ave) - Webster St (formerly Seventh), Pacific - Santa Clara; Webster St shops",
+ "blocks": [
+  {
+   "name": "374",
+   "streets": {
+    "N": "Pacific",
+    "S": "Lincoln",
+    "W": "6th",
+    "E": "Webster"
+   },
+   "px4_est": [
+    [
+     300,
+     236
+    ],
+    [
+     1324,
+     236
+    ],
+    [
+     1324,
+     690
+    ],
+    [
+     300,
+     690
+    ]
+   ],
+   "corners": [
+    {
+     "x": 298.0,
+     "y": 236.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1322.2,
+     "y": 236.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1332.6,
+     "y": 684.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 298.0,
+     "y": 694.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     298.0,
+     236.0
+    ],
+    [
+     1322.2,
+     236.0
+    ],
+    [
+     1332.6,
+     684.1
+    ],
+    [
+     298.0,
+     694.8
+    ]
+   ],
+   "edge_q": [
+    0.47,
+    0.36,
+    0.36,
+    0.44
+   ],
+   "corners_all": [
+    {
+     "x": 298.0,
+     "y": 236.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1322.2,
+     "y": 236.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1332.6,
+     "y": 684.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 298.0,
+     "y": 694.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    298.0,
+    236.0,
+    1332.6274786698382,
+    694.7837171052631
+   ]
+  },
+  {
+   "name": "373",
+   "streets": {
+    "N": "Lincoln",
+    "S": "Haight",
+    "W": "6th",
+    "E": "Webster"
+   },
+   "px4_est": [
+    [
+     300,
+     836
+    ],
+    [
+     1324,
+     836
+    ],
+    [
+     1324,
+     1256
+    ],
+    [
+     300,
+     1256
+    ]
+   ],
+   "corners": [
+    {
+     "x": 297.0,
+     "y": 841.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1327.3,
+     "y": 837.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1331.1,
+     "y": 1245.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 297.0,
+     "y": 1249.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     297.0,
+     841.2
+    ],
+    [
+     1327.3,
+     837.3
+    ],
+    [
+     1331.1,
+     1245.7
+    ],
+    [
+     297.0,
+     1249.7
+    ]
+   ],
+   "edge_q": [
+    0.26,
+    0.65,
+    0.4,
+    0.64
+   ],
+   "corners_all": [
+    {
+     "x": 297.0,
+     "y": 841.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1327.3,
+     "y": 837.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1331.1,
+     "y": 1245.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 297.0,
+     "y": 1249.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    297.0,
+    837.2636402956362,
+    1331.1273387307679,
+    1249.7352487664473
+   ]
+  },
+  {
+   "name": "466",
+   "streets": {
+    "N": "Haight",
+    "S": "Santa Clara",
+    "W": "6th",
+    "E": "Webster"
+   },
+   "px4_est": [
+    [
+     300,
+     1324
+    ],
+    [
+     1324,
+     1324
+    ],
+    [
+     1324,
+     1740
+    ],
+    [
+     300,
+     1740
+    ]
+   ],
+   "corners": [
+    {
+     "x": 301.8,
+     "y": 1339.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.1,
+     "y": 1334.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1325.3,
+     "y": 1738.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 309.5,
+     "y": 1740.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     301.8,
+     1339.6
+    ],
+    [
+     1329.1,
+     1334.3
+    ],
+    [
+     1325.3,
+     1738.2
+    ],
+    [
+     309.5,
+     1740.8
+    ]
+   ],
+   "edge_q": [
+    0.5,
+    0.69,
+    0.35,
+    0.47
+   ],
+   "corners_all": [
+    {
+     "x": 301.8,
+     "y": 1339.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1329.1,
+     "y": 1334.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1325.3,
+     "y": 1738.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 309.5,
+     "y": 1740.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    301.8491031425007,
+    1334.3420767391751,
+    1329.1255496260833,
+    1740.7914720683427
+   ]
+  }
+ ],
+ "pct": 25
+}

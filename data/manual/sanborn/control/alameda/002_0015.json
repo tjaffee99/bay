@@ -1,0 +1,446 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End: 6th St - Webster St, Santa Clara - Central; south of Central Neptune Court (on the former Neptune Beach grounds; the beach itself is in data/manual/vanished_sites)",
+ "blocks": [
+  {
+   "name": "430",
+   "streets": {
+    "N": "Santa Clara",
+    "S": "Taylor",
+    "W": "6th",
+    "E": "Webster"
+   },
+   "px4_est": [
+    [
+     304,
+     190
+    ],
+    [
+     1324,
+     190
+    ],
+    [
+     1324,
+     600
+    ],
+    [
+     304,
+     600
+    ]
+   ],
+   "corners": [
+    {
+     "x": 304.6,
+     "y": 185.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1319.5,
+     "y": 176.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1319.5,
+     "y": 605.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     304.6,
+     185.4
+    ],
+    [
+     1319.5,
+     176.2
+    ],
+    [
+     1319.5,
+     605.4
+    ],
+    [
+     305.9,
+     610.6
+    ]
+   ],
+   "edge_q": [
+    0.37,
+    0.41,
+    0.37,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 304.6,
+     "y": 185.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1319.5,
+     "y": 176.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1319.5,
+     "y": 605.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 305.9,
+     "y": 610.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.4 1.7] at 6th x Taylor NE"
+    }
+   ],
+   "zone_px": [
+    304.57718244942896,
+    176.18537151702787,
+    1319.5,
+    610.6215584009559
+   ]
+  },
+  {
+   "name": "431",
+   "streets": {
+    "N": "Taylor",
+    "S": "Central",
+    "W": "6th",
+    "E": "Webster"
+   },
+   "px4_est": [
+    [
+     304,
+     690
+    ],
+    [
+     1324,
+     690
+    ],
+    [
+     1324,
+     1110
+    ],
+    [
+     304,
+     1110
+    ]
+   ],
+   "corners": [
+    {
+     "x": 306.2,
+     "y": 700.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1333.2,
+     "y": 700.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1335.8,
+     "y": 1114.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 308.8,
+     "y": 1114.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     306.2,
+     700.0
+    ],
+    [
+     1333.2,
+     700.0
+    ],
+    [
+     1335.8,
+     1114.5
+    ],
+    [
+     308.8,
+     1114.5
+    ]
+   ],
+   "edge_q": [
+    0.29,
+    0.36,
+    0.28,
+    0.52
+   ],
+   "corners_all": [
+    {
+     "x": 306.2,
+     "y": 700.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1333.2,
+     "y": 700.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1335.8,
+     "y": 1114.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 308.8,
+     "y": 1114.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    306.2468671679198,
+    700.0,
+    1335.843984962406,
+    1114.5
+   ]
+  },
+  {
+   "name": "neptune_court",
+   "streets": {
+    "N": "Central",
+    "S": "Shore",
+    "W": "6th",
+    "E": "McKay"
+   },
+   "px4_est": [
+    [
+     296,
+     1244
+    ],
+    [
+     690,
+     1244
+    ],
+    [
+     690,
+     1520
+    ],
+    [
+     296,
+     1520
+    ]
+   ],
+   "corners": [
+    {
+     "x": 306.2,
+     "y": 700.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "431"
+    },
+    {
+     "x": 1333.2,
+     "y": 700.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Webster",
+      "Taylor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "431"
+    },
+    {
+     "x": 1335.8,
+     "y": 1114.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Webster",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "431"
+    },
+    {
+     "x": 308.8,
+     "y": 1114.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "431"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "431"
+   ],
+   "px4": [
+    [
+     303.7,
+     1237.9
+    ],
+    [
+     682.2,
+     1236.6
+    ],
+    [
+     687.5,
+     1511.6
+    ],
+    [
+     297.1,
+     1512.9
+    ]
+   ],
+   "edge_q": [
+    0.57,
+    0.25,
+    0.28,
+    0.32
+   ],
+   "corners_all": [
+    {
+     "x": 303.7,
+     "y": 1237.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Central"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [4249.4 7038.6] at 6th x Central SE"
+    }
+   ],
+   "zone_px": [
+    297.12966909489427,
+    1236.6180615421388,
+    687.4714063629198,
+    1512.904122130995
+   ]
+  }
+ ],
+ "pct": 25
+}
