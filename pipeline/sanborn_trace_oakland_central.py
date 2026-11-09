@@ -120,6 +120,75 @@ def apply_storeys():
         C.log(area, year, n, "storeys read off the sheet")
 
 
+def add_labels(reads):
+    """scratch aid: {footprint id: (name, use or None)} read off the sheets -> labels.json [x, y, name, use] at a point
+    inside the footprint on its 25 % scan (E.assemble reads labels.json)."""
+    from shapely.geometry import Polygon
+    p = E.CONTROL / "labels.json"
+    lab = json.load(open(p)) if p.exists() else {}
+    rows = {}
+    for fid, (name, use) in reads.items():
+        key = fid.rsplit("_", 1)[0]
+        if key not in rows:
+            rows[key] = {r["id"]: r for r in json.load(open(E.INTERIM / f"{key}.json"))}
+        q = Polygon(rows[key][fid]["px_ring"]).buffer(0).representative_point()
+        lst = [e for e in lab.setdefault(key, []) if Polygon(rows[key][fid]["px_ring"]).buffer(0).distance(
+            Polygon([(e[0] - .1, e[1] - .1), (e[0] + .1, e[1] - .1), (e[0] + .1, e[1] + .1)])) > 0.5]
+        lst.append([round(q.x, 1), round(q.y, 1), name, use])
+        lab[key] = lst
+    json.dump(lab, open(p, "w"), indent=1)
+
+
+def carry_forward():
+    """a building on the earlier map whose storeys or name were read off the sheet keeps them on the later map when it
+    is the same building there (IoU >= 0.5 with a footprint of the same Sanborn colour whose storeys / name were not
+    read): apply_sanborn emits a building present on both maps with its later outline and attributes.
+    stories_source = 'map (read from the <year> sheet: same building)'."""
+    import shapely
+    from shapely.geometry import shape
+    from shapely.strtree import STRtree
+    from pyproj import Transformer
+    to_utm = Transformer.from_crs(4326, 32610, always_xy=True)
+    utm = lambda g: shapely.transform(g, lambda c: np.column_stack(to_utm.transform(c[:, 0], c[:, 1])))  # noqa: E731
+    for area in sorted({a for a, _ in E.AREAS}):
+        years = sorted(y for a, y in E.AREAS if a == area)
+        for y0, y1 in zip(years[:-1], years[1:]):
+            p0, p1 = E.OUT / f"{area}_{y0}.geojson", E.OUT / f"{area}_{y1}.geojson"
+            if not (p0.exists() and p1.exists()):
+                continue
+            A = json.load(open(p0))["features"]
+            fc = json.load(open(p1))
+            src = [(utm(shape(f["geometry"])), f["properties"]) for f in A
+                   if f["properties"]["stories_source"].startswith("map") or f["properties"].get("name")]
+            if not src:
+                continue
+            tree = STRtree([g for g, _ in src])
+            ns = nn = 0
+            for f in fc["features"]:
+                pr = f["properties"]
+                g = utm(shape(f["geometry"]))
+                best, bi = None, 0.5
+                for j in tree.query(g):
+                    g0, p0r = src[j]
+                    if p0r["sanborn_colour"] != pr["sanborn_colour"]:
+                        continue
+                    iou = g0.intersection(g).area / max(g0.union(g).area, 1e-6)
+                    if iou >= bi:
+                        best, bi = p0r, iou
+                if best is None:
+                    continue
+                if best["stories_source"].startswith("map") and not pr["stories_source"].startswith("map"):
+                    pr["stories"], pr["stories_source"] = best["stories"], f"map (read from the {y0} sheet: same building)"
+                    ns += 1
+                if best.get("name") and not pr.get("name"):
+                    pr["name"] = best["name"]
+                    if best["use_source"].startswith("map") and pr["use_source"] == "default":
+                        pr["use"], pr["use_source"] = best["use"], f"map (label on the {y0} sheet: same building)"
+                    nn += 1
+            json.dump(fc, open(p1, "w"))
+            C.log(area, y1, ns, "storeys and", nn, "names carried over from", y0)
+
+
 def add_storeys(reads):
     """scratch aid: {footprint id: stories} -> storeys.json entries [x, y, stories] at a point inside the footprint."""
     from shapely.geometry import Polygon
@@ -297,3 +366,4 @@ if __name__ == "__main__":
         C.cap_blocks()
         C.commercial_fronts()
         apply_storeys()
+        carry_forward()

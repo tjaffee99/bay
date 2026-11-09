@@ -1,0 +1,366 @@
+{
+ "006_0151": [
+  [
+   1245.8,
+   440.0,
+   "Oakland Market",
+   "store"
+  ],
+  [
+   348.1,
+   455.0,
+   "Oakland Enquirer (printer)",
+   "office"
+  ],
+  [
+   520.0,
+   392.1,
+   "Moving picture & vaudeville theatre",
+   "theatre"
+  ],
+  [
+   1227.9,
+   1517.0,
+   "Oakland Cold Storage Co.",
+   "warehouse"
+  ],
+  [
+   1168.0,
+   998.5,
+   "Livery stable",
+   "stable"
+  ],
+  [
+   517.2,
+   1079.2,
+   "Livery stable",
+   "stable"
+  ],
+  [
+   1152.9,
+   303.4,
+   "Bank / office building (from plans Sept 1911)",
+   "office"
+  ]
+ ],
+ "006_0152": [
+  [
+   356.6,
+   888.1,
+   "Hotel St. Mark",
+   "hotel"
+  ],
+  [
+   1116.0,
+   336.9,
+   "Union Savings Bank Bldg",
+   "bank"
+  ],
+  [
+   306.6,
+   354.4,
+   "Oakland Bank of Savings",
+   "bank"
+  ],
+  [
+   502.0,
+   653.0,
+   "Cordes Bldg (furniture)",
+   "store"
+  ],
+  [
+   1288.0,
+   383.9,
+   "Macdonough Theatre & Bldg",
+   "theatre"
+  ],
+  [
+   501.6,
+   1485.2,
+   "Livery stable",
+   "stable"
+  ],
+  [
+   348.0,
+   1736.0,
+   "Polytechnic Business College",
+   "school"
+  ],
+  [
+   1188.6,
+   955.0,
+   "S.P.R.R. waiting room",
+   "rail"
+  ]
+ ],
+ "006_0153": [
+  [
+   420.8,
+   297.0,
+   "Central Bank Bldg",
+   "bank"
+  ],
+  [
+   723.9,
+   321.0,
+   "Syndicate Bldg",
+   "office"
+  ],
+  [
+   571.0,
+   484.5,
+   "Ye Liberty Theatre",
+   "theatre"
+  ],
+  [
+   1167.0,
+   346.5,
+   "Moving picture theatre",
+   "theatre"
+  ],
+  [
+   514.0,
+   939.1,
+   "1st Presbyterian Church",
+   "church"
+  ],
+  [
+   417.2,
+   1197.5,
+   "Livery stable",
+   "stable"
+  ],
+  [
+   411.0,
+   542.4,
+   "Elks Club / Athenian Club",
+   "hall"
+  ],
+  [
+   417.0,
+   1448.5,
+   "Hall / club",
+   "hall"
+  ]
+ ],
+ "006_0154": [
+  [
+   967.0,
+   344.9,
+   "City Hall Annex (temporary)",
+   "office"
+  ],
+  [
+   572.5,
+   322.5,
+   "U.S. Post Office",
+   "office"
+  ],
+  [
+   1092.5,
+   614.9,
+   "Home Telephone Bldg",
+   "office"
+  ],
+  [
+   1295.6,
+   307.6,
+   "44 Apartments (reinforced concrete, from plans Sept 1911)",
+   "flats"
+  ],
+  [
+   817.8,
+   618.9,
+   "1st Church of Christ Scientist",
+   "church"
+  ],
+  [
+   1124.5,
+   888.5,
+   "8 Apartments",
+   "flats"
+  ],
+  [
+   429.0,
+   1479.3,
+   "10 Apartments",
+   "flats"
+  ]
+ ],
+ "006_0155": [
+  [
+   237.0,
+   637.5,
+   "15 Apartments",
+   "flats"
+  ],
+  [
+   258.0,
+   1758.7,
+   "12 Apartments",
+   "flats"
+  ],
+  [
+   559.0,
+   959.7,
+   "Rooms & boarding",
+   "flats"
+  ]
+ ],
+ "006_0162": [
+  [
+   499.1,
+   539.5,
+   "W. P. Fuller & Co. paints, oils, sash & doors",
+   "warehouse"
+  ],
+  [
+   1227.0,
+   876.4,
+   "Lincoln School",
+   "school"
+  ],
+  [
+   334.9,
+   1737.5,
+   "30 Apartments",
+   "flats"
+  ]
+ ],
+ "006_0163": [
+  [
+   1182.3,
+   1161.0,
+   "Studebaker Bros Co. (autos, wagons)",
+   "store"
+  ],
+  [
+   1323.0,
+   201.5,
+   "Oakland Chamber of Commerce exhibits",
+   "hall"
+  ]
+ ],
+ "006_0164": [
+  [
+   472.0,
+   1424.5,
+   "Peralta Apartments",
+   "flats"
+  ],
+  [
+   559.3,
+   389.5,
+   "Hotel Oakland",
+   "hotel"
+  ],
+  [
+   1119.0,
+   1660.7,
+   "Masonic Cathedral (A. & A. S. R.)",
+   "hall"
+  ],
+  [
+   487.8,
+   1674.5,
+   "Oakland Conservatory of Music",
+   "school"
+  ],
+  [
+   1210.1,
+   274.7,
+   "Ebell Club (women's)",
+   "hall"
+  ],
+  [
+   1219.1,
+   1390.4,
+   "Boarding house",
+   "flats"
+  ]
+ ],
+ "006_0165": [
+  [
+   820.0,
+   835.6,
+   "28 Apartments",
+   "flats"
+  ],
+  [
+   685.8,
+   828.3,
+   "15 Apartments",
+   "flats"
+  ],
+  [
+   1030.5,
+   836.6,
+   "12 Apartments",
+   "flats"
+  ],
+  [
+   1046.5,
+   275.4,
+   "37 Apartments",
+   "flats"
+  ],
+  [
+   430.7,
+   1421.5,
+   "Boarding house",
+   "flats"
+  ]
+ ],
+ "006_0167": [
+  [
+   276.8,
+   1086.5,
+   "27 Apartments",
+   "flats"
+  ],
+  [
+   883.6,
+   1118.3,
+   "Oakland Public Museum (Camron-Stanford house)",
+   "other"
+  ],
+  [
+   908.3,
+   601.0,
+   "Oakland high-pressure pumping station no. 1",
+   "factory"
+  ],
+  [
+   260.6,
+   1755.5,
+   "Polytechnic College of Engineering",
+   "school"
+  ],
+  [
+   259.7,
+   1670.5,
+   "Polytechnic College machine shop",
+   "school"
+  ]
+ ],
+ "006_0168": [
+  [
+   448.9,
+   1677.8,
+   "Madison Apartments (100 apartments)",
+   "flats"
+  ],
+  [
+   509.9,
+   824.2,
+   "Boarding house",
+   "flats"
+  ],
+  [
+   196.0,
+   1100.2,
+   "Boarding house",
+   "flats"
+  ]
+ ]
+}

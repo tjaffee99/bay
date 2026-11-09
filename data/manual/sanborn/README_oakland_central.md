@@ -21,7 +21,8 @@ West of Broadway (vol. 1), the freeway corridors (SR-24, I-580, I-980) and their
 | `oakland_<area>_coverage.geojson` | one polygon per map year (`map_year` = the file year): the fitted block zones + 12 m (half the streets). Inside it an empty spot was empty on that map |
 | `control/oakland_central/<key>.json` | per sheet: blocks (`streets` N/S/W/E, `px4_est` estimates, refined `px4`, `edge_q`, corners used with their control type), `with` (blocks fitted together), `skip`, `refine_R`, `residential`, `notes`; registered 1950 sheets: the SIFT registration (`registered_to`, `T`) |
 | `control/oakland_central/areas.json` | which sheets make up each area and map year |
-| `control/oakland_central/storeys.json` | storeys read off the sheets by eye: `{key: [[x, y, stories], ...]}` (pixel on the 25 % scan inside the building) |
+| `control/oakland_central/storeys.json` | storeys read off the sheets by eye on the 50 % scans (the numeral at a building's corner; `2½` = 2.5; a footprint whose parts carry different marks is left to the default rule): `{key: [[x, y, stories], ...]}` (pixel on the 25 % scan inside the building) |
+| `control/oakland_central/labels.json` | names / uses read off the sheets by pixel position (banks, hotels, theatres, apartment houses, churches, schools, halls, liveries) |
 
 Keys are `<LOC item suffix>_<sheet>`: `006_0152` = sanborn00727_006 (1911 vol. 2) sheet 152, `016_0152` =
 sanborn00727_016 (1911 – Nov 1950 vol. 2) sheet 152.
@@ -35,7 +36,7 @@ As `README_oakland.md` (`id`, `map_year`, `volume`, `volume_label`, `loc_url`, `
 | property | meaning here |
 |---|---|
 | `map_year` | 1911 (1911 vol. 2) or 1950 (1911 – Nov 1950 vol. 2: the 1911 plates with paste-over corrections, and re-drawn plates for sheets 152 (May 1944), 153 (May 1944) and 154 (new sheet, Jan 1925)) |
-| `stories` | read off the sheet where `stories_source = map (read from the sheet)` (`storeys.json`), else the Oakland default rule (frame < 30 m² shed 1; frame ≤ 300 m² dwelling 2 on residential sheets, store 2 on the commercial sheets; frame ≥ 300 m² warehouse 1; brick / stone / concrete 2) |
+| `stories` | read off the sheet where `stories_source = map (read from the sheet)` (`storeys.json`: 1911 buildings of ≥ 300 m² frame or ≥ 150 m² masonry, 113 reads); `map (read from the 1911 sheet: same building)` on the 1950 map for a building with the same outline (IoU ≥ 0.5) and colour, names likewise (`apply_sanborn` emits such a building with its 1950 row); else the Oakland default rule (frame < 30 m² shed 1; frame ≤ 300 m² dwelling 2 on residential sheets, store 2 on the commercial sheets; frame ≥ 300 m² warehouse 1; brick / stone / concrete 2) |
 | `use` | the default rule; `default (rule: commercial street frontage)` = store within 40 m of Broadway, 30 m of Grand Ave; `default (rule: 3+ storey residential building)` = flats where a dwelling was read at 3+ storeys |
 | `extraction` | `colour class`, `region` (1950: regions enclosed by drawn lines, classed by median colour), or `colour class (light outline)`: a large solid fill (≥ 100 m²) whose outline is thin or broken by lettering (45–70 % dark), which `extract` rejects |
 | `residential` sheets | 153–155, 162–168 (1911 and their registered 1950 states); commercial: 151, 152 and the re-drawn 1950 sheets 152–154 |
@@ -44,8 +45,8 @@ As `README_oakland.md` (`id`, `map_year`, `volume`, `volume_label`, `loc_url`, `
 
 | file | features | confidence high / medium / low | area (1000 m²) | modern_overlap ≥ 0.5 | materials | storeys read |
 |---|---|---|---|---|---|---|
-| oakland_lakeside_1911 | 1295 | 997 / 298 / 0 | 194.4 | 958 | frame 1194, brick 72, concrete 22, stone 7 | 0 |
-| oakland_lakeside_1950 | 952 | 580 / 368 / 4 | 247.9 | 739 | frame 410, concrete 321, brick 207, iron 14 | 0 |
+| oakland_lakeside_1911 | 1295 | 997 / 298 / 0 | 194.4 | 958 | frame 1194, brick 72, concrete 22, stone 7 | 108 |
+| oakland_lakeside_1950 | 952 | 580 / 368 / 4 | 247.9 | 739 | frame 410, concrete 321, brick 207, iron 14 | 43 (carried over) |
 
 A "feature" is one coloured fill, split along the drawn partition walls (porches, bay windows and rear additions drawn
 with a line become their own small features: 386 / 164 "sheds" < 30 m²). `modern_overlap` ≥ 0.5 marks a building that
