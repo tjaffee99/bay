@@ -319,11 +319,76 @@ def consistency(pred, today, burned_zone):
         pred = gpd.GeoDataFrame(pd.concat([pred[~drop], extra], ignore_index=True), geometry="geometry", crs=pred.crs)
     else:
         pred = pred[~drop].reset_index(drop=True)
+    pred = resolve_overlaps(pred, today)
     bad = pred.start_year.values >= pred.end_year.values - 0.05
     log(f"predecessors: consistency: {n_surv} surviving documented buildings hand over to today's footprint "
         f"({n_dup} already there), {int(cross.sum())} generated buildings cut at the 1906 fire, "
         f"{int(bad.sum())} rows ending before they start dropped")
     return pred[~bad].reset_index(drop=True)
+
+
+def resolve_overlaps(pred, today=None):
+    """Two buildings never stand on one spot at the same time (audit 2026-11: 430 vanished
+    buildings stood inside a footprint that already existed, 1,700 pairs of vanished ones
+    overlapped — traced Sanborn outlines over the generated fabric they replace, a
+    building from one map edition over its successor from the next, generated houses
+    under documented ones). Rank: documented (tables, OpenHistoricalMap) > traced
+    (Sanborn) > generated. Where two overlap by more than half of the smaller one and in
+    time, the lower-ranked (same rank: the earlier) one ends when the other starts, or
+    starts when it ends, or goes. A traced / generated building inside a footprint of
+    today that already stood ends when that footprint starts, or goes."""
+    pred = pred.reset_index(drop=True)
+    src = pd.Series(pred.source.astype(str).values)
+    pri = np.where(src.str.startswith("sanborn").values, 2, np.where(src.str.endswith("procedural").values, 1, 3))
+    s = pred.start_year.values.astype(float).copy()
+    e = pred.end_year.values.astype(float).copy()
+    geom = pred.geometry.values
+    area = np.maximum(shapely.area(geom), 1e-6)
+    drop = np.zeros(len(pred), bool)
+    n_today = n_pair = 0
+    if today is not None and len(today):
+        ts = today.start_year.values.astype(float)
+        ia, ib = today.sindex.query(geom, predicate="intersects")
+        if len(ia):
+            inter = shapely.area(shapely.intersection(geom[ia], today.geometry.values[ib]))
+            ok = (inter > 0.5 * area[ia]) & (e[ia] > ts[ib] + 1.5) & (pri[ia] < 3)
+            for i, t in zip(ia[ok], ts[ib[ok]]):
+                if drop[i] or e[i] <= t + 1.5:
+                    continue
+                if s[i] < t - 1.0:
+                    e[i] = t - 0.3
+                else:
+                    drop[i] = True
+                n_today += 1
+    ia, ib = pred.sindex.query(geom, predicate="intersects")
+    m = ia < ib
+    ia, ib = ia[m], ib[m]
+    if len(ia):
+        inter = shapely.area(shapely.intersection(geom[ia], geom[ib]))
+        ok = (inter > 0.5 * np.minimum(area[ia], area[ib])) & (np.minimum(e[ia], e[ib]) - np.maximum(s[ia], s[ib]) > 0.5) \
+            & ~((pri[ia] == 3) & (pri[ib] == 3))
+        ia, ib = ia[ok], ib[ok]
+        order = np.argsort(-np.maximum(pri[ia], pri[ib]), kind="stable")
+        for a, b in zip(ia[order], ib[order]):
+            if drop[a] or drop[b] or min(e[a], e[b]) - max(s[a], s[b]) <= 0.5:
+                continue
+            if pri[a] != pri[b]:
+                hi, lo = (a, b) if pri[a] > pri[b] else (b, a)
+            else:
+                hi, lo = (a, b) if s[a] >= s[b] else (b, a)   # the later building replaced the earlier
+            if s[lo] < s[hi] - 0.3:
+                e[lo] = min(e[lo], s[hi] - 0.1)
+            elif e[hi] < e[lo] - 1.0:
+                s[lo] = max(s[lo], e[hi] + 0.1)
+            else:
+                drop[lo] = True
+            n_pair += 1
+    pred["start_year"] = s
+    pred["end_year"] = e
+    drop |= s >= e - 0.3
+    log(f"predecessors: overlaps: {n_today} vanished buildings inside a standing footprint cut or dropped, "
+        f"{n_pair} overlapping pairs resolved, {int(drop.sum())} rows dropped")
+    return pred[~drop].reset_index(drop=True)
 
 
 def industrial_lots(points):

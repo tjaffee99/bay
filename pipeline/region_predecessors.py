@@ -790,6 +790,9 @@ def region_predecessors(today):
         st.to_parquet(sp)
     if len(cf):
         pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)
+    # two buildings never stand on one spot at the same time (sf_predecessors.resolve_overlaps)
+    from sf_predecessors import resolve_overlaps
+    pred = resolve_overlaps(gpd.GeoDataFrame(pred, geometry="geometry", crs=UTM), tu)
     pred = pred.to_crs(4326)
     use_map = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
                "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}

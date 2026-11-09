@@ -197,8 +197,9 @@ def deheap(g, xy, year, conf):
     that old" (Alameda: 7,700 buildings in 1910 against 3,300 in the years around it; Marin
     1900: 13 times its neighbours). Below the placeholder threshold (spikes are handled
     separately) these are rounded estimates, not records: per county, the excess over the
-    neighbouring years is spread over the ten years around the round year (1900: the ten
-    years before it), per ~80 m block so streets still fill together, and marked estimated.
+    neighbouring years is spread around the heaped year (decades ± 5 years, fives ± 3, other
+    heaps ± 2; 1900: the ten years before it), per ~80 m block so streets still fill
+    together, and marked estimated.
     Without this ~25,000 buildings appeared in 1900, 1910 and 1920 alone."""
     year, conf = year.copy(), conf.copy()
     cty = g.county.astype(str).values if "county" in g else np.full(len(g), "")
@@ -208,11 +209,14 @@ def deheap(g, xy, year, conf):
     for c in np.unique(cty):
         m = (cty == c) & (yi > 0)
         vc = pd.Series(yi[m]).value_counts()
-        for y0 in range(1870, 1955, 5):
+        for y0 in range(1870, 1956):
             n = int(vc.get(y0, 0))
             nb = float(np.median([vc.get(y0 + d, 0) for d in (-3, -2, -1, 1, 2, 3)]))
             if n < 150 or n < 1.6 * max(nb, 1.0):
                 continue
+            # decades are the roughest guesses (± 5 years), then the fives (± 3); the Alameda
+            # roll also heaps on 1908, 1912, 1914 … ("about 1912": ± 2)
+            w = 10.0 if y0 % 10 == 0 else (6.0 if y0 % 5 == 0 else 4.0)
             share = 1.0 - nb / n
             idx = np.nonzero(m & (yi == y0))[0]
             pick = idx[np.array([h01(f"dh{k}") for k in idx]) < share]
@@ -221,7 +225,7 @@ def deheap(g, xy, year, conf):
             hb = np.array([h01(f"db{k}") for k in blk[pick]])
             hl = np.array([h01(f"dl{k}") for k in pick])
             h = 0.7 * hb + 0.3 * hl
-            year[pick] = (y0 - 9.0 + 10.0 * h) if y0 == 1900 else (y0 - 5.0 + 10.0 * h)
+            year[pick] = (y0 - 9.0 + 10.0 * h) if y0 == 1900 else (y0 + 0.5 - w / 2 + w * h)
             conf[pick] = "estimated"
             total += len(pick)
     log(f"region: {total} round-year roll estimates (1900, 1910, 1920 …) spread over their decade")
@@ -388,6 +392,17 @@ def campus_impute(g, xy, year, conf, src, upper):
     return year
 
 
+def write_recorded_points(g, year, conf):
+    """Recorded (roll / researched) construction years with their positions, BEFORE the
+    land check moves buildings onto existing ground: the terrain stage uses them as
+    evidence that the ground was there (terrain_tiles.exact_building_evidence)."""
+    ex = (np.asarray(conf) == "exact") & np.isfinite(year)
+    rp = g.geometry[ex].representative_point()
+    pd.DataFrame({"lon": rp.x.values, "lat": rp.y.values,
+                  "year": np.asarray(year, float)[ex]}).to_parquet(INTERIM / "region_recorded_points.parquet")
+    log(f"region: {int(ex.sum())} recorded years written for the terrain's ground evidence")
+
+
 def land_check(g, year):
     p = INTERIM / "grid_region_landyear.npy"
     if not p.exists():
@@ -549,6 +564,7 @@ def main():
     # researched dates stand even where the fill under them is dated later (the fill
     # zones are coarse: the Richmond shipyard box pushed the 1931 Ford plant to 1941)
     known = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
+    write_recorded_points(g, year, conf)
     year = np.where(known, year, land_check(g, year))
     start = row_timing(g, year)
     # stepped massing from airborne LiDAR in the downtowns (lidar_parts.py region jobs):

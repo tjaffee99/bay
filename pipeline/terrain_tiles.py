@@ -101,6 +101,55 @@ def nearest_fill(a, valid):
     return a[tuple(idx)]
 
 
+def exact_building_evidence(g):
+    """Per cell: the 2nd-earliest RECORDED construction year (assessor / researched, not
+    estimated) among today's buildings within ~60 m — NaN with fewer than two. Evidence
+    that the ground existed by then (used against fill years that are too late)."""
+    from scipy.spatial import cKDTree
+    xs, ys, yr = [], [], []
+    p = INTERIM / "sf_buildings.parquet"
+    if p.exists():
+        b = gpd.read_parquet(p)[["start_year", "year_confidence", "year_reason", "geometry"]]
+        b = b[(b.year_confidence == "exact") & b.year_reason.isin(["ok", "ok_research", "ok_permit"]) & (b.start_year >= 1770)].to_crs(3857)
+        c = b.geometry.representative_point()
+        xs.append(c.x.values); ys.append(c.y.values); yr.append(b.start_year.values)
+    # (the counties: recorded years as written by region_buildings.py before its land
+    # check moved the buildings onto existing ground)
+    p = INTERIM / "region_recorded_points.parquet"
+    if p.exists():
+        r = pd.read_parquet(p)
+        r = r[r.year >= 1770]
+        xs.append(np.radians(r.lon.values) * 6378137.0)
+        ys.append(6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(r.lat.values) / 2)))
+        yr.append(r.year.values)
+    out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
+    if not xs:
+        return out
+    X, Y, V = np.concatenate(xs), np.concatenate(ys), np.concatenate(yr).astype(np.float32)
+    rad = 60.0 / np.cos(np.radians(37.7))
+    c = np.clip(np.rint((X - g["X0"]) / g["res"]).astype(int), 0, g["cols"] - 1)
+    r_ = np.clip(np.rint((g["Y0"] - Y) / g["res"]).astype(int), 0, g["rows"] - 1)
+    inside = (X >= g["X0"] - rad) & (X <= g["X0"] + g["cols"] * g["res"] + rad) & (Y <= g["Y0"] + rad) & (Y >= g["Y0"] - g["rows"] * g["res"] - rad)
+    X, Y, V, c, r_ = X[inside], Y[inside], V[inside], c[inside], r_[inside]
+    if not len(X):
+        return out
+    # only cells near a building need the query
+    near = np.zeros((g["rows"], g["cols"]), bool)
+    near[r_, c] = True
+    k = max(1, int(np.ceil(rad / g["res"])))
+    near = ndimage.binary_dilation(near, iterations=k)
+    rr, cc = np.nonzero(near)
+    tree = cKDTree(np.column_stack([X, Y]))
+    cx = g["X0"] + cc * g["res"]
+    cy = g["Y0"] - rr * g["res"]
+    d, idx = tree.query(np.column_stack([cx, cy]), k=6, distance_upper_bound=rad)
+    vals = np.where(np.isfinite(d), V[np.minimum(idx, len(V) - 1)], np.inf)
+    vals.sort(axis=1)
+    second = vals[:, 1]
+    out[rr, cc] = np.where(np.isfinite(second), second, np.nan)
+    return out
+
+
 def sf_building_years(g):
     """Year each cell becomes city ground: when the 2nd building within ~45 m of it stands
     (San Francisco's buildings incl. vanished ones, and the five counties' footprints from
@@ -672,6 +721,15 @@ def histories(name, g, d):
     filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier & ~still_bay
     fill_y = np.where(np.isfinite(zones_fill), zones_fill, np.where(urban, urban_y - 3, np.nan))
     fill_y = np.where(filled & np.isnan(fill_y), 1950.0, fill_y)
+    # a building with a recorded year stands on the ground: where at least two such
+    # buildings within ~60 m predate the fill year of a cell, the fill zone is too wide or
+    # too late there and the ground is theirs (they stood in the bay for decades — the
+    # 1889 Audiffred Building until 1915, 1880s Alameda and San Rafael streets)
+    ev_y = exact_building_evidence(g)
+    ev_fix = filled & np.isfinite(ev_y) & np.isfinite(fill_y) & (ev_y - 1.5 < fill_y)
+    fill_y = np.where(ev_fix, ev_y - 1.5, fill_y)
+    zones_fill = np.where(ev_fix & np.isfinite(zones_fill), np.fmin(zones_fill, ev_y - 1.5), zones_fill)
+    log(f"terrain {name}: {int(ev_fix.sum())} made-land cells dated by the recorded buildings standing on them")
     # In the city, made land was put to use within a few years (wharves, rail yards,
     # warehouses, streets) — not left bare until today's buildings went up: anything
     # standing on it today means it was city soon after filling. Open fill greens over.
