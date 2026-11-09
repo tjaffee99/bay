@@ -51,6 +51,8 @@ As `README_oakland.md` (`id`, `map_year`, `volume`, `volume_label`, `loc_url`, `
 | oakland_lakeside_1950 | 952 | 580 / 368 / 4 | 247.9 | 739 | frame 410, concrete 321, brick 207, iron 14 | 43 (carried over) |
 | oakland_adams_point_1911 | 842 | 197 / 457 / 188 | 83.5 | 559 | frame 838, brick 4 | 30 |
 | oakland_adams_point_1950 | 1224 | 375 / 675 / 174 | 168.0 | 846 | frame 990, concrete 129, brick 102, iron 3 | 14 (carried over) |
+| oakland_eastlake_1911 | 795 | 733 / 62 / 0 | 61.2 | 477 | frame 791, brick 3, concrete 1 | 0 |
+| oakland_eastlake_1950 | 998 | 905 / 93 / 0 | 101.6 | 608 | frame 890, brick 72, concrete 33, iron 3 | 0 |
 
 A "feature" is one coloured fill, split along the drawn partition walls (porches, bay windows and rear additions drawn
 with a line become their own small features: 386 / 164 "sheds" < 30 m²). `modern_overlap` ≥ 0.5 marks a building that
@@ -147,6 +149,11 @@ x-axis vs east: the Broadway grid is drawn north-to-the-right at +64°, sheets 1
 | 006_0142 | 1911 | 1 / 6 | 9 | 1.45/2.81 (group) | 0.2035, −4.5° |
 | 006_0144 | 1911 | 1 / 3 | 6 | 1.99/2.96 (group) | 0.2044, −18.7° |
 | 006_0141 | 1911 | 1 / 5 | 4 | 2.28/3.13 (group) | 0.2050, 36.2° |
+| 006_0185 | 1911 | 1 / 2 | 2 (E 15th St) | exact (2 corners) → medium | 0.1998, −47.9° |
+| 006_0186 | 1911 | 1 / 9 | 8 (E 15th + E 18th St) | 0.51/1.01 (group) | 0.2004, −47.6° |
+| 006_0199 | 1911 | 2 / 8 | 11 | 0.35 (402); 0.65/0.95 (group; Lake Shore blocks capped medium) | 0.2006–0.2008, −47.6 – −47.8° |
+| 006_0200 | 1911 | 9 / 9 | 25 | 0.12–0.45, max 0.89 | 0.1992–0.2013, −47.9 – −48.0° |
+| 006_0201 | 1911 | 9 / 9 | 25 | 0.11–0.69, max 2.54 | 0.1994–0.2010, −47.7 – −47.9° |
 
 | 1950 sheet | registered onto | SIFT inliers | registration RMS |
 |---|---|---|---|
@@ -167,6 +174,11 @@ x-axis vs east: the Broadway grid is drawn north-to-the-right at +64°, sheets 1
 | 016_0142 | 006_0142 | 762 | 1.57 px = 0.32 m |
 | 016_0144 | 006_0144 | 1530 | 1.57 px = 0.32 m |
 | 016_0141 | 006_0141 | 1373 | 1.68 px = 0.35 m |
+| 016_0185 | 006_0185 | 1469 | 1.47 px = 0.30 m |
+| 016_0186 | 006_0186 | 868 | 1.42 px = 0.29 m |
+| 016_0199 | 006_0199 | 991 | 1.58 px = 0.32 m |
+| 016_0200 | 006_0200 | 957 | 1.53 px = 0.31 m |
+| 016_0201 | 006_0201 | 897 | 1.68 px = 0.34 m |
 
 Collinear control (all corners on one street: the right strip of 016_0153, the left strip of 016_0154, sheet 153's
 long blocks) caps a footprint at `medium`.
