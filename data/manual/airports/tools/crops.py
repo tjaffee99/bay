@@ -50,6 +50,12 @@ for spec in specs:
                 for r in rings:
                     x, y = vt.ll2loc(*np.asarray(r.coords).T, cx, cy)
                     d.line([P(u, v) for u, v in zip(x, y)], fill=COL[cl], width=1)
+    if opt.get("--bldg"):
+        for ft in json.loads(Path(opt["--bldg"]).read_text())["features"]:
+            g = shape(ft["geometry"])
+            for p in getattr(g, "geoms", [g]):
+                x, y = vt.ll2loc(*np.asarray(p.exterior.coords).T, cx, cy)
+                d.line([P(u, v) for u, v in zip(x, y)], fill=(0, 170, 0), width=1)
     d.rectangle([0, im.size[1] - 16, 60, im.size[1]], fill=(255, 255, 255)); d.text((3, im.size[1] - 14), name, fill=(255, 0, 0))
     panels.append(im)
 w, h = panels[0].size; rows = (len(panels) + cols - 1) // cols
