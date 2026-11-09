@@ -29,7 +29,9 @@ import {installCameraControls} from './camera-controls';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
 
 export const YEAR_MIN = 1769;
-export const YEAR_MAX = 2026;
+// the end of the current year: at "2026" the slider stopped at 2026.0 and the buildings
+// finished during 2026 (start 2026.x) never appeared
+export const YEAR_MAX = 2026.99;
 
 // ---------------------------------------------------------------- state
 const initial = readHash();

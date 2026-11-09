@@ -39,6 +39,7 @@ import zlib
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import shapely
 from rasterio import features
 from rasterio.transform import Affine
 from scipy import ndimage
@@ -186,6 +187,63 @@ def golf_years(g):
         out[out == 0] = np.nan
     log(f"golf: {len(shapes)} courses")
     return out
+
+
+def researched_green_years(g5):
+    """Opening year of each land-use feature (EPSG:3857 frame with name, class) outside San
+    Francisco, NaN where not researched: data/tables/region_green_dates.csv (name, class,
+    lon, lat, year_open …: the feature containing the point, else the nearest feature of
+    that name within ~1.5 km), golf_courses.csv (by name) and the region rows of
+    park_names.csv (first name period; point, else name)."""
+    ry = np.full(len(g5), np.nan, np.float32)
+    names = g5["name"].fillna("").astype(str).str.strip().str.lower().values if "name" in g5 else np.full(len(g5), "")
+    sidx = g5.sindex
+
+    def assign(nm, lon, lat, year):
+        if not np.isfinite(year):
+            return
+        hit = []
+        if np.isfinite(lon) and np.isfinite(lat):
+            X = np.radians(lon) * 6378137.0
+            Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(lat) / 2))
+            pt = shapely.Point(X, Y)
+            hit = [j for j in sidx.query(pt, predicate="intersects")]
+            if len(hit) > 1 and nm:
+                same = [j for j in hit if names[j] == nm]
+                hit = same or hit
+            if not hit and nm:
+                near = [j for j in sidx.query(pt.buffer(1900.0)) if names[j] == nm]
+                hit = near
+        elif nm:
+            hit = list(np.flatnonzero(names == nm))
+        for j in hit:
+            ry[j] = year if not np.isfinite(ry[j]) else min(ry[j], year)
+
+    p = TABLES / "region_green_dates.csv"
+    if p.exists():
+        t = pd.read_csv(p)
+        for r in t.itertuples():
+            assign(str(getattr(r, "name", "") or "").strip().lower(), pd.to_numeric(getattr(r, "lon", np.nan), errors="coerce"),
+                   pd.to_numeric(getattr(r, "lat", np.nan), errors="coerce"), pd.to_numeric(getattr(r, "year_open", np.nan), errors="coerce"))
+    p = TABLES / "golf_courses.csv"
+    if p.exists():
+        t = pd.read_csv(p)
+        for nm, y in zip(t.name.astype(str), pd.to_numeric(t.year_open, errors="coerce")):
+            for j in np.flatnonzero((names == nm.strip().lower()) & ~np.isfinite(ry)):
+                ry[j] = y
+    p = TABLES / "park_names.csv"
+    if p.exists():
+        t = pd.read_csv(p)
+        t["from_year"] = pd.to_numeric(t.from_year, errors="coerce")
+        first = t.sort_values("from_year").groupby("park", as_index=False).first()
+        for r in first.itertuples():
+            lon, lat = pd.to_numeric(getattr(r, "lon", np.nan), errors="coerce"), pd.to_numeric(getattr(r, "lat", np.nan), errors="coerce")
+            if np.isfinite(lon) and np.isfinite(lat):
+                nm = str(r.park).strip().lower()
+                before = np.isfinite(ry).copy()
+                assign(nm, lon, lat, float(r.from_year))
+                ry[before] = ry[before]  # (assign keeps the earlier year)
+    return ry
 
 
 def park_layers(g):
@@ -467,27 +525,24 @@ def histories(name, g, d):
     lu5 = RAW / "overture" / "2026-10-21.0" / "region5_land_use.parquet"
     open_claim_y = np.full((rows, cols), np.nan, np.float32)
     if lu5.exists():
+        TOWN = ["park", "golf_course", "cemetery", "recreation_ground", "village_green"]
+        # only with a researched year: reserves and state / national parks (open space —
+        # the farming stops, the ground stays natural), zoos and theme parks (park ground)
+        OPEN = ["nature_reserve", "state_park", "national_park", "protected_landscape_seascape", "strict_nature_reserve",
+                "species_management_area", "wilderness_area", "natural_monument", "protected"]
+        SPECIAL = ["zoo", "theme_park"]
         d5 = pd.read_parquet(lu5)
-        d5 = d5[d5["class"].isin(["park", "golf_course", "cemetery", "recreation_ground", "village_green"])]
+        d5 = d5[d5["class"].isin(TOWN + OPEN + SPECIAL)]
         g5 = gpd.GeoDataFrame(d5, geometry=gpd.GeoSeries.from_wkb(d5.geometry), crs=4326).to_crs(3857)
-        g5 = g5[g5.geometry.notna() & g5.geom_type.isin(["Polygon", "MultiPolygon"])]
-        researched = {}
-        gp = TABLES / "golf_courses.csv"
-        if gp.exists():
-            gt = pd.read_csv(gp)
-            researched.update(dict(zip(gt.name.astype(str), pd.to_numeric(gt.year_open, errors="coerce"))))
-        pnp = TABLES / "park_names.csv"
-        if pnp.exists():
-            pt = pd.read_csv(pnp)
-            for nm, y0 in zip(pt.park.astype(str), pd.to_numeric(pt.from_year, errors="coerce")):
-                if np.isfinite(y0):
-                    researched[nm] = min(researched.get(nm, 9999.0), float(y0))
-        nm5 = g5["name"].astype(str) if "name" in g5 else pd.Series("", index=g5.index)
-        ry = np.array([researched.get(n, np.nan) for n in nm5], np.float32)
+        g5 = g5[g5.geometry.notna() & g5.geom_type.isin(["Polygon", "MultiPolygon"])].reset_index(drop=True)
+        ry = researched_green_years(g5)
+        g5 = g5[g5["class"].isin(TOWN).values | np.isfinite(ry)]
+        ry = ry[g5.index.values]
+        g5 = g5.reset_index(drop=True)
         # big parks (regional open space: hills, shorelines) stay natural ground — they
         # only stop the farming; town parks, courses and cemeteries become park ground
         ha = g5.geometry.area.values * np.cos(np.radians(37.6)) ** 2 / 1e4
-        big = (ha > 40) & g5["class"].isin(["park", "recreation_ground", "village_green"]).values
+        big = ((ha > 40) & g5["class"].isin(["park", "recreation_ground", "village_green"]).values) | g5["class"].isin(OPEN).values
         green5 = rasterize_on(g, [(geom, 1) for geom in g5.geometry], fill=0, dtype="uint8").astype(bool) \
             & ~in_sf & ~water_now
         big5 = rasterize_on(g, [(geom, 1) for geom in g5.geometry[big]], fill=0, dtype="uint8").astype(bool) \
@@ -1171,7 +1226,9 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     fy = (vy[pick] + max(r0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
                     fx = (vx[pick] + max(c0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
                     kinds.append(np.full(pick.sum(), D_FARMHOUSE)); ys.append(fy); xs.append(fx)
-                    fs = y_start[pick] + rng.uniform(0, 8, pick.sum())
+                    # (never before American settlement: the mission fields of 1776-1849 had
+                    # no farmsteads of this kind)
+                    fs = np.maximum(y_start[pick], 1849.0) + rng.uniform(0, 8, pick.sum())
                     sizes.append(rng.uniform(11, 14, pick.sum())); starts.append(fs)
                     ends.append(y_end[pick])
                     wy, wx, ws, wst, wen = windbreaks(fy, fx, fs, y_end[pick], g["res"] / sub, rng)
@@ -1296,6 +1353,14 @@ def real_farmsteads(g, covers, years, park_y=None):
                 farm_y = yv[e - 1, k]
             elif cv[e, k] not in FARM_COVERS and np.isfinite(farm_y) and not np.isfinite(city_y):
                 city_y = yv[e - 1, k]
+        # the year the cell became city / park ground, whether or not a farm era is
+        # recorded there first (3,400 mapped farmsteads on cells that went from natural
+        # cover straight to city stood on among the houses to this day)
+        if not np.isfinite(city_y):
+            for e in range(1, 5):
+                if np.isfinite(yv[e - 1, k]) and yv[e - 1, k] > 0 and cv[e, k] in (URBAN, SUBURB, PARK, FILL):
+                    city_y = yv[e - 1, k]
+                    break
         before = [m for m in editions[k] if m < first - 0.5]
         after = [m for m in editions[k] if m > last + 0.5]
         if before:
@@ -1312,7 +1377,9 @@ def real_farmsteads(g, covers, years, park_y=None):
             a = min(after)
             en = last + (a - last) * rng.uniform(0.2, 0.9)
         else:
-            en = city_y if np.isfinite(city_y) and city_y > last else np.nan
+            # (a cell already city ground on the last map that shows the farmstead: it
+            # went within a few years of that map)
+            en = city_y if np.isfinite(city_y) and city_y > last else (last + rng.uniform(2, 10) if np.isfinite(city_y) else np.nan)
         # a park, golf course or cemetery took the ground: the farm went with it
         if park_y is not None and np.isfinite(park_y[gi[k], gj[k]]):
             py_ = float(park_y[gi[k], gj[k]])
@@ -1339,7 +1406,8 @@ def real_farmsteads(g, covers, years, park_y=None):
         out.loc[old, "kind"] = D_FARMYARD
         # the house still stands (a missing later edition is a detector miss); the barns
         # go when the cell becomes city
-        out.loc[old, "end"] = np.asarray(cities)[old]
+        cy_ = np.asarray(cities, float)
+        out.loc[old, "end"] = np.where(np.isfinite(cy_) & (cy_ <= gdf["last"].values), gdf["last"].values + 6.0, cy_)[old]
     mask = np.zeros((rows, cols), bool)
     if cov is not None and len(cov):
         t = Affine(g["res"], 0, g["X0"] - g["res"] / 2, 0, -g["res"], g["Y0"] + g["res"] / 2)

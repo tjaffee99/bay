@@ -167,11 +167,14 @@ def main():
     # a tall footprint missing from the 2016 DataSF snapshot is a post-2014 tower.
     hgt = np.fmax(df.hgt_median_m.astype(float).values, pd.to_numeric(df.get("overture_height"), errors="coerce").values)
     imp_tall = reason != "ok"
+    # (8+ storeys without a usable year: steel frame, after the fire at the earliest — a
+    # placeholder "1885" put 30 m apartment slabs among the Victorians)
+    lower_redev[imp_tall & (hgt >= 26)] = np.fmax(lower_redev[imp_tall & (hgt >= 26)], 1907)
     lower_redev[imp_tall & (hgt >= 35)] = np.fmax(lower_redev[imp_tall & (hgt >= 35)], 1920)
     lower_redev[imp_tall & (hgt >= 50)] = np.fmax(lower_redev[imp_tall & (hgt >= 50)], 1950)
     new_tower = imp_tall & (hgt >= 30) & (df.source != "datasf_footprints_2016").values
     lower_redev[new_tower] = np.fmax(lower_redev[new_tower], 2014)
-    upper[imp_tall & (hgt >= 35) & (reason == "spike")] = np.inf
+    upper[imp_tall & (hgt >= 26) & (reason == "spike")] = np.inf
     log(f"years: height floors for {int((imp_tall & (hgt >= 35)).sum())} tall buildings without usable years "
         f"({int(new_tower.sum())} post-2016-snapshot towers)")
 
@@ -236,8 +239,15 @@ def main():
         elif len(cands):
             year[i] = float(np.median(cands))
         elif np.isfinite(fbuy[i]) and lo_i <= fbuy[i] <= upper[i]:
-            # HISDAC-US first built-up year of the 250 m cell
-            year[i] = fbuy[i]
+            # HISDAC-US first built-up year of the 250 m cell. It comes in 5-year epochs
+            # (1880 = "first built up 1876-80") and is the cell's FIRST building: used as
+            # is, 7,600 buildings appeared in bursts at 1880, 1885, 1890 … Spread over
+            # the epoch and the years after it (to the placeholder's bound), block by
+            # block so a street still fills together
+            hb = stable_hash01("fb" + (key[:-3] if isinstance(key, str) and len(key) > 3 else str(i)))
+            hl = stable_hash01("fl" + str(df.sf16_bldgid.iloc[i] or i))
+            hi_i = min(upper[i], fbuy[i] + 8.0)
+            year[i] = (fbuy[i] - 4.0) + (hi_i - (fbuy[i] - 4.0)) * (0.75 * hb + 0.25 * hl)
             src_year[i] = "hisdac_fbuy"
         else:
             fallback += 1

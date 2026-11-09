@@ -132,6 +132,7 @@ def assign_years(g):
         f"({pd.Series(src[np.isfinite(year)]).str.split(':').str[0].value_counts().head(8).to_dict()})")
     u = g.to_crs(UTM).geometry.representative_point()
     xy = np.column_stack([u.x.values, u.y.values])
+    year, conf = deheap(g, xy, year, conf)
     # researched dates of institutional / campus / landmark buildings (the rolls miss or
     # misdate exempt property: Stanford's Main Quad read 1983, Hoover Tower 1977)
     year, conf, src, end = known_dates(g, year, conf, src)
@@ -151,7 +152,18 @@ def assign_years(g):
         d, idx = tree.query(xy[need], k=12, distance_upper_bound=200)
         vals = np.where(np.isfinite(d), hy[np.minimum(idx, len(hy) - 1)], np.nan)
         med = np.nanmedian(np.where(np.isfinite(vals), vals, np.nan), axis=1)
-        year[need] = np.where(np.isfinite(med), np.minimum(med, upper_all[need]), np.nan)
+        # where the neighbours are younger than the roll's placeholder ("1900", "1910",
+        # "1920": about that old, year not recorded) the placeholder bounds the estimate —
+        # spread over the 8 years up to it (per ~80 m block, so a street fills together),
+        # not all on the placeholder year: 20,000 houses appeared in three single years
+        up = upper_all[need]
+        cl = np.isfinite(med) & (med > up)
+        bx = np.floor(xy[need, 0] / 80).astype(np.int64) * 100003 + np.floor(xy[need, 1] / 80).astype(np.int64)
+        hb = np.array([h01(f"pb{k}") for k in bx[cl]])
+        hl = np.array([h01(f"pl{k}") for k in need[cl]])
+        yy = np.where(np.isfinite(med), np.minimum(med, up), np.nan)
+        yy[cl] = up[cl] - 8.0 * (0.7 * hb + 0.3 * hl)
+        year[need] = yy
     # HISDAC first built-up year of the 250 m cell (region grid), then a default
     miss = np.isnan(year)
     if miss.any():
@@ -171,12 +183,49 @@ def assign_years(g):
         hh = np.array([h01(f"r{k}") for k in range(len(g))])
         year[ok] = f[ok] + hh[ok] * np.clip(2020 - f[ok], 0, 25)
         year[np.isnan(year)] = 1975 + 20 * hh[np.isnan(year)]
-        # the placeholder still bounds these
-        year[miss] = np.minimum(year[miss], upper_all[miss])
+        # the placeholder still bounds these (spread over the 8 years before it, as above)
+        over = miss & (year > upper_all)
+        year[over] = upper_all[over] - 8.0 * hh[over]
     year = site_bounds(g, year, conf, src)
     year = ohm_bounds(g, year, conf, src)
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
     return year, raw, conf, end, src
+
+
+def deheap(g, xy, year, conf):
+    """Assessor years heap on round years: appraisers wrote "1910" or "1920" for "about
+    that old" (Alameda: 7,700 buildings in 1910 against 3,300 in the years around it; Marin
+    1900: 13 times its neighbours). Below the placeholder threshold (spikes are handled
+    separately) these are rounded estimates, not records: per county, the excess over the
+    neighbouring years is spread over the ten years around the round year (1900: the ten
+    years before it), per ~80 m block so streets still fill together, and marked estimated.
+    Without this ~25,000 buildings appeared in 1900, 1910 and 1920 alone."""
+    year, conf = year.copy(), conf.copy()
+    cty = g.county.astype(str).values if "county" in g else np.full(len(g), "")
+    yi = np.where(np.isfinite(year), np.floor(year), -1).astype(int)
+    blk = np.floor(xy[:, 0] / 80).astype(np.int64) * 100003 + np.floor(xy[:, 1] / 80).astype(np.int64)
+    total = 0
+    for c in np.unique(cty):
+        m = (cty == c) & (yi > 0)
+        vc = pd.Series(yi[m]).value_counts()
+        for y0 in range(1870, 1955, 5):
+            n = int(vc.get(y0, 0))
+            nb = float(np.median([vc.get(y0 + d, 0) for d in (-3, -2, -1, 1, 2, 3)]))
+            if n < 150 or n < 1.6 * max(nb, 1.0):
+                continue
+            share = 1.0 - nb / n
+            idx = np.nonzero(m & (yi == y0))[0]
+            pick = idx[np.array([h01(f"dh{k}") for k in idx]) < share]
+            if not len(pick):
+                continue
+            hb = np.array([h01(f"db{k}") for k in blk[pick]])
+            hl = np.array([h01(f"dl{k}") for k in pick])
+            h = 0.7 * hb + 0.3 * hl
+            year[pick] = (y0 - 9.0 + 10.0 * h) if y0 == 1900 else (y0 - 5.0 + 10.0 * h)
+            conf[pick] = "estimated"
+            total += len(pick)
+    log(f"region: {total} round-year roll estimates (1900, 1910, 1920 …) spread over their decade")
+    return year, conf
 
 
 def ohm_bounds(g, year, conf, src):

@@ -255,6 +255,7 @@ def main():
                          include=lambda a: not a.startswith(REGION_SANBORN) and not a.startswith("sf_goldrush"))
     from ohm_import import apply_goldrush
     pred = apply_goldrush(pred, b)
+    pred = consistency(pred, b, shapely.union_all(fire.geometry.values))
     pred = pred.to_crs(4326)
     pred["base"] = 0.0
     pred["use"] = pred["use_sanborn"].map(SANBORN_USE).fillna(0).astype(int) if "use_sanborn" in pred else 0
@@ -270,6 +271,59 @@ def main():
 # Neighborhoods (2008), Mission Bay (1998), Pier 70 and Hunters Point rezonings
 HISTORIC_INDUSTRIAL = ("PDR", "M-1", "M-2", "UMU", "MUG", "WMUG", "MUO", "WMUO", "CMUO", "SALI", "SLI", "SPD",
                        "MB-", "PM-", "HP-", "SSO")
+
+
+def consistency(pred, today, burned_zone):
+    """Last pass over the vanished buildings (audit 2026-11):
+    * documented buildings that still stand (notable_pre1906 rows without an end) are in
+      today's footprints too: the placeholder ends when today's footprint on the spot
+      starts (a post-fire restoration or a later rebuild of the same building), and is
+      dropped where today's footprint already carries the documented year — they used to
+      be drawn twice for good;
+    * generated buildings inside the burned district that slipped across the 1906 fire
+      end in it and their lot is rebuilt afterwards;
+    * rows that end before they start are dropped."""
+    pred = pred.reset_index(drop=True)
+    t_sidx = today.sindex
+    t_start = today.start_year.values
+    drop = np.zeros(len(pred), bool)
+    end = pred.end_year.values.astype(float).copy()
+    n_surv = n_dup = 0
+    for i in np.flatnonzero((end >= 9000) & pred.source.isin(["notable_pre1906", "notable_demolished"]).values):
+        g = pred.geometry.values[i]
+        st = []
+        for j in t_sidx.query(g, predicate="intersects"):
+            tg = today.geometry.values[j]
+            inter = g.intersection(tg).area
+            if inter > 0.3 * g.area or inter > 0.5 * tg.area:
+                st.append(t_start[j])
+        if not st:
+            continue
+        if min(st) <= pred.start_year.values[i] + 1.0:
+            drop[i] = True
+            n_dup += 1
+        else:
+            end[i] = min(st)
+            n_surv += 1
+    pred["end_year"] = end
+    c = pred.geometry.representative_point()
+    proc = pred.source.astype(str).str.endswith("_procedural").values
+    cross = proc & (pred.start_year.values < 1906.29) & (pred.end_year.values > 1906.6) & c.within(burned_zone).values
+    extra = pred[cross].copy()
+    if len(extra):
+        hk = np.array([h01(str(k), "fire") for k in extra.mapblklot])
+        extra["start_year"] = np.minimum(1906.6 + 5.5 * hk, extra.end_year.values - 0.6)
+        extra["mapblklot"] = extra.mapblklot.astype(str) + ":r1906"
+        extra["year_reason"] = "post_fire_rebuild"
+        pred.loc[cross, "end_year"] = 1906.29
+        pred = gpd.GeoDataFrame(pd.concat([pred[~drop], extra], ignore_index=True), geometry="geometry", crs=pred.crs)
+    else:
+        pred = pred[~drop].reset_index(drop=True)
+    bad = pred.start_year.values >= pred.end_year.values - 0.05
+    log(f"predecessors: consistency: {n_surv} surviving documented buildings hand over to today's footprint "
+        f"({n_dup} already there), {int(cross.sum())} generated buildings cut at the 1906 fire, "
+        f"{int(bad.sum())} rows ending before they start dropped")
+    return pred[~bad].reset_index(drop=True)
 
 
 def industrial_lots(points):
@@ -324,6 +378,10 @@ def apply_sanborn(pred, today, fire, areas, include=None):
     sb = sb[sb.geometry.notna() & sb.geometry.is_valid & (sb.geometry.area > 6)]
     sb = sb[~sb["use"].fillna("").isin(SANBORN_SKIP)].reset_index(drop=True)
     burned_zone = shapely.union_all(fire.geometry.values)
+    # well inside the burn (the boundary is good to about a block): nothing there predates
+    # the fire, whatever a footprint match between the 1899 and 1913 maps suggests
+    burned_core = burned_zone.buffer(-40) if not burned_zone.is_empty else burned_zone
+    n_fire_shift = n_fire_split = 0
     today_sidx = today.sindex
     t_start = today.start_year.values
     pred_sidx = pred.sindex
@@ -407,6 +465,19 @@ def apply_sanborn(pred, today, fire, areas, include=None):
                         if c.within(poly) and cs > y:
                             ends.append(cs + (ce - cs) * h01(key, "c"))
                     end = min(ends) if ends else max(y + 15, 1960.0)
+                # 1906: a building first mapped after the fire inside the burned district was
+                # built after it (not when the fabric it replaced was); one mapped before AND
+                # after it, deep inside the burn, is a rebuild on the same lot — the old one
+                # ends in the fire
+                pre_fire = None
+                if start < 1906.29 < end and not burned_zone.is_empty:
+                    if first > 1906.29 and c.within(burned_zone):
+                        start = 1906.6 + max(first - 0.3 - 1906.6, 0.2) * (0.05 + 0.85 * hk)
+                        n_fire_shift += 1
+                    elif first < 1906.29 and c.within(burned_core):
+                        pre_fire = (float(start), 1906.29)
+                        start = 1906.6 + max(min(y, end) - 0.3 - 1906.6, 0.2) * (0.05 + 0.85 * hk)
+                        n_fire_split += 1
                 if end <= start + 0.5:
                     continue
                 r = M.iloc[i]
@@ -427,6 +498,12 @@ def apply_sanborn(pred, today, fire, areas, include=None):
                              "mapblklot": key, "material": {"frame": "", "iron": "", "concrete": ""}.get(mat, mat),
                              "use_sanborn": use, "year_confidence": "estimated",
                              "year_reason": f"sanborn_{int(first)}_{int(y)}"})
+                if pre_fire is not None:
+                    rows.append(dict(rows[-1], start_year=pre_fire[0], end_year=pre_fire[1], mapblklot=key + ":pre1906",
+                                     year_reason=f"sanborn_{int(first)}_burned_1906"))
+    if n_fire_shift or n_fire_split:
+        log(f"predecessors: Sanborn and the 1906 fire: {n_fire_shift} buildings first mapped after it start after it, "
+            f"{n_fire_split} mapped before and after it rebuilt")
     new = gpd.GeoDataFrame(rows, crs=UTM)
     # documented buildings whose footprint was traced on these maps (notable_demolished
     # rows pointing at Sanborn ids): the traced outline takes the documented dates and the
@@ -662,7 +739,10 @@ def table_buildings(path, lots, source, embarcadero=None):
                 fp = _rect(cx, cy, b, a, -a_) if mat_key != "tule" else Point(cx, cy).buffer(a, 4)
             if fp is None or fp.is_empty:
                 continue
-            rows.append({"geometry": fp, "start_year": float(r.start_year) + (rng.uniform(0, 0.8) if n > 1 else 0.0), "end_year": end,
+            # (groups go up over ~10 months, but never past their own end: the June-October
+            # 1776 camp at the Dolores lagoon started "after" it ended)
+            jit = rng.uniform(0, min(0.8, 0.5 * max(end - float(r.start_year), 0.0))) if n > 1 else 0.0
+            rows.append({"geometry": fp, "start_year": float(r.start_year) + jit, "end_year": end,
                          "height": float(height), "stories": float(storeys) if np.isfinite(storeys) else np.nan, "kind": "building",
                          "source": source, "material": mat_key,
                          "mapblklot": str(lots.mapblklot.iloc[int(lot_i)]) if (pd.notna(lot_i) and n == 1) else f"n:{r.id}:{k}",
