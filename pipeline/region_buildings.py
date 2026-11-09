@@ -240,19 +240,24 @@ def known_dates(g, year, conf, src):
     end = np.full(len(g), 9999.0)
     tabs = [pd.read_csv(p) for p in (TABLES / "known_building_dates_region.csv",
                                     MANUAL / "industrial_sites" / "known_dates_industrial.csv",
-                                    MANUAL / "ohm" / "known_dates_ohm.csv") if p.exists()]
+                                    MANUAL / "ohm" / "known_dates_ohm.csv",
+                                    MANUAL / "airports" / "buildings.csv") if p.exists()]
     if not tabs:
         return year, conf, src, end
     k = pd.concat(tabs, ignore_index=True)
     k = k[k.get("county", pd.Series("", index=k.index)).fillna("").astype(str) != "San Francisco"]
     k = k[np.isfinite(pd.to_numeric(k.lat, errors="coerce")) & np.isfinite(pd.to_numeric(k.start_year, errors="coerce"))]
-    pts = gpd.GeoDataFrame(k[["id", "start_year", "end_year"]].reset_index(drop=True),
+    # rows may say how sure they are (airports / industrial audits: "estimated" = between
+    # two map editions); anything else is a documented year
+    k["conf"] = np.where(k.get("confidence", pd.Series("", index=k.index)).fillna("").astype(str).eq("estimated"),
+                         "estimated", "exact")
+    pts = gpd.GeoDataFrame(k[["id", "start_year", "end_year", "conf"]].reset_index(drop=True),
                            geometry=gpd.points_from_xy(k.lon.astype(float), k.lat.astype(float)), crs=4326)
     j = gpd.sjoin(pts, g[["geometry"]].set_crs(4326, allow_override=True), predicate="within", how="inner")
     year = year.copy()
-    for fi, sy, ey, kid in zip(j.index_right.values, j.start_year.values, j.end_year.values, j.id.values):
+    for fi, sy, ey, kid, kc in zip(j.index_right.values, j.start_year.values, j.end_year.values, j.id.values, j.conf.values):
         year[fi] = float(sy)
-        conf[fi] = "exact"
+        conf[fi] = kc
         src[fi] = f"known:{kid}"
         e = pd.to_numeric(ey, errors="coerce")
         if np.isfinite(e) and e < 9000:

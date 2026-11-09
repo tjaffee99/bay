@@ -48,6 +48,82 @@ def land_year(lon, lat):
     return out
 
 
+def dated_pavement(f):
+    """SFO / OAK / SJC pavement dated feature by feature (data/manual/airports: USGS topo
+    editions + airport histories; README there): a whole feature takes its own years, a
+    runway is cut into its construction phases (metres along its axis), taxiways / aprons
+    crossing a phase boundary are clipped by the dated zones; the removed runways (Mills
+    Field's north-south strip 1927-62, OAK's Navy diagonal 1944-86) are added."""
+    import shapely
+    base = MANUAL / "airports"
+    pp, zp, vp = base / "pavement_dates.csv", base / "pavement_zones.geojson", base / "vanished_pavement.geojson"
+    if not pp.exists():
+        return f
+    pav = pd.read_csv(pp)
+    zones = {}
+    if zp.exists():
+        z = gpd.read_file(zp).to_crs(UTM)
+        zones = dict(zip(z["zone"].astype(str), z.geometry.values))
+    to_utm = lambda lon, lat: gpd.GeoSeries(gpd.points_from_xy([lon], [lat]), crs=4326).to_crs(UTM).iloc[0]  # noqa: E731
+
+    def band(r, half=250.0):
+        a, b = to_utm(r.part_lon0, r.part_lat0), to_utm(r.part_lon1, r.part_lat1)
+        d = np.array([b.x - a.x, b.y - a.y]); L = np.hypot(*d)
+        if L < 1:
+            return None
+        u = d / L; n = np.array([-u[1], u[0]]) * half
+        P0, P1 = np.array([a.x, a.y]), np.array([b.x, b.y])
+        return shapely.Polygon([P0 + n, P1 + n, P1 - n, P0 - n])
+
+    by_id = {k: g_ for k, g_ in pav.groupby("overture_id")}
+    out = []
+    n_dated = 0
+    # (records, not itertuples: "class" is a keyword and would be renamed)
+    for d in f.to_dict("records"):
+        rows = by_id.get(d.get("id"))
+        if rows is None:
+            out.append(d)
+            continue
+        n_dated += 1
+        geom = d["geometry"]
+        used = []
+        for q in rows.itertuples():
+            if q.part == "whole":
+                piece = geom
+            elif q.part == "axis_interval":
+                bd = band(q)
+                piece = geom.intersection(bd) if bd is not None else None
+            else:
+                zg = zones.get(str(q.clip_zone))
+                piece = geom.intersection(zg) if zg is not None else None
+            if piece is None or piece.is_empty or piece.area < 20:
+                continue
+            for u_ in used:
+                piece = piece.difference(u_)
+            if piece.is_empty or piece.area < 20:
+                continue
+            used.append(piece)
+            out.append(dict(d, geometry=piece, opened=float(q.start_year),
+                            closed=float(q.end_year) if pd.notna(q.end_year) else 9999.0))
+        rest = geom.difference(shapely.union_all(used)) if used else geom
+        if not rest.is_empty and rest.area > 200:
+            first = float(rows.start_year.min())
+            out.append(dict(d, geometry=rest, opened=first))
+    f2 = gpd.GeoDataFrame(out, geometry="geometry", crs=UTM)
+    if vp.exists():
+        v = gpd.read_file(vp).to_crs(UTM)
+        vg = [gm.buffer(float(w) / 2, cap_style="flat") if gm.geom_type == "LineString" else gm
+              for gm, w in zip(v.geometry, pd.to_numeric(v.get("width_m", 45), errors="coerce").fillna(45))]
+        extra = gpd.GeoDataFrame({"class": v["kind"].astype(str).replace({"": "runway"}), "name": v["name"],
+                                  "opened": pd.to_numeric(v.start_year, errors="coerce"),
+                                  "closed": pd.to_numeric(v.end_year, errors="coerce").fillna(9999.0),
+                                  "aclass": "aerodrome"}, geometry=vg, crs=UTM)
+        f2 = gpd.GeoDataFrame(pd.concat([f2, extra], ignore_index=True), geometry="geometry", crs=UTM)
+    log(f"airports: {n_dated} SFO / OAK / SJC pavement features dated by construction phase, "
+        f"+ {len(f2) - len(f)} pieces / removed runways")
+    return f2
+
+
 def main():
     d = pd.read_parquet(RAW / "overture" / RELEASE / "region_airports.parquet")
     g = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
@@ -81,7 +157,11 @@ def main():
     j = gpd.sjoin_nearest(f, pu[["class", "opened", "closed", "geometry"]].rename(columns={"class": "aclass"}),
                           how="left", max_distance=1500)
     j = j[~j.index.duplicated()]
-    f["aclass"], f["opened"], f["closed"] = j.aclass.values, j.opened.values, j.closed.values
+    # align by row label (sjoin_nearest returns its rows in its own order: assigning .values
+    # positionally gave features other airports' opening years)
+    f["aclass"] = j.aclass.reindex(f.index).values
+    f["opened"] = j.opened.reindex(f.index).values
+    f["closed"] = j.closed.reindex(f.index).values
     f = f[f.opened.notna()]
     big = f.aclass.isin(list(BIG)).values
     width = np.select([f["class"].isin(["runway", "stopway"]).values, f["class"].eq("taxiway").values,
@@ -92,12 +172,14 @@ def main():
             geoms.append(geom.buffer(w / 2, cap_style="flat", join_style="round"))
         else:
             geoms.append(geom)
-    f = f.set_geometry(gpd.GeoSeries(geoms, crs=UTM))
-    f = f.explode(index_parts=False)
-    f = f[f.geometry.geom_type == "Polygon"]
+    f = f.set_geometry(gpd.GeoSeries(geoms, index=f.index, crs=UTM))  # same row labels as f
+    f = dated_pavement(f)
     # vertices every 25 m so the flat polygons follow the terrain (earcut joins the long
-    # edges of a runway across its width, so the inside follows too)
-    f = f.set_geometry(f.geometry.segmentize(25))
+    # edges of a runway across its width, so the inside follows too); segmentize can turn
+    # a clipped piece with a pinched ring into a MultiPolygon, so explode afterwards
+    f = f.set_geometry(f.geometry.make_valid().segmentize(25))
+    f = f.explode(index_parts=False).reset_index(drop=True)
+    f = f[(f.geometry.geom_type == "Polygon") & (f.geometry.area > 20)].reset_index(drop=True)
     ll = f.to_crs(4326)
     c = ll.geometry.representative_point()
     ly = land_year(c.x.values, c.y.values)
