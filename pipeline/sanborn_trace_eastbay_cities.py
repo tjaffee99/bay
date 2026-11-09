@@ -70,6 +70,7 @@ CITIES = {
             "bristol": "hearst avenue",  # West Berkeley's Bristol St is today's Hearst Ave
         },
         "wide_streets": {"shattuck avenue": 32},
+        "commercial_streets": {"shattuck avenue": 50, "telegraph avenue": 40, "university avenue": 45, "san pablo avenue": 45},
         "railroad_streets": [],
     },
     "alameda": {
@@ -91,6 +92,7 @@ CITIES = {
             "st charles": "saint charles street", "schiller": "schiller street", "morton": "morton street",
             "taylor": "taylor avenue", "railroad avenue": "lincoln avenue",
         },
+        "commercial_streets": {"webster street": 40, "park street": 40},
         "vanished_sites": ["sandy_beach_baths", "alameda_baths", "sunny_cove_baths", "green_arbor_baths", "cottage_baths",
                            "terrace_baths", "neptune_gardens", "neptune_beach"],
         "railroad_streets": [],
@@ -114,6 +116,7 @@ CITIES = {
         # the 1916 scans are pale (block lines at grey 100-125, frame yellow at saturation ~70): stretch value and
         # saturation before the colour classes of the Oakland tool are applied (see enhance())
         "enhance": {"v_lo": 90, "v_hi": 245, "s_gain": 1.8, "s_off": -25},
+        "commercial_streets": {"macdonald avenue": 50},
         "no_reclass": True,  # the frame yellow is hue 21-22 on these plates: E.reclass would call it brown fire-proof
         "railroad_streets": [],
     },
@@ -416,6 +419,113 @@ def enhance(key):
     json.dump(G, open(mp, "w"), indent=1)
 
 
+def commercial_fronts():
+    """default use on the main commercial streets (CITIES[city]['commercial_streets']: {street: m}): a building whose
+    use came from the sheet-wide default (dwelling / warehouse on residential sheets) and whose centroid lies within
+    that distance of the street's centreline is a store ('default (rule: commercial street frontage)'). Labels win."""
+    cs = CITIES[CITY_NAME].get("commercial_streets")
+    if not cs:
+        return
+    import shapely
+    from shapely.geometry import shape
+    from pyproj import Transformer
+    to_utm = Transformer.from_crs(4326, 32610, always_xy=True)
+    r = E.roads()
+    zone = shapely.union_all([shapely.union_all(r[r.key == k].geometry.values).buffer(d) for k, d in cs.items() if (r.key == k).any()])
+    for (area, year) in E.AREAS:
+        p = E.OUT / f"{area}_{year}.geojson"
+        if not p.exists():
+            continue
+        fc = json.load(open(p))
+        n = 0
+        for ft in fc["features"]:
+            pr = ft["properties"]
+            if pr.get("use_source") != "default" or pr["use"] not in ("dwelling", "warehouse"):
+                continue
+            g = shapely.transform(shape(ft["geometry"]), lambda c: np.column_stack(to_utm.transform(c[:, 0], c[:, 1])))
+            if zone.contains(g.centroid):
+                pr["use"], pr["use_source"] = "store", "default (rule: commercial street frontage)"
+                n += 1
+        json.dump(fc, open(p, "w"))
+        if n:
+            log(area, year, n, "footprints on commercial street fronts -> store")
+
+
+OHM_API = "https://overpass-api.openhistoricalmap.org/api/interpreter"
+
+
+def ohm_northside():
+    """Berkeley Northside: the houses of the 1911 Sanborn that OpenHistoricalMap volunteers traced (CC0; ways with
+    source '1911 Sanborn Map', end_date 1923-09-17 = the 1923 Berkeley fire) -> berkeley_northside_1911.geojson in the
+    schema of the traced files (confidence medium, storeys from building:levels else the default rule) and a coverage
+    of 8 m around each house (the OHM tracing is partial)."""
+    import subprocess
+    import geopandas as gpd
+    import shapely
+    from pyproj import Transformer
+    from shapely.geometry import Polygon, mapping
+    from shapely.ops import unary_union
+    from shapely.strtree import STRtree
+    raw = ROOT / "data/raw/ohm_berkeley"
+    raw.mkdir(parents=True, exist_ok=True)
+    f = raw / "buildings.json"
+    if not f.exists():
+        q = '[out:json][timeout:90];(way["building"](37.84,-122.33,37.90,-122.23););out body geom;'
+        subprocess.run(["curl", "-sS", "--max-time", "180", "-A", "BayAreaThroughTime/0.1 (research)", "--data-urlencode",
+                        f"data={q}", OHM_API, "-o", str(f)], check=True)
+    rows = []
+    for e in json.load(open(f))["elements"]:
+        t = e.get("tags", {})
+        if e["type"] != "way" or not t.get("source", "").startswith("1911 Sanborn"):
+            continue
+        rows.append({"ohm_id": e["id"], "addr": f"{t.get('Address') or t.get('addr:housenumber', '')} {t.get('StreetName') or t.get('addr:street', '')}".strip(),
+                     "comment": t.get("Comment") or "", "levels": t.get("building:levels"),
+                     "geometry": Polygon([(p["lon"], p["lat"]) for p in e["geometry"]])})
+    g = gpd.GeoDataFrame(rows, crs=4326).to_crs(32610)
+    fp = E.modern_footprints()
+    fpg = list(fp.geometry.values)
+    tree = STRtree(fpg)
+
+    def overlap(p):
+        parts = [fpg[i].intersection(p) for i in tree.query(p) if fpg[i].intersects(p)]
+        return round(float(unary_union(parts).area / p.area), 2) if parts else 0.0
+    feats = []
+    for r in g.itertuples():
+        a = r.geometry.area
+        try:
+            lv = float(r.levels) if isinstance(r.levels, str) and r.levels.strip() else None
+        except (TypeError, ValueError):
+            lv = None
+        if a < 30:
+            st, us, ss, usrc = 1, "shed", "default (rule: frame < 30 m2 shed)", "default"
+        else:
+            st, us, ss, usrc = 2, "dwelling", "default (rule: frame dwelling, residential district)", "default"
+            if "flat" in r.comment.lower():
+                us, usrc = "flats", "OpenHistoricalMap tag Comment (from the sheet)"
+        if lv:
+            st, ss = lv, "OpenHistoricalMap building:levels"
+        feats.append((r.geometry, {"id": f"ohm_way_{r.ohm_id}", "map_year": 1911, "volume": "sanborn00419_002", "volume_label": "1911 Vol. 1",
+                                   "sheet": None, "sheet_no": None, "loc_url": "https://www.loc.gov/item/sanborn00419_002/", "iiif": None,
+                                   "stories": st, "stories_source": ss, "material": "frame", "use": us, "use_source": usrc, "name": None,
+                                   "address": r.addr or None, "sanborn_colour": None, "confidence": "medium",
+                                   "georef": f"OpenHistoricalMap way {r.ohm_id}", "georef_rms_m": None,
+                                   "extraction": "OpenHistoricalMap volunteer tracing of the 1911 Sanborn (CC0), tagged end_date 1923-09-17 (1923 Berkeley fire)",
+                                   "area_m2": round(float(a), 1), "modern_overlap": overlap(r.geometry)}))
+    to_ll = Transformer.from_crs(32610, 4326, always_xy=True)
+    ll = lambda geom: shapely.transform(geom, lambda c: np.column_stack(to_ll.transform(c[:, 0], c[:, 1])))  # noqa: E731
+    rnd = lambda gj: json.loads(json.dumps(gj), parse_float=lambda s: round(float(s), 7))  # noqa: E731
+    crs = {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}
+    json.dump({"type": "FeatureCollection", "name": "berkeley_northside_1911", "crs": crs,
+               "features": [{"type": "Feature", "properties": p, "geometry": rnd(mapping(ll(gm)))} for gm, p in sorted(feats, key=lambda x: x[1]["id"])]},
+              open(E.OUT / "berkeley_northside_1911.geojson", "w"))
+    cov = unary_union([gm.buffer(8, join_style=2) for gm, _ in feats])
+    json.dump({"type": "FeatureCollection", "name": "berkeley_northside_coverage",
+               "features": [{"type": "Feature", "properties": {"area": "berkeley_northside", "map_year": 1911, "sheets": ["OpenHistoricalMap"],
+                                                               "features": len(feats), "note": "8 m around each traced building only: the OHM tracing is partial"},
+                             "geometry": rnd(mapping(ll(cov)))}]}, open(E.OUT / "berkeley_northside_coverage.geojson", "w"))
+    log("berkeley_northside 1911", len(feats), "OHM houses")
+
+
 def cap_blocks():
     """per-block confidence caps: a block whose own corners are gone (campus, superblock) and that is placed by the fit
     of its neighbours ("with") carries `confidence_cap` in its control entry; lower the confidence of its footprints in
@@ -551,6 +661,9 @@ if __name__ == "__main__":
     if stage == "check":
         check(args or None)
         sys.exit()
+    if stage == "ohm":  # Berkeley Northside houses traced in OpenHistoricalMap
+        ohm_northside()
+        sys.exit()
     keys = args or E.all_keys()
     if stage in ("all", "fetch"):
         for k in keys:
@@ -585,4 +698,5 @@ if __name__ == "__main__":
         E.assemble()
         cap_blocks()
         drop_vanished_sites()
+        commercial_fronts()
         assemble_tracks()
