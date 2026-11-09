@@ -297,13 +297,17 @@ def main():
 
     # ---------------------------------------------------------------- OSM 3D parts
     df = apply_parts(df)
+    # ---------------------------------------------------------------- LiDAR stepped massing
+    df = apply_lidar_parts(df)
 
     validate(df)
     report(df, raw, spikes)
     df = df.to_crs(4326)
     keep = ["sf16_bldgid", "mapblklot", "address", "raw_year", "start_year", "end_year", "year_confidence",
             "year_reason", "year_source", "height", "base", "stories", "units", "use", "use_definition", "kind", "source",
-            "in_fire_zone", "geometry"]
+            "in_fire_zone", "lidar_group", "geometry"]
+    if "lidar_group" not in df:
+        df["lidar_group"] = None
     df = df[keep]
     df.to_parquet(OUT)
     df.assign(stories=df.stories.astype(float)).to_file(INTERIM / "sf_buildings.fgb", driver="FlatGeobuf")
@@ -576,6 +580,48 @@ def apply_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     df = df.drop(df.index[list(drop)])
     if add:
         df = pd.concat([df, gpd.GeoDataFrame(add, crs=UTM)], ignore_index=True)
+    return gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
+
+
+def apply_lidar_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Stepped massing from the 2023 USGS 3DEP LiDAR (pipeline/lidar_parts.py ->
+    data/interim/sf_lidar_parts.parquet): footprints whose roof has several levels (towers
+    over podiums, set-backs, penthouses, front / rear wings) are split into parts at their
+    measured roof heights. Each part keeps its building's years and attributes; heights are
+    above the footprint's ground (sf_export puts all parts of one footprint on the same
+    ground, column lidar_group). OSM building parts are kept where they are better (the
+    LiDAR file flags outlines whose OSM parts share one height or disagree by > 6 m)."""
+    p = INTERIM / "sf_lidar_parts.parquet"
+    if not p.exists():
+        log("lidar parts: none (run lidar_parts.py sf)")
+        return df
+    lp = gpd.read_parquet(p)
+    lp = lp[lp.prefer_lidar.astype(bool) & (lp.height_m > 0.5)].to_crs(UTM)
+    pos = {k: i for i, k in enumerate(df.sf16_bldgid.astype(str).values)}
+    drop, add = set(), []
+    for key, grp in lp.groupby("key"):
+        idx = [pos[k] for k in str(grp.replaces.iloc[0]).split("|") if k in pos]
+        if not idx:
+            continue
+        donor = df.iloc[max(idx, key=lambda i: df.geometry.iloc[i].area)]
+        for r in grp.itertuples():
+            g = r.geometry
+            if g is None or g.is_empty or g.area < 2:
+                continue
+            row = donor.copy()
+            row["geometry"] = g
+            row["height"] = float(r.height_m)
+            row["base"] = 0.0
+            row["source"] = "lidar_parts_3dep_2023"
+            row["sf16_bldgid"] = f"{donor.sf16_bldgid}#{int(r.part_index)}"
+            row["lidar_group"] = key
+            add.append(row)
+        drop.update(idx)
+    log(f"lidar parts: {len(drop)} footprints / OSM parts replaced by {len(add)} stepped LiDAR parts")
+    if not add:
+        return df
+    df = df.drop(df.index[sorted(drop)])
+    df = pd.concat([df, gpd.GeoDataFrame(add, crs=UTM)], ignore_index=True)
     return gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
 
 

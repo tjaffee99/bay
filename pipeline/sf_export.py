@@ -89,7 +89,10 @@ def materials(df, h01):
     resid = np.isin(use, [1, 2]) | ((use == 0) & (H < 14))
     commercial = np.isin(use, [3, 4])
     industrial = (use == 5) | ((soma | bayside_ind) & ~resid & (y < 1960))
-    hash_ = np.array([h01(str(k)) for k in df.sf16_bldgid.fillna("").astype(str) + df.index.astype(str)])
+    ids = df.sf16_bldgid.fillna("").astype(str)
+    # LiDAR parts of one building ("<id>#<part>") share its material
+    keys = np.where(ids.str.contains("#", regex=False), ids.str.split("#").str[0], ids + df.index.astype(str))
+    hash_ = np.array([h01(str(k)) for k in keys])
     mat = np.full(len(df), M_GENERIC, np.uint8)
     roof = np.full(len(df), R_FLAT, np.uint8)
 
@@ -210,6 +213,16 @@ def main():
     splits = np.cumsum(counts)[:-1]
     gmin = np.array([a.min() for a in np.split(gz, splits)])
     gmean = np.array([a.mean() for a in np.split(gz, splits)])
+    # LiDAR parts of one footprint (sf_buildings.apply_lidar_parts) are heights above the
+    # footprint's ground: give them all the group's ground so the roofs stay level
+    if "lidar_group" in df:
+        lg = df.lidar_group.fillna("").astype(str).values
+        has = lg != ""
+        if has.any():
+            area = df.geometry.to_crs(32610).area.values
+            t = pd.DataFrame({"g": lg[has], "m": gmean[has] * area[has], "a": area[has]}).groupby("g").sum()
+            gg = (t.m / t.a).reindex(lg[has]).values
+            df.loc[has, "height"] = df.height.values[has] + (gg - gmean[has])
     ground = gmin - 1.0
     df["height"] = df.height + (gmean - gmin) + 1.0 * (df.base.values == 0)
     df["base"] = np.where(df.base.values > 0, gmean + df.base.values, ground)
