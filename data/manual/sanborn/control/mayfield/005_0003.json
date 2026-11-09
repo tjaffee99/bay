@@ -1,0 +1,862 @@
+{
+ "residential": true,
+ "commercial_blocks": [
+  "44",
+  "55"
+ ],
+ "notes": "Mayfield sheet 3 (May 1908): Lincoln Av (California Av) from County Road / Main St (El Camino Real) to Birch St, Palo Alto Av (College Av) -> Grant Av; grid north (NE) = right. The block north of Lincoln (44) fitted with the blocks across it; 43 (to College Av) by the same fit.",
+ "blocks": [
+  {
+   "name": "55",
+   "streets": {
+    "N": "ash street",
+    "S": "county road",
+    "W": "lincoln avenue",
+    "E": "sherman avenue"
+   },
+   "px4_est": [
+    [
+     970.5,
+     952
+    ],
+    [
+     970.5,
+     1397
+    ],
+    [
+     132.5,
+     1397
+    ],
+    [
+     132.5,
+     952
+    ]
+   ],
+   "corners": [
+    {
+     "x": 970.7,
+     "y": 964.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.2,
+     "y": 1396.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 132.0,
+     "y": 1397.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 132.0,
+     "y": 955.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     970.7,
+     964.4
+    ],
+    [
+     968.2,
+     1396.6
+    ],
+    [
+     132.0,
+     1397.9
+    ],
+    [
+     132.0,
+     955.1
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    1.0,
+    0.88,
+    0.96
+   ],
+   "corners_all": [
+    {
+     "x": 970.7,
+     "y": 964.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.2,
+     "y": 1396.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 132.0,
+     "y": 1397.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 132.0,
+     "y": 955.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    132.0,
+    955.1392413013441,
+    970.7427088658142,
+    1397.9086798140936
+   ]
+  },
+  {
+   "name": "56",
+   "streets": {
+    "N": "birch street",
+    "S": "ash street",
+    "W": "lincoln avenue",
+    "E": "sherman avenue"
+   },
+   "px4_est": [
+    [
+     1517,
+     947.5
+    ],
+    [
+     1517,
+     1395
+    ],
+    [
+     1030,
+     1395
+    ],
+    [
+     1030,
+     947.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1515.2,
+     "y": 947.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1517.8,
+     "y": 1393.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1028.6,
+     "y": 1395.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1029.9,
+     "y": 948.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1515.2,
+     947.1
+    ],
+    [
+     1517.8,
+     1393.2
+    ],
+    [
+     1028.6,
+     1395.8
+    ],
+    [
+     1029.9,
+     948.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1515.2,
+     "y": 947.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1517.8,
+     "y": 1393.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1028.6,
+     "y": 1395.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1029.9,
+     "y": 948.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1028.5896841801505,
+    947.0970176139125,
+    1517.8050859166215,
+    1395.8234103308107
+   ]
+  },
+  {
+   "name": "68",
+   "streets": {
+    "N": "ash street",
+    "S": "county road",
+    "W": "sherman avenue",
+    "E": "grant avenue"
+   },
+   "px4_est": [
+    [
+     968.5,
+     1456.5
+    ],
+    [
+     968.5,
+     1844.5
+    ],
+    [
+     137.5,
+     1844.5
+    ],
+    [
+     137.5,
+     1456.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 968.5,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.5,
+     "y": 1844.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 134.3,
+     "y": 1845.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "grant avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 138.2,
+     "y": 1457.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sherman avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     968.5,
+     1457.0
+    ],
+    [
+     968.5,
+     1844.1
+    ],
+    [
+     134.3,
+     1845.4
+    ],
+    [
+     138.2,
+     1457.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.97,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 968.5,
+     "y": 1457.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.5,
+     "y": 1844.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 134.3,
+     "y": 1845.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "grant avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 138.2,
+     "y": 1457.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sherman avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    134.2670271252971,
+    1457.0,
+    968.5,
+    1845.4130137641312
+   ]
+  },
+  {
+   "name": "69",
+   "streets": {
+    "N": "birch street",
+    "S": "ash street",
+    "W": "sherman avenue",
+    "E": "grant avenue"
+   },
+   "px4_est": [
+    [
+     1519,
+     1455.5
+    ],
+    [
+     1519,
+     1843
+    ],
+    [
+     1028.5,
+     1843
+    ],
+    [
+     1028.5,
+     1455.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1517.5,
+     "y": 1455.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1517.5,
+     "y": 1842.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1027.8,
+     "y": 1843.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1031.7,
+     "y": 1455.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1517.5,
+     1455.0
+    ],
+    [
+     1517.5,
+     1842.6
+    ],
+    [
+     1027.8,
+     1843.9
+    ],
+    [
+     1031.7,
+     1455.0
+    ]
+   ],
+   "edge_q": [
+    0.96,
+    1.0,
+    0.94,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1517.5,
+     "y": 1455.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1517.5,
+     "y": 1842.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1027.8,
+     "y": 1843.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1031.7,
+     "y": 1455.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1027.7670472572095,
+    1455.0,
+    1517.5,
+    1843.9098609172777
+   ]
+  },
+  {
+   "name": "44",
+   "streets": {
+    "N": "birch street",
+    "S": "county road",
+    "W": "x",
+    "E": "lincoln avenue"
+   },
+   "px4_est": [
+    [
+     1517.5,
+     409
+    ],
+    [
+     1517.5,
+     855
+    ],
+    [
+     134.5,
+     855
+    ],
+    [
+     134.5,
+     409
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1518.0,
+     "y": 851.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "44"
+    },
+    {
+     "x": 134.0,
+     "y": 855.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lincoln avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "44"
+    },
+    {
+     "x": 970.7,
+     "y": 964.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "55"
+    },
+    {
+     "x": 968.2,
+     "y": 1396.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "55"
+    },
+    {
+     "x": 132.0,
+     "y": 1397.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "55"
+    },
+    {
+     "x": 132.0,
+     "y": 955.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "55"
+    },
+    {
+     "x": 1515.2,
+     "y": 947.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "56"
+    },
+    {
+     "x": 1517.8,
+     "y": 1393.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "56"
+    },
+    {
+     "x": 1028.6,
+     "y": 1395.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "56"
+    },
+    {
+     "x": 1029.9,
+     "y": 948.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "56"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "55",
+    "56"
+   ],
+   "px4": [
+    [
+     1518.0,
+     405.5
+    ],
+    [
+     1518.0,
+     851.3
+    ],
+    [
+     134.0,
+     855.2
+    ],
+    [
+     134.0,
+     412.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.79,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1518.0,
+     "y": 851.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 134.0,
+     "y": 855.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lincoln avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    60.0,
+    20.0,
+    1517.5,
+    855.0
+   ]
+  }
+ ],
+ "pct": 25
+}
