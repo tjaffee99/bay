@@ -864,12 +864,19 @@ def histories(name, g, d):
                 pav = rasterize_on(g, [(geom.buffer(60), float(y)) for geom, y in zip(pv.geometry, pv.start)]).astype(np.float32)
                 pv_ok = pav > 0
                 if pv_ok.any():
+                    # the earliest pavement within ~400 m (a farm between a 1961 runway and
+                    # a 2001 taxiway went with the runway), else the nearest pavement
+                    rad = max(3, int(round(400 / (g["res"] * np.cos(np.radians(37.5))))))
+                    pav_min = ndimage.minimum_filter(np.where(pv_ok, pav, 1e4).astype(np.float32), size=2 * rad + 1)
                     pav_n = nearest_fill(np.where(pv_ok, pav, np.nan).astype(np.float32), pv_ok)
-                    ap_open = np.where(airport, np.maximum(ap_open, pav_n), ap_open)
+                    pav_y = np.where(pav_min < 5e3, pav_min, pav_n)
+                    ap_open = np.where(airport, np.maximum(ap_open, pav_y), ap_open)
         ay = np.where(np.isfinite(fill_y) & filled, np.maximum(ap_open, fill_y + 0.5), ap_open)
         urban &= ~(airport & (urban_y >= ay - 1))
         event(airport, GRASS, ay)
         claim_y = np.where(airport, ay, claim_y)
+        # (park_y also tells the decorations when the farms and farmsteads went)
+        park_y = np.where(airport & np.isnan(park_y), ay, park_y)
 
     # ---- urbanisation, parks, planted woods
     # suburban ground: houses in yards and trees (little of the ground under roofs,
