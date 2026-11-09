@@ -458,6 +458,54 @@ def histories(name, g, d):
     # parks and planted woods never paint over water (Lake Merced, Stow Lake, ...)
     park_y[water_now] = np.nan
     wood_y[water_now] = np.nan
+    # outside SF (whose parks come from sf-ground.json): parks, golf courses, cemeteries and
+    # recreation grounds (Overture region land use) are park ground from their year —
+    # golf_courses.csv / park_names.csv where researched, else the year the neighbourhood
+    # around them was built (nearest city ground outside them; estimated). They also
+    # claim the ground from farming (assembly below): no orchard or farmhouse comes
+    # back on a park, course or cemetery
+    lu5 = RAW / "overture" / "2026-10-21.0" / "region5_land_use.parquet"
+    open_claim_y = np.full((rows, cols), np.nan, np.float32)
+    if lu5.exists():
+        d5 = pd.read_parquet(lu5)
+        d5 = d5[d5["class"].isin(["park", "golf_course", "cemetery", "recreation_ground", "village_green"])]
+        g5 = gpd.GeoDataFrame(d5, geometry=gpd.GeoSeries.from_wkb(d5.geometry), crs=4326).to_crs(3857)
+        g5 = g5[g5.geometry.notna() & g5.geom_type.isin(["Polygon", "MultiPolygon"])]
+        researched = {}
+        gp = TABLES / "golf_courses.csv"
+        if gp.exists():
+            gt = pd.read_csv(gp)
+            researched.update(dict(zip(gt.name.astype(str), pd.to_numeric(gt.year_open, errors="coerce"))))
+        pnp = TABLES / "park_names.csv"
+        if pnp.exists():
+            pt = pd.read_csv(pnp)
+            for nm, y0 in zip(pt.park.astype(str), pd.to_numeric(pt.from_year, errors="coerce")):
+                if np.isfinite(y0):
+                    researched[nm] = min(researched.get(nm, 9999.0), float(y0))
+        nm5 = g5["name"].astype(str) if "name" in g5 else pd.Series("", index=g5.index)
+        ry = np.array([researched.get(n, np.nan) for n in nm5], np.float32)
+        # big parks (regional open space: hills, shorelines) stay natural ground — they
+        # only stop the farming; town parks, courses and cemeteries become park ground
+        ha = g5.geometry.area.values * np.cos(np.radians(37.6)) ** 2 / 1e4
+        big = (ha > 40) & g5["class"].isin(["park", "recreation_ground", "village_green"]).values
+        green5 = rasterize_on(g, [(geom, 1) for geom in g5.geometry], fill=0, dtype="uint8").astype(bool) \
+            & ~in_sf & ~water_now
+        big5 = rasterize_on(g, [(geom, 1) for geom in g5.geometry[big]], fill=0, dtype="uint8").astype(bool) \
+            & green5 if big.any() else np.zeros((rows, cols), bool)
+        res5 = np.full((rows, cols), np.nan, np.float32)
+        if np.isfinite(ry).any():
+            sel = np.isfinite(ry)
+            r_ = rasterize_on(g, [(geom, float(y)) for geom, y in zip(g5.geometry[sel], ry[sel])]).astype(np.float32)
+            res5 = np.where(r_ > 0, r_, np.nan)
+        around = np.isfinite(urban_y) & ~green5
+        nb_y = nearest_fill(np.where(around, urban_y, np.nan).astype(np.float32), around)
+        g5y = np.where(np.isfinite(res5), res5, nb_y)
+        g5y = np.where(green5 & np.isfinite(g5y), g5y, np.nan)
+        open_claim_y = np.where(big5, g5y, np.nan).astype(np.float32)
+        g5y = np.where(big5, np.nan, g5y)
+        park_y = np.where(np.isfinite(g5y) & np.isnan(park_y), g5y, park_y)
+        log(f"terrain {name}: {int(np.isfinite(g5y).sum())} park / golf / cemetery cells outside SF "
+            f"({int(np.isfinite(res5).sum())} with a researched year)")
     is_park = np.isfinite(park_y)
     urban &= ~is_park
 
@@ -794,14 +842,32 @@ def histories(name, g, d):
     # (after any fill), not city ground or orchard; runways / aprons are drawn on top
     ap_path = INTERIM / "airports.parquet"
     airport = np.zeros((rows, cols), bool)
+    # ground claimed from farming: by a park / course / cemetery from its year, by an airfield
+    claim_y = np.where(is_park, park_y, open_claim_y).astype(np.float32)
+    # a regional park that was farmed returns to its natural cover when it became a park
+    oc = np.isfinite(open_claim_y) & ~is_park
+    event(oc, N, open_claim_y)
     if ap_path.exists():
         ap = gpd.read_parquet(ap_path).to_crs(3857)
         ap_open = rasterize_on(g, [(geom, float(y)) for geom, y in zip(ap.geometry, ap.opened)], fill=0,
                                dtype="float32").astype(np.float32)
         airport = (ap_open > 0) & ~water_now
+        # the grass follows the pavement phases (airports.py: airport_pavement.parquet, from
+        # the previous run): each cell of the field from the year of the nearest pavement
+        pv_path = INTERIM / "airport_pavement.parquet"
+        if pv_path.exists():
+            pv = gpd.read_parquet(pv_path).to_crs(3857)
+            pv = pv[np.isfinite(pv.start)].sort_values("start", ascending=False)
+            if len(pv):
+                pav = rasterize_on(g, [(geom.buffer(60), float(y)) for geom, y in zip(pv.geometry, pv.start)]).astype(np.float32)
+                pv_ok = pav > 0
+                if pv_ok.any():
+                    pav_n = nearest_fill(np.where(pv_ok, pav, np.nan).astype(np.float32), pv_ok)
+                    ap_open = np.where(airport, np.maximum(ap_open, pav_n), ap_open)
         ay = np.where(np.isfinite(fill_y) & filled, np.maximum(ap_open, fill_y + 0.5), ap_open)
         urban &= ~(airport & (urban_y >= ay - 1))
         event(airport, GRASS, ay)
+        claim_y = np.where(airport, ay, claim_y)
 
     # ---- urbanisation, parks, planted woods
     # suburban ground: houses in yards and trees (little of the ground under roofs,
@@ -871,8 +937,10 @@ def histories(name, g, d):
         for e in range(C.shape[0]):
             ce, ye = C[e], Y[e]
             ok = np.isfinite(ye) & (ce != last) & (n < MAXC)
-            # agriculture can't come after urbanisation / fill
+            # agriculture can't come after urbanisation / fill, nor once a park, golf course,
+            # cemetery or airfield has the ground
             ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & np.isin(last, [URBAN, SUBURB, FILL, PARK]))
+            ok &= ~(np.isin(ce, [FARM, ORCHARD, VINEYARD, PASTURE]) & (ye >= claim_y[r0:r1] - 0.01))
             # natural "fill" after the place is already urban is meaningless
             ok &= ~((ce == FILL) & np.isin(last, [URBAN, SUBURB]))
             # bare fill that is built on within 4 years: go straight to the city (saves a slot)
@@ -1008,7 +1076,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         return arr[np.clip(np.rint(fy / sub).astype(int), 0, g["rows"] - 1), np.clip(np.rint(fx / sub).astype(int), 0, g["cols"] - 1)]
 
     lon_all, lat_all = None, None
-    mapped = real_farmsteads(g, covers, years)
+    mapped = real_farmsteads(g, covers, years, park_y)
     # San Francisco's planted forests (Sutro, Presidio, Golden Gate Park on dunes / scrub)
     lon_g, lat_g = lonlat_of(g)
     in_sf_g = (lon_g > SF_BOX[0]) & (lon_g < SF_BOX[2]) & (lat_g > SF_BOX[1]) & (lat_g < SF_BOX[3])
@@ -1152,7 +1220,7 @@ def block_hash(bx, by):
     return (h & np.uint32(65535)).astype(np.float64) / 65535.0
 
 
-def real_farmsteads(g, covers, years):
+def real_farmsteads(g, covers, years, park_y=None):
     """Farmsteads mapped on USGS historical topographic maps (topo_farmsteads.py ->
     data/manual/farmsteads/). A farmstead seen on one edition and missing from a later
     edition covering the same ground ended between the two; one first seen on a later
@@ -1236,6 +1304,10 @@ def real_farmsteads(g, covers, years):
             en = last + (a - last) * rng.uniform(0.2, 0.9)
         else:
             en = city_y if np.isfinite(city_y) and city_y > last else np.nan
+        # a park, golf course or cemetery took the ground: the farm went with it
+        if park_y is not None and np.isfinite(park_y[gi[k], gj[k]]):
+            py_ = float(park_y[gi[k], gj[k]])
+            en = py_ if not np.isfinite(en) else min(en, py_)
         starts.append(st)
         ends.append(en)
         cities.append(city_y)

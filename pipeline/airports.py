@@ -246,9 +246,18 @@ def main():
     ly = np.array([np.median(v) for v in np.split(lys, np.cumsum(n_s)[:-1])])
     ly = np.where(ly < 0, np.nan, ly)
     start = np.where(np.isfinite(ly), np.maximum(f.opened.values, ly + 0.5), f.opened.values)
+    # dated pavement for the terrain: the airfield's grass follows its pavement phases
+    # (terrain_tiles.py), not the whole of today's outline from the opening year
+    gpd.GeoDataFrame({"start": start, "end": f.closed.values, "kind": f["class"].map(KIND).values},
+                     geometry=f.geometry.values, crs=UTM).to_crs(4326).to_parquet(INTERIM / "airport_pavement.parquet")
     ground = Ground()
     starts, pos, kinds, years = [0], [], [], []
-    for geom, k, y0, y1 in zip(ll.geometry.values, f["class"].map(KIND).values, start, f.closed.values):
+    # drawn in this order without depth writes (viewer DrapeExtension): aprons, then
+    # taxiways, then runways on top; big pieces before small ones
+    kind_arr = f["class"].map(KIND).values
+    order = np.lexsort((-f.geometry.area.values, -kind_arr))
+    for i in order:
+        geom, k, y0, y1 = ll.geometry.values[i], kind_arr[i], start[i], f.closed.values[i]
         ring = np.asarray(geom.exterior.coords)[:, :2]
         z = ground(ring[:, 0], ring[:, 1]) + 0.35
         pos.append(np.column_stack([ring[:, 0] - ORIGIN[0], ring[:, 1] - ORIGIN[1], z]).ravel())
@@ -259,16 +268,24 @@ def main():
     # minimum pixel width so the airfields still read when zoomed far out
     lstarts, lpos, lkind, lwidth, lyears = [0], [], [], [], []
     fu = f.geometry.values
-    for geom, k, y0, y1 in zip(fu, f["class"].map(KIND).values, start, f.closed.values):
-        if k == 2:
+    for geom, k, y0, y1 in zip(fu, kind_arr, start, f.closed.values):
+        # runways only (taxiway pieces are curved / L-shaped: their bounding rectangle
+        # drew wide grey bands across the field when zoomed out), and only pieces that
+        # are close to a rectangle; width = area / length (the true mean width)
+        if k != 0:
             continue
-        rect = np.asarray(geom.minimum_rotated_rectangle.exterior.coords)[:4]
+        mrr = geom.minimum_rotated_rectangle
+        if geom.area < 0.8 * mrr.area:
+            continue
+        rect = np.asarray(mrr.exterior.coords)[:4]
         e1, e2 = rect[1] - rect[0], rect[2] - rect[1]
         if np.hypot(*e1) >= np.hypot(*e2):
-            a, b, w = (rect[0] + rect[3]) / 2, (rect[1] + rect[2]) / 2, np.hypot(*e2)
+            a, b = (rect[0] + rect[3]) / 2, (rect[1] + rect[2]) / 2
         else:
-            a, b, w = (rect[0] + rect[1]) / 2, (rect[2] + rect[3]) / 2, np.hypot(*e1)
-        if np.hypot(*(b - a)) < 3 * w:
+            a, b = (rect[0] + rect[1]) / 2, (rect[2] + rect[3]) / 2
+        L = np.hypot(*(b - a))
+        w = geom.area / max(L, 1.0)
+        if L < 3 * w:
             continue
         ll = gpd.GeoSeries(gpd.points_from_xy([a[0], b[0]], [a[1], b[1]]), crs=UTM).to_crs(4326)
         lon, lat = ll.x.values, ll.y.values

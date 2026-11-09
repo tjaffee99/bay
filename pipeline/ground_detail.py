@@ -35,6 +35,15 @@ KINDS = {"fairway": 0, "green": 1, "tee": 2, "rough": 3, "bunker": 4, "driving_r
          "playground": 8, "dog_park": 9, "pedestrian": 10, "plaza": 10, "garden": 11, "flowerbed": 11, "grass": 12,
          "recreation_ground": 12, "village_green": 12, "water_hazard": 14, "lateral_water_hazard": 14}
 GOLF = {"fairway", "green", "tee", "rough", "bunker", "driving_range"}
+# draw order (the viewer drapes these without depth writes: later draws on top) —
+# lawns and plazas under fields, fairways under tees and greens, bunkers and ponds last
+DRAW_RANK = {12: 0, 11: 1, 10: 2, 3: 3, 0: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 2: 10, 1: 11, 14: 12, 4: 13, 13: 14}
+
+
+def draw_order(kind_codes, areas):
+    """Indices in drawing order: by DRAW_RANK, bigger pieces first within a rank."""
+    rank = np.array([DRAW_RANK.get(int(k), 6) for k in kind_codes])
+    return np.lexsort((-np.asarray(areas, float), rank))
 
 
 def rpd_parks():
@@ -118,7 +127,8 @@ def main():
     ground = Ground()
     starts, pos, kinds, years = [0], [], [], []
     fu = feats.to_crs(UTM)
-    for i, geom in enumerate(fu.geometry.values):
+    for i in draw_order(feats["class"].map(KINDS).values, fu.geometry.area.values):
+        geom = fu.geometry.values[i]
         ring = geom.exterior
         if ring.length < 8:
             continue
@@ -297,7 +307,8 @@ def village_labels():
 
 def _outlines(fu, ground, kind_of, years_of, z_extra=0.0):
     starts, pos, kinds, years = [0], [], [], []
-    for i, geom in enumerate(fu.geometry.values):
+    for i in draw_order([kind_of(j) for j in range(len(fu))], fu.geometry.area.values):
+        geom = fu.geometry.values[i]
         ring = geom.exterior
         if ring.length < 8:
             continue

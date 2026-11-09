@@ -4,10 +4,10 @@
  * OpenStreetMap outlines draped on the terrain, each from its (estimated) year.
  */
 import {COORDINATE_SYSTEM} from '@deck.gl/core';
-import {Matrix4} from '@math.gl/core';
 import type {Layer} from '@deck.gl/core';
 import {PathLayer, SolidPolygonLayer} from '@deck.gl/layers';
 import {loadColumnar} from '../data/columnar';
+import {DrapeExtension, DRAPE_PARAMETERS} from './drape-extension';
 import {TimeExtension} from './time-extension';
 
 // kinds — keep in sync with pipeline/ground_detail.py
@@ -31,20 +31,8 @@ const COLORS: [number, number, number][] = [
 
 type GD = {data: any; origin: [number, number]; colors: Uint8Array; years: Float32Array};
 
-/** Height above the terrain for things draped on it: 0.3 m close up, more when zoomed out,
- * where the coarser terrain tiles and the depth buffer's precision would hide them
- * (runways vanishing when zooming out). Invisible from above at those scales. */
-const lifts = new Map<number, Matrix4>();
-export function liftMatrix(zoom: number, base = 0.3): Matrix4 {
-  const dz = zoom >= 14.5 ? 0 : Math.min(60, 1.5 * 2 ** (14.5 - zoom));
-  const key = Math.round((dz + base) * 10);
-  let m = lifts.get(key);
-  if (!m) {
-    m = new Matrix4().translate([0, 0, dz]);
-    lifts.set(key, m);
-  }
-  return m;
-}
+// draped on the terrain by DrapeExtension (depth pulled toward the camera, no depth
+// write): no vertical lift, so nothing shifts on screen or vanishes when zooming out
 let sf: GD | null = null;
 // the five counties (pipeline/ground_detail.py -> region-ground-detail.bin.gz, ~10x SF's):
 // loaded the first time the view comes close enough to draw it
@@ -52,6 +40,7 @@ let region: GD | null = null;
 let regionState: 'idle' | 'loading' | 'done' = 'idle';
 let redraw: (() => void) | null = null;
 const fade = new TimeExtension({mode: 'fade'});
+const drape = new DrapeExtension();
 
 /** Called once the lazily loaded region detail arrives (main.ts passes its render). */
 export function setGroundDetailRedraw(fn: () => void) {
@@ -91,7 +80,6 @@ function gdLayer(id: string, d: GD, year: number, zoom: number): Layer {
     _normalize: false,
     coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
     coordinateOrigin: [d.origin[0], d.origin[1], 0],
-    modelMatrix: liftMatrix(zoom),
     extruded: false,
     getFillColor: (_: any, {index, target}: any) => {
       target[0] = col[index * 4];
@@ -100,7 +88,7 @@ function gdLayer(id: string, d: GD, year: number, zoom: number): Layer {
       target[3] = 255;
       return target;
     },
-    extensions: [fade],
+    extensions: [fade, drape],
     getYears: (_: any, {index, target}: any) => {
       target[0] = yrs[index * 2];
       target[1] = yrs[index * 2 + 1];
@@ -111,7 +99,7 @@ function gdLayer(id: string, d: GD, year: number, zoom: number): Layer {
     shrinkYears: 0.5,
     pickable: false,
     shadowEnabled: false,
-    parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
+    parameters: DRAPE_PARAMETERS as any
   } as any) as any;
 }
 
@@ -194,7 +182,6 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         _pathType: 'open',
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [L.origin[0], L.origin[1], 0],
-        modelMatrix: liftMatrix(zoom, 0.5),
         getWidth: (_: any, {index}: any) => L.width[index],
         getColor: (_: any, {index}: any) => (L.kind[index] === 0 ? [96, 98, 102, 255] : [128, 130, 132, 220]),
         widthUnits: 'meters',
@@ -203,7 +190,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         billboard: false,
         pickable: false,
         shadowEnabled: false,
-        extensions: [fade],
+        extensions: [fade, drape],
         getYears: (_: any, {index, target}: any) => {
           target[0] = L.years[index * 2];
           target[1] = L.years[index * 2 + 1];
@@ -213,7 +200,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         growYears: 1,
         shrinkYears: 0.5,
         visible: zoom < 13.5,
-        parameters: {depthBias: -3, depthBiasSlopeScale: -1.5} as any
+        parameters: DRAPE_PARAMETERS as any
       } as any) as any
     );
   }
@@ -226,8 +213,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
       _normalize: false,
       coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
       coordinateOrigin: [apOrigin[0], apOrigin[1], 0],
-      modelMatrix: liftMatrix(zoom),
-      extruded: false,
+        extruded: false,
       getFillColor: (_: any, {index, target}: any) => {
         target[0] = col[index * 4];
         target[1] = col[index * 4 + 1];
@@ -235,7 +221,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
         target[3] = 255;
         return target;
       },
-      extensions: [fade],
+      extensions: [fade, drape],
       getYears: (_: any, {index, target}: any) => {
         target[0] = yrs[index * 2];
         target[1] = yrs[index * 2 + 1];
@@ -246,7 +232,7 @@ export function airportLayers(year: number, zoom: number): Layer[] {
       shrinkYears: 0.5,
       pickable: false,
       shadowEnabled: false,
-      parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
+      parameters: DRAPE_PARAMETERS as any
     } as any) as any
   ];
 }
