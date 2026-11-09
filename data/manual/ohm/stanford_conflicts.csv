@@ -1,0 +1,3 @@
+footprint,known_id,known_name,known_start,ohm_id,ohm_name,ohm_start,ohm_note,diff,current_pipeline_year,known_source
+6b40b196-3071-4830-9e34-dd5aaf119a58,stanford_harmony_house,Harmony House,1920.0,https://www.openhistoricalmap.org/way/199571839,,>= 1934,not on the 1934 campus map (OHM start_date 1960-02-29: 'not on 1934 Campus Map'),,1920.476697699069,https://stgenpln.blob.core.windows.net/document/SU_2018GUP_App_Vol4_pt2.pdf
+bb5c3ccc-9690-486e-88e7-c5b6429bd70a,stanford_montag_hall,Montag Hall (Bakewell Building),1927.0,https://www.openhistoricalmap.org/way/199595290,Montag Hall,2006,"OHM start_date 2006-02-01, cited to matched to ASRC",79.0,1927.2320760377188,https://stgenpln.blob.core.windows.net/document/SU_2018GUP_App_Vol4_pt2.pdf

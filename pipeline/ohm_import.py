@@ -856,9 +856,255 @@ def apply_goldrush(pred, today, include_years=(1851, 1852, 1887)):
     return gpd.GeoDataFrame(pd.concat([pred, new], ignore_index=True), geometry="geometry", crs=UTM)
 
 
+# ================================================================== Stanford
+STANFORD_SOURCES = ("Stanford Base Map", "2003 Campus Map", "Map of the lands of Leland Stanford", "1966 Law School",
+                    "Law School site aerials", "Training and Organizational", "Research Administration")
+PLACEHOLDER_DAYS = ("-02-29", "-02-28")
+
+
+def stanford_campus():
+    """Stanford's land (Overture land_use 'university' outlines named Stanford), UTM, buffered 60 m."""
+    import pyarrow.parquet as pq
+    lu = pq.read_table(RAW / "overture" / "2026-10-21.0" / "region5_land_use.parquet").to_pandas()
+    lu = lu[lu["class"].isin(["university", "college"]) & lu.name.fillna("").str.contains("Stanford")]
+    g = gpd.GeoDataFrame(lu, geometry=gpd.GeoSeries.from_wkb(lu.geometry), crs=4326).to_crs(UTM)
+    return shapely.union_all(g.geometry.values).buffer(60)
+
+
+# OHM's Stanford import (user import "LSJUbldgs", source map "Campus of Leland Stanford Junior University, 1962",
+# purl.stanford.edu/qr683hn3144) dates most outlines with binned "-02-29" placeholders. What each bin means was
+# checked against the researched Stanford rows of data/tables/known_building_dates_region.csv on the same
+# footprint (python ohm_import.py stanford prints the table): 1888-02-29 = the original Quad (researched
+# 1889-1903, 119 rows); 1920-02-29 = drawn on the old campus maps (33 rows, all <= 1954, 30 <= 1934);
+# 1932-02-29 "shown on 1934 map" (1934 x5); 1940-02-29 "not on 1934 map" (1961 x5); 1964-02-29 (1970 x4),
+# 2000-02-28 (2003-2020, 10 rows) and 2004-02-28 (2016 x5) = built after that year; 1976-02-29 (fixme
+# start_date) = unknown (1876-2000 among 29 rows); the Escondido Village "1956" is one year for the whole site
+# (it also sits on the 1875 Escondite Cottage) and the "approximate" Science & Engineering Quad dates are one
+# year for buildings of 2005-2014. Only cited or day-exact dates become researched rows; the bins become bounds.
+BIN_BOUNDS = {"1920-02-29": (np.nan, 1962.0, "drawn on the old campus maps (OHM bin 1920-02-29; researched rows: "
+                             "all <= 1954, 30 of 33 <= 1934)"),
+              "1932-02-29": (np.nan, 1934.0, "shown on the 1934 campus map"),
+              "1964-02-29": (1964.0, np.nan, "OHM bin 1964-02-29 = built after 1964 (researched rows: 1970 x4)"),
+              "2000-02-28": (2000.0, np.nan, "OHM bin 2000-02-28 = built after 2000 (researched rows: 2003-2020)"),
+              "2004-02-28": (2004.0, np.nan, "OHM bin 2004-02-28 = built after 2004 (researched rows: 2016 x5)"),
+              "2004-02-29": (2004.0, np.nan, "OHM bin 2004-02-29 = built after 2004")}
+
+
+def stanford_evidence(t):
+    """(kind, start, note, start_min, start_max) for an OHM Stanford building; kind is 'dated' (a cited or
+    day-exact date), 'bound' (a map bin: start_min / start_max) or 'placeholder' (no evidence)."""
+    sd = str(t.get("start_date") or "")
+    src = str(t.get("start_date:source") or "")
+    fix = str(t.get("fixme") or "")
+    sl, fl = src.lower(), fix.lower()
+    y = year_of(sd)
+    nan = np.nan
+    if not np.isfinite(y):
+        return "placeholder", nan, "no start_date", nan, nan
+    if "not on 1934" in sl or "not shown on 1934" in sl:
+        return "bound", nan, f"not on the 1934 campus map (OHM start_date {sd}: '{src}')", 1934.0, nan
+    if "student_housing" in sl and sd.endswith(PLACEHOLDER_DAYS):
+        return "placeholder", nan, "OHM gives the whole Escondido Village site one year (1956-02-29)", nan, nan
+    if sl.startswith("approximate"):
+        return "placeholder", nan, f"OHM start_date {sd} is an approximate group date ({src[:90]})", nan, nan
+    if "shown on 1934 map" in sl or sl in ("on 1934 map", "arbitrary, shown on 1934 map"):
+        return "bound", nan, f"shown on the 1934 campus map (OHM start_date {sd}: '{src}')", nan, 1934.0
+    if sl.startswith(("http", "wikipedia", "more_info", "matched to asrc")):
+        url = t.get("more_info:1") if sl.startswith("more_info") else (src if src.startswith("http") else "")
+        note = f"OHM start_date {sd}, cited to {src[:110]}" + (f" ({url})" if url and url != src else "")
+        return "dated", y, note, nan, nan
+    if sd[:10] in BIN_BOUNDS:
+        lo, hi, why = BIN_BOUNDS[sd[:10]]
+        return "bound", nan, why, lo, hi
+    if sd.endswith(PLACEHOLDER_DAYS) or "start_date" in fl or "start date" in fl:
+        return "placeholder", nan, f"OHM start_date {sd} is a placeholder", nan, nan
+    note = f"OHM start_date {sd}" + (" (no source on the feature)" if len(sd) >= 10 else " (year only, no source on the feature)")
+    if "construction begins" in fl:
+        note += f"; OHM fixme: {fix}"
+    return "dated", y, note, nan, nan
+
+
+def stanford():
+    import pyarrow.parquet as pq
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    campus = stanford_campus()
+    g = to_gdf(els, keep=lambda t: "building" in t)
+    g = g[g.geom_type.isin(["Polygon", "MultiPolygon"])].to_crs(UTM)
+    imp = g.tags.map(lambda t: t.get("import") == "LSJUbldgs").values
+    other_src = g.tags.map(lambda t: any(k in " ".join(str(v) for v in t.values()) for k in STANFORD_SOURCES)).values
+    unsourced = g.tags.map(lambda t: not any(k in t for k in ("source", "source:name", "import"))).values
+    on_campus = g.geometry.representative_point().within(campus).values
+    g = g[imp | (on_campus & (other_src | unsourced))].reset_index(drop=True)
+    g["key"] = [f"{a[0]}{b}" for a, b in zip(g.osm_type, g.osm_id)]
+    log(f"stanford: {len(g)} OHM buildings ({imp.sum()} LSJUbldgs import, {len(g) - imp.sum()} others on campus)")
+    ev = g.tags.map(stanford_evidence)
+    g["kind"] = [e[0] for e in ev]
+    g["year"] = [e[1] for e in ev]
+    g["note"] = [e[2] for e in ev]
+    g["smin"] = [e[3] for e in ev]
+    g["smax"] = [e[4] for e in ev]
+    g["name"] = g.tags.map(lambda t: t.get("name") or t.get("building:number") or "")
+    g["end"] = g.tags.map(lambda t: year_of(t.get("end_date")))
+    g["end_src"] = g.tags.map(lambda t: t.get("end_date:source") or t.get("source:1:name") or "")
+    g["levels"] = g.tags.map(lambda t: pd.to_numeric(t.get("building:levels"), errors="coerce"))
+    g["height_m"] = g.tags.map(lambda t: pd.to_numeric(t.get("height"), errors="coerce"))
+    # today's footprints (Overture, five counties) around the campus
+    b = g.to_crs(4326).total_bounds
+    t = pq.read_table(RAW / "overture" / "2026-10-21.0" / "region5_building.parquet",
+                      columns=["id", "px", "py", "name", "county", "geometry"],
+                      filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
+                               ("py", "<", b[3] + 0.01)]).to_pandas()
+    ov = gpd.GeoDataFrame(t, geometry=gpd.GeoSeries.from_wkb(t.geometry), crs=4326).to_crs(UTM)
+    osidx = ov.sindex
+    m_id, m_iou, m_cover = [], [], []
+    for gm in g.geometry.values:
+        best, bi, bc = None, 0.0, 0.0
+        c = gm.representative_point()
+        for j in osidx.query(gm, predicate="intersects"):
+            og = ov.geometry.values[j]
+            inter = gm.intersection(og).area
+            iou = inter / max(gm.union(og).area, 1e-6)
+            cover = inter / max(min(gm.area, og.area), 1e-6)
+            score = iou + (0.3 if og.contains(c) else 0.0)
+            if score > bi + (0.3 if best is not None and ov.geometry.values[best].contains(c) else 0.0):
+                best, bi, bc = j, iou, cover
+        ok = best is not None and (bi >= 0.5 or (bc >= 0.6 and ov.geometry.values[best].contains(gm.representative_point())))
+        m_id.append(best if ok else None)
+        m_iou.append(round(bi, 2))
+        m_cover.append(round(bc, 2))
+    g["ov"] = m_id
+    g["iou"] = m_iou
+    g["cover"] = m_cover
+    log(f"stanford: {g.ov.notna().sum()} matched to today's footprints, {g.ov.isna().sum()} without one")
+    # the pipeline's current year per footprint (region_building_points: one point per built footprint)
+    rbp = pd.read_parquet(INTERIM / "region_building_points.parquet")
+    rbp = rbp[(rbp.lon > b[0] - 0.01) & (rbp.lon < b[2] + 0.01) & (rbp.lat > b[1] - 0.01) & (rbp.lat < b[3] + 0.01)]
+    rp_ = gpd.GeoDataFrame(rbp, geometry=gpd.points_from_xy(rbp.lon, rbp.lat), crs=4326).to_crs(UTM)
+    jj = gpd.sjoin(rp_, ov[["geometry"]], predicate="within")
+    cur = jj.groupby("index_right").start_year.min()
+    # researched rows already in data/tables/known_building_dates_region.csv
+    kr = pd.read_csv(TABLES / "known_building_dates_region.csv")
+    kr = kr[(kr.lat.between(b[1] - 0.01, b[3] + 0.01)) & (kr.lon.between(b[0] - 0.01, b[2] + 0.01))]
+    kp = gpd.GeoDataFrame(kr, geometry=gpd.points_from_xy(kr.lon, kr.lat), crs=4326).to_crs(UTM)
+    kj = gpd.sjoin(kp, ov[["geometry"]], predicate="within")
+    known_by_fp = {int(r.index_right): r for r in kj.itertuples()}
+    return g, ov, cur, known_by_fp, kp
+
+
+def write_stanford():
+    g, ov, cur, known_by_fp, kp = stanford()
+    OHM_OUT.mkdir(parents=True, exist_ok=True)
+    rows, bounds, conflicts, agree = [], [], [], []
+    ovll = ov.to_crs(4326)
+    for r in g.itertuples():
+        if pd.isna(r.ov) or (np.isfinite(r.end) and r.end < 2026):
+            continue
+        j = int(r.ov)
+        fp = ov.geometry.values[j]
+        pt = r.geometry.representative_point()
+        if not fp.contains(pt):
+            pt = fp.representative_point()
+        ll = gpd.GeoSeries([pt], crs=UTM).to_crs(4326).iloc[0]
+        cy = cur.get(j, np.nan)
+        county = ov.county.values[j] or "Santa Clara"
+        url = ohm_url(r.osm_type, r.osm_id)
+        if r.kind == "dated":
+            yr = int(np.floor(r.year))
+            k = known_by_fp.get(j)
+            if k is not None:
+                d = abs(float(k.start_year) - yr)
+                (agree if d <= 2 else conflicts).append({
+                    "footprint": ov.id.values[j], "known_id": k.id, "known_name": k.name, "known_start": k.start_year,
+                    "ohm_id": url, "ohm_name": r.name, "ohm_start": yr, "ohm_note": r.note, "diff": d,
+                    "current_pipeline_year": cy, "known_source": k.source_url})
+                continue
+            rows.append({"id": f"ohm_stanford_{r.key}", "name": r.name or f"Stanford building (OHM {r.key})",
+                         "lat": round(ll.y, 6), "lon": round(ll.x, 6), "start_year": yr, "end_year": 9999,
+                         "source_url": url, "note": r.note + f". Matched to Overture {ov.id.values[j][:8]} "
+                         f"(IoU {r.iou}); pipeline year now {cy:.0f}." if np.isfinite(cy) else
+                         r.note + f". Matched to Overture {ov.id.values[j][:8]} (IoU {r.iou}).",
+                         "county": county})
+        elif r.kind == "bound":
+            k = known_by_fp.get(j)
+            lo, hi = r.smin, r.smax
+            viol = np.isfinite(cy) and ((np.isfinite(hi) and cy > hi + 0.5) or (np.isfinite(lo) and cy < lo))
+            if k is not None:
+                ks = float(k.start_year)
+                if (np.isfinite(hi) and ks > hi + 0.5) or (np.isfinite(lo) and ks < lo):
+                    conflicts.append({"footprint": ov.id.values[j], "known_id": k.id, "known_name": k.name,
+                                      "known_start": ks, "ohm_id": url, "ohm_name": r.name,
+                                      "ohm_start": f"<= {hi:g}" if np.isfinite(hi) else f">= {lo:g}", "ohm_note": r.note,
+                                      "diff": np.nan, "current_pipeline_year": cy, "known_source": k.source_url})
+            bounds.append({"id": f"ohm_stanford_{r.key}", "name": r.name, "lat": round(ll.y, 6), "lon": round(ll.x, 6),
+                           "start_min": lo, "start_max": hi, "evidence": r.note,
+                           "current_pipeline_year": round(cy, 1) if np.isfinite(cy) else np.nan,
+                           "violates": bool(viol), "known_row": k.id if k is not None else "",
+                           "source_url": url, "county": county, "overture_id": ov.id.values[j]})
+    kd = pd.DataFrame(rows)
+    kd = kd.drop_duplicates("lat").sort_values("id")
+    kd.to_csv(OHM_OUT / "known_dates_ohm.csv", index=False)
+    pd.DataFrame(bounds).sort_values("id").to_csv(OHM_OUT / "stanford_bounds_ohm.csv", index=False)
+    pd.DataFrame(conflicts + [dict(a, diff=a["diff"]) for a in []]).to_csv(OHM_OUT / "stanford_conflicts.csv", index=False)
+    log(f"stanford: {len(kd)} known-date rows, {len(bounds)} map-bin bounds "
+        f"({sum(x['violates'] for x in bounds)} violated by today's pipeline year), {len(conflicts)} conflicts and "
+        f"{len(agree)} agreements with known_building_dates_region.csv")
+    # demolished: gone from today's footprints, with an OHM end date
+    dem = g[g.end.notna() & (g.end < 2026)].copy()
+    out = []
+    for r in dem.itertuples():
+        kind, y, note = r.kind, r.year, r.note
+        esrc = str(r.tags.get("end_date:source") or "")
+        ssrc = str(r.tags.get("start_date:source") or "")
+        arbitrary = "arbitrary" in esrc.lower()
+        jov = None if pd.isna(r.ov) else int(r.ov)
+        out.append({"id": f"ohm_stanford_{r.key}", "name": r.name or None,
+                    "start_year": float(np.floor(y)) if kind == "dated" else None,
+                    "start_evidence": note + (" [OHM: arbitrary]" if "arbitrary" in ssrc.lower() else ""),
+                    "end_year": float(r.end),
+                    "end_evidence": f"OHM end_date {r.tags.get('end_date')}" + (f" ({r.end_src})" if r.end_src else ""),
+                    "end_confidence": "arbitrary (OHM)" if arbitrary else ("cited" if esrc.startswith("http") else "OHM date"),
+                    "storeys": r.levels if np.isfinite(r.levels) else None,
+                    "height_m": r.height_m if np.isfinite(r.height_m) else None,
+                    "confidence": "estimated", "source_url": ohm_url(r.osm_type, r.osm_id),
+                    "best_overture_iou": r.iou,
+                    "today_footprint": ov.id.values[jov] if jov is not None else None,
+                    "today_footprint_year": round(float(cur.get(jov, np.nan)), 1) if jov is not None else None,
+                    "geometry": r.geometry})
+    dg = gpd.GeoDataFrame(out, crs=UTM)
+    # gone, but today's footprint data (Overture 2026-10) still has the same building: a researched row that ends it
+    stale = dg[dg.today_footprint.notna() & (dg.best_overture_iou >= 0.8) & dg.start_year.notna() &
+               ((dg.today_footprint_year - dg.start_year).abs() <= 3) & (dg.end_confidence != "arbitrary (OHM)")]
+    if len(stale):
+        add = []
+        for r in stale.itertuples():
+            pt = gpd.GeoSeries([r.geometry.representative_point()], crs=UTM).to_crs(4326).iloc[0]
+            add.append({"id": r.id, "name": r.name, "lat": round(pt.y, 6), "lon": round(pt.x, 6),
+                        "start_year": int(r.start_year), "end_year": int(np.floor(r.end_year)),
+                        "source_url": r.source_url, "note": f"{r.start_evidence}; {r.end_evidence}. Demolished, but "
+                        f"the Overture 2026-10 footprint {r.today_footprint[:8]} is still this building.",
+                        "county": "Santa Clara"})
+        kd = pd.concat([kd, pd.DataFrame(add)], ignore_index=True).sort_values("id")
+        kd.to_csv(OHM_OUT / "known_dates_ohm.csv", index=False)
+        log(f"stanford: + {len(add)} rows ending a demolished building that today's footprints still show")
+    _write_geojson(dg, OHM_OUT / "demolished_ohm.geojson", "demolished_ohm")
+    # LSJU outlines with no footprint today and no end date: for review (demolished after the import?)
+    un = g[g.ov.isna() & g.end.isna() & (g.geometry.area >= 60)]
+    pd.DataFrame({"ohm": [ohm_url(a, b_) for a, b_ in zip(un.osm_type, un.osm_id)], "name": un.name.values,
+                  "kind": un.kind.values, "note": un.note.values, "best_iou": un.iou.values,
+                  "area_m2": un.geometry.area.round(0).values,
+                  "lat": un.to_crs(4326).geometry.representative_point().y.round(6).values,
+                  "lon": un.to_crs(4326).geometry.representative_point().x.round(6).values}
+                 ).to_csv(OHM_OUT / "stanford_unmatched_ohm.csv", index=False)
+    log(f"stanford: {len(dg)} demolished buildings with OHM end dates ({dg.today_footprint.notna().sum()} on a spot "
+        f"rebuilt since); {len(un)} outlines >= 60 m2 without a footprint today or an end date (stanford_unmatched_ohm.csv)")
+    print(g.kind.value_counts())
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "all"
     if cmd in ("download", "all"):
         download()
     if cmd in ("goldrush", "all"):
         write_goldrush()
+    if cmd in ("stanford", "all"):
+        write_stanford()
