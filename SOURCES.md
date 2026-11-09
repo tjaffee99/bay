@@ -282,6 +282,13 @@ Built by `pipeline/landscape.py`, `landscape_water.py`, `landscape_broek.py`, `l
 - BCDC, *Staff Report: Salt Ponds*, October 2005 (http://www.bcdc.ca.gov/wp-content/uploads/sites/354/2023/09/Salt-Ponds-PDF.pdf).
 - Use: dates of the salt-pond complexes in `water_history.csv` (facts only).
 
+#### `sbsprp_salt_context_2005`, `sbsprp_phase2_cultural_2016`, `usgs_htmc` South Bay sheets — South Bay salt-pond phases (2026-11)
+- EDAW (L. Watt), 2005, *South Bay Salt Pond Restoration Project Historic Context Report* (Appendix D; scanned text OCR'd), https://www.southbayrestoration.org/documents/permit-related/Historic%20Salt%20AppendixD.pdf — chronology after Ver Planck 1958 (*Salt in California*, CDMG Bulletin 175), Sandoval 1988 and the Leslie Salt / Dumbarton Land & Improvement Co. archive; reproduces the USC&GS 1907 chart of San Francisco Bay, Thompson & West 1878 atlas plates, Claire Lopez's 1971 maps (reclamation districts, DL&I Co. levees 1907–08, Eden Landing works 1860–1910) and Ver Planck's 1958 maps.
+- SBSPRP Phase 2 Final EIS/R (2016), §3.7 Cultural Resources, https://www.southbayrestoration.org/planning/phase2/documents/AR-FEISR/3.7_Cultural%20Resources_w%20Figs.pdf (Alviso, Drawbridge, Ravenswood histories; pond S5 pumphouse 1943–48).
+- USGS Historical Topographic Map Collection (`usgs_htmc`, public domain): Haywards 1899 (survey 1896), Hayward 1915, 1942 (1939 photos); Palo Alto 1897 / 1899 (survey 1895), 1941 (survey 1939), 1943 (1940 photos); San Jose 1897 / 1899 (survey 1895), 1943 (1939 photos); Pleasanton 1906; 1:24,000 Newark 1947 / 1959, Redwood Point 1948 / 1959, Mountain View, Milpitas, Palo Alto, Niles 1953 (1948 photos), Milpitas, Mountain View, Palo Alto 1961, Hayward 1959 — read on screen with a lon/lat grid (scratch renders, not stored).
+- Licences: the reports are public agency documents used for facts; maps public domain.
+- Use: `data/manual/landscape/south_bay_salt_phases.geojson` → `sb_*` rows of `water_history.csv` (zone rings drawn on the sheets, clipped to the SFEI c.1998 pond / diked extent); `README_south_bay_baylands.md`.
+
 #### Other dated facts (per row / feature in the files)
 - Lake Merritt, Oakland estuary, Tidal Canal: Wikipedia "Lake Merritt", "Oakland Estuary"; oaklandgeology.com (tidal canal history); HMdb Tidal Canal marker; Alameda Post. Reservoir / lake dam years: Wikipedia articles per reservoir (URL per row). Farm-district eras: Broek 1932; Hayward Area Historical Society (agricultural history); Contra Costa County Historical Society; East Contra Costa Historical Society (Brentwood); NPS Point Reyes ranching history; Pleasanton Weekly (hops); Wikipedia articles cited per feature.
 
