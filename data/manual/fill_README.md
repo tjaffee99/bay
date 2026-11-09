@@ -2,7 +2,7 @@
 
 Files covered here:
 
-- `data/manual/fill_zones.csv`: 248 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
+- `data/manual/fill_zones.csv`: 249 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
 - `data/tables/landcover_history.csv`: the pre-urban land cover to paint under today's city, with dates.
 - New raw downloads in `data/raw/`. They are listed under "Downloaded datasets" below.
 
@@ -289,8 +289,10 @@ which it was filled.
   Meadowsweet Dairy 20 years earlier" than the early-1950s Madera Gardens, Corte Madera Memories). The 1939 sheets'
   sparse marsh symbols can read as dry, so only cells near that sheet's roads and buildings are used and every ring
   was checked by eye on the sheet. `sm_foster_city_diked` (levee 1900, Frank Brewer) and `sm_redwood_shores_salt` keep
-  their documented years and boxes. Not covered: Bel Marin Keys and the rest of the Novato baylands (no masks north of
-  37.98°), East San Rafael (no 1939-photo sheet east of 122.5° W).
+  their documented years and boxes. `mn_bel_marin_keys_diked` 1900–10 (ESTIMATED: Whiteside marsh "drained in the early
+  1900s for farmland", Wikipedia) fills the gap between the Hamilton and Sonoma-baylands boxes; it is a box from a
+  written source, not checked on map editions (no masks north of 37.98°). Not covered: East San Rafael (no 1939-photo
+  sheet east of 122.5° W).
 * **Bay Farm Island re-checked:** `al_bay_farm_reclaimed_marsh` (1900–24) stays as it is. The 115 ha that read "wet" on
   the 1958-photo San Leandro sheet carry the mud-flat stipple of hydraulic fill being pumped inside the new dike — on
   ground the 1939-photo and 1946-photo sheets draw as dry diked land. The OAK rows of `airports/pavement_dates.csv` and

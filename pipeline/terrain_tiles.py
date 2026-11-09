@@ -483,11 +483,15 @@ def histories(name, g, d):
     # lakes stay natural): reservoirs, gravel pits, park / golf lakes and stock ponds were
     # dry ground in 1769. Researched ones are dated by water_history.csv below; the rest
     # appear in the post-war decades (gravel pits, ponds)
+    # (also where the c.1800 maps draw dry ground: 540 ha of gravel pits and ponds around
+    # Pleasanton, Livermore, Sunol and the valley percolation ponds stayed land for good)
+    mapped_dry = water_now & (hist > 0) & (elev > 2) & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
     later_water = water_now & (N == RESERVOIR) & (hist == 0) & (elev > 2)
     if later_water.any():
         land_ok = ~water_now & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
         N[later_water] = nearest_fill(N, land_ok)[later_water]
         log(f"terrain {name}: {int(later_water.sum())} cells of today's inland water were dry before their reservoir / pit / pond")
+    later_water = later_water | mapped_dry
     # quarries and landfills (data/manual/industrial_sites) are WorldCover "bare", read as
     # natural rock above: before the digging / dumping the ground was the hillside around
     # them (Permanente, Selby, Stevens Creek, San Rafael rock quarry, the landfills)
