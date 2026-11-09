@@ -605,7 +605,20 @@ def assemble():
             rec = W.sheet_rec(key)
             rows = json.load(open(E.INTERIM / f"{key}.json"))
             blocks = {b["name"]: b for b in G.get("blocks", [])}
-            bpolys = E.block_polys(G)
+            # block zones, clipped to the scan (a registered earlier edition can cover less than its base plate) and
+            # to valid_px
+            from PIL import Image as _I
+            iw, ih = _I.open(G["img"]).size
+            vp = G.get("valid_px") or [0, 0, iw, ih]
+            frame = Polygon([[max(0, vp[0]), max(0, vp[1])], [min(iw, vp[2]), max(0, vp[1])], [min(iw, vp[2]), min(ih, vp[3])],
+                             [max(0, vp[0]), min(ih, vp[3])]]).buffer(-25, join_style=2)
+            bpolys = []
+            for b in G.get("blocks", []):
+                x0, y0, x1, y1 = b["rect_px"]
+                q = Polygon([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]).intersection(frame)
+                if q.is_empty or q.area < 400:
+                    continue
+                bpolys.append((b["name"], Polygon(W.apply(np.array(b["M"]), np.asarray(q.exterior.coords)))))
             cv = unary_union([pg.buffer(12, join_style=2) for _, pg in bpolys]).buffer(15, join_style=2).buffer(-15, join_style=2)
             if cfg.get("cover_extra_px"):  # parts of a block zone with no drawn outline (plazas, yards) - pixel polygons
                 for name, ring in cfg["cover_extra_px"]:
