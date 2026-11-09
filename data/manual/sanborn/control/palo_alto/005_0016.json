@@ -1,0 +1,1084 @@
+{
+ "residential": true,
+ "commercial_blocks": [
+  "2"
+ ],
+ "notes": "sheet 16 (May 1908): Alma St -> Bryant St, Palo Alto Av -> Everett Av; north = up. The two blocks west of Hawthorne Av fitted with the blocks across it.",
+ "blocks": [
+  {
+   "name": "45",
+   "streets": {
+    "N": "bryant street",
+    "S": "ramona street",
+    "W": "hawthorne avenue",
+    "E": "everett avenue"
+   },
+   "px4_est": [
+    [
+     912.5,
+     115
+    ],
+    [
+     1504,
+     115
+    ],
+    [
+     1504,
+     453.5
+    ],
+    [
+     912.5,
+     453.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 912.5,
+     "y": 112.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.9,
+     "y": 116.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.6,
+     "y": 454.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 912.5,
+     "y": 452.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     912.5,
+     112.8
+    ],
+    [
+     1504.9,
+     116.7
+    ],
+    [
+     1503.6,
+     454.8
+    ],
+    [
+     912.5,
+     452.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.94,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 912.5,
+     "y": 112.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.9,
+     "y": 116.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.6,
+     "y": 454.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 912.5,
+     "y": 452.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    912.5,
+    112.77631578947367,
+    1504.9011711958092,
+    454.81395202997044
+   ]
+  },
+  {
+   "name": "15",
+   "streets": {
+    "N": "ramona street",
+    "S": "emerson street",
+    "W": "hawthorne avenue",
+    "E": "everett avenue"
+   },
+   "px4_est": [
+    [
+     912.7,
+     528
+    ],
+    [
+     1504.5,
+     528
+    ],
+    [
+     1504.5,
+     863
+    ],
+    [
+     912.7,
+     863
+    ]
+   ],
+   "corners": [
+    {
+     "x": 911.3,
+     "y": 527.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 528.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 863.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 912.6,
+     "y": 861.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     911.3,
+     527.6
+    ],
+    [
+     1504.5,
+     528.9
+    ],
+    [
+     1504.5,
+     863.8
+    ],
+    [
+     912.6,
+     861.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 911.3,
+     "y": 527.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 528.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 863.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 912.6,
+     "y": 861.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    911.2904908539078,
+    527.588971404933,
+    1504.5,
+    863.8157894736842
+   ]
+  },
+  {
+   "name": "147",
+   "streets": {
+    "N": "emerson street",
+    "S": "high street",
+    "W": "hawthorne avenue",
+    "E": "everett avenue"
+   },
+   "px4_est": [
+    [
+     910.5,
+     950.5
+    ],
+    [
+     1503.5,
+     950.5
+    ],
+    [
+     1503.5,
+     1284.5
+    ],
+    [
+     910.5,
+     1284.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 911.4,
+     "y": 951.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.4,
+     "y": 951.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.1,
+     "y": 1284.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 910.1,
+     "y": 1285.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     911.4,
+     951.0
+    ],
+    [
+     1504.4,
+     951.0
+    ],
+    [
+     1503.1,
+     1284.1
+    ],
+    [
+     910.1,
+     1285.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 911.4,
+     "y": 951.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.4,
+     "y": 951.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.1,
+     "y": 1284.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 910.1,
+     "y": 1285.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    910.0885250246374,
+    951.0,
+    1504.405924992121,
+    1285.4088077460178
+   ]
+  },
+  {
+   "name": "2",
+   "streets": {
+    "N": "high street",
+    "S": "alma street",
+    "W": "hawthorne avenue",
+    "E": "everett avenue"
+   },
+   "px4_est": [
+    [
+     909.5,
+     1360
+    ],
+    [
+     1503.5,
+     1360
+    ],
+    [
+     1503.5,
+     1696
+    ],
+    [
+     909.5,
+     1696
+    ]
+   ],
+   "corners": [
+    {
+     "x": 910.4,
+     "y": 1360.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.9,
+     "y": 1359.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1502.6,
+     "y": 1695.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 909.1,
+     "y": 1696.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     910.4,
+     1360.9
+    ],
+    [
+     1503.9,
+     1359.6
+    ],
+    [
+     1502.6,
+     1695.1
+    ],
+    [
+     909.1,
+     1696.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 910.4,
+     "y": 1360.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1503.9,
+     "y": 1359.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1502.6,
+     "y": 1695.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 909.1,
+     "y": 1696.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    909.0905043788204,
+    1359.591198175569,
+    1503.9094956211798,
+    1696.408801824431
+   ]
+  },
+  {
+   "name": "16",
+   "streets": {
+    "N": "bryant street",
+    "S": "emerson street",
+    "W": "palo alto avenue",
+    "E": "hawthorne avenue"
+   },
+   "px4_est": [
+    [
+     236,
+     112
+    ],
+    [
+     825.2,
+     112
+    ],
+    [
+     825.2,
+     859
+    ],
+    [
+     236,
+     859
+    ]
+   ],
+   "corners": [
+    {
+     "x": 825.6,
+     "y": 112.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hawthorne avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 824.3,
+     "y": 860.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 912.5,
+     "y": 112.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "45"
+    },
+    {
+     "x": 1504.9,
+     "y": 116.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "45"
+    },
+    {
+     "x": 1503.6,
+     "y": 454.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "45"
+    },
+    {
+     "x": 912.5,
+     "y": 452.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "45"
+    },
+    {
+     "x": 911.3,
+     "y": 527.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "15"
+    },
+    {
+     "x": 1504.5,
+     "y": 528.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "15"
+    },
+    {
+     "x": 1504.5,
+     "y": 863.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "15"
+    },
+    {
+     "x": 912.6,
+     "y": 861.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "15"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "45",
+    "15"
+   ],
+   "px4": [
+    [
+     237.6,
+     112.0
+    ],
+    [
+     825.6,
+     112.0
+    ],
+    [
+     824.3,
+     860.8
+    ],
+    [
+     232.4,
+     858.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.98
+   ],
+   "corners_all": [
+    {
+     "x": 825.6,
+     "y": 112.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hawthorne avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 824.3,
+     "y": 860.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    40.0,
+    112.0,
+    825.0,
+    859.0
+   ]
+  },
+  {
+   "name": "1",
+   "streets": {
+    "N": "emerson street",
+    "S": "alma street",
+    "W": "palo alto avenue",
+    "E": "hawthorne avenue"
+   },
+   "px4_est": [
+    [
+     150,
+     949.5
+    ],
+    [
+     823,
+     949.5
+    ],
+    [
+     823,
+     1697
+    ],
+    [
+     150,
+     1697
+    ]
+   ],
+   "corners": [
+    {
+     "x": 823.8,
+     "y": 949.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1"
+    },
+    {
+     "x": 821.2,
+     "y": 1697.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hawthorne avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "1"
+    },
+    {
+     "x": 911.4,
+     "y": 951.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 1504.4,
+     "y": 951.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 1503.1,
+     "y": 1284.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 910.1,
+     "y": 1285.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 910.4,
+     "y": 1360.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hawthorne avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2"
+    },
+    {
+     "x": 1503.9,
+     "y": 1359.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "everett avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2"
+    },
+    {
+     "x": 1502.6,
+     "y": 1695.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "everett avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2"
+    },
+    {
+     "x": 909.1,
+     "y": 1696.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hawthorne avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "147",
+    "2"
+   ],
+   "px4": [
+    [
+     135.5,
+     949.5
+    ],
+    [
+     823.8,
+     949.5
+    ],
+    [
+     821.2,
+     1697.0
+    ],
+    [
+     135.5,
+     1697.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.99,
+    0.01
+   ],
+   "corners_all": [
+    {
+     "x": 823.8,
+     "y": 949.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hawthorne avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 821.2,
+     "y": 1697.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hawthorne avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    40.0,
+    949.0,
+    823.0,
+    1697.0
+   ]
+  }
+ ],
+ "pct": 25
+}

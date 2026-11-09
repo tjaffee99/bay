@@ -1,0 +1,1106 @@
+{
+ "residential": true,
+ "notes": "sheet 11 (May 1908): Bryant St -> Cowper St, Everett Av -> University Av (Margarita = Kipling St, Gilman = Florence); north = up.",
+ "blocks": [
+  {
+   "name": "33",
+   "streets": {
+    "N": "cowper street",
+    "S": "kipling street",
+    "W": "everett avenue",
+    "E": "lytton avenue"
+   },
+   "px4_est": [
+    [
+     166,
+     173
+    ],
+    [
+     757.5,
+     173
+    ],
+    [
+     757.5,
+     511
+    ],
+    [
+     166,
+     511
+    ]
+   ],
+   "corners": [
+    {
+     "x": 166.0,
+     "y": 171.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 757.1,
+     "y": 175.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 758.4,
+     "y": 511.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 166.0,
+     "y": 509.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     166.0,
+     171.3
+    ],
+    [
+     757.1,
+     175.2
+    ],
+    [
+     758.4,
+     511.8
+    ],
+    [
+     166.0,
+     509.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 166.0,
+     "y": 171.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 757.1,
+     "y": 175.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 758.4,
+     "y": 511.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 166.0,
+     "y": 509.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    166.0,
+    171.27631578947367,
+    758.4110862772093,
+    511.8198428895191
+   ]
+  },
+  {
+   "name": "34",
+   "streets": {
+    "N": "cowper street",
+    "S": "kipling street",
+    "W": "lytton avenue",
+    "E": "university avenue"
+   },
+   "px4_est": [
+    [
+     843.5,
+     177.5
+    ],
+    [
+     1435.5,
+     177.5
+    ],
+    [
+     1435.5,
+     513
+    ],
+    [
+     843.5,
+     513
+    ]
+   ],
+   "corners": [
+    {
+     "x": 843.1,
+     "y": 176.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1436.0,
+     "y": 180.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1436.0,
+     "y": 513.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 844.4,
+     "y": 513.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     843.1,
+     176.8
+    ],
+    [
+     1436.0,
+     180.7
+    ],
+    [
+     1436.0,
+     513.0
+    ],
+    [
+     844.4,
+     513.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 843.1,
+     "y": 176.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1436.0,
+     "y": 180.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1436.0,
+     "y": 513.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 844.4,
+     "y": 513.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    843.0892563221091,
+    176.77357701139385,
+    1436.0,
+    513.0
+   ]
+  },
+  {
+   "name": "31",
+   "streets": {
+    "N": "kipling street",
+    "S": "waverley street",
+    "W": "everett avenue",
+    "E": "lytton avenue"
+   },
+   "px4_est": [
+    [
+     165,
+     586
+    ],
+    [
+     757,
+     586
+    ],
+    [
+     757,
+     922
+    ],
+    [
+     165,
+     922
+    ]
+   ],
+   "corners": [
+    {
+     "x": 165.0,
+     "y": 584.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 756.9,
+     "y": 587.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.6,
+     "y": 922.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 165.0,
+     "y": 920.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     165.0,
+     584.7
+    ],
+    [
+     756.9,
+     587.3
+    ],
+    [
+     755.6,
+     922.8
+    ],
+    [
+     165.0,
+     920.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 165.0,
+     "y": 584.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 756.9,
+     "y": 587.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.6,
+     "y": 922.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 165.0,
+     "y": 920.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    165.0,
+    584.6842105263158,
+    756.902743745509,
+    922.8095169592918
+   ]
+  },
+  {
+   "name": "30",
+   "streets": {
+    "N": "kipling street",
+    "S": "waverley street",
+    "W": "lytton avenue",
+    "E": "university avenue"
+   },
+   "px4_est": [
+    [
+     843.5,
+     589.5
+    ],
+    [
+     1434.5,
+     589.5
+    ],
+    [
+     1434.5,
+     923.5
+    ],
+    [
+     843.5,
+     923.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 843.5,
+     "y": 589.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.5,
+     "y": 589.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.5,
+     "y": 924.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.5,
+     "y": 922.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     843.5,
+     589.0
+    ],
+    [
+     1434.5,
+     589.0
+    ],
+    [
+     1434.5,
+     924.8
+    ],
+    [
+     843.5,
+     922.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 843.5,
+     "y": 589.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.5,
+     "y": 589.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "kipling street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.5,
+     "y": 924.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.5,
+     "y": 922.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    843.5,
+    589.0,
+    1434.5,
+    924.8157894736842
+   ]
+  },
+  {
+   "name": "19",
+   "streets": {
+    "N": "waverley street",
+    "S": "bryant street",
+    "W": "everett avenue",
+    "E": "lytton avenue"
+   },
+   "px4_est": [
+    [
+     163.5,
+     1009.5
+    ],
+    [
+     755.5,
+     1009.5
+    ],
+    [
+     755.5,
+     1758.5
+    ],
+    [
+     163.5,
+     1758.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 164.8,
+     "y": 1008.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.0,
+     "y": 1010.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.0,
+     "y": 1758.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 162.2,
+     "y": 1758.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     164.8,
+     1008.2
+    ],
+    [
+     755.0,
+     1010.8
+    ],
+    [
+     755.0,
+     1758.5
+    ],
+    [
+     162.2,
+     1758.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 164.8,
+     "y": 1008.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "everett avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.0,
+     "y": 1010.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 755.0,
+     "y": 1758.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "lytton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 162.2,
+     "y": 1758.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "everett avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    162.18421052631578,
+    1008.190079977866,
+    755.0,
+    1758.5
+   ]
+  },
+  {
+   "name": "35",
+   "streets": {
+    "N": "waverley street",
+    "S": "gilman street",
+    "W": "lytton avenue",
+    "E": "university avenue"
+   },
+   "px4_est": [
+    [
+     843,
+     1010.5
+    ],
+    [
+     1434.5,
+     1010.5
+    ],
+    [
+     1434.5,
+     1347.5
+    ],
+    [
+     843,
+     1347.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 843.0,
+     "y": 1011.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1435.0,
+     "y": 1011.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1435.0,
+     "y": 1347.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.0,
+     "y": 1347.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     843.0,
+     1011.0
+    ],
+    [
+     1435.0,
+     1011.0
+    ],
+    [
+     1435.0,
+     1347.5
+    ],
+    [
+     843.0,
+     1347.5
+    ]
+   ],
+   "edge_q": [
+    0.92,
+    1.0,
+    1.0,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 843.0,
+     "y": 1011.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1435.0,
+     "y": 1011.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1435.0,
+     "y": 1347.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.0,
+     "y": 1347.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    843.0,
+    1011.0,
+    1435.0,
+    1347.5
+   ]
+  },
+  {
+   "name": "20",
+   "streets": {
+    "N": "gilman street",
+    "S": "bryant street",
+    "W": "lytton avenue",
+    "E": "university avenue"
+   },
+   "px4_est": [
+    [
+     843.5,
+     1421.5
+    ],
+    [
+     1434,
+     1421.5
+    ],
+    [
+     1434,
+     1759.5
+    ],
+    [
+     843.5,
+     1759.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 843.5,
+     "y": 1420.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.0,
+     "y": 1421.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.0,
+     "y": 1759.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.5,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     843.5,
+     1420.6
+    ],
+    [
+     1434.0,
+     1421.9
+    ],
+    [
+     1434.0,
+     1759.0
+    ],
+    [
+     843.5,
+     1759.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.95,
+    0.98,
+    0.98
+   ],
+   "corners_all": [
+    {
+     "x": 843.5,
+     "y": 1420.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "lytton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.0,
+     "y": 1421.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "university avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1434.0,
+     "y": 1759.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "university avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 843.5,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lytton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    843.5,
+    1420.592105263158,
+    1434.0,
+    1759.0
+   ]
+  }
+ ],
+ "pct": 25
+}

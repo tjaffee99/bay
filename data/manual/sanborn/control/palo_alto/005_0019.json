@@ -1,0 +1,1267 @@
+{
+ "residential": true,
+ "commercial_blocks": [
+  "68",
+  "305"
+ ],
+ "notes": "sheet 19 (May 1908): Alma St -> Bryant St, Forest Av -> Channing Av (Palo Alto Planing Mill, Dudfield lumber yard); north = up.",
+ "blocks": [
+  {
+   "name": "66",
+   "streets": {
+    "N": "bryant street",
+    "S": "ramona street",
+    "W": "forest avenue",
+    "E": "homer avenue"
+   },
+   "px4_est": [
+    [
+     177.5,
+     115
+    ],
+    [
+     763.5,
+     115
+    ],
+    [
+     763.5,
+     450.5
+    ],
+    [
+     177.5,
+     450.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 178.0,
+     "y": 116.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.0,
+     "y": 113.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.0,
+     "y": 449.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 178.0,
+     "y": 451.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     178.0,
+     116.3
+    ],
+    [
+     763.0,
+     113.7
+    ],
+    [
+     763.0,
+     449.2
+    ],
+    [
+     178.0,
+     451.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 178.0,
+     "y": 116.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.0,
+     "y": 113.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.0,
+     "y": 449.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 178.0,
+     "y": 451.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    178.0,
+    113.68645590084427,
+    763.0,
+    451.81354409915576
+   ]
+  },
+  {
+   "name": "67",
+   "streets": {
+    "N": "bryant street",
+    "S": "ramona street",
+    "W": "homer avenue",
+    "E": "channing avenue"
+   },
+   "px4_est": [
+    [
+     851.5,
+     114.5
+    ],
+    [
+     1440.5,
+     114.5
+    ],
+    [
+     1440.5,
+     450
+    ],
+    [
+     851.5,
+     450
+    ]
+   ],
+   "corners": [
+    {
+     "x": 851.5,
+     "y": 114.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1438.3,
+     "y": 114.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1442.2,
+     "y": 450.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 851.5,
+     "y": 450.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     851.5,
+     114.0
+    ],
+    [
+     1438.3,
+     114.0
+    ],
+    [
+     1442.2,
+     450.0
+    ],
+    [
+     851.5,
+     450.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 851.5,
+     "y": 114.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1438.3,
+     "y": 114.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1442.2,
+     "y": 450.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 851.5,
+     "y": 450.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    851.5,
+    114.0,
+    1442.2236842105262,
+    450.0
+   ]
+  },
+  {
+   "name": "10",
+   "streets": {
+    "N": "ramona street",
+    "S": "emerson street",
+    "W": "forest avenue",
+    "E": "homer avenue"
+   },
+   "px4_est": [
+    [
+     178,
+     526
+    ],
+    [
+     764.5,
+     526
+    ],
+    [
+     764.5,
+     857.5
+    ],
+    [
+     178,
+     857.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 178.0,
+     "y": 527.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.6,
+     "y": 525.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 764.9,
+     "y": 857.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 178.0,
+     "y": 858.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     178.0,
+     527.8
+    ],
+    [
+     763.6,
+     525.2
+    ],
+    [
+     764.9,
+     857.1
+    ],
+    [
+     178.0,
+     858.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 178.0,
+     "y": 527.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 763.6,
+     "y": 525.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 764.9,
+     "y": 857.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 178.0,
+     "y": 858.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    178.0,
+    525.1882986339172,
+    764.9062721037066,
+    858.4078947368421
+   ]
+  },
+  {
+   "name": "9",
+   "streets": {
+    "N": "ramona street",
+    "S": "emerson street",
+    "W": "homer avenue",
+    "E": "channing avenue"
+   },
+   "px4_est": [
+    [
+     852.7,
+     524
+    ],
+    [
+     1441.5,
+     524
+    ],
+    [
+     1441.5,
+     856.5
+    ],
+    [
+     852.7,
+     856.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 852.2,
+     "y": 524.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1441.5,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1441.5,
+     "y": 856.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 852.2,
+     "y": 856.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     852.2,
+     524.0
+    ],
+    [
+     1441.5,
+     524.0
+    ],
+    [
+     1441.5,
+     856.0
+    ],
+    [
+     852.2,
+     856.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 852.2,
+     "y": 524.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1441.5,
+     "y": 524.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "ramona street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1441.5,
+     "y": 856.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 852.2,
+     "y": 856.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    852.2,
+    524.0,
+    1441.5,
+    856.0
+   ]
+  },
+  {
+   "name": "7",
+   "streets": {
+    "N": "emerson street",
+    "S": "high street",
+    "W": "forest avenue",
+    "E": "homer avenue"
+   },
+   "px4_est": [
+    [
+     180,
+     945.5
+    ],
+    [
+     770,
+     945.5
+    ],
+    [
+     770,
+     1278.5
+    ],
+    [
+     180,
+     1278.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 178.2,
+     "y": 946.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 766.3,
+     "y": 945.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.2,
+     "y": 1278.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 180.8,
+     "y": 1278.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     178.2,
+     946.4
+    ],
+    [
+     766.3,
+     945.1
+    ],
+    [
+     770.2,
+     1278.0
+    ],
+    [
+     180.8,
+     1278.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 178.2,
+     "y": 946.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 766.3,
+     "y": 945.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.2,
+     "y": 1278.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 180.8,
+     "y": 1278.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    178.19141716572494,
+    945.1004202069873,
+    770.2177572309151,
+    1278.0
+   ]
+  },
+  {
+   "name": "68",
+   "streets": {
+    "N": "emerson street",
+    "S": "high street",
+    "W": "homer avenue",
+    "E": "channing avenue"
+   },
+   "px4_est": [
+    [
+     854.5,
+     943.5
+    ],
+    [
+     1443.5,
+     943.5
+    ],
+    [
+     1443.5,
+     1274
+    ],
+    [
+     854.5,
+     1274
+    ]
+   ],
+   "corners": [
+    {
+     "x": 854.1,
+     "y": 944.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.4,
+     "y": 943.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1443.1,
+     "y": 1273.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 855.4,
+     "y": 1275.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     854.1,
+     944.4
+    ],
+    [
+     1444.4,
+     943.1
+    ],
+    [
+     1443.1,
+     1273.2
+    ],
+    [
+     855.4,
+     1275.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 854.1,
+     "y": 944.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.4,
+     "y": 943.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "emerson street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1443.1,
+     "y": 1273.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 855.4,
+     "y": 1275.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    854.095723377123,
+    943.0900734368241,
+    1444.4095267400398,
+    1275.8117008868905
+   ]
+  },
+  {
+   "name": "305",
+   "streets": {
+    "N": "high street",
+    "S": "alma street",
+    "W": "forest avenue",
+    "E": "homer avenue"
+   },
+   "px4_est": [
+    [
+     181.5,
+     1353.5
+    ],
+    [
+     770,
+     1353.5
+    ],
+    [
+     770,
+     1688.5
+    ],
+    [
+     181.5,
+     1688.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 180.2,
+     "y": 1353.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.0,
+     "y": 1352.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.0,
+     "y": 1688.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 182.8,
+     "y": 1688.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     180.2,
+     1353.4
+    ],
+    [
+     770.0,
+     1352.1
+    ],
+    [
+     770.0,
+     1688.0
+    ],
+    [
+     182.8,
+     1688.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 180.2,
+     "y": 1353.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "forest avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.0,
+     "y": 1352.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 770.0,
+     "y": 1688.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "homer avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 182.8,
+     "y": 1688.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "forest avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    180.18351011934237,
+    1352.092105263158,
+    770.0,
+    1688.0
+   ]
+  },
+  {
+   "name": "8",
+   "streets": {
+    "N": "high street",
+    "S": "alma street",
+    "W": "homer avenue",
+    "E": "channing avenue"
+   },
+   "px4_est": [
+    [
+     855.5,
+     1350
+    ],
+    [
+     1444,
+     1350
+    ],
+    [
+     1444,
+     1686
+    ],
+    [
+     855.5,
+     1686
+    ]
+   ],
+   "corners": [
+    {
+     "x": 855.1,
+     "y": 1351.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1443.6,
+     "y": 1349.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.9,
+     "y": 1684.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 856.4,
+     "y": 1686.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     855.1,
+     1351.8
+    ],
+    [
+     1443.6,
+     1349.2
+    ],
+    [
+     1444.9,
+     1684.2
+    ],
+    [
+     856.4,
+     1686.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 855.1,
+     "y": 1351.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "homer avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1443.6,
+     "y": 1349.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "channing avenue",
+      "high street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1444.9,
+     "y": 1684.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "channing avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 856.4,
+     "y": 1686.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "homer avenue",
+      "alma street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    855.0992229856556,
+    1349.1860487510735,
+    1444.9007682588745,
+    1686.811715452099
+   ]
+  }
+ ],
+ "pct": 25
+}

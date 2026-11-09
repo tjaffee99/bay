@@ -1,0 +1,792 @@
+{
+ "residential": true,
+ "notes": "sheet 12 (May 1908): Bryant St -> Cowper St, University Av -> Forest Av; north = up.",
+ "blocks": [
+  {
+   "name": "29",
+   "streets": {
+    "N": "cowper street",
+    "S": "waverley street",
+    "W": "university avenue",
+    "E": "hamilton avenue"
+   },
+   "px4_est": [
+    [
+     200,
+     174.5
+    ],
+    [
+     794.5,
+     174.5
+    ],
+    [
+     794.5,
+     920.5
+    ],
+    [
+     200,
+     920.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 209.5,
+     "y": 170.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "university avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 795.7,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hamilton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 791.8,
+     "y": 918.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 201.6,
+     "y": 912.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     209.5,
+     170.5
+    ],
+    [
+     795.7,
+     175.6
+    ],
+    [
+     791.8,
+     918.1
+    ],
+    [
+     201.6,
+     912.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 209.5,
+     "y": 170.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "university avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 795.7,
+     "y": 175.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hamilton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 791.8,
+     "y": 918.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 201.6,
+     "y": 912.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    201.63324170724036,
+    170.45243860635094,
+    795.7176395575797,
+    918.1075780177939
+   ]
+  },
+  {
+   "name": "28",
+   "streets": {
+    "N": "cowper street",
+    "S": "waverley street",
+    "W": "hamilton avenue",
+    "E": "forest avenue"
+   },
+   "px4_est": [
+    [
+     883.5,
+     177.5
+    ],
+    [
+     1470.5,
+     177.5
+    ],
+    [
+     1470.5,
+     922.5
+    ],
+    [
+     883.5,
+     922.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 884.2,
+     "y": 176.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1471.4,
+     "y": 180.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.1,
+     "y": 924.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 880.3,
+     "y": 918.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     884.2,
+     176.3
+    ],
+    [
+     1471.4,
+     180.2
+    ],
+    [
+     1470.1,
+     924.1
+    ],
+    [
+     880.3,
+     918.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 884.2,
+     "y": 176.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1471.4,
+     "y": 180.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "cowper street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1470.1,
+     "y": 924.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 880.3,
+     "y": 918.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    880.2957098688378,
+    176.28122573654798,
+    1471.403073548106,
+    924.1278959036845
+   ]
+  },
+  {
+   "name": "21",
+   "streets": {
+    "N": "waverley street",
+    "S": "bryant street",
+    "W": "university avenue",
+    "E": "hamilton avenue"
+   },
+   "px4_est": [
+    [
+     200.5,
+     1007
+    ],
+    [
+     791.5,
+     1007
+    ],
+    [
+     791.5,
+     1753
+    ],
+    [
+     200.5,
+     1753
+    ]
+   ],
+   "corners": [
+    {
+     "x": 200.8,
+     "y": 1001.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 791.3,
+     "y": 1007.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 788.7,
+     "y": 1754.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hamilton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 196.8,
+     "y": 1748.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "university avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     200.8,
+     1001.9
+    ],
+    [
+     791.3,
+     1007.1
+    ],
+    [
+     788.7,
+     1754.1
+    ],
+    [
+     196.8,
+     1748.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 200.8,
+     "y": 1001.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "university avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 791.3,
+     "y": 1007.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 788.7,
+     "y": 1754.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "hamilton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 196.8,
+     "y": 1748.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "university avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    196.79835196849984,
+    1001.87065478242,
+    791.3153311190337,
+    1754.1064681393277
+   ]
+  },
+  {
+   "name": "36",
+   "streets": {
+    "N": "waverley street",
+    "S": "gilman street",
+    "W": "hamilton avenue",
+    "E": "forest avenue"
+   },
+   "px4_est": [
+    [
+     879,
+     1010.5
+    ],
+    [
+     1469.5,
+     1010.5
+    ],
+    [
+     1469.5,
+     1347.5
+    ],
+    [
+     879,
+     1347.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 879.0,
+     "y": 1007.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.5,
+     "y": 1013.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.5,
+     "y": 1349.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 879.0,
+     "y": 1343.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     879.0,
+     1007.9
+    ],
+    [
+     1469.5,
+     1013.1
+    ],
+    [
+     1469.5,
+     1349.1
+    ],
+    [
+     879.0,
+     1343.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 879.0,
+     "y": 1007.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.5,
+     "y": 1013.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "waverley street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.5,
+     "y": 1349.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 879.0,
+     "y": 1343.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    879.0,
+    1007.8684210526316,
+    1469.5,
+    1349.1315789473683
+   ]
+  },
+  {
+   "name": "22",
+   "streets": {
+    "N": "gilman street",
+    "S": "bryant street",
+    "W": "hamilton avenue",
+    "E": "forest avenue"
+   },
+   "px4_est": [
+    [
+     877.5,
+     1423.5
+    ],
+    [
+     1469.5,
+     1423.5
+    ],
+    [
+     1469.5,
+     1758
+    ],
+    [
+     877.5,
+     1758
+    ]
+   ],
+   "corners": [
+    {
+     "x": 878.0,
+     "y": 1419.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.0,
+     "y": 1425.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 878.0,
+     "y": 1755.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     878.0,
+     1419.9
+    ],
+    [
+     1469.0,
+     1425.1
+    ],
+    [
+     1469.0,
+     1759.2
+    ],
+    [
+     878.0,
+     1755.3
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.99,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 878.0,
+     "y": 1419.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "hamilton avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.0,
+     "y": 1425.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "forest avenue",
+      "gilman street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1469.0,
+     "y": 1759.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "forest avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 878.0,
+     "y": 1755.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "hamilton avenue",
+      "bryant street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    878.0,
+    1419.87286628734,
+    1469.0,
+    1759.220350284495
+   ]
+  }
+ ],
+ "pct": 25
+}
