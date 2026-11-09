@@ -436,6 +436,8 @@ def apply_chamfer(key, max_rms=1.5, max_max=3.0):
         img = E.image(key)
         A = np.array(ch["M"])
         rms = max(ch["rms_m"], 1.0)
+        if ch.get("inlier_share") is not None and ch["inlier_share"] < 0.45:
+            rms = 3.5  # a weak match (< 45 % of today's property lines on drawn lines): low confidence
         blocks = []
         for bl in cfg["blocks"]:
             q = np.asarray(bl["px4"], float)

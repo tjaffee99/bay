@@ -733,6 +733,7 @@ CELL_SHARE, CELL_HEAVY = 0.35, 0.20       # cells of big blocks
 MIN_COV = 0.3                             # a block is read when this share of it lies on the sheet(s)
 SQ_FRONT_M = 15.0                         # frontage credited to one house square
 HOLE_HA = 0.6                             # fill holes in the extent smaller than this
+PARTIAL_SHARE = 0.12                      # partly built blocks (separate files)
 MIN_HA = 2.0                              # drop isolated built specks smaller than this (a farm group, one cell)
 
 
@@ -775,14 +776,21 @@ def snapshot_stats(town, year):
     if style == "tint":
         built |= (tot["cov"] >= MIN_COV) & (tot.tint_share >= TINT_SHARE)
     tot["built"] = built
+    # partly built: at least ~3-4 houses drawn on the block (or a short built frontage), not built up
+    tot["partial"] = (tot["cov"] >= MIN_COV) & ~built & (tot.share >= PARTIAL_SHARE)
     tot.attrs["t_band"] = t_band
     return bl, tot
 
 
-def extent_polys(bl, tot, clip):
+def extent_polys(bl, tot, clip, col="built", exclude=None):
     import shapely
     g = bl.set_index("bid").geometry
-    u = shapely.union_all(list(g[tot.built.values].values)).buffer(12, join_style="mitre").buffer(-12, join_style="mitre")
+    sel = list(g[tot[col].values].values)
+    if not sel:
+        return shapely.MultiPolygon()
+    u = shapely.union_all(sel).buffer(12, join_style="mitre").buffer(-12, join_style="mitre")
+    if exclude is not None:
+        u = u.difference(exclude)
     parts = []
     for p in shapely.get_parts(u):
         def small(h):
@@ -870,6 +878,15 @@ def build(town, years=None, meta=None):
                             "geometry": mapping(shapely.set_precision(to_ll(u), 1e-7))}]}
         p = OUT / f"{town}_{year}.geojson"
         p.write_text(json.dumps(fc, separators=(",", ":")))
+        # partly built blocks (not part of the built-up extent)
+        up = extent_polys(bl, tot, clip, "partial", exclude=u)
+        pp = dict(props, kind="partly_built", area_km2=round(up.area / 1e6, 3), n_blocks=int(tot.partial.sum()),
+                  method=f"blocks with built frontage share >= {PARTIAL_SHARE} (about 3-4 houses drawn on a block) "
+                         f"but below the built-up threshold; not in {town}_{year}.geojson")
+        fcp = {"type": "FeatureCollection",
+               "features": [{"type": "Feature", "properties": pp,
+                             "geometry": mapping(shapely.set_precision(to_ll(up), 1e-7))}]}
+        (OUT / f"{town}_{year}_partial.geojson").write_text(json.dumps(fcp, separators=(",", ":")))
         # per-block table (interim, for checks)
         t = tot.copy()
         t.to_parquet(INT / f"class_{town}_{year}.parquet")
@@ -893,10 +910,10 @@ PROBES = {"oakland": {"lakeside_uptown": (1905, (-122.2705, 37.8030, -122.2590, 
                       "temescal": (1910, (-122.2660, 37.8300, -122.2560, 37.8380))}}
 
 
-def load_extent(town, year):
+def load_extent(town, year, suffix=""):
     import shapely
     from shapely.geometry import shape
-    p = OUT / f"{town}_{year}.geojson"
+    p = OUT / f"{town}_{year}{suffix}.geojson"
     fc = json.loads(p.read_text())
     return to_utm(shapely.union_all([shape(f["geometry"]) for f in fc["features"]]))
 
@@ -964,6 +981,11 @@ def check(town):
         r = {"year": year, "area_km2": round(ext.area / 1e6, 2), "coverage_km2": round(cov.area / 1e6, 2)}
         inc = shapely.contains(cov, P)
         ine = shapely.contains(ext.buffer(20), P)
+        part = load_extent(town, year, "_partial")
+        r["partial_km2"] = round(part.area / 1e6, 2)
+        inp = shapely.contains(part.buffer(20), P) | ine
+        mm = inc & (pts.start_year.values > 1800) & (pts.start_year.values < year - 1)
+        r["survivors_pre_inside_built_or_partial_pct"] = round(100 * float((mm & inp).sum()) / max(1, mm.sum()), 1)
         for lab, lo, hi in (("pre", 1800, year - 1), ("decade_before", year - 10, year - 1)):
             m = inc & (pts.start_year.values >= lo) & (pts.start_year.values < hi)
             r[f"survivors_{lab}"] = int(m.sum())

@@ -1,0 +1,78 @@
+{
+ "residential": true,
+ "notes": "the east ends of the 37th - 34th St blocks (west of Webster St) and the blocks south of Mosswood Park (Webster St - Broadway, drawn by hand); Mosswood Park itself (not cut) not traced; placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   571,
+   1833,
+   "Webster",
+   "34th"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.20039128305802145,
+    -0.04089971492088809,
+    564925.3972021603
+   ],
+   [
+    -0.04089971492088809,
+    -0.20039128305802145,
+    4186705.235857229
+   ]
+  ],
+  "dist_px": 4.41,
+  "inlier_share": 0.38,
+  "rms_m": 0.54,
+  "n_points": 2960
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "1120-1127e",
+   "px4": [
+    [
+     10,
+     560
+    ],
+    [
+     548,
+     560
+    ],
+    [
+     548,
+     1821
+    ],
+    [
+     10,
+     1821
+    ]
+   ],
+   "corners": []
+  },
+  {
+   "name": "1124-1126",
+   "px4": [
+    [
+     583,
+     1179
+    ],
+    [
+     1333,
+     1190
+    ],
+    [
+     1214,
+     1810
+    ],
+    [
+     583,
+     1810
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

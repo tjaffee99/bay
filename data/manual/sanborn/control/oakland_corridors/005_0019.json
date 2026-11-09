@@ -1,0 +1,56 @@
+{
+ "residential": true,
+ "notes": "37th St - 34th St, Telegraph Ave - the sheet edge (Webster St on sheet 20): Edwards St and 36th St (Sherman Ave) are gone or moved (I-580, West MacArthur Blvd), so the zone is drawn by hand and the sheet placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   1071,
+   1833,
+   "Andover",
+   "34th"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.19493090479551903,
+    -0.04037819813485952,
+    564630.1379203883
+   ],
+   [
+    -0.04037819813485952,
+    -0.19493090479551903,
+    4186725.800136842
+   ]
+  ],
+  "dist_px": 3.61,
+  "inlier_share": 0.6,
+  "rms_m": 0.54,
+  "n_points": 3311
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "1120-1129",
+   "px4": [
+    [
+     155,
+     560
+    ],
+    [
+     1643,
+     560
+    ],
+    [
+     1643,
+     1821
+    ],
+    [
+     155,
+     1821
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}
