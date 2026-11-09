@@ -260,6 +260,40 @@ def park_name_periods():
     return sf, region
 
 
+def region_green_dates():
+    """Researched opening / closing years of golf courses, cemeteries, parks, zoos outside San
+    Francisco (data/tables/region_green_dates.csv: `name` = the Overture / OSM name of the
+    feature, lon / lat = a point inside it because names repeat between cities).
+    Returns [(name, lon, lat, class, year_open, year_close)]; year_open 9999 = planned, not built."""
+    p = TABLES / "region_green_dates.csv"
+    if not p.exists():
+        return []
+    t = pd.read_csv(p)
+    y0 = pd.to_numeric(t.year_open, errors="coerce")
+    y1 = pd.to_numeric(t.year_close, errors="coerce").fillna(9999.0)
+    return [(str(n).strip(), float(x), float(y), str(c), float(a), float(b))
+            for n, x, y, c, a, b in zip(t.name, t.lon, t.lat, t["class"], y0, y1) if np.isfinite(a)]
+
+
+def green_lookup(rows, names, lons, lats):
+    """(year_open, year_close) arrays for features matched to region_green_dates.csv rows by
+    name and position (within ~2 km of the row's point); NaN / 9999 where unmatched."""
+    by_name = {}
+    for r in rows:
+        by_name.setdefault(r[0], []).append(r)
+    y0 = np.full(len(names), np.nan)
+    y1 = np.full(len(names), 9999.0)
+    for i, (n, x, y) in enumerate(zip(names, lons, lats)):
+        best, bd = None, 0.025
+        for r in by_name.get(str(n).strip(), ()):
+            d = max(abs(r[1] - x), abs(r[2] - y))
+            if d < bd:
+                best, bd = r, d
+        if best is not None:
+            y0[i], y1[i] = best[4], best[5]
+    return y0, y1
+
+
 def village_labels():
     """Names of the contact-era Native villages (data/manual/ohlone/villages.csv,
     early_region.csv, early_sf.csv tule rows; mission neophyte huts and sweat houses are not
@@ -327,9 +361,10 @@ def _outlines(fu, ground, kind_of, years_of, z_extra=0.0):
 def region_detail(golf_y):
     """The five counties' golf courses, pitches, tracks, playgrounds, gardens and lawns
     (OSM outlines via Overture region5_land_use) -> region-ground-detail.bin.gz, loaded by
-    the viewer when zoomed in. Dated like SF's: golf features by their course (golf_courses.csv,
-    else the course's neighbourhood: early tenth of the buildings within 500 m, not before
-    1895), the rest by when the neighbourhood was built (2nd earliest building within 60 m,
+    the viewer when zoomed in. Dated like SF's: golf features by their course (golf_courses.csv
+    and region_green_dates.csv — researched opening year, and closing year for courses that
+    shut but are still mapped — else the course's neighbourhood: early tenth of the buildings
+    within 500 m, not before 1895), the rest by when the neighbourhood was built (2nd earliest building within 60 m,
     incl. vanished ones: region_building_points.parquet), else 1950. Also labels for the named
     parks of 1 ha or more."""
     from extent import in_extent
@@ -367,23 +402,30 @@ def region_detail(golf_y):
     cu = courses.to_crs(UTM)
     cc = cu.geometry.representative_point()
     cy = courses["name"].map(golf_y).astype(float).values
+    green = region_green_dates()
+    ccl = cc.to_crs(4326)
+    gy0, gy1 = green_lookup([r for r in green if r[3] == "golf_course"], courses["name"].values, ccl.x.values, ccl.y.values)
+    cy = np.where(np.isfinite(gy0), gy0, cy)
     est = nth_year(np.column_stack([cc.x.values, cc.y.values]), 200, 500.0, q=10)
     courses["year"] = np.where(np.isfinite(cy), cy, np.maximum(np.nan_to_num(est, nan=1960.0), 1895.0))
+    courses["end"] = gy1
     fu = feats.to_crs(UTM)
     rp = fu.geometry.representative_point()
     year = nth_year(np.column_stack([rp.x.values, rp.y.values]), 4, 60.0)
-    j = gpd.sjoin(gpd.GeoDataFrame(geometry=rp.values, crs=UTM), cu[["geometry"]].assign(cyear=courses.year.values),
+    j = gpd.sjoin(gpd.GeoDataFrame(geometry=rp.values, crs=UTM),
+                  cu[["geometry"]].assign(cyear=courses.year.values, cend=courses.end.values),
                   predicate="within", how="left")
     j = j[~j.index.duplicated()]
     golf = feats["class"].isin(GOLF | {"water_hazard", "lateral_water_hazard"}).values & j.cyear.notna().values
     year = np.where(golf, j.cyear.values, year)
     year = np.where(np.isnan(year), 1950.0, year)
+    end = np.where(golf, j.cend.fillna(9999.0).values, 9999.0)   # closed courses still mapped
     kinds_ = feats["class"].map(KINDS).values
     area = fu.geometry.area.values
     starts, pos, kinds, years = _outlines(
         fu, Ground(),
         lambda i: KINDS["playground"] if (kinds_[i] == KINDS["track"] and area[i] > 8000) else int(kinds_[i]),
-        lambda i: (float(year[i]), 9999.0))
+        lambda i: (float(year[i]), float(end[i])))
     write_columnar(VIEWER_DATA / "region-ground-detail.bin.gz", {
         "start_indices|shuffle": np.asarray(starts, np.uint32),
         "positions|shuffle": np.concatenate(pos).astype(np.float32),
@@ -392,7 +434,8 @@ def region_detail(golf_y):
     }, origin=ORIGIN, counts={"polygons": len(kinds), "vertices": starts[-1]})
     log(f"ground detail: region {len(kinds)} outlines ({np.bincount(kinds, minlength=15).tolist()}), "
         f"{len(courses)} golf courses ({int(np.isfinite(cy).sum())} with a researched year)")
-    # labels: named parks of 1 ha or more, from when their neighbourhood was built
+    # labels: named parks of 1 ha or more, from their researched opening year
+    # (region_green_dates.csv), else from when their neighbourhood was built
     pk = lu[(lu["class"].isin(["park", "golf_course", "recreation_ground"])) & lu["name"].notna()]
     pk = pk[pk["name"].astype(str).str.len().between(3, 40)]
     pku = pk.to_crs(UTM)
@@ -403,12 +446,15 @@ def region_detail(golf_y):
     py = nth_year(np.column_stack([pr.x.values, pr.y.values]), 4, 150.0)
     gyear = pk["name"].map(dict(zip(courses["name"], courses["year"]))).astype(float).values
     py = np.where(np.isfinite(gyear), gyear, py)
+    prl0 = pr.to_crs(4326)
+    ty0, ty1 = green_lookup(green, pk["name"].astype(str).values, prl0.x.values, prl0.y.values)
+    py = np.where(np.isfinite(ty0), ty0, py)
     # researched name histories (park_names.csv rows with lon / lat) replace the
     # neighbourhood date: their periods start when the park opened under that name
     _, hist = park_name_periods()
     out, seen, n_hist = [], set(), 0
     prl = pr.to_crs(4326)
-    for nm, c, y, h in zip(pk["name"].astype(str), prl.values, py, ha):
+    for nm, c, y, h, y1 in zip(pk["name"].astype(str), prl.values, py, ha, ty1):
         key = (nm, round(c.x, 2), round(c.y, 2))
         if key in seen:
             continue
@@ -425,7 +471,12 @@ def region_detail(golf_y):
         if not np.isfinite(y):   # no neighbourhood to date it by: no label
             continue
         seen.add(key)
-        out.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y), "ha": round(float(h), 2)})
+        if y >= 9999:            # planned, not built
+            continue
+        lab = {"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y), "ha": round(float(h), 2)}
+        if y1 < 9999:
+            lab["end"] = float(y1)
+        out.append(lab)
     log(f"ground detail: {len(out)} region park labels ({n_hist} parks with a researched name history)")
     return out
 

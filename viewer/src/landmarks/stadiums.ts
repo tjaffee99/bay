@@ -353,7 +353,7 @@ const candlestick1971: Landmark = {
   replaces: [rect(0, 0, 260, 230)],
   facts: {
     Enclosed: '1971 (outfield stands added for the 49ers)',
-    Capacity: '≈ 63,000 baseball / 69,732 football',
+    Capacity: '58,000–62,000 baseball (1972–99) / 61,000–70,000 football (69,732 in 2000–14)',
     Names: 'Candlestick Park 1960–95 · 3Com Park 1995–2002 · San Francisco Stadium at Candlestick Point 2002–04 · Monster Park 2004–08 · Candlestick Park again 2008–14',
     'Last event': 'Aug 14, 2014',
     Demolished: 'Feb – Sep 2015',

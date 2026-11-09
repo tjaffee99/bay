@@ -802,7 +802,9 @@ function oregon(): Landmark {
     'Oregon Building (PPIE 1915)',
     'building',
     [1914.3, 1914.84],
-    PPIE_END,
+    // kept after the Exposition (it stood on Presidio ground): the Army used it as a clubhouse (NPS);
+    // torn down about 1921 according to one account — LOW CONFIDENCE end year
+    1921.0,
     ppieLL(G.c[0], G.c[1]),
     b => {
       b.frame(0, 0, 0, PPIE_BRG, () => {
@@ -837,10 +839,10 @@ function oregon(): Landmark {
     {
       Built: 'a "Parthenon with the bark on" (Foulkes & Hogue), dedicated Halloween 1914',
       Colonnade: '48 Douglas-fir logs (one per state), 5 to 6½ ft through and 42 ft high, about 20 tons each; 150 × 250 ft over all (Todd 1921, vol. 3); 60 ft on the Sanborn map',
-      Fate: 'given to the Presidio as an enlisted men\'s club after the Exposition',
+      Fate: 'not demolished with the Exposition in 1916: it stood on Presidio ground and the Army kept it as a military clubhouse (NPS); torn down about 1921 (one account — end year LOW CONFIDENCE)',
       Model: 'platform outline from the Sanborn map; column spacing (18 × 8) estimated'
     },
-    [SANBORN, TODD3]
+    [SANBORN, TODD3, 'https://www.nps.gov/goga/learn/historyculture/ppie-legacy.htm']
   );
 }
 
