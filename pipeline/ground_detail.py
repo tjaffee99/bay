@@ -152,15 +152,24 @@ def main():
     }, origin=ORIGIN, counts={"polygons": len(kinds), "vertices": starts[-1]})
     log(f"ground detail: {len(kinds)} outlines ({np.bincount(kinds, minlength=15).tolist()})")
 
-    # labels for every city park (and the golf courses' parks), dated where known
+    # labels for every city park (and the golf courses' parks), dated where known; a park
+    # that was renamed gets one label per name period (data/tables/park_names.csv), never
+    # before the park itself (parks.csv start_year)
     labels = []
+    sf_names, _ = park_name_periods()
     pu2 = parks.to_crs(UTM)
     for (_, r), area in zip(parks.iterrows(), pu2.geometry.area.values):
         if not np.isfinite(r.year):
             continue
         c = r.geometry.representative_point()
-        labels.append({"name": r["name"], "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(r.year),
-                       "ha": round(float(area) / 1e4, 2)})
+        for nm, y0, y1 in sf_names.get(r["name"], [(r["name"], -np.inf, 9999.0)]):
+            s = max(float(r.year), y0)
+            if s >= y1:
+                continue
+            lab = {"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": s, "ha": round(float(area) / 1e4, 2)}
+            if y1 < 9999:
+                lab["end"] = y1
+            labels.append(lab)
     n_parks = len(labels)
     # names of military / industrial sites and vanished large sites, over the years they
     # stood (label_start / label_end where the ground outlives the use)
@@ -192,7 +201,34 @@ def main():
     labels += village_labels()
     labels += region_detail(golf_y)
     (VIEWER_DATA / "park-labels.json").write_text(json.dumps(labels))
-    log(f"ground detail: {n_parks} dated SF park labels ({len(parks)} parks), {len(labels) - n_parks} site / region park labels")
+    log(f"ground detail: {n_parks} dated SF park labels ({len(parks)} parks, "
+        f"{len(sf_names)} with a name history), {len(labels) - n_parks} site / region park labels")
+
+
+def park_name_periods():
+    """Name histories (data/tables/park_names.csv): one row per name a park went by.
+    `park` is the park's key — the RPD / parks.csv name in San Francisco, the OSM / Overture
+    name in the region (rows with lon / lat, matched within ~1 km); `name` is the label for
+    [from_year, to_year). A park listed here is labelled only for its listed periods (a gap
+    = no known name, no label). Returns ({sf park: [(name, y0, y1)]}, [region rows])."""
+    p = TABLES / "park_names.csv"
+    if not p.exists():
+        return {}, []
+    t = pd.read_csv(p)
+    t["from_year"] = pd.to_numeric(t.from_year, errors="coerce")
+    t["to_year"] = pd.to_numeric(t.to_year, errors="coerce").fillna(9999.0)
+    t = t[t.from_year.notna() & t.name.notna()]
+    lon = pd.to_numeric(t.get("lon"), errors="coerce")
+    lat = pd.to_numeric(t.get("lat"), errors="coerce")
+    sf, region = {}, []
+    for r, x, y in zip(t.itertuples(), lon, lat):
+        if np.isfinite(x) and np.isfinite(y):
+            region.append((str(r.park).strip(), float(x), float(y), str(r.name), float(r.from_year), float(r.to_year)))
+        else:
+            sf.setdefault(str(r.park).strip(), []).append((str(r.name), float(r.from_year), float(r.to_year)))
+    for v in sf.values():
+        v.sort(key=lambda a: a[1])
+    return sf, region
 
 
 def village_labels():
@@ -337,15 +373,30 @@ def region_detail(golf_y):
     py = nth_year(np.column_stack([pr.x.values, pr.y.values]), 4, 150.0)
     gyear = pk["name"].map(dict(zip(courses["name"], courses["year"]))).astype(float).values
     py = np.where(np.isfinite(gyear), gyear, py)
-    out, seen = [], set()
+    # researched name histories (park_names.csv rows with lon / lat) replace the
+    # neighbourhood date: their periods start when the park opened under that name
+    _, hist = park_name_periods()
+    out, seen, n_hist = [], set(), 0
     prl = pr.to_crs(4326)
     for nm, c, y, h in zip(pk["name"].astype(str), prl.values, py, ha):
         key = (nm, round(c.x, 2), round(c.y, 2))
-        if key in seen or not np.isfinite(y):   # no neighbourhood to date it by: no label
+        if key in seen:
+            continue
+        rows = [r for r in hist if r[0] == nm.strip() and abs(r[1] - c.x) < 0.012 and abs(r[2] - c.y) < 0.01]
+        if rows:
+            seen.add(key)
+            n_hist += 1
+            for _, _, _, label, y0, y1 in sorted(rows, key=lambda a: a[4]):
+                lab = {"name": label, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": y0, "ha": round(float(h), 2)}
+                if y1 < 9999:
+                    lab["end"] = y1
+                out.append(lab)
+            continue
+        if not np.isfinite(y):   # no neighbourhood to date it by: no label
             continue
         seen.add(key)
         out.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y), "ha": round(float(h), 2)})
-    log(f"ground detail: {len(out)} region park labels")
+    log(f"ground detail: {len(out)} region park labels ({n_hist} parks with a researched name history)")
     return out
 
 
