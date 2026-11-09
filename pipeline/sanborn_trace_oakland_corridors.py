@@ -499,7 +499,7 @@ def zones(key, s):
         A, info = chamfer(key, M, shift=20, rot_span=1.0, out="info")
     else:  # the crossings read by eye are the control (the chamfer match fails where most property lines changed)
         rms = float(np.sqrt((d ** 2).mean()))
-        info = {"M": np.asarray(M).tolist(), "dist_px": None, "inlier_share": None, "rms_m": round(max(rms, 1.5), 2),
+        info = {"M": np.asarray(M).tolist(), "dist_px": None, "inlier_share": None, "rms_m": round(max(rms, 1.5 if len(px) >= 3 else 2.5), 2),
                 "n_points": 0, "from": f"{len(px)} street crossings read by eye, RMS {rms:.2f} m"}
     cfg = {k: v for k, v in s.items() if k not in ("xings", "zones", "scale", "match_shift", "match_rot", "rot", "match")}
     cfg.update(mode="chamfer_only", predicted_from=[x[:4] for x in xs], chamfer=info, pct=25,

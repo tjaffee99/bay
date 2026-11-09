@@ -1,0 +1,63 @@
+{
+ "residential": true,
+ "notes": "Broadway - Richmond Ave, Croxton Ave - Orchard St: the I-580 cut across Piedmont, Randwick and Richmond Ave; one zone drawn by hand over the sheet's blocks, placed by two street crossings (Piedmont Ave x Randwick Ave, Richmond Blvd x Randwick Ave; the chamfer match fails here: 14 % inliers)",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   512,
+   393,
+   "Piedmont Avenue",
+   "Randwick"
+  ],
+  [
+   1143,
+   679,
+   "Richmond Boulevard",
+   "Randwick"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.1755601991991941,
+    -0.0981715521576951,
+    565054.6028844885
+   ],
+   [
+    -0.0981715521576951,
+    -0.1755601991991941,
+    4186352.5006770105
+   ]
+  ],
+  "dist_px": null,
+  "inlier_share": null,
+  "rms_m": 2.5,
+  "n_points": 0,
+  "from": "2 street crossings read by eye, RMS 0.80 m"
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "961-966",
+   "px4": [
+    [
+     150,
+     40
+    ],
+    [
+     1550,
+     40
+    ],
+    [
+     1550,
+     1840
+    ],
+    [
+     150,
+     1840
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

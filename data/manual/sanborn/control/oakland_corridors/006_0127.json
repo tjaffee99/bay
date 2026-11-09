@@ -1,0 +1,70 @@
+{
+ "residential": true,
+ "notes": "Walsworth Ave - Vernon St, Perry St - Moss Ave (MacArthur Blvd): the I-580 cut along Santa Clara Ave / Moss Ave; one zone drawn by hand, placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   524,
+   543,
+   "Perry Place",
+   "Oakland Avenue"
+  ],
+  [
+   940,
+   543,
+   "Santa Clara Avenue",
+   "Oakland Avenue"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.14788953389742152,
+    0.13551924921483097,
+    565490.4139039313
+   ],
+   [
+    0.13551924921483097,
+    -0.14788953389742152,
+    4185959.021691763
+   ]
+  ],
+  "dist_px": 2.95,
+  "inlier_share": 0.69,
+  "rms_m": 0.42,
+  "n_points": 3268
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "1006-1036",
+   "px4": [
+    [
+     230,
+     30
+    ],
+    [
+     1600,
+     30
+    ],
+    [
+     1600,
+     1830
+    ],
+    [
+     480,
+     1830
+    ],
+    [
+     480,
+     560
+    ],
+    [
+     230,
+     560
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

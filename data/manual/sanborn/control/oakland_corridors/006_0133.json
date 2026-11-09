@@ -1,0 +1,68 @@
+{
+ "residential": true,
+ "notes": "Walsworth Ave - Vernon St, Perry St - Perkins St: the I-580 cut near Orange / Vernon St; one zone drawn by hand over the sheet's blocks, placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   679,
+   833,
+   "Oakland Avenue",
+   "Pearl"
+  ],
+  [
+   1119,
+   833,
+   "Orange",
+   "Pearl"
+  ],
+  [
+   655,
+   1821,
+   "Oakland Avenue",
+   "Perkins"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.13674618802543942,
+    -0.14706578968950995,
+    565552.9301775787
+   ],
+   [
+    -0.14706578968950995,
+    -0.13674618802543942,
+    4186053.428411678
+   ]
+  ],
+  "dist_px": 2.5,
+  "inlier_share": 0.79,
+  "rms_m": 0.44,
+  "n_points": 4453
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "960-987",
+   "px4": [
+    [
+     260,
+     30
+    ],
+    [
+     1610,
+     30
+    ],
+    [
+     1610,
+     1830
+    ],
+    [
+     260,
+     1830
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}

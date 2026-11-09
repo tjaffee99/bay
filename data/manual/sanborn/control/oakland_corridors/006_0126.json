@@ -1,0 +1,62 @@
+{
+ "residential": true,
+ "notes": "Richmond Ave - Walsworth Ave, Moss Ave - Pearl St: the I-580 cut (Kempton / Fairmount Ave, Santa Clara Ave, Stanley Pl); one zone drawn by hand over the sheet's blocks, placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   798,
+   690,
+   "Fairmount",
+   "Santa Clara Avenue"
+  ],
+  [
+   1155,
+   1226,
+   "Fairmount",
+   "Stanley Place"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.1480544308586185,
+    -0.13617509570350955,
+    565506.198742906
+   ],
+   [
+    -0.13617509570350955,
+    -0.1480544308586185,
+    4186408.585275119
+   ]
+  ],
+  "dist_px": 2.5,
+  "inlier_share": 0.76,
+  "rms_m": 0.4,
+  "n_points": 3555
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "982-1033",
+   "px4": [
+    [
+     60,
+     110
+    ],
+    [
+     1620,
+     110
+    ],
+    [
+     1620,
+     1830
+    ],
+    [
+     60,
+     1830
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}
