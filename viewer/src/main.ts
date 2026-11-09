@@ -16,7 +16,7 @@ import {addStationLabels, dropLabels, labelLayers, labelZoomKey, loadParkLabels,
 import {extentBounds, extentDistance, extentReady} from './layers/extent';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
 import {loadRegionIndex, regionBuildingLayers, setRegionLandmarks} from './layers/region-buildings';
-import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail} from './layers/ground-detail';
+import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail, setGroundDetailRedraw} from './layers/ground-detail';
 import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
@@ -410,6 +410,7 @@ async function boot() {
     render();
   });
   loadAirports().then(render);
+  setGroundDetailRedraw(render);
   const groundP = loadGroundDetail()
     .then(render)
     .catch(e => console.warn('ground detail', e));

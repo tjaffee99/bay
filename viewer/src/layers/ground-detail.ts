@@ -28,62 +28,95 @@ const COLORS: [number, number, number][] = [
   [150, 188, 204] // 14 water (ponds of vanished / landscaped sites)
 ];
 
-let data: any = null;
-let origin: [number, number] = [0, 0];
-let colors: Uint8Array | null = null;
-let years: Float32Array | null = null;
+type GD = {data: any; origin: [number, number]; colors: Uint8Array; years: Float32Array};
+let sf: GD | null = null;
+// the five counties (pipeline/ground_detail.py -> region-ground-detail.bin.gz, ~10x SF's):
+// loaded the first time the view comes close enough to draw it
+let region: GD | null = null;
+let regionState: 'idle' | 'loading' | 'done' = 'idle';
+let redraw: (() => void) | null = null;
 const fade = new TimeExtension({mode: 'fade'});
 
-export async function loadGroundDetail() {
-  const f = await loadColumnar('data/ground-detail.bin.gz');
+/** Called once the lazily loaded region detail arrives (main.ts passes its render). */
+export function setGroundDetailRedraw(fn: () => void) {
+  redraw = fn;
+}
+
+async function loadSet(url: string): Promise<GD> {
+  const f = await loadColumnar(url);
   const c = f.columns;
   const n = f.header.counts.polygons;
-  origin = f.header.origin;
   const kind = c.kind as Uint8Array;
-  years = c.years as Float32Array;
-  colors = new Uint8Array(n * 4);
+  const colors = new Uint8Array(n * 4);
   for (let i = 0; i < n; i++) {
     const base = COLORS[kind[i]] ?? COLORS[12];
     const v = ((i * 2654435761) >>> 0) % 13 - 6; // slight variation, like real turf
     colors.set([base[0] + v, base[1] + v, base[2] + v, 255], i * 4);
   }
-  data = {length: n, startIndices: c.start_indices, attributes: {getPolygon: {value: c.positions, size: 3}}};
+  return {
+    origin: f.header.origin,
+    colors,
+    years: c.years as Float32Array,
+    data: {length: n, startIndices: c.start_indices, attributes: {getPolygon: {value: c.positions, size: 3}}}
+  };
+}
+
+export async function loadGroundDetail() {
+  sf = await loadSet('data/ground-detail.bin.gz');
+}
+
+function gdLayer(id: string, d: GD, year: number): Layer {
+  const col = d.colors;
+  const yrs = d.years;
+  return new SolidPolygonLayer({
+    id,
+    data: d.data,
+    positionFormat: 'XYZ',
+    _normalize: false,
+    coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+    coordinateOrigin: [d.origin[0], d.origin[1], 0],
+    extruded: false,
+    getFillColor: (_: any, {index, target}: any) => {
+      target[0] = col[index * 4];
+      target[1] = col[index * 4 + 1];
+      target[2] = col[index * 4 + 2];
+      target[3] = 255;
+      return target;
+    },
+    extensions: [fade],
+    getYears: (_: any, {index, target}: any) => {
+      target[0] = yrs[index * 2];
+      target[1] = yrs[index * 2 + 1];
+      return target;
+    },
+    currentYear: year,
+    growYears: 1.5,
+    shrinkYears: 0.5,
+    pickable: false,
+    shadowEnabled: false,
+    parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
+  } as any) as any;
 }
 
 export function groundDetailLayers(year: number, zoom: number): Layer[] {
-  if (!data || zoom < 13) return [];
-  const col = colors!;
-  const yrs = years!;
-  return [
-    new SolidPolygonLayer({
-      id: 'ground-detail',
-      data,
-      positionFormat: 'XYZ',
-      _normalize: false,
-      coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
-      coordinateOrigin: [origin[0], origin[1], 0],
-      extruded: false,
-      getFillColor: (_: any, {index, target}: any) => {
-        target[0] = col[index * 4];
-        target[1] = col[index * 4 + 1];
-        target[2] = col[index * 4 + 2];
-        target[3] = 255;
-        return target;
-      },
-      extensions: [fade],
-      getYears: (_: any, {index, target}: any) => {
-        target[0] = yrs[index * 2];
-        target[1] = yrs[index * 2 + 1];
-        return target;
-      },
-      currentYear: year,
-      growYears: 1.5,
-      shrinkYears: 0.5,
-      pickable: false,
-      shadowEnabled: false,
-      parameters: {depthBias: -2, depthBiasSlopeScale: -1} as any
-    } as any) as any
-  ];
+  if (zoom >= 12.5 && regionState === 'idle') {
+    regionState = 'loading';
+    loadSet('data/region-ground-detail.bin.gz')
+      .then(d => {
+        region = d;
+        regionState = 'done';
+        redraw?.();
+      })
+      .catch(e => {
+        regionState = 'done';
+        console.warn('region ground detail', e);
+      });
+  }
+  if (zoom < 13) return [];
+  const out: Layer[] = [];
+  if (sf) out.push(gdLayer('ground-detail', sf, year));
+  if (region) out.push(gdLayer('ground-detail-region', region, year));
+  return out;
 }
 
 // ------------------------------------------------------------------ airports

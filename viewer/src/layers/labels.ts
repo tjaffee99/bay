@@ -66,12 +66,16 @@ export async function loadParkLabels() {
     const res = await fetch('data/park-labels.json');
     if (!res.ok) return;
     const rows = (await res.json()) as {name: string; lon: number; lat: number; start: number; end?: number; ha: number; tier?: string}[];
-    const have = new Set(places.map(p => p.name));
+    // the same name is skipped only near an existing label (many towns have a "Central Park")
+    const byName = new Map<string, {lon: number; lat: number}[]>();
+    for (const p of places) (byName.get(p.name) ?? byName.set(p.name, []).get(p.name)!).push(p);
+    const near = (r: {name: string; lon: number; lat: number}) =>
+      (byName.get(r.name) ?? []).some(p => Math.abs(p.lon - r.lon) < 0.02 && Math.abs(p.lat - r.lat) < 0.02);
     for (const r of rows) {
-      if (have.has(r.name) || (keepFn && !keepFn(r.lon, r.lat))) continue;
+      if (near(r) || (keepFn && !keepFn(r.lon, r.lat))) continue;
       const tier = r.tier === 'site' ? 'site' : r.ha >= 8 ? 'park_major' : 'park';
       places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end ?? 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
-      have.add(r.name);
+      (byName.get(r.name) ?? byName.set(r.name, []).get(r.name)!).push(r);
     }
     placedKey = '';
   } catch (e) {

@@ -32,7 +32,7 @@ from roads import ORIGIN, Ground, UTM
 # kinds — keep in sync with viewer/src/layers/ground-detail.ts
 KINDS = {"fairway": 0, "green": 1, "tee": 2, "rough": 3, "bunker": 4, "driving_range": 5, "pitch": 6, "track": 7,
          "playground": 8, "dog_park": 9, "pedestrian": 10, "plaza": 10, "garden": 11, "flowerbed": 11, "grass": 12,
-         "recreation_ground": 12, "village_green": 12}
+         "recreation_ground": 12, "village_green": 12, "water_hazard": 14, "lateral_water_hazard": 14}
 GOLF = {"fairway", "green", "tee", "rough", "bunker", "driving_range"}
 
 
@@ -188,8 +188,117 @@ def main():
             ha = float(gpd.GeoSeries([geom], crs=4326).to_crs(UTM).area.iloc[0]) / 1e4
             labels.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y0),
                            "end": float(y1) if np.isfinite(y1) else 9999.0, "ha": round(ha, 2), "tier": "site"})
+    labels += region_detail(golf_y)
     (VIEWER_DATA / "park-labels.json").write_text(json.dumps(labels))
-    log(f"ground detail: {n_parks} dated park labels ({len(parks)} parks), {len(labels) - n_parks} site labels")
+    log(f"ground detail: {n_parks} dated SF park labels ({len(parks)} parks), {len(labels) - n_parks} site / region park labels")
+
+
+def _outlines(fu, ground, kind_of, years_of, z_extra=0.0):
+    starts, pos, kinds, years = [0], [], [], []
+    for i, geom in enumerate(fu.geometry.values):
+        ring = geom.exterior
+        if ring.length < 8:
+            continue
+        n = max(4, int(np.ceil(ring.length / 12.0)))
+        p = [ring.interpolate(t, normalized=True) for t in np.linspace(0, 1, n, endpoint=False)]
+        ll = gpd.GeoSeries(p, crs=UTM).to_crs(4326)
+        lon, lat = np.append(ll.x.values, ll.x.values[0]), np.append(ll.y.values, ll.y.values[0])
+        z = ground(lon, lat) + 0.3 + z_extra
+        pos.append(np.column_stack([lon - ORIGIN[0], lat - ORIGIN[1], z]).ravel())
+        starts.append(starts[-1] + n + 1)
+        kinds.append(kind_of(i))
+        years.extend(years_of(i))
+    return starts, pos, kinds, years
+
+
+def region_detail(golf_y):
+    """The five counties' golf courses, pitches, tracks, playgrounds, gardens and lawns
+    (OSM outlines via Overture region5_land_use) -> region-ground-detail.bin.gz, loaded by
+    the viewer when zoomed in. Dated like SF's: golf features by their course (golf_courses.csv,
+    else the course's neighbourhood: early tenth of the buildings within 500 m, not before
+    1895), the rest by when the neighbourhood was built (2nd earliest building within 60 m,
+    incl. vanished ones: region_building_points.parquet), else 1950. Also labels for the named
+    parks of 1 ha or more."""
+    from extent import in_extent
+    p = RAW / "overture" / RELEASE / "region5_land_use.parquet"
+    bp = INTERIM / "region_building_points.parquet"
+    if not (p.exists() and bp.exists()):
+        log("ground detail: no region land use / building points yet")
+        return []
+    lu = pd.read_parquet(p)
+    lu = gpd.GeoDataFrame(lu, geometry=gpd.GeoSeries.from_wkb(lu.geometry), crs=4326)
+    lu = lu[in_extent(lu.geometry.representative_point())]
+    courses = lu[lu["class"] == "golf_course"].copy()
+    feats = lu[lu["class"].isin(KINDS)].explode(index_parts=False)
+    feats = feats[feats.geometry.geom_type == "Polygon"].reset_index(drop=True)
+    b = pd.read_parquet(bp, columns=["lon", "lat", "start_year"])
+    bu = gpd.GeoSeries(gpd.points_from_xy(b.lon, b.lat), crs=4326).to_crs(UTM)
+    tree = cKDTree(np.column_stack([bu.x.values, bu.y.values]))
+    by = b.start_year.values.astype(float)
+
+    def nth_year(xy, k, r, q=None):
+        d, idx = tree.query(xy, k=k, distance_upper_bound=r)
+        ny = np.where(np.isfinite(d), by[np.minimum(idx, len(by) - 1)], np.inf)
+        ny.sort(axis=1)
+        if q is None:
+            return np.where(np.isfinite(ny[:, 1]), ny[:, 1], np.nan)
+        ok = np.isfinite(ny)
+        out = np.full(len(xy), np.nan)
+        for i in range(len(xy)):
+            v = ny[i][ok[i]]
+            if len(v) >= 5:
+                out[i] = np.percentile(v, q)
+        return out
+
+    cu = courses.to_crs(UTM)
+    cc = cu.geometry.representative_point()
+    cy = courses["name"].map(golf_y).astype(float).values
+    est = nth_year(np.column_stack([cc.x.values, cc.y.values]), 200, 500.0, q=10)
+    courses["year"] = np.where(np.isfinite(cy), cy, np.maximum(np.nan_to_num(est, nan=1960.0), 1895.0))
+    fu = feats.to_crs(UTM)
+    rp = fu.geometry.representative_point()
+    year = nth_year(np.column_stack([rp.x.values, rp.y.values]), 4, 60.0)
+    j = gpd.sjoin(gpd.GeoDataFrame(geometry=rp.values, crs=UTM), cu[["geometry"]].assign(cyear=courses.year.values),
+                  predicate="within", how="left")
+    j = j[~j.index.duplicated()]
+    golf = feats["class"].isin(GOLF | {"water_hazard", "lateral_water_hazard"}).values & j.cyear.notna().values
+    year = np.where(golf, j.cyear.values, year)
+    year = np.where(np.isnan(year), 1950.0, year)
+    kinds_ = feats["class"].map(KINDS).values
+    area = fu.geometry.area.values
+    starts, pos, kinds, years = _outlines(
+        fu, Ground(),
+        lambda i: KINDS["playground"] if (kinds_[i] == KINDS["track"] and area[i] > 8000) else int(kinds_[i]),
+        lambda i: (float(year[i]), 9999.0))
+    write_columnar(VIEWER_DATA / "region-ground-detail.bin.gz", {
+        "start_indices|shuffle": np.asarray(starts, np.uint32),
+        "positions|shuffle": np.concatenate(pos).astype(np.float32),
+        "kind": np.asarray(kinds, np.uint8),
+        "years": np.asarray(years, np.float32),
+    }, origin=ORIGIN, counts={"polygons": len(kinds), "vertices": starts[-1]})
+    log(f"ground detail: region {len(kinds)} outlines ({np.bincount(kinds, minlength=15).tolist()}), "
+        f"{len(courses)} golf courses ({int(np.isfinite(cy).sum())} with a researched year)")
+    # labels: named parks of 1 ha or more, from when their neighbourhood was built
+    pk = lu[(lu["class"].isin(["park", "golf_course", "recreation_ground"])) & lu["name"].notna()]
+    pk = pk[pk["name"].astype(str).str.len().between(3, 40)]
+    pku = pk.to_crs(UTM)
+    ha = pku.geometry.area.values / 1e4
+    keep = ha >= 1.0
+    pk, pku, ha = pk[keep], pku[keep], ha[keep]
+    pr = pku.geometry.representative_point()
+    py = nth_year(np.column_stack([pr.x.values, pr.y.values]), 4, 150.0)
+    gyear = pk["name"].map(dict(zip(courses["name"], courses["year"]))).astype(float).values
+    py = np.where(np.isfinite(gyear), gyear, py)
+    out, seen = [], set()
+    prl = pr.to_crs(4326)
+    for nm, c, y, h in zip(pk["name"].astype(str), prl.values, py, ha):
+        key = (nm, round(c.x, 2), round(c.y, 2))
+        if key in seen or not np.isfinite(y):   # no neighbourhood to date it by: no label
+            continue
+        seen.add(key)
+        out.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y), "ha": round(float(h), 2)})
+    log(f"ground detail: {len(out)} region park labels")
+    return out
 
 
 if __name__ == "__main__":
