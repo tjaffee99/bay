@@ -295,7 +295,8 @@ are 1912 / 1951 for all three areas (vol. 2 / 3 sheets are dated 1911 / 1950 in 
 * **Control-only blocks**: blocks beside the corridor that were not cut (still standing) are fitted for their
   neighbours' sake but emit no footprints and no coverage (`control_only`).
 * Zones are the block outlines (refined px4 or the drawn polygon), not their bounding boxes; the coverage of each map
-  year is extended to every footprint kept (a building drawn across a zone edge).
+  year is extended to every footprint kept (a building drawn across a zone edge); a footprint on sheets of two corridor
+  areas (zones meeting across a street) is kept once, in the first of sr24 / i980n / i580 (8 + 9 at Merrimac St).
 * Street names: `aliases.json` (Forest = Forest St, the 1911/12 38th St and Moss Ave = today's (West) MacArthur Blvd
   are written as `MacArthur Boulevard` in the specs).
 * Validation (`check`): all geometries valid, every footprint inside its coverage, a PNG per area with the traced 1951
@@ -309,8 +310,8 @@ are 1912 / 1951 for all three areas (vol. 2 / 3 sheets are dated 1911 / 1950 in 
 |---|---|---|---|---|---|
 | oakland_i580_1912 | 717 | 0 / 657 / 60 | 60.2 | 284 | frame 715, stone 1, brick 1 |
 | oakland_i580_1951 | 944 | 0 / 869 / 75 | 87.0 | 396 | frame 898, concrete 28, brick 17, iron 1 |
-| oakland_i980n_1912 | 1030 | 369 / 661 / 0 | 99.8 | 280 | frame 1018, iron 6, brick 5, concrete 1 |
-| oakland_i980n_1951 | 995 | 336 / 659 / 0 | 117.9 | 252 | frame 835, brick 99, concrete 56, iron 5 |
+| oakland_i980n_1912 | 1022 | 369 / 653 / 0 | 99.4 | 280 | frame 1010, iron 6, brick 5, concrete 1 |
+| oakland_i980n_1951 | 986 | 336 / 650 / 0 | 117.7 | 252 | frame 827, brick 99, concrete 55, iron 5 |
 | oakland_sr24_1912 | 3147 | 878 / 2222 / 47 | 239.9 | 1306 | frame 3136, brick 10, stone 1 |
 | oakland_sr24_1951 | 5435 | 1570 / 3748 / 117 | 450.9 | 2405 | frame 5214, brick 127, concrete 82, iron 12 |
 

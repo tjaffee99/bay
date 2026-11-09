@@ -538,6 +538,42 @@ def cover_footprints():
         json.dump(cov, open(p, "w"))
 
 
+PRIORITY = ("oakland_sr24", "oakland_i980n", "oakland_i580")
+
+
+def dedupe_areas():
+    """a footprint drawn on sheets of two corridor areas (block zones meeting across a street) is kept once: in the
+    first area of PRIORITY (more than half of the smaller footprint covered)."""
+    import geopandas as gpd
+    years = sorted({y for _, y in E.AREAS})
+    for y in years:
+        kept = None
+        for area in PRIORITY:
+            p = E.OUT / f"{area}_{y}.geojson"
+            if (area, y) not in E.AREAS or not p.exists():
+                continue
+            fc = json.load(open(p))
+            g = gpd.read_file(p).to_crs(32610)
+            if kept is not None and len(g):
+                j = gpd.sjoin(g[["geometry"]], kept[["geometry"]], predicate="intersects")
+                drop = set()
+                for i, r in j.iterrows():
+                    a, b = g.geometry[i], kept.geometry[r.index_right]
+                    if a.intersection(b).area > 0.5 * min(a.area, b.area):
+                        drop.add(i)
+                if drop:
+                    fc["features"] = [f for i, f in enumerate(fc["features"]) if i not in drop]
+                    json.dump(fc, open(p, "w"))
+                    C.log(area, y, len(drop), "footprints already in an earlier corridor area: dropped")
+                    g = g.drop(index=sorted(drop))
+            kept = g if kept is None else gpd.GeoDataFrame(pd_concat([kept, g]), crs=32610)
+
+
+def pd_concat(frames):
+    import pandas as pd
+    return pd.concat(frames, ignore_index=True)
+
+
 def auto(key, s):
     """two passes: predict from the crossings read by eye, refine, regroup, georef; then predict again from that
     sheet fit, refine, regroup, georef."""
@@ -760,4 +796,5 @@ if __name__ == "__main__":
         C.cap_blocks()
         C.commercial_fronts()
         apply_storeys()
+        dedupe_areas()
         cover_footprints()
