@@ -19,6 +19,8 @@ rows of buildings along their street edges).
 """
 from __future__ import annotations
 
+import os
+
 import geopandas as gpd
 import numpy as np
 import pandas as pd
@@ -774,13 +776,20 @@ def region_predecessors(today):
             log(f"region predecessors: {len(rows)} buildings of vanished large sites")
     # freeway rights-of-way and renewal clearances: the streets they cut and the rows
     # along them (corridor_fill), until the clearance
-    cf, streets = corridor_fill(tu, pred, areas)
-    cf.to_parquet(INTERIM / "corridor_houses.parquet")  # for QA plots
+    # (REUSE_CORRIDORS=1 reuses the last run's result: ~20 min, and it only changes with
+    # freeways, clearance areas, today's buildings or the predecessors near them)
+    cp, sp = INTERIM / "corridor_houses.parquet", INTERIM / "clearance_streets.parquet"
+    if os.environ.get("REUSE_CORRIDORS") and cp.exists() and sp.exists():
+        cf, st = gpd.read_parquet(cp).to_crs(UTM), gpd.read_parquet(sp).to_crs(UTM)
+        log(f"corridors: reused {len(cf)} buildings and {len(st)} streets from the last run")
+    else:
+        cf, streets = corridor_fill(tu, pred, areas)
+        cf.to_parquet(cp)  # for QA plots
+        st = gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM) if streets else \
+            gpd.GeoDataFrame({"start_year": [], "end_year": []}, geometry=[], crs=UTM)
+        st.to_parquet(sp)
     if len(cf):
         pred = gpd.GeoDataFrame(pd.concat([pred, cf], ignore_index=True), geometry="geometry", crs=UTM)
-    st = gpd.GeoDataFrame(streets, geometry="geometry", crs=UTM) if streets else \
-        gpd.GeoDataFrame({"start_year": [], "end_year": []}, geometry=[], crs=UTM)
-    st.to_parquet(INTERIM / "clearance_streets.parquet")
     pred = pred.to_crs(4326)
     use_map = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 5, "factory": 5, "shed": 5,
                "rail": 5, "stable": 0, "church": 6, "school": 6, "hall": 6, "hotel": 3}
