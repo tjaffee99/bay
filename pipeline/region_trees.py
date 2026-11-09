@@ -169,10 +169,90 @@ SOURCES = {
 }
 
 
+def arcgis_points(url: str, out, page: int = 1000):
+    """Every point of an ArcGIS REST layer -> GeoParquet (EPSG:4326), streamed: object ids
+    first, then one chunk at a time appended to the file (memory stays small). Attributes as
+    published. A .source.json next to it records url, date, count and the layer's notes."""
+    import time
+
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    import shapely
+
+    if out.exists():
+        log(f"{out.name}: cached")
+        return
+    s = session()
+    s.headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) BayThroughTime-pipeline"
+
+    def get(path, **params):
+        for attempt in range(6):
+            try:
+                r = s.post(f"{url}{path}", data={"f": "json", **params}, timeout=300)
+                j = r.json()
+                if "error" not in j:
+                    return j
+                log(f"  retry {attempt}: {str(j)[:200]}")
+            except Exception as e:  # network hiccup / bad JSON
+                log(f"  retry {attempt}: {e!r}")
+            time.sleep(2 ** attempt)
+        raise RuntimeError(f"failed {url}{path} {str(params)[:100]}")
+
+    meta = get("")
+    page = min(page, int(meta.get("maxRecordCount") or 1000))
+    ids = sorted(get("/query", where="1=1", returnIdsOnly="true").get("objectIds") or [])
+    log(f"{out.name}: {len(ids)} features from {url}")
+    tmp = out.with_suffix(".part")
+    writer, schema, n = None, None, 0
+    for i in range(0, len(ids), page):
+        j = get("/query", objectIds=",".join(map(str, ids[i:i + page])), outFields="*", outSR=4326,
+                returnGeometry="true")
+        feats = j.get("features", [])
+        rows = [f.get("attributes") or {} for f in feats]
+        geo = [f.get("geometry") or {} for f in feats]
+        x = np.array([g.get("x", np.nan) if g.get("x") is not None else np.nan for g in geo], float)
+        y = np.array([g.get("y", np.nan) if g.get("y") is not None else np.nan for g in geo], float)
+        df = pd.DataFrame(rows)
+        if schema is None:
+            # types from the layer's field list (numbers and dates -> float64, dates as epoch ms)
+            numeric = {"esriFieldTypeDouble", "esriFieldTypeSingle", "esriFieldTypeInteger", "esriFieldTypeOID",
+                       "esriFieldTypeSmallInteger", "esriFieldTypeDate", "esriFieldTypeBigInteger"}
+            ftype = {f["name"]: f["type"] for f in meta.get("fields", [])}
+            names = [c for c in df.columns if c != "geometry"]
+            schema = pa.schema([pa.field(c, pa.float64() if ftype.get(c) in numeric else pa.string()) for c in names]
+                               + [pa.field("geometry", pa.binary())])
+            schema = schema.with_metadata({b"geo": json.dumps({"version": "1.0.0", "primary_column": "geometry",
+                                           "columns": {"geometry": {"encoding": "WKB",
+                                                                    "geometry_types": ["Point"]}}}).encode()})
+            writer = pq.ParquetWriter(tmp, schema, compression="zstd")
+        cols = {}
+        for f in schema:
+            if f.name == "geometry":
+                cols[f.name] = pa.array(shapely.to_wkb(shapely.points(x, y)), pa.binary())
+            elif pa.types.is_float64(f.type):
+                cols[f.name] = pa.array(pd.to_numeric(df.get(f.name, pd.Series([None] * len(df))),
+                                                      errors="coerce").to_numpy(float), pa.float64())
+            else:
+                v = df.get(f.name, pd.Series([None] * len(df)))
+                cols[f.name] = pa.array([None if (e is None or (isinstance(e, float) and np.isnan(e))) else str(e)
+                                         for e in v], pa.string())
+        writer.write_table(pa.table(cols, schema=schema))
+        n += len(df)
+        if (i // page) % 25 == 0:
+            log(f"  {out.name}: {n}/{len(ids)}")
+    if writer:
+        writer.close()
+        tmp.rename(out)
+    (out.parent / f"{out.stem}.source.json").write_text(json.dumps({
+        "url": url, "count": n, "downloaded": time.strftime("%Y-%m-%d"), "layer_name": meta.get("name"),
+        "copyright": meta.get("copyrightText"), "description": (meta.get("description") or "")[:2000]}, indent=1))
+    log(f"{out.name}: {n} rows -> {out}")
+
+
 def download(only: list[str] | None = None):
-    """Each source's raw layer to data/raw/region_trees/<id>.parquet (cached), and the
-    Urban Tree Database (growth equations)."""
-    from download_region import arcgis_download
+    """Each source's raw layer to data/raw/region_trees/<id>.parquet (cached), one at a
+    time, and the Urban Tree Database (growth equations)."""
+    arcgis_download = lambda url, out, *a: arcgis_points(url, out)  # noqa: E731
     OUT_RAW.mkdir(parents=True, exist_ok=True)
     if not (UTD / "Data" / "TS6_Growth_coefficients.csv").exists():
         UTD.mkdir(parents=True, exist_ok=True)
@@ -388,7 +468,117 @@ def _berkeley(d):
                park=park_of(d.GROWSPACE), alive=d.ICON_TYPE.astype(str).eq("T").values)
 
 
-NORMALISE = {"san_jose": _sj, "oakland": _oakland, "berkeley": _berkeley}
+def _palo_alto(d):
+    return std(d, d.SPECIES, "", num_or_range(d.DIAMETERBREASTHEIGHT), num_or_range(d.HEIGHTCODE),
+               num_or_range(d.CANOPYWIDTH), year_of(d.INSTALLDATE), year_of(d.INVENTORYDATE),
+               park=park_of(d.GROWSPACE), alive=pd.to_numeric(d.ACTIVE, errors="coerce").fillna(1).ne(0).values)
+
+
+def _mountain_view(d):
+    # DIAMETER is the DBH in inches (Circumference / pi); HEIGHT mostly empty
+    return std(d, d.SPECIES, d.NAME, num_or_range(d.DIAMETER), num_or_range(d.HEIGHT),
+               planted=year_of(d.INSTALLDATE), park=park_of(d.SPACETYPE))
+
+
+def _hayward(d):
+    return std(d, d.SPP, "", num_or_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
+               asof=np.fmax(year_of(d.Inv_Date), year_of(d.INSPECT_DT)), park=park_of(d.LANDUSE),
+               alive=pd.to_numeric(d.Active, errors="coerce").fillna(1).ne(0).values)
+
+
+def _wca(d, sp, common, dbh, actual, height, asof=None, park=None):
+    """West Coast Arborists exports: DBH class ('0-6', '13-18', '---') and, newer, the measured DBH."""
+    dbh_v = num_or_range(actual) if actual is not None else np.full(len(d), np.nan)
+    dbh_v = np.where(dbh_v > 0, dbh_v, num_or_range(dbh))
+    return std(d, sp, common, np.where(dbh_v > 0, dbh_v, np.nan), num_or_range(height), asof=asof, park=park)
+
+
+def _alameda(d):
+    return _wca(d, "", d.CommonName, d.DBH, d.ActualDBH, d.Height, park=park_of(d.ParkwayType))
+
+
+def _pleasanton(d):
+    return _wca(d, d.BotanicalName, d.CommonName, d.DBH, None, d.Height, park=park_of(d.Street))
+
+
+def _san_ramon(d):
+    out = _wca(d, d.BotanicalName, d.CommonName, d.DBH, None, d.Height, park=park_of(d.Street))
+    ah = num_or_range(d.ActualHeight)
+    out["height_ft"] = np.where(ah > 0, ah, out.height_ft)
+    out["crown_ft"] = num_or_range(d.ActualCrown)
+    return out
+
+
+def _menlo_park(d):
+    return _wca(d, d.BOTANICALN, d.COMMONNAME, d.DBH, d.ACTUALDBH, d.HEIGHT, asof=year_of(d.DATEMODIFI),
+                park=park_of(d.SIDE))
+
+
+def _milpitas(d):
+    return _wca(d, d.BotanicalName, d.NameCommon, d.DBH, None, d.HeightRange, asof=year_of(d.TS),
+                park=park_of(d.TypePark))
+
+
+def _cupertino(d):
+    st = d.Status.fillna("").astype(str)
+    return std(d, d.Species, d.SpeciesCommonName, num_or_range(d.DiameterBreastHieght), num_or_range(d.Height),
+               num_or_range(d.CanopyDiameter), year_of(d.PlantDate), year_of(d.LastInspectedDate),
+               park=park_of(d.LocationType), alive=~st.str.contains("remov|dead|inactive|retired", case=False).values)
+
+
+def _san_mateo(d):
+    return std(d, d.SPP, "", num_or_range(d.DBH), num_or_range(d.HEIGHT), num_or_range(d.WIDTH),
+               asof=np.fmax(year_of(d.INV_DATE), year_of(d.INSPECT_DT)), park=park_of(d.LANDUSE),
+               alive=pd.to_numeric(d.ACTIVE, errors="coerce").fillna(1).ne(0).values)
+
+
+def _santa_clara(d):
+    gone = d.SpeciesType.fillna("").astype(str).str.contains("remov", case=False) | \
+        pd.to_numeric(d.StatusCode, errors="coerce").eq(999)
+    return std(d, "", d.SpeciesName, num_or_range(d.DBH), num_or_range(d.Height), num_or_range(d.Canopy),
+               asof=np.fmax(year_of(d.AssessmentDate), year_of(d.LastModDate)), alive=~gone.values)
+
+
+def _emeryville(d):
+    return std(d, d.BOTANICAL, d.COMMON, num_or_range(d.DBH_RANGE), num_or_range(d.HEIGHT_RAN),
+               asof=year_of(d.DATE), park=park_of(d.PKWY_TYPE))
+
+
+def _los_gatos(d):
+    return std(d, d.Botanical, d.Common, num_or_range(d.DBH), num_or_range(d.Height), asof=year_of(d.Date))
+
+
+def _sunnyvale(d):
+    return std(d, d.Species, "", num_or_range(d.DBH), num_or_range(d.Height))
+
+
+def _scc_county(d):
+    return std(d, d.Scientific, d.CommonName, num_or_range(d.DBH), num_or_range(d.TreeHeight),
+               num_or_range(d.CrownSprea), park=park_of(d.TreeType))
+
+
+def _stanford(d):
+    return std(d, d.BOTANICAL_, "", num_or_range(d.DBH_NUM), park=True)
+
+
+def _scu(d):
+    return std(d, "", d.Tree_Species, num_or_range(d.Tree_Diameter_at_Breast_Height__in__),
+               num_or_range(d.Tree_Height__ft__), asof=year_of(d.Timestamp), park=True)
+
+
+NORMALISE = {"san_jose": _sj, "oakland": _oakland, "berkeley": _berkeley, "palo_alto": _palo_alto,
+             "mountain_view": _mountain_view, "hayward": _hayward, "alameda": _alameda, "pleasanton": _pleasanton,
+             "san_ramon": _san_ramon, "cupertino": _cupertino, "san_mateo": _san_mateo, "menlo_park": _menlo_park,
+             "milpitas": _milpitas, "santa_clara": _santa_clara, "emeryville": _emeryville,
+             "los_gatos": _los_gatos, "sunnyvale": _sunnyvale, "scc_county": _scc_county, "stanford": _stanford,
+             "santa_clara_university": _scu}
+# the survey year of a source whose records carry no inventory date (DBH measured then)
+ASOF = {"san_jose": 2014, "oakland": 2020, "berkeley": 2013, "palo_alto": 2012, "mountain_view": 2022,
+        "hayward": 2010, "alameda": 2023, "pleasanton": 2023, "san_ramon": 2017, "cupertino": 2018,
+        "san_mateo": 2010, "menlo_park": 2024, "milpitas": 2022, "santa_clara": 2022, "emeryville": 2004,
+        "los_gatos": 2018, "sunnyvale": 2019, "scc_county": 2019, "stanford": 2010, "santa_clara_university": 2026}
+for _k, _v in ASOF.items():
+    SOURCES[_k]["asof"] = float(_v)
 
 
 # ---------------------------------------------------------------- build
@@ -512,6 +702,18 @@ def build():
     bulk_n = day.map(day.value_counts()).fillna(0).to_numpy()
     src_n = d.source.map(d.source.value_counts()).to_numpy()
     bulk = (bulk_n >= np.maximum(200, 0.02 * src_n))
+    # survey years: a year with far more "plantings" than the years around it is when the
+    # records were entered (Mountain View: 17k dates in 1993, 7k on 31 Dec 2006)
+    py = np.floor(planted)
+    for sid in d.source.unique():
+        m = (d.source.values == sid) & np.isfinite(py)
+        if not m.any():
+            continue
+        cnt = pd.Series(py[m]).value_counts()
+        for yv, cn in cnt.items():
+            around = [cnt.get(yv + k, 0) for k in range(-5, 6) if k]
+            if cn >= 100 and cn > 5 * max(np.median(around), 1):
+                bulk |= m & (py == yv)
     # a tree planted in year P can't have a trunk much thicker than its species reaches by asof
     too_thick = np.isfinite(from_dbh) & (from_dbh < planted - np.maximum(8.0, 0.5 * (asof - planted)))
     rec_ok = np.isfinite(planted) & ~bulk & ~too_thick
