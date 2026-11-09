@@ -102,9 +102,10 @@ def nearest_fill(a, valid):
 
 
 def exact_building_evidence(g):
-    """Per cell: the 2nd-earliest RECORDED construction year (assessor / researched, not
-    estimated) among today's buildings within ~60 m — NaN with fewer than two. Evidence
-    that the ground existed by then (used against fill years that are too late)."""
+    """Per cell: the earliest and the 2nd-earliest RECORDED construction year (assessor /
+    researched, not estimated) among today's buildings within ~60 m (NaN without one /
+    two). Evidence that the ground existed by then (used against fill years that are too
+    late: two buildings against a researched fill zone, one against a fallback guess)."""
     from scipy.spatial import cKDTree
     xs, ys, yr = [], [], []
     p = INTERIM / "sf_buildings.parquet"
@@ -123,8 +124,9 @@ def exact_building_evidence(g):
         ys.append(6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(r.lat.values) / 2)))
         yr.append(r.year.values)
     out = np.full((g["rows"], g["cols"]), np.nan, np.float32)
+    out1 = out.copy()
     if not xs:
-        return out
+        return out1, out
     X, Y, V = np.concatenate(xs), np.concatenate(ys), np.concatenate(yr).astype(np.float32)
     rad = 60.0 / np.cos(np.radians(37.7))
     c = np.clip(np.rint((X - g["X0"]) / g["res"]).astype(int), 0, g["cols"] - 1)
@@ -132,7 +134,7 @@ def exact_building_evidence(g):
     inside = (X >= g["X0"] - rad) & (X <= g["X0"] + g["cols"] * g["res"] + rad) & (Y <= g["Y0"] + rad) & (Y >= g["Y0"] - g["rows"] * g["res"] - rad)
     X, Y, V, c, r_ = X[inside], Y[inside], V[inside], c[inside], r_[inside]
     if not len(X):
-        return out
+        return out1, out
     # only cells near a building need the query
     near = np.zeros((g["rows"], g["cols"]), bool)
     near[r_, c] = True
@@ -147,7 +149,8 @@ def exact_building_evidence(g):
     vals.sort(axis=1)
     second = vals[:, 1]
     out[rr, cc] = np.where(np.isfinite(second), second, np.nan)
-    return out
+    out1[rr, cc] = np.where(np.isfinite(vals[:, 0]), vals[:, 0], np.nan)
+    return out1, out
 
 
 def sf_building_years(g):
@@ -243,12 +246,14 @@ def researched_green_years(g5):
     Francisco, NaN where not researched: data/tables/region_green_dates.csv (name, class,
     lon, lat, year_open …: the feature containing the point, else the nearest feature of
     that name within ~1.5 km), golf_courses.csv (by name) and the region rows of
-    park_names.csv (first name period; point, else name)."""
+    park_names.csv (first name period; point, else name). Also the closing year where the
+    table gives one. A year_open of 9999 means planned, never built."""
     ry = np.full(len(g5), np.nan, np.float32)
+    rclose = np.full(len(g5), np.nan, np.float32)
     names = g5["name"].fillna("").astype(str).str.strip().str.lower().values if "name" in g5 else np.full(len(g5), "")
     sidx = g5.sindex
 
-    def assign(nm, lon, lat, year):
+    def assign(nm, lon, lat, year, close=np.nan):
         if not np.isfinite(year):
             return
         hit = []
@@ -267,13 +272,16 @@ def researched_green_years(g5):
             hit = list(np.flatnonzero(names == nm))
         for j in hit:
             ry[j] = year if not np.isfinite(ry[j]) else min(ry[j], year)
+            if np.isfinite(close):
+                rclose[j] = close
 
     p = TABLES / "region_green_dates.csv"
     if p.exists():
         t = pd.read_csv(p)
         for r in t.itertuples():
             assign(str(getattr(r, "name", "") or "").strip().lower(), pd.to_numeric(getattr(r, "lon", np.nan), errors="coerce"),
-                   pd.to_numeric(getattr(r, "lat", np.nan), errors="coerce"), pd.to_numeric(getattr(r, "year_open", np.nan), errors="coerce"))
+                   pd.to_numeric(getattr(r, "lat", np.nan), errors="coerce"), pd.to_numeric(getattr(r, "year_open", np.nan), errors="coerce"),
+                   pd.to_numeric(getattr(r, "year_close", np.nan), errors="coerce"))
     p = TABLES / "golf_courses.csv"
     if p.exists():
         t = pd.read_csv(p)
@@ -292,7 +300,7 @@ def researched_green_years(g5):
                 before = np.isfinite(ry).copy()
                 assign(nm, lon, lat, float(r.from_year))
                 ry[before] = ry[before]  # (assign keeps the earlier year)
-    return ry
+    return ry, rclose
 
 
 def park_layers(g):
@@ -573,8 +581,9 @@ def histories(name, g, d):
     # back on a park, course or cemetery
     lu5 = RAW / "overture" / "2026-10-21.0" / "region5_land_use.parquet"
     open_claim_y = np.full((rows, cols), np.nan, np.float32)
+    green_close_y = np.full((rows, cols), np.nan, np.float32)
     if lu5.exists():
-        TOWN = ["park", "golf_course", "cemetery", "recreation_ground", "village_green"]
+        TOWN = ["park", "golf_course", "cemetery", "grave_yard", "recreation_ground", "village_green"]
         # only with a researched year: reserves and state / national parks (open space —
         # the farming stops, the ground stays natural), zoos and theme parks (park ground)
         OPEN = ["nature_reserve", "state_park", "national_park", "protected_landscape_seascape", "strict_nature_reserve",
@@ -584,9 +593,10 @@ def histories(name, g, d):
         d5 = d5[d5["class"].isin(TOWN + OPEN + SPECIAL)]
         g5 = gpd.GeoDataFrame(d5, geometry=gpd.GeoSeries.from_wkb(d5.geometry), crs=4326).to_crs(3857)
         g5 = g5[g5.geometry.notna() & g5.geom_type.isin(["Polygon", "MultiPolygon"])].reset_index(drop=True)
-        ry = researched_green_years(g5)
-        g5 = g5[g5["class"].isin(TOWN).values | np.isfinite(ry)]
-        ry = ry[g5.index.values]
+        ry, rclose = researched_green_years(g5)
+        keep5 = (g5["class"].isin(TOWN).values | np.isfinite(ry)) & ~(ry >= 9000)   # 9999: planned, not built
+        g5 = g5[keep5]
+        ry, rclose = ry[g5.index.values], rclose[g5.index.values]
         g5 = g5.reset_index(drop=True)
         # big parks (regional open space: hills, shorelines) stay natural ground — they
         # only stop the farming; town parks, courses and cemeteries become park ground
@@ -608,6 +618,11 @@ def histories(name, g, d):
         open_claim_y = np.where(big5, g5y, np.nan).astype(np.float32)
         g5y = np.where(big5, np.nan, g5y)
         park_y = np.where(np.isfinite(g5y) & np.isnan(park_y), g5y, park_y)
+        # closed since (Skywest golf course 1964-2020): open ground again from that year
+        if np.isfinite(rclose).any():
+            selc = np.isfinite(rclose)
+            rc_ = rasterize_on(g, [(geom, float(y)) for geom, y in zip(g5.geometry[selc], rclose[selc])]).astype(np.float32)
+            green_close_y = np.where((rc_ > 0) & green5, rc_, np.nan).astype(np.float32)
         log(f"terrain {name}: {int(np.isfinite(g5y).sum())} park / golf / cemetery cells outside SF "
             f"({int(np.isfinite(res5).sum())} with a researched year)")
     is_park = np.isfinite(park_y)
@@ -635,6 +650,7 @@ def histories(name, g, d):
     zone_rows.sort(key=lambda rp: str(rp[0].zone_id).startswith("fb_"))  # specific zones first
     covered = np.zeros((rows, cols), bool)
     researched_fill = np.zeros((rows, cols), bool)
+    dike_fill_y = np.full((rows, cols), np.nan, np.float32)
     for r, poly in zone_rows:
         ys = pd.to_numeric(r.year_start, errors="coerce")
         ye = pd.to_numeric(r.year_end, errors="coerce")
@@ -660,6 +676,8 @@ def histories(name, g, d):
         if k == "diked_marsh":
             sel = m & (salt | diked)
             dike_year[sel] = y[sel]
+            later = m & ~(salt | diked) & was_wet0
+            dike_fill_y[later] = np.fmin(dike_fill_y[later], y[later])
         elif k == "fill":
             upd = m & (np.isnan(zones_fill) | (y < zones_fill))
             zones_fill[upd] = y[upd]
@@ -725,11 +743,17 @@ def histories(name, g, d):
     # buildings within ~60 m predate the fill year of a cell, the fill zone is too wide or
     # too late there and the ground is theirs (they stood in the bay for decades — the
     # 1889 Audiffred Building until 1915, 1880s Alameda and San Rafael streets)
-    ev_y = exact_building_evidence(g)
+    ev1, ev2 = exact_building_evidence(g)
+    ev_y = np.where(researched_fill, ev2, ev1)   # a fallback fill year is a guess: one building is enough
     ev_fix = filled & np.isfinite(ev_y) & np.isfinite(fill_y) & (ev_y - 1.5 < fill_y)
     fill_y = np.where(ev_fix, ev_y - 1.5, fill_y)
     zones_fill = np.where(ev_fix & np.isfinite(zones_fill), np.fmin(zones_fill, ev_y - 1.5), zones_fill)
     log(f"terrain {name}: {int(ev_fix.sum())} made-land cells dated by the recorded buildings standing on them")
+    # marsh diked long before it was filled (Brewer Island / Foster City, Redwood Shores,
+    # Corte Madera: dairies, hay and salt works behind levees from c.1900, fill in the
+    # 1960s): diked land between the two, not tidal marsh until the fill
+    dk = filled & np.isfinite(dike_fill_y) & np.isfinite(fill_y) & (dike_fill_y < fill_y - 1.5)
+    event(dk, DIKED, dike_fill_y)
     # In the city, made land was put to use within a few years (wharves, rail yards,
     # warehouses, streets) — not left bare until today's buildings went up: anything
     # standing on it today means it was city soon after filling. Open fill greens over.
@@ -897,6 +921,19 @@ def histories(name, g, d):
         spread = 0.5 if c in (PARK, URBAN, RESERVOIR) else 6.0
         event(m, c, ys + spread * h)
 
+    # natural forest rows with an end year (the Oakland hills and Woodside redwoods, logged
+    # in the 1840s-60s): cut-over brush from the dozen years up to that year, second growth
+    # by the 1900s (the trees stand there today) — they stayed forest through the logging
+    for r, poly in lc_rows:
+        c = LANDCOVER_TABLE.get(str(r.cover).strip())
+        ys = pd.to_numeric(r.get("year_start"), errors="coerce")
+        ye = pd.to_numeric(r.get("year_end"), errors="coerce")
+        if c != FOREST or not np.isfinite(ye) or not (1769 < ye < 9000) or (np.isfinite(ys) and ys > 1769):
+            continue
+        m = organic_mask(g, poly) & ~water_now & (N == FOREST)
+        event(m, SCRUB, ye - 12.0 * h)
+        event(m, FOREST, np.maximum(ye + 40.0, 1900.0) + 25.0 * h)
+
     # ---- vanished large sites (data/manual/vanished_sites/sites.geojson): racetracks,
     # office / industrial campuses, amusement parks… cover the ground over their years,
     # then the site is cleared ground until whatever stands there today
@@ -1018,6 +1055,7 @@ def histories(name, g, d):
         rebuilt = 1907.4 + 1.2 * h
         event(burned_area, URBAN, np.where(urban & (urban_y > rebuilt), urban_y, rebuilt))
     event(is_park, PARK, park_y)
+    event(is_park & np.isfinite(green_close_y) & (green_close_y > park_y), GRASS, green_close_y)
     event(np.isfinite(wood_y), FOREST, wood_y)
 
     # ---- assemble: natural cover + first three events in time order (row chunks: memory)

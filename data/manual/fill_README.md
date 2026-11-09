@@ -2,7 +2,7 @@
 
 Files covered here:
 
-- `data/manual/fill_zones.csv`: about 100 dated zones, one row per stage, for fill, diked marsh, excavation, restoration and piers.
+- `data/manual/fill_zones.csv`: 245 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
 - `data/tables/landcover_history.csv`: the pre-urban land cover to paint under today's city, with dates.
 - New raw downloads in `data/raw/`. They are listed under "Downloaded datasets" below.
 
@@ -233,6 +233,54 @@ edition, ring = c.1800 wet ground that is land today, cut into the phases; hand 
   the Utah Construction / Harbor Bay fills by edition (NW lobe diked on the 1956 photos; land on the 1968 / 1973 / 1980
   sheets). Check without a terrain run: OAK `pavement_dates.csv` rows keep their researched starts (the 1927 runway waits
   to 1927.5–1927.8 at most).
+
+## Edition-dated zones (2026-11 audit): rows `tp_*`, `ot_*` and the retraced boxes
+
+Before this pass 58 % of the made land of the 30 m grid (11,500 of 19,650 ha) had no researched zone and took a
+fallback year (`fb_*`: the buildings' year − 3 where it falls inside the bracket, else the bracket midpoint — 1920 in
+the East Bay, 1935 on the Peninsula, 1915 in the north), and the coarse boxes spread their bracket by distance from the
+old shore. Both put land where the maps still show bay: the Emeryville peninsula and Point Isabel in 1920, the Seventh
+Street terminal in 1920, the Berkeley marina fill in the 1930s, East San Rafael in 1915.
+
+**Method (USGS editions, no hand tracing).** Every 1:24,000 edition of the 16 quads round the bay (San Rafael, San
+Quentin, Richmond, San Francisco North / South, Oakland West / East, Hunters Point, San Leandro, Hayward, San Mateo,
+Redwood Point, Newark, Palo Alto, Mountain View, Milpitas; photo years 1946–52, 1956–60, 1968, 1973, 1978–80, 1991–97;
+TNM historical topo GeoTIFFs) was resampled at 6 m and each pixel classed wet (water tint by a linear discriminant
+between the sheet's own always-bay and white-paper pixels, or blue marsh symbols > 12 % of a 66 m window) or land,
+then counted per terrain cell. A sheet is used only if ≥ 90 % of its always-bay reference cells read wet, ≥ 93 % of its
+always-dry cells read land and d′ ≥ 1.4 (73 of 98 sheets; dropped: the pale 1946–48 prints of Oakland East, San
+Leandro, San Francisco South, Hunters Point 1968, and all of Newark, Palo Alto and Milpitas, whose quads have too
+little open bay to calibrate on). For each cell: the last edition that shows it wet and the next one = the bracket in
+which it was filled.
+
+* **`tp_<place>_<y0>_<y1>[_b…]` (57 rows, 700 ha, kind `fill`, ESTIMATED):** made land that is wet on the `y0`-photo
+  edition and land on the `y1` edition, wherever that cell had only a fallback year, or a box year more than 2 years
+  before `y0`. Rings are the cell outlines (≥ 4 ha, exterior ring only), `source_url` = the edition that first shows
+  the land. Where a cell came out of a documented box the bracket stops at the box's documented end (Brisbane landfill
+  1967).
+* **Boxes retraced** (their cells that later editions still show wet moved to `tp_*` rows; the rest keeps the row,
+  split in parts `_a…`): `al_berkeley_waterfront_landfill` (was 1923–83 over everything; the part on the 1946 sheet is
+  now 1923–1945.5, the marina / landfill 1946–58, 1958–68, 1968–73, 1973–79), `sm_brisbane_landfill` (part on the 1956
+  sheet 1932–55.5, lagoon side 1956–67), `sm_oyster_point` (part already land on the 1956 sheet 1895–1955 ESTIMATED,
+  the marina fill 1956–68 / 1968–70), `sm_bayshore_cutoff_yard` and `al_oakland_long_wharf_mole` (same years, without
+  the Brisbane lagoon shore / the Seventh Street terminal fill of the 1960s).
+* **`ot_<place>_marsh_edge[_b…]` (29 rows, 109 ha, ESTIMATED):** c.1800 marsh edge under houses with recorded 1860s–90s
+  years (the lead's building-before-land list: 263 such houses on the detail grid) where the 1:62,500 sheet surveyed
+  1894–97 (San Francisco 1895, Concord 1897, Tamalpais 1897, San Mateo 1896, Haywards 1899) draws the street grid and no
+  marsh: West Oakland, Alameda's north shore and east end, Brooklyn, West Berkeley, San Rafael, San Mateo, Belmont.
+  Bracket = 15 years ending the year before the 5th-percentile house. Only groups of ≥ 3 houses: the black-ink "built up"
+  test also fires on map lettering ("Lake Merritt", "S.P.R.R.") and railroad trestles, so it is not used on its own.
+  Earliest year wins, so these also override the east edge of the Army Base box and of the Benton Field ring.
+* Hand rows: `cc_martinez_waterfront_blocks` (region grid; Carquinez Strait 1896 sheet) and
+  `mn_san_rafael_mission_ground` (the SFEI marsh polygon overlaps the 1817 mission site: land from the start).
+
+Effect (simulated on the grid with the rule of `terrain_tiles.py`, buildings still capping the year): 960 ha of made
+land change year — 730 ha later (median +27 years), 230 ha earlier (median −23 years). Not covered: north of 37.98°
+(Novato, Hamilton, Vallejo, Martinez except the hand row), the Newark / Palo Alto / Milpitas quads, fill older than
+the first 1:24,000 edition (still fallback or box years), and diked land that the maps draw as dry before it was
+filled (Foster City, Redwood Shores, Corte Madera: the documented fill years stand). Scratch tools of this pass:
+`edmask.py` (sheet → wet share per cell), `assemble2.py` (brackets), `old62.py` (1890s sheets), `build2.py` (rows),
+`simnew.py` / `summ.py` / `validate.py` (checks).
 
 ## Land cover table (`data/tables/landcover_history.csv`)
 

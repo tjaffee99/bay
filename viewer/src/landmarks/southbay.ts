@@ -1568,7 +1568,13 @@ const marinAdmin = landmark(
       'wing positions and widths from the OpenStreetMap outlines (© OSM contributors, ODbL) and the orthophoto; storey heights, vault rise and arcade bands estimated; roof kept level across the valley'
   },
   [WIKI + 'Marin_County_Civic_Center'],
-  [rotPoly([[-58, 30], [-8, 50], [55, 205], [10, 210], [-45, 95]], MCC_BRG)]
+  [
+    rotPoly([[-58, 30], [-8, 50], [55, 205], [10, 210], [-45, 95]], MCC_BRG),
+    // the hinge of the two wings: OSM has the whole Civic Center as one outline whose vertex centre
+    // (frame ≈ 5, 25) fell between this polygon and the Hall of Justice's, so the plain 25 m footprint
+    // of the complex was drawn over both models
+    rotPoly([[-30, 5], [25, 5], [25, 55], [-30, 55]], MCC_BRG)
+  ]
 );
 
 const marinHallOfJustice = landmark(

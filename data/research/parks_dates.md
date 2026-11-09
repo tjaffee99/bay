@@ -159,3 +159,68 @@ These are not in RPD today and were not added to `parks.csv`:
   context statement).
 * **Dorothy Erskine Park:** RPD says acquired 1977; the Open Space summary says 1978 (dedicated
   1979). Used 1977.
+
+## 2026-11 audit: greens outside San Francisco, and non-RPD parks in the city
+
+New table `data/tables/region_green_dates.csv` (215 rows): researched opening (and closing)
+years for the golf courses, cemeteries, big parks, zoos and regional / state parks of the
+five counties. `name` is the Overture / OSM name of the land-use feature and `lon, lat` a
+point inside it (names repeat between cities). `pipeline/ground_detail.py` reads it for the
+fairways / greens of each course (with the closing year of courses that shut but are still
+mapped) and for the park labels; `terrain_tiles.py` should read it for the ground (lead).
+
+* **Golf courses (94 rows, 100 of the 110 mapped features dated with `golf_courses.csv`):**
+  GolfLink's city listings give a "Year Opened" per course
+  (`https://www.golflink.com/golf-courses/ca/<city>`). They were used where the year is
+  plausible and not contradicted; the directory often gives the year of a *remodel* instead
+  (Diablo CC 2020, Contra Costa CC 2015, Menlo CC 2022, California GC 2008, Indian Valley 2004,
+  Marin CC 2008, Tony Lema 2001, Redwood Canyon 2023, Baylands 2018, Corica 2018 / 2021,
+  Castlewood Hill 1923 — before the Hearst estate was sold), so those were researched one by
+  one (club histories, Wikipedia, NCGA, golf.com, a 1984 superintendents' newsletter).
+  `estimated` = single directory source, or sources 1–2 years apart.
+* **Closed or replaced courses still on the map:** Skywest (Hayward, 1964 – Sept 2020), San
+  Geronimo (1960s – 2018, now the park features San Geronimo Park / Meadow / Commons),
+  Springtown (Livermore, 1966 – Oct 2015, now Springtown Open Space), Lew F. Galbraith
+  (Oakland, 1966 – c.1994, rebuilt as Metropolitan Golf Links 2003), Palo Alto Municipal
+  (1956, rebuilt as Baylands 2018), Willow Park (1966, renamed Redwood Canyon 2015).
+* **Cemeteries (36 rows):** Colma's from the Wikipedia article on the town and the articles
+  of each cemetery; the rest from Wikipedia / Wikidata inception dates and the cemeteries'
+  own histories. `Planned Heritage Oaks Memorial Park` (111 ha, Coyote Valley) is a proposal
+  that has not been built: `year_open = 9999`.
+* **Parks (46) and other classes (34: regional, state and national parks that Overture maps
+  as nature_reserve / protected_landscape / state_park …, Great America, Fairyland, People's
+  Park):** Wikipedia text or Wikidata inception / opening dates; the Overture class is in the
+  note of the `other` rows. Fairgrounds have no named Overture outline (2 rows, by name).
+
+Not found / left to the neighbourhood estimate (would be worth a dated source): golf —
+Sharon Heights (c.1962), Mariners Point, Montclair, Spartan Golf Complex, the Riverside course
+under Coyote Creek's Valley Course, the Thunderbird course under Rancho del Pueblo;
+cemeteries — Santa Clara Mission Cemetery, Saint Joseph (San Pablo), Chinese Cemetery (Daly
+City), Mission City Memorial Park, Valley Memorial Park (Novato), Memorial Gardens (Concord),
+Mount Olivet (San Rafael), Cedar Lawn (Fremont) and the small pioneer / parish graveyards;
+parks — Vasona Lake, Hellyer, Lake Cunningham, Sycamore Grove, Miller/Knox, Crown Beach
+(state-beach year), Bedwell Bayfront, Byxbee, Mussel Rock, Rinconada, Mitchell, Cuesta,
+Rengstorff, Washington Park (Burlingame / Alameda / Sunnyvale), Nicholl, Alvarado, DeFremery,
+San Antonio (Oakland), Dimond, Codornices, and the other city parks below ~40 ha; among the
+`other` classes Mount Tamalpais SP, Mount Diablo SP (Wikidata's dates are wrong), Angel Island,
+Redwood, Las Trampas, Mission Peak, Wildcat Canyon, San Bruno Mountain, Huddart, Edgewood.
+
+San Francisco (`parks.csv`, `golf_courses.csv`):
+
+* Non-RPD parks are matched by their Overture name (`ground.py`): added Candlestick Point
+  State Recreation Area (1977), Heron's Head Park (1998), Aquatic Park Historic District
+  (1939, estimated), Crane Cove Park (2020), Francisco Park (2022), Presidio Tunnel Tops
+  (2022), Sunset Dunes (2025). The Presidio itself is deliberately not a row (its forest is
+  dated by `Presidio forest`; a 1994 park row would re-date the woods).
+* `Sutro Heights` never matched its outline (Overture: `Sutro Heights Park`): renamed, and
+  dated 1883 (gardens opened to the public) instead of 1938 (gift to the city).
+* `ground.py` now ignores same-named Overture parks outside the city: Daly City's own
+  "Lincoln Park" was drawn from 1909.
+* Lincoln Park Golf Course 1902 → 1909: the 1902 layout was three holes on a corner of the
+  City Cemetery; the land went to the Park Commission in 1909 (18 holes by 1917).
+* Checked and kept: Golden Gate Park 1870, Panhandle, Mountain Lake (1868 reservation;
+  Wikipedia "c.1875" design), Lincoln Park 1909, McLaren 1927 (Wikidata 1926 = vote), Glen
+  Canyon 1922, Bay View 1915, Precita 1894, Mission Dolores 1905 (Wikidata 1906), South Park
+  1852, Washington Square 1847, Pioneer Park 1876, Yerba Buena Gardens 1993, Embarcadero Plaza
+  1972, Boeddeker 1985, zoo 1929, Marina Green 1915 (airfield 1920–44 already noted), Harding
+  1925, Presidio GC 1895, Golden Gate Park GC 1951, Gleneagles 1962, Sharp Park 1917 / golf 1932.

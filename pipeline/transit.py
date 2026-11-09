@@ -427,6 +427,15 @@ def main():
         seg = np.hypot(*np.diff(xy, axis=0).T)
         cum = np.concatenate([[0.0], np.cumsum(seg)])
         years = vertex_years(ln, xy, openings, bart_pts, muni_pts)
+        # a station's own platform and tail tracks are there when it opens: the researched
+        # route lines meet at the middle of the platform, so without this the far half of
+        # Daly City (1973) waited for the Colma extension (1996). Infill stations
+        # (Embarcadero, West Dublin) are younger than their track and change nothing.
+        if ln["veh"] == "bart":
+            for r in stations_tab.itertuples():
+                if r.system == "bart" and r.code in ln["stops"] and r.code in st_xy:
+                    near = np.hypot(*(xy - st_xy[r.code]).T) < 350.0
+                    years[near] = np.minimum(years[near], decyear(r.opened))
         # stops: distance along the line
         line = LineString(xy)
         if ln["system"] == "bart":
@@ -462,27 +471,32 @@ def main():
     items = []
     for sg in segs:
         li = sg["line"]
-        # shared track (e.g. King St: N from 1998, T from 2007) opens with its first line
-        y0 = 9999.0
+        # shared track (e.g. King St: N from 1998, T from 2007) opens with its first line.
+        # Years are taken vertex by vertex: an OSM way can run on past an extension's end
+        # (one way from Concord to Pittsburg / Bay Point, or Fremont to Warm Springs), and a
+        # single median year for the way opened those extensions with the 1970s system.
+        vy = np.full(len(sg["xy"]), 9999.0)
         for lj in sg["compat"]:
             dd, ii = trees[lj].query(sg["xy"])
             if np.median(dd) < 30:
-                y0 = min(y0, float(np.median(lv_y[lj][ii])))
-        if y0 >= 9999:
+                ok = dd < 60
+                vy[ok] = np.minimum(vy[ok], lv_y[lj][ii][ok])
+        if (vy >= 9999).any():
             _, ii = trees[li].query(sg["xy"])
-            y0 = float(np.median(lv_y[li][ii]))
+            vy = np.where(vy >= 9999, lv_y[li][ii], vy)
+        vy = np.round(vy, 2)
         lon, lat = to_ll(sg["xy"])
         z = ground(lon, lat) + sg["h"]
         kind = TRACK_KIND[sg["veh"]]
         width = TRACK_WIDTH[sg["veh"]]
-        # split into runs: tunnel (4) / aerial (2) / ground (0)
+        # split into runs: tunnel (4) / aerial (2) / ground (0), and where the opening year changes
         cls = np.where(sg["tn"], 4, np.where(sg["h"] > 4, 2, 0))
         a = 0
         for k in range(1, len(cls) + 1):
-            if k == len(cls) or cls[k] != cls[a]:
+            if k == len(cls) or cls[k] != cls[a] or vy[k] != vy[a]:
                 b = min(k + 1, len(cls))
                 if b - a >= 2:
-                    items.append((lon[a:b], lat[a:b], z[a:b], kind, width, y0, 9999.0, int(cls[a])))
+                    items.append((lon[a:b], lat[a:b], z[a:b], kind, width, float(vy[a]), 9999.0, int(cls[a])))
                 a = k
     write_paths3d(VIEWER_DATA / "transit.bin.gz", items)
 

@@ -398,7 +398,8 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
         for cid, _ in conns:
             conn_count[cid] = conn_count.get(cid, 0) + 1
         segs.append({"i": i, "g": g, "f": f, "s": f * L, "h": h, "tn": tn, "tn_real": tn_real, "conns": conns,
-                     "cls": row["class"], "sub": row.subclass, "bounds": row.geometry.bounds})
+                     "cls": row["class"], "sub": row.subclass, "bounds": row.geometry.bounds,
+                     "name": row["name"] if isinstance(row["name"], str) else ""})
     # the extract is wider than the map (decision 32): heights and junctions are worked out on
     # the whole network, but only roads inside the map's extent (+ margin) are written
     inside = in_extent(shapely.points([(sg["bounds"][0] + sg["bounds"][2]) / 2 for sg in segs],
@@ -567,8 +568,15 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
     if undated:
         mids = gpd.GeoSeries([segs[q]["g"].interpolate(0.5, normalized=True) for q in undated], crs=UTM).to_crs(4326)
         yrs, n_b = date_by_buildings([segs[q]["g"] for q in undated], mids, 1870.0)
+        # one road, one year: a through road does not open house by house — every stretch of a
+        # named road takes the early quartile of its stretches (as neighbourhoods are dated)
+        by_name = {}
         for q, y in zip(undated, yrs):
-            segs[q]["year"] = float(y)
+            if segs[q]["in"]:
+                by_name.setdefault(segs[q]["name"], []).append(float(y))
+        for q, y in zip(undated, yrs):
+            ys = by_name.get(segs[q]["name"]) if segs[q]["name"] else None
+            segs[q]["year"] = float(np.quantile(ys, 0.25)) if ys and len(ys) >= 4 else float(y)
         log(f"roads: {len(undated)} trunk road segments without a researched route dated like main roads "
             f"({n_b} by the buildings along them)")
     log(f"roads: {n_def} motorway segments inside the map left at the 1960 default (no researched route)")
@@ -856,7 +864,9 @@ def main():
         y1f = float(y1r) if np.isfinite(y1r) else 9999.0
         rid = str(r.route_id)
         # (the E Embarcadero has no SFMTA pattern: it keeps its researched line and trams)
-        if k in (K_CABLE, K_STREETCAR, K_LIGHTRAIL) and y1f >= 9999 and TRANSIT_TAKES_OVER and rid != "sc_e_embarcadero":
+        # (and VTA light rail in the Santa Clara Valley, which transit.py does not cover)
+        if (k in (K_CABLE, K_STREETCAR, K_LIGHTRAIL) and y1f >= 9999 and TRANSIT_TAKES_OVER and rid != "sc_e_embarcadero"
+                and not rid.startswith("vta_")):
             # still running today: from 1980 (Muni Metro) these lines are drawn and run by
             # transit.py with their real track geometry
             y1f = 1980.0

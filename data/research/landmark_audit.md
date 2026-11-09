@@ -102,6 +102,7 @@ z13 `region-buildings` tiles; dates and dimensions checked against Wikipedia / N
 | Mills Tower | parts of 155 Sansome St and 115 Sansome St |
 | Shell Building | 130 Bush St (1910) |
 | Russ Building | podium parts of 350 Bush St / 500 Pine St (2018) |
+| Marin County Civic Center | the reverse: OSM's single outline of the whole complex (16,300 m², 25.6 m) had its vertex centre between the two wings' polygons and was never hidden — a plain block stood over both models; a third polygon at the hinge now takes it |
 
 ## Open (outside the landmark files)
 
