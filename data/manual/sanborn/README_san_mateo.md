@@ -155,6 +155,11 @@ everywhere else the streets are close to scale (group fits of 0.3-1.8 m).
   hospital blocks along the creek and Griffith Av have no usable control.
 * No railway tracks traced (the S.P. main line is in today's Caltrain right of way).
 * Storeys read only for the masonry buildings; names for 18 buildings.
+* **Redwood City** (prefix `redwood_city` in `REGION_SANBORN`) not traced: June 1919 (`sanborn00783_006`, 29 sheets) and
+  April 1907 (`_005`, 14 sheets) have images; a first try on 1919 sheet 6 (court-house blocks) found most parcel corners
+  around Bradford / Hamilton St re-platted (offsets of 1 or 70+ m) and the 1919 Webster / Washington St names not in
+  today's streets (Webster St = Middlefield Rd at the court house), so it needs centreline-offset control (`oc`) and
+  street-name research first.
 
 ## Reproduce
 
