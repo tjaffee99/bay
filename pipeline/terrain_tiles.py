@@ -599,6 +599,15 @@ def histories(name, g, d):
     for m, y in restored:
         event(m & water_now & (salt | diked), SHALLOW, y)
         event(m & (wc == 90) & (salt | diked), MARSH, y)
+        # filled ground dug out again (Crissy Field: marsh filled for the 1915 exposition,
+        # the airfield 1921-74, tidal marsh re-created 2000): water / wetland today, so the
+        # fill above never touched it — land from the fill zone's year until the restoration
+        refill = m & was_wet & np.isfinite(zones_fill) & (water_now | (wc == 90)) & ~(salt | diked)
+        if refill.any():
+            event(refill, FILL, zones_fill)
+            event(refill, GRASS, zones_fill + 6.0)
+            event(refill & water_now, SHALLOW, y)
+            event(refill & ~water_now, MARSH, y)
 
     # c.1800 marsh / flat that is open water today (not a salt pond or diked): narrow
     # channels are sloughs that were always water; broad water was made later — Lake

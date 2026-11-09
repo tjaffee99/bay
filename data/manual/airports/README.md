@@ -38,8 +38,9 @@ overlapped) and every runway phase as a polygon (`kind = runway_phase`, the axis
 the runway width). `zone_clip` rows refer to `zone`.
 
 ### `vanished_pavement.geojson`
-Runways gone from today's map: the north end of Mills Field's original north-south runway (1927-1962,
-marked '4' on the 1946 sheet), OAK's NAS diagonal runway (1944-1986). Polygons at runway width, `start_year / end_year / width_m / confidence /
+Runways gone from today's map: the north end of Mills Field's north-south runway (1931-1962, marked '4'
+on the 1946 sheet; on the tidelands reclaimed in the early 1930s, so not the 1927 strip - see *Ground under
+SFO* below), OAK's NAS diagonal runway (1944-1986). Polygons at runway width, `start_year / end_year / width_m / confidence /
 source_url / note`.
 
 ### `buildings.csv` (97 rows) - columns of `data/tables/known_building_dates_region.csv` + `overture_id, confidence`
@@ -104,14 +105,57 @@ concourse 1969) - 2010; Terminal A 1990; Terminal B + rental car garage 2010.
 3. **Vanished buildings**: read `vanished_buildings.geojson` like `vanished_sites/buildings.geojson` in
    `region_predecessors.py` (same properties; `use` hall / dwelling / other).
 4. `data/tables/airports.csv` is consistent with these files (SFO 1927, OAK 1927; SJC 1945 = the dirt
-   strip, paved runway 1948) - no change needed. `airports_extra*.geojson` (NAS Alameda) is unrelated.
+   strip, paved runway 1948) - no change needed. `airports_extra*.geojson` (NAS Alameda, Crissy Field) is unrelated.
+
+## Ground under SFO (2026-11) - `data/manual/fill_zones.csv` `sm_sfo_*`
+
+Pavement waits for its ground (terrain land-year grid), and the two old SFO fill boxes (1927.2-1945 west of
+-122.386, 1941-1965 east of it, years spread across each) put the ground under the 1930s field in the
+1950s. They are replaced by one zone per phase, read off the editions in the SFO frame (water-tint masks of
+the 1946 / 1956 / 1968 PR / 1973 PR sheets, the 1939 dike traced by hand on the 1:62,500 1943 edition, the
+c.1800 marsh from the SFEI poster):
+* **Mills estate marsh pasture** (tidal marsh to the railroad on the 1892 survey, drained pasture on the
+  1939 sheet), 1905-15 ESTIMATED: the part inside the 1939 dike is 152 acres, i.e. the 150-acre "cow
+  pasture" leased in March 1927 - Mills Field of 1927 is on land from the start;
+* **tidelands reclaimed in the early 1930s** (the rest of the 1939 dike, 230 acres; "350 acres of
+  tidelands reclaimed" by 1935), 1930.5-35 - the N-S runway '4' lies here (land c.1934);
+* WPA seaplane harbour / Coast Guard Air Station 1936-40.5; 1939 extension + wartime hydraulic fill
+  1939.5-43.5 (field of the 1946 sheets); NE fill 1946.5-50.5; small 1946->56 shore pieces 1947-52.5;
+  28L extension 1957-60.5; 1R north extension 1957-61.5 (Hunters Point 1968 PR, read by hand: its purple
+  revision ink defeats the water mask); 28R extension 1968-68.5.
+Each zone ends half a year before the researched pavement on it. Check without a terrain run:
+`cd pipeline && ../.venv/bin/python ../data/manual/airports/tools/fillcheck.py` (land year at the Mills
+Field points and under every SFO row of `pavement_dates.csv`). With the new zones 296 of the 301 SFO rows
+keep their researched start (before: 215); the rest wait for their ground as the maps show: 3 taxiways
+dated 1944 by the coarse SFO-1946 zone lie beyond the 1946 shoreline (bay until the 28L fill, c.1960), a
+NE stopway (1944; Hunters Point quad not mapped in 1946) on the NE fill (c.1950), a 1961 taxiway on the
+1968 mud (1968.5).
+
+## Point-only airports and Crissy Field (`pipeline/airports.py`, `../airports_extra*.geojson`)
+
+* An airport that OSM maps only as a point (no aerodrome outline: San Rafael Airport, Meadowlark Field
+  in Livermore) gets an outline from the runways / taxiways / aprons nearer to it than to any other
+  airport within 1.5 km (convex hull + 40 m), so its pavement is kept and the terrain shows airfield
+  grass. Opening years: San Rafael 1972 (early 1970s per the Marin History Museum; not on the Novato
+  1968 PR, "LANDING STRIP" on the 1980 PR), Meadowlark 1958 (between the Altamont 1953 / 1949-photo
+  edition and its 1968 PR) - both ESTIMATED.
+* **Crissy Field** (Presidio, Army airfield 1921-74, not in Overture): `tools/crissy.py` writes the
+  outline (the open field on the 1946-photo San Francisco North sheet + the runway) and the paved runway
+  6/24 in two pieces with their own years (`start_year / end_year` in `airports_extra.geojson`, honoured
+  by `airports.py`): east part 1947.5-1999 (7/1946 aerial unpaved, 8/1948 paved; the 1956 sheet's strip),
+  west 180 m 1958-1999 (not on the 1956 sheet; 2,900 ft paved on the 1959 chart; the 1968 PR outline,
+  ~790 x 28 m). The grass field of 1921-c.1947 is the outline's airfield grass (terrain). Not modelled:
+  the 1915 PPIE racetrack / aviation field (not in `viewer/src/landmarks/batch4.ts` either), the WWII
+  temporary buildings 901-919 at the field's ends (no footprints), and the field over today's Crissy Marsh
+  (terrain: the marsh is water today, so the 1912-15 fill zone never makes it land - needs a terrain change).
 
 ## Limits
 
 * Runway interval ends are read to about +-75 m; the SJC 1953 sheets (1948 photos) are registered
   to +-30 m. The 1927 Mills Field strip and the 1930s SFO field are not on any 1:24k edition: only the
   north end of the N-S runway is drawn (vanished); the rest of the 1930s pavement is assumed under today's NW field
-  (dated with the 1946 field, 1944 - so SFO's pavement starts in the 1940s; the 1927-41 field is not modelled).
+  (dated with the 1946 field, 1944 - so SFO's pavement starts in the 1940s; the 1927-41 field is not modelled,
+  only its ground: see *Ground under SFO*).
 * Topo editions draw buildings as symbols (solid, hatched, purple); footprints under 150 m2 are not dated.
   Photorevisions seldom delete demolished buildings, so some ends are late. Identities of vanished
   buildings are generic unless named.
@@ -125,4 +169,6 @@ concourse 1969) - 2010; Terminal A 1990; Terminal B + rental car garage 2010.
 `evidence/footprint_editions_<AP>.csv`), `zcheck.py`, `qa_build.py`, `qa_trace.py` (QA maps),
 **`build.py`** (runway phases, zones, feature overrides -> `pavement_dates.csv`, `pavement_zones.geojson`,
 `vanished_pavement.geojson`), **`buildings.py`** (-> `buildings.csv`), **`trace.py SCRATCH`** (->
-`vanished_buildings.geojson`; needs the `.npy` renders and `<AP>_bldg.geojson` in SCRATCH, see its header).
+`vanished_buildings.geojson`; needs the `.npy` renders and `<AP>_bldg.geojson` in SCRATCH, see its header),
+**`fillcheck.py`** (SFO land years from the fill-zone rings, no terrain run), **`crissy.py`** (Crissy Field ->
+`../airports_extra*.geojson`).

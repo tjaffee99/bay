@@ -379,12 +379,15 @@ OPENED = {"SFO": 1927, "OAK": 1927, "SJC": 1948}
 
 # ----------------------------------------------------------------------------------------- vanished pavement
 VANISHED = [
-    dict(airport="SFO", name="Mills Field north-south runway (1927 strip, paved 1930s)", kind="runway",
-         axis=[[-338, 1400], [-372, 1000]], width=45, start=1927, end=1962, conf="estimated", src="sfo_museum",
-         note="the north end of the N-S runway marked '4' on the 1946-photo sheet, outside today's pavement "
-              "(a 1930s aerial film of Mills Field shows the 'original dirt-paved North-South runway'; paved and "
-              "widened by 1937). Only the part north of today's taxiway grid is given (its south part lies under "
-              "later pavement). Still drawn 1956, gone with the 1960s north-side works (end = 1956 -> 1968 "
+    dict(airport="SFO", name="Mills Field north-south runway (early 1930s, on the reclaimed tidelands)", kind="runway",
+         axis=[[-338, 1400], [-372, 1000]], width=45, start=1931, end=1962, conf="estimated", src="sfo_museum",
+         note="the north end of the N-S runway marked '4' on the 1946-photo sheet, outside today's pavement (a 1930-37 "
+              "aerial film of Mills Field shows the 'original dirt-paved North-South runway'; paved and widened by "
+              "1937). It lies ~300 m bayward of the c.1800 marsh edge, inside the dike of the 1939-photo sheet on the "
+              "tidelands reclaimed in the early 1930s (fill_zones sm_sfo_tidelands_1930s), so it is not the 1927 strip "
+              "(which ran on the marsh pasture by the Bayshore Highway): start = the reclamation (1931, ESTIMATED; "
+              "airports.py waits for the ground). Only the part north of today's taxiway grid is given (its south part "
+              "lies under later pavement). Still drawn 1956, gone with the 1960s north-side works (end = 1956 -> 1968 "
               "midpoint). Axis read on the 1946 sheet (+-20 m)"),
     dict(airport="OAK", name="NAS Oakland / North Field NW-SE diagonal runway", kind="runway",
          axis=[[-133, 1501], [595, 979]], width=45, start=1944, end=1986, conf="estimated", src="oak_nas",

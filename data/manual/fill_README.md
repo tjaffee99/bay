@@ -140,8 +140,15 @@ The 1853 USC&GS city chart and T-687 (1857) would pin the bands down. The georef
 | `sm_brisbane_landfill` | 1932–1967 | fill | high |
 | `sm_sierra_point` | 1965–1972 | fill | medium |
 | `sm_oyster_point` | 1956–1970 | fill | high |
-| `sm_sfo_mills_field` | 1927.2–1945 | fill | medium |
-| `sm_sfo_bay_runways` | 1941–1965 | fill | medium |
+| `sm_sfo_mills_pasture_field` / `_west` (Mills estate marsh pasture: the 1927 Mills Field and the strip west of the Bayshore Highway) | 1905–1915 | fill | low (date between the 1892 survey and the 1927 lease) |
+| `sm_sfo_tidelands_1930s` (diked airfield of the 1939 sheet, bayward of the c.1800 marsh) | 1930.5–1935 | fill | medium |
+| `sm_sfo_seaplane_harbor_a/b/c` (WPA seaplane harbour shores, Coast Guard Air Station) | 1936–1940.5 | fill | medium |
+| `sm_sfo_wartime_fill_a/b/c` (1939 extension + Army hydraulic fill, field of the 1946 sheets) | 1939.5–1943.5 | fill | medium |
+| `sm_sfo_ne_fill` | 1946.5–1950.5 | fill | medium |
+| `sm_sfo_1950s_shore_a/b/c` | 1947–1952.5 | fill | low |
+| `sm_sfo_28L_extension_fill` | 1957–1960.5 | fill | medium |
+| `sm_sfo_1R_north_fill` | 1957–1961.5 | fill | medium |
+| `sm_sfo_28R_extension_fill_a/b/c` | 1968–1968.5 | fill | medium |
 | `sm_foster_city_diked` | 1897–1901 | diked_marsh | medium |
 | `sm_foster_city_fill` | 1961–1971 | fill | high |
 | `sm_redwood_shores_salt` | 1902–1930 | diked_marsh | low |
@@ -180,6 +187,14 @@ The 1853 USC&GS city chart and T-687 (1857) would pin the bands down. The georef
 | `fb_peninsula_bayfront` | 1900–1970 | fill | low |
 | `fb_east_bay` | 1870–1970 | fill | low |
 | `fb_north_bay` | 1860–1970 | fill | low |
+
+The SFO rows (2026-11) replace one box per period: each is the land added between two USGS editions
+(1892 survey, 1939 photos at 1:62,500; 1946 / 1956 / 1968 PR / 1973 PR at 1:24,000), from a water-tint
+mask of each sheet with the 1939 dike hand-traced, split from the c.1800 marsh (SFEI poster) and
+buffered 30 m (earliest year per cell, so no gaps); years from the airport history (sources in the
+rows), ending half a year before the researched pavement on them (`data/manual/airports`).
+`data/manual/airports/tools/fillcheck.py` recomputes the zone years at the Mills Field points and under
+every SFO pavement row without a terrain run.
 
 Confidence levels:
 

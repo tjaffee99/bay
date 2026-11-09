@@ -3,8 +3,11 @@ dated ground features, and airport outlines for the terrain (airfield grass inst
 city ground or orchard, from the opening year).
 
 Dates: data/tables/airports.csv (researched opening / closing years per airport, source
-per row). Nothing is laid before its ground exists (bay fill: SFO, OAK, NAS Alameda) —
-each feature waits for the terrain's land year at its centre. Runways are mostly OSM
+per row; SFO / OAK / SJC piece by piece from data/manual/airports; researched pieces of
+vanished airfields may carry their own start_year / end_year). Airports OSM maps only as a
+point get an outline from their own pavement. Nothing is laid before its ground exists (bay
+fill: SFO, OAK, NAS Alameda) — each feature waits for the terrain's land year (median over
+the piece). Runways are mostly OSM
 centrelines: buffered to the usual width (45 m at the international / military fields,
 23 m elsewhere; taxiways 23 / 15 m, taxilanes 10 m).
 
@@ -27,6 +30,39 @@ from roads import ORIGIN, UTM, Ground
 AIRPORT_CLASSES = ["airport", "international_airport", "military_airport", "municipal_airport", "private_airport"]
 BIG = {"international_airport", "military_airport"}
 KIND = {"runway": 0, "stopway": 0, "taxiway": 1, "taxilane": 1, "apron": 2}
+
+
+def point_airport_outlines(g, reach=1500.0, margin=40.0):
+    """Outlines for airports OSM maps only as a point (San Rafael Airport, Meadowlark Field):
+    the convex hull of the runways / taxiways / aprons around the point that belong to it
+    (nearer to it than to any other airport, within `reach` m), plus a margin. Points
+    within 300 m of a polygon outline are duplicates of it and skipped; a point with no
+    pavement around it gets no outline (nothing to draw)."""
+    import shapely
+    none = gpd.GeoDataFrame(columns=["name", "class", "geometry"], geometry="geometry", crs=4326)
+    ports = g[g["class"].isin(AIRPORT_CLASSES)].to_crs(UTM)
+    poly = ports[ports.geom_type.isin(["Polygon", "MultiPolygon"])]
+    pts = ports[ports.geom_type == "Point"]
+    if not poly.empty:
+        pts = pts[pts.geometry.distance(shapely.union_all(poly.geometry.values)) > 300]
+    feats = g[g["class"].isin(list(KIND))].to_crs(UTM)
+    if pts.empty or feats.empty:
+        return none
+    # distance of every feature to every airport (polygon outlines first, then the points)
+    anchors = list(poly.geometry.values) + list(pts.geometry.values)
+    d = np.stack([feats.geometry.distance(a).values for a in anchors])
+    nearest = d.argmin(0)
+    out = []
+    for i, (_, p) in enumerate(pts.iterrows(), start=len(poly)):
+        mine = (nearest == i) & (d[i] <= reach)
+        if not mine.any():
+            continue
+        parts = [geom.buffer(12) for geom in feats.geometry.values[mine]] + [p.geometry.buffer(30)]
+        hull = shapely.union_all(parts).convex_hull.buffer(margin)
+        out.append({"name": p["name"], "class": p["class"], "geometry": hull})
+        log(f"airports: outline for point-only {p['name']} from {int(mine.sum())} runway / taxiway / apron features "
+            f"({hull.area / 1e4:.1f} ha)")
+    return gpd.GeoDataFrame(out, geometry="geometry", crs=UTM).to_crs(4326) if out else none
 
 
 def land_year(lon, lat):
@@ -128,15 +164,23 @@ def main():
     d = pd.read_parquet(RAW / "overture" / RELEASE / "region_airports.parquet")
     g = gpd.GeoDataFrame(d, geometry=gpd.GeoSeries.from_wkb(d.geometry), crs=4326)
     g = g[in_extent(g.geometry.representative_point())]
-    # airfields gone from today's map (NAS Alameda 1940-97): researched pavement polygons
-    # (data/manual/airports_extra.geojson, already at their real width) + airfield outline
+    # airports OSM has only as a point (no aerodrome outline): outline from their pavement
+    po = point_airport_outlines(g)
+    if len(po):
+        g = gpd.GeoDataFrame(pd.concat([g, po], ignore_index=True), geometry="geometry", crs=4326)
+    # airfields gone from today's map (NAS Alameda 1940-97, Crissy Field 1921-74): researched
+    # pavement polygons (data/manual/airports_extra.geojson, already at their real width; a
+    # piece with its own start_year / end_year keeps them) + airfield outline
     extra_f = MANUAL / "airports_extra.geojson"
     extra_o = MANUAL / "airports_extra_outlines.geojson"
     if extra_f.exists() and extra_o.exists():
         ef = gpd.read_file(extra_f).to_crs(4326).rename(columns={"airport": "name"})
         ef["class"] = ef["kind"]
+        for c in ("start_year", "end_year"):
+            ef["piece_" + c] = pd.to_numeric(ef[c], errors="coerce") if c in ef else np.nan
         eo = gpd.read_file(extra_o).to_crs(4326)
-        g = gpd.GeoDataFrame(pd.concat([g, ef[["name", "class", "geometry"]], eo[["name", "class", "geometry"]]],
+        g = gpd.GeoDataFrame(pd.concat([g, ef[["name", "class", "piece_start_year", "piece_end_year", "geometry"]],
+                                        eo[["name", "class", "geometry"]]],
                                        ignore_index=True), geometry="geometry", crs=4326)
         log(f"airports: + {len(ef)} researched pavement polygons, {len(eo)} outlines of vanished airfields")
     ports = g[g["class"].isin(AIRPORT_CLASSES) & (g.geom_type == "Polygon")].copy()
@@ -162,6 +206,11 @@ def main():
     f["aclass"] = j.aclass.reindex(f.index).values
     f["opened"] = j.opened.reindex(f.index).values
     f["closed"] = j.closed.reindex(f.index).values
+    if "piece_start_year" in f:
+        # researched pieces of vanished airfields carry their own years (Crissy Field's paved
+        # runway 1947-99 inside an airfield of 1921-74)
+        f["opened"] = f.piece_start_year.where(f.piece_start_year.notna() & f.opened.notna(), f.opened)
+        f["closed"] = f.piece_end_year.where(f.piece_end_year.notna() & f.opened.notna(), f.closed)
     f = f[f.opened.notna()]
     big = f.aclass.isin(list(BIG)).values
     width = np.select([f["class"].isin(["runway", "stopway"]).values, f["class"].eq("taxiway").values,
@@ -181,8 +230,21 @@ def main():
     f = f.explode(index_parts=False).reset_index(drop=True)
     f = f[(f.geometry.geom_type == "Polygon") & (f.geometry.area > 20)].reset_index(drop=True)
     ll = f.to_crs(4326)
-    c = ll.geometry.representative_point()
-    ly = land_year(c.x.values, c.y.values)
+    # ground year of a piece = median over its representative point and up to 24 of its
+    # vertices ("always land" counts as earliest): one cell of a ditch or pond that only
+    # became land with a later building no longer holds back a whole taxiway
+    smp = []
+    for geom in ll.geometry.values:
+        xy = np.asarray(geom.exterior.coords)[:-1, :2]
+        xy = xy[np.linspace(0, len(xy) - 1, min(len(xy), 24)).astype(int)]
+        rp = geom.representative_point()
+        smp.append(np.vstack([[rp.x, rp.y], xy]))
+    n_s = np.array([len(s) for s in smp])
+    allp = np.vstack(smp)
+    lys = land_year(allp[:, 0], allp[:, 1])
+    lys = np.where(np.isfinite(lys), lys, -1e4)
+    ly = np.array([np.median(v) for v in np.split(lys, np.cumsum(n_s)[:-1])])
+    ly = np.where(ly < 0, np.nan, ly)
     start = np.where(np.isfinite(ly), np.maximum(f.opened.values, ly + 0.5), f.opened.values)
     ground = Ground()
     starts, pos, kinds, years = [0], [], [], []
