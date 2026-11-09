@@ -1,0 +1,87 @@
+{
+"type": "FeatureCollection",
+"features": [
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"name": "Mills Field / San Francisco Airport NNE runway (1930s)",
+"kind": "runway",
+"start_year": 1937,
+"end_year": 1962,
+"width_m": 45,
+"confidence": "estimated",
+"source_url": "https://www.sfomuseum.org/exhibitions/mills-field-and-san-francisco-airport",
+"note": "one of the three 1930s runways ('three by 1936, forming a triangle'; paved and widened by 1937), north end marked '4 x' on the 1946 sheet; still drawn 1956, built over by the 1960s (taxiway grid / North Terminal area) - end = 1956 -> 1968 midpoint. Axis read on the 1946 sheet (+-30 m)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3831479,
+37.6301811
+],
+[
+-122.3882512,
+37.6224759
+],
+[
+-122.3887025,
+37.622666
+],
+[
+-122.3835991,
+37.6303712
+],
+[
+-122.3831479,
+37.6301811
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"name": "NAS Oakland / North Field NW-SE diagonal runway",
+"kind": "runway",
+"start_year": 1944,
+"end_year": 1986,
+"width_m": 45,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/NASOakland.html",
+"note": "wartime runway ('four asphalt runways, the longest 6,500 ft'), on the 1947-1979 editions, gone on the 1993 sheet (end = midpoint); axis read on the 1958-photo sheet (+-40 m)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2153916,
+37.7306884
+],
+[
+-122.2236594,
+37.7354093
+],
+[
+-122.2233616,
+37.73574
+],
+[
+-122.2150938,
+37.7310192
+],
+[
+-122.2153916,
+37.7306884
+]
+]
+]
+}
+}
+]
+}

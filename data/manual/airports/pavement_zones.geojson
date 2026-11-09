@@ -1,0 +1,2031 @@
+{
+"type": "FeatureCollection",
+"features": [
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10L/28R d350-3050",
+"kind": "runway_phase",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/cgassf.html",
+"evidence": "core: drawn on the 1946-photo sheets from just east of the old Bayshore Highway to the 1946 seawall; built on wartime hydraulic fill (Army lease 5 Feb 1942: 'three hard-surfaced runways built, the longest 8,000 ft', USACE 1991 via militarymuseum.org); Aug 1952 chart 28R 8,870 ft. Year = middle of 1942-46. May incorporate the 1930s Runway C (1,900 ft -> 3,000 ft in 1935) at its west end"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3656472,
+37.6167882
+],
+[
+-122.3927503,
+37.6281504
+],
+[
+-122.3924284,
+37.6286387
+],
+[
+-122.3653253,
+37.6172765
+],
+[
+-122.3656472,
+37.6167882
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10L/28R d0-350",
+"kind": "runway_phase",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "west end / blast pad over the former Bayshore Highway (crossed this axis at d~50 until the freeway bypass); not on the 1956 sheet, purple on the 1968 photorevision -> midpoint 1962"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3927503,
+37.6281504
+],
+[
+-122.3962637,
+37.6296232
+],
+[
+-122.3959417,
+37.6301116
+],
+[
+-122.3924284,
+37.6286387
+],
+[
+-122.3927503,
+37.6281504
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10L/28R d3050-3974",
+"kind": "runway_phase",
+"start_year": 1969,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://simpleflying.com/san-francisco-airport-runways-terminals-opening-dates/",
+"evidence": "east extension onto new fill: 'Runway 28 Right was extended in 1968'; still mud with the approach-light pier on the 1968 photos, paved on the 1973 photorevision -> 1969"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3563719,
+37.6128998
+],
+[
+-122.3656472,
+37.6167882
+],
+[
+-122.3653253,
+37.6172765
+],
+[
+-122.35605,
+37.6133881
+],
+[
+-122.3563719,
+37.6128998
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10R/28L d900-2950",
+"kind": "runway_phase",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/cgassf.html",
+"evidence": "core on the 1946-photo sheets (west end ~d 780-900 behind the 1940s hangar row, east end at the 1946 seawall); Aug 1952 chart 28L 6,500 ft; wartime fill, year = middle of 1942-46"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3659636,
+37.6145896
+],
+[
+-122.3865394,
+37.6232203
+],
+[
+-122.3862173,
+37.6237086
+],
+[
+-122.3656415,
+37.6150779
+],
+[
+-122.3659636,
+37.6145896
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10R/28L d0-900",
+"kind": "runway_phase",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://simpleflying.com/san-francisco-airport-runways-terminals-opening-dates/",
+"evidence": "'Runway 28 Left was lengthened ... in 1961'; west part across the old hangar row (buildings on the axis on the 1956 sheet, pavement on the 1968 photorevision)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3865394,
+37.6232203
+],
+[
+-122.3955726,
+37.6270094
+],
+[
+-122.3952506,
+37.6274976
+],
+[
+-122.3862173,
+37.6237086
+],
+[
+-122.3865394,
+37.6232203
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10R/28L d2950-3786",
+"kind": "runway_phase",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://simpleflying.com/san-francisco-airport-runways-terminals-opening-dates/",
+"evidence": "1961 lengthening of 28L: east part on new fill (bay on the 1956 sheet, paved on the 1968 photorevision)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3575728,
+37.6110701
+],
+[
+-122.3659636,
+37.6145896
+],
+[
+-122.3656415,
+37.6150779
+],
+[
+-122.3572508,
+37.6115583
+],
+[
+-122.3575728,
+37.6110701
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1L/19R d420-2602",
+"kind": "runway_phase",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+"evidence": "core: south end east of the old Bayshore Highway on the 1946-photo sheet (north end beyond that sheet, at d~2600 on the 1956 sheet); Aug 1952 chart 1L 7,000 ft; wartime fill, year = middle of 1942-46"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3696018,
+37.6274445
+],
+[
+-122.3811627,
+37.6099971
+],
+[
+-122.3817743,
+37.6102548
+],
+[
+-122.3702135,
+37.6277022
+],
+[
+-122.3696018,
+37.6274445
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1L/19R d200-420",
+"kind": "runway_phase",
+"start_year": 1953,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south extension after the Aug 1952 chart, across the old highway alignment (south end at d~200 on the 1956 sheet)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3811627,
+37.6099971
+],
+[
+-122.3823283,
+37.6082379
+],
+[
+-122.38294,
+37.6084957
+],
+[
+-122.3817743,
+37.6102548
+],
+[
+-122.3811627,
+37.6099971
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1L/19R d0-200",
+"kind": "runway_phase",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south end / blast pad: 1956 -> 1968 editions, midpoint"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3823283,
+37.6082379
+],
+[
+-122.383388,
+37.6066387
+],
+[
+-122.3839996,
+37.6068965
+],
+[
+-122.38294,
+37.6084957
+],
+[
+-122.3823283,
+37.6082379
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1R/19L d330-2480",
+"kind": "runway_phase",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+"evidence": "core (south end east of the old highway on the 1946 sheet, north end d~2480 on the 1956 sheet); Aug 1952 chart 1R 7,750 ft; wartime fill, year = middle of 1942-46"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3682535,
+37.6250541
+],
+[
+-122.3796578,
+37.607868
+],
+[
+-122.3802693,
+37.6081261
+],
+[
+-122.3688649,
+37.6253121
+],
+[
+-122.3682535,
+37.6250541
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1R/19L d200-330",
+"kind": "runway_phase",
+"start_year": 1953,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south extension, after the 1952 chart, on the 1956 sheet"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3796578,
+37.607868
+],
+[
+-122.3803474,
+37.6068289
+],
+[
+-122.3809589,
+37.6070869
+],
+[
+-122.3802693,
+37.6081261
+],
+[
+-122.3796578,
+37.607868
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1R/19L d0-200",
+"kind": "runway_phase",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south end / blast pad: 1956 -> 1968 editions, midpoint"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3803474,
+37.6068289
+],
+[
+-122.3814083,
+37.6052302
+],
+[
+-122.3820197,
+37.6054882
+],
+[
+-122.3809589,
+37.6070869
+],
+[
+-122.3803474,
+37.6068289
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 1R/19L d2480-2887",
+"kind": "runway_phase",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "north extension onto the NE fill with its approach-light pier: absent 1956, purple on the 1968 PR"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3660971,
+37.6283037
+],
+[
+-122.3682535,
+37.6250541
+],
+[
+-122.3688649,
+37.6253121
+],
+[
+-122.3667085,
+37.6285617
+],
+[
+-122.3660971,
+37.6283037
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-1946",
+"kind": "zone",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/cgassf.html",
+"evidence": "airfield on the 1946-photo sheets (taxiway grid between the four runways, 1930s field in the NW); wartime hydraulic fill and runways 1942-46"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3872067,
+37.6328265
+],
+[
+-122.3838045,
+37.6311082
+],
+[
+-122.3804022,
+37.6287568
+],
+[
+-122.3732575,
+37.6274003
+],
+[
+-122.3690615,
+37.6269481
+],
+[
+-122.3656592,
+37.6249585
+],
+[
+-122.3638447,
+37.6226071
+],
+[
+-122.3638447,
+37.6168191
+],
+[
+-122.3667933,
+37.6153721
+],
+[
+-122.3713296,
+37.6127495
+],
+[
+-122.3752989,
+37.6101268
+],
+[
+-122.377,
+37.608318
+],
+[
+-122.3798352,
+37.6072328
+],
+[
+-122.3823302,
+37.6092224
+],
+[
+-122.3849385,
+37.6119355
+],
+[
+-122.3877737,
+37.6151913
+],
+[
+-122.3900419,
+37.6192609
+],
+[
+-122.3920832,
+37.624235
+],
+[
+-122.3940111,
+37.6298421
+],
+[
+-122.3940111,
+37.6328265
+],
+[
+-122.3872067,
+37.6328265
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-westfield",
+"kind": "zone",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "West Field (cargo, airline and service area west of the 1946 field, along the freeway): developed between the 1956 and 1968 editions (low confidence for individual taxilanes)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3974134,
+37.6274003
+],
+[
+-122.394238,
+37.624235
+],
+[
+-122.3920832,
+37.624235
+],
+[
+-122.3900419,
+37.6192609
+],
+[
+-122.3877737,
+37.6151913
+],
+[
+-122.3911759,
+37.609765
+],
+[
+-122.4030837,
+37.609765
+],
+[
+-122.4030837,
+37.6283046
+],
+[
+-122.3970688,
+37.6293239
+],
+[
+-122.3974134,
+37.6274003
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-south-ends",
+"kind": "zone",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south end blast pads / taxiways of the 1/19 runways: 1956 -> 1968 editions"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3833508,
+37.606871
+],
+[
+-122.3804022,
+37.6052432
+],
+[
+-122.3776804,
+37.6063284
+],
+[
+-122.3758659,
+37.6038866
+],
+[
+-122.3821033,
+37.6029822
+],
+[
+-122.3883408,
+37.6061475
+],
+[
+-122.3877737,
+37.6111216
+],
+[
+-122.3823302,
+37.6092224
+],
+[
+-122.3833508,
+37.606871
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-NE-fill",
+"kind": "zone",
+"start_year": 1951,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "NE fill north of the 1946 airfield, paved on the 1956 sheet (Hunters Point quad not mapped 1946) -> midpoint 1951"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3639581,
+37.6307465
+],
+[
+-122.3633911,
+37.6283046
+],
+[
+-122.3656592,
+37.6249585
+],
+[
+-122.3690615,
+37.6269481
+],
+[
+-122.3732575,
+37.6274003
+],
+[
+-122.3735978,
+37.6307465
+],
+[
+-122.3639581,
+37.6307465
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-south",
+"kind": "zone",
+"start_year": 1953,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "south ends of the 1/19 runways beyond the old Bayshore Highway: after the Aug 1952 chart, on the 1956 sheet"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.377,
+37.608318
+],
+[
+-122.3776804,
+37.6063284
+],
+[
+-122.3804022,
+37.6052432
+],
+[
+-122.3833508,
+37.606871
+],
+[
+-122.3823302,
+37.6092224
+],
+[
+-122.3798352,
+37.6072328
+],
+[
+-122.377,
+37.608318
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-NW-ends",
+"kind": "zone",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "west ends of 10L/10R across the old hangar row / highway: 1956 -> 1968 editions"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.394238,
+37.624235
+],
+[
+-122.3974134,
+37.6274003
+],
+[
+-122.3968463,
+37.6305656
+],
+[
+-122.3940111,
+37.6298421
+],
+[
+-122.3920832,
+37.624235
+],
+[
+-122.394238,
+37.624235
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-28L-ext",
+"kind": "zone",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://simpleflying.com/san-francisco-airport-runways-terminals-opening-dates/",
+"evidence": "fill and taxiways south of the 28L extension: bay on the 1956 sheet, paved on the 1968 PR; 28L lengthened 1961"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3545453,
+37.6122973
+],
+[
+-122.3548855,
+37.6106694
+],
+[
+-122.3599889,
+37.6088607
+],
+[
+-122.3656592,
+37.6106694
+],
+[
+-122.3713296,
+37.6127495
+],
+[
+-122.3667933,
+37.6153721
+],
+[
+-122.3638447,
+37.6164574
+],
+[
+-122.3545453,
+37.6122973
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO-28R-ext",
+"kind": "zone",
+"start_year": 1969,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://simpleflying.com/san-francisco-airport-runways-terminals-opening-dates/",
+"evidence": "fill and taxiways north of 28R east of the 1956 seawall: mud on the 1968 photos, paved on the 1973 PR; 28R extended 1968"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3628241,
+37.622788
+],
+[
+-122.3531844,
+37.6140156
+],
+[
+-122.3526174,
+37.6127495
+],
+[
+-122.3545453,
+37.6122973
+],
+[
+-122.3638447,
+37.6164574
+],
+[
+-122.3638447,
+37.622788
+],
+[
+-122.3628241,
+37.622788
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK 10L/28R (North Field) d0-1864",
+"kind": "runway_phase",
+"start_year": 1927,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.iflyoak.com/business/news-media/media-kit/oak-backgrounder/",
+"evidence": "the original runway: built June 1927 in 21-23 days ('a 7,020-foot runway, the longest in the world'), dedicated 17 Sep 1927. Identified as today's 10L/28R because the 1945 6,200-ft runway 'parallels the original runway' (Port of Oakland); today 5,458 ft (the 1927 strip was longer). On every edition from the 1947 sheet on"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.203971,
+37.724349
+],
+[
+-122.2235713,
+37.7307033
+],
+[
+-122.2233785,
+37.7310803
+],
+[
+-122.2037782,
+37.724726
+],
+[
+-122.203971,
+37.724349
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK 10R/28L (North Field) d0-2252",
+"kind": "runway_phase",
+"start_year": 1945,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.iflyoak.com/business/news-media/media-kit/oak-backgrounder/",
+"evidence": "'1945: A new 6,200-foot east-west runway paralleling the original runway is constructed' (6,213 ft today); on the 1947 sheet"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2048369,
+37.7216684
+],
+[
+-122.2285281,
+37.7293412
+],
+[
+-122.2283355,
+37.7297182
+],
+[
+-122.2046444,
+37.7220454
+],
+[
+-122.2048369,
+37.7216684
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK 15/33 (North Field) d0-1026",
+"kind": "runway_phase",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/NASOakland.html",
+"evidence": "wartime runway of NAS Oakland (Navy lease 1 Feb 1944, 'repair and repavement of runways and taxiways', expansion from April 1944; 'four asphalt runways, the longest 6,500 ft'); on the 1947 sheet"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.219852,
+37.7313294
+],
+[
+-122.2229918,
+37.740265
+],
+[
+-122.2226636,
+37.7403382
+],
+[
+-122.2195239,
+37.7314025
+],
+[
+-122.219852,
+37.7313294
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK 12/30 (South Field) d0-3441",
+"kind": "runway_phase",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.iflyoak.com/business/news-media/media-kit/oak-backgrounder/",
+"evidence": "South Field jet runway 'behind a 4.5-mile dike', begun 1960, opened with the new terminal 1962 (10,000 ft, then 11/29; renumbered 12/30 in 2013; 10,520 ft today - the later lengthening is not dated here). Bay water on the 1958-photo sheet, runway on the 1968 PR"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2133848,
+37.7006405
+],
+[
+-122.2433533,
+37.720613
+],
+[
+-122.2430253,
+37.720925
+],
+[
+-122.2130568,
+37.7009526
+],
+[
+-122.2133848,
+37.7006405
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK-NorthField",
+"kind": "zone",
+"start_year": 1944,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.militarymuseum.org/NASOakland.html",
+"evidence": "North Field taxiways on the 1947 sheet: the wartime Navy field (lease 1 Feb 1944, 'repair and repavement of runways and taxiways', expansion from April 1944)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2140502,
+37.7428005
+],
+[
+-122.2004221,
+37.7274262
+],
+[
+-122.2026934,
+37.7215478
+],
+[
+-122.2151859,
+37.7242609
+],
+[
+-122.2195455,
+37.7243436
+],
+[
+-122.2299498,
+37.7260697
+],
+[
+-122.2322211,
+37.7301393
+],
+[
+-122.2293819,
+37.7428005
+],
+[
+-122.2140502,
+37.7428005
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "OAK",
+"zone": "OAK-SouthField",
+"kind": "zone",
+"start_year": 1962,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.iflyoak.com/business/news-media/media-kit/oak-backgrounder/",
+"evidence": "South Field (runway, terminal, cargo apron, jet hangar) on the 1960-62 dike fill, opened 1962; bay on the 1958-photo sheet, airfield on the 1968 PR"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.2390352,
+37.7247131
+],
+[
+-122.2151859,
+37.7242609
+],
+[
+-122.2026934,
+37.7215478
+],
+[
+-122.2049648,
+37.7138607
+],
+[
+-122.2095075,
+37.7048169
+],
+[
+-122.2117789,
+37.6993907
+],
+[
+-122.225407,
+37.6993907
+],
+[
+-122.2458493,
+37.7210956
+],
+[
+-122.2390352,
+37.7247131
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d350-1550",
+"kind": "runway_phase",
+"start_year": 1948,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "'1948: the first permanent runway was built with a federal airport grant' (a dirt strip from 1945, Nissen's flight school); 4,500 ft until ~1962 (Wikipedia); drawn on the 1948-photo sheet from d~350 to d~1550 (registration of that sheet +-30 m)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9284305,
+37.3616573
+],
+[
+-121.9194869,
+37.3534988
+],
+[
+-121.9198692,
+37.3532304
+],
+[
+-121.9288129,
+37.3613889
+],
+[
+-121.9284305,
+37.3616573
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d200-350",
+"kind": "runway_phase",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "'1961: the west runway was extended by 2,500 feet' - drawn on the 1960-photo sheet (SE end d~200)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9194869,
+37.3534988
+],
+[
+-121.9183689,
+37.3524789
+],
+[
+-121.9187513,
+37.3522106
+],
+[
+-121.9198692,
+37.3532304
+],
+[
+-121.9194869,
+37.3534988
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d1550-2350",
+"kind": "runway_phase",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "1961 extension, NW part (to d~2350 on the 1960-photo sheet)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9343929,
+37.3670963
+],
+[
+-121.9284305,
+37.3616573
+],
+[
+-121.9288129,
+37.3613889
+],
+[
+-121.9347753,
+37.3668279
+],
+[
+-121.9343929,
+37.3670963
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d130-200",
+"kind": "runway_phase",
+"start_year": 1966,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Jose_Mineta_International_Airport",
+"evidence": "lengthened to 7,787 ft (1965) and 8,900 ft (late 1960s, Wikipedia); SE end at d~130 on the 1968 PR"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9183689,
+37.3524789
+],
+[
+-121.9178472,
+37.352003
+],
+[
+-121.9182296,
+37.3517347
+],
+[
+-121.9187513,
+37.3522106
+],
+[
+-121.9183689,
+37.3524789
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d2350-2840",
+"kind": "runway_phase",
+"start_year": 1966,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Jose_Mineta_International_Airport",
+"evidence": "1964-68 lengthenings (6,312 ft 1964, 7,787 ft 1965, 8,900 ft late 1960s); NW end at d~2840 on the 1968-1979 photorevisions"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9380449,
+37.3704277
+],
+[
+-121.9343929,
+37.3670963
+],
+[
+-121.9347753,
+37.3668279
+],
+[
+-121.9384273,
+37.3701593
+],
+[
+-121.9380449,
+37.3704277
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d2840-3240",
+"kind": "runway_phase",
+"start_year": 1993,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "8,900 ft until ~1991 (Wikipedia), 10,200 ft in 1996 (2020 Master Plan table) -> lengthened NW toward Kifer Rd c.1991-96"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9410261,
+37.3731472
+],
+[
+-121.9380449,
+37.3704277
+],
+[
+-121.9384273,
+37.3701593
+],
+[
+-121.9414085,
+37.3728789
+],
+[
+-121.9410261,
+37.3731472
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d0-130",
+"kind": "runway_phase",
+"start_year": 2004,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "'Runway 12R-30L reconstructed and extended [to 11,000 ft]: October 2004'"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9178472,
+37.352003
+],
+[
+-121.9168783,
+37.3511192
+],
+[
+-121.9172607,
+37.3508508
+],
+[
+-121.9182296,
+37.3517347
+],
+[
+-121.9178472,
+37.352003
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12R/30L d3240-3412",
+"kind": "runway_phase",
+"start_year": 2004,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "October 2004 extension to 11,000 ft (NW end)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9423071,
+37.3743158
+],
+[
+-121.9410261,
+37.3731472
+],
+[
+-121.9414085,
+37.3728789
+],
+[
+-121.9426895,
+37.3740474
+],
+[
+-121.9423071,
+37.3743158
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12L/30R d450-1790",
+"kind": "runway_phase",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "'1961: ... a new 4,400-foot east runway was added' (4,400 ft still in 1996, 2020 Master Plan); on the 1968-1979 PRs its SE end is clear of the T-hangar rows that stood on today's axis d 0-300"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.92808,
+37.3642548
+],
+[
+-121.9180939,
+37.3551437
+],
+[
+-121.9184762,
+37.3548754
+],
+[
+-121.9284623,
+37.3639864
+],
+[
+-121.92808,
+37.3642548
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12L/30R d0-450",
+"kind": "runway_phase",
+"start_year": 2001,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "'Runway 12L-30R reconstructed and extended [to 11,000 ft]: August 2001' (over the removed SE T-hangars and south-end GA area)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9180939,
+37.3551437
+],
+[
+-121.9147403,
+37.3520841
+],
+[
+-121.9151227,
+37.3518157
+],
+[
+-121.9184762,
+37.3548754
+],
+[
+-121.9180939,
+37.3551437
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC 12L/30R d1790-3435",
+"kind": "runway_phase",
+"start_year": 2001,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "August 2001 extension to 11,000 ft (NW part)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9403353,
+37.3754362
+],
+[
+-121.92808,
+37.3642548
+],
+[
+-121.9284623,
+37.3639864
+],
+[
+-121.9407177,
+37.3751678
+],
+[
+-121.9403353,
+37.3754362
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-1961",
+"kind": "zone",
+"start_year": 1961,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sjc_timeline",
+"evidence": "taxiways of the 1961 runway program (12R extension + new east runway): on the 1960-photo sheet or the 1968 PR within the 1961 runway lengths"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9336823,
+37.3681966
+],
+[
+-121.9292104,
+37.3641174
+],
+[
+-121.9279359,
+37.3650119
+],
+[
+-121.9324077,
+37.3690912
+],
+[
+-121.9310483,
+37.3700454
+],
+[
+-121.9165149,
+37.3567877
+],
+[
+-121.9194038,
+37.3547601
+],
+[
+-121.9171679,
+37.3527205
+],
+[
+-121.9195469,
+37.3510506
+],
+[
+-121.9363162,
+37.3663479
+],
+[
+-121.9336823,
+37.3681966
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-westside",
+"kind": "zone",
+"start_year": 1965,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+"evidence": "west-side GA taxiways and aprons: the west-side hangars carry 1965-66 roll years; on the 1968 PR"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9400427,
+37.3697473
+],
+[
+-121.9195469,
+37.3510506
+],
+[
+-121.9246449,
+37.3474724
+],
+[
+-121.9451407,
+37.3661691
+],
+[
+-121.9400427,
+37.3697473
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-1966",
+"kind": "zone",
+"start_year": 1966,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://en.wikipedia.org/wiki/San_Jose_Mineta_International_Airport",
+"evidence": "NW taxiways of the 1964-68 lengthenings (8,900 ft)"
+},
+"geometry": {
+"type": "MultiPolygon",
+"coordinates": [
+[
+[
+[
+-121.9374088,
+37.371596
+],
+[
+-121.9336823,
+37.3681966
+],
+[
+-121.9363162,
+37.3663479
+],
+[
+-121.9400427,
+37.3697473
+],
+[
+-121.9374088,
+37.371596
+]
+]
+],
+[
+[
+[
+-121.9310483,
+37.3700454
+],
+[
+-121.9324077,
+37.3690912
+],
+[
+-121.9361343,
+37.3724906
+],
+[
+-121.9347748,
+37.3734447
+],
+[
+-121.9310483,
+37.3700454
+]
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-1993",
+"kind": "zone",
+"start_year": 1993,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "NW end with the 10,200-ft 12R (c.1991-96)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9401768,
+37.3739839
+],
+[
+-121.9374937,
+37.3715364
+],
+[
+-121.9405525,
+37.3693894
+],
+[
+-121.9432356,
+37.371837
+],
+[
+-121.9401768,
+37.3739839
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-2001-SE",
+"kind": "zone",
+"start_year": 2001,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "12L extension and new cross Taxiway A at the south end (Aug 2001), over removed T-hangars"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9160051,
+37.3571456
+],
+[
+-121.9115333,
+37.3530663
+],
+[
+-121.9149319,
+37.3506808
+],
+[
+-121.9194038,
+37.3547601
+],
+[
+-121.9160051,
+37.3571456
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-2001-NW",
+"kind": "zone",
+"start_year": 2001,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "12L extension NW part and new cross Taxiway N (Aug 2001)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.9422532,
+37.3760152
+],
+[
+-121.9409787,
+37.3769098
+],
+[
+-121.9279359,
+37.3650119
+],
+[
+-121.9292104,
+37.3641174
+],
+[
+-121.9400918,
+37.3740436
+],
+[
+-121.9422532,
+37.3760152
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SJC",
+"zone": "SJC-2004-NW",
+"kind": "zone",
+"start_year": 2004,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
+"evidence": "12R extension to 11,000 ft (Oct 2004), NW end"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-121.945397,
+37.3738087
+],
+[
+-121.9422532,
+37.3760152
+],
+[
+-121.9400918,
+37.3740436
+],
+[
+-121.9432356,
+37.371837
+],
+[
+-121.945397,
+37.3738087
+]
+]
+]
+}
+}
+]
+}
