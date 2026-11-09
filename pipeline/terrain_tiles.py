@@ -949,7 +949,11 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         return arr[np.clip(np.rint(fy / sub).astype(int), 0, g["rows"] - 1), np.clip(np.rint(fx / sub).astype(int), 0, g["cols"] - 1)]
 
     lon_all, lat_all = None, None
-    mapped = real_farmsteads(g, covers, years) if name == "region" else None
+    mapped = real_farmsteads(g, covers, years)
+    # San Francisco's planted forests (Sutro, Presidio, Golden Gate Park on dunes / scrub)
+    lon_g, lat_g = lonlat_of(g)
+    in_sf_g = (lon_g > SF_BOX[0]) & (lon_g < SF_BOX[2]) & (lat_g > SF_BOX[1]) & (lat_g < SF_BOX[3])
+    del lon_g, lat_g
     mapped_mask = mapped[1] if mapped is not None else np.zeros((g["rows"], g["cols"]), bool)
 
     def fn(tx, ty):
@@ -974,7 +978,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             start = np.where(np.isfinite(wy), wy + rng.uniform(0, 4, len(fy)), start)
             start = np.where(np.isnan(start) & np.isfinite(py), py + rng.uniform(2, 12, len(fy)), start)
             start = np.where(np.isnan(start) & np.isfinite(uy), uy + rng.uniform(5, 25, len(fy)), start)
-            planted_sf = np.isnan(start) & np.isin(nat, [DUNES, SCRUB]) & (name == "detail")
+            planted_sf = np.isnan(start) & np.isin(nat, [DUNES, SCRUB]) & at_vertex(in_sf_g, fy, fx)
             start = np.where(planted_sf, 1890 + rng.uniform(0, 40, len(fy)), start)
             # trees on made land (bay, flats, marsh until filled) can't predate the land
             ly = at_vertex(land_year, fy, fx)
@@ -1001,11 +1005,21 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     # rows of trees: a 3x3 block per lattice cell (≈25 m spacing), on every
                     # third crown of the viewer's orchard ground pattern (8.5 m grid at
                     # (k + 0.5) / 9 cells) — clear of the lanes along the 4-cell block edges
-                    oy, ox = np.meshgrid(np.array([-1, 1, 3]) / 6.0, np.array([-1, 1, 3]) / 6.0)
+                    # (always on the z13 lattice the shader draws on: in the z14 detail grid
+                    # one z13 cell is 2 x 2 lattice cells)
+                    lat = 2.0 if g["z"] == 14 else 1.0
+                    if lat > 1:
+                        ev = (((vy + max(r0 // sub, 0) + g["ty0"] * VERTS) % 2) == 0) & \
+                             (((vx + max(c0 // sub, 0) + g["tx0"] * VERTS) % 2) == 0)
+                        vy, vx, y_start, y_end = vy[ev], vx[ev], y_start[ev], y_end[ev]
+                        if not len(vy):
+                            continue
+                    oy, ox = np.meshgrid(np.array([-1, 1, 3]) / 6.0 * lat, np.array([-1, 1, 3]) / 6.0 * lat)
                     ly_ = (vy[:, None] + oy.ravel()[None]) + max(r0 // sub, 0)
                     lx_ = (vx[:, None] + ox.ravel()[None]) + max(c0 // sub, 0)
                     # not on the blocks the shader draws as other fields (block_hash)
-                    keep = block_hash(np.floor((lx_ + g["tx0"] * VERTS) / 4), np.floor((ly_ + g["ty0"] * VERTS) / 4)) >= 0.2
+                    keep = block_hash(np.floor((lx_ + g["tx0"] * VERTS) / (4 * lat)),
+                                      np.floor((ly_ + g["ty0"] * VERTS) / (4 * lat))) >= 0.2
                     fy, fx = ly_[keep] * sub, lx_[keep] * sub
                     kinds.append(np.full(fy.size, D_ORCHARD)); ys.append(fy); xs.append(fx)
                     sizes.append(rng.uniform(4, 6, fy.size))
@@ -1014,7 +1028,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                 else:
                     # one farmstead per ~25 lattice cells, on a hash — except where a
                     # historical map shows where the farmsteads really were
-                    pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % 25) == 0
+                    pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % (100 if g["z"] == 14 else 25)) == 0
                     pick &= ~mapped_mask[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
                     if not pick.any():
                         continue
