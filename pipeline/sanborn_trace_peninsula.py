@@ -258,6 +258,47 @@ def set_zones(key, zones):
     json.dump(cfg, open(f, "w"), indent=1)
 
 
+def register_region(src, dst, src_box, dst_box, valid_px=None):
+    """SIFT + RANSAC similarity of one part of a sheet (src_box [x0, y0, x1, y1] on the src scan) onto the matching part of
+    the later plate (dst_box on dst), for sheets whose strips were rearranged between editions (Mayfield 1904 sheet 4 =
+    the two strips of 1908 sheet 5 in the other order). src may carry a letter suffix (004_0004a) to name the part; its
+    control file records the boxes, and `valid_px` (default src_box) limits the footprints taken from that part."""
+    import cv2
+    from PIL import Image
+    A = cv2.GaussianBlur(np.asarray(Image.open(E.image(src[:8])).convert("L")), (3, 3), 0)
+    B = cv2.GaussianBlur(np.asarray(Image.open(E.image(dst[:8])).convert("L")), (3, 3), 0)
+    ma = np.zeros(A.shape, np.uint8); ma[src_box[1]:src_box[3], src_box[0]:src_box[2]] = 255
+    mb = np.zeros(B.shape, np.uint8); mb[dst_box[1]:dst_box[3], dst_box[0]:dst_box[2]] = 255
+    det = cv2.SIFT_create(nfeatures=20000)
+    ka, da = det.detectAndCompute(A, ma)
+    kb, db = det.detectAndCompute(B, mb)
+    good = [m[0] for m in cv2.BFMatcher(cv2.NORM_L2).knnMatch(da, db, k=2) if len(m) == 2 and m[0].distance < 0.8 * m[1].distance]
+    pa = np.float32([ka[g.queryIdx].pt for g in good]); pb = np.float32([kb[g.trainIdx].pt for g in good])
+    T, inl = cv2.estimateAffinePartial2D(pa, pb, method=cv2.RANSAC, ransacReprojThreshold=3.0, maxIters=20000, confidence=0.999)
+    inl = inl.ravel().astype(bool)
+    r = (pa[inl] @ T[:, :2].T + T[:, 2]) - pb[inl]
+    rms = float(np.sqrt((r ** 2).sum(axis=1).mean()))
+    json.dump({"registered_to": dst, "T": T.tolist(), "reg_inliers": int(inl.sum()), "reg_rms_px": round(rms, 2),
+               "src_box": src_box, "dst_box": dst_box, "valid_px": valid_px or src_box},
+              open(E.CONTROL / f"{src}.json", "w"), indent=1)
+    E.log(src, "->", dst, f"inliers {int(inl.sum())} rms {rms:.2f} px")
+
+
+def _georef(key):
+    """waterfront georef; a registered part of a sheet keeps its own `valid_px` (register_region)."""
+    _W_georef(key)
+    cfg = json.load(open(E.CONTROL / f"{key}.json"))
+    if "registered_to" in cfg and cfg.get("valid_px"):
+        f = E.INTERIM / f"{key}.M.json"
+        G = json.load(open(f))
+        G["valid_px"] = cfg["valid_px"]
+        G.pop("valid_poly_px", None)
+        json.dump(G, open(f, "w"), indent=1)
+
+
+_W_georef = W.georef
+
+
 def solid_lines(key, minlen=120, box=None):
     """scratch aid for writing block specs: long solid axis-aligned dark lines of a sheet (block outlines) as
     ('H', y, x0, x1) / ('V', x, y0, y1) runs, merged across 1-3 px of thickness; dashed lines have gaps and drop out."""
@@ -681,7 +722,7 @@ def main():
             E.refine(k)
     if stage in ("all", "georef"):
         for k in E.base_first(keys):
-            W.georef(k)
+            _georef(k)
     if stage == "freeze":
         for k in keys:
             E.freeze(k)
