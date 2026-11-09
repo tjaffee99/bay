@@ -121,16 +121,131 @@ land (TIGER area water removed). Vallejo is outside the map.
 ### Snapshots
 
 <!-- snapshots -->
+| town | year | sheets | built-up km² | partly built km² | area read km² | confidence | pre-map buildings standing today inside built-up (+ partly built) (n) | prev. snapshot kept | Sanborn built blocks inside / empty blocks inside |
+|---|---|---|---|---|---|---|---|---|---|
+| oakland | 1894 | sf1895, concord1897, haywards1899 | 11.06 | 9.8 | 134.7 | medium | 81.6% (91.7%) (2362) |  |  |
+| oakland | 1914 | sf1915, concord1915, hayward1915 | 28.35 | 14.63 | 134.7 | medium | 82.3% (93.8%) (23290) | 90.7% | downtown 1912: 97% of 30 / 100% of 2; west 1912: 89% of 71 / 33% of 12 |
+| oakland | 1939 | concord1942, hayward1942 | 41.91 | 4.05 | 89.19 | medium | 91.6% (93.5%) (53785) | 95.0% |  |
+| oakland | 1946 | oaklandwest1949, oaklandeast1947, sanleandro1947 | 71.91 | 6.23 | 134.7 | high | 95.7% (96.8%) (86788) | 93.4% | downtown 1951: 100% of 28 / 33% of 3; west 1951: 100% of 69 / 82% of 17 |
+| berkeley | 1894 | sf1895, concord1897 | 4.7 | 4.81 | 41.57 | medium | 62.5% (85.1%) (275) |  |  |
+| berkeley | 1914 | sf1915, concord1915 | 11.89 | 5.87 | 41.57 | medium | 88.0% (97.0%) (7619) | 82.8% | downtown 1911: 88% of 17 / 33% of 6; southside 1911: 77% of 30 / 0% of 5; west 1911: 22% of 9 / 13% of 30 |
+| berkeley | 1946 | richmond1947, oaklandwest1949, briones1947, oaklandeast1947 | 25.1 | 0.95 | 41.57 | high | 99.3% (99.7%) (30117) | 98.5% |  |
+| alameda | 1894 | sf1895, concord1897 | 4.04 | 1.76 | 35.67 | medium | 76.8% (90.3%) (967) |  | westend 1897: 100% of 3 / 10% of 30 |
+| alameda | 1914 | sf1915, concord1915 | 5.32 | 1.51 | 35.67 | medium | 87.5% (95.8%) (5936) | 85.8% |  |
+| alameda | 1946 | oaklandwest1949, oaklandeast1947 | 9.76 | 1.28 | 35.67 | high | 97.7% (98.3%) (12359) | 97.7% | westend 1948: 100% of 22 / 67% of 15 |
+| san_jose | 1885 | sanjose1889 | 5.73 | 10.2 | 184.6 | medium | 56.5% (72.1%) (154) |  |  |
+| san_jose | 1895 | sanjose1897 | 6.86 | 11.28 | 184.6 | medium | 55.1% (76.1%) (410) | 92.7% |  |
+| san_jose | 1939 | sanjose1943 | 33.73 | 10.83 | 184.6 | medium | 92.3% (94.3%) (22224) | 86.2% |  |
+| san_jose | 1948 | sanjosewest1953, sanjoseeast1953, milpitas1953 | 46.4 | 7.45 | 173.96 | high | 94.5% (96.8%) (28845) | 89.0% | jose_downtown 1950: 100% of 92 / 67% of 18 |
+| san_leandro | 1896 | haywards1899 | 0.66 | 1.39 | 39.77 | low | 16.7% (46.2%) (78) |  |  |
+| san_leandro | 1914 | hayward1915 | 1.24 | 2.53 | 39.77 | low | 24.3% (54.8%) (547) | 79.6% |  |
+| san_leandro | 1939 | hayward1942 | 5.88 | 0.68 | 39.77 | medium | 90.2% (91.4%) (4853) | 71.4% |  |
+| san_leandro | 1946 | sanleandro1947, hayward1947 | 8.66 | 2.1 | 39.77 | high | 94.4% (97.2%) (9993) | 93.6% |  |
+| hayward | 1896 | haywards1899 | 0.62 | 1.91 | 77.54 | low | 6.1% (38.8%) (49) |  |  |
+| hayward | 1914 | hayward1915 | 0.98 | 2.38 | 77.54 | low | 22.1% (44.6%) (399) | 98.4% |  |
+| hayward | 1939 | hayward1942 | 5.24 | 1.93 | 77.54 | medium | 58.3% (63.5%) (2471) | 68.6% |  |
+| hayward | 1946 | hayward1947, sanleandro1947, newark1947 | 5.02 | 4.67 | 73.86 | medium | 70.4% (86.2%) (3677) | 62.8% |  |
+| richmond | 1894 | sf1895 | 0.72 | 2.0 | 99.16 | low | 0.0% (7.7%) (13) |  |  |
+| richmond | 1914 | sf1915 | 3.9 | 5.02 | 99.16 | medium | 58.6% (79.4%) (2031) | 22.6% | downtown 1916: 100% of 9 / 27% of 11 |
+| richmond | 1946 | richmond1947, sanquentin1948 | 27.18 | 4.05 | 99.16 | high | 95.3% (96.7%) (19638) | 87.5% |  |
+| palo_alto | 1895 | paloalto1899 | 0.5 | 1.74 | 32.33 | low | 9.7% (45.2%) (31) |  | alto_downtown 1901: 75% of 4 / 0% of 7 |
+| palo_alto | 1940 | paloalto1943 | 7.1 | 1.07 | 32.33 | medium | 83.6% (86.4%) (4962) | 66.4% |  |
+| palo_alto | 1948 | paloalto1953, mountainview1953 | 12.92 | 1.45 | 32.33 | high | 95.7% (96.3%) (6476) | 89.8% |  |
+| redwood_city | 1895 | paloalto1899 | 0.37 | 0.66 | 18.99 | low | 56.8% (73.0%) (37) |  |  |
+| redwood_city | 1940 | paloalto1943 | 8.68 | 0.55 | 18.99 | medium | 93.1% (96.7%) (3470) | 97.3% |  |
+| redwood_city | 1948 | paloalto1953, woodside1953, redwoodpoint1948 | 13.15 | 0.88 | 27.78 | high | 97.3% (98.3%) (6342) | 93.0% |  |
+| san_mateo | 1892 | sanmateo1896 | 0.62 | 1.46 | 51.63 | low | 13.0% (26.1%) (23) |  |  |
+| san_mateo | 1914 | sanmateo1915 | 0.46 | 1.87 | 51.63 | low | 3.1% (20.0%) (1574) | 11.3% | mateo_downtown 1908: 58% of 12 / 0% of 9; mateo_downtown 1920: 57% of 14 / 0% of 12 |
+| san_mateo | 1939 | sanmateo1943 | 12.87 | 1.28 | 51.63 | medium | 93.4% (96.4%) (9751) | 63.1% |  |
+| san_mateo | 1946 | sanmateo1947 | 17.0 | 1.18 | 48.74 | high | 99.0% (99.4%) (12730) | 95.4% |  |
+| san_rafael | 1895 | tamalpais1897, sf1895 | 1.89 | 1.65 | 27.03 | medium | 62.4% (76.8%) (125) |  |  |
+| san_rafael | 1939 | tamalpais1941 | 2.04 | 1.54 | 18.56 | medium | 61.9% (76.0%) (2362) | 56.2% |  |
+| san_rafael | 1952 | sanrafael1954, sanquentin1948 | 5.87 | 1.71 | 27.03 | high | 88.6% (94.1%) (4540) | 94.3% |  |
+| martinez | 1896 | karquines1898 | 0.19 | 0.56 | 10.31 | low | 15.7% (76.5%) (51) |  |  |
+| martinez | 1940 | carquinezstrait1940 | 1.4 | 0.79 | 10.31 | medium | 80.7% (91.5%) (1677) | 68.2% |  |
+| martinez | 1948 | benicia1950, briones1947, portchicago1951 | 2.63 | 1.06 | 12.32 | high | 89.1% (96.3%) (2245) | 92.9% |  |
 <!-- /snapshots -->
 
 ### Probes and threshold sensitivity
 
 <!-- probes -->
+| town | year | probe | share inside |
+|---|---|---|---|
+| oakland | 1894 | lakeside_uptown | 46.9% |
+| oakland | 1894 | west_oakland | 83.3% |
+| oakland | 1894 | temescal | 30.4% |
+| oakland | 1894 | block km² at share 0.25 / 0.35 / 0.45 | 12.9 / 10.2 / 8.0 |
+| oakland | 1914 | lakeside_uptown | 74.8% |
+| oakland | 1914 | west_oakland | 91.8% |
+| oakland | 1914 | temescal | 79.3% |
+| oakland | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 29.5 / 25.1 / 20.9 |
+| oakland | 1946 | lakeside_uptown | 78.2% |
+| oakland | 1946 | west_oakland | 94.1% |
+| oakland | 1946 | temescal | 98.6% |
+| berkeley | 1894 | block km² at share 0.25 / 0.35 / 0.45 | 5.8 / 4.3 / 3.3 |
+| berkeley | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 12.7 / 10.8 / 8.9 |
+| alameda | 1894 | block km² at share 0.25 / 0.35 / 0.45 | 4.3 / 3.7 / 3.1 |
+| alameda | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 5.5 / 5.0 / 4.4 |
+| san_jose | 1885 | block km² at share 0.25 / 0.35 / 0.45 | 7.1 / 5.0 / 3.6 |
+| san_jose | 1895 | block km² at share 0.25 / 0.35 / 0.45 | 7.8 / 5.7 / 4.3 |
+| san_leandro | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 0.8 / 0.5 / 0.3 |
+| san_leandro | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 1.4 / 1.0 / 0.7 |
+| hayward | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 1.0 / 0.6 / 0.5 |
+| hayward | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 1.4 / 0.9 / 0.6 |
+| richmond | 1894 | block km² at share 0.25 / 0.35 / 0.45 | 1.2 / 0.6 / 0.4 |
+| richmond | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 4.6 / 3.2 / 2.5 |
+| palo_alto | 1895 | block km² at share 0.25 / 0.35 / 0.45 | 0.8 / 0.4 / 0.2 |
+| redwood_city | 1895 | block km² at share 0.25 / 0.35 / 0.45 | 0.5 / 0.3 / 0.2 |
+| san_mateo | 1892 | block km² at share 0.25 / 0.35 / 0.45 | 1.2 / 0.7 / 0.3 |
+| san_mateo | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 0.8 / 0.4 / 0.2 |
+| san_rafael | 1895 | block km² at share 0.25 / 0.35 / 0.45 | 2.0 / 1.4 / 1.0 |
+| martinez | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 0.3 / 0.2 / 0.1 |
 <!-- /probes -->
 
 ## Maps used
 
 <!-- maps -->
+| sheet | quadrangle | scale | edition | shows | reading | alignment to today's streets | GeoPDF |
+|---|---|---|---|---|---|---|---|
+| `sanjose1889` | San Jose | 1:62,500 | 1889 | 1885 (surveyed 1885 (1939 reprint)) | bands + squares | 239 m (affine, 43/63 windows, RMS 22 m) | [301582](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Jose_301582_1889_62500_geo.pdf) |
+| `sanmateo1896` | San Mateo | 1:62,500 | 1896 | 1892 (surveyed 1892) | bands + squares | 208 m (affine, 9/17 windows, RMS 16 m) | [298916](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Mateo_298916_1896_62500_geo.pdf) |
+| `concord1897` | Concord | 1:62,500 | 1897 | 1894 (surveyed 1893-94 (collar), engraved Apr 1897) | bands + squares | 113 m (affine, 10/15 windows, RMS 19 m) | [297157](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Concord_297157_1897_62500_geo.pdf) |
+| `sf1895` | San Francisco | 1:62,500 | 1895 | 1894 (surveyed 1892-94) | bands + squares | 221 m (affine, 43/67 windows, RMS 21 m) | [298889](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Francisco_298889_1895_62500_geo.pdf) |
+| `paloalto1899` | Palo Alto | 1:62,500 | 1899 | 1895 (surveyed 1895) | bands + squares | 193 m (affine, 28/42 windows, RMS 19 m) | [298453](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Palo%20Alto_298453_1899_62500_geo.pdf) |
+| `sanjose1897` | San Jose | 1:62,500 | 1897 | 1895 (surveyed 1895) | bands + squares | 250 m (affine, 53/84 windows, RMS 23 m) | [298899](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Jose_298899_1897_62500_geo.pdf) |
+| `tamalpais1897` | Tamalpais | 1:62,500 | 1897 | 1895 (surveyed 1895) | bands + squares | 204 m (affine, 23/27 windows, RMS 21 m) | [298980](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Tamalpais_298980_1897_62500_geo.pdf) |
+| `haywards1899` | Haywards | 1:62,500 | 1899 | 1896 (surveyed 1896 (1901 imprint)) | bands + squares | 215 m (affine, 35/57 windows, RMS 20 m) | [297665](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Haywards_297665_1899_62500_geo.pdf) |
+| `karquines1898` | Karquines | 1:62,500 | 1898 | 1896 (surveyed 1896) | bands + squares | 194 m (affine, 7/15 windows, RMS 23 m) | [297860](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Karquines_297860_1898_62500_geo.pdf) |
+| `concord1915` | Concord | 1:62,500 | 1915 | 1914 (edition of June 1915: surveyed 1893-94, culture revised in part in 1913-14 (collar note)) | bands + squares | 211 m (affine, 31/62 windows, RMS 16 m) | [297163](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Concord_297163_1915_62500_geo.pdf) |
+| `hayward1915` | Hayward | 1:62,500 | 1915 | 1914 (surveyed 1914 (1939 imprint)) | bands + squares | 217 m (affine, 41/68 windows, RMS 18 m) | [297660](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hayward_297660_1915_62500_geo.pdf) |
+| `sanmateo1915` | San Mateo | 1:62,500 | 1915 | 1914 (1915 edition: surveyed 1892, culture revised in part in 1914 (collar note)) | bands + squares | 209 m (affine, 30/37 windows, RMS 8 m) | [298922](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Mateo_298922_1915_62500_geo.pdf) |
+| `sf1915` | San Francisco | 1:62,500 | 1915 | 1914 (1915 edition: surveyed 1892-94, culture revised in 1914 (collar note)) | bands + squares | 223 m (affine, 105/128 windows, RMS 20 m) | [298897](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Francisco_298897_1915_62500_geo.pdf) |
+| `concord1942` | Concord | 1:62,500 | 1942 | 1939 (aerial photographs 1939) | grey tint | 7 m (affine, 54/187 windows, RMS 7 m) | [465521](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Concord_465521_1942_62500_geo.pdf) |
+| `hayward1942` | Hayward | 1:62,500 | 1942 | 1939 (aerial photographs 1939) | grey tint | 17 m (affine, 56/135 windows, RMS 7 m) | [465728](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hayward_465728_1942_62500_geo.pdf) |
+| `sanjose1943` | San Jose | 1:62,500 | 1943 | 1939 (aerial photographs 1939) | grey tint | 17 m (affine, 73/210 windows, RMS 7 m) | [466308](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Jose_466308_1943_62500_geo.pdf) |
+| `sanmateo1943` | San Mateo | 1:62,500 | 1943 | 1939 (aerial photographs 1939) | grey tint | as published (fit 5 m, RMS 7 m) | [466324](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Mateo_466324_1943_62500_geo.pdf) |
+| `tamalpais1941` | Tamalpais | 1:62,500 | 1941 | 1939 (aerial photographs 1939) | grey tint | 9 m (affine, 19/64 windows, RMS 8 m) | [301788](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Tamalpais_301788_1941_62500_geo.pdf) |
+| `carquinezstrait1940` | Carquinez Strait | 1:62,500 | 1940 | 1940 (aerial photographs 1940 (1965 imprint)) | grey tint | 8 m (affine, 21/66 windows, RMS 7 m) | [297037](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Carquinez%20Strait_297037_1940_62500_geo.pdf) |
+| `paloalto1943` | Palo Alto | 1:62,500 | 1943 | 1940 (aerial photographs 1940) | grey tint | as published (fit 6 m, RMS 8 m) | [298463](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Palo%20Alto_298463_1943_62500_geo.pdf) |
+| `briones1947` | Briones Valley | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 4 m, RMS 5 m) | [288606](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Briones%20Valley_288606_1947_24000_geo.pdf) |
+| `hayward1947` | Hayward | 1:24,000 | 1947 | 1946 (aerial photographs 1946, survey 1947) | pink tint | 8 m (affine, 22/26 windows, RMS 4 m) | [291242](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Hayward_291242_1947_24000_geo.pdf) |
+| `newark1947` | Newark | 1:24,000 | 1947 | 1946 (aerial photographs 1946) | pink tint | as published (fit 2 m, RMS 8 m) | [293493](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Newark_293493_1947_24000_geo.pdf) |
+| `oaklandeast1947` | Oakland East | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | 6 m (affine, 43/43 windows, RMS 4 m) | [293612](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Oakland%20East_293612_1947_24000_geo.pdf) |
+| `oaklandwest1949` | Oakland West | 1:24,000 | 1949 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 3 m, RMS 5 m) | [293623](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Oakland%20West_293623_1949_24000_geo.pdf) |
+| `richmond1947` | Richmond | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 4 m, RMS 4 m) | [294667](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Richmond_294667_1947_24000_geo.pdf) |
+| `sanleandro1947` | San Leandro | 1:24,000 | 1947 | 1946 (1947 edition (photos c. 1946)) | pink tint | as published (fit 2 m, RMS 5 m) | [300122](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Leandro_300122_1947_24000_geo.pdf) |
+| `sanmateo1947` | San Mateo | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 3 m, RMS 4 m) | [300157](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Mateo_300157_1947_24000_geo.pdf) |
+| `sanquentin1948` | San Quentin | 1:24,000 | 1948 | 1947 (aerial photographs 1947) | pink tint | as published (fit 1 m, RMS 4 m) | [300194](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Quentin_300194_1948_24000_geo.pdf) |
+| `benicia1950` | Benicia | 1:24,000 | 1950 | 1948 (aerial photographs 1948, field check 1950) | pink tint | as published (fit 4 m, RMS 6 m) | [288319](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Benicia_288319_1950_24000_geo.pdf) |
+| `milpitas1953` | Milpitas | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | 6 m (affine, 6/13 windows, RMS 5 m) | [292969](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Milpitas_292969_1953_24000_geo.pdf) |
+| `mountainview1953` | Mountain View | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 4 m, RMS 5 m) | [293234](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Mountain%20View_293234_1953_24000_geo.pdf) |
+| `paloalto1953` | Palo Alto | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 1 m, RMS 4 m) | [293907](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Palo%20Alto_293907_1953_24000_geo.pdf) |
+| `portchicago1951` | Port Chicago | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1950) | pink tint | 13 m (affine, 14/22 windows, RMS 8 m) | [294325](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Port%20Chicago_294325_1951_24000_geo.pdf) |
+| `redwoodpoint1948` | Redwood Point | 1:24,000 | 1948 | 1948 (1948 edition) | pink tint | as published | [294610](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Redwood%20Point_294610_1948_24000_geo.pdf) |
+| `sanjoseeast1953` | San Jose East | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 6 m, RMS 4 m) | [300099](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Jose%20East_300099_1953_24000_geo.pdf) |
+| `sanjosewest1953` | San Jose West | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 2 m, RMS 5 m) | [300105](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Jose%20West_300105_1953_24000_geo.pdf) |
+| `woodside1953` | Woodside | 1:24,000 | 1953 | 1948 (aerial photographs 1948, field check 1953) | pink tint | 7 m (affine, 34/34 windows, RMS 4 m) | [301429](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Woodside_301429_1953_24000_geo.pdf) |
+| `sanrafael1954` | San Rafael | 1:24,000 | 1954 | 1952 (aerial photographs 1952, field check 1954) | pink tint | as published (fit 5 m, RMS 4 m) | [300201](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Rafael_300201_1954_24000_geo.pdf) |
 <!-- /maps -->
 
 ## Per-town notes

@@ -204,6 +204,32 @@ TOWNS = {
 }
 
 
+SMALL = ("small town drawn house by house on this sheet: only its densest core passes the built-up threshold; "
+         "most houses of the time stand in the _partial area or outside both")
+NOTES = {
+    ("oakland", 1939): dict(note="east of 122°15' W and south of 37°45' N only (no 1940s edition of the San Francisco "
+                                 "15' quadrangle)"),
+    ("berkeley", 1894): dict(note="a college town of scattered houses: West Berkeley (Ocean View) and the blocks south "
+                                  "and west of the campus"),
+    ("richmond", 1894): dict(confidence="low", note="before Richmond (founded 1905): a few houses at Stege and along "
+                                                    "San Pablo Avenue, partly road ink"),
+    ("san_leandro", 1896): dict(confidence="low", note=SMALL), ("san_leandro", 1914): dict(confidence="low", note=SMALL),
+    ("hayward", 1896): dict(confidence="low", note=SMALL), ("hayward", 1914): dict(confidence="low", note=SMALL),
+    ("hayward", 1939): dict(note="no tint over Hayward on Hayward 1942: read house by house"),
+    ("san_leandro", 1939): dict(note="no tint over San Leandro on Hayward 1942: read house by house"),
+    ("hayward", 1946): dict(confidence="medium", note="Hayward 1947 tints only part of the town; the rest is read "
+                                                      "house by house"),
+    ("palo_alto", 1895): dict(confidence="low", note=SMALL), ("redwood_city", 1895): dict(confidence="low", note=SMALL),
+    ("san_mateo", 1892): dict(confidence="low", note=SMALL + "; the lettering SAN MATEO adds a few blocks"),
+    ("san_mateo", 1914): dict(confidence="low", note=SMALL + "; culture revised only in part in 1914"),
+    ("martinez", 1896): dict(confidence="low", note=SMALL),
+    ("san_rafael", 1939): dict(note="Tamalpais 1941 covers west of 122°30' only; houses drawn, no tint"),
+    ("martinez", 1940): dict(note="houses drawn, no tint (Carquinez Strait 1940)"),
+}
+for (t_, y_), v_ in NOTES.items():
+    TOWNS[t_].setdefault("notes", {})[y_] = v_
+
+
 # --------------------------------------------------------------------------- frames
 _T = {}
 
