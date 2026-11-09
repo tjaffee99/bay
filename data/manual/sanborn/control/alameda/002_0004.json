@@ -1,0 +1,522 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End, drawn with north to the right: 3rd St (formerly Davenport) - 4th St, Santa Clara - Pacific; west of 3rd St the curving Lincoln Ave / Santa Clara Ave blocks (393-396, 410) are placed by the fit of the three blocks below (no control of their own). Today's 4th St west property line lies ~4.5 m west of the line the sheets draw (12.3 m from the centreline vs 7.9 m on the east side, where sheet 9 fits to 0.8 m): the 4th St corners are not used; the blocks are fitted together on their 3rd St corners with the plate-scale prior.",
+ "scale_prior": [
+  0.2015,
+  0.0006
+ ],
+ "blocks": [
+  {
+   "name": "437",
+   "streets": {
+    "N": "Haight",
+    "S": "Santa Clara",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     570,
+     910
+    ],
+    [
+     570,
+     1810
+    ],
+    [
+     80,
+     1810
+    ],
+    [
+     80,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 81.6,
+     "y": 912.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "437"
+    },
+    {
+     "x": 572.4,
+     "y": 920.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "392"
+    },
+    {
+     "x": 1516.4,
+     "y": 916.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "436"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "392",
+    "436"
+   ],
+   "px4": [
+    [
+     572.4,
+     917.7
+    ],
+    [
+     577.7,
+     1822.9
+    ],
+    [
+     76.3,
+     1821.6
+    ],
+    [
+     81.6,
+     912.4
+    ]
+   ],
+   "edge_q": [
+    0.44,
+    0.61,
+    0.46,
+    0.44
+   ],
+   "corners_all": [
+    {
+     "x": 572.4,
+     "y": 917.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.7 1.1] at 3rd x Haight SE"
+    },
+    {
+     "x": 81.6,
+     "y": 912.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    76.30068905520295,
+    912.3857962075484,
+    577.7071847410623,
+    1822.9285907216463
+   ]
+  },
+  {
+   "name": "392",
+   "streets": {
+    "N": "Lincoln",
+    "S": "Haight",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     994,
+     910
+    ],
+    [
+     994,
+     1810
+    ],
+    [
+     580,
+     1810
+    ],
+    [
+     580,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 572.4,
+     "y": 920.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "392"
+    },
+    {
+     "x": 81.6,
+     "y": 912.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "437"
+    },
+    {
+     "x": 1516.4,
+     "y": 916.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "436"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "437",
+    "436"
+   ],
+   "px4": [
+    [
+     980.4,
+     912.8
+    ],
+    [
+     985.7,
+     1822.5
+    ],
+    [
+     577.7,
+     1822.5
+    ],
+    [
+     572.4,
+     920.6
+    ]
+   ],
+   "edge_q": [
+    0.43,
+    0.36,
+    0.44,
+    0.38
+   ],
+   "corners_all": [
+    {
+     "x": 980.4,
+     "y": 912.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 572.4,
+     "y": 920.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    572.4303609180843,
+    912.8122641677743,
+    985.7046783625731,
+    1822.5
+   ]
+  },
+  {
+   "name": "436",
+   "streets": {
+    "N": "Pacific",
+    "S": "Lincoln",
+    "W": "3rd",
+    "E": "4th"
+   },
+   "px4_est": [
+    [
+     1510,
+     910
+    ],
+    [
+     1510,
+     1810
+    ],
+    [
+     1074,
+     1810
+    ],
+    [
+     1074,
+     910
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1516.4,
+     "y": 916.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "436"
+    },
+    {
+     "x": 81.6,
+     "y": 912.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "437"
+    },
+    {
+     "x": 572.4,
+     "y": 920.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "392"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "437",
+    "392"
+   ],
+   "px4": [
+    [
+     1516.4,
+     916.1
+    ],
+    [
+     1515.1,
+     1819.5
+    ],
+    [
+     1073.3,
+     1819.5
+    ],
+    [
+     1070.7,
+     917.4
+    ]
+   ],
+   "edge_q": [
+    0.74,
+    0.67,
+    0.45,
+    0.57
+   ],
+   "corners_all": [
+    {
+     "x": 1516.4,
+     "y": 916.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1070.7,
+     "y": 917.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [9.6 1.2] at 3rd x Lincoln NE"
+    }
+   ],
+   "zone_px": [
+    1070.705900104936,
+    916.0727938906832,
+    1516.399016383201,
+    1819.5
+   ]
+  },
+  {
+   "name": "west_of_3rd",
+   "streets": {
+    "N": "Pacific",
+    "S": "Santa Clara",
+    "W": "Main",
+    "E": "3rd"
+   },
+   "px4_est": [
+    [
+     1520,
+     40
+    ],
+    [
+     1520,
+     840
+    ],
+    [
+     60,
+     840
+    ],
+    [
+     60,
+     40
+    ]
+   ],
+   "corners": [
+    {
+     "x": 81.6,
+     "y": 912.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "437"
+    },
+    {
+     "x": 572.4,
+     "y": 920.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "3rd",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "392"
+    },
+    {
+     "x": 1516.4,
+     "y": 916.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "3rd",
+      "Pacific"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "436"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "437",
+    "392",
+    "436"
+   ],
+   "px4": [
+    [
+     1520.0,
+     40.0
+    ],
+    [
+     1520.0,
+     840.0
+    ],
+    [
+     60.0,
+     840.0
+    ],
+    [
+     60.0,
+     40.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    60.0,
+    40.0,
+    1520.0,
+    840.0
+   ]
+  }
+ ],
+ "pct": 25
+}

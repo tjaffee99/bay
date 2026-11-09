@@ -1,0 +1,480 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "residential": true,
+ "notes": "West End: 4th St (formerly West End Ave) - 5th St (formerly Second Ave), Pacific - Santa Clara (Marion Court) 459 (Pacific - Lincoln, crossed by the railroad): its Pacific Ave corners are 7-8 m off a block fit (Pacific's south line has moved); fitted on its Lincoln corners with 461.",
+ "blocks": [
+  {
+   "name": "459",
+   "streets": {
+    "N": "Pacific",
+    "S": "Lincoln",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     276
+    ],
+    [
+     1600,
+     276
+    ],
+    [
+     1600,
+     780
+    ],
+    [
+     104,
+     780
+    ]
+   ],
+   "corners": [
+    {
+     "x": 116.0,
+     "y": 776.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "459"
+    },
+    {
+     "x": 112.2,
+     "y": 859.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "461"
+    },
+    {
+     "x": 1605.4,
+     "y": 865.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "461"
+    },
+    {
+     "x": 1598.9,
+     "y": 1302.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "461"
+    },
+    {
+     "x": 114.8,
+     "y": 1300.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "461"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "461"
+   ],
+   "px4": [
+    [
+     116.0,
+     287.2
+    ],
+    [
+     1601.4,
+     289.8
+    ],
+    [
+     1600.1,
+     776.5
+    ],
+    [
+     116.0,
+     776.5
+    ]
+   ],
+   "edge_q": [
+    0.26,
+    0.8,
+    0.4,
+    0.71
+   ],
+   "corners_all": [
+    {
+     "x": 1600.1,
+     "y": 776.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 116.0,
+     "y": 776.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    116.0,
+    287.2053194483535,
+    1601.3718196464863,
+    776.5
+   ]
+  },
+  {
+   "name": "461",
+   "streets": {
+    "N": "Lincoln",
+    "S": "Haight",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     856
+    ],
+    [
+     1600,
+     856
+    ],
+    [
+     1600,
+     1296
+    ],
+    [
+     104,
+     1296
+    ]
+   ],
+   "corners": [
+    {
+     "x": 112.2,
+     "y": 859.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1605.4,
+     "y": 865.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1598.9,
+     "y": 1302.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 114.8,
+     "y": 1300.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     112.2,
+     859.9
+    ],
+    [
+     1605.4,
+     865.2
+    ],
+    [
+     1598.9,
+     1302.8
+    ],
+    [
+     114.8,
+     1300.2
+    ]
+   ],
+   "edge_q": [
+    0.35,
+    0.71,
+    0.45,
+    0.72
+   ],
+   "corners_all": [
+    {
+     "x": 112.2,
+     "y": 859.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1605.4,
+     "y": 865.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Lincoln"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1598.9,
+     "y": 1302.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 114.8,
+     "y": 1300.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    112.2075197151212,
+    859.8972963682631,
+    1605.4026527166586,
+    1302.813781743611
+   ]
+  },
+  {
+   "name": "460_384",
+   "streets": {
+    "N": "Haight",
+    "S": "Santa Clara",
+    "W": "4th",
+    "E": "5th"
+   },
+   "px4_est": [
+    [
+     104,
+     1380
+    ],
+    [
+     1600,
+     1380
+    ],
+    [
+     1600,
+     1800
+    ],
+    [
+     104,
+     1800
+    ]
+   ],
+   "corners": [
+    {
+     "x": 110.8,
+     "y": 1386.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.9,
+     "y": 1395.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1592.0,
+     "y": 1790.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 108.2,
+     "y": 1798.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     110.8,
+     1386.7
+    ],
+    [
+     1596.9,
+     1395.8
+    ],
+    [
+     1592.0,
+     1790.6
+    ],
+    [
+     108.2,
+     1798.4
+    ]
+   ],
+   "edge_q": [
+    0.39,
+    0.63,
+    0.29,
+    0.67
+   ],
+   "corners_all": [
+    {
+     "x": 110.8,
+     "y": 1386.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1596.9,
+     "y": 1395.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Haight"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1592.0,
+     "y": 1790.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 108.2,
+     "y": 1798.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Santa Clara"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    108.19407747301102,
+    1386.6864421451146,
+    1596.9331280559397,
+    1798.4252353074532
+   ]
+  }
+ ],
+ "pct": 25
+}
