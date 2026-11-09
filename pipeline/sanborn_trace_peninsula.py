@@ -163,6 +163,40 @@ E.world_of = world_of
 W.world_of = world_of
 
 
+def fit(px, w, lines=(), prior=None):
+    """the waterfront similarity fit with the South Bay tool's optional rotation prior: prior = [scale, sigma] or
+    [scale, sigma, rotation_deg, sigma_deg] (control along one street only, or a single corner)."""
+    import math
+    from scipy.optimize import least_squares
+    px, w = np.asarray(px, float).reshape(-1, 2), np.asarray(w, float).reshape(-1, 2)
+
+    def resid(v):
+        M = W.M_of(v)
+        r = list((W.apply(M, px) - w).ravel()) if len(px) else []
+        r += [float(n @ (W.apply(M, [q])[0] - p0)) for q, p0, n in lines]
+        if prior:
+            r.append((v[0] - prior[0]) / prior[1])
+            if len(prior) >= 4:
+                r.append(((math.degrees(v[1]) - prior[2] + 180) % 360 - 180) / prior[3])
+        return r
+    s0 = prior[0] if prior else 0.2
+    c0 = w.mean(axis=0) if len(w) else lines[0][1]
+    pc = px.mean(axis=0) if len(px) else np.mean([q for q, _, _ in lines], axis=0)
+    best = None
+    for th in np.radians(np.arange(-180, 180, 15)):
+        t = c0 - W.apply(W.M_of([s0, th, 0, 0]), [pc])[0]
+        sol = least_squares(resid, [s0, th, t[0], t[1]])
+        if best is None or sol.cost < best.cost:
+            best = sol
+    M = W.M_of(best.x)
+    res = [float(np.hypot(*(W.apply(M, [p])[0] - q))) for p, q in zip(px, w)]
+    res += [abs(float(n @ (W.apply(M, [q])[0] - p0))) for q, p0, n in lines]
+    return M, np.array(res)
+
+
+W.fit = fit
+
+
 def refine_block(gray, px4, R=16, inset=0.12):
     """eastbay refine_block with a continuity test: the block lines on these small-town plates are thin (1-2 px at
     25 %, grey 180-200 after JPEG blur, often split over two pixel rows) and run beside dashed double lines (water

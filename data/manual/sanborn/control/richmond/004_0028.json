@@ -1,0 +1,823 @@
+{
+ "refine_R": 20,
+ "weak": 0.15,
+ "notes": "Downtown south of Macdonald: 7th - 10th St, Macdonald - Chanslor (Richmond Corporation yard, skating rink, Lincoln School, St. Mark s R.C. Church)",
+ "blocks": [
+  {
+   "name": "721",
+   "streets": {
+    "N": "Macdonald",
+    "S": "Bissell",
+    "W": "7th",
+    "E": "8th"
+   },
+   "px4_est": [
+    [
+     364,
+     130
+    ],
+    [
+     716,
+     130
+    ],
+    [
+     716,
+     930
+    ],
+    [
+     364,
+     930
+    ]
+   ],
+   "corners": [
+    {
+     "x": 704.0,
+     "y": 133.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "8th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     367.0,
+     135.8
+    ],
+    [
+     704.0,
+     133.3
+    ],
+    [
+     704.0,
+     923.0
+    ],
+    [
+     367.0,
+     923.0
+    ]
+   ],
+   "edge_q": [
+    0.26,
+    0.33,
+    0.06,
+    0.48
+   ],
+   "corners_all": [
+    {
+     "x": 367.0,
+     "y": 135.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "7th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 0.8 20. ] at 7th x Macdonald SE"
+    },
+    {
+     "x": 704.0,
+     "y": 133.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "8th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 704.0,
+     "y": 923.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 367.0,
+     "y": 923.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "7th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    367.0,
+    133.27392344497608,
+    704.0,
+    923.0
+   ]
+  },
+  {
+   "name": "722",
+   "streets": {
+    "N": "Macdonald",
+    "S": "Bissell",
+    "W": "8th",
+    "E": "9th"
+   },
+   "px4_est": [
+    [
+     776,
+     130
+    ],
+    [
+     1130,
+     130
+    ],
+    [
+     1130,
+     930
+    ],
+    [
+     776,
+     930
+    ]
+   ],
+   "corners": [
+    {
+     "x": 773.5,
+     "y": 135.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "8th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 780.0,
+     "y": 923.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     773.5,
+     135.0
+    ],
+    [
+     1150.0,
+     135.0
+    ],
+    [
+     1150.0,
+     923.0
+    ],
+    [
+     780.0,
+     923.0
+    ]
+   ],
+   "edge_q": [
+    0.63,
+    0.04,
+    0.35,
+    0.29
+   ],
+   "corners_all": [
+    {
+     "x": 773.5,
+     "y": 135.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "8th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.0,
+     "y": 135.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "9th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 1150.0,
+     "y": 923.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 780.0,
+     "y": 923.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    773.5016447368421,
+    135.0,
+    1150.0,
+    923.0
+   ]
+  },
+  {
+   "name": "723",
+   "streets": {
+    "N": "Macdonald",
+    "S": "Bissell",
+    "W": "9th",
+    "E": "10th"
+   },
+   "px4_est": [
+    [
+     1180,
+     130
+    ],
+    [
+     1530,
+     130
+    ],
+    [
+     1530,
+     930
+    ],
+    [
+     1180,
+     930
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1180.0,
+     "y": 133.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "9th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1180.0,
+     "y": 922.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1180.0,
+     133.5
+    ],
+    [
+     1538.2,
+     133.5
+    ],
+    [
+     1540.8,
+     920.1
+    ],
+    [
+     1180.0,
+     922.8
+    ]
+   ],
+   "edge_q": [
+    0.37,
+    0.17,
+    0.41,
+    0.48
+   ],
+   "corners_all": [
+    {
+     "x": 1180.0,
+     "y": 133.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "9th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1538.2,
+     "y": 133.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "10th",
+      "Macdonald"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no centreline of 10th within 600 m"
+    },
+    {
+     "x": 1540.8,
+     "y": 920.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "10th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no centreline of 10th within 600 m"
+    },
+    {
+     "x": 1180.0,
+     "y": 922.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1180.0,
+    133.5,
+    1540.7832339920362,
+    922.8157894736842
+   ]
+  },
+  {
+   "name": "772",
+   "streets": {
+    "N": "Bissell",
+    "S": "Chanslor",
+    "W": "7th",
+    "E": "8th"
+   },
+   "px4_est": [
+    [
+     364,
+     1000
+    ],
+    [
+     716,
+     1000
+    ],
+    [
+     716,
+     1810
+    ],
+    [
+     364,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 704.1,
+     "y": 1800.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "8th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 366.0,
+     "y": 1800.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "7th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     366.0,
+     1014.0
+    ],
+    [
+     705.4,
+     1014.0
+    ],
+    [
+     704.1,
+     1800.0
+    ],
+    [
+     366.0,
+     1800.0
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    0.21,
+    0.3,
+    0.27
+   ],
+   "corners_all": [
+    {
+     "x": 366.0,
+     "y": 1014.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "7th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 705.4,
+     "y": 1014.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 704.1,
+     "y": 1800.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "8th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 366.0,
+     "y": 1800.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "7th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    366.0,
+    1014.0,
+    705.3851526965562,
+    1800.0
+   ]
+  },
+  {
+   "name": "773",
+   "streets": {
+    "N": "Bissell",
+    "S": "Chanslor",
+    "W": "8th",
+    "E": "9th"
+   },
+   "px4_est": [
+    [
+     776,
+     1000
+    ],
+    [
+     1130,
+     1000
+    ],
+    [
+     1130,
+     1810
+    ],
+    [
+     776,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 780.8,
+     "y": 1013.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1111.8,
+     "y": 1013.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1115.7,
+     "y": 1799.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "9th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 778.2,
+     "y": 1799.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "8th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     780.8,
+     1013.0
+    ],
+    [
+     1111.8,
+     1013.0
+    ],
+    [
+     1115.7,
+     1799.0
+    ],
+    [
+     778.2,
+     1799.0
+    ]
+   ],
+   "edge_q": [
+    0.36,
+    0.02,
+    0.02,
+    0.03
+   ],
+   "corners_all": [
+    {
+     "x": 780.8,
+     "y": 1013.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "8th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1111.8,
+     "y": 1013.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1115.7,
+     "y": 1799.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "9th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 778.2,
+     "y": 1799.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "8th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    778.2199480181937,
+    1013.0,
+    1115.6700779727096,
+    1799.0
+   ]
+  },
+  {
+   "name": "774",
+   "streets": {
+    "N": "Bissell",
+    "S": "Chanslor",
+    "W": "9th",
+    "E": "10th"
+   },
+   "px4_est": [
+    [
+     1180,
+     1000
+    ],
+    [
+     1530,
+     1000
+    ],
+    [
+     1530,
+     1810
+    ],
+    [
+     1180,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1183.0,
+     "y": 1012.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1183.0,
+     "y": 1799.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "9th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1183.0,
+     1012.8
+    ],
+    [
+     1540.0,
+     1010.1
+    ],
+    [
+     1540.0,
+     1799.0
+    ],
+    [
+     1183.0,
+     1799.0
+    ]
+   ],
+   "edge_q": [
+    0.29,
+    0.26,
+    0.22,
+    0.31
+   ],
+   "corners_all": [
+    {
+     "x": 1183.0,
+     "y": 1012.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "9th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1540.0,
+     "y": 1010.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "10th",
+      "Bissell"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no centreline of 10th within 600 m"
+    },
+    {
+     "x": 1540.0,
+     "y": 1799.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "10th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "no centreline of 10th within 600 m"
+    },
+    {
+     "x": 1183.0,
+     "y": 1799.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "9th",
+      "Chanslor"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1183.0,
+    1010.109022556391,
+    1540.0,
+    1799.0
+   ]
+  }
+ ],
+ "pct": 25
+}

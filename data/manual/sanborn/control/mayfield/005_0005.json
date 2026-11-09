@@ -1,0 +1,852 @@
+{
+ "residential": true,
+ "scale_prior": [
+  0.203,
+  0.002,
+  57.2,
+  0.4
+ ],
+ "notes": "Mayfield sheet 5 (May 1908): Grant Av -> Washington Av, County Road (El Camino Real) -> Birch St (upper strip), and Birch St -> the railroad between Grant and Sheridan Av (lower strip, fitted from its two Birch St corners + the plate scale); grid north (NE) = right. Washington Av is not used as control (today's Page Mill Rd does not reach Ash / Birch St).",
+ "blocks": [
+  {
+   "name": "81",
+   "streets": {
+    "N": "ash street",
+    "S": "county road",
+    "W": "grant avenue",
+    "E": "sheridan avenue"
+   },
+   "px4_est": [
+    [
+     951,
+     116.8
+    ],
+    [
+     951,
+     540.8
+    ],
+    [
+     118,
+     540.8
+    ],
+    [
+     118,
+     116.8
+    ]
+   ],
+   "corners": [
+    {
+     "x": 951.0,
+     "y": 115.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 951.0,
+     "y": 541.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 115.9,
+     "y": 539.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 121.1,
+     "y": 115.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     951.0,
+     115.8
+    ],
+    [
+     951.0,
+     541.2
+    ],
+    [
+     115.9,
+     539.9
+    ],
+    [
+     121.1,
+     115.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.94,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 951.0,
+     "y": 115.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 951.0,
+     "y": 541.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 115.9,
+     "y": 539.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 121.1,
+     "y": 115.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    115.87973242139287,
+    115.8,
+    951.0,
+    541.207894736842
+   ]
+  },
+  {
+   "name": "82",
+   "streets": {
+    "N": "birch street",
+    "S": "ash street",
+    "W": "grant avenue",
+    "E": "sheridan avenue"
+   },
+   "px4_est": [
+    [
+     1504.5,
+     116.5
+    ],
+    [
+     1504.5,
+     540.7
+    ],
+    [
+     1010.5,
+     540.7
+    ],
+    [
+     1010.5,
+     116.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1504.5,
+     "y": 117.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 539.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1010.0,
+     "y": 539.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1010.0,
+     "y": 116.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1504.5,
+     117.4
+    ],
+    [
+     1504.5,
+     539.7
+    ],
+    [
+     1010.0,
+     539.7
+    ],
+    [
+     1010.0,
+     116.1
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1504.5,
+     "y": 117.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1504.5,
+     "y": 539.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1010.0,
+     "y": 539.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1010.0,
+     "y": 116.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1010.0,
+    116.09077349243552,
+    1504.5,
+    539.7
+   ]
+  },
+  {
+   "name": "94",
+   "streets": {
+    "N": "ash street",
+    "S": "county road",
+    "W": "sheridan avenue",
+    "E": "washington"
+   },
+   "px4_est": [
+    [
+     950.7,
+     630.5
+    ],
+    [
+     950.7,
+     1055
+    ],
+    [
+     116.5,
+     1055
+    ],
+    [
+     116.5,
+     630.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 949.7,
+     "y": 630.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "94"
+    },
+    {
+     "x": 115.6,
+     "y": 630.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sheridan avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "94"
+    },
+    {
+     "x": 951.0,
+     "y": 115.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "81"
+    },
+    {
+     "x": 951.0,
+     "y": 541.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "81"
+    },
+    {
+     "x": 115.9,
+     "y": 539.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "81"
+    },
+    {
+     "x": 121.1,
+     "y": 115.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "81"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "81"
+   ],
+   "px4": [
+    [
+     949.7,
+     630.5
+    ],
+    [
+     949.7,
+     1054.2
+    ],
+    [
+     116.9,
+     1056.8
+    ],
+    [
+     115.6,
+     630.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.91,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 949.7,
+     "y": 630.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 115.6,
+     "y": 630.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sheridan avenue",
+      "county road"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    115.59210526315789,
+    630.5,
+    949.7,
+    1056.8144849810278
+   ]
+  },
+  {
+   "name": "95",
+   "streets": {
+    "N": "birch street",
+    "S": "ash street",
+    "W": "sheridan avenue",
+    "E": "washington"
+   },
+   "px4_est": [
+    [
+     1502.5,
+     630.5
+    ],
+    [
+     1502.5,
+     1054
+    ],
+    [
+     1010.5,
+     1054
+    ],
+    [
+     1010.5,
+     630.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1502.9,
+     "y": 630.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "95"
+    },
+    {
+     "x": 1009.6,
+     "y": 630.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "95"
+    },
+    {
+     "x": 1504.5,
+     "y": 117.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "82"
+    },
+    {
+     "x": 1504.5,
+     "y": 539.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "82"
+    },
+    {
+     "x": 1010.0,
+     "y": 539.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "82"
+    },
+    {
+     "x": 1010.0,
+     "y": 116.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "82"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "82"
+   ],
+   "px4": [
+    [
+     1502.9,
+     630.5
+    ],
+    [
+     1501.6,
+     1053.2
+    ],
+    [
+     1010.9,
+     1055.8
+    ],
+    [
+     1009.6,
+     630.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1502.9,
+     "y": 630.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1009.6,
+     "y": 630.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sheridan avenue",
+      "ash street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1009.5921052631579,
+    630.5,
+    1502.907894736842,
+    1055.8135776133113
+   ]
+  },
+  {
+   "name": "83",
+   "streets": {
+    "N": "3rd street",
+    "S": "birch street",
+    "W": "grant avenue",
+    "E": "sheridan avenue"
+   },
+   "px4_est": [
+    [
+     704,
+     1197.5
+    ],
+    [
+     704,
+     1622
+    ],
+    [
+     121,
+     1622
+    ],
+    [
+     121,
+     1197.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 121.8,
+     "y": 1622.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "px4": [
+    [
+     704.0,
+     1193.9
+    ],
+    [
+     704.0,
+     1622.0
+    ],
+    [
+     121.8,
+     1622.0
+    ],
+    [
+     119.2,
+     1199.1
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.52
+   ],
+   "corners_all": [
+    {
+     "x": 121.8,
+     "y": 1622.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 119.2,
+     "y": 1199.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [95.8 10.5] at grant avenue x birch street NE"
+    }
+   ],
+   "zone_px": [
+    119.19442613076576,
+    1193.8684210526317,
+    704.0,
+    1622.0
+   ]
+  },
+  {
+   "name": "84",
+   "streets": {
+    "N": "x",
+    "S": "3rd street",
+    "W": "grant avenue",
+    "E": "sheridan avenue"
+   },
+   "px4_est": [
+    [
+     1240,
+     1170
+    ],
+    [
+     1240,
+     1660
+    ],
+    [
+     760,
+     1660
+    ],
+    [
+     760,
+     1170
+    ]
+   ],
+   "corners": [
+    {
+     "x": 121.8,
+     "y": 1622.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sheridan avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "83"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "83"
+   ],
+   "px4": [
+    [
+     1240.0,
+     1170.0
+    ],
+    [
+     1240.0,
+     1660.0
+    ],
+    [
+     760.0,
+     1660.0
+    ],
+    [
+     760.0,
+     1170.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    760.0,
+    1170.0,
+    1240.0,
+    1660.0
+   ]
+  }
+ ],
+ "pct": 25
+}

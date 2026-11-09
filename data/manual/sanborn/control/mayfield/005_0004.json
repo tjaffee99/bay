@@ -1,0 +1,645 @@
+{
+ "residential": true,
+ "notes": "Mayfield sheet 4 (May 1908): Birch St -> the railroad, College Av -> Grant Av (Mayfield Brewery, public school); grid north (NE) = right. Control only on Birch St (4 corners in one line); 3rd St is not today's Park Blvd (70 m apart), so its corners are not used; the depot and lumber yard along the tracks not used.",
+ "blocks": [
+  {
+   "name": "57",
+   "streets": {
+    "N": "3rd street",
+    "S": "birch street",
+    "W": "lincoln avenue",
+    "E": "sherman avenue"
+   },
+   "px4_est": [
+    [
+     726.5,
+     837
+    ],
+    [
+     726.5,
+     1284
+    ],
+    [
+     137.5,
+     1284
+    ],
+    [
+     137.5,
+     837
+    ]
+   ],
+   "corners": [
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      948
+     ],
+     "x": 137.5,
+     "y": 837,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 948] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      1395
+     ],
+     "x": 137.5,
+     "y": 1284,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1395] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1455.5
+     ],
+     "x": 137.5,
+     "y": 1346,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1455.5] (block 69)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1843
+     ],
+     "x": 137.5,
+     "y": 1734,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1843] (block 69)"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "70"
+   ],
+   "px4": [
+    [
+     726.1,
+     832.5
+    ],
+    [
+     727.4,
+     1285.8
+    ],
+    [
+     138.7,
+     1283.2
+    ],
+    [
+     141.3,
+     839.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.98,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 138.7,
+     "y": 1283.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 141.3,
+     "y": 839.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "lincoln avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    138.68898196897277,
+    832.4652314726594,
+    727.4132517066085,
+    1285.8198697690405
+   ]
+  },
+  {
+   "name": "70",
+   "streets": {
+    "N": "3rd street",
+    "S": "birch street",
+    "W": "sherman avenue",
+    "E": "grant avenue"
+   },
+   "px4_est": [
+    [
+     726,
+     1346
+    ],
+    [
+     726,
+     1734
+    ],
+    [
+     137.5,
+     1734
+    ],
+    [
+     137.5,
+     1346
+    ]
+   ],
+   "corners": [
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      948
+     ],
+     "x": 137.5,
+     "y": 837,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 948] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      1395
+     ],
+     "x": 137.5,
+     "y": 1284,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1395] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1455.5
+     ],
+     "x": 137.5,
+     "y": 1346,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1455.5] (block 69)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1843
+     ],
+     "x": 137.5,
+     "y": 1734,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1843] (block 69)"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "57"
+   ],
+   "px4": [
+    [
+     727.4,
+     1346.0
+    ],
+    [
+     726.1,
+     1734.0
+    ],
+    [
+     138.0,
+     1734.0
+    ],
+    [
+     138.0,
+     1346.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 138.0,
+     "y": 1734.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "grant avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [89.5 14.6] at grant avenue x birch street NW"
+    },
+    {
+     "x": 138.0,
+     "y": 1346.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "sherman avenue",
+      "birch street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    138.0,
+    1346.0,
+    727.4078947368421,
+    1734.0
+   ]
+  },
+  {
+   "name": "46",
+   "streets": {
+    "N": "x",
+    "S": "birch street",
+    "W": "y",
+    "E": "lincoln avenue"
+   },
+   "px4_est": [
+    [
+     874.5,
+     297.5
+    ],
+    [
+     874.5,
+     747
+    ],
+    [
+     82.5,
+     747
+    ],
+    [
+     82.5,
+     297.5
+    ]
+   ],
+   "corners": [
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      948
+     ],
+     "x": 137.5,
+     "y": 837,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 948] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      1395
+     ],
+     "x": 137.5,
+     "y": 1284,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1395] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1455.5
+     ],
+     "x": 137.5,
+     "y": 1346,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1455.5] (block 69)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1843
+     ],
+     "x": 137.5,
+     "y": 1734,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1843] (block 69)"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "57",
+    "70"
+   ],
+   "px4": [
+    [
+     874.5,
+     297.5
+    ],
+    [
+     874.5,
+     747.0
+    ],
+    [
+     82.5,
+     747.0
+    ],
+    [
+     82.5,
+     297.5
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    82.5,
+    297.5,
+    874.5,
+    747.0
+   ]
+  },
+  {
+   "name": "58",
+   "streets": {
+    "N": "x",
+    "S": "3rd street",
+    "W": "lincoln avenue",
+    "E": "sherman avenue"
+   },
+   "px4_est": [
+    [
+     990,
+     836.5
+    ],
+    [
+     990,
+     1287
+    ],
+    [
+     784,
+     1287
+    ],
+    [
+     784,
+     836.5
+    ]
+   ],
+   "corners": [
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      948
+     ],
+     "x": 137.5,
+     "y": 837,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 948] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      1395
+     ],
+     "x": 137.5,
+     "y": 1284,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1395] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1455.5
+     ],
+     "x": 137.5,
+     "y": 1346,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1455.5] (block 69)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1843
+     ],
+     "x": 137.5,
+     "y": 1734,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1843] (block 69)"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "57",
+    "70"
+   ],
+   "px4": [
+    [
+     990.0,
+     836.5
+    ],
+    [
+     990.0,
+     1287.0
+    ],
+    [
+     784.0,
+     1287.0
+    ],
+    [
+     784.0,
+     836.5
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    784.0,
+    836.5,
+    990.0,
+    1287.0
+   ]
+  },
+  {
+   "name": "71",
+   "streets": {
+    "N": "x",
+    "S": "3rd street",
+    "W": "sherman avenue",
+    "E": "grant avenue"
+   },
+   "px4_est": [
+    [
+     990,
+     1346
+    ],
+    [
+     990,
+     1736
+    ],
+    [
+     782.5,
+     1736
+    ],
+    [
+     782.5,
+     1346
+    ]
+   ],
+   "corners": [
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      948
+     ],
+     "x": 137.5,
+     "y": 837,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 948] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "56",
+     "px_other": [
+      1579,
+      1395
+     ],
+     "x": 137.5,
+     "y": 1284,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1395] (block 56)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1455.5
+     ],
+     "x": 137.5,
+     "y": 1346,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1455.5] (block 69)"
+    },
+    {
+     "tie": "005_0003",
+     "tie_block": "69",
+     "px_other": [
+      1579,
+      1843
+     ],
+     "x": 137.5,
+     "y": 1734,
+     "norefine": 1,
+     "label": "Birch St corner drawn on sheet 3 at [1579, 1843] (block 69)"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "57",
+    "70"
+   ],
+   "px4": [
+    [
+     990.0,
+     1346.0
+    ],
+    [
+     990.0,
+     1736.0
+    ],
+    [
+     782.5,
+     1736.0
+    ],
+    [
+     782.5,
+     1346.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    782.5,
+    1346.0,
+    990.0,
+    1736.0
+   ]
+  }
+ ],
+ "pct": 25
+}
