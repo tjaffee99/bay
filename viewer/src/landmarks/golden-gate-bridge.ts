@@ -230,11 +230,19 @@ export const goldenGateBridge: Landmark = {
   end: 9999,
   anchor: ANCHOR,
   build,
-  // suppress generic footprints of the anchorage housings / toll structures under the deck
-  replaces: [S_ANCH, N_ANCH].map(p => {
-    const l = lngLatToLocal(ANCHOR, p);
-    return rect(l[0], l[1], 120, 120);
-  }),
+  // suppress generic footprints of the anchorage housings / toll structures under the deck,
+  // and of the towers (OSM maps the south tower as a building part; the 2023 LiDAR split it
+  // into 223 / 146 / 76 m prisms that stood inside the model)
+  replaces: [
+    ...[S_ANCH, N_ANCH].map(p => {
+      const l = lngLatToLocal(ANCHOR, p);
+      return rect(l[0], l[1], 120, 120);
+    }),
+    ...[S_TOWER, N_TOWER].map(p => {
+      const l = lngLatToLocal(ANCHOR, p);
+      return rect(l[0], l[1], 90, 90);
+    })
+  ],
   facts: {
     'Construction': 'Jan 5, 1933 – Apr 1937',
     'Opened': 'May 27, 1937',
