@@ -55,8 +55,9 @@ RES = 2.5
 S = {}
 
 
-def sheet(key, file, quad, scale, edition, year, style, note=""):
-    S[key] = dict(key=key, file=file, quad=quad, scale=scale, edition=edition, year=year, style=style, note=note)
+def sheet(key, file, quad, scale, edition, year, style, note="", tint="pink"):
+    S[key] = dict(key=key, file=file, quad=quad, scale=scale, edition=edition, year=year, style=style, note=note,
+                  tint=tint)
 
 
 Q15 = lambda w, s: (w, s, w + 0.25, s + 0.25)      # noqa: E731
@@ -70,13 +71,13 @@ sheet("concord1897", "CA_Concord_297157_1897_62500_geo.tif", Q15(-122.25, 37.75)
 sheet("concord1915", "CA_Concord_297163_1915_62500_geo.tif", Q15(-122.25, 37.75), 62500, 1915, 1914, "early",
       "edition of June 1915: surveyed 1893-94, culture revised in part in 1913-14 (collar note)")
 sheet("concord1942", "CA_Concord_465521_1942_62500_geo.tif", Q15(-122.25, 37.75), 62500, 1942, 1939, "tint",
-      "aerial photographs 1939")
+      "aerial photographs 1939", tint="grey")
 sheet("haywards1899", "CA_Haywards_297665_1899_62500_geo.tif", Q15(-122.25, 37.5), 62500, 1899, 1896, "early",
       "surveyed 1896 (1901 imprint)")
 sheet("hayward1915", "CA_Hayward_297660_1915_62500_geo.tif", Q15(-122.25, 37.5), 62500, 1915, 1914, "early",
       "surveyed 1914 (1939 imprint)")
 sheet("hayward1942", "CA_Hayward_465728_1942_62500_geo.tif", Q15(-122.25, 37.5), 62500, 1942, 1939, "tint",
-      "aerial photographs 1939")
+      "aerial photographs 1939", tint="grey")
 sheet("oaklandwest1949", "CA_Oakland%20West_293623_1949_24000_geo.tif", Q75(-122.375, 37.75), 24000, 1949, 1946,
       "tint", "aerial photographs 1946, field check 1947")
 sheet("oaklandeast1947", "CA_Oakland%20East_293612_1947_24000_geo.tif", Q75(-122.25, 37.75), 24000, 1947, 1946,
@@ -98,7 +99,7 @@ sheet("sanjose1889", "CA_San%20Jose_301582_1889_62500_geo.tif", Q15(-122.0, 37.2
 sheet("sanjose1897", "CA_San%20Jose_298899_1897_62500_geo.tif", Q15(-122.0, 37.25), 62500, 1897, 1895, "early",
       "surveyed 1895")
 sheet("sanjose1943", "CA_San%20Jose_466308_1943_62500_geo.tif", Q15(-122.0, 37.25), 62500, 1943, 1939, "tint",
-      "aerial photographs 1939")
+      "aerial photographs 1939", tint="grey")
 sheet("sanjosewest1953", "CA_San%20Jose%20West_300105_1953_24000_geo.tif", Q75(-122.0, 37.25), 24000, 1953, 1948,
       "tint", "aerial photographs 1948, survey 1953")
 sheet("sanjoseeast1953", "CA_San%20Jose%20East_300099_1953_24000_geo.tif", Q75(-121.875, 37.25), 24000, 1953, 1948,
@@ -108,7 +109,7 @@ sheet("milpitas1953", "CA_Milpitas_292969_1953_24000_geo.tif", Q75(-122.0, 37.37
 sheet("paloalto1899", "CA_Palo%20Alto_298453_1899_62500_geo.tif", Q15(-122.25, 37.25), 62500, 1899, 1895, "early",
       "surveyed 1895")
 sheet("paloalto1943", "CA_Palo%20Alto_298463_1943_62500_geo.tif", Q15(-122.25, 37.25), 62500, 1943, 1940, "tint",
-      "aerial photographs 1940")
+      "aerial photographs 1940", tint="grey")
 sheet("paloalto1953", "CA_Palo%20Alto_293907_1953_24000_geo.tif", Q75(-122.25, 37.375), 24000, 1953, 1948, "tint",
       "aerial photographs 1948, survey 1953")
 sheet("mountainview1953", "CA_Mountain%20View_293234_1953_24000_geo.tif", Q75(-122.125, 37.375), 24000, 1953, 1948,
@@ -122,19 +123,19 @@ sheet("sanmateo1896", "CA_San%20Mateo_298916_1896_62500_geo.tif", Q15(-122.5, 37
 sheet("sanmateo1915", "CA_San%20Mateo_298922_1915_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1915, 1915, "early",
       "1915 edition of the 1892 survey")
 sheet("sanmateo1943", "CA_San%20Mateo_466324_1943_62500_geo.tif", Q15(-122.5, 37.5), 62500, 1943, 1939, "tint",
-      "aerial photographs 1939")
+      "aerial photographs 1939", tint="grey")
 sheet("sanmateo1947", "CA_San%20Mateo_300157_1947_24000_geo.tif", Q75(-122.375, 37.5), 24000, 1947, 1946, "tint",
       "aerial photographs 1946, field check 1947")
 sheet("tamalpais1897", "CA_Tamalpais_298980_1897_62500_geo.tif", Q15(-122.75, 37.75), 62500, 1897, 1895, "early",
       "surveyed 1895")
 sheet("tamalpais1941", "CA_Tamalpais_301788_1941_62500_geo.tif", Q15(-122.75, 37.75), 62500, 1941, 1939, "tint",
-      "aerial photographs 1939")
+      "aerial photographs 1939", tint="grey")
 sheet("sanrafael1954", "CA_San%20Rafael_300201_1954_24000_geo.tif", Q75(-122.625, 37.875), 24000, 1954, 1952,
       "tint", "aerial photographs 1952, field check 1954")
 sheet("karquines1898", "CA_Karquines_297860_1898_62500_geo.tif", Q15(-122.25, 38.0), 62500, 1898, 1896, "early",
       "surveyed 1896")
 sheet("carquinez1942", "CA_Carquinez_297034_1942_62500_geo.tif", Q15(-122.25, 38.0), 62500, 1942, 1937, "tint",
-      "aerial photographs 1937")
+      "aerial photographs 1937", tint="grey")
 sheet("benicia1950", "CA_Benicia_288319_1950_24000_geo.tif", Q75(-122.25, 38.0), 24000, 1950, 1948, "tint",
       "aerial photographs 1948, field check 1950")
 sheet("portchicago1951", "CA_Port%20Chicago_294325_1951_24000_geo.tif", Q75(-122.125, 38.0), 24000, 1951, 1948,
@@ -161,8 +162,7 @@ TOWNS = {
     "oakland": dict(name="Oakland (incl. Emeryville, Piedmont)", places=["0653000", "0622594", "0656938"],
                     bbox=(-122.335, 37.725, -122.155, 37.855),
                     snaps={1894: EARLY_OAK, 1914: REV_OAK, 1939: ["concord1942", "hayward1942"],
-                           1946: ["oaklandwest1949", "oaklandeast1947", "richmond1947", "briones1947",
-                                  "sanleandro1947"]}),
+                           1946: ["oaklandwest1949", "oaklandeast1947", "sanleandro1947"]}),
     "berkeley": dict(name="Berkeley (incl. Albany)", places=["0606000", "0600674"],
                      bbox=(-122.33, 37.845, -122.23, 37.91),
                      snaps={1894: ["sf1895", "concord1897"], 1914: ["sf1915", "concord1915"],
@@ -332,12 +332,30 @@ def ink_mask(img, style):
     return _strips(img, f)
 
 
-def tint_mask(img):
-    """Red / pink urban-area tint of the 1939-53 sheets (as topo_farmsteads.urban_tint)."""
-    def f(b):
+def tint_mask(img, kind, res, scale):
+    """Urban-area tint of the 1939-53 sheets: 'pink' (red / pink screen of the 1:24,000 sheets, as
+    topo_farmsteads.urban_tint) or 'grey' (the grey-tan built-up tint of the 1939-43 1:62,500
+    editions). A majority over ~0.8 mm on paper drops the anti-aliased edges of lines."""
+    import cv2
+    mx = img[::7, ::7].astype(np.int16).sum(2)
+    paper = np.percentile(mx[mx > 450], 95) if (mx > 450).any() else 700
+
+    # light pink / salmon ground + red dot screen; the paper is white to yellowish (R - G 0-6 on every
+    # 1:24,000 sheet used, from the sheets' R - G histograms), woodland green, contours thin orange
+    def pink(b):
         R, G, B = b[:, :, 0], b[:, :, 1], b[:, :, 2]
-        return (R - G > 22) & (G - B < 18) & (R > 190)
-    return _strips(img, f)
+        return (R - G > 10) & (R > 195) & (B > 100) & (G - B < 50)
+
+    def grey(b):
+        R, G, B = b[:, :, 0], b[:, :, 1], b[:, :, 2]
+        return ((R > 150) & (R < 235) & (R - G >= -3) & (R - G < 27) & (G - B > 3) & (G - B < 42)
+                & (R + G + B < paper - 55))
+    m = _strips(img, pink if kind == "pink" else grey).astype(np.float32)
+    k = max(3, int(round(0.8 * scale / 1000.0 / res)) | 1)
+    m = (cv2.blur(m, (k, k)) > (0.35 if kind == "pink" else 0.45)).astype(np.uint8)
+    r = max(1, int(round(0.3 * scale / 1000.0 / res)))      # drop strips along road lines (< 0.6 mm wide)
+    m = cv2.morphologyEx(m, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1,) * 2))
+    return m.astype(bool)
 
 
 def line_kernels(length_px, n=12):
@@ -381,12 +399,20 @@ def town_clip(town):
 
 
 def land_poly(bounds):
-    """Today's land (data/interim/land_modern.fgb) within bounds (UTM)."""
+    """Today's land within bounds (UTM): the box minus TIGER 2024 area water (bay, lakes, reservoirs,
+    salt ponds) of the five counties."""
     import geopandas as gpd
     import shapely
-    p = ROOT / "data" / "interim" / "land_modern.fgb"
-    g = gpd.read_file(p).to_crs(UTM)
-    return shapely.union_all(list(g.geometry)).buffer(0).intersection(shapely.box(*bounds))
+    box = shapely.box(*bounds)
+    ll = to_ll(box).bounds
+    ws = []
+    for c in ("06001", "06013", "06041", "06081", "06085"):
+        w = gpd.read_file(f"zip://{ROOT / 'data' / 'raw' / 'tiger' / f'tl_2024_{c}_areawater.zip'}",
+                          bbox=tuple(ll))
+        if len(w):
+            ws += list(w.to_crs(UTM).geometry)
+    water = shapely.union_all(ws).buffer(0) if ws else shapely.Polygon()
+    return box.difference(water)
 
 
 def to_utm(g):
@@ -416,8 +442,13 @@ def modern_roads(bounds_ll, classes=None):
 BLOCK_CLASSES = {"trunk", "primary", "secondary", "tertiary", "residential", "unclassified", "living_street"}
 
 
+BIG_HA = 5.0       # blocks larger than this (hills, parks, yards, waterfront) are read in CELL_M cells
+CELL_M = 100.0
+
+
 def blocks(town, clip):
-    """Today's street blocks (UTM polygons) inside the town clip."""
+    """Today's street blocks (UTM polygons) inside the town clip, on today's land; blocks over
+    BIG_HA split into CELL_M squares (kind = 'cell')."""
     import geopandas as gpd
     import shapely
     cache = INT / f"blocks_{town}.parquet"
@@ -429,9 +460,24 @@ def blocks(town, clip):
     net = shapely.union_all(lines)
     polys = list(shapely.get_parts(shapely.polygonize(shapely.get_parts(net))))
     polys = [p for p in polys if p.area > 200 and clip.contains(p.representative_point())]
-    polys = [p.intersection(clip) for p in polys]
-    polys = [p for p in polys if not p.is_empty and p.area > 200]
-    g = gpd.GeoDataFrame({"bid": np.arange(len(polys))}, geometry=polys, crs=UTM)
+    land = land_poly(clip.bounds)
+    out, kind = [], []
+    for p in polys:
+        p = p.intersection(clip).intersection(land)
+        for q in shapely.get_parts(p):
+            if q.geom_type != "Polygon" or q.area <= 200:
+                continue
+            if q.area <= BIG_HA * 1e4:
+                out.append(q); kind.append("block")
+                continue
+            x0, y0, x1, y1 = q.bounds
+            for gx in np.arange(math.floor(x0 / CELL_M) * CELL_M, x1, CELL_M):
+                for gy in np.arange(math.floor(y0 / CELL_M) * CELL_M, y1, CELL_M):
+                    c = q.intersection(shapely.box(gx, gy, gx + CELL_M, gy + CELL_M))
+                    for cc in shapely.get_parts(c):
+                        if cc.geom_type == "Polygon" and cc.area > 200:
+                            out.append(cc); kind.append("cell")
+    g = gpd.GeoDataFrame({"bid": np.arange(len(out)), "kind": kind}, geometry=out, crs=UTM)
     g.to_parquet(cache)
     return g
 
@@ -529,56 +575,37 @@ def align(sh, grid, small, vs, bounds_ll):
 
 
 # --------------------------------------------------------------------------- per sheet
-def block_stats(town, key, preview=False):
-    """Render + align one sheet over a town, measure every block. Cached in data/interim."""
+NEAT_MM = 0.5      # ink this close to the quadrangle edge (neat line, ticks) is not read
+
+# mask codes (one uint8 PNG per town and sheet in data/interim): which pixels are what
+M_VALID, M_HEAVY, M_BAND, M_TINT, M_SQ, M_SKEL = 1, 2, 4, 8, 16, 32
+
+
+def masks(town, key, preview=False):
+    """Render + align one sheet over a town -> code image (cached PNG) with valid / heavy ink / band /
+    tint / house-square centre / band skeleton bits."""
     import cv2
-    import pandas as pd
-    from rasterio import features
-    sh = S[key]
     INT.mkdir(parents=True, exist_ok=True)
-    cache = INT / f"stats_{town}_{key}.parquet"
+    cache = INT / f"mask_{town}_{key}.png"
     if cache.exists() and not preview:
-        return pd.read_parquet(cache)
+        return cv2.imread(str(cache), cv2.IMREAD_UNCHANGED)
+    sh = S[key]
     grid = Grid(TOWNS[town]["bbox"])
-    clip = town_clip(town)
-    bl = blocks(town, clip)
     model = align_sheet(key)
     print(key, "align", {k: model.get(k) for k in ("aligned", "model", "n_windows", "n_used", "rms_m", "shift_m", "reason")})
     if sh["style"] == "tint" and model.get("aligned") and model.get("shift_m", 0) < 6:
         model = None                        # accurate 1:24,000 sheets: as published
     img, valid = render(sh, grid, model)
+    if img is None:
+        code = np.zeros((grid.H, grid.W), np.uint8)
+        cv2.imwrite(str(cache), code)
+        return code
     ink = ink_mask(img, sh["style"])
     heavy, bands = heavy_and_bands(ink, grid.res, sh)
-    tint = tint_mask(img) if sh["style"] == "tint" else np.zeros_like(ink)
-    if sh["style"] == "tint":               # the tint is drawn under streets / lettering: close small gaps
-        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-        tint = cv2.morphologyEx(tint.astype(np.uint8), cv2.MORPH_CLOSE, k).astype(bool)
-    lab = features.rasterize(((g, i + 1) for i, g in enumerate(bl.geometry)), out_shape=(grid.H, grid.W),
-                             transform=grid.transform, dtype="int32")
-    n = len(bl) + 1
-    cnt = lambda m: np.bincount(lab[m], minlength=n)      # noqa: E731
-    px_all = np.bincount(lab.ravel(), minlength=n)
-    px_valid = cnt(valid)
-    a_band = cnt(bands & valid)
-    a_heavy = cnt(heavy & valid)
-    a_tint = cnt(tint & valid)
-    # squares: compact heavy-ink components not part of a band
-    sq = heavy & ~cv2.dilate(bands.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
-    nl, cl, st, cen = cv2.connectedComponentsWithStats(sq.astype(np.uint8), 8)
-    mm = sh["scale"] / 1000.0
-    amin = (0.25 * mm) ** 2 / grid.res ** 2           # >= 0.25 x 0.25 mm on paper
-    ok = (st[1:, cv2.CC_STAT_AREA] >= amin)
-    ci = np.clip(np.round(cen[1:, 0]).astype(int), 0, grid.W - 1)
-    cj = np.clip(np.round(cen[1:, 1]).astype(int), 0, grid.H - 1)
-    n_sq = np.bincount(lab[cj[ok], ci[ok]], minlength=n)
-    # band thickness -> band length per block
-    from skimage.morphology import skeletonize
-    sk = skeletonize(bands)
-    a_skel = cnt(sk & valid)
-    df = pd.DataFrame({"bid": bl.bid.values, "px": px_all[1:], "px_valid": px_valid[1:], "a_band": a_band[1:],
-                       "a_heavy": a_heavy[1:], "a_tint": a_tint[1:], "n_sq": n_sq[1:], "skel": a_skel[1:]})
-    df["res"] = grid.res
-    df.to_parquet(cache)
+    del ink
+    tint = (tint_mask(img, sh.get("tint", "pink"), grid.res, sh["scale"]) if sh["style"] == "tint"
+            else np.zeros_like(heavy))
+    print(key, "tinted share of the area read", round(float(tint[valid].mean()), 3) if valid.any() else 0)
     if preview:
         pv = img.copy()
         pv[heavy & ~bands] = (0, 160, 255)
@@ -586,12 +613,116 @@ def block_stats(town, key, preview=False):
         if sh["style"] == "tint":
             pv[tint & ~heavy] = (255, 190, 120)
         cv2.imwrite(str(INT / f"pv_{town}_{key}.jpg"), pv[:, :, ::-1], [cv2.IMWRITE_JPEG_QUALITY, 80])
+        del pv
+    del img
+    code = (valid * M_VALID | heavy * M_HEAVY | bands * M_BAND | tint * M_TINT).astype(np.uint8)
+    # squares: compact heavy-ink components not part of a band -> one centre pixel each
+    sq = heavy & ~cv2.dilate(bands.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+    nl, cl, st, cen = cv2.connectedComponentsWithStats(sq.astype(np.uint8), 8)
+    del cl, sq
+    mm = sh["scale"] / 1000.0
+    amin = (0.25 * mm) ** 2 / grid.res ** 2           # >= 0.25 x 0.25 mm on paper
+    ok = (st[1:, cv2.CC_STAT_AREA] >= amin)
+    ci = np.clip(np.round(cen[1:, 0]).astype(int), 0, grid.W - 1)[ok]
+    cj = np.clip(np.round(cen[1:, 1]).astype(int), 0, grid.H - 1)[ok]
+    code[cj, ci] |= M_SQ
+    from skimage.morphology import skeletonize
+    code[skeletonize(bands)] |= M_SKEL
+    cv2.imwrite(str(cache), code)
+    return code
+
+
+NEAR_M = 60.0      # band / square ink further than this from today's streets is not counted
+
+
+_NEAR = {}
+
+
+def street_near(town, grid):
+    """Pixels within NEAR_M of a street centreline of today (the block-forming classes)."""
+    import cv2
+    if town in _NEAR:
+        return _NEAR[town]
+    w, s, e, n = TOWNS[town]["bbox"]
+    rr = np.full((grid.H, grid.W), 255, np.uint8)
+    for cls, g in modern_roads((w - .01, s - .01, e + .01, n + .01), BLOCK_CLASSES | {"service"}):
+        g = to_utm(g)
+        for line in getattr(g, "geoms", [g]):
+            c = np.asarray(line.coords)
+            px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
+            cv2.polylines(rr, [np.round(px).astype(np.int32)], False, 0, 1)
+    d = cv2.distanceTransform(rr, cv2.DIST_L2, 5)
+    near = d <= NEAR_M / grid.res
+    del d, rr
+    # railways (today's, Overture; and vanished ones, data/manual/historic_rail.geojson) are drawn as
+    # heavy lines on the early sheets: ink within RAIL_M of a railway is not counted
+    rl = np.zeros((grid.H, grid.W), np.uint8)
+    th = max(1, int(round(2 * RAIL_M / grid.res)))
+    for g in railways((w - .01, s - .01, e + .01, n + .01)):
+        g = to_utm(g)
+        for line in getattr(g, "geoms", [g]):
+            c = np.asarray(line.coords)
+            px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
+            cv2.polylines(rl, [np.round(px).astype(np.int32)], False, 1, th)
+    near &= rl == 0
+    _NEAR[town] = near
+    return near
+
+
+RAIL_M = 12.0
+
+
+def railways(bounds_ll):
+    import duckdb
+    import geopandas as gpd
+    import shapely
+    w, s, e, n = bounds_ll
+    con = duckdb.connect()
+    con.execute("LOAD spatial;")
+    q = (f"select ST_AsWKB(geometry) g from read_parquet('{OVT / 'rail.parquet'}') where class in "
+         f"('standard_gauge', 'narrow_gauge', 'unknown') and ST_XMin(geometry) < {e} and ST_XMax(geometry) > {w} "
+         f"and ST_YMin(geometry) < {n} and ST_YMax(geometry) > {s}")
+    out = [shapely.from_wkb(bytes(g)) for (g,) in con.execute(q).fetchall()]
+    h = gpd.read_file(ROOT / "data" / "manual" / "historic_rail.geojson")
+    h = h[h["mode"].isin(["rail", "narrow_gauge", "interurban"])].cx[w:e, s:n]
+    return out + list(h.geometry)
+
+
+def block_stats(town, key, preview=False):
+    """Per block pixel counts of one sheet (cached; recomputed from the mask PNG when blocks change)."""
+    import pandas as pd
+    from rasterio import features
+    cache = INT / f"stats_{town}_{key}.parquet"
+    bl = blocks(town, town_clip(town))
+    if cache.exists() and not preview:
+        df = pd.read_parquet(cache)
+        if len(df) == len(bl):
+            return df
+    code = masks(town, key, preview)
+    grid = Grid(TOWNS[town]["bbox"])
+    lab = features.rasterize(((g, i + 1) for i, g in enumerate(bl.geometry)), out_shape=(grid.H, grid.W),
+                             transform=grid.transform, dtype="int32")
+    n = len(bl) + 1
+    import cv2
+    r = max(1, int(round(NEAT_MM * S[key]["scale"] / 1000.0 / grid.res)))   # off the neat line and its ticks
+    valid = cv2.erode(((code & M_VALID) > 0).astype(np.uint8),
+                      cv2.getStructuringElement(cv2.MORPH_RECT, (2 * r + 1,) * 2)) > 0
+    near = street_near(town, grid)       # building ink counts only near a street (not lettering in the hills)
+    cnt = lambda m: np.bincount(lab[m & valid], minlength=n)      # noqa: E731
+    df = pd.DataFrame({"bid": bl.bid.values, "px": np.bincount(lab.ravel(), minlength=n)[1:],
+                       "px_valid": cnt(np.ones_like(valid))[1:], "a_band": cnt(((code & M_BAND) > 0) & near)[1:],
+                       "a_heavy": cnt(((code & M_HEAVY) > 0) & near)[1:], "a_tint": cnt((code & M_TINT) > 0)[1:],
+                       "n_sq": cnt(((code & M_SQ) > 0) & near)[1:], "skel": cnt(((code & M_SKEL) > 0) & near)[1:]})
+    df["res"] = grid.res
+    df.to_parquet(cache)
     return df
 
 
 # --------------------------------------------------------------------------- classify / build
 THRESH = {"early": 0.35, "tint": 0.35}   # built frontage share (early) / share under the urban tint
-TINT_SHARE = 0.30
+TINT_SHARE = 0.50
+CELL_SHARE, CELL_HEAVY = 0.35, 0.20       # cells of big blocks
+MIN_COV = 0.3                             # a block is read when this share of it lies on the sheet(s)
 SQ_FRONT_M = 15.0                         # frontage credited to one house square
 HOLE_HA = 0.6                             # fill holes in the extent smaller than this
 MIN_HA = 0.8                              # drop isolated built specks smaller than this
@@ -627,9 +758,14 @@ def snapshot_stats(town, year):
     tot["share"] = ((tot.band_m + SQ_FRONT_M * tot.n_sq) / fr).clip(upper=1.5)
     tot["tint_share"] = tot.a_tint / tot.px_valid.clip(lower=1)
     style = S[keys[0]]["style"]
-    built = (tot["cov"] >= 0.5) & (tot.share >= THRESH[style])
+    tot["kind"] = bl.set_index("bid").kind.reindex(tot.index).values
+    tot["heavy_frac"] = tot.a_heavy / tot.px_valid.clip(lower=1)
+    # street blocks: built frontage share; cells of big blocks (yards, wharves, hills): a rail line or
+    # two is not built-up, so also a minimum share of heavy ink
+    built = (tot["cov"] >= MIN_COV) & (((tot.kind == "block") & (tot.share >= THRESH[style]))
+                                   | ((tot.share >= CELL_SHARE) & (tot.heavy_frac >= CELL_HEAVY)))
     if style == "tint":
-        built |= (tot["cov"] >= 0.5) & (tot.tint_share >= TINT_SHARE)
+        built |= (tot["cov"] >= MIN_COV) & (tot.tint_share >= TINT_SHARE)
     tot["built"] = built
     tot.attrs["t_band"] = t_band
     return bl, tot
@@ -638,19 +774,25 @@ def snapshot_stats(town, year):
 def extent_polys(bl, tot, clip):
     import shapely
     g = bl.set_index("bid").geometry
-    u = shapely.union_all(list(g[tot.built.values].values)).buffer(0.5).buffer(-0.5)
+    u = shapely.union_all(list(g[tot.built.values].values)).buffer(12, join_style="mitre").buffer(-12, join_style="mitre")
     parts = []
     for p in shapely.get_parts(u):
-        holes = [h for h in p.interiors if shapely.Polygon(h).area < HOLE_HA * 1e4]
-        keep = [h for h in p.interiors if shapely.Polygon(h).area >= HOLE_HA * 1e4]
+        def small(h):
+            hp = shapely.Polygon(h)
+            return hp.area < HOLE_HA * 1e4 or hp.area / max(hp.length, 1) < 10     # specks, street strips
+        keep = [h for h in p.interiors if not small(h)]
         p = shapely.Polygon(p.exterior, keep)
         if p.area >= MIN_HA * 1e4:
             parts.append(p)
     u = shapely.union_all(parts) if parts else shapely.Polygon()
     land = land_poly(clip.bounds)
     u = u.intersection(land.buffer(30)).intersection(clip)
-    u = shapely.simplify(u, 1.0)
-    return shapely.make_valid(u)
+    u = shapely.make_valid(shapely.simplify(u, 1.0))
+    polys = [p for p in shapely.get_parts(u) if p.geom_type == "Polygon" and p.area > 1]
+    if not polys:
+        polys += [q for p in shapely.get_parts(u) if p.geom_type in ("MultiPolygon", "GeometryCollection")
+                  for q in shapely.get_parts(p) if q.geom_type == "Polygon"]
+    return shapely.MultiPolygon(polys) if polys else shapely.MultiPolygon()
 
 
 def coverage_poly(town, year, clip):
@@ -672,6 +814,25 @@ def to_ll(g):
     return shapely.transform(g, lambda c: np.column_stack(t.transform(c[:, 0], c[:, 1])))
 
 
+def default_confidence(keys):
+    """high: 1:24,000 urban tint from aerial photographs; medium: the 1:62,500 sheets (band / square
+    reading of the 1885-1915 surveys, ~15-25 m alignment RMS; grey tint of the 1939-43 editions)."""
+    return "high" if all(S[k]["style"] == "tint" and S[k]["scale"] == 24000 for k in keys) else "medium"
+
+
+def export_coverage():
+    """data/manual/region_extents/coverage.geojson: per town and snapshot, the area that was read."""
+    feats = []
+    for p in sorted(INT.glob("coverage_*.json")):
+        d = json.loads(p.read_text())
+        t, y = d["props"]["town"], d["props"]["year"]
+        if t not in TOWNS or y not in TOWNS[t]["snaps"] or not (OUT / f"{t}_{y}.geojson").exists():
+            continue
+        feats.append({"type": "Feature", "properties": d["props"], "geometry": d["geom"]})
+    (OUT / "coverage.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats},
+                                                     separators=(",", ":")))
+
+
 def build(town, years=None, meta=None):
     import shapely
     from shapely.geometry import mapping
@@ -684,18 +845,21 @@ def build(town, years=None, meta=None):
         cov = coverage_poly(town, year, clip)
         keys = TOWNS[town]["snaps"][year]
         info = TOWNS[town].get("notes", {}).get(year, {})
-        props = {"town": town, "year": int(year),
+        sheets_note = "; ".join(f"{k} (1:{S[k]['scale']:,} {S[k]['edition']}): {S[k]['note']}" for k in keys)
+        props = {"town": town, "year": int(year), "kind": "built_up",
                  "source": "+".join(f"usgs_htmc:{k}" for k in keys),
                  "source_url": " ".join(f"{PDF}{S[k]['scale']}/{S[k]['file'].replace('_geo.tif', '_geo.pdf')}" for k in keys),
-                 "confidence": info.get("confidence", "medium"),
-                 "note": info.get("note", "; ".join(f"{k}: {S[k]['note']}" for k in keys)),
+                 "confidence": info.get("confidence", default_confidence(keys)),
+                 "note": (info["note"] + " | " if "note" in info else "") + sheets_note
+                         + f" | area read: {round(cov.area / 1e6, 2)} km2 (coverage.geojson); outside it this snapshot says nothing",
                  "edition_years": sorted({S[k]["edition"] for k in keys}),
                  "map_years": sorted({S[k]["year"] for k in keys}),
                  "method": f"blocks with built frontage share >= {THRESH[S[keys[0]]['style']]}"
                            + (f" or urban tint share >= {TINT_SHARE}" if S[keys[0]]["style"] == "tint" else ""),
                  "area_km2": round(u.area / 1e6, 3), "n_blocks": int(tot.built.sum())}
         fc = {"type": "FeatureCollection",
-              "features": [{"type": "Feature", "properties": props, "geometry": mapping(to_ll(u))}]}
+              "features": [{"type": "Feature", "properties": props,
+                            "geometry": mapping(shapely.set_precision(to_ll(u), 1e-7))}]}
         p = OUT / f"{town}_{year}.geojson"
         p.write_text(json.dumps(fc, separators=(",", ":")))
         # per-block table (interim, for checks)
@@ -703,8 +867,9 @@ def build(town, years=None, meta=None):
         t.to_parquet(INT / f"class_{town}_{year}.parquet")
         cv = {"town": town, "year": int(year), "sheets": keys, "area_km2": round(cov.area / 1e6, 3)}
         (INT / f"coverage_{town}_{year}.json").write_text(json.dumps({"props": cv, "geom": mapping(to_ll(cov))}))
-        print(town, year, "built blocks", int(tot.built.sum()), "of", int((tot["cov"] >= 0.5).sum()),
+        print(town, year, "built blocks", int(tot.built.sum()), "of", int((tot["cov"] >= MIN_COV).sum()),
               "read; extent", props["area_km2"], "km2; t_band", round(tot.attrs["t_band"], 1), "m")
+    export_coverage()
 
 
 # --------------------------------------------------------------------------- checks
@@ -714,6 +879,10 @@ SANBORN = {"oakland": ["oakland_west", "oakland_downtown"],
            "palo_alto": ["palo_alto_downtown", "palo_alto_mayfield"], "san_mateo": ["san_mateo_downtown"],
            "richmond": ["richmond_downtown"]}
 SAN_BUILT, SAN_EMPTY = 0.15, 0.05     # Sanborn footprint share of a block: built / empty
+# districts known to be built up by a date (lon/lat boxes), reported per snapshot
+PROBES = {"oakland": {"lakeside_uptown": (1905, (-122.2705, 37.8030, -122.2590, 37.8120)),
+                      "west_oakland": (1890, (-122.2990, 37.8020, -122.2830, 37.8130)),
+                      "temescal": (1910, (-122.2660, 37.8300, -122.2560, 37.8380))}}
 
 
 def load_extent(town, year):
@@ -807,7 +976,7 @@ def check(town):
         for (area, yr), grp in sb.groupby(["area", "year"]):
             if abs(yr - year) > 6:
                 continue
-            ok = grp.bid.isin(cls.index[cls["cov"] >= 0.5])
+            ok = grp.bid.isin(cls.index[cls["cov"] >= MIN_COV])
             grp = grp[ok]
             b = grp[grp.share >= SAN_BUILT]
             e = grp[grp.share < SAN_EMPTY]
@@ -815,6 +984,24 @@ def check(town):
                        "built_blocks": int(len(b)), "built_in_extent_pct": round(100 * float(cls.loc[b.bid, "built"].mean()) if len(b) else float("nan"), 1),
                        "empty_blocks": int(len(e)), "empty_in_extent_pct": round(100 * float(cls.loc[e.bid, "built"].mean()) if len(e) else float("nan"), 1)})
         r["sanborn"] = sr
+        # consistency: share of the previous snapshot (inside this one's coverage) that this one keeps
+        prev = [y for y in years if y < year]
+        if prev:
+            pe = load_extent(town, prev[-1]).intersection(cov)
+            r["prev_kept_pct"] = round(100 * pe.intersection(ext).area / max(1.0, pe.area), 1)
+        # probe areas: known built-up districts (share of their land inside the extent)
+        land = land_poly(clip.bounds)
+        for name, (yr_built, bb) in PROBES.get(town, {}).items():
+            pb = shapely.box(*tf("EPSG:4326", UTM).transform(bb[0], bb[1]),
+                             *tf("EPSG:4326", UTM).transform(bb[2], bb[3])).intersection(land).intersection(cov)
+            if pb.area > 0:
+                r[f"probe_{name}_pct"] = round(100 * pb.intersection(ext).area / pb.area, 1)
+        # threshold sensitivity (block area, early sheets)
+        if S[TOWNS[town]["snaps"][year][0]]["style"] == "early":
+            ar = gb.area.reindex(cls.index).values
+            rd = (cls["cov"] >= MIN_COV).values & (cls["kind"] == "block").values
+            r["block_km2_at_share"] = {str(t): round(float(ar[rd & (cls.share.values >= t)].sum()) / 1e6, 1)
+                                       for t in (0.25, 0.35, 0.45)}
         rep["snapshots"].append(r)
         print(json.dumps(r))
     (INT / f"check_{town}.json").write_text(json.dumps(rep, indent=1))
@@ -837,7 +1024,7 @@ def plot(town, bl, pts, years):
 
     def draw(ax, g, **kw):
         for p in shapely.get_parts(g):
-            if p.is_empty:
+            if p.is_empty or p.geom_type != "Polygon":
                 continue
             x, y = p.exterior.xy
             ax.fill(x, y, **kw)
@@ -848,6 +1035,8 @@ def plot(town, bl, pts, years):
     for k, (ax, year) in enumerate(zip(axs, years)):
         bnd = shapely.union_all(list(bl.geometry.values))
         for p in shapely.get_parts(clip):
+            if p.geom_type != "Polygon":
+                continue
             x, y = p.exterior.xy
             ax.plot(x, y, color="#888", lw=0.5)
         for pe, (py_, pc) in enumerate(prev):
@@ -857,6 +1046,8 @@ def plot(town, bl, pts, years):
         new = ext.difference(shapely.union_all([p for p, _ in prev])) if prev else ext
         draw(ax, new, color=cols[k % len(cols)], lw=0, alpha=0.9)
         for p in shapely.get_parts(cov):
+            if p.geom_type != "Polygon":
+                continue
             x, y = p.exterior.xy
             ax.plot(x, y, color="#2b6cb0", lw=1.0, ls="--")
         old = pts[(pts.start_year < year) & (pts.start_year > 1800)]
@@ -875,6 +1066,71 @@ def plot(town, bl, pts, years):
     plt.close(fig)
 
 
+# --------------------------------------------------------------------------- README tables
+def report():
+    """Markdown tables (maps used, snapshots + validation) between the markers of ../README.md."""
+    used = sorted({k for t in TOWNS.values() for ks in t["snaps"].values() for k in ks},
+                  key=lambda k: (S[k]["year"], S[k]["key"]))
+    L = ["| sheet | quadrangle | scale | edition | shows | reading | alignment to today's streets | GeoPDF |",
+         "|---|---|---|---|---|---|---|---|"]
+    for k in used:
+        sh = S[k]
+        ap = INT / f"align_{k}.json"
+        if not ap.exists():
+            continue
+        al = json.loads(ap.read_text())
+        a = (f"{al['shift_m']:.0f} m ({al['model']}, {al['n_used']}/{al['n_windows']} windows, RMS {al['rms_m']:.0f} m)"
+             if al.get("aligned") else "as published")
+        if sh["style"] == "tint" and al.get("aligned") and al.get("shift_m", 0) < 6:
+            a = f"as published (fit {al['shift_m']:.0f} m, RMS {al['rms_m']:.0f} m)"
+        quad = sh["file"].split("_")[1].replace("%20", " ")
+        url = f"{PDF}{sh['scale']}/{sh['file'].replace('_geo.tif', '_geo.pdf')}"
+        rd = "bands + squares" if sh["style"] == "early" else f"{sh['tint']} tint"
+        L.append(f"| `{k}` | {quad} | 1:{sh['scale']:,} | {sh['edition']} | {sh['year']} ({sh['note']}) | {rd} | {a} | "
+                 f"[{url.split('_')[-4]}]({url}) |")
+    T = ["| town | year | sheets | built-up km² | area read km² | confidence | pre-map buildings standing today inside (n) "
+         "| prev. snapshot kept | Sanborn built blocks inside / empty blocks inside |",
+         "|---|---|---|---|---|---|---|---|---|"]
+    for town in TOWNS:
+        cp = INT / f"check_{town}.json"
+        if not cp.exists():
+            continue
+        rep = json.loads(cp.read_text())
+        for r in rep["snapshots"]:
+            y = r["year"]
+            gj = OUT / f"{town}_{y}.geojson"
+            if not gj.exists():
+                continue
+            pr = json.loads(gj.read_text())["features"][0]["properties"]
+            sb = "; ".join(f"{x['area'].split('_', 1)[-1]} {x['sanborn_year']}: {x['built_in_extent_pct']:.0f}% of "
+                           f"{x['built_blocks']} / {x['empty_in_extent_pct']:.0f}% of {x['empty_blocks']}"
+                           for x in r.get("sanborn", []) if x["blocks"])
+            T.append(f"| {town} | {y} | {', '.join(TOWNS[town]['snaps'][y])} | {r['area_km2']} | {r['coverage_km2']} | "
+                     f"{pr['confidence']} | {r['survivors_pre_inside_pct']}% ({r['survivors_pre']}) | "
+                     f"{str(r.get('prev_kept_pct', '')) + '%' if 'prev_kept_pct' in r else ''} | {sb} |")
+    P = ["| town | year | probe | share inside |", "|---|---|---|---|"]
+    for town in TOWNS:
+        cp = INT / f"check_{town}.json"
+        if not cp.exists():
+            continue
+        for r in json.loads(cp.read_text())["snapshots"]:
+            for k, v in r.items():
+                if k.startswith("probe_"):
+                    P.append(f"| {town} | {r['year']} | {k[6:-4]} | {v}% |")
+            if "block_km2_at_share" in r:
+                d = r["block_km2_at_share"]
+                P.append(f"| {town} | {r['year']} | block km² at share 0.25 / 0.35 / 0.45 | "
+                         f"{d['0.25']} / {d['0.35']} / {d['0.45']} |")
+    rp = OUT / "README.md"
+    txt = rp.read_text()
+    for tag, body in (("maps", L), ("snapshots", T), ("probes", P)):
+        a0, a1 = f"<!-- {tag} -->", f"<!-- /{tag} -->"
+        if a0 in txt and a1 in txt:
+            i, j = txt.index(a0) + len(a0), txt.index(a1)
+            txt = txt[:i] + "\n" + "\n".join(body) + "\n" + txt[j:]
+    rp.write_text(txt)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd")
@@ -888,6 +1144,8 @@ if __name__ == "__main__":
         build(o.town, [int(y) for y in o.rest] or None)
     elif o.cmd == "check":
         check(o.town)
+    elif o.cmd == "report":
+        report()
     elif o.cmd == "all":
         for y, keys in TOWNS[o.town]["snaps"].items():
             for k in keys:
