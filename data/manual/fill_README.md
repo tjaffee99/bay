@@ -2,7 +2,7 @@
 
 Files covered here:
 
-- `data/manual/fill_zones.csv`: 245 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
+- `data/manual/fill_zones.csv`: 248 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
 - `data/tables/landcover_history.csv`: the pre-urban land cover to paint under today's city, with dates.
 - New raw downloads in `data/raw/`. They are listed under "Downloaded datasets" below.
 
@@ -246,18 +246,20 @@ Street terminal in 1920, the Berkeley marina fill in the 1930s, East San Rafael 
 Quentin, Richmond, San Francisco North / South, Oakland West / East, Hunters Point, San Leandro, Hayward, San Mateo,
 Redwood Point, Newark, Palo Alto, Mountain View, Milpitas; photo years 1946–52, 1956–60, 1968, 1973, 1978–80, 1991–97;
 TNM historical topo GeoTIFFs) was resampled at 6 m and each pixel classed wet (water tint by a linear discriminant
-between the sheet's own always-bay and white-paper pixels, or blue marsh symbols > 12 % of a 66 m window) or land,
-then counted per terrain cell. A sheet is used only if ≥ 90 % of its always-bay reference cells read wet, ≥ 93 % of its
-always-dry cells read land and d′ ≥ 1.4 (73 of 98 sheets; dropped: the pale 1946–48 prints of Oakland East, San
+between the sheet's own always-bay and white-paper pixels, with a chroma guard so that grey stipple on white paper —
+sand, beaches, hydraulic fill being pumped — is not read as water; or blue marsh symbols > 12 % of a 66 m window) or
+land, then counted per terrain cell. A sheet is used only if ≥ 90 % of its always-bay reference cells read wet, ≥ 93 % of its
+always-dry cells read land and d′ ≥ 1.4 (72 of 98 sheets, plus the pale Richmond 1947 print without the chroma guard; dropped: the pale 1946–48 prints of Oakland East, San
 Leandro, San Francisco South, Hunters Point 1968, and all of Newark, Palo Alto and Milpitas, whose quads have too
 little open bay to calibrate on). For each cell: the last edition that shows it wet and the next one = the bracket in
 which it was filled.
 
-* **`tp_<place>_<y0>_<y1>[_b…]` (57 rows, 700 ha, kind `fill`, ESTIMATED):** made land that is wet on the `y0`-photo
+* **`tp_<place>_<y0>_<y1>[_b…]` (50 rows, 630 ha, kind `fill`, ESTIMATED):** made land that is wet on the `y0`-photo
   edition and land on the `y1` edition, wherever that cell had only a fallback year, or a box year more than 2 years
   before `y0`. Rings are the cell outlines (≥ 4 ha, exterior ring only), `source_url` = the edition that first shows
   the land. Where a cell came out of a documented box the bracket stops at the box's documented end (Brisbane landfill
-  1967).
+  1967). A row is dropped where the 1939-photo 1:62,500 sheet shows the ground dry before the "wet" edition (Bay Farm
+  Island, Mill Valley bayfront): that is diked land flooded or pumped full while it was being filled, not new land.
 * **Boxes retraced** (their cells that later editions still show wet moved to `tp_*` rows; the rest keeps the row,
   split in parts `_a…`): `al_berkeley_waterfront_landfill` (was 1923–83 over everything; the part on the 1946 sheet is
   now 1923–1945.5, the marina / landfill 1946–58, 1958–68, 1968–73, 1973–79), `sm_brisbane_landfill` (part on the 1956
@@ -274,13 +276,35 @@ which it was filled.
 * Hand rows: `cc_martinez_waterfront_blocks` (region grid; Carquinez Strait 1896 sheet) and
   `mn_san_rafael_mission_ground` (the SFEI marsh polygon overlaps the 1817 mission site: land from the start).
 
-Effect (simulated on the grid with the rule of `terrain_tiles.py`, buildings still capping the year): 960 ha of made
-land change year — 730 ha later (median +27 years), 230 ha earlier (median −23 years). Not covered: north of 37.98°
+* **`al_alameda_west_end_1915_fill` (17 ha, 1895–1913, ESTIMATED):** marsh on the 1895 sheet, filled ground with rail
+  yards and works on the 1915 edition, inside the ring of `al_alameda_benton_field_navy_fill` (1930–39.5), which had
+  dated it 1930–33; the earliest year wins. Only the part checked by eye (the white slough interiors of the 1915 sheet
+  also read "dry").
+* **`*_diked` rows (kind `diked_marsh`, for the terrain rule "diked cover from the dike year until the fill year"):**
+  marsh on the 1890s 1:62,500 sheets that the 1939-photo sheets (San Mateo 1939, Hayward 1942, Tamalpais 1941) draw
+  dry and near roads / buildings, on ground the terrain only makes land years later — `sm_san_mateo_east_diked` (228
+  ha), `sm_south_san_francisco_diked` (58 ha), `sm_burlingame_millbrae_diked` (33 ha), `sm_belmont_san_carlos_diked`
+  (32 ha), `mn_san_rafael_canal_diked` (29 ha): dike years 1896–1938 ESTIMATED (between the two map dates; no local
+  record found); `mn_corte_madera_diked` 1930–35 (hand ring on the 1941 sheet; "diked and drained to grow hay for
+  Meadowsweet Dairy 20 years earlier" than the early-1950s Madera Gardens, Corte Madera Memories). The 1939 sheets'
+  sparse marsh symbols can read as dry, so only cells near that sheet's roads and buildings are used and every ring
+  was checked by eye on the sheet. `sm_foster_city_diked` (levee 1900, Frank Brewer) and `sm_redwood_shores_salt` keep
+  their documented years and boxes. Not covered: Bel Marin Keys and the rest of the Novato baylands (no masks north of
+  37.98°), East San Rafael (no 1939-photo sheet east of 122.5° W).
+* **Bay Farm Island re-checked:** `al_bay_farm_reclaimed_marsh` (1900–24) stays as it is. The 115 ha that read "wet" on
+  the 1958-photo San Leandro sheet carry the mud-flat stipple of hydraulic fill being pumped inside the new dike — on
+  ground the 1939-photo and 1946-photo sheets draw as dry diked land. The OAK rows of `airports/pavement_dates.csv` and
+  the NAS pieces of `airports_extra.geojson` keep exactly the zone years they had (`pavecheck.py`: 159 OAK rows and
+  36 NAS pieces, none changed, none later).
+
+Effect (simulated on the grid with the rule of `terrain_tiles.py`, buildings still capping the year): 910 ha of made
+land change year — 660 ha later (median +28 years), 250 ha earlier (median −25 years). Not covered: north of 37.98°
 (Novato, Hamilton, Vallejo, Martinez except the hand row), the Newark / Palo Alto / Milpitas quads, fill older than
 the first 1:24,000 edition (still fallback or box years), and diked land that the maps draw as dry before it was
 filled (Foster City, Redwood Shores, Corte Madera: the documented fill years stand). Scratch tools of this pass:
-`edmask.py` (sheet → wet share per cell), `assemble2.py` (brackets), `old62.py` (1890s sheets), `build2.py` (rows),
-`simnew.py` / `summ.py` / `validate.py` (checks).
+`edmask.py` (sheet → wet share per cell), `assemble3.py` (brackets), `old62.py` / `old15.py` / `old39.py` (1890s, 1915
+and 1939-photo 1:62,500 sheets), `build3.py` + `build4.py` (rows), `simnew.py` / `summ.py` / `validate.py` /
+`pavecheck.py` (checks).
 
 ## Land cover table (`data/tables/landcover_history.csv`)
 

@@ -189,6 +189,10 @@ Replace `sf_dunes = in_sf & (lon < -122.445) & (elev < 120)` with these polygons
 - **Lakes and reservoirs.** OpenStreetMap water polygons via Overture 2026-10 (`data/raw/landscape/overture_water.parquet`).
 - **Dredged water.** Today's water inside a coarse area ring, minus the SFEI c.1800 open bay. That leaves exactly the marsh and flat that became water.
 - **Salt ponds and diked land.** SFEI c.1998 baylands (`data/interim/baylands_1998.geojson`) clipped by complex rings. Ponds are joined across their levees, giving one polygon per complex.
+- **Hand rows (`water_history_extra.csv`, 2026-11 audit, 25 rows).** Same columns; `landscape_water.py` appends them as they are. Outlines are the terrain grid's own water cells (WorldCover), one row per water body. They cover what the two rules of the terrain get wrong when no row exists:
+  - *water today that no c.1800 layer covers* is taken for a post-war pond (default 1945–65). That is wrong for natural lakes — **Lake Merced** (3 parts, 107 ha), **Rodeo Lagoon**, **Abbotts Lagoon** get `year_start` 1700 = "always" — and too late or early for **Lake Anza 1938**, **Cull Canyon 1963**, **Don Castro 1964** and an arm of Upper San Leandro Reservoir (1926) that the OSM ring misses;
+  - *water today on ground a c.1800 layer maps as dry or wet meadow* never becomes water at all: **Shadow Cliffs Lake 1971** (Kaiser gravel pit, park opening), the **Quarry Lakes / Niles gravel pits 1976** (ESTIMATED: the year the gravel company's pumping was stopped), **Lake Elizabeth 1969** — only its cells on the SFEI wet meadow; the cells SFEI maps as the perennial pond of Stivers Lagoon are left out, so the lagoon stays water before 1969 (the earlier `lake_lake_elizabeth` rows, which dried the lagoon, stay dropped).
+  - Not dated yet (no row, so still default or never water): the Pleasanton–Livermore gravel-pit lakes (Lake I, Cope Lake, Lake H … about 370 ha), the Sunol pits, Almaden Lake and the Santa Clara Valley percolation ponds, Mallard Reservoir, Bear Gulch, Cherry Flat, Lake Ranch, Grant Lake, Sandy Wool Lake, Boronda Lake, Lake Lucerne.
 
 ### Rows
 
