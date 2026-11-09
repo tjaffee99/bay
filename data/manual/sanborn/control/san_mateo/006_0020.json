@@ -1,0 +1,691 @@
+{
+ "residential_blocks": [
+  "114",
+  "113"
+ ],
+ "notes": "sheet 20 (May 1920): San Mateo Creek north of 1st Av: Cypress Ct -> 1st Av between Griffith Av and C St (Hotel Mateo, the B St stores north of 1st, the Regent Theatre); north = left. One fit for the sheet from the corners at B x 1st, C x 1st and Ellsworth x Baldwin.",
+ "blocks": [
+  {
+   "name": "118",
+   "streets": {
+    "N": "cypress court",
+    "S": "1st avenue",
+    "W": "railroad avenue",
+    "E": "c street"
+   },
+   "px4_est": [
+    [
+     123.5,
+     441.5
+    ],
+    [
+     123.5,
+     110
+    ],
+    [
+     1322,
+     110
+    ],
+    [
+     1322,
+     441.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    },
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "113"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "139",
+    "138",
+    "114",
+    "113"
+   ],
+   "px4": [
+    [
+     109.5,
+     449.5
+    ],
+    [
+     109.5,
+     111.0
+    ],
+    [
+     1320.3,
+     111.0
+    ],
+    [
+     1324.2,
+     440.1
+    ]
+   ],
+   "edge_q": [
+    0.0,
+    0.65,
+    0.96,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    20.0,
+    20.0,
+    1330.0,
+    445.0
+   ]
+  },
+  {
+   "name": "139",
+   "streets": {
+    "N": "x",
+    "S": "1st avenue",
+    "W": "b street",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     980,
+     921.5
+    ],
+    [
+     980,
+     590.5
+    ],
+    [
+     1324,
+     590.5
+    ],
+    [
+     1324,
+     921.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    },
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "113"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "118",
+    "138",
+    "114",
+    "113"
+   ],
+   "px4": [
+    [
+     981.2,
+     922.4
+    ],
+    [
+     977.1,
+     578.8
+    ],
+    [
+     1324.0,
+     576.2
+    ],
+    [
+     1324.0,
+     921.1
+    ]
+   ],
+   "edge_q": [
+    0.12,
+    1.0,
+    0.99,
+    0.98
+   ],
+   "corners_all": [
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    380.0,
+    560.0,
+    1330.0,
+    925.0
+   ]
+  },
+  {
+   "name": "138",
+   "streets": {
+    "N": "x",
+    "S": "1st avenue",
+    "W": "y",
+    "E": "b street"
+   },
+   "px4_est": [
+    [
+     1100,
+     1277
+    ],
+    [
+     1100,
+     1023
+    ],
+    [
+     1326,
+     1023
+    ],
+    [
+     1326,
+     1277
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    },
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "113"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "118",
+    "139",
+    "114",
+    "113"
+   ],
+   "px4": [
+    [
+     1101.5,
+     1271.2
+    ],
+    [
+     1111.6,
+     1026.0
+    ],
+    [
+     1326.0,
+     1026.0
+    ],
+    [
+     1326.0,
+     1267.3
+    ]
+   ],
+   "edge_q": [
+    0.71,
+    0.87,
+    0.98,
+    0.59
+   ],
+   "corners_all": [
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    960.0,
+    980.0,
+    1330.0,
+    1290.0
+   ]
+  },
+  {
+   "name": "114",
+   "streets": {
+    "N": "x",
+    "S": "baldwin avenue",
+    "W": "ellsworth avenue",
+    "E": "railroad avenue"
+   },
+   "px4_est": [
+    [
+     20,
+     1188
+    ],
+    [
+     20,
+     600
+    ],
+    [
+     962,
+     600
+    ],
+    [
+     962,
+     1188
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    },
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "113"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "118",
+    "139",
+    "138",
+    "113"
+   ],
+   "px4": [
+    [
+     24.5,
+     1188.0
+    ],
+    [
+     24.5,
+     589.0
+    ],
+    [
+     979.6,
+     589.0
+    ],
+    [
+     971.6,
+     1188.0
+    ]
+   ],
+   "edge_q": [
+    0.0,
+    0.8,
+    0.12,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 971.6,
+     "y": 1188.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.  16.8] at ellsworth avenue x baldwin avenue NE"
+    }
+   ],
+   "zone_px": [
+    20.0,
+    560.0,
+    960.0,
+    1192.0
+   ]
+  },
+  {
+   "name": "113",
+   "streets": {
+    "N": "x",
+    "S": "baldwin avenue",
+    "W": "griffith",
+    "E": "ellsworth avenue"
+   },
+   "px4_est": [
+    [
+     20,
+     1849.5
+    ],
+    [
+     20,
+     1262.5
+    ],
+    [
+     950,
+     1262.5
+    ],
+    [
+     950,
+     1849.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "113"
+    },
+    {
+     "x": 1320.3,
+     "y": 111.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "c street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "118"
+    },
+    {
+     "x": 1324.0,
+     "y": 921.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "139"
+    },
+    {
+     "x": 1326.0,
+     "y": 1026.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "b street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "138"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SW"
+   ],
+   "with": [
+    "118",
+    "139",
+    "138",
+    "114"
+   ],
+   "px4": [
+    [
+     31.0,
+     1849.0
+    ],
+    [
+     31.0,
+     1262.5
+    ],
+    [
+     938.0,
+     1262.5
+    ],
+    [
+     938.0,
+     1849.0
+    ]
+   ],
+   "edge_q": [
+    0.01,
+    1.0,
+    0.2,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 938.0,
+     "y": 1262.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "ellsworth avenue",
+      "baldwin avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    20.0,
+    1200.0,
+    960.0,
+    1880.0
+   ]
+  }
+ ],
+ "pct": 25
+}

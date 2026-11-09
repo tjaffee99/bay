@@ -1,0 +1,220 @@
+{
+ "residential": true,
+ "scale_prior": [
+  0.2015,
+  0.002
+ ],
+ "notes": "sheet 25 (May 1920): west of A St between 2nd and 3rd Av (St Matthew's church, 151; 150) only, from the two corners on A St; the school / union high school / hospital blocks along the creek and Griffith Av not used (no usable control).",
+ "blocks": [
+  {
+   "name": "151",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "x",
+    "E": "a street"
+   },
+   "px4_est": [
+    [
+     1093.5,
+     799
+    ],
+    [
+     1093.5,
+     303
+    ],
+    [
+     1548.5,
+     303
+    ],
+    [
+     1548.5,
+     799
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1091.9,
+     "y": 303.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "a street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1548.5,
+     "y": 303.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "a street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     1097.1,
+     799.0
+    ],
+    [
+     1091.9,
+     303.0
+    ],
+    [
+     1548.5,
+     303.0
+    ],
+    [
+     1548.5,
+     799.0
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    1.0,
+    0.99,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1091.9,
+     "y": 303.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "a street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1548.5,
+     "y": 303.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "a street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1093.5,
+    303.0,
+    1549.0,
+    880.0
+   ]
+  },
+  {
+   "name": "150",
+   "streets": {
+    "N": "2nd avenue",
+    "S": "3rd avenue",
+    "W": "x",
+    "E": "y"
+   },
+   "px4_est": [
+    [
+     1172,
+     1816.5
+    ],
+    [
+     1172,
+     949.5
+    ],
+    [
+     1549.5,
+     949.5
+    ],
+    [
+     1549.5,
+     1816.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1091.9,
+     "y": 303.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "a street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "151"
+    },
+    {
+     "x": 1548.5,
+     "y": 303.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "a street",
+      "3rd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "151"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "151"
+   ],
+   "px4": [
+    [
+     1172.0,
+     1816.5
+    ],
+    [
+     1172.0,
+     949.5
+    ],
+    [
+     1549.5,
+     949.5
+    ],
+    [
+     1549.5,
+     1816.5
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1172.0,
+    949.5,
+    1549.5,
+    1816.5
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -582,6 +582,44 @@ def assemble():
                   open(E.OUT / f"{area}_coverage.geojson", "w"))
 
 
+def check(out=None):
+    """validation of the town's outputs: valid geometries, every footprint inside its year's coverage, map years, and
+    a check PNG (scratch) of the traced footprints (by map year) over today's Overture footprints."""
+    import geopandas as gpd
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    area = sorted({a for a, _ in E.AREAS})
+    fp = E.modern_footprints()
+    fig, axes = plt.subplots(1, len({y for _, y in E.AREAS}), figsize=(9 * len({y for _, y in E.AREAS}), 10))
+    axes = np.atleast_1d(axes)
+    report = []
+    for a in area:
+        cov = gpd.read_file(E.OUT / f"{a}_coverage.geojson").to_crs(32610)
+        for ax, ((aa, y), _) in zip(axes, sorted((k, v) for k, v in E.AREAS.items() if k[0] == a)):
+            g = gpd.read_file(E.OUT / f"{a}_{y}.geojson").to_crs(32610)
+            cv = cov[cov.map_year == y].geometry.union_all()
+            inside = g.geometry.within(cv.buffer(0.5))
+            report.append(f"{a} {y}: {len(g)} footprints, valid {bool(g.geometry.is_valid.all())}, inside coverage "
+                          f"{int(inside.sum())}/{len(g)}, map_year {sorted(g.map_year.unique())}, confidence "
+                          f"{g.confidence.value_counts().to_dict()}")
+            x0, y0, x1, y1 = cv.bounds
+            fp.cx[x0 - 30:x1 + 30, y0 - 30:y1 + 30].plot(ax=ax, color="#bbbbbb", edgecolor="none")
+            col = {"frame": "#e8a33c", "brick": "#c0392b", "stone": "#2e6fd1", "concrete": "#2e6fd1", "iron": "#555555",
+                   "adobe": "#8b5a2b", "unknown": "#2a9d4b"}
+            g.plot(ax=ax, color=[col.get(m, "#999999") for m in g.material], alpha=0.75, edgecolor="#222222", linewidth=0.3)
+            gpd.GeoSeries([cv], crs=32610).boundary.plot(ax=ax, color="#2a9d4b", linewidth=1)
+            ax.set_xlim(x0 - 30, x1 + 30); ax.set_ylim(y0 - 30, y1 + 30)
+            ax.set_title(f"{a} {y}: {len(g)} traced footprints (colour = material) over today's buildings (grey)")
+            ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
+    E.SCRATCH.mkdir(parents=True, exist_ok=True)
+    out = out or E.SCRATCH / f"{CITY_NAME}_check.png"
+    fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
+    for r in report:
+        E.log(r)
+    return out
+
+
 def main():
     city = sys.argv[1]
     setup(city)
@@ -624,6 +662,8 @@ def main():
             print(E.overlay(k, scale=float(os.environ.get("SCALE", 0.5))))
     if stage in ("all", "assemble"):
         assemble()
+    if stage in ("all", "check"):
+        print(check())
 
 
 if __name__ == "__main__":
