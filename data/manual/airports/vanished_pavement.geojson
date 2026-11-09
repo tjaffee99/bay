@@ -5,6 +5,47 @@
 "type": "Feature",
 "properties": {
 "airport": "SFO",
+"name": "Mills Field Runway B (1927 dirt strip, 5,770 ft)",
+"kind": "runway",
+"start_year": 1927.35,
+"end_year": 1944,
+"width_m": 60,
+"confidence": "estimated",
+"source_url": "https://collection.sfomuseum.org/objects/1511943509",
+"note": "the runway dedicated with Mills Field on 7 May 1927: '5,770-foot-long, dirt-surfaced' (SFO Museum; the negative of 5 Jan 1928 is inscribed 'MILLS FIELD MUNICIPAL AIRPORT RUNWAY B 5,770 FT LONG'; the first graded strip was 4,950 ft). Not drawn on any topo sheet (the 1939-photo sheet omits the field): placed on the 150-acre pasture leased east of the Bayshore Highway (fill_zones sm_sfo_mills_pasture_field), parallel to the highway ~250 m east of it - the 'original dirt-paved North-South runway' / 'diagonal runway positioned Northwest to Southeast' of the 1930-37 aerial films (SFMTA via California Revealed) - from the south end of the 1939 dike 1,759 m NNW. Position, width (60 m) and end (the wartime four-runway field of the 1946 sheets, 1944) ESTIMATED"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3946621,
+37.633982
+],
+[
+-122.386837,
+37.6193493
+],
+[
+-122.3874629,
+37.6191364
+],
+[
+-122.3952881,
+37.6337691
+],
+[
+-122.3946621,
+37.633982
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
 "name": "Mills Field north-south runway (early 1930s, on the reclaimed tidelands)",
 "kind": "runway",
 "start_year": 1931,

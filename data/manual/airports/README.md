@@ -38,7 +38,7 @@ overlapped) and every runway phase as a polygon (`kind = runway_phase`, the axis
 the runway width). `zone_clip` rows refer to `zone`.
 
 ### `vanished_pavement.geojson`
-Runways gone from today's map: the north end of Mills Field's north-south runway (1931-1962, marked '4'
+Runways gone from today's map: Mills Field's 1927 dirt strip, Runway B (1927.35-1944, see *Mills Field 1927-41* below), the north end of Mills Field's north-south runway (1931-1962, marked '4'
 on the 1946 sheet; on the tidelands reclaimed in the early 1930s, so not the 1927 strip - see *Ground under
 SFO* below), OAK's NAS diagonal runway (1944-1986). Polygons at runway width, `start_year / end_year / width_m / confidence /
 source_url / note`.
@@ -107,6 +107,35 @@ concourse 1969) - 2010; Terminal A 1990; Terminal B + rental car garage 2010.
 4. `data/tables/airports.csv` is consistent with these files (SFO 1927, OAK 1927; SJC 1945 = the dirt
    strip, paved runway 1948) - no change needed. `airports_extra*.geojson` (NAS Alameda, Crissy Field) is unrelated.
 
+## Mills Field 1927-41 (2026-11)
+The field had lettered runways from the start; none is drawn on a topo sheet (the 1939-photo 1:62,500 sheet omits the
+airfield), so their places are read from documents and the 1946 sheet:
+* **Runway B**, the runway dedicated on 7 May 1927: '5,770-foot-long, dirt-surfaced' (SFO Museum; negative of 5 Jan 1928
+  inscribed 'RUNWAY B 5,770 FT LONG'; the first graded strip was 4,950 ft). Placed on the 150-acre pasture east of the
+  Bayshore Highway, parallel to the highway ~250 m east of it, 1,759 m NNW from the south end of the 1939 dike - the
+  'original dirt-paved North-South runway' / 'diagonal runway Northwest to Southeast' of the 1930-37 aerial films.
+  `vanished_pavement.geojson`, 1927.35-1944, 60 m wide; position, width and end ESTIMATED.
+* **Runway C** ran with 'the prevailing west-northwest winds' and was extended 'from 1,900 to 3,000 feet' in 1935 (New Deal;
+  SFO Museum) - onto the tidelands reclaimed in the early 1930s. The WNW runway of the 1946 sheet lies on the axis of
+  today's 10L/28R (+-80 m), so 10L/28R d 350-929 m is dated 1928 (estimated: lettered runways by Jan 1928) and d 929-1264 m
+  1935 (documented); the rest stays the 1944 wartime core. Land check (fillcheck intervals): pasture ~1912, extension <= 1934.
+* The north end of the N-S runway '4' (1931-62) is unchanged.
+
+## Ground under OAK and NAS Alameda (2026-11) - `data/manual/fill_zones.csv` `al_*`
+The 1927 box under OAK (every c.1800 marsh / flat cell of -122.23..-122.195 x 37.715..37.735 that is land today became land
+in 1927, i.e. also the 1958-62 South Field and the Hegenberger marsh) and the Bay Farm / South Field / NAS / NSC boxes are
+replaced by phases read off the editions (`../fill_README.md`, *Alameda Point … Oakland Airport*). All 159 OAK rows of
+`pavement_dates.csv` keep their researched start years with the new zones (1927 North Field pieces wait for their ground
+until 1927.5-1927.8 at most; 1945 10R/28L on the 1941.5-44.5 Navy strip; 1962 South Field on the 1958.5-61.5 dike fill).
+
+## NAS Alameda pavement (`../airports_extra.geojson`, `tools/nas.py`)
+The NAS runway / taxiway / apron polygons (today's pavement at Alameda Point) are cut at the shore of the 1946-photo sheet:
+inside 1941 (the station's field, 5 paved runways on the 29 Jul 1946 aerial), outside 1957 (west / south additions for the
+lengthened jet runways, on the 1958-photo sheet); every piece ends 9999 - the airfield closed 25 Apr 1997 but its runways,
+taxiways and ramps are still there ('a 4/2/18 aerial view ... shows the NAS Alameda airfield remained almost completely
+intact', airfields-freeman.com). The airport outline (`data/tables/airports.csv`) still closes in 1997. Not modelled: the
+Alameda Airport (1929-39; 3 shell / graded runways, the longest 3,250 ft E-W) and Benton Field runways.
+
 ## Ground under SFO (2026-11) - `data/manual/fill_zones.csv` `sm_sfo_*`
 
 Pavement waits for its ground (terrain land-year grid), and the two old SFO fill boxes (1927.2-1945 west of
@@ -144,8 +173,8 @@ NE stopway (1944; Hunters Point quad not mapped in 1946) on the NE fill (c.1950)
   6/24 in two pieces with their own years (`start_year / end_year` in `airports_extra.geojson`, honoured
   by `airports.py`): east part 1947.5-1999 (7/1946 aerial unpaved, 8/1948 paved; the 1956 sheet's strip),
   west 180 m 1958-1999 (not on the 1956 sheet; 2,900 ft paved on the 1959 chart; the 1968 PR outline,
-  ~790 x 28 m). The grass field of 1921-c.1947 is the outline's airfield grass (terrain). Not modelled:
-  the 1915 PPIE racetrack / aviation field (not in `viewer/src/landmarks/batch4.ts` either), the WWII
+  ~790 x 28 m). The grass field of 1921-c.1947 is the outline's airfield grass (terrain). The 1915 PPIE race track /
+  polo, athletic and aviation field is the vanished site `ppie_west_end` (`../vanished_sites/`). Not modelled: the WWII
   temporary buildings 901-919 at the field's ends (no footprints), and the field over today's Crissy Marsh
   (terrain: the marsh is water today, so the 1912-15 fill zone never makes it land - needs a terrain change).
 
@@ -154,8 +183,8 @@ NE stopway (1944; Hunters Point quad not mapped in 1946) on the NE fill (c.1950)
 * Runway interval ends are read to about +-75 m; the SJC 1953 sheets (1948 photos) are registered
   to +-30 m. The 1927 Mills Field strip and the 1930s SFO field are not on any 1:24k edition: only the
   north end of the N-S runway is drawn (vanished); the rest of the 1930s pavement is assumed under today's NW field
-  (dated with the 1946 field, 1944 - so SFO's pavement starts in the 1940s; the 1927-41 field is not modelled,
-  only its ground: see *Ground under SFO*).
+  (dated with the 1946 field, 1944), except Runway B (1927 strip, vanished) and Runway C (west end of 10L/28R, 1928 / 1935):
+  see *Mills Field 1927-41*.
 * Topo editions draw buildings as symbols (solid, hatched, purple); footprints under 150 m2 are not dated.
   Photorevisions seldom delete demolished buildings, so some ends are late. Identities of vanished
   buildings are generic unless named.
@@ -171,4 +200,4 @@ NE stopway (1944; Hunters Point quad not mapped in 1946) on the NE fill (c.1950)
 `vanished_pavement.geojson`), **`buildings.py`** (-> `buildings.csv`), **`trace.py SCRATCH`** (->
 `vanished_buildings.geojson`; needs the `.npy` renders and `<AP>_bldg.geojson` in SCRATCH, see its header),
 **`fillcheck.py`** (SFO land years from the fill-zone rings, no terrain run), **`crissy.py`** (Crissy Field ->
-`../airports_extra*.geojson`).
+`../airports_extra*.geojson`), **`nas.py`** (NAS Alameda pavement phases in `../airports_extra.geojson`).

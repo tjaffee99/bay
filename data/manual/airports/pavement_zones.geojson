@@ -5,13 +5,93 @@
 "type": "Feature",
 "properties": {
 "airport": "SFO",
-"zone": "SFO 10L/28R d350-3050",
+"zone": "SFO 10L/28R d350-929",
+"kind": "runway_phase",
+"start_year": 1928,
+"end_year": 9999,
+"confidence": "estimated",
+"source_url": "https://millsfield.sfomuseum.org/twitter/1657088465228660738/",
+"evidence": "Runway C of Mills Field, 1,900 ft from the hangar row on the old Bayshore Highway eastward across the 1927 pasture (the field had lettered runways by Jan 1928: 'Runway B 5,770 ft'). Runway C ran with 'the prevailing west-northwest winds' (SFO Museum) - the WNW runway of the 1946-photo sheet lies on this axis (+-80 m), so it is placed at the west end of today's 10L/28R. Start ESTIMATED (1928)"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3869382,
+37.6257138
+],
+[
+-122.3927503,
+37.6281504
+],
+[
+-122.3924284,
+37.6286387
+],
+[
+-122.3866163,
+37.6262021
+],
+[
+-122.3869382,
+37.6257138
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10L/28R d929-1264",
+"kind": "runway_phase",
+"start_year": 1935,
+"end_year": 9999,
+"confidence": "documented",
+"source_url": "https://millsfield.sfomuseum.org/twitter/1657088465228660738/",
+"evidence": "'Beginning in 1935 as part of FDR's New Deal, runway \"C\" was extended from 1,900 to 3,000 feet' (SFO Museum), onto the tidelands reclaimed in the early 1930s (fill_zones sm_sfo_tidelands_1930s); paved and widened by 1937"
+},
+"geometry": {
+"type": "Polygon",
+"coordinates": [
+[
+[
+-122.3835754,
+37.6243041
+],
+[
+-122.3869382,
+37.6257138
+],
+[
+-122.3866163,
+37.6262021
+],
+[
+-122.3832535,
+37.6247924
+],
+[
+-122.3835754,
+37.6243041
+]
+]
+]
+}
+},
+{
+"type": "Feature",
+"properties": {
+"airport": "SFO",
+"zone": "SFO 10L/28R d1264-3050",
 "kind": "runway_phase",
 "start_year": 1944,
 "end_year": 9999,
 "confidence": "estimated",
 "source_url": "https://www.militarymuseum.org/cgassf.html",
-"evidence": "core: drawn on the 1946-photo sheets from just east of the old Bayshore Highway to the 1946 seawall; built on wartime hydraulic fill (Army lease 5 Feb 1942: 'three hard-surfaced runways built, the longest 8,000 ft', USACE 1991 via militarymuseum.org); Aug 1952 chart 28R 8,870 ft. Year = middle of 1942-46. May incorporate the 1930s Runway C (1,900 ft -> 3,000 ft in 1935) at its west end"
+"evidence": "core: drawn on the 1946-photo sheets from just east of the old Bayshore Highway to the 1946 seawall; built on wartime hydraulic fill (Army lease 5 Feb 1942: 'three hard-surfaced runways built, the longest 8,000 ft', USACE 1991 via militarymuseum.org); Aug 1952 chart 28R 8,870 ft. Year = middle of 1942-46 (its west 914 m are the 1928 / 1935 Runway C)"
 },
 "geometry": {
 "type": "Polygon",
@@ -22,12 +102,12 @@
 37.6167882
 ],
 [
--122.3927503,
-37.6281504
+-122.3835754,
+37.6243041
 ],
 [
--122.3924284,
-37.6286387
+-122.3832535,
+37.6247924
 ],
 [
 -122.3653253,

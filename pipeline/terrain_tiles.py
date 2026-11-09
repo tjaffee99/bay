@@ -650,7 +650,9 @@ def histories(name, g, d):
         # filled ground dug out again (Crissy Field: marsh filled for the 1915 exposition,
         # the airfield 1921-74, tidal marsh re-created 2000): water / wetland today, so the
         # fill above never touched it — land from the fill zone's year until the restoration
-        refill = m & was_wet & np.isfinite(zones_fill) & (water_now | (wc == 90)) & ~(salt | diked)
+        # (researched fill zones only: a fallback bracket over a restored marsh made
+        # channels land for decades)
+        refill = m & was_wet & np.isfinite(zones_fill) & researched_fill & (water_now | (wc == 90)) & ~(salt | diked)
         if refill.any():
             event(refill, FILL, zones_fill)
             event(refill, GRASS, zones_fill + 6.0)

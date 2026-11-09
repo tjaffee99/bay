@@ -90,8 +90,10 @@ def main():
         add(r.geometry, {"kind": "park", "name": r.map_park_n, "start_year": r.start, "end_year": r.end,
                          "year_confidence": r.confidence, "source": "rpd_parks+parks.csv"})
 
-    # federal parkland (not in RPD) dated in parks.csv by name
-    named = land_use[(land_use.subtype == "park") & land_use.name.notna()].copy()
+    # federal parkland (not in RPD) dated in parks.csv by name; Crissy Field (reopened 2001) is mapped
+    # as landuse=grass, i.e. Overture managed / grass, not as a park
+    is_park = (land_use.subtype == "park") | ((land_use.subtype == "managed") & (land_use["class"] == "grass"))
+    named = land_use[is_park & land_use.name.notna()].copy()
     named["key"] = named.name.str.strip().str.lower()
     for _, r in named.iterrows():
         t = table.get(r.key)

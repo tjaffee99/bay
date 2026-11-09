@@ -43,6 +43,8 @@ SRC = {
     "sjc_timeline": "https://www.flysanjose.com/sjc_timeline",
     "sjc_mp2020": "https://www.flysanjose.com/sites/default/files/rsheelen/MP-ExecSum2020.pdf",
     "usgs_topo": "https://www.usgs.gov/programs/national-geospatial-program/historical-topographic-maps-preserving-past",
+    "sfo_museum_rwyC": "https://millsfield.sfomuseum.org/twitter/1657088465228660738/",
+    "sfo_museum_rwyB": "https://collection.sfomuseum.org/objects/1511943509",
 }
 TOPO = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/"
 ED = {  # the editions the readings come from (first sheet named = the one covering most of the field)
@@ -85,11 +87,20 @@ RUNWAYS = {
         "10L/28R": dict(ids=["c161b8e8-f8f6-3719-b220-20227ff1c202", "c43be67d-3fe1-3ff5-9969-f311063d3c6d",
                              "1cf96308-5113-32ed-be4b-bcd8731cf6c8", "081cb7ea-b670-33fb-b2b8-0096d7a09cab"],
                         end_a="10L (west)", width=61, parts=[
-            (350, 3050, 1944, "estimated", "sfo_cgas",
+            (350, 929, 1928, "estimated", "sfo_museum_rwyC",
+             "Runway C of Mills Field, 1,900 ft from the hangar row on the old Bayshore Highway eastward across the "
+             "1927 pasture (the field had lettered runways by Jan 1928: 'Runway B 5,770 ft'). Runway C ran with 'the "
+             "prevailing west-northwest winds' (SFO Museum) - the WNW runway of the 1946-photo sheet lies on this "
+             "axis (+-80 m), so it is placed at the west end of today's 10L/28R. Start ESTIMATED (1928)"),
+            (929, 1264, 1935, "documented", "sfo_museum_rwyC",
+             "'Beginning in 1935 as part of FDR's New Deal, runway \"C\" was extended from 1,900 to 3,000 feet' "
+             "(SFO Museum), onto the tidelands reclaimed in the early 1930s (fill_zones sm_sfo_tidelands_1930s); "
+             "paved and widened by 1937"),
+            (1264, 3050, 1944, "estimated", "sfo_cgas",
              "core: drawn on the 1946-photo sheets from just east of the old Bayshore Highway to the 1946 seawall; "
              "built on wartime hydraulic fill (Army lease 5 Feb 1942: 'three hard-surfaced runways built, the "
              "longest 8,000 ft', USACE 1991 via militarymuseum.org); Aug 1952 chart 28R 8,870 ft. Year = middle of "
-             "1942-46. May incorporate the 1930s Runway C (1,900 ft -> 3,000 ft in 1935) at its west end"),
+             "1942-46 (its west 914 m are the 1928 / 1935 Runway C)"),
             (0, 350, 1962, "estimated", "usgs_topo",
              "west end / blast pad over the former Bayshore Highway (crossed this axis at d~50 until the freeway "
              "bypass); not on the 1956 sheet, purple on the 1968 photorevision -> midpoint 1962"),
@@ -379,6 +390,16 @@ OPENED = {"SFO": 1927, "OAK": 1927, "SJC": 1948}
 
 # ----------------------------------------------------------------------------------------- vanished pavement
 VANISHED = [
+    dict(airport="SFO", name="Mills Field Runway B (1927 dirt strip, 5,770 ft)", kind="runway",
+         axis=[[-895, 248], [-1585, 1866]], width=60, start=1927.35, end=1944, conf="estimated", src="sfo_museum_rwyB",
+         note="the runway dedicated with Mills Field on 7 May 1927: '5,770-foot-long, dirt-surfaced' (SFO Museum; the "
+              "negative of 5 Jan 1928 is inscribed 'MILLS FIELD MUNICIPAL AIRPORT RUNWAY B 5,770 FT LONG'; the first graded "
+              "strip was 4,950 ft). Not drawn on any topo sheet (the 1939-photo sheet omits the field): placed on the "
+              "150-acre pasture leased east of the Bayshore Highway (fill_zones sm_sfo_mills_pasture_field), parallel to "
+              "the highway ~250 m east of it - the 'original dirt-paved North-South runway' / 'diagonal runway positioned "
+              "Northwest to Southeast' of the 1930-37 aerial films (SFMTA via California Revealed) - from the south end of "
+              "the 1939 dike 1,759 m NNW. Position, width (60 m) and end (the wartime four-runway field of the 1946 "
+              "sheets, 1944) ESTIMATED"),
     dict(airport="SFO", name="Mills Field north-south runway (early 1930s, on the reclaimed tidelands)", kind="runway",
          axis=[[-338, 1400], [-372, 1000]], width=45, start=1931, end=1962, conf="estimated", src="sfo_museum",
          note="the north end of the N-S runway marked '4' on the 1946-photo sheet, outside today's pavement (a 1930-37 "

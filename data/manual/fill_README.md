@@ -158,14 +158,23 @@ The 1853 USC&GS city chart and T-687 (1857) would pin the bands down. The georef
 | `al_oakland_long_wharf_mole` | 1868–1882 | fill | high |
 | `al_key_route_mole_toll_plaza` | 1903–1936.9 | fill | low |
 | `al_oakland_outer_harbor_army_base` | 1910–1942 | fill | medium |
-| `al_naval_supply_center_middle_harbor` | 1940–1941.95 | fill | medium |
-| `al_middle_harbor_shoreline_park` | 2003–2004 | restored | medium |
+| `al_naval_supply_center_middle_harbor_a…d` (depot ground of the 1946 sheet, north of the Inner Harbor entrance) | 1940–1941.95 | fill | medium |
+| `al_middle_harbor_shoreline_park_a…i` (depot ground of the 1946–93 sheets that is water today) | 2000.5–2004 | restored | low |
+| `al_middle_harbor_vision2000_a/b` (water to 1993, land today) | 2000–2004 | fill | low |
 | `al_tidal_canal` | 1889–1902.7 | excavated | high |
-| `al_alameda_nas` | 1936.4–1941 | fill | high |
+| `al_alameda_airport_point` (training-wall strip, sand hook, Alameda Airport) | 1927–1929.2 | fill | low (extent from a 1939 aerial) |
+| `al_alameda_benton_field_navy_fill` (Bay Airdrome marsh, Benton Field, Navy fill to Aug 1939) | 1930–1939.5 | fill | medium |
+| `al_alameda_nas_inner_bay` (inner bay filled for the airfield) | 1939.6–1941 | fill | medium |
+| `al_alameda_nas_1950s_extension_a/b/c` (jet-runway additions, 1946 → 1958 sheets) | 1947–1956.5 | fill | medium |
 | `al_alameda_south_shore` | 1955.85–1960 | fill | medium |
-| `al_bay_farm_island_harbor_bay` | 1955–1972 | fill | medium |
-| `al_oakland_airport_north` | 1927.3–1927.7 | fill | medium |
-| `al_oakland_airport_south` | 1958–1962 | fill | medium |
+| `al_bay_farm_reclaimed_marsh` (marsh round Bay Farm Island inside the 1939 levee, Alameda side) | 1900–1924 | fill | low |
+| `al_oakland_airport_north_field` (North Field marsh, Oakland side) | 1926.8–1927.3 | fill | medium |
+| `al_oakland_airport_navy_strip` (south of Maitland Drive, 1939 → 1946 sheets) | 1941.5–1944.5 | fill | medium |
+| `al_oakland_airport_south_field_a/b` (South Field dike fill) | 1958.5–1961.5 | fill | medium |
+| `al_oakland_hegenberger_marsh` (east of the Airport Channel, inside the old box) | 1950–1965 | fill | low |
+| `al_bay_farm_nw_fill` | 1956.5–1959.5 | fill | medium |
+| `al_bay_farm_harbor_bay_fill_a…d` (land on the 1968-photo sheets) | 1960–1967.5 | fill | medium |
+| `al_bay_farm_harbor_bay_fill_1970s_a/b` (land on the 1973 / 1980 PRs) | 1968–1973 | fill | medium |
 | `al_berkeley_waterfront_landfill` | 1923–1983 | fill | medium |
 | `al_albany_bulb` | 1963–1987 | fill | medium |
 | `cc_richmond_shipyards` | 1940.9–1943 | fill | medium |
@@ -201,6 +210,29 @@ Confidence levels:
 - **high**: dated construction records (contracts, seawall tables, openings).
 - **medium**: a documented bracket, or one secondary source.
 - **low**: an inferred or interpolated bracket, conflicting sources, or a fallback.
+
+## Alameda Point, Middle Harbor, Bay Farm Island and Oakland Airport (2026-11)
+
+The boxes `al_alameda_nas`, `al_naval_supply_center_middle_harbor` (+ the restored `al_middle_harbor_shoreline_park` box),
+`al_bay_farm_island_harbor_bay`, `al_oakland_airport_north` and `al_oakland_airport_south` are replaced by phases traced on
+the USGS editions like the SFO zones (renders in a local metre frame with `airports/tools/render.py`, water-tint masks per
+edition, ring = c.1800 wet ground that is land today, cut into the phases; hand lines where a sheet has no water tint):
+* **The strait into Oakland was closed 1941–2003.** The terrain's restored-ground rule (fill under a `restored` ring that is
+  water today is land from its fill year until the restoration) turned every water cell of the Middle Harbor box that a
+  fill zone also covered into land — the NSC box reached across the Inner Harbor entrance channel, so the channel was
+  land from 1941 to 2003. The NSC ring now stops at the channel, and the restored ring is the depot ground of the
+  1946–93 sheets that is water in WorldCover 2021 (the berths, the widened channel edge) — and lies inside the NSC
+  ring (a restored cell outside any specific fill ring would take the `fb_east_bay` fallback year: land from 1920).
+* **NAS Alameda:** 1:24k Oakland West 1949 (1946 photos), 1959, 1968 PR … 1993 + the USGS aerial of 4 Aug 1939
+  (UCSB via airfields-freeman.com, registered by hand on the 1946 sheet, ±150 m): the Alameda Airport's training-wall
+  strip and sand hook (1927–29), the Bay Airdrome marsh / Benton Field / Navy fill east of the inner bay (land in Aug 1939),
+  the inner bay filled for the airfield (1939–41), and the west / south additions of the 1958 sheet (jet runways).
+* **Bay Farm Island / OAK:** marsh round the island on the 1896 survey, farmland and golf course (Alameda side) and the
+  North Field (Oakland side, bought Feb–Apr 1927) inside the levee of the 1939-photo sheet; a Navy-era strip south of
+  Maitland Drive (1946 sheet); the South Field dike fill (under construction on the 1959 sheet, airfield on the 1968 PR);
+  the Utah Construction / Harbor Bay fills by edition (NW lobe diked on the 1956 photos; land on the 1968 / 1973 / 1980
+  sheets). Check without a terrain run: OAK `pavement_dates.csv` rows keep their researched starts (the 1927 runway waits
+  to 1927.5–1927.8 at most).
 
 ## Land cover table (`data/tables/landcover_history.csv`)
 

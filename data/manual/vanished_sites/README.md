@@ -108,9 +108,31 @@ still stands — the Great Mall, the Edenvale church — it is left out).
 | `oaks_park` | Oaks Park (Oakland Oaks ball park), Emeryville | 1913 – 1955 (demolished c.1957) | Sanborn Oakland 1911–Oct 1950 vol. 3 sheet 317 | stands ±3 m; demolition year estimated |
 | `bay_district_track` | Bay District race track, SF (First Ave – Fifth Ave, Fulton St – Point Lobos Ave) | Sep 1874 – 27 May 1896 (streets cut by 1898) | San Francisco 1:62,500 1895 (1894 survey) | oval ±20 m |
 | `ingleside_racetrack` | Ingleside race track, SF | 28 Nov 1895 – 1906 (sold 1910) | Urbano Drive (laid on the track 1912) | oval ±10 m; width estimated |
+| `ppie_west_end` | Exposition race track and livestock exhibit (PPIE 1915), the Presidio / Crissy Field | built 1914 – Exposition 20 Feb – 4 Dec 1915 (buildings razed 1916; the track and infield to the Army airfield, 1919) | Sanborn map of the PPIE (1914), sheet 4, chained to sheet 3; USGS San Francisco 1:62,500 1915 (oval tilt) | east turn / buildings ±5 m; west half of the oval estimated |
 | `russell_city` | Russell City, Hayward | laid out 1907 – evicted 1964, cleared 1966 | San Leandro 1:24k 1947 (houses), 1959 (town tint), 1968 PR; Hayward 1:62,500 1942 (1939 photos) for dating | positions ±5 m; footprints and start years **estimated** |
 | `geneva_drive_in` | Geneva Drive-In (Geneva 4), Daly City | 1950 – 1999 (demolished Mar 2002) | San Francisco South 1:24k 1956 | outline ±10 m |
 | `oakland_trans_pacific_lots` | Trans Pacific Centre blocks, downtown Oakland (9th–11th St, Broadway–Webster) | cleared 1978 / c.1980–82, vacant or parking until 1982 / 1990 / 2001 | Sanborn 1950 vol. 2 sheets 150–151; USGS Oakland West 1980 PR (1979 photos); 1982 EIR | estimated (see `../redevelopment_areas.csv`) |
+
+### PPIE west end, 1915 (`ppie_west_end`, `tools/ppie_trace.py`, `traced/ppie_sheet4_1914.json`)
+* Source: sheet 4 of the Sanborn map of the Panama-Pacific International Exposition ("survey and inspection completed
+  November 18, 1914", LOC `sanborn00813_025`, IIIF 50 %), the sheet the batch-4 landmark models (`viewer/src/landmarks/batch4.ts`)
+  left out for lack of street control. Sheet 3 is fitted to the batch-4 Exposition grid on six pavilions batch4 traced from it
+  (residuals 0.7–5.3 m, 0.205 m/px; the Palace of Fine Arts rotunda falls 2 m off); sheet 4 abuts it (the Avenue of the States
+  kerbs continue 8 px lower; Canada straddles the seam).
+* **Race track**: the east turn's two track lines fitted as circles (r 97.7 / 116.5 m, centre on the sheet); the west turn lies
+  beyond the sheet, so the oval is completed as a stadium of one mile at the inner line ("the mile track" with "an athletic
+  field and polo grounds in its infield", Daily Racing Form 4 Dec 1915) whose long axis follows the oval of the USGS 1:62,500
+  San Francisco 1915 edition (bearing 97°; at the Exposition grid's 81° the west turn would climb 20 m up the Presidio bluff).
+  `dirt_track` ring + `turf` infield (polo / athletic / aviation field: Athletic Field dedicated 9 Apr 1915, NPS) 1915–1919.5
+  (end: Crissy airfield built on the old track 1919–21; ESTIMATED).
+* **Buildings** (41): the yellow (frame) fills of sheet 4 — Stock Exhibit barns, the livestock stadium ring (hand-read) round its
+  show ring (`dirt_track` part), the Dairy Building round its open arena, Poultry Exhibit, stables, the stock supply yard,
+  the Livestock Congress auditorium, and the western state / nation pavilions (Arkansas, Kansas, West Virginia, North Dakota,
+  Iowa, Massachusetts, Washington, Montana, Maryland, Utah, Indiana, Philippine Islands, Sweden). 1915.13–1916.3 (as the batch-4
+  PPIE models); heights / storeys ESTIMATED by use (the sheet's height figures were not read). Buildings cut by the sheet-3 seam
+  (Idaho, Canada) are left to sheet 3.
+* Applied in place (`ppie_trace.py SCRATCH --apply` replaces this site's lines in `sites.geojson` / `buildings.geojson`;
+  `trace_sites.py` would rebuild the files without the later additions, so it is not rerun).
 
 ### Bay Meadows (1934–2008)
 * Main track: 1-mile dirt oval, axis bearing −8°, fitted to the track line of the 1993 sheet (the 1946/1956 sheets
