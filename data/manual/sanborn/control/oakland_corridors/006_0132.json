@@ -1,0 +1,62 @@
+{
+ "residential": true,
+ "notes": "only the north half (Richmond Ave / Glen Echo Creek - Fairmount Ave: blocks 963, 967, 983) where I-580 runs; one zone drawn by hand, placed by the chamfer match",
+ "mode": "chamfer_only",
+ "predicted_from": [
+  [
+   1048,
+   988,
+   "Kempton",
+   "Fairmount"
+  ],
+  [
+   1464,
+   1190,
+   "Pearl",
+   "Fairmount"
+  ]
+ ],
+ "chamfer": {
+  "M": [
+   [
+    0.13480791196547715,
+    0.14567135915394683,
+    565061.029967623
+   ],
+   [
+    0.14567135915394683,
+    -0.13480791196547715,
+    4185930.4028305816
+   ]
+  ],
+  "dist_px": 4.48,
+  "inlier_share": 0.38,
+  "rms_m": 0.53,
+  "n_points": 4473
+ },
+ "pct": 25,
+ "blocks": [
+  {
+   "name": "963-983",
+   "px4": [
+    [
+     95,
+     167
+    ],
+    [
+     1667,
+     167
+    ],
+    [
+     1667,
+     1000
+    ],
+    [
+     95,
+     1000
+    ]
+   ],
+   "corners": []
+  }
+ ]
+}
