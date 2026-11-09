@@ -347,6 +347,15 @@ def water():
                             confidence=r["confidence"], ring_type="lonlat", ring=ring_str(p4),
                             area_ha=round(a / 1e4, 1), note=r["note"], source_url=r["source_url"]))
     df = pd.DataFrame(out)
+    # hand rows (2026-11 audit): natural lakes that no c.1800 layer covers (Lake Merced, Rodeo
+    # Lagoon, Abbotts Lagoon: year_start 1700 = always), gravel-pit lakes, small flood-control
+    # reservoirs - outlines from the terrain grid's water cells, same columns, appended as is
+    extra = OUT / "water_history_extra.csv"
+    if extra.exists():
+        ex = pd.read_csv(extra)
+        ex = ex[~ex.area_id.isin(df.area_id)]
+        df = pd.concat([df, ex[df.columns]], ignore_index=True)
+        log(f"water_history.csv: {len(ex)} hand rows from {extra.name}")
     df.to_csv(OUT / "water_history.csv", index=False)
     log(f"water_history.csv: {len(df)} rows; areas (ha) by id:\n" +
         df.groupby(df.area_id.str.replace(r"_\d+$", "", regex=True)).area_ha.sum().round(0).to_string())
