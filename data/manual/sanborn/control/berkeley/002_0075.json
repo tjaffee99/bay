@@ -1,0 +1,920 @@
+{
+ "refine_R": 20,
+ "weak": 0.12,
+ "residential": true,
+ "notes": "West Berkeley: 5th - 8th St, Addison - Bancroft (West Berkeley Macaroni Factory, Hygienic Health Food Co.) Today 7th St runs diagonally from Allston Way to 8th St at Bancroft and Bancroft Way is closed between 6th and 8th St (superblock): 2559 / 2560 are fitted with 2558 (row fit, the plate is to scale: block fits 0.2003-0.2019 m/px, rotation 14.8-15.0 deg).",
+ "blocks": [
+  {
+   "name": "2569",
+   "streets": {
+    "N": "Addison",
+    "S": "Allston",
+    "W": "5th",
+    "E": "6th"
+   },
+   "px4_est": [
+    [
+     160,
+     104
+    ],
+    [
+     580,
+     104
+    ],
+    [
+     580,
+     836
+    ],
+    [
+     160,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 165.9,
+     "y": 102.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 576.8,
+     "y": 103.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.2,
+     "y": 833.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 164.6,
+     "y": 832.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     165.9,
+     102.1
+    ],
+    [
+     576.8,
+     103.4
+    ],
+    [
+     574.2,
+     833.9
+    ],
+    [
+     164.6,
+     832.6
+    ]
+   ],
+   "edge_q": [
+    0.78,
+    0.76,
+    0.81,
+    0.66
+   ],
+   "corners_all": [
+    {
+     "x": 165.9,
+     "y": 102.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 576.8,
+     "y": 103.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.2,
+     "y": 833.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 164.6,
+     "y": 832.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    164.59820515051092,
+    102.11062434504964,
+    576.8179539620329,
+    833.8896986126945
+   ]
+  },
+  {
+   "name": "2568",
+   "streets": {
+    "N": "Addison",
+    "S": "Allston",
+    "W": "6th",
+    "E": "7th"
+   },
+   "px4_est": [
+    [
+     694,
+     104
+    ],
+    [
+     1066,
+     104
+    ],
+    [
+     1066,
+     836
+    ],
+    [
+     694,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 696.0,
+     "y": 102.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1062.8,
+     "y": 104.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "7th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1060.2,
+     "y": 835.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "7th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 696.0,
+     "y": 833.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     696.0,
+     102.2
+    ],
+    [
+     1062.8,
+     104.8
+    ],
+    [
+     1060.2,
+     835.8
+    ],
+    [
+     696.0,
+     833.2
+    ]
+   ],
+   "edge_q": [
+    0.83,
+    0.74,
+    0.78,
+    0.76
+   ],
+   "corners_all": [
+    {
+     "x": 696.0,
+     "y": 102.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1062.8,
+     "y": 104.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "7th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1060.2,
+     "y": 835.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "7th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 696.0,
+     "y": 833.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    696.0,
+    102.1983588002264,
+    1062.812937720166,
+    835.7746535134332
+   ]
+  },
+  {
+   "name": "2567",
+   "streets": {
+    "N": "Addison",
+    "S": "Allston",
+    "W": "7th",
+    "E": "8th"
+   },
+   "px4_est": [
+    [
+     1154,
+     104
+    ],
+    [
+     1560,
+     104
+    ],
+    [
+     1560,
+     836
+    ],
+    [
+     1154,
+     836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1152.8,
+     "y": 103.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "7th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1560.9,
+     "y": 108.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "8th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1559.6,
+     "y": 835.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "8th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.2,
+     "y": 834.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "7th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1152.8,
+     103.4
+    ],
+    [
+     1560.9,
+     108.6
+    ],
+    [
+     1559.6,
+     835.4
+    ],
+    [
+     1150.2,
+     834.1
+    ]
+   ],
+   "edge_q": [
+    0.58,
+    0.83,
+    0.78,
+    0.78
+   ],
+   "corners_all": [
+    {
+     "x": 1152.8,
+     "y": 103.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "7th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1560.9,
+     "y": 108.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "8th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1559.6,
+     "y": 835.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "8th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1150.2,
+     "y": 834.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "7th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1150.1911138869946,
+    103.35309975517868,
+    1560.8995483890715,
+    835.4065762637999
+   ]
+  },
+  {
+   "name": "2558",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "5th",
+    "E": "6th"
+   },
+   "px4_est": [
+    [
+     160,
+     924
+    ],
+    [
+     580,
+     924
+    ],
+    [
+     580,
+     1836
+    ],
+    [
+     160,
+     1836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 164.0,
+     "y": 922.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.0,
+     "y": 923.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.0,
+     "y": 1836.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 164.0,
+     "y": 1835.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     164.0,
+     922.6
+    ],
+    [
+     574.0,
+     923.9
+    ],
+    [
+     574.0,
+     1836.4
+    ],
+    [
+     164.0,
+     1835.1
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.77,
+    0.78,
+    0.47
+   ],
+   "corners_all": [
+    {
+     "x": 164.0,
+     "y": 922.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.0,
+     "y": 923.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 574.0,
+     "y": 1836.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 164.0,
+     "y": 1835.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    164.0,
+    922.6046365914787,
+    574.0,
+    1836.389097744361
+   ]
+  },
+  {
+   "name": "2559",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "6th",
+    "E": "7th"
+   },
+   "px4_est": [
+    [
+     694,
+     924
+    ],
+    [
+     1066,
+     924
+    ],
+    [
+     1066,
+     1836
+    ],
+    [
+     694,
+     1836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 693.6,
+     "y": 924.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2559"
+    },
+    {
+     "x": 164.0,
+     "y": 922.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 574.0,
+     "y": 923.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 574.0,
+     "y": 1836.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 164.0,
+     "y": 1835.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "2558"
+   ],
+   "px4": [
+    [
+     693.6,
+     924.6
+    ],
+    [
+     1059.8,
+     925.9
+    ],
+    [
+     1057.2,
+     1838.6
+    ],
+    [
+     694.9,
+     1834.8
+    ]
+   ],
+   "edge_q": [
+    0.72,
+    0.68,
+    0.73,
+    0.74
+   ],
+   "corners_all": [
+    {
+     "x": 693.6,
+     "y": 924.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    693.5929574467997,
+    924.5906655257739,
+    1059.8103474102268,
+    1838.6300575285104
+   ],
+   "confidence_cap": "medium"
+  },
+  {
+   "name": "2560",
+   "streets": {
+    "N": "Allston",
+    "S": "Bancroft",
+    "W": "7th",
+    "E": "8th"
+   },
+   "px4_est": [
+    [
+     1154,
+     924
+    ],
+    [
+     1560,
+     924
+    ],
+    [
+     1560,
+     1836
+    ],
+    [
+     1154,
+     1836
+    ]
+   ],
+   "corners": [
+    {
+     "x": 164.0,
+     "y": 922.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 574.0,
+     "y": 923.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 574.0,
+     "y": 1836.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "6th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 164.0,
+     "y": 1835.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2558"
+    },
+    {
+     "x": 693.6,
+     "y": 924.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "6th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2559"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "2558",
+    "2559"
+   ],
+   "px4": [
+    [
+     1148.8,
+     926.0
+    ],
+    [
+     1559.7,
+     926.0
+    ],
+    [
+     1555.8,
+     1836.1
+    ],
+    [
+     1146.2,
+     1837.4
+    ]
+   ],
+   "edge_q": [
+    0.79,
+    0.49,
+    0.75,
+    0.78
+   ],
+   "corners_all": [],
+   "zone_px": [
+    1146.180074913362,
+    926.0,
+    1559.715027700831,
+    1837.4332380253002
+   ],
+   "confidence_cap": "medium"
+  }
+ ],
+ "pct": 25
+}

@@ -1,7 +1,7 @@
 {
  "refine_R": 20,
  "weak": 0.12,
- "notes": "West Berkeley waterfront: the bay shore - 5th St, Addison - Bancroft (Ramona Candy Co., Standard Soap / Western Refining, Tillman & Bendel warehouse, Van Emon Elevator Co., Century Mercantile, nursery). The shore blocks 2572 / 2555 (I-80 and fill today) are fitted with their 3rd St corners and the block across 3rd St.",
+ "notes": "West Berkeley waterfront: the bay shore - 5th St, Addison - Bancroft (Ramona Candy Co., Standard Soap / Western Refining, Tillman & Bendel warehouse, Van Emon Elevator Co., Century Mercantile, nursery). The shore blocks 2572 / 2555 (I-80 and fill today) are fitted with their 3rd St corners and the block across 3rd St. 3rd St has no road today: blocks beside it are fitted per row together with the 4th - 5th St block.",
  "blocks": [
   {
    "name": "2572",
@@ -55,6 +55,58 @@
      "norefine": 1,
      "weak": false,
      "block": "2571"
+    },
+    {
+     "x": 1162.3,
+     "y": 116.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1539.7,
+     "y": 115.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1543.7,
+     "y": 845.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1167.6,
+     "y": 847.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
     }
    ],
    "skip": [
@@ -62,7 +114,8 @@
     "SW"
    ],
    "with": [
-    "2571"
+    "2571",
+    "2570"
    ],
    "px4": [
     [
@@ -142,11 +195,11 @@
     ],
     [
      550,
-     1780
+     1838
     ],
     [
      168,
-     1780
+     1838
     ]
    ],
    "corners": [
@@ -162,6 +215,71 @@
      "norefine": 1,
      "weak": false,
      "block": "2556"
+    },
+    {
+     "x": 1078.9,
+     "y": 1850.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2556"
+    },
+    {
+     "x": 1167.2,
+     "y": 937.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1544.9,
+     "y": 935.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1543.6,
+     "y": 1845.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1169.8,
+     "y": 1846.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
     }
    ],
    "skip": [
@@ -169,11 +287,12 @@
     "SW"
    ],
    "with": [
-    "2556"
+    "2556",
+    "2557"
    ],
    "px4": [
     [
-     184.0,
+     155.2,
      933.5
     ],
     [
@@ -181,19 +300,19 @@
      933.5
     ],
     [
-     560.2,
-     1789.8
+     560.1,
+     1840.5
     ],
     [
-     184.0,
-     1796.3
+     151.3,
+     1840.5
     ]
    ],
    "edge_q": [
     0.0,
     0.63,
-    0.02,
-    0.15
+    0.76,
+    0.14
    ],
    "corners_all": [
     {
@@ -210,8 +329,8 @@
      "drop": "\"unknown street '3rd'\""
     },
     {
-     "x": 560.2,
-     "y": 1789.8,
+     "x": 560.1,
+     "y": 1840.5,
      "q": "NW",
      "corner": "SE",
      "pc": [
@@ -224,10 +343,10 @@
     }
    ],
    "zone_px": [
-    184.0,
+    151.26544748434964,
     933.5,
-    560.1921671392452,
-    1796.2639156792504
+    560.1460700208671,
+    1840.5
    ]
   },
   {
@@ -267,7 +386,8 @@
       "Addison"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2571"
     },
     {
      "x": 1076.7,
@@ -279,8 +399,64 @@
       "Allston"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2571"
+    },
+    {
+     "x": 1162.3,
+     "y": 116.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1539.7,
+     "y": 115.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1543.7,
+     "y": 845.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
+    },
+    {
+     "x": 1167.6,
+     "y": 847.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2570"
     }
+   ],
+   "with": [
+    "2570"
    ],
    "px4": [
     [
@@ -541,11 +717,11 @@
     ],
     [
      1070,
-     1780
+     1838
     ],
     [
      696,
-     1780
+     1838
     ]
    ],
    "corners": [
@@ -559,8 +735,77 @@
       "Allston"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2556"
+    },
+    {
+     "x": 1078.9,
+     "y": 1850.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2556"
+    },
+    {
+     "x": 1167.2,
+     "y": 937.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1544.9,
+     "y": 935.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Allston"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1543.6,
+     "y": 1845.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
+    },
+    {
+     "x": 1169.8,
+     "y": 1846.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Bancroft"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2557"
     }
+   ],
+   "with": [
+    "2557"
    ],
    "px4": [
     [
@@ -572,19 +817,19 @@
      937.1
     ],
     [
-     1078.8,
-     1786.0
+     1078.9,
+     1850.5
     ],
     [
      707.0,
-     1786.0
+     1850.5
     ]
    ],
    "edge_q": [
     0.71,
-    0.77,
-    0.0,
-    0.61
+    0.76,
+    0.63,
+    0.58
    ],
    "corners_all": [
     {
@@ -613,8 +858,8 @@
      "weak": false
     },
     {
-     "x": 1078.8,
-     "y": 1786.0,
+     "x": 1078.9,
+     "y": 1850.5,
      "q": "NW",
      "corner": "SE",
      "pc": [
@@ -622,11 +867,11 @@
       "Bancroft"
      ],
      "norefine": 1,
-     "weak": true
+     "weak": false
     },
     {
      "x": 707.0,
-     "y": 1786.0,
+     "y": 1850.5,
      "q": "NE",
      "corner": "SW",
      "pc": [
@@ -634,14 +879,15 @@
       "Bancroft"
      ],
      "norefine": 1,
-     "weak": true
+     "weak": false,
+     "drop": "\"unknown street '3rd'\""
     }
    ],
    "zone_px": [
     707.0,
-    937.1405409691507,
-    1078.8343653250774,
-    1786.0
+    937.1405509050386,
+    1078.852017157431,
+    1850.5
    ]
   },
   {
@@ -663,11 +909,11 @@
     ],
     [
      1536,
-     1780
+     1838
     ],
     [
      1160,
-     1780
+     1838
     ]
    ],
    "corners": [
@@ -697,7 +943,7 @@
     },
     {
      "x": 1543.6,
-     "y": 1799.9,
+     "y": 1845.1,
      "q": "NW",
      "corner": "SE",
      "pc": [
@@ -708,8 +954,8 @@
      "weak": false
     },
     {
-     "x": 1169.9,
-     "y": 1798.6,
+     "x": 1169.8,
+     "y": 1846.4,
      "q": "NE",
      "corner": "SW",
      "pc": [
@@ -731,18 +977,18 @@
     ],
     [
      1543.6,
-     1799.9
+     1845.1
     ],
     [
-     1169.9,
-     1798.6
+     1169.8,
+     1846.4
     ]
    ],
    "edge_q": [
     0.78,
     0.79,
-    0.13,
-    0.81
+    0.76,
+    0.8
    ],
    "corners_all": [
     {
@@ -771,7 +1017,7 @@
     },
     {
      "x": 1543.6,
-     "y": 1799.9,
+     "y": 1845.1,
      "q": "NW",
      "corner": "SE",
      "pc": [
@@ -782,8 +1028,8 @@
      "weak": false
     },
     {
-     "x": 1169.9,
-     "y": 1798.6,
+     "x": 1169.8,
+     "y": 1846.4,
      "q": "NE",
      "corner": "SW",
      "pc": [
@@ -795,10 +1041,10 @@
     }
    ],
    "zone_px": [
-    1167.208251825953,
-    935.1219207302142,
-    1544.899966066981,
-    1799.9343548681713
+    1167.2067161793725,
+    935.1219171855473,
+    1544.900472529003,
+    1846.3734600449375
    ]
   }
  ],

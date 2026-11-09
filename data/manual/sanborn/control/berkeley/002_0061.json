@@ -1,7 +1,7 @@
 {
  "refine_R": 20,
  "weak": 0.12,
- "notes": "West Berkeley (Ocean View): 2nd - 5th St, Bristol (today Hearst Ave) - Addison (El Dorado Oil Works, Ebbing starch works, Ocean View Hotel, glass works); SP main line along 3rd St.",
+ "notes": "West Berkeley (Ocean View): 2nd - 5th St, Bristol (today Hearst Ave) - Addison (El Dorado Oil Works, Ebbing starch works, Ocean View Hotel, glass works); SP main line along 3rd St. 3rd St (the Southern Pacific right of way) has no road today: the blocks beside it are fitted per row (2nd to 5th St) together.",
  "blocks": [
   {
    "name": "2592",
@@ -40,7 +40,8 @@
       "Bristol"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2592"
     },
     {
      "x": 138.0,
@@ -52,8 +53,91 @@
       "University"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2592"
+    },
+    {
+     "x": 1069.9,
+     "y": 270.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2591"
+    },
+    {
+     "x": 1068.6,
+     "y": 907.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2591"
+    },
+    {
+     "x": 1160.0,
+     "y": 269.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1539.0,
+     "y": 270.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1539.0,
+     "y": 905.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1160.0,
+     "y": 906.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
     }
+   ],
+   "with": [
+    "2591",
+    "2590"
    ],
    "px4": [
     [
@@ -175,7 +259,8 @@
       "Bristol"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2591"
     },
     {
      "x": 1068.6,
@@ -187,8 +272,91 @@
       "University"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2591"
+    },
+    {
+     "x": 138.0,
+     "y": 275.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2592"
+    },
+    {
+     "x": 138.0,
+     "y": 914.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2592"
+    },
+    {
+     "x": 1160.0,
+     "y": 269.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1539.0,
+     "y": 270.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1539.0,
+     "y": 905.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
+    },
+    {
+     "x": 1160.0,
+     "y": 906.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2590"
     }
+   ],
+   "with": [
+    "2592",
+    "2590"
    ],
    "px4": [
     [
@@ -467,7 +635,8 @@
       "University"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2575"
     },
     {
      "x": 139.9,
@@ -479,8 +648,91 @@
       "Addison"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2575"
+    },
+    {
+     "x": 1067.6,
+     "y": 1062.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2576"
+    },
+    {
+     "x": 1068.9,
+     "y": 1668.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2576"
+    },
+    {
+     "x": 1159.8,
+     "y": 1060.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1538.4,
+     "y": 1058.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1537.1,
+     "y": 1662.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1157.2,
+     "y": 1667.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
     }
+   ],
+   "with": [
+    "2576",
+    "2577"
    ],
    "px4": [
     [
@@ -602,7 +854,8 @@
       "University"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2576"
     },
     {
      "x": 1068.9,
@@ -614,8 +867,91 @@
       "Addison"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "2576"
+    },
+    {
+     "x": 138.6,
+     "y": 1066.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2575"
+    },
+    {
+     "x": 139.9,
+     "y": 1671.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "2nd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2575"
+    },
+    {
+     "x": 1159.8,
+     "y": 1060.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "4th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1538.4,
+     "y": 1058.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "5th",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1537.1,
+     "y": 1662.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "5th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
+    },
+    {
+     "x": 1157.2,
+     "y": 1667.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "4th",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2577"
     }
+   ],
+   "with": [
+    "2575",
+    "2577"
    ],
    "px4": [
     [

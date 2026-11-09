@@ -1,0 +1,439 @@
+{
+ "refine_R": 16,
+ "weak": 0.12,
+ "scale_prior": [
+  0.2015,
+  0.0008
+ ],
+ "notes": "West Berkeley shore at University Ave (two-part sheet): Monarch Oil & Refining, West Berkeley Lumber Co., Everding & Co. starch works, Eldorado Oil Works, the municipal wharf (2594 / 2593 / 2574, filled ground; today I-80 and the University Ave overpass); inset: Pacific Guano & Fertilizer Co. (2596, Delaware - Bristol west of 2nd St). Control only along 2nd St (collinear) with the plate-scale prior.",
+ "blocks": [
+  {
+   "name": "2593",
+   "streets": {
+    "N": "Bristol",
+    "S": "University",
+    "W": "1st",
+    "E": "2nd"
+   },
+   "px4_est": [
+    [
+     1080,
+     118
+    ],
+    [
+     1560,
+     118
+    ],
+    [
+     1560,
+     770
+    ],
+    [
+     1080,
+     770
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1558.2,
+     "y": 123.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1560.8,
+     "y": 760.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     1079.0,
+     123.0
+    ],
+    [
+     1558.2,
+     123.0
+    ],
+    [
+     1560.8,
+     760.0
+    ],
+    [
+     1079.0,
+     760.0
+    ]
+   ],
+   "edge_q": [
+    0.59,
+    0.73,
+    0.75,
+    0.09
+   ],
+   "corners_all": [
+    {
+     "x": 1558.2,
+     "y": 123.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1560.8,
+     "y": 760.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1079.0,
+    123.0,
+    1560.775427833387,
+    760.0
+   ]
+  },
+  {
+   "name": "2574",
+   "streets": {
+    "N": "University",
+    "S": "Addison",
+    "W": "1st",
+    "E": "2nd"
+   },
+   "px4_est": [
+    [
+     1300,
+     870
+    ],
+    [
+     1560,
+     870
+    ],
+    [
+     1560,
+     1610
+    ],
+    [
+     1300,
+     1610
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1559.9,
+     "y": 858.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     1311.5,
+     862.0
+    ],
+    [
+     1559.9,
+     858.3
+    ],
+    [
+     1557.2,
+     1608.0
+    ],
+    [
+     1311.5,
+     1608.0
+    ]
+   ],
+   "edge_q": [
+    0.4,
+    0.63,
+    0.0,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 1559.9,
+     "y": 858.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1557.2,
+     "y": 1608.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "Addison"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [8.7 1.4] at 2nd x Addison NW"
+    }
+   ],
+   "zone_px": [
+    1311.5,
+    858.278479654844,
+    1559.857473400943,
+    1608.0
+   ]
+  },
+  {
+   "name": "2594",
+   "streets": {
+    "N": "Bristol",
+    "S": "University",
+    "W": "1st",
+    "E": "2nd"
+   },
+   "px4_est": [
+    [
+     40,
+     90
+    ],
+    [
+     1080,
+     90
+    ],
+    [
+     1080,
+     850
+    ],
+    [
+     40,
+     850
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1558.2,
+     "y": 123.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2593"
+    },
+    {
+     "x": 1560.8,
+     "y": 760.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2593"
+    },
+    {
+     "x": 1559.9,
+     "y": 858.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "University"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "2574"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "2593",
+    "2574"
+   ],
+   "px4": [
+    [
+     40.0,
+     90.0
+    ],
+    [
+     1080.0,
+     90.0
+    ],
+    [
+     1080.0,
+     850.0
+    ],
+    [
+     40.0,
+     850.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    40.0,
+    90.0,
+    1080.0,
+    850.0
+   ]
+  },
+  {
+   "name": "2596",
+   "streets": {
+    "N": "Delaware",
+    "S": "Bristol",
+    "W": "1st",
+    "E": "2nd"
+   },
+   "px4_est": [
+    [
+     200,
+     1160
+    ],
+    [
+     752,
+     1160
+    ],
+    [
+     752,
+     1858
+    ],
+    [
+     200,
+     1858
+    ]
+   ],
+   "corners": [
+    {
+     "x": 756.0,
+     "y": 1869.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     216.4,
+     1143.5
+    ],
+    [
+     756.0,
+     1148.7
+    ],
+    [
+     756.0,
+     1869.0
+    ],
+    [
+     215.1,
+     1869.0
+    ]
+   ],
+   "edge_q": [
+    0.03,
+    0.48,
+    0.33,
+    0.04
+   ],
+   "corners_all": [
+    {
+     "x": 756.0,
+     "y": 1148.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "2nd",
+      "Delaware"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 10.3 134.6] at 2nd x Delaware SW"
+    },
+    {
+     "x": 756.0,
+     "y": 1869.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "2nd",
+      "Bristol"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    215.07136932589356,
+    1143.525161624818,
+    756.0,
+    1869.0
+   ]
+  }
+ ],
+ "pct": 25
+}

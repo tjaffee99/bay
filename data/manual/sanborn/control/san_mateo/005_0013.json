@@ -1,0 +1,633 @@
+{
+ "residential": true,
+ "notes": "sheet 13 (Apr 1908): D St -> G St (Delaware -> Grant), Cypress Av -> 2nd Av, north of the creek; north = left. Residential.",
+ "blocks": [
+  {
+   "name": "148",
+   "streets": {
+    "N": "1st avenue",
+    "S": "2nd avenue",
+    "W": "d street",
+    "E": "e street"
+   },
+   "px4_est": [
+    [
+     1015,
+     1758.5
+    ],
+    [
+     1015,
+     1419.5
+    ],
+    [
+     1463,
+     1419.5
+    ],
+    [
+     1463,
+     1758.5
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1014.1,
+     "y": 1757.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1461.6,
+     "y": 1758.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     1014.1,
+     1757.6
+    ],
+    [
+     1015.4,
+     1419.5
+    ],
+    [
+     1462.9,
+     1419.5
+    ],
+    [
+     1461.6,
+     1758.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1014.1,
+     "y": 1757.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1015.4,
+     "y": 1419.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "e street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [13.1  1. ] at e street x 1st avenue SW"
+    },
+    {
+     "x": 1462.9,
+     "y": 1419.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "e street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [79.   9.7] at e street x 2nd avenue NW"
+    },
+    {
+     "x": 1461.6,
+     "y": 1758.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1014.0956394615391,
+    1419.5,
+    1462.907894736842,
+    1758.9037551049523
+   ]
+  },
+  {
+   "name": "147",
+   "streets": {
+    "N": "creek",
+    "S": "1st avenue",
+    "W": "d street",
+    "E": "e street"
+   },
+   "px4_est": [
+    [
+     642,
+     1757
+    ],
+    [
+     642,
+     1419.5
+    ],
+    [
+     911.5,
+     1419.5
+    ],
+    [
+     911.5,
+     1757
+    ]
+   ],
+   "corners": [
+    {
+     "x": 911.9,
+     "y": 1757.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "147"
+    },
+    {
+     "x": 1014.1,
+     "y": 1757.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    },
+    {
+     "x": 1461.6,
+     "y": 1758.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "d street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "148"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "with": [
+    "148"
+   ],
+   "px4": [
+    [
+     648.5,
+     1757.0
+    ],
+    [
+     648.5,
+     1420.0
+    ],
+    [
+     910.6,
+     1420.0
+    ],
+    [
+     911.9,
+     1757.0
+    ]
+   ],
+   "edge_q": [
+    0.4,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 910.6,
+     "y": 1420.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "e street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1. 1.] at e street x 1st avenue NW"
+    },
+    {
+     "x": 911.9,
+     "y": 1757.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "d street",
+      "1st avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    648.5,
+    1420.0,
+    911.9078947368421,
+    1757.0
+   ]
+  },
+  {
+   "name": "121",
+   "streets": {
+    "N": "cypress avenue",
+    "S": "creek",
+    "W": "d street",
+    "E": "e street"
+   },
+   "px4_est": [
+    [
+     88,
+     1773
+    ],
+    [
+     88,
+     1420
+    ],
+    [
+     575,
+     1420
+    ],
+    [
+     575,
+     1773
+    ]
+   ],
+   "corners": [
+    {
+     "x": 87.6,
+     "y": 1771.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "d street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 88.9,
+     "y": 1420.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "e street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "px4": [
+    [
+     87.6,
+     1771.5
+    ],
+    [
+     88.9,
+     1420.0
+    ],
+    [
+     590.5,
+     1420.0
+    ],
+    [
+     590.5,
+     1771.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.9,
+    0.12,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 87.6,
+     "y": 1771.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "d street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 88.9,
+     "y": 1420.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "e street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    87.5976964365588,
+    1420.0,
+    590.5,
+    1771.5
+   ]
+  },
+  {
+   "name": "122",
+   "streets": {
+    "N": "cypress avenue",
+    "S": "2nd avenue",
+    "W": "e street",
+    "E": "f street"
+   },
+   "px4_est": [
+    [
+     88,
+     1343
+    ],
+    [
+     88,
+     848
+    ],
+    [
+     1568.5,
+     848
+    ],
+    [
+     1568.5,
+     1343
+    ]
+   ],
+   "corners": [
+    {
+     "x": 87.6,
+     "y": 849.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "f street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1569.4,
+     "y": 843.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "f street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "px4": [
+    [
+     88.9,
+     1340.5
+    ],
+    [
+     87.6,
+     849.5
+    ],
+    [
+     1569.4,
+     843.0
+    ],
+    [
+     1568.1,
+     1340.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.64,
+    1.0,
+    0.0
+   ],
+   "corners_all": [
+    {
+     "x": 88.9,
+     "y": 1340.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "e street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 87.6,
+     "y": 849.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "f street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1569.4,
+     "y": 843.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "f street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1568.1,
+     "y": 1340.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "e street",
+      "2nd avenue"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    87.59620220110047,
+    842.9564322981677,
+    1569.421301349553,
+    1340.5
+   ]
+  },
+  {
+   "name": "127",
+   "streets": {
+    "N": "cypress avenue",
+    "S": "creek avenue",
+    "W": "f street",
+    "E": "g street"
+   },
+   "px4_est": [
+    [
+     88.5,
+     771
+    ],
+    [
+     88.5,
+     267
+    ],
+    [
+     1214,
+     267
+    ],
+    [
+     1214,
+     771
+    ]
+   ],
+   "corners": [
+    {
+     "x": 88.5,
+     "y": 773.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "f street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 88.5,
+     "y": 269.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "g street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "px4": [
+    [
+     88.5,
+     773.1
+    ],
+    [
+     88.5,
+     269.4
+    ],
+    [
+     1213.5,
+     261.6
+    ],
+    [
+     1213.5,
+     767.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 88.5,
+     "y": 773.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "f street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 88.5,
+     "y": 269.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "g street",
+      "cypress avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    88.5,
+    261.5561387921158,
+    1213.5,
+    773.1315789473684
+   ]
+  }
+ ],
+ "pct": 25
+}
