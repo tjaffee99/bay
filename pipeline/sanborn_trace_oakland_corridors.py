@@ -507,6 +507,34 @@ def zones(key, s):
     report(key)
 
 
+def cover_footprints():
+    """the coverage of each map year also contains every traced footprint (a building drawn across the edge of a block
+    zone + 12 m: its representative point decided that it was kept)."""
+    import shapely
+    from shapely.geometry import mapping, shape
+    areas = sorted({a for a, _ in E.AREAS})
+    for area in areas:
+        p = E.OUT / f"{area}_coverage.geojson"
+        if not p.exists():
+            continue
+        cov = json.load(open(p))
+        for ft in cov["features"]:
+            y = ft["properties"]["map_year"]
+            f = E.OUT / f"{area}_{y}.geojson"
+            if not f.exists():
+                continue
+            fps = [shape(g["geometry"]) for g in json.load(open(f))["features"]]
+            g0 = shape(ft["geometry"])
+            out = [q for q in fps if not g0.contains(q)]
+            if not out:
+                continue
+            g = shapely.union_all([g0] + [q.buffer(2e-6, join_style=2) for q in out])
+            g = shapely.set_precision(g, 1e-7)
+            ft["geometry"] = json.loads(json.dumps(mapping(g)), parse_float=lambda v: round(float(v), 7))
+            C.log(area, y, len(out), "footprints across the zone edge: coverage extended")
+        json.dump(cov, open(p, "w"))
+
+
 def auto(key, s):
     """two passes: predict from the crossings read by eye, refine, regroup, georef; then predict again from that
     sheet fit, refine, regroup, georef."""
@@ -605,7 +633,7 @@ def check(areas=None, dpi=150):
         for y in years:
             g = gpd.read_file(E.OUT / f"{area}_{y}.geojson").to_crs(32610)
             cv = shapely.union_all(cov[cov.map_year == y].geometry.values)
-            inside = g.geometry.within(cv.buffer(0.5))
+            inside = g.geometry.within(cv.buffer(1e-3))
             C.log(area, y, f"{len(g)} footprints, valid {int(g.geometry.is_valid.sum())}, inside coverage {int(inside.sum())},",
                   "confidence", g.confidence.value_counts().to_dict(), "modern_overlap>=0.5", int((g.modern_overlap >= 0.5).sum()),
                   "georef RMS median", round(float(g.georef_rms_m.median()), 2), "max", round(float(g.georef_rms_m.max()), 2))
@@ -729,3 +757,4 @@ if __name__ == "__main__":
         C.cap_blocks()
         C.commercial_fronts()
         apply_storeys()
+        cover_footprints()
