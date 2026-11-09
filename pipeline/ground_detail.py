@@ -1,7 +1,8 @@
 """Stage: ground detail — the small real features a satellite view shows and the terrain
 grid (30 m) can't: golf fairways, greens, tees and bunkers, sports pitches, running
 tracks, playgrounds, plazas, gardens and lawns (OpenStreetMap outlines via Overture
-base land_use), draped on the terrain. Plus labels for every city park.
+base land_use), draped on the terrain. Plus labels for every city park (one per name period
+where data/tables/park_names.csv gives a name history).
 
 Dating (outlines are real, dates estimated):
   * inside a golf course -> the course's opening year (data/tables/golf_courses.csv)
@@ -67,9 +68,27 @@ def main():
     is_golf = feats["class"].isin(GOLF).values
     year = np.where(is_golf & j.year.notna().values, j.year.values, year)
     # inside a city park
-    jp = gpd.sjoin(pts, parks[["year", "geometry"]], predicate="within", how="left")
+    # sports grounds in a park are no older than the park as a playground: the first name
+    # period that calls it a playground / recreation ground / field (park_names.csv), else
+    # the era floor of the kind (estimated): municipal playgrounds and athletic fields from
+    # the Playground Commission (1908), dog parks from the 1990s — a reserved square of
+    # 1855 had no ball fields
+    sf_names, _ = park_name_periods()
+    play_y = {}
+    for pk, periods in sf_names.items():
+        ys = [y0 for nm, y0, _y1 in periods if any(w in nm.lower() for w in ("playground", "recreation", "field", "athletic"))]
+        if ys:
+            play_y[pk] = min(ys)
+    parks["play_year"] = parks.name.map(play_y)
+    jp = gpd.sjoin(pts, parks[["year", "play_year", "geometry"]], predicate="within", how="left")
     jp = jp[~jp.index.duplicated()]
     year = np.where(np.isnan(year) & jp.year.notna().values, jp.year.values, year)
+    cls = feats["class"].values
+    floor = np.select([np.isin(cls, ["pitch", "track", "playground"]), cls == "dog_park"], [1909.0, 1992.0], -np.inf)
+    floor = np.where(jp.play_year.notna().values & np.isin(cls, ["pitch", "track", "playground"]),
+                     np.maximum(jp.play_year.values.astype(float), 1898.0), floor)
+    in_park = jp.year.notna().values & ~is_golf
+    year = np.where(in_park, np.maximum(year, floor), year)
     # otherwise when the neighbourhood around it was built
     frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "geometry"]]]
     if (INTERIM / "sf_predecessors.parquet").exists():
