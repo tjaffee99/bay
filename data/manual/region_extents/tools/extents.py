@@ -667,12 +667,21 @@ def street_near(town, grid):
             c = np.asarray(line.coords)
             px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
             cv2.polylines(rl, [np.round(px).astype(np.int32)], False, 1, th)
+    # freeways: the heavy highway symbol of the 1930s-50s sheets (Bayshore, Eastshore) is not frontage
+    thm = max(1, int(round(2 * MOTORWAY_M / grid.res)))
+    for cls, g in modern_roads((w - .01, s - .01, e + .01, n + .01), {"motorway"}):
+        g = to_utm(g)
+        for line in getattr(g, "geoms", [g]):
+            c = np.asarray(line.coords)
+            px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
+            cv2.polylines(rl, [np.round(px).astype(np.int32)], False, 1, thm)
     near &= rl == 0
     _NEAR[town] = near
     return near
 
 
 RAIL_M = 12.0
+MOTORWAY_M = 25.0
 
 
 def railways(bounds_ll):
