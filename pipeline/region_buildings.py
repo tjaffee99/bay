@@ -31,7 +31,7 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 from building_binary import write_buildings
-from common import INTERIM, RAW, TABLES, VIEWER_DATA, log
+from common import INTERIM, MANUAL, RAW, TABLES, VIEWER_DATA, log
 from download_overture import RELEASE
 from sf_buildings import CONF, USE_CATEGORIES
 from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_EARLY, M_GLASS, M_INDUSTRIAL, M_MASONRY, M_MIDCENTURY,
@@ -172,18 +172,51 @@ def assign_years(g):
         year[np.isnan(year)] = 1975 + 20 * hh[np.isnan(year)]
         # the placeholder still bounds these
         year[miss] = np.minimum(year[miss], upper_all[miss])
+    year = site_bounds(g, year, conf, src)
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
-    return year, raw, conf, end
+    return year, raw, conf, end, src
+
+
+def site_bounds(g, year, conf, src):
+    """Military / industrial sites (data/manual/industrial_sites, rule all_pre in
+    building_dates.csv): no footprint inside a refinery, plant, base or yard predates the
+    site's documented founding (Lockheed Sunnyvale's roll placeholder 1900 -> 1956)."""
+    sp, rp_ = MANUAL / "industrial_sites" / "sites.geojson", MANUAL / "industrial_sites" / "building_dates.csv"
+    if not (sp.exists() and rp_.exists()):
+        return year
+    rules = pd.read_csv(rp_)
+    rules = rules[rules.applies_to.astype(str).str.strip() == "all_pre"]
+    sites = gpd.read_file(sp).to_crs(4326)
+    pts = g.geometry.representative_point().set_crs(4326, allow_override=True)
+    year = year.copy()
+    n = 0
+    for r in rules.itertuples():
+        y0 = pd.to_numeric(r.year, errors="coerce")
+        geom = sites[sites.site_id == r.site_id].geometry
+        if not np.isfinite(y0) or not len(geom):
+            continue
+        poly = geom.union_all()
+        idx = pts.sindex.query(poly, predicate="contains")
+        bad = idx[(year[idx] < y0) & ~pd.Series(src[idx]).astype(str).str.startswith(("known:", "early:")).values]
+        year[bad] = y0 + 0.5 + 2.0 * np.array([h01(f"sb{k}") for k in bad])
+        conf[bad] = "estimated"
+        n += len(bad)
+    log(f"region: {n} footprints on military / industrial sites moved to the site's founding ({len(rules)} sites)")
+    return year
 
 
 def known_dates(g, year, conf, src):
-    """data/tables/known_building_dates_region.csv (researched, one source per row): every
+    """data/tables/known_building_dates_region.csv and the military / industrial audit's
+    data/manual/industrial_sites/known_dates_industrial.csv (researched, one source per row:
+    refineries, plants, bases dated by the USGS topo editions that first draw them): every
     footprint containing a row's point takes its year (and end year)."""
     end = np.full(len(g), 9999.0)
-    p = TABLES / "known_building_dates_region.csv"
-    if not p.exists():
+    tabs = [pd.read_csv(p) for p in (TABLES / "known_building_dates_region.csv",
+                                    MANUAL / "industrial_sites" / "known_dates_industrial.csv") if p.exists()]
+    if not tabs:
         return year, conf, src, end
-    k = pd.read_csv(p)
+    k = pd.concat(tabs, ignore_index=True)
+    k = k[k.get("county", pd.Series("", index=k.index)).fillna("").astype(str) != "San Francisco"]
     k = k[np.isfinite(pd.to_numeric(k.lat, errors="coerce")) & np.isfinite(pd.to_numeric(k.start_year, errors="coerce"))]
     pts = gpd.GeoDataFrame(k[["id", "start_year", "end_year"]].reset_index(drop=True),
                            geometry=gpd.points_from_xy(k.lon.astype(float), k.lat.astype(float)), crs=4326)
@@ -369,8 +402,11 @@ def use_codes(g, area):
 def main():
     from roads import Ground
     g = load_footprints()
-    year, raw, conf, end = assign_years(g)
-    year = land_check(g, year)
+    year, raw, conf, end, src = assign_years(g)
+    # researched dates stand even where the fill under them is dated later (the fill
+    # zones are coarse: the Richmond shipyard box pushed the 1931 Ford plant to 1941)
+    known = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
+    year = np.where(known, year, land_check(g, year))
     start = row_timing(g, year)
     H, stories, area = heights(g)
     use = use_codes(g, area)

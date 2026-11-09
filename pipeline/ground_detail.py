@@ -160,8 +160,36 @@ def main():
         c = r.geometry.representative_point()
         labels.append({"name": r["name"], "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(r.year),
                        "ha": round(float(area) / 1e4, 2)})
+    n_parks = len(labels)
+    # names of military / industrial sites and vanished large sites, over the years they
+    # stood (label_start / label_end where the ground outlives the use)
+    from extent import in_extent
+    for f in (MANUAL / "industrial_sites" / "sites.geojson", MANUAL / "vanished_sites" / "sites.geojson"):
+        if not f.exists():
+            continue
+        st = gpd.read_file(f).to_crs(4326)
+        for site_id, grp in st.groupby("site_id"):
+            nm = next((str(v) for v in grp.get("name_label", pd.Series(dtype=object)) if isinstance(v, str) and v.strip()), None) \
+                or next((str(v) for v in grp.get("name", pd.Series(dtype=object)) if isinstance(v, str) and v.strip()), None)
+            if not nm or len(nm) > 40:
+                continue
+            y0 = pd.to_numeric(grp.get("label_start", grp["year_start"]), errors="coerce")
+            y1 = pd.to_numeric(grp.get("label_end", grp["year_end"]), errors="coerce")
+            y0 = y0.min() if y0.notna().any() else pd.to_numeric(grp["year_start"], errors="coerce").min()
+            y1 = y1.max() if y1.notna().any() else pd.to_numeric(grp["year_end"], errors="coerce").max()
+            if not np.isfinite(y0):
+                continue
+            geom = grp.geometry.union_all()
+            if geom is None or geom.is_empty:
+                continue
+            c = geom.representative_point()
+            if not in_extent(gpd.GeoSeries([c], crs=4326))[0]:
+                continue
+            ha = float(gpd.GeoSeries([geom], crs=4326).to_crs(UTM).area.iloc[0]) / 1e4
+            labels.append({"name": nm, "lon": round(c.x, 6), "lat": round(c.y, 6), "start": float(y0),
+                           "end": float(y1) if np.isfinite(y1) else 9999.0, "ha": round(ha, 2), "tier": "site"})
     (VIEWER_DATA / "park-labels.json").write_text(json.dumps(labels))
-    log(f"ground detail: {len(labels)} dated park labels ({len(parks)} parks)")
+    log(f"ground detail: {n_parks} dated park labels ({len(parks)} parks), {len(labels) - n_parks} site labels")
 
 
 if __name__ == "__main__":

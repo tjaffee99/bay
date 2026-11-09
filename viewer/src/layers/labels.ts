@@ -31,6 +31,9 @@ const TIERS: Record<string, {zoom: [number, number, number, number]; size: numbe
   // city parks (pipeline/ground_detail.py -> park-labels.json): big ones earlier
   park_major: {zoom: [12.3, 12.9, 16.5, 17.5], size: 14, color: [62, 104, 52], italic: true, priority: 3},
   park: {zoom: [14.3, 14.9, 17.5, 18.5], size: 13, color: [62, 104, 52], italic: true, priority: 0},
+  // military / industrial and vanished large sites (refineries, shipyards, bases, quarries,
+  // racetracks, amusement parks): over the years they stood
+  site: {zoom: [11.8, 12.5, 16.5, 17.5], size: 13, color: [104, 80, 64], italic: true, priority: 2},
   // BART and Muni Metro stations (pipeline/transit.py -> transit-stations.json)
   station: {zoom: [12.4, 13.0, 17.5, 18.5], size: 12, color: [32, 66, 128], priority: 1},
   station_muni: {zoom: [14.3, 14.9, 17.5, 18.5], size: 12, color: [150, 40, 40], priority: 0}
@@ -62,12 +65,13 @@ export async function loadParkLabels() {
   try {
     const res = await fetch('data/park-labels.json');
     if (!res.ok) return;
-    const rows = (await res.json()) as {name: string; lon: number; lat: number; start: number; ha: number}[];
+    const rows = (await res.json()) as {name: string; lon: number; lat: number; start: number; end?: number; ha: number; tier?: string}[];
     const have = new Set(places.map(p => p.name));
     for (const r of rows) {
       if (have.has(r.name) || (keepFn && !keepFn(r.lon, r.lat))) continue;
-      const tier = r.ha >= 8 ? 'park_major' : 'park';
-      places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
+      const tier = r.tier === 'site' ? 'site' : r.ha >= 8 ? 'park_major' : 'park';
+      places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end ?? 9999, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
+      have.add(r.name);
     }
     placedKey = '';
   } catch (e) {

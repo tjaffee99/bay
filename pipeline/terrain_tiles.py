@@ -362,6 +362,20 @@ def histories(name, g, d):
     # Yerba Buena Shoals under Treasure Island), whatever the coarser c.1800 layers say
     made_land = np.isin(b98, [12, 13]) & ~np.isin(N, list(WET))
     N[made_land] = SHALLOW
+    # quarries and landfills (data/manual/industrial_sites) are WorldCover "bare", read as
+    # natural rock above: before the digging / dumping the ground was the hillside around
+    # them (Permanente, Selby, Stevens Creek, San Rafael rock quarry, the landfills)
+    isp = MANUAL / "industrial_sites" / "sites.geojson"
+    ind_sites = gpd.read_file(isp).to_crs(3857) if isp.exists() else None
+    if ind_sites is not None:
+        pits = ind_sites[ind_sites["cover"].isin(["quarry_pit", "landfill"])]
+        if len(pits):
+            pm = rasterize_on(g, [(gm, 1) for gm in pits.geometry.buffer(60) if gm is not None], fill=0,
+                              dtype="uint8").astype(bool) & (N == ROCK)
+            if pm.any():
+                nat = nearest_fill(N, ~pm & ~np.isin(N, [ROCK, DEEP, SHALLOW, FLAT, MARSH, BEACH, RESERVOIR]))
+                N[pm] = nat[pm]
+                log(f"terrain {name}: {int(pm.sum())} quarry / landfill cells get the natural ground around them before the works")
 
     ev_cover, ev_year = [], []
 
@@ -694,6 +708,40 @@ def histories(name, g, d):
                         later |= m2
                 event(m & ~later, FILL, y1 + 0.3 * h)
         log(f"terrain {name}: {n_site} parts of vanished sites")
+
+    # ---- military and industrial sites (data/manual/industrial_sites, audited against the
+    # USGS topo editions): refineries, plants, yards, bases from their founding; quarry pits
+    # and landfills in their dated stages (Permanente 1903 / 1939 / 1948 / 1960 / 1968 /
+    # 1979 / 1991 / today); magazines, buffer land and training ground ("open_works") keep
+    # their natural ground; a use that ended leaves cleared ground unless a later part
+    # takes over
+    if ind_sites is not None:
+        IND_COVER = {"industrial": URBAN, "tank_farm": URBAN, "rail_yard": URBAN, "military": SUBURB,
+                     "quarry_pit": ROCK, "landfill": FILL}
+        n_ind = 0
+        for site_id, grp in ind_sites.groupby("site_id"):
+            spans = []
+            for geom, cov, y0, y1 in zip(grp.geometry, grp["cover"], grp["year_start"], grp["year_end"]):
+                c = IND_COVER.get(str(cov))
+                y0 = pd.to_numeric(y0, errors="coerce")
+                y1 = pd.to_numeric(y1, errors="coerce")
+                if c is None or not np.isfinite(y0) or geom is None:
+                    continue
+                m = rasterize_on(g, [(geom, 1)], fill=0, dtype="uint8").astype(bool) & ~water_now
+                if not m.any():
+                    continue
+                event(m, c, float(y0) + 0.5 * h)
+                spans.append((m, float(y0), float(y1) if np.isfinite(y1) else 9999.0))
+                n_ind += 1
+            for m, y0, y1 in spans:
+                if y1 >= 9999:
+                    continue
+                later = np.zeros_like(m)
+                for m2, z0, _ in spans:
+                    if z0 >= y1 - 0.5:
+                        later |= m2
+                event(m & ~later, FILL, y1 + 0.5 * h)
+        log(f"terrain {name}: {n_ind} parts of military / industrial sites")
 
     # ---- airports (airports.py): the field is airfield grass from its opening year
     # (after any fill), not city ground or orchard; runways / aprons are drawn on top
