@@ -144,6 +144,13 @@ def extent_fill(today, pred, areas, lots=None):
         snaps.setdefault(town, []).append((y, poly))
     if not snaps:
         return empty
+    # what each snapshot's map sheets cover (a lot outside it says nothing about that year)
+    cov: dict = {}
+    cp = INTERIM.parent / "manual" / "region_extents" / "coverage.geojson"
+    if cp.exists():
+        cg = gpd.read_file(cp).to_crs(UTM)
+        for t_, y_, gm in zip(cg["town"].astype(str), pd.to_numeric(cg["year"], errors="coerce"), cg.geometry):
+            cov[(t_, float(y_))] = gm
     lots = load_lots() if lots is None else lots
     tu = today.to_crs(UTM)
     tp = gpd.GeoDataFrame({"start": tu.start_year.values, "h": tu.height.values, "use": tu.use.values},
@@ -163,15 +170,24 @@ def extent_fill(today, pred, areas, lots=None):
         lst.sort(key=lambda t: t[0])
         years = [y for y, _ in lst]
         inside = np.zeros((len(lst), len(lots)), bool)
-        for k, (_, poly) in enumerate(lst):
+        covered = np.ones((len(lst), len(lots)), bool)
+        for k, (yk, poly) in enumerate(lst):
             shapely.prepare(poly)
             cand = sidx.query(poly, predicate="intersects")
             inside[k, cand] = shapely.contains_xy(poly, lxy[cand, 0], lxy[cand, 1])
+            cgm = cov.get((town, yk))
+            if cgm is not None:
+                shapely.prepare(cgm)
+                covered[k] = False
+                cc = sidx.query(cgm, predicate="intersects")
+                covered[k, cc] = shapely.contains_xy(cgm, lxy[cc, 0], lxy[cc, 1])
         has = inside.any(axis=0)
         for i in np.nonzero(has)[0]:
             k1 = int(np.argmax(inside[:, i]))
             y1 = years[k1]
-            y0 = years[k1 - 1] if k1 > 0 else y1 - 25.0
+            # the last earlier map that covered this lot and showed it unbuilt
+            prev = [years[k] for k in range(k1) if covered[k, i]]
+            y0 = prev[-1] if prev else y1 - 25.0
             m = lots.m.values[i]
             # today's building already there (or put up within ~15 years: infill of a block
             # that was mostly built, not a replacement): it is the lot's first building
