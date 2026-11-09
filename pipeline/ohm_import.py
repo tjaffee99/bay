@@ -1440,6 +1440,19 @@ def write_region_demolished():
                        next((x for x in s_.split(" | ") if x.startswith("http")), u)
                        for s_, u in zip(ok.sources, ok.ohm_url)],
         "county": ok.county.values, "other_agent_area": ok.other_agent_area.values})
+    # already documented (data/tables/notable_demolished_region.csv): within 30 m, overlapping lifespans
+    ex = pd.read_csv(TABLES / "notable_demolished_region.csv")
+    exp = gpd.GeoSeries(gpd.points_from_xy(ex.lon, ex.lat), crs=4326).to_crs(UTM)
+    ndp = gpd.GeoSeries(gpd.points_from_xy(nd.lon, nd.lat), crs=4326).to_crs(UTM)
+    dupe = np.zeros(len(nd), bool)
+    for k_, q in enumerate(ndp.values):
+        dist = exp.distance(q).values
+        ov_ = (ex.start_year.values < nd.end_year.values[k_]) & (ex.end_year.values > nd.start_year.values[k_])
+        dupe[k_] = bool(((dist < 30) & ov_).any())
+    if dupe.any():
+        log(f"region: {int(dupe.sum())} rows already in notable_demolished_region.csv dropped: "
+            + ", ".join(nd.name.values[dupe].astype(str)))
+    nd = nd[~dupe]
     nd.to_csv(OHM_OUT / "notable_demolished_ohm.csv", index=False)
     log(f"region: {len(d)} OHM buildings with an end date (outside SF / Stanford / Sanborn tracings): "
         f"{(d.today_iou >= 0.5).sum()} match a footprint standing today, {d.traced_in.notna().sum()} already traced; "
