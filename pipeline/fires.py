@@ -620,7 +620,7 @@ def rebuild_years(g, xy, year, conf, end, src=None):
     fire = st.fire_id.values
     fp = np.full(n, -1, np.int64)
     if len(cand):
-        geoms = np.asarray(gpd.GeoSeries(g.geometry.values[cand], crs=4326).to_crs(UTM).values)
+        geoms = np.asarray(gpd.GeoSeries(np.asarray(g.geometry.values[cand], dtype=object), crs=4326).to_crs(UTM).values)
         ids = g["id"].iloc[cand].astype(str).values if "id" in g else np.array([f"fp{k}" for k in cand], dtype=object)
         cxy = xy[cand]
         cy = year[cand]
