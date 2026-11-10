@@ -939,8 +939,9 @@ route("sn_dozier_north", "Sacramento Northern (Oakland, Antioch & Eastern) main 
 route("spc_boulder_creek", "Felton & Pescadero Railroad (South Pacific Coast / Southern Pacific Boulder Creek branch)",
       "narrow_gauge", SCT + "2019/03/stations-boulder-creek.html", [
           seg("Felton - Ben Lomond - Brookdale - Boulder Creek", 1885.4, 1934.07,
-              rail((-122.07255, 37.04584), (-122.07802, 37.06257), (-122.07792, 37.08068), (-122.09545, 37.09551), (-122.11043, 37.11042), (-122.12216, 37.12811), join=250.0),
-              note="Felton & Pescadero Railroad, completed to Boulder Creek in 1885 (month ESTIMATED) in place of the "
+              rail((-122.0644, 37.04773), (-122.07738, 37.06545), (-122.07823, 37.08187), (-122.0955, 37.09579), (-122.11176, 37.11169), (-122.12216, 37.12811), join=250.0),
+              note="From the junction with the main line at Felton across the San Lorenzo River and up the valley. "
+                   "Felton & Pescadero Railroad, completed to Boulder Creek in 1885 (month ESTIMATED) in place of the "
                    "San Lorenzo Valley flume; standard gauge with the main line c.1908-09 (ESTIMATED); Southern "
                    "Pacific petitioned for abandonment 30 August 1933, abandoned 26 January 1934 (santacruztrains.com). "
                    "Geometry: OSM abandoned grade and OpenHistoricalMap ways 200444390 / 200446467-81 (CC0).",
@@ -956,11 +957,13 @@ route("spc_boulder_creek", "Felton & Pescadero Railroad (South Pacific Coast / S
 route("sp_loma_prieta", "Loma Prieta Railroad (Southern Pacific Loma Prieta branch, Aptos Creek)", "rail",
       SCT + "search?q=loma+prieta+branch", [
           seg("Aptos - Molino - Loma Prieta", 1883.8, 1928.13,
+              pts((-121.8992, 36.9771), (-121.90308, 36.98249), chaikin=0),
               rail((-121.90308, 36.98249), (-121.90648, 37.00182), (-121.90543, 37.021), (-121.90171, 37.02761), join=100.0),
               note="Loma Prieta Railroad up Aptos Creek to the Loma Prieta Lumber Company's mill, 1883 (month "
                    "ESTIMATED); logging ended 1921, abandonment petitioned 30 November 1927, branch abandoned "
                    "19 February 1928 (santacruztrains.com). Geometry: OSM abandoned grade (Forest of Nisene Marks); "
-                   "the split at the mill site (37.0275 N) is ESTIMATED.", confidence="estimated"),
+                   "a straight 0.7 km link joins it to the main line at Aptos; the split at the mill site (37.0275 N) is "
+                   "ESTIMATED.", confidence="estimated"),
           seg("Loma Prieta - Monte Vista (upper Aptos Creek)", 1884.2, 1902.5,
               rail((-121.90171, 37.02761), (-121.89721, 37.03606), (-121.88978, 37.04676), (-121.88669, 37.05495), join=100.0),
               note="Extension to the mill at Monte Vista completed 14 March 1884 (extended again 1888); the branch "

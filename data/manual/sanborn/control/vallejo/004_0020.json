@@ -1,0 +1,1224 @@
+{
+ "zones_only": true,
+ "residential": true,
+ "block_cap": {
+  "345": "medium",
+  "322": "medium",
+  "300": "medium"
+ },
+ "blocks": [
+  {
+   "name": "346",
+   "streets": {
+    "N": "Florida Street",
+    "S": "Carolina Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     866,
+     200
+    ],
+    [
+     1460,
+     200
+    ],
+    [
+     1460,
+     612
+    ],
+    [
+     866,
+     612
+    ]
+   ],
+   "corners": [
+    {
+     "x": 867.0,
+     "y": 197.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1461.3,
+     "y": 194.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.3,
+     "y": 611.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 867.0,
+     "y": 614.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [],
+   "px4": [
+    [
+     867.0,
+     197.3
+    ],
+    [
+     1461.3,
+     194.7
+    ],
+    [
+     1457.3,
+     611.7
+    ],
+    [
+     867.0,
+     614.3
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.9,
+    1.0,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 867.0,
+     "y": 197.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1461.3,
+     "y": 194.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.3,
+     "y": 611.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 867.0,
+     "y": 614.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    867.0,
+    194.67856340223133,
+    1461.2746688483435,
+    614.3113592060961
+   ]
+  },
+  {
+   "name": "345",
+   "streets": {
+    "N": "Florida Street",
+    "S": "Carolina Street",
+    "W": "Branciforte Street",
+    "E": "Santa Clara Street"
+   },
+   "px4_est": [
+    [
+     158,
+     200
+    ],
+    [
+     750,
+     200
+    ],
+    [
+     750,
+     612
+    ],
+    [
+     158,
+     612
+    ]
+   ],
+   "corners": [
+    {
+     "x": 751.0,
+     "y": 198.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "345"
+    },
+    {
+     "x": 751.0,
+     "y": 614.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "345"
+    },
+    {
+     "x": 867.0,
+     "y": 197.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "346"
+    },
+    {
+     "x": 1461.3,
+     "y": 194.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "346"
+    },
+    {
+     "x": 1457.3,
+     "y": 611.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "346"
+    },
+    {
+     "x": 867.0,
+     "y": 614.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "346"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "346"
+   ],
+   "px4": [
+    [
+     158.2,
+     199.9
+    ],
+    [
+     751.0,
+     198.6
+    ],
+    [
+     751.0,
+     614.3
+    ],
+    [
+     160.9,
+     618.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.9,
+    1.0,
+    0.93
+   ],
+   "corners_all": [
+    {
+     "x": 751.0,
+     "y": 198.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Florida Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 751.0,
+     "y": 614.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    158.1836196130602,
+    198.5898826458037,
+    751.0,
+    618.2046446885785
+   ]
+  },
+  {
+   "name": "323",
+   "streets": {
+    "N": "Carolina Street",
+    "S": "Capitol Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     865,
+     735
+    ],
+    [
+     1458,
+     735
+    ],
+    [
+     1458,
+     1153
+    ],
+    [
+     865,
+     1153
+    ]
+   ],
+   "corners": [
+    {
+     "x": 865.0,
+     "y": 737.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.8,
+     "y": 731.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1455.2,
+     "y": 1147.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 865.0,
+     "y": 1150.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [],
+   "px4": [
+    [
+     865.0,
+     737.5
+    ],
+    [
+     1457.8,
+     731.0
+    ],
+    [
+     1455.2,
+     1147.7
+    ],
+    [
+     865.0,
+     1150.3
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.89,
+    1.0,
+    0.82
+   ],
+   "corners_all": [
+    {
+     "x": 865.0,
+     "y": 737.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.8,
+     "y": 731.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1455.2,
+     "y": 1147.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 865.0,
+     "y": 1150.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    865.0,
+    730.9622879929364,
+    1457.841209468692,
+    1150.3157894736842
+   ]
+  },
+  {
+   "name": "322",
+   "streets": {
+    "N": "Carolina Street",
+    "S": "Capitol Street",
+    "W": "Branciforte Street",
+    "E": "Santa Clara Street"
+   },
+   "px4_est": [
+    [
+     157,
+     737
+    ],
+    [
+     750,
+     737
+    ],
+    [
+     750,
+     1153
+    ],
+    [
+     157,
+     1153
+    ]
+   ],
+   "corners": [
+    {
+     "x": 749.0,
+     "y": 739.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "322"
+    },
+    {
+     "x": 749.0,
+     "y": 1150.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "322"
+    },
+    {
+     "x": 865.0,
+     "y": 737.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "323"
+    },
+    {
+     "x": 1457.8,
+     "y": 731.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "323"
+    },
+    {
+     "x": 1455.2,
+     "y": 1147.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "323"
+    },
+    {
+     "x": 865.0,
+     "y": 1150.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "323"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "323"
+   ],
+   "px4": [
+    [
+     158.0,
+     739.0
+    ],
+    [
+     749.0,
+     739.0
+    ],
+    [
+     749.0,
+     1150.3
+    ],
+    [
+     158.0,
+     1154.2
+    ]
+   ],
+   "edge_q": [
+    0.97,
+    0.83,
+    1.0,
+    0.93
+   ],
+   "corners_all": [
+    {
+     "x": 749.0,
+     "y": 739.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Carolina Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 749.0,
+     "y": 1150.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    158.0,
+    739.0,
+    749.0,
+    1154.2170276027337
+   ]
+  },
+  {
+   "name": "301",
+   "streets": {
+    "N": "Capitol Street",
+    "S": "Virginia Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     865,
+     1268
+    ],
+    [
+     1458,
+     1268
+    ],
+    [
+     1458,
+     1690
+    ],
+    [
+     865,
+     1690
+    ]
+   ],
+   "corners": [
+    {
+     "x": 865.4,
+     "y": 1269.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.0,
+     "y": 1268.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.0,
+     "y": 1684.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 864.1,
+     "y": 1685.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [],
+   "px4": [
+    [
+     865.4,
+     1269.4
+    ],
+    [
+     1457.0,
+     1268.1
+    ],
+    [
+     1457.0,
+     1684.1
+    ],
+    [
+     864.1,
+     1685.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.87,
+    1.0,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 865.4,
+     "y": 1269.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.0,
+     "y": 1268.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1457.0,
+     "y": 1684.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 864.1,
+     "y": 1685.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    864.1064171941873,
+    1268.0943241324221,
+    1457.0,
+    1685.4098774802649
+   ]
+  },
+  {
+   "name": "300",
+   "streets": {
+    "N": "Capitol Street",
+    "S": "Virginia Street",
+    "W": "Branciforte Street",
+    "E": "Santa Clara Street"
+   },
+   "px4_est": [
+    [
+     157,
+     1272
+    ],
+    [
+     750,
+     1272
+    ],
+    [
+     750,
+     1690
+    ],
+    [
+     157,
+     1690
+    ]
+   ],
+   "corners": [
+    {
+     "x": 748.2,
+     "y": 1271.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "300"
+    },
+    {
+     "x": 750.8,
+     "y": 1684.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "300"
+    },
+    {
+     "x": 865.4,
+     "y": 1269.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "301"
+    },
+    {
+     "x": 1457.0,
+     "y": 1268.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Sacramento Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "301"
+    },
+    {
+     "x": 1457.0,
+     "y": 1684.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Sacramento Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "301"
+    },
+    {
+     "x": 864.1,
+     "y": 1685.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Santa Clara Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "301"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "301"
+   ],
+   "px4": [
+    [
+     157.0,
+     1272.4
+    ],
+    [
+     748.2,
+     1271.1
+    ],
+    [
+     750.8,
+     1684.0
+    ],
+    [
+     157.0,
+     1691.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.91,
+    0.97,
+    0.94
+   ],
+   "corners_all": [
+    {
+     "x": 748.2,
+     "y": 1271.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Santa Clara Street",
+      "Capitol Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 750.8,
+     "y": 1684.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Santa Clara Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    157.0,
+    1271.096146888725,
+    750.778281730965,
+    1691.9473684210527
+   ]
+  }
+ ],
+ "pct": 25
+}
