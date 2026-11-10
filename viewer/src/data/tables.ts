@@ -3,11 +3,14 @@
  * Imported at build time; missing files simply yield empty tables.
  */
 // only the tables the viewer shows (the research tables are pipeline inputs: don't bundle them)
-const files = import.meta.glob(['../../../data/tables/eras.csv', '../../../data/tables/events.csv', '../../../data/tables/population.csv'], {
-  query: '?raw',
-  import: 'default',
-  eager: true
-}) as Record<string, string>;
+const files = import.meta.glob(
+  ['../../../data/tables/eras.csv', '../../../data/tables/events.csv', '../../../data/tables/population.csv', '../../../data/tables/story.csv'],
+  {
+    query: '?raw',
+    import: 'default',
+    eager: true
+  }
+) as Record<string, string>;
 
 function table(name: string): Record<string, string>[] {
   const key = Object.keys(files).find(k => k.endsWith(`/${name}.csv`));
@@ -81,6 +84,42 @@ export const events: HistEvent[] = table('events')
   }))
   .filter(e => Number.isFinite(e.year))
   .sort((a, b) => a.year - b.year);
+
+/** A stop of the guided tour (data/tables/story.csv, in chronological order). */
+export type StoryStop = {
+  id: string;
+  year: number;
+  /** the year runs on to this while the stop is shown (null: it holds) */
+  yearEnd: number | null;
+  lon: number;
+  lat: number;
+  zoom: number;
+  pitch: number;
+  bearing: number;
+  /** degrees the camera turns while the stop is shown */
+  orbit: number;
+  title: string;
+  text: string;
+  source: string;
+};
+
+const num = (v: string | undefined, d: number) => (v !== undefined && v !== '' && Number.isFinite(+v) ? +v : d);
+export const story: StoryStop[] = table('story')
+  .map(r => ({
+    id: r.id,
+    year: +r.year,
+    yearEnd: r.year_end ? +r.year_end : null,
+    lon: +r.lon,
+    lat: +r.lat,
+    zoom: num(r.zoom, 13),
+    pitch: num(r.pitch, 50),
+    bearing: num(r.bearing, 0),
+    orbit: num(r.orbit, 20),
+    title: r.title,
+    text: r.text,
+    source: r.source_url || ''
+  }))
+  .filter(s => Number.isFinite(s.year) && Number.isFinite(s.lon) && Number.isFinite(s.lat) && s.title);
 
 /** Fractional year of an event (mid-month if the day is unknown). */
 export function eventTime(e: HistEvent): number {

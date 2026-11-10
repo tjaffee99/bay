@@ -23,7 +23,8 @@ import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
 import {loadRegionTreeIndex, regionTreeLayers, regionTreesReady} from './layers/region-trees';
 import {treeLod} from './layers/decoration-meshes';
 import {loadLocalStreetIndex, loadRoads, localStreetLayers, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
-import {events, eventTime, loadCities, localPopulationAt} from './data/tables';
+import {events, eventTime, loadCities, localPopulationAt, story as storyStops} from './data/tables';
+import {createStory} from './story';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
@@ -196,6 +197,7 @@ function updateOverlays() {
 }
 
 slider.addEventListener('input', () => {
+  story.interrupt();
   state.year = Number(slider.value);
   render();
   scheduleHash();
@@ -211,7 +213,30 @@ function setPlaying(p: boolean) {
     requestAnimationFrame(tick);
   }
 }
-playBtn.addEventListener('click', () => setPlaying(!state.playing));
+playBtn.addEventListener('click', () => {
+  if (story.isActive()) story.exit();
+  setPlaying(!state.playing);
+});
+
+// ---------------------------------------------------------------- story mode
+// A guided tour (data/tables/story.csv): the engine only moves the camera and the year.
+const story = createStory(
+  map,
+  storyStops,
+  {
+    getYear: () => state.year,
+    setYear: y => {
+      state.year = Math.max(YEAR_MIN, Math.min(YEAR_MAX, y));
+      render();
+    },
+    onStart: () => {
+      setPlaying(false);
+      infoBox.hidden = true;
+    },
+    onExit: () => scheduleHash()
+  },
+  $<HTMLButtonElement>('story')
+);
 $<HTMLSelectElement>('speed').addEventListener('change', e => (state.speed = Number((e.target as HTMLSelectElement).value)));
 
 let lastT = 0;
@@ -231,6 +256,7 @@ function tick(t: number) {
 
 document.addEventListener('keydown', e => {
   if ((e.target as HTMLElement).tagName === 'SELECT') return;
+  if (story.key(e)) return;
   if (e.code === 'Space') {
     e.preventDefault();
     setPlaying(!state.playing);
@@ -455,6 +481,9 @@ async function boot() {
   loading.classList.add('done');
   warnIfSoftwareRendering();
   (window as any).__ready = true;
+  // ?story starts the tour once the map is loaded (?story=12 from the 12th stop)
+  const sp = new URLSearchParams(location.search);
+  if (sp.has('story')) story.start(Math.max(0, (Number(sp.get('story')) || 1) - 1));
 }
 boot();
 
