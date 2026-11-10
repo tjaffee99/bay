@@ -53,3 +53,26 @@ fort_mcdowell,site,1909.0,named,,footprints dated by the USGS editions that firs
 hamilton_field,site,1932.0,all_pre,,Hamilton Field founded 1932: no footprint inside can be older,https://en.wikipedia.org/wiki/Hamilton_Army_Airfield
 hamilton_field,site,1932.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Hamilton_Army_Airfield
 clayton_quarries,site,1956.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Clayton,_California"
+mare_island,site,1854.0,all_pre,,Mare Island Naval Shipyard founded 1854: no footprint inside can be older,https://en.wikipedia.org/wiki/Mare_Island_Naval_Shipyard
+mare_island,site,1854.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Mare_Island_Naval_Shipyard
+benicia_arsenal,site,1851.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Benicia_Arsenal
+benicia_refinery,site,1969.0,all_pre,,Benicia Refinery founded 1969: no footprint inside can be older,https://en.wikipedia.org/wiki/Benicia_Refinery
+benicia_refinery,site,1969.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Benicia_Refinery
+travis_afb,site,1942.0,all_pre,,Travis AFB founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Travis_Air_Force_Base
+travis_afb,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Travis_Air_Force_Base
+tracen_petaluma,site,1942.6,all_pre,,Coast Guard Training Center Petaluma founded 1942.6: no footprint inside can be older,https://en.wikipedia.org/wiki/Training_Center_Petaluma
+tracen_petaluma,site,1942.6,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Training_Center_Petaluma
+columbia_steel,site,1910.0,all_pre,,Columbia Steel founded 1910: no footprint inside can be older,https://en.wikipedia.org/wiki/Columbia_Steel_Company
+columbia_steel,site,1910.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Columbia_Steel_Company
+pittsburg_power_plant,site,1954.0,all_pre,,Pittsburg Power Plant founded 1954: no footprint inside can be older,https://clui.org/ludb/site/pittsburg-power-plant
+contra_costa_power_plant,site,1951.0,all_pre,,Contra Costa Power Plant founded 1951: no footprint inside can be older,https://files.cpuc.ca.gov/LegacyCPUCDecisionsAndResolutions/Decisions/Decisions_D57801_to_D73750/D63489_19620327_A43983.pdf
+antioch_paper_mills,site,1949.0,all_pre,,Antioch Paper Mills founded 1949: no footprint inside can be older,https://en.wikipedia.org/wiki/Gaylord_Container_Corporation
+davenport_cement,site,1906.0,all_pre,,Davenport Cement Plant founded 1906: no footprint inside can be older,"https://en.wikipedia.org/wiki/Davenport,_California"
+davenport_cement,site,1906.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Davenport,_California"
+lockheed_santa_cruz,site,1957.0,all_pre,,Lockheed Santa Cruz Facility founded 1957: no footprint inside can be older,https://localwiki.org/santacruz/Lockheed_Martin
+kaiser_steel_napa,site,1941.0,all_pre,,Kaiser Steel Napa founded 1941: no footprint inside can be older,https://en.wikipedia.org/wiki/Basalt_Rock_Company
+cmf_vacaville,site,1955.0,all_pre,,California Medical Facility founded 1955: no footprint inside can be older,https://en.wikipedia.org/wiki/California_Medical_Facility
+csp_solano,site,1984.6,all_pre,,"California State Prison, Solano founded 1984.6: no footprint inside can be older","https://en.wikipedia.org/wiki/California_State_Prison,_Solano"
+anheuser_busch_fairfield,site,1976.0,all_pre,,Anheuser-Busch Brewery founded 1976: no footprint inside can be older,"https://en.wikipedia.org/wiki/Fairfield,_California"
+potrero_hills_landfill,site,1986.6,all_pre,,Potrero Hills Landfill founded 1986.6: no footprint inside can be older,https://www.waterboards.ca.gov/sanfranciscobay/board_decisions/tentative_orders/Potrero_Hills/Potrero_Hills.pdf
+kirby_canyon_landfill,site,1986.0,all_pre,,Kirby Canyon Landfill founded 1986: no footprint inside can be older,https://www.waterboards.ca.gov/sanfranciscobay/board_info/agendas/2018/March/KirbyCanyon/2018_Kirby_TO.pdf

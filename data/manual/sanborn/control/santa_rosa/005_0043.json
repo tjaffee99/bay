@@ -1,0 +1,581 @@
+{
+ "confidence_cap": "medium",
+ "blocks": [
+  {
+   "name": "26",
+   "streets": {
+    "N": "5th Street",
+    "S": "4th Street",
+    "W": "Washington Street",
+    "E": "A Street"
+   },
+   "px4_est": [
+    [
+     685,
+     620
+    ],
+    [
+     685,
+     160
+    ],
+    [
+     990,
+     160
+    ],
+    [
+     990,
+     620
+    ]
+   ],
+   "corners": [
+    {
+     "x": 692.2,
+     "y": 1176.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 996.1,
+     "y": 1172.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 696.2,
+     "y": 1797.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Wilson Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 692.3,
+     "y": 1252.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 997.1,
+     "y": 1248.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 1004.8,
+     "y": 1796.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Wilson Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "18",
+    "21"
+   ],
+   "px4": [
+    [
+     686.7,
+     622.7
+    ],
+    [
+     682.8,
+     162.1
+    ],
+    [
+     985.8,
+     155.6
+    ],
+    [
+     991.1,
+     618.8
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [],
+   "zone_px": [
+    682.7942252827435,
+    155.55074386902695,
+    991.1174125174215,
+    622.7010759778241
+   ]
+  },
+  {
+   "name": "18",
+   "streets": {
+    "N": "5th Street",
+    "S": "4th Street",
+    "W": "Davis Street",
+    "E": "Washington Street"
+   },
+   "px4_est": [
+    [
+     688,
+     1172
+    ],
+    [
+     688,
+     690
+    ],
+    [
+     995,
+     690
+    ],
+    [
+     995,
+     1172
+    ]
+   ],
+   "corners": [
+    {
+     "x": 692.2,
+     "y": 1176.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 996.1,
+     "y": 1172.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 696.2,
+     "y": 1797.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Wilson Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 692.3,
+     "y": 1252.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 997.1,
+     "y": 1248.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    },
+    {
+     "x": 1004.8,
+     "y": 1796.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Wilson Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "21"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 75,
+    "W": 50
+   },
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "21"
+   ],
+   "px4": [
+    [
+     692.2,
+     1176.7
+    ],
+    [
+     686.9,
+     690.2
+    ],
+    [
+     990.8,
+     686.3
+    ],
+    [
+     996.1,
+     1172.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.91,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 692.2,
+     "y": 1176.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 996.1,
+     "y": 1172.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    686.871022062357,
+    686.3299544020739,
+    996.1398958194864,
+    1176.6699052171377
+   ]
+  },
+  {
+   "name": "21",
+   "streets": {
+    "N": "5th Street",
+    "S": "4th Street",
+    "W": "Wilson Street",
+    "E": "Davis Street"
+   },
+   "px4_est": [
+    [
+     693,
+     1805
+    ],
+    [
+     693,
+     1247
+    ],
+    [
+     1000,
+     1247
+    ],
+    [
+     1000,
+     1805
+    ]
+   ],
+   "corners": [
+    {
+     "x": 696.2,
+     "y": 1797.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Wilson Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 692.3,
+     "y": 1252.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 997.1,
+     "y": 1248.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1004.8,
+     "y": 1796.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Wilson Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 75,
+    "W": 50,
+    "E": 50
+   },
+   "skip": [],
+   "px4": [
+    [
+     696.2,
+     1797.9
+    ],
+    [
+     692.3,
+     1252.7
+    ],
+    [
+     997.1,
+     1248.8
+    ],
+    [
+     1004.8,
+     1796.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    0.71,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 696.2,
+     "y": 1797.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Wilson Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 692.3,
+     "y": 1252.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Davis Street",
+      "5th Street"
+     ],
+     "w": [
+      50,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 997.1,
+     "y": 1248.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Davis Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1004.8,
+     "y": 1796.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Wilson Street",
+      "4th Street"
+     ],
+     "w": [
+      50,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    692.3168680520479,
+    1248.8138827161608,
+    1004.8281184513933,
+    1797.8942935990474
+   ]
+  }
+ ],
+ "pct": 25
+}

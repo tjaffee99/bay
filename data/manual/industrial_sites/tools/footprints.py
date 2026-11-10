@@ -2,7 +2,7 @@
 
 footprints(geom_ll) -> GeoDataFrame [fid, src, geometry (lon/lat), area_m2, circ, live_year,
                                      live_end, roll_year, roll_src]
-  * region (5 counties): Overture `region5_building` footprints; live year = the built
+  * region (5 core counties + the 4 added counties): Overture `region5_building` / `region4_building` footprints; live year = the built
     `region_building_points` row at the same representative point (nearest within 4 m);
     roll year / source = `region5_footprint_years` (public > third-party > commercial > historic)
   * San Francisco: `sf_buildings.parquet` (start_year as built; raw assessor year)
@@ -61,10 +61,19 @@ def footprints(geom_ll, buffer_m=0.0):
     pad = 0.0005
     con = duckdb.connect()
     con.execute("LOAD spatial;")
-    q = (f"select id, ST_AsWKB(geometry) g from read_parquet('{OVT}/region5_building.parquet') "
-         f"where ST_XMin(geometry) < {b[2] + pad} and ST_XMax(geometry) > {b[0] - pad} "
-         f"and ST_YMin(geometry) < {b[3] + pad} and ST_YMax(geometry) > {b[1] - pad}")
-    rows = con.execute(q).fetchall()
+    rows, seen = [], set()
+    # region5 = the five core counties, region4 = the counties added with the ten-county extent
+    for fn in ("region5_building", "region4_building"):
+        q = (f"select id, ST_AsWKB(geometry) g from read_parquet('{OVT}/{fn}.parquet') "
+             f"where ST_XMin(geometry) < {b[2] + pad} and ST_XMax(geometry) > {b[0] - pad} "
+             f"and ST_YMin(geometry) < {b[3] + pad} and ST_YMax(geometry) > {b[1] - pad}")
+        try:
+            for r_ in con.execute(q).fetchall():
+                if r_[0] not in seen:
+                    seen.add(r_[0])
+                    rows.append(r_)
+        except duckdb.IOException:
+            pass
     frames = []
     sel = geom_ll if not buffer_m else gpd.GeoSeries([geom_ll], crs=4326).to_crs(32610).buffer(buffer_m).to_crs(4326).iloc[0]
     shapely.prepare(sel)

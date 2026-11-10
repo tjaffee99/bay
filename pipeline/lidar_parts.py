@@ -80,6 +80,49 @@ SF_PROJECT = "CA_SanFrancisco_1_B23"
 # collection dates from the project metadata (vendor XML / ScienceBase "Start/End")
 PROJECT_DATES = {
     "CA_SanFrancisco_1_B23": 2023.30,      # 2023-04-20
+    # collection start .. end of the work unit (USGS WESM.csv, rockyweb.usgs.gov/vdelivery/Datasets/
+    # Staged/Elevation/metadata/WESM.csv), mid-date
+    "CA_NorthernCA_1_B22": 2022.78,        # 2022-09-13 .. 2022-11-11, QL1 (Sonoma County)
+    "CA_SolanoCounty_1_A23": 2023.04,      # 2022-12-26 .. 2023-02-06, QL1
+    "CA_NorthCoastRanges_2_B23": 2023.83,  # 2023-09-16 .. 2023-12-15, QL1 (Napa County)
+    "CA_SantaCruzCounty_2020": 2020.26,    # 2020-03-22 .. 2020-04-15, QL1
+    "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017": 2018.0,  # 2017-12-09 .. 2018-01-21, QL2
+}
+# A project "tnm:<project>/<work unit>" is a survey that is not on the EPT bucket: its LAZ tiles
+# (rockyweb.usgs.gov/vdelivery/Datasets/Staged/Elevation/LPC/Projects/<project>/<work unit>/LAZ/)
+# are listed by the TNM Access API for the job's box and binned like EPT nodes (east Contra Costa:
+# no EPT project covers Antioch / Pittsburg; the newest public survey there is CA_Sacramento_2017).
+TNM = "tnm:"
+TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
+
+# Region jobs of the 2026-11 expansion (Sonoma, Napa, Solano, Santa Cruz, east Contra Costa, south
+# Santa Clara), in running order: name -> (lon0, lat0, lon1, lat1), EPT project(s). The project is
+# the newest 3DEP survey over the box (checked against the EPT index and WESM, 2026-11): Sonoma's
+# towns have the 2022 QL1 survey, so the 2013 Sonoma Veg Map survey is not used anywhere.
+#   python lidar_parts.py region --name santa_rosa      (bbox / project from this list)
+#   python lidar_parts.py jobs                          (every listed job not built yet, one at a time)
+# The nine earlier jobs (oakland, berkeley, emeryville, san_jose, walnut_creek, palo_alto, san_mateo,
+# redwood_city, mountain_view) were run with --bbox; their grids are in data/interim/lidar/<job>/meta.json.
+REGION_JOBS = {
+    "santa_rosa": ((-122.730, 38.428, -122.695, 38.460), "CA_NorthernCA_1_B22"),      # downtown, Railroad Sq, Memorial Hospital, SRJC
+    "vallejo": ((-122.2645, 38.092, -122.240, 38.112), "CA_SolanoCounty_1_A23"),      # downtown + waterfront
+    "napa": ((-122.300, 38.288, -122.272, 38.308), "CA_NorthCoastRanges_2_B23"),
+    "santa_cruz": ((-122.040, 36.960, -122.012, 36.982), "CA_SantaCruzCounty_2020"),  # downtown, Beach Hill, Boardwalk
+    "fairfield": ((-122.060, 38.240, -122.030, 38.265), "CA_SolanoCounty_1_A23"),     # Texas St, county centre, NorthBay
+    "vacaville": ((-122.000, 38.348, -121.975, 38.365), "CA_SolanoCounty_1_A23"),
+    "petaluma": ((-122.652, 38.224, -122.622, 38.244), "CA_NorthernCA_1_B22"),        # downtown + the river mills
+    "antioch": ((-121.822, 38.006, -121.795, 38.022), "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017"),
+    "pittsburg": ((-121.898, 38.022, -121.872, 38.040), "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017"),
+    "gilroy": ((-121.580, 36.998, -121.558, 37.016), "CA_SantaClaraCounty_2020"),
+    "morgan_hill": ((-121.665, 37.120, -121.642, 37.138), "CA_SantaClaraCounty_2020"),
+    "watsonville": ((-121.770, 36.902, -121.745, 36.920), "CA_SantaCruzCounty_2020"),
+    "benicia": ((-122.170, 38.042, -122.145, 38.060), "CA_SolanoCounty_1_A23"),
+    "sonoma_state": ((-122.685, 38.334, -122.665, 38.347), "CA_NorthernCA_1_B22"),    # Rohnert Park: Sonoma State University
+    "graton": ((-122.735, 38.352, -122.718, 38.364), "CA_NorthernCA_1_B22"),          # Rohnert Park: Graton Resort & Casino
+    "ucsc": ((-122.072, 36.975, -122.045, 37.003), "CA_SantaCruzCounty_2020"),        # UC Santa Cruz
+    "travis_afb": ((-121.970, 38.255, -121.920, 38.280), "CA_SolanoCounty_1_A23"),    # hangar line, David Grant Medical Center
+    "mare_island": ((-122.290, 38.085, -122.2645, 38.110), "CA_SolanoCounty_1_A23"),  # shipyard core
+    "genentech_vacaville": ((-121.965, 38.375, -121.935, 38.395), "CA_SolanoCounty_1_A23"),
 }
 
 VOXEL = 0.7            # deepest EPT level read: voxels <= 0.7 m (mercator) -> ~5 pts/m2 on roofs
@@ -159,11 +202,30 @@ class Ept:
 def project_year(name: str) -> float:
     if name in PROJECT_DATES:
         return PROJECT_DATES[name]
-    m = re.search(r"_B(\d\d)$", name)
+    m = re.search(r"_[A-Z](\d\d)$", name)  # 3DEP BAA suffix: _B23, _A23 (CA_SolanoCounty_1_A23)
     if m:
         return 2000 + int(m.group(1))
     m = re.search(r"(19|20)\d\d", name)
     return float(m.group(0)) if m else float("nan")
+
+
+def tnm_tiles(project: str, bbox_ll):
+    """LAZ tiles of a 3DEP project / work unit over a lon/lat box, from the TNM Access API (the
+    list is cached in data/raw/lidar/<project>__<work unit>/): [(tile name, url, lon/lat bounds)]."""
+    tag = hashlib.md5(",".join(f"{v:.5f}" for v in bbox_ll).encode()).hexdigest()[:8]
+    cache = LIDAR_RAW / project.replace("/", "__") / f"tnm_{tag}.json"
+    if not cache.exists():
+        r = get_with_retry(session(), TNM_API, params={"datasets": "Lidar Point Cloud (LPC)", "max": 500,
+                                                       "bbox": ",".join(f"{v:.6f}" for v in bbox_ll),
+                                                       "outputFormat": "JSON"})
+        items = [{"url": it["downloadURL"], "bbox": it["boundingBox"], "size": it.get("sizeInBytes")}
+                 for it in r.json().get("items", []) if f"/{project}/" in it["downloadURL"]]
+        if not items:
+            raise SystemExit(f"TNM lists no LAZ tile of {project} in {bbox_ll}")
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(items, indent=1))
+    return [(Path(it["url"]).stem, it["url"], (it["bbox"]["minX"], it["bbox"]["minY"], it["bbox"]["maxX"], it["bbox"]["maxY"]))
+            for it in json.loads(cache.read_text())]
 
 
 def pick_projects(bbox_ll) -> list[str]:
@@ -253,10 +315,93 @@ def _fetch(url):
     raise RuntimeError(f"failed to fetch {url}: {err!r}")
 
 
+def _bin_points(las, g, to_utm, zfac=1.0):
+    """Decoded points (an EPT node / a chunk of a LAZ tile) -> (cell, z dm, last return, ground)."""
+    cls = np.asarray(las.classification)
+    ok = ~np.isin(cls, NOISE_CLASSES)
+    try:
+        ok &= ~np.asarray(las.withheld, bool)
+    except Exception:  # noqa: BLE001 - no withheld flag in this point format
+        pass
+    x = np.asarray(las.x)[ok]
+    y = np.asarray(las.y)[ok]
+    z = np.asarray(las.z)[ok] * zfac
+    rn = np.asarray(las.return_number)[ok].astype(np.int16)
+    nr = np.asarray(las.number_of_returns)[ok].astype(np.int16)
+    cls = cls[ok]
+    u, v = to_utm(x, y)
+    c = np.floor((u - g.x0) / g.res).astype(np.int64)
+    r = np.floor((g.y1 - v) / g.res).astype(np.int64)
+    inside = (c >= 0) & (c < g.w) & (r >= 0) & (r < g.h)
+    if not inside.any():
+        return None
+    zz = np.clip(np.rint(z[inside] * 10), -32000, 32000).astype(np.int16)
+    return r[inside] * g.w + c[inside], zz, (rn >= nr)[inside], np.isin(cls[inside], GROUND_CLASSES)
+
+
+def _reduce(parts):
+    """Binned points -> per cell (index, max z, max last-return z, max ground z, points, non-last)."""
+    idx = np.concatenate([p[0] for p in parts])
+    zz = np.concatenate([p[1] for p in parts])
+    last = np.concatenate([p[2] for p in parts])
+    gnd = np.concatenate([p[3] for p in parts])
+    o = np.argsort(idx, kind="stable")
+    idx, zz, last, gnd = idx[o], zz[o], last[o], gnd[o]
+    starts = np.flatnonzero(np.r_[True, idx[1:] != idx[:-1]])
+    return (idx[starts], np.maximum.reduceat(zz, starts),
+            np.maximum.reduceat(np.where(last, zz, NODATA).astype(np.int16), starts),
+            np.maximum.reduceat(np.where(gnd, zz, NODATA).astype(np.int16), starts),
+            np.add.reduceat(np.ones(len(idx), np.int32), starts), np.add.reduceat((~last).astype(np.int32), starts))
+
+
+def _bin_laz_tile(uid, url):
+    """One LAZ tile (its own CRS, read from the header), decoded in chunks of 4 M points."""
+    import laspy
+    import pyproj
+    _, data = _fetch(url)
+    if data is None:
+        return uid, None
+    reds = []
+    with laspy.open(io.BytesIO(data)) as rd:
+        crs = rd.header.parse_crs()
+        if crs is None:
+            raise RuntimeError(f"{url}: no CRS in the LAS header")
+        subs = crs.sub_crs_list if crs.is_compound else [crs]
+        horiz = next(c for c in subs if not c.is_vertical)
+        vert = next((c for c in subs if c.is_vertical), None)
+        # z to metres (vertical unit; a projected CRS in feet without a vertical part has z in feet too)
+        zfac = vert.axis_info[0].unit_conversion_factor if vert is not None else \
+            (horiz.axis_info[0].unit_conversion_factor if horiz.is_projected else 1.0)
+        # projection only, no datum shift: NAD83 is taken as WGS 84, as the EPT (EPSG:3857) nodes are
+        to_ll = pyproj.Transformer.from_crs(horiz, horiz.geodetic_crs, always_xy=True)
+        ll_utm = pyproj.Transformer.from_crs("EPSG:4326", UTM, always_xy=True)
+
+        def to_utm(x, y):
+            return ll_utm.transform(*to_ll.transform(x, y))
+
+        for pts in rd.chunk_iterator(4_000_000):
+            p = _bin_points(pts, _W["grid"], to_utm, zfac)
+            if p is not None:
+                reds.append(_reduce([p]))
+    if not reds:
+        return uid, None
+    if len(reds) == 1:
+        return uid, reds[0]
+    idx = np.concatenate([r[0] for r in reds])
+    o = np.argsort(idx, kind="stable")
+    idx = idx[o]
+    starts = np.flatnonzero(np.r_[True, idx[1:] != idx[:-1]])
+    col = [np.concatenate([r[i] for r in reds])[o] for i in range(1, 6)]
+    return uid, (idx[starts], np.maximum.reduceat(col[0], starts), np.maximum.reduceat(col[1], starts),
+                 np.maximum.reduceat(col[2], starts), np.add.reduceat(col[3], starts), np.add.reduceat(col[4], starts))
+
+
 def _bin_unit(unit):
     """Download + decode the nodes of one work unit, bin on the grid, reduce per cell."""
     import laspy
     uid, url, keys, bounds = unit
+    if keys is None:
+        return _bin_laz_tile(uid, url)
     g = _W["grid"]
     tr = _W["tr"]
     sel = laspy.DecompressionSelection.base()
@@ -272,53 +417,22 @@ def _bin_unit(unit):
         cu, *_ = np.linalg.lstsq(A, u, rcond=None)
         cv, *_ = np.linalg.lstsq(A, v, rcond=None)
         affine = (cu, cv)
+
+    def to_utm(x, y):
+        if affine is None:
+            return tr.transform(x, y)
+        cu, cv = affine
+        return cu[0] * x + cu[1] * y + cu[2], cv[0] * x + cv[1] * y + cv[2]
+
     for _, data in _W["pool"].map(_fetch, [f"{url}/ept-data/{k}.laz" for k in keys]):
         if data is None:
             continue
-        las = laspy.read(io.BytesIO(data), decompression_selection=sel)
-        cls = np.asarray(las.classification)
-        ok = ~np.isin(cls, NOISE_CLASSES)
-        try:
-            ok &= ~np.asarray(las.withheld, bool)
-        except Exception:  # noqa: BLE001 - no withheld flag in this point format
-            pass
-        x = np.asarray(las.x)[ok]
-        y = np.asarray(las.y)[ok]
-        z = np.asarray(las.z)[ok]
-        rn = np.asarray(las.return_number)[ok].astype(np.int16)
-        nr = np.asarray(las.number_of_returns)[ok].astype(np.int16)
-        cls = cls[ok]
-        if affine is not None:
-            cu, cv = affine
-            u = cu[0] * x + cu[1] * y + cu[2]
-            v = cv[0] * x + cv[1] * y + cv[2]
-        else:
-            u, v = tr.transform(x, y)
-        c = np.floor((u - g.x0) / g.res).astype(np.int64)
-        r = np.floor((g.y1 - v) / g.res).astype(np.int64)
-        inside = (c >= 0) & (c < g.w) & (r >= 0) & (r < g.h)
-        if not inside.any():
-            continue
-        zz = np.clip(np.rint(z[inside] * 10), -32000, 32000).astype(np.int16)
-        last = (rn >= nr)[inside]
-        gnd = np.isin(cls[inside], GROUND_CLASSES)
-        parts.append((r[inside] * g.w + c[inside], zz, last, gnd))
+        p = _bin_points(laspy.read(io.BytesIO(data), decompression_selection=sel), g, to_utm)
+        if p is not None:
+            parts.append(p)
     if not parts:
         return uid, None
-    idx = np.concatenate([p[0] for p in parts])
-    zz = np.concatenate([p[1] for p in parts])
-    last = np.concatenate([p[2] for p in parts])
-    gnd = np.concatenate([p[3] for p in parts])
-    o = np.argsort(idx, kind="stable")
-    idx, zz, last, gnd = idx[o], zz[o], last[o], gnd[o]
-    starts = np.flatnonzero(np.r_[True, idx[1:] != idx[:-1]])
-    uidx = idx[starts]
-    dsm = np.maximum.reduceat(zz, starts)
-    dsml = np.maximum.reduceat(np.where(last, zz, NODATA).astype(np.int16), starts)
-    gz = np.maximum.reduceat(np.where(gnd, zz, NODATA).astype(np.int16), starts)
-    cnt = np.add.reduceat(np.ones(len(idx), np.int32), starts)
-    cmr = np.add.reduceat((~last).astype(np.int32), starts)
-    return uid, (uidx, dsm, dsml, gz, cnt, cmr)
+    return uid, _reduce(parts)
 
 
 def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, workers: int = 3):
@@ -330,9 +444,9 @@ def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, work
         log(f"lidar: rasters for {job} exist ({out})")
         return out
     out.mkdir(parents=True, exist_ok=True)
-    depths = {p: Ept(p).depth_for() for p in projects}
+    depths = {p: Ept(p).depth_for() for p in projects if not p.startswith(TNM)}
     meta = {"job": job, "project": "+".join(projects), "lidar_year": min(project_year(p) for p in projects),
-            "grid": grid.to_json(), "max_depth": max(depths.values()), "depths": depths, "crs": UTM}
+            "grid": grid.to_json(), "max_depth": max(depths.values(), default=0), "depths": depths, "crs": UTM}
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
 
     # grid bbox in EPSG:3857 (+ margin) for node selection
@@ -345,6 +459,16 @@ def build_rasters(job: str, projects: list[str], grid: Grid, interest=None, work
 
     ulist = []
     for project in projects:
+        if project.startswith(TNM):  # LAZ tiles: one work unit per tile that has footprints
+            fwd = pyproj.Transformer.from_crs("EPSG:3857", "EPSG:4326", always_xy=True)
+            ll = fwd.transform([mb[0], mb[2]], [mb[1], mb[3]])
+            n0 = len(ulist)
+            for name, turl, tb in tnm_tiles(project[len(TNM):], (ll[0][0], ll[1][0], ll[0][1], ll[1][1])):
+                tx, ty = fwd.transform([tb[0], tb[2]], [tb[1], tb[3]], direction="INVERSE")
+                if interest is None or len(interest.query(sbox(tx[0], ty[0], tx[1], ty[1]))) > 0:
+                    ulist.append((f"{project}:{name}", turl, None, None))
+            log(f"lidar: {project}: {len(ulist) - n0} LAZ tiles")
+            continue
         ept = Ept(project)
         max_depth = depths[project]
         ud = max_depth - 2  # work unit = one column of this depth (~260 m), its deeper nodes included
@@ -619,6 +743,16 @@ def split_footprint(geom, wt, z, hag, dtm, veg=None, px_area=1.0):
     if len(zin) < max(4, 0.25 * Si.sum()):
         return "no_data", np.nan, gref, []
     whole = float(np.median(zin))
+
+    def single():
+        # one roof level. Seen through tree canopy (or a lattice tower / pipe rack): where most of
+        # its pixels have split returns the median sits on the trees, not the roof -> no height
+        # (Santa Rosa 2022: 22-71 % of such footprints read > 5 m above their Overture height,
+        # 0.1-0.5 % of the others)
+        if veg is not None and np.mean(veg[Si & np.isfinite(z)] >= CANOPY_PLATEAU) > 0.5:
+            return "canopy", whole, gref, []
+        return "single", whole, gref, []
+
     area = S.sum() * px_area
     hin = hag[Si & np.isfinite(z)]
     open_frac = float((hin < OPEN_HAG).mean())
@@ -626,16 +760,16 @@ def split_footprint(geom, wt, z, hag, dtm, veg=None, px_area=1.0):
         return "mostly_open", whole, gref, []          # building gone / not built yet / mis-registered
     p1, p99 = np.percentile(zin, [1, 99])
     if area < 2 * MIN_PART or (p99 - p1 < MIN_STEP and open_frac * area < MIN_PART):
-        return "single", whole, gref, []
+        return single()
     # plateaus on the inset (edge pixels are mixed with walls / eaves), then extended to the footprint
     lab, info = segment(np.where(Si, z, np.nan), hag, Si, px_area, veg)
     if len(info) <= 1:
-        return "single", whole, gref, []
+        return single()
     nparts = sum(1 for v in info.values() if not v[3])
     if nparts == 0:
         return "mostly_open", whole, gref, []
     if nparts == 1 and all(v[2] * px_area < MIN_PART for v in info.values() if v[3]):
-        return "single", whole, gref, []
+        return single()
     full = _smooth_labels(_fill_nearest(lab, lab >= 0))
     polys = {}
     for g, v in shapes(full.astype(np.int32), transform=wt):
@@ -691,7 +825,7 @@ def split_footprint(geom, wt, z, hag, dtm, veg=None, px_area=1.0):
         parts[j][0] = shapely.make_valid(shapely.union_all([parts[j][0], p[0]]))
         parts[j][2] = parts[j][0].area
     if len(parts) == 1 and parts[0][2] > 0.9 * geom.area:
-        return "single", whole, gref, []
+        return single()
     return "split", whole, gref, [tuple(p) for p in parts]
 
 
@@ -817,11 +951,34 @@ def load_region_footprints(bbox_ll):
                                       ("py", ">=", bbox_ll[1]), ("py", "<=", bbox_ll[3])]).to_pandas()
     g = gpd.GeoDataFrame({"key": d["id"].values, "source": np.where(d.has_parts.fillna(False), "overture_has_parts",
                                                                      "overture"),
-                          "start_year": np.nan, "end_year": np.nan, "height": d.height.astype(float).values,
-                          "members": None},
+                          "start_year": region_recorded_years(d["id"].values), "end_year": np.nan,
+                          "height": d.height.astype(float).values, "members": None},
                          geometry=shapely.from_wkb(d.geometry.values), crs="EPSG:4326")
-    log(f"region: {len(g)} Overture footprints in {bbox_ll}")
+    log(f"region: {len(g)} Overture footprints in {bbox_ll} ({int(np.isfinite(g.start_year).sum())} with a recorded year)")
     return g
+
+
+def region_recorded_years(ids):
+    """Recorded construction year per Overture footprint id (download_region.py candidates:
+    historic survey > official roll > public copy > commercial; placeholder spikes dropped; NaN =
+    none). run_parts skips footprints recorded after the survey (status newer_than_survey): the
+    survey saw the site before today's building, so it keeps its flat footprint and Overture
+    height instead of parts / a height cut from whatever stood there (region_buildings applies
+    the same rule to the single-level heights with its final start year)."""
+    import pandas as pd
+    p = INTERIM / "region5_footprint_years.parquet"
+    out = np.full(len(ids), np.nan)
+    if not p.exists() or not len(ids):
+        return out
+    kinds = ("historic", "public", "third_party", "commercial")
+    fy = pd.read_parquet(p, columns=["id"] + [f"{a}_{k}" for k in kinds for a in ("year", "spike")],
+                         filters=[("id", "in", list(ids))]).drop_duplicates("id").set_index("id")
+    fy = fy.reindex(ids)
+    for k in kinds:
+        y = pd.to_numeric(fy[f"year_{k}"], errors="coerce").to_numpy(dtype=float, na_value=np.nan)
+        ok = np.isfinite(y) & (y > 1700) & ~fy[f"spike_{k}"].fillna(False).astype(bool).values
+        out = np.where(np.isfinite(out), out, np.where(ok, y, np.nan))
+    return out
 
 
 def run_parts(job: str, fp, workers: int = 3):
@@ -983,6 +1140,8 @@ EXAMPLES = {  # validation views (lon0, lat0, lon1, lat1)
 STATUS_TEXT = {
     "split": "cut into LiDAR parts",
     "single": "one roof plateau (no step >= 3 m over >= 40 m2): stays one prism",
+    "canopy": "one roof level, but most of its pixels have split returns (tree canopy over the roof, lattice "
+              "tower): no measured height, keeps its Overture height",
     "mostly_open": "> 60 % of the footprint is at ground level in the survey (building gone / footprint over open ground)",
     "no_data": "too few LiDAR returns inside (glass / water / outside the survey)",
     "no_ground": "no ground around it in the DTM",
@@ -998,7 +1157,8 @@ def report(job, st, pg, fp, extra_lines=()):
     split = st[st.status == "split"]
     outs = [INTERIM / f"{job}_lidar_parts.parquet", INTERIM / f"{job}_lidar_heights.parquet"]
     lines = [f"# LiDAR building parts ({job})", "",
-             f"* LiDAR: USGS 3DEP `{meta['project']}` (Entwine Point Tiles, depth <= {meta['max_depth']}), "
+             f"* LiDAR: USGS 3DEP `{meta['project']}` (" + ("LAZ tiles listed by the TNM API" if TNM in meta["project"]
+                                                             else f"Entwine Point Tiles, depth <= {meta['max_depth']}") + "), "
              f"survey {meta['lidar_year']}; built by `pipeline/lidar_parts.py`",
              f"* rasters: {meta['grid']['w']} x {meta['grid']['h']} cells at {meta['grid']['res']} m ({UTM}), "
              f"`data/interim/lidar/{job}/{{dsm,dsml,dtm,veg}}.tif`",
@@ -1119,9 +1279,12 @@ def main():
     a.add_argument("--bbox", type=parse_bbox)
     a.add_argument("--workers", type=int, default=3)
     a = sub.add_parser("region")
-    a.add_argument("--bbox", type=parse_bbox, required=True)
+    a.add_argument("--bbox", type=parse_bbox, help="default: the box of --name in REGION_JOBS")
     a.add_argument("--name", required=True)
-    a.add_argument("--project", help="EPT project name(s), comma-separated (default: newest covering the bbox)")
+    a.add_argument("--project", help="EPT project name(s), comma-separated (default: REGION_JOBS, else the "
+                                     "newest covering the bbox)")
+    a.add_argument("--workers", type=int, default=3)
+    a = sub.add_parser("jobs", help="every REGION_JOBS job whose parts are not built yet, in order")
     a.add_argument("--workers", type=int, default=3)
     a = sub.add_parser("preview")
     a.add_argument("--job", default="sf")
@@ -1133,12 +1296,20 @@ def main():
         fp = load_sf_footprints(args.bbox)
         job = "sf" if args.bbox is None else "sf_" + hashlib.md5(str(args.bbox).encode()).hexdigest()[:6]
         run(job, [SF_PROJECT], fp, args.workers, args.bbox, EXAMPLES)
-    elif args.cmd == "region":
-        projects = args.project.split(",") if args.project else pick_projects(args.bbox)
-        fp = load_region_footprints(args.bbox)
-        b = args.bbox
-        cx, cy, hw, hh = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, min(0.004, (b[2] - b[0]) / 2), min(0.003, (b[3] - b[1]) / 2)
-        run(args.name, projects, fp, args.workers, args.bbox, {"centre": (cx - hw, cy - hh, cx + hw, cy + hh)})
+    elif args.cmd in ("region", "jobs"):
+        if args.cmd == "jobs":
+            todo = [(n, bb, pr) for n, (bb, pr) in REGION_JOBS.items()
+                    if not (INTERIM / f"{n}_lidar_parts.parquet").exists()]
+        else:
+            listed = REGION_JOBS.get(args.name)
+            if args.bbox is None and listed is None:
+                raise SystemExit(f"--bbox is required: {args.name} is not in REGION_JOBS")
+            todo = [(args.name, args.bbox or listed[0], args.project or (listed[1] if listed and not args.bbox else None))]
+        for name, b, project in todo:
+            projects = project.split(",") if project else pick_projects(b)
+            fp = load_region_footprints(b)
+            cx, cy, hw, hh = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, min(0.004, (b[2] - b[0]) / 2), min(0.003, (b[3] - b[1]) / 2)
+            run(name, projects, fp, args.workers, b, {"centre": (cx - hw, cy - hh, cx + hw, cy + hh)})
     elif args.cmd == "preview":
         import geopandas as gpd
         fp = load_sf_footprints(args.bbox) if args.job.startswith("sf") else load_region_footprints(args.bbox)

@@ -777,6 +777,10 @@ def region_predecessors(today):
             pred = gpd.GeoDataFrame(pd.concat([pred, gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM)], ignore_index=True),
                                     geometry="geometry", crs=UTM)
             log(f"region predecessors: {len(rows)} buildings of vanished large sites")
+    # buildings destroyed by wildfires (pipeline/fires.py, data/manual/fires; unchanged
+    # without that folder): they stand until the day of the fire
+    import fires
+    pred = fires.add_predecessors(tu, pred, lots)
     # freeway rights-of-way and renewal clearances: the streets they cut and the rows
     # along them (corridor_fill), until the clearance
     # (REUSE_CORRIDORS=1 reuses the last run's result: ~20 min, and it only changes with

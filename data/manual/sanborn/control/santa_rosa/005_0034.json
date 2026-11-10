@@ -1,0 +1,341 @@
+{
+ "block_cap": {
+  "15": "medium"
+ },
+ "blocks": [
+  {
+   "name": "12",
+   "streets": {
+    "N": "5th Street",
+    "S": "4th Street",
+    "W": "B Street",
+    "E": "Mendocino Avenue"
+   },
+   "px4_est": [
+    [
+     672,
+     937
+    ],
+    [
+     672,
+     222
+    ],
+    [
+     980,
+     222
+    ],
+    [
+     980,
+     937
+    ]
+   ],
+   "corners": [
+    {
+     "x": 674.2,
+     "y": 935.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "B Street",
+      "5th Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.3,
+     "y": 225.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Mendocino Avenue",
+      "5th Street"
+     ],
+     "w": [
+      70,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 975.2,
+     "y": 221.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Mendocino Avenue",
+      "4th Street"
+     ],
+     "w": [
+      70,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 977.8,
+     "y": 934.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "B Street",
+      "4th Street"
+     ],
+     "w": [
+      60,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 75,
+    "W": 60,
+    "E": 70
+   },
+   "skip": [],
+   "px4": [
+    [
+     674.2,
+     935.4
+    ],
+    [
+     670.3,
+     225.2
+    ],
+    [
+     975.2,
+     221.3
+    ],
+    [
+     977.8,
+     934.1
+    ]
+   ],
+   "edge_q": [
+    0.98,
+    0.99,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 674.2,
+     "y": 935.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "B Street",
+      "5th Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.3,
+     "y": 225.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Mendocino Avenue",
+      "5th Street"
+     ],
+     "w": [
+      70,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 975.2,
+     "y": 221.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Mendocino Avenue",
+      "4th Street"
+     ],
+     "w": [
+      70,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 977.8,
+     "y": 934.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "B Street",
+      "4th Street"
+     ],
+     "w": [
+      60,
+      75
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    670.2942337810135,
+    221.33806680287088,
+    977.8051213908009,
+    935.3984328337042
+   ]
+  },
+  {
+   "name": "15",
+   "streets": {
+    "N": "5th Street",
+    "S": "4th Street",
+    "W": "A Street",
+    "E": "B Street"
+   },
+   "px4_est": [
+    [
+     675,
+     1750
+    ],
+    [
+     675,
+     1020
+    ],
+    [
+     982,
+     1020
+    ],
+    [
+     982,
+     1750
+    ]
+   ],
+   "corners": [
+    {
+     "x": 674.2,
+     "y": 935.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "B Street",
+      "5th Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 670.3,
+     "y": 225.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Mendocino Avenue",
+      "5th Street"
+     ],
+     "w": [
+      70,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 975.2,
+     "y": 221.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Mendocino Avenue",
+      "4th Street"
+     ],
+     "w": [
+      70,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 977.8,
+     "y": 934.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "B Street",
+      "4th Street"
+     ],
+     "w": [
+      60,
+      75
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "12"
+   ],
+   "px4": [
+    [
+     676.3,
+     1751.7
+    ],
+    [
+     673.7,
+     1024.8
+    ],
+    [
+     978.6,
+     1022.2
+    ],
+    [
+     979.9,
+     1747.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.96,
+    1.0,
+    1.0
+   ],
+   "corners_all": [],
+   "zone_px": [
+    673.7016111000627,
+    1022.2133885240163,
+    979.9039352320362,
+    1751.7066868432157
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -143,6 +143,136 @@ sheet("benicia1950", "CA_Benicia_288319_1950_24000_geo.tif", Q75(-122.25, 38.0),
 sheet("portchicago1951", "CA_Port%20Chicago_294325_1951_24000_geo.tif", Q75(-122.125, 38.0), 24000, 1951, 1948,
       "tint", "aerial photographs 1948, survey 1950")
 
+# ---- the ten-county extent (2026-11): Sonoma, Napa, Solano, Santa Cruz, east Contra Costa, south Santa Clara.
+# Survey / photo years from each scan's FGDC record (TNM). Q30: the 1:125,000 30' reconnaissance sheets.
+Q30 = lambda w, s: (w, s, w + 0.5, s + 0.5)        # noqa: E731
+# first surveys (houses drawn one by one, block fronts as bands)
+sheet("napa1902", "CA_Napa_299520_1902_125000_geo.tif", Q30(-122.5, 38.0), 125000, 1902, 1899, "early",
+      "1:125,000 30' sheet, surveyed 1896-99 (FGDC: survey year 1899)")
+# (the sheet runs over its south neat line to 36°56' N to hold the city of Santa Cruz and Point Santa Cruz)
+sheet("santacruz1902", "CA_Santa%20Cruz_299623_1902_125000_geo.tif", (-122.5, 36.93, -122.0, 37.5), 125000, 1902, 1899,
+      "early", "1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)")
+sheet("santarosa1916", "CA_Santa%20Rosa_298960_1916_62500_geo.tif", Q15(-122.75, 38.25), 62500, 1916, 1914, "early",
+      "surveyed 1914 (1927 imprint)")
+sheet("petaluma1914", "CA_Petaluma_298524_1914_62500_geo.tif", Q15(-122.75, 38.0), 62500, 1914, 1912, "early",
+      "surveyed 1912 (1924 imprint)")
+sheet("mareisland1916", "CA_Mare%20Island_298114_1916_62500_geo.tif", Q15(-122.5, 38.0), 62500, 1916, 1914, "early",
+      "surveyed 1914 (1927 imprint)")
+sheet("capitola1914", "CA_Capitola_297018_1914_62500_geo.tif", Q15(-122.0, 36.75), 62500, 1914, 1912, "early",
+      "surveyed 1912 (1922 imprint)")
+sheet("sanjuanbautista1917", "CA_San%20Juan%20Bautista_466314_1917_62500_geo.tif", Q15(-121.75, 36.75), 62500, 1917,
+      1915, "early", "surveyed 1915 (1925 imprint)")
+sheet("morganhill1917", "CA_Morgan%20Hill_298244_1917_62500_geo.tif", Q15(-121.75, 37.0), 62500, 1917, 1915, "early",
+      "surveyed 1915 (1931 imprint)")
+sheet("vacaville1908", "CA_Vacaville_299006_1908_62500_geo.tif", Q15(-122.0, 38.25), 62500, 1908, 1906, "early",
+      "surveyed 1906 (1922 imprint)")
+sheet("mtvaca1921", "CA_Mt%20Vaca_466014_1921_62500_geo.tif", Q15(-122.25, 38.25), 62500, 1921, 1915, "early",
+      "edition of 1921, field check 1915")
+sheet("antioch1908", "CA_Antioch_296718_1908_62500_geo.tif", Q15(-122.0, 38.0), 62500, 1908, 1907, "early",
+      "surveyed 1907 (1914 imprint)")
+sheet("byron1916", "CA_Byron_296940_1916_62500_geo.tif", Q15(-121.75, 37.75), 62500, 1916, 1911, "early",
+      "surveyed 1911")
+sheet("riovista1910", "CA_Rio%20Vista_296463_1910_31680_geo.tif", Q75(-121.75, 38.125), 31680, 1910, 1908, "early",
+      "1:31,680 sheet, surveyed 1908")
+sheet("healdsburg1920", "CA_Healdsburg_465734_1920_62500_geo.tif", Q15(-123.0, 38.5), 62500, 1920, 1915, "early",
+      "edition of 1920, field check 1915")
+sheet("calistoga1927", "CA_Calistoga_465409_1927_62500_geo.tif", Q15(-122.75, 38.5), 62500, 1927, 1915, "early",
+      "edition of 1927, surveyed 1915")
+sheet("hopland1938", "CA_Hopland_465760_1938_62500_geo.tif", Q15(-123.25, 38.75), 62500, 1938, 1922, "early",
+      "edition of 1938: surveyed 1916, field check 1922")
+# 1:62,500 editions of 1933-43 (resurveys and editions compiled from 1937-42 aerial photographs)
+sheet("healdsburg1940", "CA_Healdsburg_297672_1940_62500_geo.tif", Q15(-123.0, 38.5), 62500, 1940, 1933, "tint",
+      "edition of 1940, surveyed 1933", tint="grey")
+sheet("sebastopol1942", "CA_Sebastopol_301668_1942_62500_geo.tif", Q15(-123.0, 38.25), 62500, 1942, 1935, "tint",
+      "edition of 1942, surveyed 1935", tint="grey")
+sheet("capitola1940", "CA_Capitola_465438_1940_62500_geo.tif", Q15(-122.0, 36.75), 62500, 1940, 1938, "tint",
+      "aerial photographs 1938", tint="grey")
+sheet("sanjuanbautista1940", "CA_San%20Juan%20Bautista_466316_1940_62500_geo.tif", Q15(-121.75, 36.75), 62500, 1940,
+      1939, "tint", "aerial photographs 1939", tint="grey")
+sheet("morganhill1941", "CA_Morgan%20Hill_465964_1941_62500_geo.tif", Q15(-121.75, 37.0), 62500, 1941, 1939, "tint",
+      "edition of 1941: surveyed 1915, revised 1939 (aerial photographs 1939 on the 1939 edition)", tint="grey")
+sheet("sonoma1942", "CA_Sonoma_301738_1942_62500_geo.tif", Q15(-122.5, 38.25), 62500, 1942, 1939, "tint",
+      "aerial photographs 1939, survey 1941", tint="grey")
+sheet("mtvaca1942", "CA_Mt%20Vaca_466013_1942_62500_geo.tif", Q15(-122.25, 38.25), 62500, 1942, 1939, "tint",
+      "aerial photographs 1939", tint="grey")
+sheet("vacaville1941", "CA_Vacaville_466506_1941_62500_geo.tif", Q15(-122.0, 38.25), 62500, 1941, 1939, "tint",
+      "aerial photographs 1939", tint="grey")
+sheet("byron1940", "CA_Byron_296942_1940_62500_geo.tif", Q15(-121.75, 37.75), 62500, 1940, 1940, "tint",
+      "aerial photographs 1940 (1943 imprint)", tint="grey")
+sheet("santarosa1944", "CA_Santa%20Rosa_301627_1944_62500_geo.tif", Q15(-122.75, 38.25), 62500, 1944, 1942, "tint",
+      "edition of 1944: surveyed 1914, revised 1942", tint="grey")
+sheet("sthelena1945", "CA_St%20Helena_466421_1945_62500_geo.tif", Q15(-122.5, 38.5), 62500, 1945, 1942, "tint",
+      "edition of 1945, surveyed 1942", tint="grey")
+sheet("hopland1944", "CA_Hopland_465759_1944_62500_geo.tif", Q15(-123.25, 38.75), 62500, 1944, 1942, "tint",
+      "aerial photographs 1942", tint="grey")
+sheet("calistoga1945", "CA_Calistoga_296981_1945_62500_geo.tif", Q15(-122.75, 38.5), 62500, 1945, 1943, "tint",
+      "edition of 1945, surveyed 1943", tint="grey")
+# 1:24,000 sheets of 1949-60 (first imprints, before the photorevisions)
+sheet("mareisland1949", "CA_Mare%20Island_292723_1949_24000_geo.tif", Q75(-122.375, 38.0), 24000, 1949, 1948, "tint",
+      "aerial photographs 1948, survey 1949")
+sheet("napa1951", "CA_Napa_293422_1951_24000_geo.tif", Q75(-122.375, 38.25), 24000, 1951, 1948, "tint",
+      "aerial photographs 1948, survey 1951")
+sheet("sonoma1951", "CA_Sonoma_300595_1951_24000_geo.tif", Q75(-122.5, 38.25), 24000, 1951, 1948, "tint",
+      "aerial photographs 1948, survey 1951")
+sheet("rutherford1951", "CA_Rutherford_294860_1951_24000_geo.tif", Q75(-122.5, 38.375), 24000, 1951, 1948, "tint",
+      "aerial photographs 1948, survey 1951")
+sheet("fairfieldsouth1949", "CA_Fairfield%20South_290434_1949_24000_geo.tif", Q75(-122.125, 38.125), 24000, 1949,
+      1948, "tint", "aerial photographs 1948, survey 1949")
+sheet("fairfieldnorth1951", "CA_Fairfield%20North_290424_1951_24000_geo.tif", Q75(-122.125, 38.25), 24000, 1951,
+      1948, "tint", "aerial photographs 1948, survey 1951")
+sheet("elmira1953", "CA_Elmira_303008_1953_24000_geo.tif", Q75(-122.0, 38.25), 24000, 1953, 1949, "tint",
+      "aerial photographs 1949, field check 1953")
+sheet("dixon1952", "CA_Dixon_465565_1952_24000_geo.tif", Q75(-121.875, 38.375), 24000, 1952, 1949, "tint",
+      "aerial photographs 1949, survey 1952")
+sheet("riovista1953", "CA_Rio%20Vista_294705_1953_24000_geo.tif", Q75(-121.75, 38.125), 24000, 1953, 1949, "tint",
+      "aerial photographs 1949, survey 1953")
+sheet("antiochnorth1953", "CA_Antioch%20North_288002_1953_24000_geo.tif", Q75(-121.875, 38.0), 24000, 1953, 1949,
+      "tint", "aerial photographs 1949, field check 1953")
+sheet("honkerbay1953", "CA_Honker%20Bay_291408_1953_24000_geo.tif", Q75(-122.0, 38.0), 24000, 1953, 1949, "tint",
+      "aerial photographs 1949, field check 1953")
+sheet("brentwood1954", "CA_Brentwood_288600_1954_24000_geo.tif", Q75(-121.75, 37.875), 24000, 1954, 1949, "tint",
+      "aerial photographs 1949, field check 1954")
+sheet("santarosa1954", "CA_Santa%20Rosa_300294_1954_24000_geo.tif", Q75(-122.75, 38.375), 24000, 1954, 1952, "tint",
+      "aerial photographs 1952, survey 1954")
+sheet("petaluma1953", "CA_Petaluma_294061_1953_24000_geo.tif", Q75(-122.75, 38.125), 24000, 1953, 1952, "tint",
+      "aerial photographs 1952, survey 1953")
+sheet("petalumacreek1954", "CA_Petaluma%20Creek_466127_1954_24000_geo.tif", Q75(-122.625, 38.125), 24000, 1954, 1952,
+      "tint", "aerial photographs 1952, survey 1954 (the quadrangle later named Petaluma River)")
+sheet("sebastopol1954", "CA_Sebastopol_300394_1954_24000_geo.tif", Q75(-122.875, 38.375), 24000, 1954, 1952, "tint",
+      "aerial photographs 1952, survey 1954")
+sheet("santacruz1954", "CA_Santa%20Cruz_300246_1954_24000_geo.tif", (-122.1833333, 36.9166667, -122.0, 37.0), 24000,
+      1954, 1952, "tint", "aerial photographs 1952, survey 1954")
+sheet("soquel1954", "CA_Soquel_300606_1954_24000_geo.tif", Q75(-122.0, 36.875), 24000, 1954, 1952, "tint",
+      "aerial photographs 1952, survey 1954")
+sheet("watsonvillewest1954", "CA_Watsonville%20West_301247_1954_24000_geo.tif", Q75(-121.875, 36.875), 24000, 1954,
+      1952, "tint", "aerial photographs 1952, survey 1954")
+sheet("watsonvilleeast1955", "CA_Watsonville%20East_301243_1955_24000_geo.tif", Q75(-121.75, 36.875), 24000, 1955,
+      1952, "tint", "aerial photographs 1952, survey 1955")
+sheet("chittenden1955", "CA_Chittenden_289219_1955_24000_geo.tif", Q75(-121.625, 36.875), 24000, 1955, 1952, "tint",
+      "aerial photographs 1952, survey 1955")
+sheet("gilroy1955", "CA_Gilroy_290814_1955_24000_geo.tif", Q75(-121.625, 37.0), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, survey 1955")
+sheet("morganhill1955", "CA_Morgan%20Hill_293124_1955_24000_geo.tif", Q75(-121.75, 37.125), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, survey 1955")
+sheet("mtmadonna1955", "CA_Mt%20Madonna_293330_1955_24000_geo.tif", Q75(-121.75, 37.0), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, survey 1955")
+sheet("healdsburg1955", "CA_Healdsburg_291252_1955_24000_geo.tif", Q75(-122.875, 38.5), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, field check 1955")
+sheet("guerneville1955", "CA_Guerneville_291072_1955_24000_geo.tif", Q75(-123.0, 38.5), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, field check 1955")
+sheet("felton1955", "CA_Felton_465668_1955_24000_geo.tif", Q75(-122.125, 37.0), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, field check 1955")
+sheet("castlerockridge1955", "CA_Castle%20Rock%20Ridge_289043_1955_24000_geo.tif", Q75(-122.125, 37.125), 24000, 1955,
+      1953, "tint", "aerial photographs 1953, field check 1955")
+sheet("bigbasin1955", "CA_Big%20Basin_288374_1955_24000_geo.tif", Q75(-122.25, 37.125), 24000, 1955, 1953, "tint",
+      "aerial photographs 1953, field check 1955")
+sheet("calistoga1958", "CA_Calistoga_288811_1958_24000_geo.tif", Q75(-122.625, 38.5), 24000, 1958, 1957, "tint",
+      "aerial photographs 1957, field check 1958")
+sheet("sthelena1960", "CA_St%20Helena_295293_1960_24000_geo.tif", Q75(-122.5, 38.5), 24000, 1960, 1957, "tint",
+      "aerial photographs 1957, field check 1960")
+sheet("cloverdale1960", "CA_Cloverdale_289371_1960_24000_geo.tif", Q75(-123.125, 38.75), 24000, 1960, 1957, "tint",
+      "aerial photographs 1957, field check 1960")
+
 
 def sheet_path(sh):
     """The sheet's GeoPDF (the full 600-700 ppi scan; the GeoTIFF is a 300 ppi resample)."""
@@ -226,6 +356,69 @@ NOTES = {
     ("san_rafael", 1939): dict(note="Tamalpais 1941 covers west of 122°30' only; houses drawn, no tint"),
     ("martinez", 1940): dict(note="houses drawn, no tint (Carquinez Strait 1940)"),
 }
+# ---- the older towns of the ten-county extent (2026-11)
+TOWNS.update({
+    "santa_rosa": dict(name="Santa Rosa", places=["0670098"], bbox=(-122.75, 38.405, -122.665, 38.475),
+                       snaps={1914: ["santarosa1916"], 1942: ["santarosa1944"], 1952: ["santarosa1954"]}),
+    "petaluma": dict(name="Petaluma", places=["0656784"], bbox=(-122.68, 38.205, -122.59, 38.275),
+                     snaps={1912: ["petaluma1914"], 1952: ["petaluma1953", "petalumacreek1954"]}),
+    "napa": dict(name="Napa", places=["0650258"], bbox=(-122.33, 38.27, -122.25, 38.34),
+                 snaps={1899: ["napa1902"], 1939: ["sonoma1942"], 1948: ["napa1951"]}),
+    "vallejo": dict(name="Vallejo", places=["0681666"], bbox=(-122.30, 38.07, -122.20, 38.15),
+                    snaps={1899: ["napa1902"], 1914: ["mareisland1916"],
+                           1940: ["carquinezstrait1940"], 1948: ["mareisland1949", "benicia1950"]}),
+    "santa_cruz": dict(name="Santa Cruz", places=["0669112"], bbox=(-122.07, 36.945, -121.98, 37.005),
+                       snaps={1899: ["santacruz1902"], 1952: ["santacruz1954", "soquel1954"]}),
+    "watsonville": dict(name="Watsonville", places=["0683668"], bbox=(-121.80, 36.89, -121.73, 36.94),
+                        snaps={1915: ["capitola1914", "sanjuanbautista1917"],
+                               1939: ["capitola1940", "sanjuanbautista1940"],
+                               1952: ["watsonvillewest1954", "watsonvilleeast1955"]}),
+    "benicia": dict(name="Benicia", places=["0605290"], bbox=(-122.19, 38.04, -122.12, 38.085),
+                    snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940"], 1948: ["benicia1950"]}),
+    "sonoma": dict(name="Sonoma", places=["0672646"], bbox=(-122.49, 38.27, -122.43, 38.315),
+                   snaps={1899: ["napa1902"], 1939: ["sonoma1942"], 1948: ["sonoma1951"]}),
+    "healdsburg": dict(name="Healdsburg", places=["0633056"], bbox=(-122.90, 38.59, -122.84, 38.64),
+                       snaps={1915: ["healdsburg1920"], 1933: ["healdsburg1940"],
+                              1953: ["healdsburg1955", "guerneville1955"]}),
+    "sebastopol": dict(name="Sebastopol", places=["0670770"], bbox=(-122.85, 38.385, -122.80, 38.42),
+                       snaps={1935: ["sebastopol1942"], 1952: ["sebastopol1954"]}),
+    "st_helena": dict(name="St. Helena", places=["0664140"], bbox=(-122.50, 38.485, -122.44, 38.53),
+                      snaps={1899: ["napa1902"], 1942: ["sonoma1942", "sthelena1945"],
+                             1957: ["rutherford1951", "sthelena1960"]}),
+    "calistoga": dict(name="Calistoga", places=["0609892"], bbox=(-122.61, 38.56, -122.55, 38.60),
+                      snaps={1915: ["calistoga1927"], 1943: ["calistoga1945"], 1957: ["calistoga1958"]}),
+    "fairfield": dict(name="Fairfield - Suisun City", places=["0623182", "0675630"],
+                      bbox=(-122.08, 38.225, -122.00, 38.275),
+                      snaps={1896: ["karquines1898"], 1915: ["mtvaca1921"], 1940: ["carquinezstrait1940", "mtvaca1942"],
+                             1948: ["fairfieldsouth1949", "fairfieldnorth1951"]}),
+    "vacaville": dict(name="Vacaville", places=["0681554"], bbox=(-122.02, 38.335, -121.95, 38.38),
+                      snaps={1906: ["vacaville1908"], 1939: ["vacaville1941", "mtvaca1942"],
+                             1949: ["elmira1953", "fairfieldnorth1951"]}),
+    "dixon": dict(name="Dixon", places=["0619402"], bbox=(-121.85, 38.43, -121.80, 38.465),
+                  snaps={1906: ["vacaville1908"], 1939: ["vacaville1941"], 1949: ["dixon1952"]}),
+    "rio_vista": dict(name="Rio Vista", places=["0660984"], bbox=(-121.72, 38.14, -121.67, 38.18),
+                      snaps={1908: ["riovista1910"], 1949: ["riovista1953"]}),
+    "gilroy": dict(name="Gilroy", places=["0629504"], bbox=(-121.61, 36.985, -121.54, 37.03),
+                   snaps={1915: ["morganhill1917", "sanjuanbautista1917"],
+                          1939: ["morganhill1941", "sanjuanbautista1940"], 1953: ["gilroy1955", "chittenden1955"]}),
+    "morgan_hill": dict(name="Morgan Hill", places=["0649278"], bbox=(-121.68, 37.105, -121.62, 37.155),
+                        snaps={1915: ["morganhill1917"], 1939: ["morganhill1941"],
+                               1953: ["morganhill1955", "mtmadonna1955"]}),
+    "antioch": dict(name="Antioch", places=["0602252"], bbox=(-121.85, 37.985, -121.77, 38.03),
+                    snaps={1907: ["antioch1908"], 1949: ["antiochnorth1953"]}),
+    "pittsburg": dict(name="Pittsburg", places=["0657456"], bbox=(-121.92, 38.0, -121.85, 38.045),
+                      snaps={1907: ["antioch1908"], 1949: ["honkerbay1953", "antiochnorth1953"]}),
+    "brentwood": dict(name="Brentwood", places=["0608142"], bbox=(-121.72, 37.915, -121.67, 37.95),
+                      snaps={1911: ["byron1916"], 1940: ["byron1940"], 1949: ["brentwood1954"]}),
+    "cloverdale": dict(name="Cloverdale", places=["0614190"], bbox=(-123.04, 38.785, -122.99, 38.825),
+                       snaps={1922: ["hopland1938"], 1942: ["hopland1944"], 1957: ["cloverdale1960"]}),
+    "capitola": dict(name="Capitola - Soquel", places=["0611040", "0672688"], bbox=(-121.98, 36.965, -121.93, 37.005),
+                     snaps={1912: ["capitola1914"], 1938: ["capitola1940"], 1952: ["soquel1954"]}),
+    "boulder_creek": dict(name="Boulder Creek - Felton (San Lorenzo Valley: also Ben Lomond, Brookdale)",
+                          places=["0607652", "0623826", "0605332", "0608478"], bbox=(-122.14, 37.03, -122.05, 37.14),
+                          snaps={1899: ["santacruz1902"], 1953: ["felton1955", "castlerockridge1955", "bigbasin1955"]}),
+})
+
 for (t_, y_), v_ in NOTES.items():
     TOWNS[t_].setdefault("notes", {})[y_] = v_
 
@@ -251,7 +444,7 @@ def nad27_tfs(crs_wkt):
         crs = pyproj.CRS.from_wkt(crs_wkt)
         geo = crs.geodetic_crs
         tg = TransformerGroup("EPSG:4326", geo, always_xy=True,
-                              area_of_interest=pyproj.aoi.AreaOfInterest(-123.5, 36.5, -121.0, 38.8))
+                              area_of_interest=pyproj.aoi.AreaOfInterest(-123.7, 36.5, -121.0, 39.1))
         _T[key] = (tg.transformers[0], pyproj.Transformer.from_crs(geo, crs, always_xy=True))
     return _T[key]
 
@@ -434,9 +627,13 @@ def land_poly(bounds):
     box = shapely.box(*bounds)
     ll = to_ll(box).bounds
     ws = []
-    for c in ("06001", "06013", "06041", "06081", "06085"):
-        w = gpd.read_file(f"zip://{ROOT / 'data' / 'raw' / 'tiger' / f'tl_2024_{c}_areawater.zip'}",
-                          bbox=tuple(ll))
+    for c in ("06001", "06013", "06041", "06081", "06085", "06055", "06095", "06097", "06087"):
+        zp = ROOT / "data" / "raw" / "tiger" / f"tl_2024_{c}_areawater.zip"
+        if not zp.exists():
+            import subprocess
+            subprocess.run(["curl", "-sS", "-L", "-m", "300", "-o", str(zp),
+                            f"https://www2.census.gov/geo/tiger/TIGER2024/AREAWATER/{zp.name}"], check=True)
+        w = gpd.read_file(f"zip://{zp}", bbox=tuple(ll))
         if len(w):
             ws += list(w.to_crs(UTM).geometry)
     water = shapely.union_all(ws).buffer(0) if ws else shapely.Polygon()
@@ -576,7 +773,9 @@ def align(sh, grid, small, vs, bounds_ll):
         wsum = A[inl, 4].sum()
         if wsum > best_w:
             best_w, use = wsum, inl
-    if use.sum() < 2 or use.sum() < 0.35 * len(A):
+    # (mountain sheets: most windows match contours, not streets; 8+ windows agreeing within 2 tol out of a
+    # +-420 m search cannot be chance)
+    if use.sum() < 2 or (use.sum() < 0.35 * len(A) and use.sum() < 8):
         out.update(aligned=False, reason=f"no consensus ({int(use.sum())} of {len(A)})")
         return out
     xc, yc = A[use, 0].mean(), A[use, 1].mean()
@@ -602,6 +801,51 @@ def align(sh, grid, small, vs, bounds_ll):
     return out
 
 
+def align_local(town, key):
+    """Fallback for sheets whose quadrangle has too few streets for the windowed fit (mountain sheets:
+    Hopland 1938): one constant shift from the town itself (its box + 600 m, 5 m pixels), accepted
+    when the correlation peak is distinct. Cached per sheet and town."""
+    import cv2
+    p = INT / f"align_{key}_{town}.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    sh = S[key]
+    w, s, e, n = TOWNS[town]["bbox"]
+    bb = (w - 0.007, s - 0.0055, e + 0.007, n + 0.0055)
+    grid = Grid(bb, 5.0)
+    out = {"aligned": False, "reason": "local: no distinct peak", "n_windows": 1}
+    img, valid = render(sh, grid, None, pdf_step=2)
+    if img is not None:
+        ink = ink_mask(img, sh["style"]).astype(np.float32)
+        rr = np.zeros(ink.shape, np.uint8)
+        for cls, g in modern_roads(bb, {"primary", "secondary", "tertiary", "residential", "unclassified", "trunk"}):
+            g = to_utm(g)
+            for line in getattr(g, "geoms", [g]):
+                c = np.asarray(line.coords)
+                px = np.column_stack([(c[:, 0] - grid.x0) / grid.res, (grid.y1 - c[:, 1]) / grid.res])
+                cv2.polylines(rr, [np.round(px).astype(np.int32)], False, 1, 1)
+        Rb = cv2.GaussianBlur(rr.astype(np.float32), (0, 0), 1.5)
+        Ib = cv2.GaussianBlur(ink, (0, 0), 1.5)
+        S_ = int((420 if sh["style"] == "early" else 120) / grid.res)
+        if min(Rb.shape) > 2 * S_ + 40:
+            tpl = Rb[S_:-S_, S_:-S_]
+            cc = cv2.matchTemplate(Ib, tpl, cv2.TM_CCOEFF_NORMED)
+            _, r1, _, (lx, ly) = cv2.minMaxLoc(cc)
+            sup = max(2, int(50 / grid.res))
+            cc2 = cc.copy()
+            cc2[max(ly - sup, 0):ly + sup + 1, max(lx - sup, 0):lx + sup + 1] = -1
+            r2 = float(cc2.max())
+            dX, dY = (lx - S_) * grid.res, -(ly - S_) * grid.res
+            out.update(peak=round(float(r1), 3), second=round(r2, 3))
+            if r1 >= 0.10 and r1 - r2 >= 0.015:
+                out = {"aligned": True, "model": "constant (town window)", "xc": float(grid.x0 + grid.W * grid.res / 2),
+                       "yc": float(grid.y1 - grid.H * grid.res / 2), "cx": [float(dX), 0.0, 0.0],
+                       "cy": [float(dY), 0.0, 0.0], "n_windows": 1, "n_used": 1, "rms_m": None,
+                       "shift_m": round(float(np.hypot(dX, dY)), 1), "peak": round(float(r1), 3), "second": round(r2, 3)}
+    p.write_text(json.dumps(out, indent=1))
+    return out
+
+
 # --------------------------------------------------------------------------- per sheet
 TINT_OPEN_MM = 0.9
 NEAT_MM = 0.5      # ink this close to the quadrangle edge (neat line, ticks) is not read
@@ -621,6 +865,8 @@ def masks(town, key, preview=False):
     sh = S[key]
     grid = Grid(TOWNS[town]["bbox"])
     model = align_sheet(key)
+    if not model.get("aligned"):
+        model = align_local(town, key)
     print(key, "align", {k: model.get(k) for k in ("aligned", "model", "n_windows", "n_used", "rms_m", "shift_m", "reason")})
     if sh["style"] == "tint" and model.get("aligned") and model.get("shift_m", 0) < 6:
         model = None                        # accurate 1:24,000 sheets: as published

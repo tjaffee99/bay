@@ -775,3 +775,227 @@ route("sfo_7th_st", "San Francisco & Oakland Railroad / SP 7th Street line (Oakl
                    "trains (1911-41). Its continuation through East Oakland to Fruitvale is not traced here.",
               confidence="estimated"),
       ])
+
+
+# =====================================================================================
+# THE NEW COUNTIES (2026-11): lost railways of Sonoma, Napa, Solano and Santa Cruz
+# Geometry: OSM abandoned / disused grades (Overture rail 2026-10-21) and OpenHistoricalMap ways (CC0;
+# data/raw/historic_rail/h2_ohm_newarea.json, written by `python pipeline/ohm_import.py railextract`) through the
+# `rail` method; dates never from OHM (decision 39). Build only these: `python historic_rail_trace.py build
+# npc_north nwp_guerneville nwp_sebastopol psr_two_rock sp_santa_rosa nwp_sonoma sp_calistoga sfnp_donahue
+# vaca_valley sn_dozier_north spc_boulder_creek sp_loma_prieta pvc osr_south wtc` (a build without ids drops the
+# OHM features merged by hand into historic_rail.geojson).
+# =====================================================================================
+NWPW = WIKI + "Northwestern_Pacific_Railroad"
+SFNPW = WIKI + "San_Francisco_and_North_Pacific_Railroad"
+PSRW = WIKI + "Petaluma_and_Santa_Rosa_Railroad"
+OHMW = "https://www.openhistoricalmap.org/way/"
+SCT = "https://www.santacruztrains.com/"
+
+route("npc_north", "North Pacific Coast Railroad (narrow gauge) in Sonoma County: Valley Ford - Occidental - Monte Rio - "
+      "Duncans Mills", "narrow_gauge", NWPW, [
+          seg("Valley Ford - Freestone - Occidental - Camp Meeker - Monte Rio", 1876.5, 1930.25,
+              rail((-122.90845, 38.30562), (-122.92742, 38.32013), (-122.91818, 38.34101), (-122.91749, 38.36309), (-122.92528, 38.38048), (-122.93022, 38.3946), (-122.94793, 38.40964), (-122.9596, 38.42805), (-122.9789, 38.44369), (-123.00166, 38.44876), (-123.00795, 38.46533), join=250.0),
+              note="North Pacific Coast narrow gauge, built from Tomales to the Russian River in 1876 (month ESTIMATED); "
+                   "last narrow-gauge train 29 March 1930, the line between Monte Rio and Point Reyes Station dismantled "
+                   "that autumn (Wikipedia, Northwestern Pacific Railroad). Geometry: OpenHistoricalMap way 202387713 "
+                   "(CC0; from USGS topographic maps and 3DEP lidar), OSM grade at Valley Ford.",
+              confidence="estimated", geometry_confidence="medium", source_url=NWPW + " " + OHMW + "202387713"),
+          seg("Monte Rio - Duncans Mills (dual gauge with the Guerneville branch from 1909)", 1876.9, 1935.5,
+              rail((-123.00795, 38.46533), (-123.03106, 38.46903), (-123.05382, 38.45286), join=250.0),
+              note="Rails reached Duncans Mills in 1876 (Wikipedia, Northwestern Pacific Railroad; 1877 in other "
+                   "accounts - ESTIMATED); the Guerneville branch was extended from Monte Rio to Duncans Mills as dual "
+                   "gauge by 1909; rails removed in 1935 (month ESTIMATED). The Duncans Mills - Cazadero line (1886 - "
+                   "c.1933) is not drawn: no early survey of it was found. Geometry: OpenHistoricalMap ways 202387715 "
+                   "and 200372102 (CC0; the latter 'route is approximate').",
+              confidence="estimated", geometry_confidence="medium", standard_gauge=1909.0,
+              source_url=NWPW + " " + OHMW + "202387715"),
+      ])
+
+route("nwp_guerneville", "Fulton and Guerneville Railroad (SF&NP / Northwestern Pacific Guerneville branch)", "rail", SFNPW, [
+    seg("Fulton - Mirabel - Hilton - Korbel - Rio Nido - Guerneville", 1877.0, 1935.5,
+        rail((-122.77147, 38.49536), (-122.79776, 38.49053), (-122.82463, 38.48332), (-122.8451, 38.49158), (-122.86566, 38.48901), (-122.89527, 38.49333), (-122.91555, 38.50773), (-122.94045, 38.50403), (-122.9659, 38.50828), (-122.98189, 38.517), (-123.00073, 38.5011)),
+        note="Fulton and Guerneville Railroad (formed 1874), SF&NP branch completed to Guerneville in 1877; rails removed "
+             "in 1935 and River Road built on the grade (Wikipedia: San Francisco and North Pacific Railroad, "
+             "Northwestern Pacific Railroad). Months ESTIMATED. Geometry: OpenHistoricalMap way 202387871 (CC0; from "
+             "USGS 3DEP lidar).", confidence="estimated", geometry_confidence="medium",
+        source_url=SFNPW + " " + NWPW + " " + OHMW + "202387871"),
+    seg("Guerneville - Guernewood Park - Monte Rio (line of 1909 to the narrow gauge)", 1909.0, 1935.5,
+        road((-123.00054, 38.50199), (-123.00532, 38.50075), (-123.00645, 38.49675), (-123.01111, 38.49406), (-123.01521, 38.49221), (-123.01587, 38.48773), (-123.01374, 38.48427), (-123.00929, 38.48215), (-123.00382, 38.48167), snap=80.0),
+        rail((-123.00361, 38.48165), (-122.99741, 38.48062), (-122.99993, 38.47576), (-123.00254, 38.47034), (-123.00552, 38.46766), (-123.01065, 38.46462), join=60.0),
+        note="After the flood of 19 March 1907 destroyed the branch's bridge at Bohemia, NWP rebuilt it half a mile "
+             "downriver and extended the branch to Monte Rio and Duncans Mills by 1909; rails removed 1935, River Road "
+             "/ SR 116 took the grade (Wikipedia, Northwestern Pacific Railroad). The earlier extension below "
+             "Guerneville (to the Bohemia bridge, before 1907) is not drawn. Geometry: today's highway from "
+             "Guerneville to Northwood, then OpenHistoricalMap ways 200372095 / 200372105 / 200372106 / 200372091 "
+             "(CC0, 'routes are approximate') - LOW CONFIDENCE.", confidence="estimated", geometry_confidence="low",
+        source_url=NWPW),
+])
+
+route("nwp_sebastopol", "Santa Rosa - Sebastopol: SF&NP Sebastopol branch (1890) and the Petaluma & Santa Rosa interurban "
+      "(1904)", "rail", SFNPW, [
+          seg("SF&NP Sebastopol branch: Santa Rosa - Leddy - Sebastopol", 1890.0, 1904.92,
+              rail((-122.72122, 38.42246), (-122.73974, 38.42987), (-122.76896, 38.4265), (-122.79278, 38.41221), (-122.82039, 38.39995)),
+              note="Santa Rosa, Sebastopol and Green Valley Railroad, SF&NP branch completed in 1890 (month ESTIMATED). "
+                   "From December 1904 the Petaluma & Santa Rosa interurban ran beside it (next segment). Geometry: "
+                   "OpenHistoricalMap way 202387872 (CC0; from USGS topographic maps).",
+              confidence="estimated", geometry_confidence="medium", source_url=SFNPW + " " + OHMW + "202387872"),
+          seg("Santa Rosa - Sebastopol: Petaluma & Santa Rosa interurban beside the NWP branch (one line from the 1940s)",
+              1904.92, 1984.0, rail((-122.72122, 38.42246), (-122.73974, 38.42987), (-122.76896, 38.4265), (-122.79278, 38.41221), (-122.82039, 38.39995)), mode="interurban",
+              note="Petaluma & Santa Rosa trolleys reached the west side of the steam railroad at Santa Rosa on "
+                   "1 December 1904 (crossing installed 1 March 1905); NWP bought the P&SR in 1932, trolley service "
+                   "ended 1 July 1932; the P&SR track was dismantled from Santa Rosa to Leddy in 1946-47 and the NWP "
+                   "branch track west of Leddy in the 1930s (SR 12 took its grade), leaving one line Santa Rosa - "
+                   "Leddy - Sebastopol, abandoned 1984-89 (now the Joe Rodota Trail; end year ESTIMATED). The two "
+                   "tracks ran side by side west of Leddy and are drawn as one line. Geometry: OpenHistoricalMap way "
+                   "202387872 (CC0).", confidence="estimated", geometry_confidence="medium",
+              source_url=PSRW + " " + NWPW),
+      ])
+
+route("psr_two_rock", "Petaluma & Santa Rosa Railroad: Two Rock branch", "interurban", PSRW, [
+    seg("Liberty - Cherry - Two Rock", 1913.57, 1952.5,
+        pts((-122.7045, 38.2838), (-122.72092, 38.28435), chaikin=0),
+        rail((-122.72092, 38.28435), (-122.74663, 38.28567), (-122.76638, 38.2765), (-122.79061, 38.26738)),
+        note="Branch from Liberty to Two Rock opened 28 July 1913; passenger service ended 30 September 1925; "
+             "dismantled 1952 (month ESTIMATED). Geometry: OSM abandoned grade ('Petaluma and Santa Rosa Railroad'); "
+             "the first 1.4 km from the main line at Liberty are a straight link (not mapped).",
+        confidence="exact", geometry_confidence="medium"),
+])
+
+route("sp_santa_rosa", "Santa Rosa and Carquinez Railroad (Southern Pacific Santa Rosa branch through the Valley of the "
+      "Moon)", "rail", WIKI + "Santa_Rosa_and_Carquinez_Railroad", [
+          seg("Santa Rosa (North Street yard) - Melita - Kenwood - Glen Ellen", 1888.0, 1935.0,
+              rail((-122.70829, 38.44597), (-122.68105, 38.44848), (-122.66091, 38.46148), (-122.63636, 38.45412), (-122.61247, 38.44324), (-122.58872, 38.43361), (-122.56621, 38.41994), (-122.5407, 38.40473), (-122.53032, 38.38929), (-122.51342, 38.37504), (-122.52247, 38.35413), names=["OHM way 200461230"]),
+              note="Completed in 1888 from Santa Rosa through the Valley of the Moon to Sonoma, Schellville and Napa "
+                   "Junction; the line north of Glen Ellen was abandoned in 1935 (Montgomery Drive in Santa Rosa is on "
+                   "the grade) (Wikipedia, Santa Rosa and Carquinez Railroad). Months ESTIMATED. Geometry: "
+                   "OpenHistoricalMap way 200461230 (CC0; from the USGS Santa Rosa 1916 sheet).",
+              confidence="estimated", geometry_confidence="medium",
+              source_url=WIKI + "Santa_Rosa_and_Carquinez_Railroad " + OHMW + "200461230"),
+          seg("Glen Ellen - Yulupa - Agua Caliente - Sonoma (SP station) - Schellville", 1888.0, 1942.71,
+              rail((-122.52247, 38.35413), (-122.5052, 38.33764), (-122.49616, 38.31742), names=["OHM way 200461230"]),
+              rail((-122.49616, 38.31742), (-122.48483, 38.29707), (-122.47746, 38.27974), (-122.46639, 38.25688), (-122.44478, 38.2471), join=300.0),
+              note="Same line. NWP's parallel track Yulupa - Glen Ellen was given up in 1934 in favour of this one, "
+                   "and the Sonoma - Yulupa - Glen Ellen trackage of both railroads was abandoned in 1942 (15 Sept "
+                   "1942; abandonedrails.com 'Glen Ellen Branch'). Wikipedia dates the abandonment Santa Rosa - Sonoma "
+                   "to 1935; the end of the piece south of Sonoma is ESTIMATED. Geometry: OpenHistoricalMap way "
+                   "200461230 north of 38.317 N, OSM abandoned grade south of it.",
+              confidence="estimated", geometry_confidence="medium",
+              source_url="https://www.abandonedrails.com/glen-ellen-branch"),
+      ])
+
+route("nwp_sonoma", "Sonoma Valley Railroad (Northwestern Pacific Sonoma / Glen Ellen branch)", "narrow_gauge",
+      "https://www.abandonedrails.com/glen-ellen-branch", [
+          seg("Schellville - Vineburg - Sonoma", 1879.5, 1975.0,
+              rail((-122.44014, 38.24954), (-122.4374, 38.27806), (-122.4517, 38.2947)),
+              note="Sonoma Valley Railroad (3 ft gauge), extended into Sonoma in 1879 (month ESTIMATED), standard "
+                   "gauge 1890; 'the SP/NWP continued to serve Sonoma until the 1970s' (abandonedrails.com) - end year "
+                   "ESTIMATED. Geometry: OSM abandoned grade.", confidence="estimated", standard_gauge=1890.0,
+              source_url="https://www.abandonedrails.com/glen-ellen-branch " + NWPW),
+      ])
+
+route("sp_calistoga", "Napa Valley Rail Road: St. Helena - Calistoga (Southern Pacific Calistoga branch)", "rail",
+      "https://www.abandonedrails.com/calistoga-branch", [
+          seg("St. Helena - Krug (track in place, Napa Valley Wine Train)", 1868.58, 9999,
+              rail((-122.46949, 38.50607), (-122.48394, 38.51999), join=60.0),
+              note="Napa Valley Rail Road, opened to Calistoga on 31 July 1868; this part is still in place."),
+          seg("Krug - Barro - Bale - Calistoga", 1868.58, 1969.0,
+              rail((-122.48394, 38.51999), (-122.48955, 38.52361), (-122.50292, 38.54635), (-122.52727, 38.55946), (-122.55159, 38.56841), (-122.57818, 38.58001), join=60.0),
+              note="Opened to Calistoga 31 July 1868. Southern Pacific applied on 18 September 1968 to abandon the "
+                   "Calistoga Branch from M.P. 88.750 near Krug to its end at Calistoga (6.916 mi); the rails were "
+                   "pulled up in the 1970s (abandonedrails.com, ICC docket 25306). End year ESTIMATED. Geometry: OSM "
+                   "abandoned grade ('Calistoga Branch').", confidence="estimated"),
+      ])
+
+route("sfnp_donahue", "San Francisco & North Pacific Railroad: Petaluma - Lakeville - Donahue Landing", "rail", SFNPW, [
+    seg("Petaluma - Lakeville - Donahue Landing", 1870.0, 1884.36,
+        rail((-122.619, 38.23326), (-122.59365, 38.228), (-122.56775, 38.21785), (-122.55334, 38.20686), (-122.54157, 38.18613)),
+        note="The SF&NP's first southern terminus: trains met the San Francisco steamers at Donahue Landing on the "
+             "Petaluma River from 1870 until the line to Tiburon opened in 1884 (Wikipedia, San Francisco and North "
+             "Pacific Railroad). When the track to the landing was taken up was not found: shown until 1884 "
+             "(ESTIMATED). Geometry: OSM abandoned grade (ends at Lakeville, just short of the landing).",
+        confidence="estimated"),
+])
+
+route("vaca_valley", "Vaca Valley Railroad (Vaca Valley & Clear Lake RR / Southern Pacific Winters branch)", "rail",
+      WIKI + "Vaca_Valley_and_Clear_Lake_Railroad", [
+          seg("Vacaville - Allendale - Winters (Putah Creek)", 1875.65, 1975.0,
+              rail((-121.97627, 38.35427), (-121.97919, 38.36474), (-121.96562, 38.39305), (-121.94675, 38.41749), (-121.94293, 38.43496), (-121.94285, 38.46293), (-121.94651, 38.4794), (-121.95317, 38.49657), (-121.96717, 38.5195), join=400.0),
+              note="Track between Vacaville and Winters opened 26 August 1875; this part 'was abandoned in the 1970s' "
+                   "(Wikipedia) - end year ESTIMATED. Geometry: OSM abandoned grade ('Winters Branch').",
+              confidence="estimated"),
+      ])
+
+route("sn_dozier_north", "Sacramento Northern (Oakland, Antioch & Eastern) main line north of Dozier", "interurban",
+      WIKI + "Sacramento_Northern_Railway", [
+          seg("Dozier - Yolano - Solano County line (toward the Lisbon trestle and Sacramento)", 1913.0, 1954.0,
+              rail((-121.82007, 38.2858), (-121.79772, 38.30703), (-121.78653, 38.31956), (-121.76796, 38.34034), (-121.73082, 38.3819), (-121.69367, 38.42316), (-121.6679, 38.452), (-121.66229, 38.45815)),
+              note="Oakland, Antioch & Eastern main line to Sacramento, opened 1913; most traffic on the main line "
+                   "south of Sacramento ceased when the train ferry Ramon was withdrawn in 1954 (as routes.csv "
+                   "ir_sn_solano; the track was taken up later - end ESTIMATED). Geometry: OSM abandoned grade "
+                   "('Dozier to Sacramento'), to the edge of the map.", confidence="estimated"),
+      ])
+
+route("spc_boulder_creek", "Felton & Pescadero Railroad (South Pacific Coast / Southern Pacific Boulder Creek branch)",
+      "narrow_gauge", SCT + "2019/03/stations-boulder-creek.html", [
+          seg("Felton - Ben Lomond - Brookdale - Boulder Creek", 1885.4, 1934.07,
+              rail((-122.07255, 37.04584), (-122.07802, 37.06257), (-122.07792, 37.08068), (-122.09545, 37.09551), (-122.11043, 37.11042), (-122.12216, 37.12811), join=250.0),
+              note="Felton & Pescadero Railroad, completed to Boulder Creek in 1885 (month ESTIMATED) in place of the "
+                   "San Lorenzo Valley flume; standard gauge with the main line c.1908-09 (ESTIMATED); Southern "
+                   "Pacific petitioned for abandonment 30 August 1933, abandoned 26 January 1934 (santacruztrains.com). "
+                   "Geometry: OSM abandoned grade and OpenHistoricalMap ways 200444390 / 200446467-81 (CC0).",
+              confidence="estimated", standard_gauge=1909.2),
+          seg("Dougherty Extension Railroad: Boulder Creek - Wildwood - Doughertys", 1888.4, 1917.9,
+              rail((-122.12216, 37.12811), (-122.12601, 37.13361), (-122.13083, 37.13901), (-122.13317, 37.14587), (-122.13685, 37.15204), join=250.0),
+              note="Lumber railroad of the Santa Clara Valley Mill & Lumber Co. north of Boulder Creek, opened 1888 "
+                   "(month ESTIMATED), track scrapped in late 1917 (santacruztrains.com). Only the first 3 km "
+                   "(OpenHistoricalMap way 200446492, CC0) are drawn.", confidence="estimated",
+              geometry_confidence="medium", source_url=SCT + "search?q=dougherty+extension+railroad"),
+      ])
+
+route("sp_loma_prieta", "Loma Prieta Railroad (Southern Pacific Loma Prieta branch, Aptos Creek)", "rail",
+      SCT + "search?q=loma+prieta+branch", [
+          seg("Aptos - Molino - Loma Prieta", 1883.8, 1928.13,
+              rail((-121.90308, 36.98249), (-121.90648, 37.00182), (-121.90543, 37.021), (-121.90171, 37.02761), join=100.0),
+              note="Loma Prieta Railroad up Aptos Creek to the Loma Prieta Lumber Company's mill, 1883 (month "
+                   "ESTIMATED); logging ended 1921, abandonment petitioned 30 November 1927, branch abandoned "
+                   "19 February 1928 (santacruztrains.com). Geometry: OSM abandoned grade (Forest of Nisene Marks); "
+                   "the split at the mill site (37.0275 N) is ESTIMATED.", confidence="estimated"),
+          seg("Loma Prieta - Monte Vista (upper Aptos Creek)", 1884.2, 1902.5,
+              rail((-121.90171, 37.02761), (-121.89721, 37.03606), (-121.88978, 37.04676), (-121.88669, 37.05495), join=100.0),
+              note="Extension to the mill at Monte Vista completed 14 March 1884 (extended again 1888); the branch "
+                   "beyond Loma Prieta station was abandoned on 30 June 1902 (santacruztrains.com). Geometry: OSM "
+                   "abandoned grade."),
+      ])
+
+route("pvc", "Pajaro Valley Consolidated Railroad (narrow gauge): Watsonville - Moss Landing - Spreckels", "narrow_gauge",
+      SCT + "search?q=pajaro+valley+consolidated+railroad", [
+          seg("Watsonville - Pajaro River (toward Moss Landing and Spreckels)", 1890.0, 1929.5,
+              rail((-121.76305, 36.90166), (-121.768, 36.8856), (-121.78967, 36.88151), (-121.80237, 36.86666), (-121.80469, 36.84659), join=150.0),
+              note="Claus Spreckels' beet railroad (Pajaro Valley Railroad, 1890 - year from the project brief, "
+                   "ESTIMATED); abandonment petitioned June 1928, shut down in 1929 and scrapped by Southern Pacific "
+                   "(santacruztrains.com). Geometry: OSM abandoned grade, to the edge of the map.",
+              confidence="estimated"),
+      ])
+
+route("osr_south", "Ocean Shore Railway, Southern Division (Santa Cruz - Davenport - Swanton)", "rail",
+      WIKI + "Ocean_Shore_Railroad", [
+          seg("Davenport - Scott Creek - Swanton", 1906.4, 1923.0,
+              rail((-122.19709, 37.01269), (-122.21617, 37.02844), (-122.2293, 37.0501), join=250.0),
+              note="The southern section opened to Swanton in May 1906 (regular service from June); main-line service "
+                   "ended in 1920 and the line north from Santa Cruz was leased to the San Vicente Lumber Company, "
+                   "which used the tracks until 1923 (month ESTIMATED) (Wikipedia, Ocean Shore Railroad). Santa Cruz - "
+                   "Davenport ran beside the Coast Line Railroad (routes.csv rr_santa_cruz) and is not drawn twice. "
+                   "Geometry: OSM abandoned grade.", confidence="estimated"),
+      ])
+
+route("wtc", "Watsonville Transportation Company (Watsonville Railway & Navigation Co.): Watsonville - Port Watsonville",
+      "interurban", WIKI + "Watsonville_Traction_Company", [
+          seg("Main St - Wall (West Beach) St - Beach Road - Port Rogers / Port Watsonville", 1904.4, 1913.8,
+              road((-121.7569, 36.91025), (-121.76354, 36.90709), (-121.76957, 36.9037), (-121.77689, 36.89827), (-121.78033, 36.89578), (-121.79252, 36.88672), (-121.79815, 36.88253), (-121.81534, 36.86974), names=["Beach"], snap=80.0),
+              note="3 ft gauge electric line from Wall and Main streets down Wall St and along Beach Road to the wharf "
+                   "at Port Rogers; completed about May 1904; bankrupt 8 September 1905 and idle until reorganised in "
+                   "1911 (Port Watsonville); operations ceased October 1913 (Wikipedia, Watsonville Traction Company). "
+                   "Geometry: today's West Beach Street and Beach Road (the line ran in / beside them); the wharf is "
+                   "not drawn.", geometry_confidence="medium"),
+      ])

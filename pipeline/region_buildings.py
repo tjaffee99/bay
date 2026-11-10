@@ -194,6 +194,11 @@ def assign_years(g):
     year = clearance_bounds(xy, year, conf)
     year = site_bounds(g, year, conf, src)
     year = ohm_bounds(g, year, conf, src)
+    # wildfires (pipeline/fires.py, data/manual/fires; unchanged without that folder): a
+    # footprint where CAL FIRE recorded a destroyed structure is the rebuild (starts after
+    # the fire) or, with no sign of a rebuild, the building that burned (ends at the fire)
+    import fires
+    year, conf, end = fires.rebuild_years(g, xy, year, conf, end, src)
     log(f"region: years exact {(conf == 'exact').sum()}, estimated {(conf != 'exact').sum()}")
     return year, raw, conf, end, src
 

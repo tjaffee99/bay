@@ -2,7 +2,7 @@
 
 Files covered here:
 
-- `data/manual/fill_zones.csv`: 261 dated zones (2026-11: 153 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
+- `data/manual/fill_zones.csv`: 303 dated zones (2026-11: 184 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
 - `data/tables/landcover_history.csv`: the pre-urban land cover to paint under today's city, with dates.
 - New raw downloads in `data/raw/`. They are listed under "Downloaded datasets" below.
 

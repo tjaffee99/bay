@@ -60,6 +60,11 @@ STANFORD_BBOX = (37.395, -122.205, 37.445, -122.145)
 # the core Bay Area (pipeline/extent.py) in four boxes
 REGION_BOXES = [(37.08, -123.1, 37.65, -122.3), (37.65, -123.1, 38.22, -122.3),
                 (37.08, -122.3, 37.65, -121.54), (37.65, -122.3, 38.22, -121.54)]
+# the ten-county extent of 2026-11 (Sonoma, Napa, Solano, Santa Cruz, east Contra Costa, south Santa Clara):
+# what the core boxes leave out, downloaded 2026-11-10
+NEW_AREA_BOXES = [(38.22, -123.67, 38.90, -122.3), (38.22, -122.3, 38.90, -121.17),
+                  (36.79, -122.45, 37.08, -121.17), (37.08, -121.54, 38.22, -121.17)]
+REGION_BOXES = REGION_BOXES + NEW_AREA_BOXES
 
 
 def h01(key: str, salt: str = "") -> float:
@@ -1277,6 +1282,66 @@ def write_rail_picks(g):
     log(f"rail: {len(rg)} railway segments -> historic_rail_ohm.geojson, {len(rt)} route rows -> routes_ohm.csv")
 
 
+# ================================================================== extras: lost railways of the new counties
+# OHM ways of railways whose track is gone (Sonoma, Santa Cruz, Solano), handed to historic_rail_trace.py: its
+# `rail` method routes on data/raw/historic_rail/h2_*.json next to the Overture / OSM grades, so the routes of
+# data/manual/historic_rail_spec.py (dates, sources and sections live there - never OHM's dates) can follow them.
+# (name, (w, s, e, n) box the ways are clipped to, keep(tags) or None)
+NEW_AREA_RAIL_BOXES = [
+    # NPC narrow gauge Valley Ford - Occidental - Monte Rio - Duncans Mills (ways 202387713 / 202387715, from USGS
+    # topo sheets and 3DEP lidar), the Guerneville branch (202387871, 3DEP) and its 1909 extension, the SF&NP
+    # Sebastopol branch (202387872) and SP's Santa Rosa branch through the Valley of the Moon (200461230)
+    # (not the Santa Rosa street railway ways, nor the St. Helena - Calistoga line: OSM has that grade)
+    ("sonoma", (-123.20, 38.315, -122.45, 38.56),
+     lambda t: t.get("name") not in ("Fourth Street", "McDonald Avenue")
+     and "1945 topographic" not in str(t.get("source", ""))),
+    # Boulder Creek branch (Felton - Boulder Creek; santacruztrains.com), not the SPC main line beside it
+    ("boulder_creek", (-122.14, 37.045, -122.065, 37.155),
+     lambda t: str(t.get("end_date", "")).startswith("1934")),
+    # Sacramento Northern: Creed - Vacaville Junction link of 1930 (cut by the air base)
+    ("sn_vacaville", (-121.97, 38.24, -121.85, 38.30), lambda t: str(t.get("end_date", "")) in ("1950", "1960")),
+]
+
+
+def write_rail_extract():
+    """data/raw/historic_rail/h2_ohm_newarea.json: Overpass-style JSON of the OHM railway ways above that are not
+    today's track (end-dated, or < 50 % within 40 m of an Overture track in use), clipped to their box. Way ids
+    are written negative (OHM ids, not OSM ids)."""
+    import pyarrow.parquet as pq  # noqa: F401
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    g = to_gdf({k: e for k, e in els.items() if k[0] == "way"}, keep=lambda t: "railway" in t)
+    g = g[g.geom_type.isin(["LineString", "MultiLineString"])].reset_index(drop=True)
+    ov = gpd.read_parquet(RAW / "overture" / "2026-10-21.0" / "rail.parquet").set_crs(4326, allow_override=True)
+    gone = np.array([any(v in ("is_abandoned", "is_disused") for x in (f if f is not None else []) for v in x["values"])
+                     for f in ov.rail_flags])
+    out = []
+    for name, (w, s_, e, n), keep in NEW_AREA_RAIL_BOXES:
+        box = shapely.geometry.box(w, s_, e, n)
+        sub = g[g.intersects(box)]
+        act = shapely.union_all(ov[~gone].cx[w - 0.01:e + 0.01, s_ - 0.01:n + 0.01].to_crs(UTM).geometry.values).buffer(40)
+        su = sub.to_crs(UTM)
+        for r, gu in zip(sub.itertuples(), su.geometry.values):
+            t = r.tags
+            if keep is not None and not keep(t):
+                continue
+            on = gu.intersection(act).length / max(gu.length, 1.0)
+            if not t.get("end_date") and on >= 0.5:
+                continue
+            part = r.geometry.intersection(box)
+            for k, ln in enumerate(getattr(part, "geoms", [part])):
+                if ln.geom_type != "LineString" or len(ln.coords) < 2:
+                    continue
+                out.append({"type": "way", "id": -int(r.osm_id) * 10 - k,
+                            "tags": {"railway": "abandoned", "name": f"OHM way {r.osm_id} {t.get('name', '')}".strip(),
+                                     "source": ohm_url("way", r.osm_id)},
+                            "geometry": [{"lon": round(x, 7), "lat": round(y, 7)} for x, y in ln.coords]})
+    p = RAW / "historic_rail" / "h2_ohm_newarea.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"generator": "pipeline/ohm_import.py write_rail_extract (OpenHistoricalMap, CC0)",
+                             "elements": out}))
+    log(f"rail extract: {len(out)} OHM way pieces -> {p}")
+
+
 # ================================================================== extras: demolished buildings in the region
 # cities whose Sanborn maps other agents are tracing now (they may reuse OHM there): flagged, not dropped
 OTHER_AGENT_AREAS = {"palo_alto_menlo_park": (-122.22, 37.40, -122.10, 37.48), "san_mateo": (-122.36, 37.54, -122.28, 37.60),
@@ -1632,6 +1697,8 @@ if __name__ == "__main__":
         write_stanford()
     if cmd in ("rail", "extras", "all"):
         write_rail_picks(write_rail())
+    if cmd in ("railextract", "extras", "all"):
+        write_rail_extract()
     if cmd in ("demolished", "extras", "all"):
         write_region_demolished()
     if cmd in ("camp", "extras", "all"):

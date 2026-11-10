@@ -18,7 +18,7 @@ to fix that, from real maps wherever possible.
 | `traced/permanente_*.geojson` | Permanente pit outlines extracted from the 1960 / 1968 / 1979 / 1991 sheets (`tools/tint.py`) |
 | `traced/audit.csv` | per site: today's footprints, the live map's years, how many the maps draw, how many are corrected and by how much |
 | `traced/audit_terrain.csv` | per part: share of terrain vertices WorldCover calls bare / built (what the c.1800 cover paints as rock) |
-| `tools/` | `build.py` (everything from `industrial_def.py`), `editions.py`, `date_editions.py`, `footprints.py`, `tint.py`, `montage.py`, `audit_terrain.py` |
+| `tools/` | `build.py` (everything from `industrial_def.py`), `editions.py`, `date_editions.py`, `footprints.py`, `tint.py`, `montage.py`, `audit_terrain.py`; `build_ext.py` + `industrial_def_ext.py` (the sites of the ten-county extent, appended to the same files — section below) |
 
 Rebuild: `cd data/manual/industrial_sites && ../../../.venv/bin/python -I tools/build.py` (edition
 presence is cached in `data/interim/industrial_sites/`; `--redate` re-reads the maps; ~30 min cold, one
@@ -325,6 +325,128 @@ fill, which the fill history already dates.)
 * Absence on a topo sheet is weak (urban tint omits buildings; sheets sometimes skip plant buildings), so
   footprints never drawn keep their live year unless it predates the site; and edition dates are
   midpoints (±5–15 years between editions; 1915–1947 is a 32-year gap at the refineries).
+
+## Ten-county extent (2026-11)
+
+When the map grew to ten counties (Solano, Napa, Sonoma, Santa Cruz, east Contra Costa, south Santa Clara)
+the new area had no sites: Mare Island, Travis, the Pittsburg – Antioch waterfront, the Davenport cement
+plant and the quarries and landfills were plain city ground from whatever year their buildings got (federal
+posts and plants mostly 1976–1988, imputed), bare rock "since 1769", and unnamed. **34 site ids (69 parts)**
+were added to the same three files, in the same formats, by `tools/build_ext.py` from
+`tools/industrial_def_ext.py` (facts and source per site there; the core sites' features and rows are kept
+byte for byte, the new ones appended; idempotent):
+
+    cd data/manual/industrial_sites && ../../../.venv/bin/python -I tools/build_ext.py   # ~1 min with the cache
+
+(cold, the seven edition-dated sites read ~90 map editions: ~15 min; `tools/footprints.py` now also reads
+`region4_building.parquet`, the footprints of the added counties.)
+
+| site | label | kind | years | parts | outline | confidence |
+|---|---|---|---|---|---|---|
+| `mare_island` | Mare Island Naval Shipyard | shipyard | 1854–today (named 1854–1996.2) | 10 | osm, traced | exact |
+| `benicia_arsenal` | Benicia Arsenal | military | 1851–today (named 1851–1964) | 1 | traced | estimated |
+| `benicia_industrial_park` | Benicia Industrial Park | other (label only) | 1965–today | 5 | osm | exact |
+| `benicia_refinery` | Benicia Refinery | refinery | 1969–today | 1 | osm | exact |
+| `travis_afb` | Travis AFB | military | 1943–today (named 1951–today) | 2 | osm, traced | exact |
+| `fairfield_suisun_aab` | Fairfield-Suisun Army Air Base | military (label only) | 1942–1951 | 1 | osm | exact |
+| `skaggs_island` | Skaggs Island Naval Station | military | 1942–2012 (named 1942–1993) | 1 | traced | estimated |
+| `tracen_petaluma` | Coast Guard Training Center Petaluma | military | 1942.6–today (named 1971.5–today) | 2 | hull, osm | exact |
+| `two_rock_ranch_station` | Two Rock Ranch Station | military (label only) | 1942.6–1971.5 | 1 | osm | exact |
+| `camp_stoneman` | Camp Stoneman | military | 1942.4–today (named 1942.4–1954) | 1 | traced | estimated |
+| `columbia_steel` | Columbia Steel | factory | 1910–today (named 1910–1986) | 1 | osm | exact |
+| `uss_posco` | USS-POSCO Industries | factory (label only) | 1986–2023.9 | 1 | osm | exact |
+| `dow_pittsburg` | Dow Chemical | chemical | 1939–today | 1 | osm | estimated |
+| `pittsburg_power_plant` | Pittsburg Power Plant | power_plant | 1954–today | 2 | osm | exact |
+| `contra_costa_power_plant` | Contra Costa Power Plant | power_plant | 1951–today | 2 | osm | exact |
+| `antioch_paper_mills` | Antioch Paper Mills | factory | 1949–today (named 1949–2002) | 2 | osm | exact |
+| `dupont_oakley` | DuPont Oakley Plant | chemical | 1956–1999 (named 1956–1998) | 1 | osm | estimated |
+| `davenport_cement` | Davenport Cement Plant | cement | 1906–today (named 1906–2010) | 2 | osm | exact |
+| `davenport_quarries` | Bonny Doon Quarries | quarry | 1906–today (named 1906–2010) | 3 | osm | estimated |
+| `california_powder_works` | California Powder Works | chemical | 1864–1914 | 1 | hull | estimated |
+| `lockheed_santa_cruz` | Lockheed Santa Cruz Facility | factory | 1957–today | 1 | osm | exact |
+| `wilson_quarry` | Wilson Quarry (Graniterock) | quarry | 1900–today | 3 | osm, traced | estimated |
+| `buena_vista_landfill` | Buena Vista Landfill | other | 1965–today | 2 | osm | estimated |
+| `kaiser_steel_napa` | Kaiser Steel Napa | factory | 1941–today (named 1955–1988) | 2 | osm | exact |
+| `basalt_rock_napa` | Basalt Rock Co. | shipyard (label only) | 1941–1955 | 2 | osm | exact |
+| `napa_pipe` | Napa Pipe | factory (label only) | 1988–2004 | 2 | osm | exact |
+| `napa_quarry` | Napa Quarry (Basalt Rock, Syar) | quarry | 1920–today | 7 | osm, traced | estimated |
+| `cmf_vacaville` | California Medical Facility | other | 1955–today | 1 | hull | exact |
+| `csp_solano` | California State Prison, Solano | other | 1984–today | 1 | osm | exact |
+| `anheuser_busch_fairfield` | Anheuser-Busch Brewery | factory | 1976–today (named 1976–2026) | 1 | osm | exact |
+| `potrero_hills_landfill` | Potrero Hills Landfill | other | 1986.6–today | 1 | osm | exact |
+| `lake_herman_quarry` | Lake Herman Quarry | quarry | 1948–today | 2 | osm, traced | estimated |
+| `utc_coyote` | UTC Rocket Test Site | factory | 1959–today (named 1959–2004) | 2 | osm | estimated |
+| `kirby_canyon_landfill` | Kirby Canyon Landfill | other | 1986–today | 1 | osm | exact |
+
+**What is new in the method**
+
+* **Growth stages by clipping** (`clip=` in the definitions): an OSM outline is cut where a map edition ends the
+  built-up ground. Mare Island: the yard along the strait as far as the Mare Island 1:62,500 sheet of 1916
+  (1914 survey) draws it (1854); the north yard (river / tule in 1914, built up on the 1942 sheet: 1928,
+  estimated midpoint; causeway 1919); the North End reclaimed in the 1938–45 expansion (1940, estimated); the
+  post behind the yard (Officers' Row, Marine barracks, hospital — `military`, traced on the 1951 sheet); the
+  south end with the Naval Ammunition Depot's magazines of 1857–64 (`open_works`). Antioch: the Fibreboard
+  kraft mill of 1949 and the Crown Zellerbach mill of 1957 are the east and west halves of one OSM outline.
+* **Quarries and landfills in two or three stages** where no opening year is documented: the quarry symbol /
+  pit of the first 1:24k edition showing it (extent estimated), then the pit of a later edition or today's OSM
+  outline from the midpoint between the two (`estimated`, bracket in the part's note): Lake Herman (symbol
+  1948; today's 138 ha from 1995), Napa quarry (Basalt Rock 1920; today's pits from 1963), Wilson Quarry
+  (1900 / 1965 / 2000), the Bonny Doon quarries of the Davenport plant (San Vicente quarry 1906; limestone and
+  shale quarries 1972), Buena Vista landfill (1965). Kirby Canyon and Potrero Hills have documented opening
+  years (1986). As in the core, a quarry / landfill part also takes the pit's WorldCover "bare" ground back
+  to the natural cover around it before the first stage.
+* **Name periods** — the consumers draw one label per `site_id`, so a place whose name changed has its other
+  names as *label-only* site ids: the same outline with `cover = open_works` (not painted by the terrain, no
+  founding-year floor). Fairfield-Suisun Army Air Base 1942–51 → Travis AFB; Two Rock Ranch Station (Army)
+  1942–71 → Coast Guard Training Center Petaluma; Columbia Steel 1910–86 → USS-POSCO Industries 1986–2023;
+  Basalt Rock Co. 1941–55 → Kaiser Steel Napa 1955–88 → Napa Pipe 1988–2004; Benicia Arsenal 1851–1964 →
+  Benicia Industrial Park (1965–; `open_works` also because its warehouses went up over decades and date
+  their own ground).
+* **Reservations stay open ground:** only the built cantonment is `military` (Travis: the tint of the 1953
+  sheet; Two Rock: hull of the buildings; Skaggs Island: the station's buildings on the 1951 sheet); the base
+  boundary is an `open_works` part (label, founding-year floor). Travis' runways are the airports layer's.
+* **Ground that ended:** Skaggs Island (buildings removed by 2013), the DuPont Oakley plant (demolished
+  1998–99) and the powder works (1914) end and are cleared; Camp Stoneman keeps its ground after 1954 (label
+  ends) because the town's houses stand on it from the 1940s on — a cleared stage after earlier city events
+  would stay cleared for good.
+
+**Footprints** (`known_dates_industrial.csv`, 333 new rows: 317 dated by edition + 16 researched; rows of a
+footprint that another researched table already dates are not written):
+
+| site | founded | footprints | live p10 / median | drawn on maps | corrected (too late / too early) | median shift (yr) |
+|---|---|---|---|---|---|---|
+| `mare_island` | 1854 | 666 | 1976 / 1988 | 158 | 98 (98 / 0) | +53 |
+| `benicia_arsenal` | 1851 | 149 | 1931 / 1969 | 38 | 19 (19 / 0) | +40 |
+| `benicia_refinery` | 1969 | 142 | 1978 / 1985 | 66 | 62 (62 / 0) | +16 |
+| `travis_afb` | 1942 | 1245 | 1978 / 1987 | 88 | 81 (81 / 0) | +25 |
+| `tracen_petaluma` | 1942.6 | 130 | 1977 / 1984 | 37 | 38 (34 / 4) | +29 |
+| `columbia_steel` | 1910 | 47 | 1978 / 1986 | 12 | 11 (11 / 0) | +37 |
+| `davenport_cement` | 1906 | 36 | 1979 / 1984 | 22 | 10 (10 / 0) | +56 |
+
+Researched (`indx_…` ids, point inside the Overture footprint): Mare Island Building 46 (smithery, 1855),
+Building 47 (administration, 1855), Building 69 (supply warehouse, 1869), the nine coal sheds (1900),
+Quarters A (1900) and stone magazine A-1 (1857) from the National Historic Landmark listing and the NPS page;
+the Benicia Arsenal Camel Barn that is the museum (1855); the California Medical Facility's main building
+(1955). `building_dates.csv`: 16 `all_pre` floors (sites with a documented founding year) + 7 `named`.
+
+**Estimated / thin evidence (say so in `confidence` and `note`)**: every `traced` and `hull` outline
+(±40–100 m); Dow Pittsburg starts with Dow's purchase in 1939 (the Great Western Electro-Chemical plant stood
+before; its founding year was not verified, so no floor); UTC Coyote c.1959–2004 ("after about 45 years");
+DuPont Oakley's end (DTSC 1997, State Lands 1998); the Benicia Industrial Park's first year; Skaggs Island's
+clearance year; all quarry / landfill stage years from map brackets; the Mare Island north yard / North End
+years. Edition dates of footprints are midpoints between editions (Mare Island: 1914 → 1942 → 1948 …).
+
+**Not added** (no citable date or outline in this pass): Benicia Barracks as a site of its own (1849; in the
+Arsenal's note); the Arsenal's hill reservation outline; Mare Island hospital H-1 (the NHL listing
+summary gives 1889; not cross-checked), stables (1854–60), St. Peter's Chapel footprint (1901, not found by name) and the dry docks as dated parts;
+Johns-Manville Pittsburg, Kaiser Gypsum Antioch, the Antioch and Watsonville canneries, Gilroy Foods (no
+outline with a cited year); the Fibreboard downtown Antioch mill of 1889; Cowell Lime Works (c.1853–; no
+closing year at hand; inside UCSC); Wrigley Santa Cruz (1955–97, one building, sources differ by a year);
+Lipton / Texas Instruments Santa Cruz; Sonoma County Central landfill (Mecham Road; opening year not
+confirmed, nothing on the Cotati 1973 photorevision); Syar's other quarries, the Cordelia quarries, the Felton
+sand quarries (Hanson, Olympia, Quail Hollow), Dimeo Lane landfill; the Navy's Dixon transmitter station.
+Napa State Hospital, Sonoma Developmental Center, NAAS Santa Rosa and the Montezuma Hills belong to other
+passes. `traced/audit_terrain.csv` was not re-run for the new parts.
 
 ## Licences
 USGS topographic maps: public domain. Outlines from OpenStreetMap via Overture (`osm` / `osm_box` parts,

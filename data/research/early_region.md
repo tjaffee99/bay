@@ -1,10 +1,10 @@
 # Early settlements outside San Francisco, 1769 – c.1850
 
-Research notes for `data/tables/early_region.csv`: the missions, the pueblo, the Mexican ranchos and the Native villages of Santa Clara, Alameda, Contra Costa, San Mateo and Marin counties, before the region's buildings take over.
+Research notes for `data/tables/early_region.csv`: the missions, the pueblo, the Mexican ranchos and the Native villages of Santa Clara, Alameda, Contra Costa, San Mateo and Marin counties, before the region's buildings take over. Since the map grew to ten counties (2026-11) the table also carries the first colonial places of Sonoma, Napa, Solano and Santa Cruz counties that are not landmark models: see "The ten-county extension" in section 2.
 
 The owner's complaint was that Mission Santa Clara, Mission San José and the pueblo of San José were labelled but empty. They were not empty. Mission Santa Clara held about 1,250 people in 1800, the largest mission population in California. It moved four times and left a trail of churches, quadrangles and rows of adobe houses for its Indian families. Mission San José peaked at 1,886 people in 1831. The pueblo of San José had about 40 houses and huts in 1835, and a map of the mid-1840s shows 51 buildings.
 
-The table has the same columns as `early_sf.csv` plus `county`, and `sf_predecessors.table_buildings` reads it as it stands. A test run with an empty lot layer gives 972 valid footprints from 142 rows. It has 6 high, 22 medium and 114 low-confidence rows.
+The table has the same columns as `early_sf.csv` plus `county`, and `sf_predecessors.table_buildings` reads it as it stands. A test run with an empty lot layer gave 972 valid footprints from the first 142 rows; with the ten-county extension the table has 157 rows (6 high, 29 medium and 122 low confidence), and the 138 rows that are drawn (19 `SURVIVES` rows are left to today's footprints) give 941 valid footprints.
 
 **Already modelled, not repeated here.** These are landmark models:
 
@@ -122,7 +122,42 @@ The rows include:
 - **Marin.** The Camilo Ynitia adobe at Olompali (from 1834; burned 1976, now a ruin); John Reed's mill (1834–36) and his 18 × 30 ft adobe in Mill Valley; Richardson's house in Sausalito (1841).
 - **San Mateo.** Charles Brown's 1847 sawmill near Woodside.
 
-### Native villages (23 rows, about 270 houses)
+### The ten-county extension (2026-11; 16 new rows, 2 corrected)
+
+Fort Ross, Mission San Francisco Solano and the Sonoma Barracks, the Petaluma Adobe, the Bale Mill and Mission Santa Cruz are landmark models (other files). The table adds only the fabric around them for which a dated, located source was found. Every date is quoted in the row; the official landmark texts are the Office of Historic Preservation's (`ohp.parks.ca.gov/ListedResources/Detail/<n>`), positions are the landmark coordinates or today's footprint.
+
+| Row | Years | Source | Confidence |
+|---|---|---|---|
+| `son_cooper_sawmill`: J. B. R. Cooper's water-powered sawmill on Mark West Creek | 1834 – winter 1840–41 (flood) | CHL 835 | low (size) |
+| `son_casa_grande`: Vallejo's Casa Grande on the Sonoma plaza, main wing | in use Jan 1837, finished 1840 – fire of 12 Feb 1867 | Sonoma SHP (Wikipedia, after California State Parks) | low (size ESTIMATED) |
+| `son_casa_grande_tower`: its three-storey adobe tower | about 1843 – 1867 (end ESTIMATED with the main wing) | same | low |
+| `son_casa_grande_servants`: the servants' wing | 1836–40 (1837.0) – SURVIVES | same; Overture footprint 32.5 × 7.4 m | medium |
+| `son_blue_wing_inn` | "about 1840" – SURVIVES | CHL 17 | medium |
+| `son_salvador_vallejo_adobe` | "between 1836 and 1846" (1841.0, the middle) – SURVIVES | CHL 501 | low (year) |
+| `son_nash_adobe` | 1847 – SURVIVES (restored 1931) | CHL 667 | medium |
+| `nap_yount_blockhouse`: George Yount's log blockhouse, Rancho Caymus | 1836 – end ESTIMATED 1865 (Yount's death) | CHL 564 | low |
+| `nap_yount_adobe`: his adobe house "nearby" | 1837 – end ESTIMATED 1865 | CHL 564 | low (position) |
+| `nap_yount_mills`: grist mill and sawmill "across the bridge" | "before 1845" (1844.0) – end ESTIMATED 1865 | CHL 564 | low |
+| `nap_york_cabin`: John York's log cabin, Calistoga | Oct 1845 – razed 1930 | CHL 682 | medium |
+| `sol_pena_adobe`: Peña Adobe, Rancho Los Putos | 1843 (CHL; Wikipedia 1842) – SURVIVES | CHL 534 | medium |
+| `scz_mission_adobe`: the Mission (Neary–Rodríguez) Adobe, Indian family housing of Mission Santa Cruz | built 1822–24 (1824.0) – SURVIVES, 7 of 17 rooms | Visit Santa Cruz County; CHL 342 | medium |
+| `scz_branciforte_adobe`: the one dwelling left of the Villa de Branciforte | "Spanish period (1797–1821)" (1821.0, the last year) – SURVIVES | Visit Santa Cruz County; Wikipedia; CHL 469 | low (year) |
+| `scz_castro_adobe`: Castro Adobe, Rancho San Andrés | "1848 or 1849" (1849.0) – SURVIVES | Visit Santa Cruz County; CHL 998 | medium |
+| `cc_marsh_rancheria`: the Indian village beside John Marsh's adobe | 1838 – 1856 (Marsh's years in the adobe; ESTIMATED) | John Marsh House Trust | low |
+
+Corrected rows: `bmw_marsh_creek_village` is now the Volvon village of contact times (1700 – 1806.2, the Volvon migration of 1804–06; it ran to 1845 before), with the Marsh-era rancheria as its own row; `mw_utumia` ends in 1821.6 instead of 1820 (Milliken: the North Tomales Bay people were at Mission San Rafael by the end of 1821). The contact-era villages of the new counties are in `data/manual/ohlone/villages.csv` (40 rows; README there).
+
+The eight new `SURVIVES` rows were matched to today's Overture footprints (`region4_building.parquet`): each row's point is the centroid of the footprint it should date (within the 25 m the pipeline allows), except the Nash adobe (landmark coordinates; nearest footprint 10 m). Two identifications rest on size alone and say so: the Mission Adobe on School Street (35.9 × 9.6 m, seven rooms) and the Peña Adobe (17.3 × 9.5 m, 30 m from the landmark point).
+
+**Looked for and left out** (no guess entered):
+
+- **Port Rumiantsev and the three Russian farms** (Khlebnikov near Bodega, Kostromitinov on the Russian River, Chernykh near Graton; 1830s – 1841): the 1841 bill of sale lists their buildings with sizes, but the Fort Ross Conservancy pages that carry it refused connections, and the farm sites are known only to a few kilometres (the Kostromitinov site is disputed in the archaeological literature). CHL 833 gives only that the Company "used the bay as an outpost until 1841".
+- **Stephen Smith's steam sawmill** (1843, "in the redwoods north of the town of Bodega, on Salmon Creek"): site and end not found.
+- **Villa de Branciforte's houses** (1797–1840s) and **the neophyte village of Mission Santa Cruz** before the 1822–24 adobe rows: no count or plan found (Bancroft i and the mission reports were not read for this pass). CHL 342 says the mission had 32 buildings in 1834.
+- **The other adobes of the pueblo of Sonoma** (Leese–Fitch, Castañeda, Ray–Adler, the Swiss Hotel adobe of about 1850) and its 1846 house count: not verified.
+- **Rancho adobes with a date but no located site:** Cayetano Juárez's adobes at Tulucay (1840 and 1845; the two Wikipedia articles disagree on which one still stands, and its footprint was not identified), the Vaca adobe (lost in the 1892 earthquake), María Carrillo's adobe at Santa Rosa (1837–38; the state nomination PDF could not be read), Joaquín Carrillo's at Sebastopol (1846), Cyrus Alexander's and the Fitch adobe (Sotoyome), Solano's adobe on Rancho Suisun, the Bolcoff adobe at Wilder Ranch (about 1840; stands among later ranch buildings), Martina Castro's at Soquel, Rafael Castro's at Aptos, the Rodríguez adobes of Bolsa del Pájaro, and south Santa Clara County's San Ysidro (Ortega, Gilroy), Las Ánimas and Ojo de Agua de la Coche (Murphy).
+- **Americans before 1849:** David Hudson's cabin (CHL 683, Oct 1845; end not recorded), the Kelsey house (CHL 686; no year), Chiles Mill (CHL 547, "1845–56"), Wolfskill's place on Putah Creek (CHL 804, 1842; no building described), Isaac Graham's Zayante sawmill (about 1842; site and end not found), Benicia's first houses (1847).
+### Native villages (26 rows, about 270 houses)
 
 Only villages for which a source gives a place are included. All are LOW confidence, with the site point estimated and the house count estimated at 6–8 people per house.
 
@@ -137,7 +172,7 @@ Only villages for which a source gives a place are included. All are LOW confide
   - Ssatumnumo and Chagunte (Chiguan).
   - Mitenne (Quiroste) at Whitehouse Creek, about 200 people per Crespí.
   - The Huchiun-Aguasto village of about 400 between Rodeo and Pinole creeks.
-- **Bay Miwok.** The Marsh Creek village.
+- **Bay Miwok.** The Marsh Creek village (Volvon; since 2026-11 it ends in 1806.2, and the rancheria of Marsh's time, 1838–56, is a separate row).
 - **Coast Miwok** (Barrett's list via Wikipedia): Olompali, Awani-wi (San Rafael), Liwanelowa (Sausalito), Echa-tamal (Nicasio), Olema-loke, Bauli-n (Bolinas), Chokeche (Novato), Puyuku (Ignacio) and Utumia (Tomales).
 
 Tule houses follow `early_sf.csv`: a 4 m dome, 2.5 m high. Mission huts are 3.6 m across and 2.7 m high, after the Spanish writer of 1822 ("at the most ... four yards in diameter ... elevated three yards").
@@ -164,7 +199,7 @@ For the Volvon "Morgan Territory village" only advocacy sources were found. The 
   - Mission San José: the landmark frame (261°; u = north, v = west).
   - San Rafael: the replica chapel centre in the landmark frame (7°).
   - Peralta Hacienda: the 1870 house.
-- **`SURVIVES` rows** (11): the shape note begins with "SURVIVES" and `end_year = 9999`. These buildings are in today's footprints (Overture), most with a wrong or missing assessor year:
+- **`SURVIVES` rows** (19; the 11 of the first pass are listed here, the 8 of the ten-county extension in its table above): the shape note begins with "SURVIVES" and `end_year = 9999`. These buildings are in today's footprints (Overture), most with a wrong or missing assessor year:
   - `scl_womans_club_adobe`, `sj_peralta_adobe`, `sj_roberto_sunol_adobe`, `scl_alviso_adobe_milpitas`, `scl_higuera_adobe_milpitas`
   - `sm_sanchez_adobe`, `ala_alviso_adobe_pleasanton`
   - `cc_moraga_adobe`, `cc_salvio_pacheco_adobe`, `cc_fernando_pacheco_adobe`, `cc_martinez_adobe`
@@ -187,4 +222,4 @@ For the Volvon "Morgan Territory village" only advocacy sources were found. The 
 4. **The first pueblo site** is bounded but not excavated; the CSV scatters its houses over the bounded area.
 5. The **San Mateo hospice**: construction year (1790s or c.1800) and size are unknown.
 6. The 1847 **Dennis Martin mill** and the Rancho de las Pulgas and Buri Buri adobes are unlocated.
-7. **Not included:** Benicia and Sonoma (out of scope); New York of the Pacific (1849; no buildings documented); Timothy Murphy's San Rafael house; the Garcia adobe at Olema; Briones at Bolinas; the Ygnacio Martínez hacienda in Pinole Valley; the Berryessa adobe in Santa Clara (date not verified).
+7. **Not included:** Benicia (first houses 1847; Sonoma's plaza adobes were added in 2026-11, see the ten-county extension); New York of the Pacific (1849; no buildings documented); Timothy Murphy's San Rafael house; the Garcia adobe at Olema; Briones at Bolinas; the Ygnacio Martínez hacienda in Pinole Valley; the Berryessa adobe in Santa Clara (date not verified).
