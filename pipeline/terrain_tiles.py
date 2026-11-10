@@ -862,12 +862,13 @@ def histories(name, g, d):
     if ag_path.exists():
         # researched farm history (data/manual/landscape/agriculture.geojson): district eras
         # (grazing -> wheat / hay / dairies / vineyards -> orchards), Broek's 1931 landscape map
-        # and the 1940s-50s topo orchards; each cell keeps its first farm era and its last one
-        # before the city (the terrain holds four changes per cell)
+        # and the 1940s-50s topo orchards; each cell keeps its first farm era, its last one
+        # before the city and the one the last replaced (grain -> hops / prunes / apples ->
+        # vineyards in the wine valleys; the terrain holds four changes per cell)
         from scipy.special import ndtr
         AGK = {"grain": FARM, "hay": FARM, "vegetables": FARM, "nursery": FARM, "farm_mixed": FARM,
                "orchard": ORCHARD, "vineyard": VINEYARD, "pasture_dairy": PASTURE}
-        PRIO = {"district_era": 0, "broek_1931": 1, "topo_1940s": 2, "special": 3}
+        PRIO = {"district_era": 0, "broek_1931": 1, "topo_1940s": 2, "osm_today": 2, "special": 3}
 
         def blob(seed, sigma):
             r = np.random.default_rng(seed).standard_normal((rows, cols)).astype(np.float32)
@@ -884,6 +885,8 @@ def histories(name, g, d):
         last_c = np.full((rows, cols), 255, np.uint8)
         last_y = np.full((rows, cols), np.nan, np.float32)
         last_p = np.full((rows, cols), -1, np.int8)
+        mid_c = np.full((rows, cols), 255, np.uint8)        # the era the last one replaced
+        mid_y = np.full((rows, cols), np.nan, np.float32)
         t = Affine(g["res"], 0, g["X0"] - g["res"] / 2, 0, -g["res"], g["Y0"] + g["res"] / 2)
         for r in ag.itertuples():
             c = AGK.get(str(r.kind))
@@ -916,10 +919,16 @@ def histories(name, g, d):
             fy[unset], fcv[unset] = yy[unset], cc[unset]
             ly, lcv, lp = last_y[sl], last_c[sl], last_p[sl]
             later = m & ~unset & (np.isnan(ly) | (yy >= ly - 0.5) | (r.prio > lp))
+            # a real change of crop (not a better outline of the same era) keeps the old one
+            push = later & np.isfinite(ly) & (lcv != cc) & (yy > ly + 5)
+            my, mcv = mid_y[sl], mid_c[sl]
+            my[push], mcv[push] = ly[push], lcv[push]
             ly[later], lcv[later], lp[later] = yy[later], cc[later], r.prio
         has_first = np.isfinite(first_y)
         event(has_first, first_c, first_y)
         has_last = np.isfinite(last_y) & (last_c != first_c) & (last_y > first_y)
+        has_mid = has_last & np.isfinite(mid_y) & (mid_c != first_c) & (mid_c != last_c) & (mid_y > first_y) & (mid_y < last_y)
+        event(has_mid, mid_c, mid_y)
         event(has_last, last_c, last_y)
         log(f"terrain {name}: farm history from researched eras: {int(has_first.sum())} cells, "
             f"{int(has_last.sum())} with a later farm era")
