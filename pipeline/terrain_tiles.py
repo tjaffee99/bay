@@ -1017,7 +1017,9 @@ def histories(name, g, d):
     # ground claimed from farming: by a park / course / cemetery from its year, by an airfield
     claim_y = np.where(is_park, park_y, open_claim_y).astype(np.float32)
     # a regional park that was farmed returns to its natural cover when it became a park
-    oc = np.isfinite(open_claim_y) & ~is_park
+    # (not ground that was bay or marsh c.1800: a shoreline park on fill, a refuge of salt
+    # ponds or diked marsh keeps its made ground until a `restored` row breaches it)
+    oc = np.isfinite(open_claim_y) & ~is_park & ~np.isin(N, list(WET))
     event(oc, N, open_claim_y)
     if ap_path.exists():
         ap = gpd.read_parquet(ap_path).to_crs(3857)

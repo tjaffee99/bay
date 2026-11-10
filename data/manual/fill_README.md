@@ -2,7 +2,7 @@
 
 Files covered here:
 
-- `data/manual/fill_zones.csv`: 249 dated zones (2026-11: 141 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
+- `data/manual/fill_zones.csv`: 261 dated zones (2026-11: 153 researched rows + the edition-dated `tp_*` / `ot_*` rows and the `*_diked` rows, see "Edition-dated zones" below), one row per stage, for fill, diked marsh, excavation, restoration and piers.
 - `data/tables/landcover_history.csv`: the pre-urban land cover to paint under today's city, with dates.
 - New raw downloads in `data/raw/`. They are listed under "Downloaded datasets" below.
 
@@ -334,6 +334,34 @@ has no row: the c.1800 layer has almost no marsh under it (2.7 ha of made-land c
 do nothing. The Las Gallinas / St. Vincent's diked marsh keeps the default dike year 1900 (McInnis: "diked in the
 early 1900s", county bought the marsh in 1972). Lakes without a completion year: Mallard Reservoir, Grant Lake,
 Boronda Lake (not later than the park's opening in 1965).
+
+**Ten-county extent (2026-11, third pass; 261 rows).** For the new area (Sonoma, Napa, Solano, Santa Cruz, east Contra
+Costa, south Santa Clara) the lakes were dated in bulk: every Overture / OSM lake or reservoir of 7.5 ha and more
+was joined by distance to the National Inventory of Dams (`nid.sec.usace.army.mil/api/nation/csv`, California rows;
+dam within 170 m, most within 30 m) and 38 got a `lake` row in `landscape/water_history.csv` with the inventory's
+completion year (Lake Berryessa 1957, Lake Sonoma 1983, Lake Hennessey 1946, Lake Curry 1926, Loch Lomond 1960,
+Pacheco 1939 …; also Mallard Reservoir 1930 and Grant Lake 1927 in the old area). Rings are the lake outline
+buffered 60–100 m and simplified (the pipeline intersects them with today's water, so they only have to contain the
+lake). Natural lakes are written like Lake Merced, `year_start` 1700: Pinto, College, Kelly, San Felipe, Laguna
+(Chileno Valley). Three rows were wrong and are corrected: `lake_lake_chabot_2` is Vallejo's Lake Chabot (1870), not
+a second part of the San Leandro reservoir (1875); Lake Lucerne is 1923 (the 1938 of the second pass belongs to the
+neighbouring Bean Hollow #2 dam); Bethany Reservoir is 1961, not "late 1960s". Franks Tract (flooded February 1938)
+and Big Break (1928) are `shallow_water` rows that do nothing yet: `terrain_tiles.py` treats water at sea level as
+natural, and the Delta has no c.1800 layer. Not dated: Soda Lake at Aromas (inventory: Granite Rock dam 1978, but
+possibly a natural alkali lake before), Boronda Lake (inventory 1988, park opened 1965), gravel pits and ponds
+without a dam record (Ogier Ponds, the Russian River pits), the Discovery Bay lagoons.
+
+`fill_zones.csv` got one row, `nb_cullinan_ranch_restored` (levee breached 6 January 2015). The rest of the new
+shore was checked against the region grid and left on fallback or default years because no dated source was found:
+Mare Island (547 ha of made land; only the totals 956 → about 5,600 acres are published), the Vallejo waterfront
+(430 ha; "in 1914 the city built a bulkhead along the entire waterfront and pumped in the mud", E. Wichels, Vallejo
+Times-Herald 11 April 1965 — the fallback there already gives about 1912), Benicia's industrial park (121 ha), the
+Pittsburg waterfront (689 ha), Suisun City, Petaluma, Tolay Lake (drained "about 1850" per Wikipedia, 1870s per
+others; the fallback gives about 1865), the Napa flood project's wetlands (2003–05?). `nb_suisun_marsh_diked` stops
+at 38.07° N: the south of Van Sickle Island and Chipps Island (about 720 ha) take the default dike year 1900, which
+lies inside that row's 1870–1930. Delta islands, Discovery Bay, Santa Cruz harbor, Watsonville and the Pajaro mouth
+lie outside the c.1800 baylands layer (east of 121.82° W, south of 37.29° N), so no fill, dike or excavation row can
+act there yet. Scratch tools: `audit/land2/nidjoin.py`, `wbuild.py`, `n3.py`, `b1.py`, `b2.py`.
 
 ## Land cover table (`data/tables/landcover_history.csv`)
 
