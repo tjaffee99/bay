@@ -118,7 +118,8 @@ def tile_features():
 
 def footprints(t):
     cols = ["id", "class", "subtype", "name", "height", "px", "py", "county", "geometry"]
-    tb = pq.read_table(OVR / "region5_building.parquet", columns=cols)
+    from common import read_region_overture
+    tb = read_region_overture("building", columns=cols)   # region5_* + region4_* batches
     b = tb.drop(["geometry"]).to_pandas()
     b["wkb"] = tb.column("geometry").to_numpy(zero_copy_only=False)
     b["fid"] = np.array([zlib.crc32(s.encode()) for s in b.id.values], dtype=np.uint32)

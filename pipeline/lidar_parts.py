@@ -811,9 +811,10 @@ def load_region_footprints(bbox_ll):
     import pandas as pd
     import shapely
     from download_region import OUT_OVERTURE
-    d = pd.read_parquet(OUT_OVERTURE / "region5_building.parquet", columns=["id", "has_parts", "height", "px", "py", "geometry"],
-                        filters=[("px", ">=", bbox_ll[0]), ("px", "<=", bbox_ll[2]),
-                                 ("py", ">=", bbox_ll[1]), ("py", "<=", bbox_ll[3])])
+    from common import read_region_overture
+    d = read_region_overture("building", columns=["id", "has_parts", "height", "px", "py", "geometry"],
+                             filters=[("px", ">=", bbox_ll[0]), ("px", "<=", bbox_ll[2]),
+                                      ("py", ">=", bbox_ll[1]), ("py", "<=", bbox_ll[3])]).to_pandas()
     g = gpd.GeoDataFrame({"key": d["id"].values, "source": np.where(d.has_parts.fillna(False), "overture_has_parts",
                                                                      "overture"),
                           "start_year": np.nan, "end_year": np.nan, "height": d.height.astype(float).values,

@@ -951,10 +951,10 @@ def stanford():
     g["height_m"] = g.tags.map(lambda t: pd.to_numeric(t.get("height"), errors="coerce"))
     # today's footprints (Overture, five counties) around the campus
     b = g.to_crs(4326).total_bounds
-    t = pq.read_table(RAW / "overture" / "2026-10-21.0" / "region5_building.parquet",
-                      columns=["id", "px", "py", "name", "county", "geometry"],
-                      filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
-                               ("py", "<", b[3] + 0.01)]).to_pandas()
+    from common import read_region_overture
+    t = read_region_overture("building", columns=["id", "px", "py", "name", "county", "geometry"],
+                             filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
+                                      ("py", "<", b[3] + 0.01)]).to_pandas()
     ov = gpd.GeoDataFrame(t, geometry=gpd.GeoSeries.from_wkb(t.geometry), crs=4326).to_crs(UTM)
     osidx = ov.sindex
     m_id, m_iou, m_cover = [], [], []
@@ -1362,9 +1362,10 @@ def write_region_demolished():
     d = gpd.GeoDataFrame(rows, crs=UTM)
     # today's footprints (Overture): a footprint of the same shape means it still stands (or moved back) / is stale
     b = d.to_crs(4326).total_bounds
-    t = pq.read_table(RAW / "overture" / "2026-10-21.0" / "region5_building.parquet", columns=["id", "county", "geometry"],
-                      filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
-                               ("py", "<", b[3] + 0.01)]).to_pandas()
+    from common import read_region_overture
+    t = read_region_overture("building", columns=["id", "county", "geometry"],
+                             filters=[("px", ">", b[0] - 0.01), ("px", "<", b[2] + 0.01), ("py", ">", b[1] - 0.01),
+                                      ("py", "<", b[3] + 0.01)]).to_pandas()
     ov = gpd.GeoDataFrame(t, geometry=gpd.GeoSeries.from_wkb(t.geometry), crs=4326).to_crs(UTM)
     osidx = ov.sindex
     best, county = [], []

@@ -40,7 +40,8 @@ from sf_export import (M_BRICK, M_CIVIC, M_CONTEMP, M_EARLY, M_GLASS, M_INDUSTRI
                        M_STUCCO, M_TOWER70, M_VICTORIAN, R_FLAT, R_SHINGLE, R_TILE)
 
 UTM = "EPSG:32610"
-COUNTIES = {"041": "Marin", "013": "Contra Costa", "001": "Alameda", "081": "San Mateo", "085": "Santa Clara"}
+COUNTIES = {"041": "Marin", "013": "Contra Costa", "001": "Alameda", "081": "San Mateo", "085": "Santa Clara",
+            "097": "Sonoma", "055": "Napa", "095": "Solano", "087": "Santa Cruz"}
 TILE_Z = 13
 LOW_Z = 11
 OUT = VIEWER_DATA / "region-buildings"
@@ -67,11 +68,11 @@ def tile_origin(x, y, z=TILE_Z):
 
 
 def load_footprints():
-    """Overture footprints of the five counties (download_region.py: clipped, with county),
-    joined to the per-footprint candidate years (region5_footprint_years.parquet)."""
-    g = gpd.read_parquet(RAW / "overture" / RELEASE / "region5_building.parquet")
-    if g.crs is None:
-        g = g.set_crs(4326)
+    """Overture footprints of the counties (download_region.py: clipped, with county; one file
+    per download batch, region5_* and region4_*), joined to the per-footprint candidate years
+    (region5_footprint_years.parquet, all counties)."""
+    from common import read_region_overture_gdf
+    g = read_region_overture_gdf("building")
     fy = pd.read_parquet(INTERIM / "region5_footprint_years.parquet")
     fy = fy.drop(columns=[c for c in ("county",) if c in fy])
     only = __import__("os").environ.get("REGION_COUNTY")  # e.g. REGION_COUNTY=Marin for a test run
