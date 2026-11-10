@@ -1360,6 +1360,21 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
     in_sf_g = (lon_g > SF_BOX[0]) & (lon_g < SF_BOX[2]) & (lat_g > SF_BOX[1]) & (lat_g < SF_BOX[3])
     del lon_g, lat_g
     mapped_mask = mapped[1] if mapped is not None else np.zeros((g["rows"], g["cols"]), bool)
+    # generated farmsteads only where no real building is known: within ~300 m of any real
+    # footprint (standing today or vanished, region_building_points) the real buildings are the
+    # farm, and an invented red farmhouse beside them is wrong (owner, 2026-11)
+    real_near = np.zeros((g["rows"], g["cols"]), np.uint8)
+    bpp = INTERIM / "region_building_points.parquet"
+    if bpp.exists():
+        bb = pd.read_parquet(bpp, columns=["lon", "lat"])
+        bj = np.rint((np.radians(bb.lon.values) * 6378137.0 - g["X0"]) / g["res"]).astype(int)
+        bi = np.rint((g["Y0"] - 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(bb.lat.values) / 2))) / g["res"]).astype(int)
+        okb = (bi >= 0) & (bi < g["rows"]) & (bj >= 0) & (bj < g["cols"])
+        real_near[bi[okb], bj[okb]] = 1
+        rr_ = int(np.ceil(300.0 / (g["res"] * 0.79)))   # ground metres per lattice cell ~ res * cos(lat)
+        real_near = ndimage.maximum_filter(real_near, size=2 * rr_ + 1)
+        del bb, bj, bi
+    real_near = real_near.astype(bool)
 
     def fn(tx, ty):
         r0 = (ty - g["ty0"]) * VERTS * sub
@@ -1453,6 +1468,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     # historical map shows where the farmsteads really were
                     pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % (100 if g["z"] == 14 else 25)) == 0
                     pick &= ~mapped_mask[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
+                    pick &= ~real_near[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
                     if not pick.any():
                         continue
                     fy = (vy[pick] + max(r0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())
@@ -1640,6 +1656,28 @@ def real_farmsteads(g, covers, years, park_y=None):
         # go when the cell becomes city
         cy_ = np.asarray(cities, float)
         out.loc[old, "end"] = np.where(np.isfinite(cy_) & (cy_ <= gdf["last"].values), gdf["last"].values + 6.0, cy_)[old]
+        # real buildings tell the story once they are there (owner, 2026-11: no red farm
+        # buildings where real houses are known): a mapped farmstead - house or barns - ends
+        # when the first building standing today within ~60 m of it was built, and is not
+        # drawn at all where such a building is as old as the farmstead (the map's symbol and
+        # the footprint are the same farm)
+        ball = pd.read_parquet(bp, columns=["lon", "lat", "start_year", "end_year"])
+        ball = ball[ball.end_year > 9000]
+        ax = np.radians(ball.lon.values) * 6378137.0
+        ay = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(ball.lat.values) / 2))
+        dd, ii = cKDTree(np.column_stack([ax, ay])).query(np.column_stack([gdf.x.values, gdf.y.values]), k=8,
+                                                          distance_upper_bound=76.0)
+        ys_ = np.where(np.isfinite(dd), ball.start_year.values[np.minimum(ii, len(ball) - 1)], np.inf)
+        real_first = ys_.min(axis=1)
+        has_real = np.isfinite(real_first)
+        st_ = out["start"].values.astype(float)
+        en_ = out["end"].values.astype(float)
+        out["end"] = np.where(has_real, np.fmin(en_, np.maximum(real_first, st_)), en_)
+        gone = has_real & (out["end"].values <= st_ + 0.5)
+        n_cut = int((has_real & ~gone).sum())
+        out = out[~gone].reset_index(drop=True)
+        log(f"farmsteads: {int(gone.sum())} mapped farmsteads are today's real buildings (not drawn), "
+            f"{n_cut} more end when a real building takes the site")
     mask = np.zeros((rows, cols), bool)
     if cov is not None and len(cov):
         t = Affine(g["res"], 0, g["X0"] - g["res"] / 2, 0, -g["res"], g["Y0"] + g["res"] / 2)
