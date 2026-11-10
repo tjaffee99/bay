@@ -1673,6 +1673,61 @@ def merge_detail_deco():
     log(f"terrain: {n_par} z13 tiles over the detail grid take its decorations ({n_add:+d} instances)")
 
 
+def rank_byte(lon, lat):
+    """rankByte() of viewer/src/layers/deco-layer.ts (32-bit integer hash of the position)."""
+    M = np.uint64(0xFFFFFFFF)
+    a = np.floor(np.asarray(lon, np.float64) * 3.3e4 + 0.5).astype(np.int64).astype(np.uint64) & M
+    b = np.floor(np.asarray(lat, np.float64) * 3.3e4 + 0.5).astype(np.int64).astype(np.uint64) & M
+    h = ((a * np.uint64(73856093)) & M) ^ ((b * np.uint64(19349663)) & M)
+    h = ((h ^ (h >> np.uint64(13))) * np.uint64(0x5BD1E995)) & M
+    h ^= h >> np.uint64(15)
+    return (h % np.uint64(256)).astype(np.int64)
+
+
+def prune_unseen_deco():
+    """Drop the decorations the viewer never draws (2026-11: the published site had grown to
+    half a gigabyte, four fifths of the terrain tiles being tree records). The tile loader
+    (decodeTile in viewer/src/layers/terrain.ts) skips, by the tree's position rank,
+      * broadleaf / conifer trees of rank > 0.4 in a dense tile (> 6,000 instances per z13
+        tile area) at every zoom, and
+      * every tree, shrub and orchard tree of rank > 0.4 in a z13 tile drawn as such — the
+        only way a z13 tile under four z14 detail tiles is ever drawn.
+    The same test here, with the same hash on the same coordinates, so nothing visible
+    changes; the viewer keeps its own test."""
+    from audit_region_years import read_bayt
+    n_tiles = n_drop = n_all = 0
+    for z in (13, 14):
+        for f in (TILES / str(z)).glob("*/*.bin.gz"):
+            x, y = int(f.parent.name), int(f.name.split(".")[0])
+            h, c = read_bayt(f)
+            if "deco_kind" not in c or not len(c["deco_kind"]):
+                continue
+            kind = c["deco_kind"]
+            pos = c["deco_pos"].reshape(-1, 2)
+            gx = pos[:, 0].astype(np.float64) / 65535 * 64
+            gy = pos[:, 1].astype(np.float64) / 65535 * 64
+            west, east = x / 2 ** z * 360 - 180, (x + 1) / 2 ** z * 360 - 180
+            lon = west + ((east - west) * gx) / 64
+            nn = math.pi - (2 * math.pi * (y + gy / 64)) / 2 ** z
+            lat = (180 / math.pi) * np.arctan(np.sinh(nn))
+            high = rank_byte(lon, lat) / 255 > 0.4
+            dense = len(kind) * (4 if z == 14 else 1) > 6000
+            drop = high & (kind <= 1) & dense
+            if z == 13 and all((TILES / "14" / str(2 * x + i) / f"{2 * y + j}.bin.gz").exists() for i in (0, 1) for j in (0, 1)):
+                drop |= high & (kind != D_FARMHOUSE) & (kind != D_FARMYARD)
+            n_all += len(kind)
+            if not drop.any():
+                continue
+            keep = ~drop
+            cols = {k: c[k] for k in ("elev", "cover", "year")}
+            cols.update({"deco_pos": pos[keep].ravel(), "deco_kind": kind[keep], "deco_size": c["deco_size"][keep],
+                         "deco_years": c["deco_years"].reshape(-1, 2)[keep].ravel()})
+            write_columnar(f, cols, counts=dict(h.get("counts", {}), deco=int(keep.sum())))
+            n_tiles += 1
+            n_drop += int(drop.sum())
+    log(f"terrain: {n_drop} of {n_all} decorations the viewer never draws removed from {n_tiles} tiles")
+
+
 def main():
     meta = {}
     for name, zooms, step in (("region", [8, 9, 10, 11, 12, 13], 4), ("detail", [14], 2)):
@@ -1686,6 +1741,7 @@ def main():
         np.save(INTERIM / f"grid_{name}_landyear.npy", land_year_of(covers, years))
         meta[name] = {"z": g["z"], "tx0": g["tx0"], "ty0": g["ty0"], "tx1": g["tx1"], "ty1": g["ty1"], "zooms": zooms}
     merge_detail_deco()
+    prune_unseen_deco()
     (VIEWER_DATA / "terrain.json").write_text(json.dumps({"grids": meta, "covers": COVER_NAMES,
                                                           "deco": ["broadleaf", "conifer", "palm", "orchard", "farmhouse", "shrub", "farmyard"]}, indent=1))
 
