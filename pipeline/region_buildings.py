@@ -526,11 +526,19 @@ def lidar_parts_region(g, start=None):
     for i, k in enumerate(g["id"].astype(str).values):
         pos.setdefault(k, []).append(i)
     drop, src_rows, geoms, hs, grp = set(), [], [], [], []
+    start_a = np.asarray(start, float) if start is not None else None
+    n_newer = 0
     for key, parts in lp.groupby("key"):
         idx = [i for k in str(parts.replaces.iloc[0]).split("|") for i in pos.get(k, [])]
         if not idx:
             continue
         donor = max(idx, key=lambda i: g.geometry.values[i].area)
+        # a building that went up after the survey was not what the LiDAR measured there
+        if start is not None and "lidar_year" in parts:
+            ly_ = pd.to_numeric(parts.lidar_year, errors="coerce").max()
+            if np.isfinite(ly_) and np.isfinite(start_a[donor]) and start_a[donor] > ly_ + 0.5:
+                n_newer += 1
+                continue
         for r in parts.itertuples():
             if r.geometry is None or r.geometry.is_empty:
                 continue
@@ -548,7 +556,8 @@ def lidar_parts_region(g, start=None):
     new = gpd.GeoDataFrame(new.reset_index(drop=True), geometry="geometry", crs=g.crs)
     lidar_h = np.concatenate([single_h[keep], np.asarray(hs)])
     lgroup = np.concatenate([np.full(len(keep), "", dtype=object), np.asarray(grp, dtype=object)])
-    log(f"region: LiDAR stepped massing: {len(drop)} footprints -> {len(src_rows)} parts ({len(files)} areas)")
+    log(f"region: LiDAR stepped massing: {len(drop)} footprints -> {len(src_rows)} parts ({len(files)} areas; "
+        f"{n_newer} newer than their survey left whole)")
     return new, rows, lidar_h, lgroup
 
 

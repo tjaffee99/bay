@@ -711,3 +711,18 @@ College pattern) say "Campus-wide date" in the note; rows with an approximate ye
     Only the catalogue records (title, date) of the clippings were read, not the article texts: the row's years are
     ESTIMATED from those dates.
 
+
+<!-- lidar -->
+### LiDAR building heights and stepped massing — new counties (`pipeline/lidar_parts.py`, `REGION_JOBS`)
+
+- **USGS 3DEP lidar point clouds** (public domain, U.S. Geological Survey 3D Elevation Program), read as Entwine Point Tiles from the public AWS bucket `usgs-lidar-public` (https://s3-us-west-2.amazonaws.com/usgs-lidar-public/<project>/ept.json; index https://github.com/hobuinc/usgs-lidar). Collection dates from the USGS work-unit metadata (WESM, https://rockyweb.usgs.gov/vdelivery/Datasets/Staged/Elevation/metadata/WESM.csv). Use: measured roof heights and stepped parts of the footprints in the downtown / campus / plant boxes of the 2026-11 expansion (`data/interim/<job>_lidar_parts.parquet`, `_lidar_heights.parquet`). Attribution: "U.S. Geological Survey, 3D Elevation Program".
+  - `CA_NorthernCA_1_B22` (flown 2022-09-13 – 2022-11-11, QL1, NAVD88 m): Santa Rosa, Petaluma, Sonoma State University.
+  - `CA_SolanoCounty_1_A23` (2022-12-26 – 2023-02-06, QL1): Vallejo, Fairfield, Vacaville, Benicia, Travis AFB, Mare Island, Genentech Vacaville.
+  - `CA_NorthCoastRanges_2_B23` (2023-09-16 – 2023-12-15, QL1): Napa.
+  - `CA_SantaCruzCounty_2020` (2020-03-22 – 2020-04-15, QL1): Santa Cruz, Watsonville, UC Santa Cruz.
+  - `CA_SantaClaraCounty_2020` (2020-04-03 – 2020-04-22, QL1; already used for San José): Gilroy, Morgan Hill.
+  - `USGS_LPC_CA_Sonoma_A4_2013_LAS_2017` (Sonoma County Vegetation Mapping and LiDAR Program, 2013-09-28 – 2013-11-11, QL2, **z in US survey feet** in the EPT — converted): Graton Resort & Casino only, because the 2022 survey leaves the rancheria (tribal trust land) blank. Buildings recorded after the survey keep their Overture height.
+  - `CA_Central_Valley_LiDAR_2016_D16 / CA_Sacramento_2017` (2017-12-09 – 2018-01-21, QL2, NAD83(2011) UTM 10N, NAVD88 m): Antioch, Pittsburg. Not on the EPT bucket: LAZ tiles from https://rockyweb.usgs.gov/vdelivery/Datasets/Staged/Elevation/LPC/Projects/CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017/LAZ/ listed by the TNM Access API (https://tnmaccess.nationalmap.gov/api/v1/products, dataset "Lidar Point Cloud (LPC)"). The server answers HTTP 429 in bursts and serves ~0.1 MB/s per connection, so the stage resumes downloads with HTTP Range.
+- Checked and not used: `USGS_LPC_CA_NoCAL_Wildfires_B5b_2018` (older than the surveys above everywhere it overlaps), `CA_ContraCosta_1_2022` (ends south of Antioch, lat 37.99), `CA_FEMA_Z4_B1_2018`, `ARRA-CA_CentralCoast-Z3/Z4_2010`, `CA_ContraCostaCo_2007`, `CA_Delta_2007`.
+- Height checks against published figures: Petaluma's 1938 Poultry Producers / Dairymen's Feed mill, "towering majestically to a height of 170 feet" (Press Democrat 1938, quoted by Sonoma County Library, https://legacy.sonomalibrary.org/node/9144) — measured 51.5 m (169 ft); Bethlehem Towers, Santa Rosa's tallest building, 14 storeys (Press Democrat, https://www.pressdemocrat.com/news/9464917-181/santa-rosa-apartment-project-to) — measured 38.1 m; Santa Cruz Dream Inn, 10-storey tower (Santa Cruz LocalWiki, https://localwiki.org/santacruz/Santa_Cruz_Dream_Inn) — measured 32.5 m above the mean ground of its bluff-to-beach outline.
+
