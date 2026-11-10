@@ -25,6 +25,9 @@ Usage:  python pipeline/ohm_import.py download     # Overpass -> data/raw/ohm/*.
         python pipeline/ohm_import.py goldrush
         python pipeline/ohm_import.py stanford
         python pipeline/ohm_import.py extras
+        python pipeline/ohm_import.py railextract  # OHM ways of lost railways in the new counties ->
+                                                    # data/raw/historic_rail/h2_ohm_newarea.json (historic_rail_trace.py)
+        python pipeline/ohm_import.py newarea      # review list of dated OHM features in the new counties
         python pipeline/ohm_import.py all
 """
 from __future__ import annotations
@@ -1342,6 +1345,38 @@ def write_rail_extract():
     log(f"rail extract: {len(out)} OHM way pieces -> {p}")
 
 
+def write_new_area_review():
+    """data/manual/ohm/new_area_review_ohm.csv: every dated OHM feature that is not a railway or a road in the
+    counties added in 2026-11 (inside EXTENT, outside EXTENT_CORE) - buildings, bridges, sites, town outlines -
+    for review. Nothing is imported from it: OHM's dates there are mostly map years (the 1876 Thompson map of
+    Santa Rosa) or unsourced, and are evidence to check, not dates to copy (decision 39)."""
+    from extent import EXTENT_CORE, POLY
+    core = Polygon(EXTENT_CORE)
+    els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
+    g = to_gdf(els, keep=lambda t: "railway" not in t and t.get("route") != "ferry" and "highway" not in t)
+    rp = g.geometry.representative_point()
+    g = g[rp.within(POLY) & ~rp.within(core)].reset_index(drop=True)
+
+    def kind(t):
+        for k in ("building", "man_made", "amenity", "landuse", "leisure", "boundary", "historic", "military",
+                  "aeroway", "place", "route", "natural", "waterway", "tourism"):
+            if k in t:
+                return f"{k}={t[k]}"
+        return "other"
+    t = g.tags
+    c = g.geometry.representative_point()
+    out = pd.DataFrame({
+        "ohm": [ohm_url(a, b) for a, b in zip(g.osm_type, g.osm_id)], "kind": t.map(kind),
+        "name": t.map(lambda d: d.get("name", "")), "start_date": t.map(lambda d: d.get("start_date", "")),
+        "end_date": t.map(lambda d: d.get("end_date", "")),
+        "source": t.map(lambda d: d.get("source") or d.get("start_date:source") or d.get("source:name") or ""),
+        "lon": c.x.round(5), "lat": c.y.round(5)})
+    out = out.sort_values(["kind", "lat", "lon"])
+    OHM_OUT.mkdir(parents=True, exist_ok=True)
+    out.to_csv(OHM_OUT / "new_area_review_ohm.csv", index=False)
+    log(f"new area: {len(out)} dated OHM features that are not railways or roads -> new_area_review_ohm.csv")
+
+
 # ================================================================== extras: demolished buildings in the region
 # cities whose Sanborn maps other agents are tracing now (they may reuse OHM there): flagged, not dropped
 OTHER_AGENT_AREAS = {"palo_alto_menlo_park": (-122.22, 37.40, -122.10, 37.48), "san_mateo": (-122.36, 37.54, -122.28, 37.60),
@@ -1360,7 +1395,10 @@ def write_region_demolished():
     """OHM buildings with an end date (demolished, burned or moved) outside San Francisco and Stanford, and not
     from a Sanborn tracing (Palo Alto, San Mateo, Berkeley are being traced by other agents)."""
     import pyarrow.parquet as pq
-    from extent import POLY
+    from extent import EXTENT_CORE
+    # the core Bay Area only (today's footprints are checked against the five-county file); OHM's few dated
+    # buildings in the counties added in 2026-11 are listed by write_new_area_review()
+    POLY = Polygon(EXTENT_CORE)
     els = load_elements(glob.glob(str(OHM_RAW / "geom_*.json")))
     g = to_gdf(els, keep=lambda t: "building" in t)
     g = g[g.geom_type.isin(["Polygon", "MultiPolygon"])]
@@ -1699,6 +1737,8 @@ if __name__ == "__main__":
         write_rail_picks(write_rail())
     if cmd in ("railextract", "extras", "all"):
         write_rail_extract()
+    if cmd in ("newarea", "extras", "all"):
+        write_new_area_review()
     if cmd in ("demolished", "extras", "all"):
         write_region_demolished()
     if cmd in ("camp", "extras", "all"):

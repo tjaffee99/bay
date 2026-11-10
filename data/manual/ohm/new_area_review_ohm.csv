@@ -1,0 +1,86 @@
+ohm,kind,name,start_date,end_date,source,lon,lat
+https://www.openhistoricalmap.org/way/198305787,amenity=college,Christian College,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71975,38.44338
+https://www.openhistoricalmap.org/way/198305770,amenity=college,Pacific Methodist College,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70966,38.44451
+https://www.openhistoricalmap.org/way/198305772,amenity=school,Public School,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70899,38.44335
+https://www.openhistoricalmap.org/way/200480655,building=hospital,,1962,,https://www.sfgate.com/health/article/gilroy-nurses-win-labor-ruling-against-hospital-2753653.php,-121.57716,37.0052
+https://www.openhistoricalmap.org/way/200480654,building=hospital,Wheeler Hospital,1929-07-27,,https://www.newspapers.com/article/oakland-tribune-opened-its-doors/134281036/,-121.57709,37.00574
+https://www.openhistoricalmap.org/way/200480653,building=hospital,,1989-07,2000-10,"Rodebaugh, Dale, “New M.H. landmark hospital opens Friday”, San Jose Mercury News, 5 September 1989, p. 1B",-121.57156,37.03653
+https://www.openhistoricalmap.org/relation/2828443,building=hospital,,1989-09-09,,"Rodebaugh, Dale, “New M.H. landmark hospital opens Friday”, San Jose Mercury News, 5 September 1989, p.  1B",-121.64591,37.15367
+https://www.openhistoricalmap.org/way/201961891,building=house,Dixon House,1887,1906,https://www.cityofgilroy.org/DocumentCenter/View/1519/7391-Alexander-Street-PDF,-121.56638,37.00723
+https://www.openhistoricalmap.org/way/201961892,building=house,Dethlefson House,1906,,https://www.cityofgilroy.org/DocumentCenter/View/1519/7391-Alexander-Street-PDF,-121.56638,37.00723
+https://www.openhistoricalmap.org/way/200480658,building=house,,1945,,"Larimer, Tim, “Civics lesson costs man his land”, San Jose Mercury News, 4 April 1988, p. 1B",-121.64853,37.15491
+https://www.openhistoricalmap.org/way/200480652,building=office,,1988-01,,"Foley, Jack, “Ground to be broken for hospital: Morgan Hill facility to have 60 beds”, San Jose Mercury News, 18 March 1987, p. 1B",-121.64551,37.15422
+https://www.openhistoricalmap.org/way/200464947,building=school,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.72193,38.44087
+https://www.openhistoricalmap.org/way/198305773,building=school,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70899,38.44326
+https://www.openhistoricalmap.org/way/198305788,building=school,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.7199,38.44339
+https://www.openhistoricalmap.org/way/198305771,building=school,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70966,38.44472
+https://www.openhistoricalmap.org/way/200372101,building=school,Scotta School,1877,2020,,-123.05556,38.45322
+https://www.openhistoricalmap.org/way/200466321,building=train_station,Calistoga Depot,1868,,CA Historical Resource #687 https://ohp.parks.ca.gov/ListedResources/Detail/687,-122.5781,38.57977
+https://www.openhistoricalmap.org/way/199932206,building=warehouse,Blakemore Warehouse,1913,,,-121.87647,38.20368
+https://www.openhistoricalmap.org/way/200464946,building=warehouse,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.72187,38.4373
+https://www.openhistoricalmap.org/way/199973722,building=yes,Morris Abrams Building,1937,,,-122.02607,36.97252
+https://www.openhistoricalmap.org/way/199973718,building=yes,Hall of Records,1882,,,-122.02565,36.97498
+https://www.openhistoricalmap.org/way/199973720,building=yes,Santa Cruz County National Bank Building,1910,,,-122.02621,36.97528
+https://www.openhistoricalmap.org/way/199973721,building=yes,Leonard Building,1894,,,-122.02578,36.97533
+https://www.openhistoricalmap.org/way/199973719,building=yes,People's Bank Building,1910,,,-122.02688,36.9754
+https://www.openhistoricalmap.org/way/199973717,building=yes,,1870,,National Register of Historic Places 92000259,-121.90046,36.97749
+https://www.openhistoricalmap.org/way/199910212,building=yes,Carnegie Brick & Pottery Company,1905,1917,,-121.53157,37.62879
+https://www.openhistoricalmap.org/way/200157348,building=yes,Mission San Francisco Solano,1823-07-04,,https://californiamissionsfoundation.org/mission-san-francisco-solano/,-122.4561,38.2939
+https://www.openhistoricalmap.org/way/200464951,building=yes,American Exchange Hotel,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71966,38.43776
+https://www.openhistoricalmap.org/way/200464952,building=yes,Santa Rosa Hotel,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71248,38.43869
+https://www.openhistoricalmap.org/way/200464950,building=yes,Kessing Hotel,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71289,38.43933
+https://www.openhistoricalmap.org/way/200464949,building=yes,Grand Hotel,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71307,38.4396
+https://www.openhistoricalmap.org/way/200464948,building=yes,Occidental Hotel,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71612,38.43978
+https://www.openhistoricalmap.org/way/200464953,building=yes,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71439,38.44053
+https://www.openhistoricalmap.org/way/200372090,building=yes,,1877,,,-123.0544,38.45397
+https://www.openhistoricalmap.org/way/200208096,building=yes,,1877,,,-123.0539,38.45408
+https://www.openhistoricalmap.org/way/173059885,historic=ship,USS LCS(L) 102,1945,,,-122.27382,38.10621
+https://www.openhistoricalmap.org/way/200912309,historic=wreck,SS Palo Alto,1929,,,-121.91415,36.96952
+https://www.openhistoricalmap.org/way/202206644,landuse=cemetery,Monticello Cemetary,1870,1953,,-122.20012,38.57466
+https://www.openhistoricalmap.org/way/200480651,landuse=construction,Saint Louise Regional Hospital,1987-03-19,1988-01,"Foley, Jack, “Ground to be broken for hospital: Morgan Hill facility to have 60 beds”, San Jose Mercury News, 18 March 1987, p. 1B",-121.6464,37.15383
+https://www.openhistoricalmap.org/way/200480659,landuse=residential,,1945,1987,"Larimer, Tim, “Civics lesson costs man his land”, San Jose Mercury News, 4 April 1988, p. 1B",-121.64865,37.15472
+https://www.openhistoricalmap.org/way/200480660,landuse=residential,,1987,,"Larimer, Tim, “Civics lesson costs man his land”, San Jose Mercury News, 4 April 1988, p. 1B",-121.64856,37.15477
+https://www.openhistoricalmap.org/way/198305784,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.72036,38.43563
+https://www.openhistoricalmap.org/way/198307233,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.7109,38.436
+https://www.openhistoricalmap.org/way/198307234,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70907,38.43692
+https://www.openhistoricalmap.org/way/198305778,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71491,38.43904
+https://www.openhistoricalmap.org/way/198305785,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.72076,38.4392
+https://www.openhistoricalmap.org/way/198305786,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.7187,38.43995
+https://www.openhistoricalmap.org/way/198307231,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70095,38.4415
+https://www.openhistoricalmap.org/way/198305789,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71387,38.44195
+https://www.openhistoricalmap.org/way/198307232,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.70737,38.44199
+https://www.openhistoricalmap.org/way/198307230,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71871,38.44239
+https://www.openhistoricalmap.org/way/198307229,landuse=residential,,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71674,38.44264
+https://www.openhistoricalmap.org/way/198305791,landuse=residential,,1855,,,-122.99926,38.50255
+https://www.openhistoricalmap.org/way/198305774,leisure=park,Plaza,1876,,"Map of the City of Santa Rosa, 1876. Thompson, Thos. H. (1877). https://www.davidrumsey.com/maps2368.html",-122.71375,38.44006
+https://www.openhistoricalmap.org/way/199823788,man_made=bridge,Route 152/156 Separation,2008,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38273,36.9695
+https://www.openhistoricalmap.org/way/199823782,man_made=bridge,Casa de Fruta Drive Undercrossing,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38432,36.98833
+https://www.openhistoricalmap.org/way/199823781,man_made=bridge,Casa de Fruta Drive Undercrossing,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38455,36.98842
+https://www.openhistoricalmap.org/way/199823766,man_made=bridge,Santa Clara Counduit Drain,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38418,36.98975
+https://www.openhistoricalmap.org/way/199823767,man_made=bridge,Santa Clara Counduit Drain,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.3839,36.98976
+https://www.openhistoricalmap.org/way/199823768,man_made=bridge,Santa Clara Counduit Drain,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38361,36.98977
+https://www.openhistoricalmap.org/way/199823769,man_made=bridge,Santa Clara Counduit Drain,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.38333,36.98979
+https://www.openhistoricalmap.org/way/199823759,man_made=bridge,Pacheco Creek,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.34439,37.01272
+https://www.openhistoricalmap.org/way/199823758,man_made=bridge,Pacheco Creek,1991,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.34431,37.01294
+https://www.openhistoricalmap.org/way/199823748,man_made=bridge,Pacheco Creek,1991,,,-121.33767,37.01629
+https://www.openhistoricalmap.org/way/199823749,man_made=bridge,Pacheco Creek,1991,,,-121.33727,37.01631
+https://www.openhistoricalmap.org/way/199823742,man_made=bridge,Cedar Creek,1989,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.32356,37.03224
+https://www.openhistoricalmap.org/way/199823741,man_made=bridge,Cedar Creek,1989,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.3235,37.03252
+https://www.openhistoricalmap.org/way/199823738,man_made=bridge,Pacheco Creek,1939,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.28914,37.04438
+https://www.openhistoricalmap.org/way/199823735,man_made=bridge,South Fork Pacheco Creek,1939,,https://dot.ca.gov/-/media/dot-media/programs/maintenance/documents/f0009151-logd04-a11y.pdf#page=60,-121.2851,37.04671
+https://www.openhistoricalmap.org/way/199824013,man_made=bridge,,1923,,,-121.29105,37.04982
+https://www.openhistoricalmap.org/way/199824012,man_made=bridge,,1923,,,-121.29024,37.05001
+https://www.openhistoricalmap.org/way/202206648,man_made=bridge,Putah Creek Stone Bridge,1896,1956,,-122.20783,38.55865
+https://www.openhistoricalmap.org/way/200912310,man_made=pier,,1930,,,-121.91326,36.97074
+https://www.openhistoricalmap.org/relation/2794626,natural=water,,1850,,PGS,-121.55029,37.82086
+https://www.openhistoricalmap.org/way/198797377,other,Me-Wuk (Bay Miwok),,1840,https://native-land.ca/,-121.75568,38.13286
+https://www.openhistoricalmap.org/relation/2749952,route=road,,1934,1939-08-12,,-121.23577,37.05619
+https://www.openhistoricalmap.org/relation/2749953,route=road,,1939-08-12,1965-04-29,,-121.21824,37.06565
+https://www.openhistoricalmap.org/relation/2749954,route=road,,1965-04-29,1991,,-121.21475,37.06744
+https://www.openhistoricalmap.org/relation/2749958,route=road,,1991,1997,,-121.21475,37.06744
+https://www.openhistoricalmap.org/relation/2749960,route=road,,1997,2008,,-121.21475,37.06744
+https://www.openhistoricalmap.org/relation/2749963,route=road,,2008,,,-121.21475,37.06744
+https://www.openhistoricalmap.org/relation/2749955,route=road,,1965-04-29,1991,,-121.21472,37.06763
+https://www.openhistoricalmap.org/relation/2749957,route=road,,1991,1997,,-121.21472,37.06763
+https://www.openhistoricalmap.org/relation/2749961,route=road,,1997,2008,,-121.21472,37.06763
+https://www.openhistoricalmap.org/relation/2749964,route=road,,2008,,,-121.21472,37.06763
