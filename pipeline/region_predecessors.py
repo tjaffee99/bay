@@ -751,6 +751,10 @@ def region_predecessors(today):
     qfiles = sorted((MANUAL / "fires").glob("quake_1906_*.geojson"))
     if qfiles:
         quake = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in qfiles], ignore_index=True), crs=4326).to_crs(UTM)[["geometry"]]
+        # the outlines run along street centrelines; apply_sanborn only splits a building mapped
+        # before and after the disaster when it lies 40 m inside the zone (San Francisco's fire
+        # line is ragged) - grown by that much, the district's own street fronts count
+        quake["geometry"] = quake.geometry.buffer(40.0)
     else:
         quake = gpd.GeoDataFrame(geometry=[], crs=UTM)
     pred = apply_sanborn(pred, tu, quake, areas, include=lambda area: area.startswith(REGION_SANBORN))
