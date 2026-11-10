@@ -1097,6 +1097,7 @@ def test(name, out_dir=None):
         if pred is not None and len(pred):
             pred.to_crs(4326).to_file(Path(out_dir) / f"{name}_pred.geojson", driver="GeoJSON")
     ONLY_BOX = None
+    (INTERIM / "fire_structures.parquet").unlink(missing_ok=True)    # a test box must not pass for a stage run
     return tu, pred
 
 

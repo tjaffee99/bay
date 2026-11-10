@@ -358,14 +358,57 @@ def _bin_laz_tile(uid, url):
     """One LAZ tile (its own CRS, read from the header), decoded in chunks of 4 M points."""
     import laspy
     import pyproj
-    _, data = _fetch(url)
-    if data is None:
+    path = _download(url, LIDAR_RAW / "_tiles" / url.rsplit("/", 1)[-1])
+    if path is None:
         return uid, None
+    try:
+        return uid, _bin_laz_file(path)
+    finally:
+        path.unlink()  # 100-300 MB each: only the rasters are kept
+
+
+def _download(url, path, tries=600):
+    """A big file to disk, resumed with HTTP Range after every break: rockyweb.usgs.gov answers
+    429 in bursts (a queue page) and serves ~0.1 MB/s per connection through the proxy."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    part = path.with_name(path.name + ".part")
+    total = None
+    for attempt in range(tries):
+        have = part.stat().st_size if part.exists() else 0
+        if total is not None and have >= total:
+            break
+        try:
+            with _W["s"].get(url, headers={"Range": f"bytes={have}-"} if have else {}, stream=True, timeout=120) as r:
+                if r.status_code == 404:
+                    return None
+                if r.status_code == 416:  # nothing after `have`: complete
+                    total = have
+                elif r.status_code in (200, 206):
+                    total = int(r.headers["Content-Range"].rsplit("/", 1)[-1]) if r.status_code == 206 \
+                        else int(r.headers.get("Content-Length", 0)) or None
+                    with open(part, "ab" if r.status_code == 206 else "wb") as f:
+                        for chunk in r.iter_content(1 << 20):
+                            f.write(chunk)
+                    if total is None:
+                        total = part.stat().st_size
+                    continue
+        except Exception:  # noqa: BLE001 - broken stream: resume
+            pass
+        time.sleep(min(20.0, 2.0 + attempt))
+    else:
+        raise RuntimeError(f"failed to download {url}")
+    os.replace(part, path)
+    return path
+
+
+def _bin_laz_file(path):
+    import laspy
+    import pyproj
     reds = []
-    with laspy.open(io.BytesIO(data)) as rd:
+    with laspy.open(path) as rd:
         crs = rd.header.parse_crs()
         if crs is None:
-            raise RuntimeError(f"{url}: no CRS in the LAS header")
+            raise RuntimeError(f"{path}: no CRS in the LAS header")
         subs = crs.sub_crs_list if crs.is_compound else [crs]
         horiz = next(c for c in subs if not c.is_vertical)
         vert = next((c for c in subs if c.is_vertical), None)
@@ -384,16 +427,16 @@ def _bin_laz_tile(uid, url):
             if p is not None:
                 reds.append(_reduce([p]))
     if not reds:
-        return uid, None
+        return None
     if len(reds) == 1:
-        return uid, reds[0]
+        return reds[0]
     idx = np.concatenate([r[0] for r in reds])
     o = np.argsort(idx, kind="stable")
     idx = idx[o]
     starts = np.flatnonzero(np.r_[True, idx[1:] != idx[:-1]])
     col = [np.concatenate([r[i] for r in reds])[o] for i in range(1, 6)]
-    return uid, (idx[starts], np.maximum.reduceat(col[0], starts), np.maximum.reduceat(col[1], starts),
-                 np.maximum.reduceat(col[2], starts), np.add.reduceat(col[3], starts), np.add.reduceat(col[4], starts))
+    return (idx[starts], np.maximum.reduceat(col[0], starts), np.maximum.reduceat(col[1], starts),
+            np.maximum.reduceat(col[2], starts), np.add.reduceat(col[3], starts), np.add.reduceat(col[4], starts))
 
 
 def _bin_unit(unit):

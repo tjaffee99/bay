@@ -999,3 +999,56 @@ route("wtc", "Watsonville Transportation Company (Watsonville Railway & Navigati
                    "Geometry: today's West Beach Street and Beach Road (the line ran in / beside them); the wharf is "
                    "not drawn.", geometry_confidence="medium"),
       ])
+
+
+# ---- topo sheets of the new counties (USGS HTMC), registered with the tracer when it loads this spec ------------
+EXTRA_SHEETS = {
+    "vac1908": (299005, "62500/CA_Vacaville_299005_1908_62500_geo.pdf"),
+    "ant1908": (296717, "62500/CA_Antioch_296717_1908_62500_geo.pdf"),
+}
+import sys as _sys                                                  # noqa: E402
+for _m in (_sys.modules.get("__main__"), _sys.modules.get("historic_rail_trace")):
+    if _m is not None and hasattr(_m, "SHEETS"):
+        _m.SHEETS.update(EXTRA_SHEETS)
+
+route("vaca_valley_elmira", "Vaca Valley Railroad: Elmira - Vacaville (Southern Pacific Vacaville / Clear Lake branch)",
+      "rail", WIKI + "Vaca_Valley_and_Clear_Lake_Railroad", [
+          seg("Elmira - Vacaville", 1869.47, 1987.0,
+              topo("vac1908", (-121.9135, 38.3497), (-121.9345, 38.3513), (-121.9550, 38.3518), (-121.9735, 38.3533),
+                   (-121.97627, 38.35427), corridor=140),
+              note="Vaca Valley Railroad, first train 16 June 1869, Elmira - Vacaville in operation 21 June 1869; the "
+                   "branch's last train ran about 1985 and the line was removed to Elmira by the 1990s (Wikipedia) - "
+                   "end year ESTIMATED. Geometry: USGS Vacaville 1908 sheet ('Clear Lake Branch').",
+              confidence="estimated"),
+      ])
+
+COAL = "https://wx4.org/to/foam/shortlines/coal/mines.html"
+route("coal_pittsburg", "Pittsburg Railroad (Mount Diablo coal field): Somersville - Pittsburg Landing", "rail", COAL, [
+    seg("Somersville - Markley Canyon - Los Medanos - Pittsburg Landing", 1866.5, 1916.0,
+        topo("md1898", (-121.8680, 37.9558), (-121.8684, 37.9629), (-121.8680, 37.9680), (-121.8646, 37.9760),
+             (-121.8606, 37.9800), (-121.8600, 37.9870), (-121.8598, 37.9950), (-121.8590, 37.9995), corridor=220),
+        topo("ant1908", (-121.8568, 38.0003), (-121.8562, 38.0050), (-121.8536, 38.0128), (-121.8520, 38.0189),
+             (-121.8490, 38.0272), corridor=160),
+        note="Standard-gauge coal railroad from the Somersville mines down Markley Canyon to Pittsburg Landing on the "
+             "San Joaquin River, 5.33 miles, completed 1866 (month ESTIMATED); abandoned 1916 (wx4.org, 'Mount Diablo "
+             "coal mine railroads', after B. Ward). Geometry: USGS Mt Diablo 1898 and Antioch 1908 sheets ('Pittsburg "
+             "R.R.').", confidence="estimated"),
+])
+
+route("coal_empire", "Empire Coal Mine and Railroad (Mount Diablo coal field): Stewartville / West Hartley - Antioch",
+      "narrow_gauge", COAL, [
+          seg("Empire Railroad: junction below the mines - north toward Antioch (to 38.0 N)", 1878.5, 1898.5,
+              topo("md1898", (-121.8087, 37.9490), (-121.8090, 37.9568), (-121.8102, 37.9655), (-121.8117, 37.9740),
+                   (-121.8163, 37.9830), (-121.8192, 37.9920), (-121.8200, 37.9998), corridor=220),
+              note="Narrow-gauge (probably 3 ft) coal railroad from the Empire and Central mines to the Antioch "
+                   "waterfront; began operations 1878 (month ESTIMATED), ceased 1897, reorganised as the Antioch "
+                   "Railroad in 1898 and worked only briefly that year (wx4.org). Geometry: USGS Mt Diablo 1898 sheet "
+                   "('Empire R.R.'); the last 2 km to the Antioch wharf (north of 38 N) are on no survey found and are "
+                   "not drawn.", confidence="estimated"),
+          seg("Empire Railroad: branch to Stewartville (Central Mine)", 1882.0, 1898.5,
+              topo("md1898", (-121.8087, 37.9490), (-121.8255, 37.9485), (-121.8400, 37.9440), (-121.8530, 37.9470),
+                   corridor=260),
+              note="Extension from the Empire mine (Judsonville) up the valley to Stewartville - year ESTIMATED (drawn "
+                   "on the 1898 sheet, surveyed 1896); ceased 1897-98 (wx4.org). Geometry: USGS Mt Diablo 1898 sheet.",
+              confidence="estimated"),
+      ])

@@ -550,6 +550,371 @@ const benicia2007: Landmark = {
   sources: [WIKI + 'Benicia%E2%80%93Martinez_Bridge']
 };
 
+// =================================================================== FORT ROSS
+
+// Russian-American Company settlement, 1812–41. National Historic Landmark nominations
+// (Fort Ross, 66000239; Commander's House, 70000150): "a quadrangular enclosure which
+// measured about 276 by 312 feet. Hand-hewn redwood timbers were used for all construction,
+// including the stockaded walls, which were 12 feet high. Two two-story blockhouses, one
+// 7-sided and the other 8-sided, were located at diagonally opposite corners"; inside, "the
+// commander's house, officers' quarters, a two-story barracks, a chapel, and 3 storehouses".
+// "The Russian Orthodox chapel was built about 1825 … during the 1906 earthquake, its walls
+// collapsed. The chapel was restored in 1916-17 and more authentically in 1955-56, only to
+// be completely destroyed by fire in 1970" (Oct 5; rebuilt 1973). "The original blockhouses
+// and some parts of the stockade remained standing until the 1906 earthquake."
+// OSM outlines (local metres from the anchor): seven-sided blockhouse at the north corner
+// (−6.6, 54.3), eight-sided at the south corner (27.8, −77.0), the chapel in the east corner,
+// a stockade fragment giving the west corner (−45.5, −33.7): walls of 93, 86, 95 and 79 m
+// (the nominations' 312 × 276 ft = 95 × 84 m). Rotchev House 17.5 × 10.5 m, Kuskov House
+// 19.1 × 14.3 m, Officials' Quarters 22.4 × 7.4 m, Magazin 16.5 × 9.1 m. Heights other than
+// the 12 ft stockade are scaled from photographs of the reconstructions.
+const FR: V2 = [-123.2437, 38.51435];
+const FR_N: V2 = [-8.0, 51.0];
+const FR_S: V2 = [25.0, -70.0];
+const FR_W: V2 = [-45.5, -33.7];
+const REDWOOD = '#74685A';
+const REDWOOD_DK = '#62584C';
+const PLANK = '#877D6F';
+const FR_SRC = [NRHP('66000239', true), NRHP('70000150'), WIKI + 'Fort_Ross,_California'];
+
+function frStockade(b: MeshBuilder) {
+  const wall = (p: V2, q: V2, t0 = 0, t1 = 1) =>
+    b.beam([p[0] + (q[0] - p[0]) * t0, p[1] + (q[1] - p[1]) * t0, 1.33], [p[0] + (q[0] - p[0]) * t1, p[1] + (q[1] - p[1]) * t1, 1.33], 0.35, 4.66);
+  b.color(REDWOOD);
+  wall(FR_W, FR_N, 0, 0.97);
+  wall(FR_N, [60.8, 18.1], 0.03, 0.47); // sally port in the north-east wall
+  wall(FR_N, [60.8, 18.1], 0.53, 1);
+  wall([65.9, 6.4], FR_S, 0, 0.95);
+  wall(FR_S, FR_W, 0.05, 0.47); // main gate, south-west
+  wall(FR_S, FR_W, 0.53, 1);
+  for (const [c, sides, r] of [[[-6.6, 54.3], 7, 3.8], [[27.8, -77.0], 8, 4.4]] as [V2, number, number][]) {
+    b.color(REDWOOD_DK).prism(ngon(c[0], c[1], r, sides), -1, 6.4, {top: false});
+    b.color(PLANK).pyramid(ngon(c[0], c[1], r + 0.5, sides), 6.4, [c[0], c[1], 9.2]);
+  }
+}
+
+/** Log building with a plank hip roof in its own frame. */
+function frHouse(b: MeshBuilder, cx: number, cy: number, brg: number, sx: number, sy: number, wall: number, rise: number) {
+  b.frame(cx, cy, 0, brg, () => {
+    b.color(REDWOOD_DK).box(0, 0, -1, sx, sy, wall + 1, {top: false});
+    b.color(PLANK).hip(0, 0, sx + 0.8, sy + 0.8, wall, rise);
+  });
+}
+
+function frChapel(b: MeshBuilder) {
+  // +y = west-north-west (the entrance and bell tower); the cupola stands over the altar in the stockade's east corner
+  b.frame(63.3, 12.2, 0, 297.3, () => {
+    b.color(REDWOOD).box(0, 0, -1, 8.1, 10, 4.3, {top: false});
+    b.color(PLANK).hip(0, 0, 8.9, 10.8, 3.3, 2.0);
+    const hex = ngon(0, 3.1, 1.55, 6);
+    b.color(REDWOOD).prism(hex, 4.0, 7.7, {top: false});
+    b.color(PLANK).pyramid(ngon(0, 3.1, 1.9, 6), 7.7, [0, 3.1, 9.7]);
+    b.color(REDWOOD).cylinder(0, -2.7, 1.6, 4.0, 6.8, 8, {top: false});
+    b.color(PLANK).pyramid(circle(0, -2.7, 1.9, 8), 6.8, [0, -2.7, 7.9]);
+    b.color('#3F3A34');
+    for (const y of [3.1, -2.7]) {
+      const z = y > 0 ? 9.7 : 7.9;
+      b.beam([0, y, z], [0, y, z + 1.0], 0.1).beam([-0.3, y, z + 0.7], [0.3, y, z + 0.7], 0.08);
+    }
+  });
+}
+
+const frStockade1812: Landmark = {
+  id: 'fort_ross_stockade_1812',
+  name: 'Fort Ross — Russian stockade and blockhouses (1812)',
+  kind: 'building',
+  built: [1812.2, 1812.7],
+  end: 1906.3,
+  anchor: FR,
+  build: frStockade,
+  facts: {
+    Founded: '1812 by Ivan Kuskov and the Russian-American Company: 25 Russians and some 80 Alaska Natives built the stockaded fort on the Kashaya Pomo site of Metini',
+    Stockade: 'about 276 × 312 ft of hand-hewn redwood timbers, 12 ft high, with three sally ports and a seven-sided and an eight-sided two-storey blockhouse at opposite corners (National Historic Landmark nomination)',
+    After: 'sold to John Sutter in December 1841; a ranch until 1903. The original blockhouses and parts of the stockade stood until the 1906 earthquake',
+    Model: 'corners and blockhouse outlines from the reconstructed fort in OpenStreetMap; blockhouse heights from photographs. LOW CONFIDENCE: how much of the wall still stood through the ranch years'
+  },
+  sources: FR_SRC
+};
+const frBuildings1812: Landmark = {
+  id: 'fort_ross_russian_buildings',
+  name: 'Fort Ross — Kuskov House, Officials’ Quarters and Magazin (Russian period)',
+  kind: 'building',
+  built: [1812.2, 1814.0],
+  end: 1842.0,
+  anchor: FR,
+  build: b => {
+    frHouse(b, 28.5, 22.5, 118.1, 14.3, 19.1, 5.6, 4.4); // Kuskov House, two storeys
+    frHouse(b, -18.3, -38.6, 118.9, 7.4, 22.4, 3.0, 2.4); // Officials' Quarters
+    frHouse(b, -13.9, 15.4, 24.4, 9.1, 16.5, 5.5, 3.2); // Magazin (fur warehouse), two storeys
+  },
+  replaces: [rotRing(rect(0, 0, 15.3, 20.1), 118.1, 28.5, 22.5), rotRing(rect(0, 0, 8.4, 23.4), 118.9, -18.3, -38.6), rotRing(rect(0, 0, 10.1, 17.5), 24.4, -13.9, 15.4)],
+  facts: {
+    Buildings: 'the first manager’s house (Kuskov House, the “old commandant’s house” of the 1841 inventory), the officials’ quarters and a two-storey warehouse (magazin) stood inside the stockade with barracks, storehouses and the well',
+    Model: 'the State Park’s reconstructions on the excavated sites, as outlined in OpenStreetMap, stand in for the Russian buildings; heights from photographs. The model ends with the colony (the company left in January 1842): what became of each building afterwards, and the years of today’s reconstructions, were not researched — LOW CONFIDENCE end date'
+  },
+  sources: FR_SRC
+};
+const frRotchev: Landmark = {
+  id: 'fort_ross_rotchev_house',
+  name: 'Fort Ross — Rotchev House',
+  kind: 'building',
+  built: [1835.5, 1836.5],
+  end: 9999,
+  anchor: FR,
+  build: b => frHouse(b, -29.0, -15.8, 25.6, 10.5, 17.5, 3.2, 4.6),
+  replaces: [rotRing(rect(0, 0, 11.5, 18.5), 25.6, -29.0, -15.8)],
+  facts: {
+    Built: 'renovated about 1836 from an existing building for Alexander Rotchev, the last manager — the only original Russian building left at the fort (National Historic Landmark, 1970)',
+    Form: 'one storey of hand-squared redwood timbers notched at the corners under a steep hip roof of split redwood planks up to 23 ft long; the nomination gives about 36 × 48 ft',
+    Fire: 'its roof was damaged by the fires of 1970–71; opened as a house museum in 2010',
+    Model: OSM_NOTE + ' (17.5 × 10.5 m); wall and roof heights from a photograph'
+  },
+  sources: [NRHP('70000150'), WIKI + 'Rotchev_House']
+};
+const chapelFacts = {
+  Built: 'about 1825 — the first Russian Orthodox chapel in North America south of Alaska, standing in the stockade’s east corner',
+  History: 'walls collapsed in the earthquake of Apr 18, 1906; re-erected 1916–17 from the original timbers and restored more authentically in 1955–56; burned Oct 5, 1970; rebuilt 1973',
+  Model: 'one mesh for all three periods (the 1916–17 chapel kept ranch-era alterations); outline from OpenStreetMap (10.0 × 8.1 m), heights from a photograph of the 1973 chapel; construction months estimated'
+};
+const frChapel1825: Landmark = {id: 'fort_ross_chapel_1825', name: 'Fort Ross Chapel (c. 1825)', kind: 'building', built: [1824.5, 1825.5], end: 1906.3, anchor: FR, build: frChapel, facts: chapelFacts, sources: FR_SRC};
+const frChapel1917: Landmark = {id: 'fort_ross_chapel_1917', name: 'Fort Ross Chapel (restored 1916–17)', kind: 'building', built: [1916.0, 1917.5], end: 1970.76, anchor: FR, build: frChapel, facts: chapelFacts, sources: FR_SRC};
+const frChapel1973: Landmark = {
+  id: 'fort_ross_chapel',
+  name: 'Fort Ross Chapel (rebuilt 1973)',
+  kind: 'building',
+  built: [1972.5, 1973.9],
+  end: 9999,
+  anchor: FR,
+  build: frChapel,
+  replaces: [rotRing(rect(0, 0, 9.1, 11), 297.3, 63.3, 12.2)],
+  facts: chapelFacts,
+  sources: FR_SRC
+};
+const frStockadeToday: Landmark = {
+  id: 'fort_ross_stockade',
+  name: 'Fort Ross — reconstructed stockade and blockhouses',
+  kind: 'building',
+  built: [1955.0, 1957.0],
+  end: 9999,
+  anchor: FR,
+  build: frStockade,
+  replaces: [rect(-6.6, 54.3, 9, 9), rect(27.8, -77.0, 10, 10), rect(-32.2, -25.9, 5, 5)],
+  facts: {
+    Reconstruction: 'the State of California (owner since 1906) rebuilt the stockade and both blockhouses on the original lines “with a high degree of accuracy, using original materials to some extent” (National Historic Landmark nomination); the restored fort reopened in 1974 after the 1970–71 fires, and Highway 1, which ran through the compound, was moved out in the 1970s',
+    Stockade: 'redwood timbers 12 ft high; seven-sided blockhouse at the north corner, eight-sided at the south corner',
+    Model: 'LOW CONFIDENCE years — the sources only show the reconstruction standing by the 1961 landmark survey; it is dated here with the chapel’s 1955–56 restoration. Blockhouse heights from photographs'
+  },
+  sources: FR_SRC
+};
+
+// =================================================================== SONOMA AND PETALUMA
+
+const ADOBE = '#EFEBE1';
+const TILE = '#A9553B';
+const SHINGLE = '#6B5F52';
+const PLAZA_SRC = NRHP('75000489', true);
+
+// ------------------------------------------------------------ Mission San Francisco Solano
+// Sonoma Plaza NHL nomination: founded July 4, 1823; the first church was "a crude wood
+// structure, 105 ft long, 34 ft wide … dedicated April 4, 1824"; the adobe mission church was
+// destroyed after secularization (1834). "The present parish church is a small
+// one-and-a-half story adobe structure with a tile roof … A one-story tile-roofed adobe
+// convento … nearly 120 feet long, adjoins the chapel on the east side to give the two
+// buildings an L-shaped ground plan … sold [1881] and utilized as a hay barn, winery, and
+// blacksmith shop … restored by the State in 1911-13." Wikipedia: Vallejo's chapel, 1841, on
+// the site of the first wooden chapel; 27 rooms in the convento by 1832.
+// OSM outline: chapel 8.9 × 33 m with its facade on Spain Street, convento 37.8 × 10.5 m.
+const MSFS: V2 = [-122.456102, 38.293892];
+const sonomaMissionChapel: Landmark = {
+  id: 'mission_san_francisco_solano_chapel',
+  name: 'Mission San Francisco Solano — chapel (1841)',
+  kind: 'building',
+  built: [1840.0, 1841.5],
+  end: 9999,
+  anchor: MSFS,
+  build: b =>
+    b.frame(-0.6, -3.8, 0, 4.0, () => {
+      b.color(ADOBE).box(0, 0, -1, 8.9, 33, 6.2, {top: false});
+      b.color(TILE).gable(0, 0, 9.8, 33.6, 5.2, 2.8, true);
+      b.color(ADOBE).tri([-4.45, -16.52, 5.2], [4.45, -16.52, 5.2], [0, -16.52, 8.0]);
+      b.color('#4A3B2C').box(0, -16.55, 0, 1.8, 0.12, 2.9).box(0, -16.55, 4.1, 1.0, 0.12, 1.1);
+      b.beam([0, -16.4, 8.0], [0, -16.4, 10.6], 0.22).beam([-0.9, -16.4, 9.8], [0.9, -16.4, 9.8], 0.2);
+    }),
+  replaces: [rotRing(rect(0, 0, 10, 34), 4.0, -0.6, -3.8)],
+  facts: {
+    Mission: 'founded July 4, 1823 by José Altimira — the 21st and last California mission, the only one founded under Mexican rule; secularized 1834',
+    Chapel: 'built in 1841 by order of Mariano Vallejo as the parish church, on the site of the first wooden mission chapel (the large adobe mission church, at the convento’s east end, was already in ruins)',
+    Later: 'sold in 1881 (hay barn, winery, blacksmith shop); bought by the Historic Landmarks League in 1903, damaged in 1906 and restored by the State 1911–13',
+    Model: OSM_NOTE + ' (8.9 × 33 m); wall and ridge heights from a photograph; construction start estimated'
+  },
+  sources: [WIKI + 'Mission_San_Francisco_Solano', PLAZA_SRC]
+};
+const sonomaMissionConvento: Landmark = {
+  id: 'mission_san_francisco_solano_convento',
+  name: 'Mission San Francisco Solano — convento',
+  kind: 'building',
+  built: [1825.0, 1832.0],
+  end: 9999,
+  anchor: MSFS,
+  build: b =>
+    b.frame(21.2, -18.8, 0, 93.9, () => {
+      // +y = east along Spain Street, +x = south (the corridor)
+      b.color(ADOBE).box(-1.75, 0, -1, 7, 37.8, 4.3, {top: false});
+      b.color(TILE).gable(-1.75, 0, 7.6, 38.4, 3.3, 2.0, true);
+      b.quad([1.7, -18.9, 3.5], [1.7, 18.9, 3.5], [5.4, 18.9, 2.6], [5.4, -18.9, 2.6]);
+      b.color('#5A4634');
+      for (let y = -18; y <= 18; y += 3.6) b.box(5.0, y, 0, 0.3, 0.3, 2.6);
+    }),
+  replaces: [rotRing(rect(0, 0, 11.5, 38.8), 93.9, 21.2, -18.8)],
+  facts: {
+    Built: 'the padres’ quarters: adobe building began in 1825 after the first season’s walls melted in the rains; 27 rooms by 1832 — the oldest building in Sonoma',
+    Form: 'one-storey tile-roofed adobe nearly 120 ft long with a corridor on wooden posts along the street; restored 1911–13',
+    Model: OSM_NOTE + ' (37.8 × 10.5 m); heights from a photograph; LOW CONFIDENCE construction years (between the 1825 start and the 1832 inventory)'
+  },
+  sources: [WIKI + 'Mission_San_Francisco_Solano', PLAZA_SRC]
+};
+
+// ------------------------------------------------------------ Sonoma Barracks
+// Wikipedia (after Stammerjohan): "Construction of the barracks was episodic: digging the
+// foundation began in 1837, construction of the adobe walls in 1839 and the building was more
+// or less completed in 1840 to '41" — "a two-story, wide-balconied, adobe building facing the
+// central plaza". OSM outline 38.4 × ≈18 m along Spain Street (balconies included), 6.8 m high.
+const sonomaBarracks: Landmark = {
+  id: 'sonoma_barracks',
+  name: 'Sonoma Barracks',
+  kind: 'building',
+  built: [1837.0, 1841.0],
+  end: 9999,
+  anchor: [-122.456624, 38.293759],
+  build: b =>
+    b.frame(-0.1, -0.6, 0, 97.7, () => {
+      // +y = east along Spain Street, +x = south (the plaza front)
+      b.color(ADOBE).box(0, 0, -1, 12, 38.4, 7.8, {top: false});
+      b.color(SHINGLE).hip(0, 0, 18.8, 39.6, 6.8, 2.8);
+      for (const sx of [-1, 1]) {
+        b.color('#7A6A58').box(sx * 7.5, 0, 3.1, 3, 38.4, 0.25);
+        b.color('#5A4A3A');
+        for (let y = -18.9; y <= 18.9; y += 4.2) b.box(sx * 8.8, y, 0, 0.3, 0.3, 6.8);
+      }
+    }),
+  replaces: [rotRing(rect(0, 0, 19.5, 39.6), 97.7, -0.1, -0.6)],
+  facts: {
+    Built: 'for Mariano Vallejo’s presidial company, moved from San Francisco in 1835: foundation 1837, adobe walls 1839, finished 1840–41',
+    '1846': 'headquarters of the Bear Flag Party (June 14), then of U.S. forces',
+    Later: 'sold in 1879 and given a Victorian front; restored by the State after 1957 to its 1840s appearance',
+    Model: OSM_NOTE + '; two-storey balconies on both long sides and a hipped shingle roof; heights from the OSM height (6.8 m) and photographs'
+  },
+  sources: [WIKI + 'Sonoma_Barracks', PLAZA_SRC]
+};
+
+// ------------------------------------------------------------ Sonoma City Hall
+// Wikipedia: cornerstone Feb 22, 1906; dedicated Sep 9, 1908; A. C. Lutgens; basalt, two
+// stories, a tower and a tiled roof, "four identical sides, each with an arched doorway".
+// OSM outline: a 20.8 m square turned 7.4°, four corner pavilions 7.2 × 7.5 m with the wall
+// between them set back 3.9 m. Heights scaled from the Wikipedia photograph (front 20.8 m).
+const sonomaCityHall: Landmark = {
+  id: 'sonoma_city_hall',
+  name: 'Sonoma City Hall',
+  kind: 'building',
+  built: [1906.15, 1908.69],
+  end: 9999,
+  anchor: [-122.457728, 38.292817],
+  build: b =>
+    b.frame(0.3, -0.1, 0, 7.4, () => {
+      const stone = '#8C8375';
+      b.color(stone).box(0, 0, -1, 13.3, 13.3, 9.8);
+      for (const sx of [-1, 1]) {
+        for (const sy of [-1, 1]) {
+          b.color(stone).box(sx * 6.75, sy * 6.75, -1, 7.2, 7.5, 9.8, {top: false});
+          b.color(TILE).hip(sx * 6.75, sy * 6.75, 8.2, 8.5, 8.8, 1.4);
+        }
+      }
+      // curved parapet gable over each of the four entrances, arched doorways below
+      for (const [nx, ny] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as V2[]) {
+        b.frame(nx * 6.7, ny * 6.7, 0, (Math.atan2(nx, ny) * 180) / Math.PI, () => {
+          b.color(stone).box(0, 0, 8.8, 6.4, 0.5, 1.2);
+          b.gable(0, 0, 4.4, 0.5, 10.0, 1.3, false);
+          b.color('#3B3530').box(0, 0.27, 0, 2.2, 0.1, 3.6);
+        });
+      }
+      b.color(TILE).hip(0, 0, 12.6, 12.6, 8.8, 1.2);
+      // bell cupola
+      b.color('#E6E0D2');
+      for (const sx of [-1, 1]) for (const sy of [-1, 1]) b.box(sx * 1.0, sy * 1.0, 10.0, 0.35, 0.35, 2.7);
+      b.box(0, 0, 9.6, 2.6, 2.6, 0.9);
+      b.color(TILE).hip(0, 0, 3.4, 3.4, 12.7, 1.2);
+      b.color('#B9B4A8').beam([0, 0, 13.9], [0, 0, 17.0], 0.1);
+    }),
+  replaces: [rotRing(rect(0, 0, 21.8, 21.8), 7.4, 0.3, -0.1)],
+  facts: {
+    Built: 'cornerstone Feb 22, 1906; dedicated Sep 9, 1908 (Adolph C. Lutgens, architect)',
+    Form: 'Mission Revival in local basalt: two storeys, four identical fronts — so that no merchant on the Plaza faced its back — a bell cupola and tile roofs; the fire engines once left through its arched doors',
+    Model: OSM_NOTE + '; heights scaled from a photograph (eaves ≈8.8 m, cupola ≈13.9 m)'
+  },
+  sources: [WIKI + 'Sonoma_City_Hall', PLAZA_SRC]
+};
+
+// ------------------------------------------------------------ Rancho Petaluma Adobe
+// NHL nomination (70000151): "the two-story house is built in [adobe] … form three sides of
+// a quadrangle measuring 200 by 145 feet … [walls] 20 feet high. A broad two-story veranda
+// ran around"; Wikipedia: built 1836–46, "what remains of the Petaluma Adobe is only half
+// its former size" (the south-east half decayed under the Bliss family; bought by the Native
+// Sons in 1910). OSM outline in a 26° frame: main wing 60.3 × 15 m (the 200 ft front), two
+// wings of ≈18 × 13 m toward the lost half.
+const petalumaAdobe: Landmark = {
+  id: 'rancho_petaluma_adobe',
+  name: 'Rancho Petaluma Adobe',
+  kind: 'building',
+  built: [1836.0, 1846.0],
+  end: 9999,
+  anchor: [-122.584807, 38.255729],
+  build: b =>
+    b.frame(0, 0, 0, 26.0, () => {
+      // +y = north-north-east along the main wing, +x = into the courtyard
+      const wing = (cx: number, cy: number, sx: number, sy: number) => {
+        const alongY = sy > sx;
+        const cxs = alongY ? sx - 5.6 : sx;
+        const cys = alongY ? sy : sy - 5.6;
+        b.color(ADOBE).box(cx, cy, -1, cxs, cys, 7.1, {top: false});
+        b.color('#7A6A58').box(cx, cy, 2.9, sx, sy, 0.25);
+        b.color('#5A4A3A');
+        if (alongY) for (const s of [-1, 1]) for (let y = cy - sy / 2 + 0.3; y <= cy + sy / 2; y += 3.3) b.box(cx + s * (sx / 2 - 0.3), y, 0, 0.3, 0.3, 6.1);
+        else for (const s of [-1, 1]) for (let x = cx - sx / 2 + 0.3; x <= cx + sx / 2; x += 3.3) b.box(x, cy + s * (sy / 2 - 0.3), 0, 0.3, 0.3, 6.1);
+        b.color(SHINGLE).hip(cx, cy, sx + 0.8, sy + 0.8, 6.1, 2.0);
+      };
+      wing(0, 3.7, 15, 60.35);
+      wing(16.45, 27.2, 17.9, 13.6);
+      wing(16.4, -10.9, 17.9, 13.0);
+    }),
+  replaces: [rotRing(rect(9, 3.7, 35, 62), 26.0)],
+  facts: {
+    Built: '1836–46 for Mariano Vallejo as the headquarters of the 66,000-acre Rancho Petaluma — the largest private adobe building in California; never quite finished',
+    Form: 'two storeys of adobe on redwood framing around a courtyard about 200 × 145 ft, walls 20 ft high, with broad two-storey verandas and a low shingled roof',
+    Remains: 'the standing half: Vallejo sold it about 1857 and the south-east half decayed; the Native Sons of the Golden West bought the rest in 1910; state historic park since 1951',
+    Model: OSM_NOTE + ' (main wing 60 × 15 m); the lost south-east half is not modelled (no plan or date of loss found); roof and veranda details from photographs'
+  },
+  sources: [WIKI + 'Rancho_Petaluma_Adobe', NRHP('70000151', true)]
+};
+
 // @@NEXT@@
 
-export const NORTHBAY: Landmark[] = [carquinez1927, carquinez1958, zampaBridge, beniciaRailBridge, benicia1962, benicia2007];
+export const NORTHBAY: Landmark[] = [
+  carquinez1927,
+  carquinez1958,
+  zampaBridge,
+  beniciaRailBridge,
+  benicia1962,
+  benicia2007,
+  frStockade1812,
+  frBuildings1812,
+  frRotchev,
+  frChapel1825,
+  frChapel1917,
+  frChapel1973,
+  frStockadeToday,
+  sonomaMissionChapel,
+  sonomaMissionConvento,
+  sonomaBarracks,
+  sonomaCityHall,
+  petalumaAdobe
+];
