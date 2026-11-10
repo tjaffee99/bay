@@ -126,7 +126,9 @@ REGION_JOBS = {
     "vacaville": ((-122.000, 38.348, -121.975, 38.365), "CA_SolanoCounty_1_A23"),
     "petaluma": ((-122.652, 38.224, -122.622, 38.244), "CA_NorthernCA_1_B22"),        # downtown + the river mills
     "antioch": ((-121.822, 38.006, -121.795, 38.022), "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017"),
-    "pittsburg": ((-121.898, 38.022, -121.872, 38.040), "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017"),
+    # Pittsburg: old town, marina and the industrial waterfront east of it; the box stays inside three of
+    # the survey's 1.5 km LAZ tiles (130 MB each, ~0.1 MB/s per connection from rockyweb)
+    "pittsburg": ((-121.8937, 38.0242, -121.8615, 38.0450), "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017"),
     "gilroy": ((-121.580, 36.998, -121.558, 37.016), "CA_SantaClaraCounty_2020"),
     "morgan_hill": ((-121.665, 37.120, -121.642, 37.138), "CA_SantaClaraCounty_2020"),
     "watsonville": ((-121.770, 36.902, -121.745, 36.920), "CA_SantaCruzCounty_2020"),
@@ -139,6 +141,11 @@ REGION_JOBS = {
     "travis_afb": ((-121.970, 38.255, -121.920, 38.280), "CA_SolanoCounty_1_A23"),    # hangar line, David Grant Medical Center
     "mare_island": ((-122.290, 38.085, -122.2645, 38.110), "CA_SolanoCounty_1_A23"),  # shipyard core
     "genentech_vacaville": ((-121.965, 38.375, -121.935, 38.395), "CA_SolanoCounty_1_A23"),
+    # Napa Valley: the big wineries and the towns between them
+    "st_helena": ((-122.490, 38.498, -122.460, 38.519), "CA_NorthCoastRanges_2_B23"),           # Main St, Beringer, Greystone (CIA)
+    "oakville_rutherford": ((-122.440, 38.436, -122.398, 38.462), "CA_NorthCoastRanges_2_B23"),  # Robert Mondavi, Opus One, Inglenook, Beaulieu
+    "yountville": ((-122.375, 38.390, -122.352, 38.412), "CA_NorthCoastRanges_2_B23"),           # town, Domaine Chandon, Veterans Home
+    "castello_di_amorosa": ((-122.548, 38.555, -122.538, 38.562), "CA_NorthCoastRanges_2_B23"),
 }
 
 VOXEL = 0.7            # deepest EPT level read: voxels <= 0.7 m (mercator) -> ~5 pts/m2 on roofs

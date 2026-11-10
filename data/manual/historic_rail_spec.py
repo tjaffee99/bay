@@ -781,10 +781,11 @@ route("sfo_7th_st", "San Francisco & Oakland Railroad / SP 7th Street line (Oakl
 # THE NEW COUNTIES (2026-11): lost railways of Sonoma, Napa, Solano and Santa Cruz
 # Geometry: OSM abandoned / disused grades (Overture rail 2026-10-21) and OpenHistoricalMap ways (CC0;
 # data/raw/historic_rail/h2_ohm_newarea.json, written by `python pipeline/ohm_import.py railextract`) through the
-# `rail` method; dates never from OHM (decision 39). Build only these: `python historic_rail_trace.py build
-# npc_north nwp_guerneville nwp_sebastopol psr_two_rock sp_santa_rosa nwp_sonoma sp_calistoga sfnp_donahue
-# vaca_valley sn_dozier_north spc_boulder_creek sp_loma_prieta pvc osr_south wtc` (a build without ids drops the
-# OHM features merged by hand into historic_rail.geojson).
+# `rail` method; USGS sheets (EXTRA_SHEETS below) through `topo`; dates never from OHM (decision 39). Build only
+# these: `python historic_rail_trace.py build npc_north nwp_guerneville nwp_sebastopol psr_ sp_santa_rosa nwp_sonoma
+# sp_calistoga sfnp_donahue vaca_valley sn_dozier_north spc_boulder_creek sp_loma_prieta pvc osr_south wtc coal_`
+# (ids are prefixes; a build without ids rewrites the whole file and drops the six OHM routes that were merged by
+# hand into historic_rail.geojson from data/manual/ohm/historic_rail_ohm.geojson).
 # =====================================================================================
 NWPW = WIKI + "Northwestern_Pacific_Railroad"
 SFNPW = WIKI + "San_Francisco_and_North_Pacific_Railroad"

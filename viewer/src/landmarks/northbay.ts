@@ -503,6 +503,8 @@ const benicia1962: Landmark = {
 };
 
 const BM07_PATH: V2[] = [[-122.116757, 38.031832], [-122.116714, 38.033654], [-122.11672, 38.034124], [-122.116754, 38.034549], [-122.116837, 38.035096], [-122.116992, 38.035767], [-122.117119, 38.036173], [-122.117224, 38.036447], [-122.11735, 38.036756], [-122.117609, 38.037292], [-122.117956, 38.037875], [-122.118378, 38.038467], [-122.121761, 38.042852], [-122.126179, 38.04858], [-122.126262, 38.048762], [-122.127196, 38.049967], [-122.127701, 38.050641], [-122.128484, 38.051649], [-122.128742, 38.052019], [-122.128859, 38.052205], [-122.128969, 38.052421], [-122.129069, 38.052615], [-122.129179, 38.05286], [-122.129291, 38.053198], [-122.129358, 38.053443]];
+// the I-780 connector that leaves the 2007 span over the Benicia shore (Overture motorway segment; 3DEP ground 46 m at its west end)
+const BM07_BRANCH: V2[] = [[-122.126179, 38.04858], [-122.126352, 38.048719], [-122.126691, 38.049142], [-122.127368, 38.049894], [-122.127764, 38.050343], [-122.127974, 38.050554], [-122.128193, 38.050733], [-122.128398, 38.050868], [-122.128686, 38.05103], [-122.128895, 38.051126], [-122.129159, 38.051221], [-122.129433, 38.051302], [-122.129726, 38.051363], [-122.130008, 38.051396]];
 const benicia2007: Landmark = {
   id: 'benicia_martinez_bridge_2007',
   name: 'Benicia–Martinez Bridge (2007 span, northbound I-680)',
@@ -541,11 +543,12 @@ const benicia2007: Landmark = {
       const q = at(e);
       deck(b, [p[0], p[1], zd(s)], [q[0], q[1], zd(e)], W, depth, conc);
     }
+    viaduct(b, BM07_PATH[0], BM07_BRANCH, zd(d[13]) - 0.3, 46.7, 12, conc, 60);
   },
   facts: {
     Opened: 'Aug 25, 2007 (construction from late 2001; US$1.3 billion), east of the railroad bridge; named for Congressman George Miller',
     Form: '1.7 mi lightweight-concrete segmental box girder — the largest of its kind in California — carrying five northbound lanes',
-    Model: 'LOW CONFIDENCE — alignment from OpenStreetMap; pier spacing (160 m), girder depths and deck heights estimated'
+    Model: 'LOW CONFIDENCE — alignment from OpenStreetMap (with the I-780 connector at the Benicia end); pier spacing (160 m), girder depths and deck heights estimated'
   },
   sources: [WIKI + 'Benicia%E2%80%93Martinez_Bridge']
 };
@@ -1218,7 +1221,7 @@ const napaCourthouse: Landmark = {
   id: 'napa_county_courthouse',
   name: 'Napa County Courthouse (1878)',
   kind: 'building',
-  built: [1878.0, 1879.0],
+  built: [1877.6, 1878.9],
   end: 9999,
   anchor: NAPA_CH,
   build: b =>

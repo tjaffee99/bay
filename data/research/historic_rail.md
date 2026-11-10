@@ -129,3 +129,36 @@ Foundation "The Peninsular Interurban". Earlier routes.csv research (SF street s
 * Santa Fe east of Port Chicago; Santa Fe's Oakland extension via Berkeley (1904); CP 7th St line east of
   Lake Merritt; Port Costa train-ferry slips.
 * Several opening months and most freight abandonments are `estimated` (see notes).
+## Addendum for data/research/historic_rail.md (new counties, 2026-11) — lead to merge
+
+Modes now also used in routes.csv for the new area: `horsecar`, `streetcar` (Santa Rosa). New tracer sheets are
+registered from the spec (`EXTRA_SHEETS`: vac1908 = Vacaville 1908, TNM 299005; ant1908 = Antioch 1908, TNM 296717);
+OHM ways reach the `rail` method through `data/raw/historic_rail/h2_ohm_newarea.json`
+(`python pipeline/ohm_import.py railextract`, after `download`).
+
+| route_id | line | dates (open -> close) | geometry |
+|---|---|---|---|
+| `npc_north` | NPC narrow gauge Valley Ford - Freestone - Occidental - Monte Rio; Monte Rio - Duncans Mills (dual gauge 1909) | 1876.5 -> 1930.25; 1876.9 -> 1935.5 | OHM 202387713 / 202387715 (topo + 3DEP), OSM grade |
+| `nwp_guerneville` | Fulton - Guerneville; Guerneville - Monte Rio (1909 line) | 1877 -> 1935.5; 1909 -> 1935.5 | OHM 202387871 (3DEP); highway + OHM approximate ways (low) |
+| `nwp_sebastopol` | Santa Rosa - Sebastopol: SF&NP branch, then P&SR beside it | 1890 -> 1904.92 (rail); 1904.92 -> 1984 (interurban) | OHM 202387872 |
+| `psr_forestville` | P&SR Sebastopol - Forestville | 1905.54 -> 1961 / 1969 / 1984 | OSM grade + OHM 202387872 |
+| `psr_two_rock` | P&SR Liberty - Two Rock | 1913.57 -> 1952.5 | OSM grade; 1.4 km straight link at Liberty |
+| `sp_santa_rosa` | SP Santa Rosa branch (Santa Rosa & Carquinez): Santa Rosa - Glen Ellen; Glen Ellen - Schellville | 1888 -> 1935; 1888 -> 1942.71 | OHM 200461230 (Santa Rosa 1916 sheet), OSM grade |
+| `nwp_sonoma` | Sonoma Valley RR Schellville - Sonoma (3 ft until 1890) | 1879.5 -> 1975 | OSM grade |
+| `sp_calistoga` | Napa Valley RR St. Helena - Krug (in place); Krug - Calistoga | 1868.58 -> 9999; -> 1969 | OSM |
+| `sfnp_donahue` | SF&NP Petaluma - Lakeville - Donahue Landing | 1870 -> 1884.36 | OSM grade |
+| `vaca_valley`, `vaca_valley_elmira` | Vacaville - Winters; Elmira - Vacaville | 1875.65 -> 1975; 1869.47 -> 1987 | OSM grade; Vacaville 1908 sheet |
+| `sn_dozier_north` | Sacramento Northern Dozier - county line | 1913 -> 1954 | OSM grade |
+| `coal_pittsburg` | Pittsburg RR Somersville - Pittsburg Landing | 1866.5 -> 1916 | Mt Diablo 1898 + Antioch 1908 sheets |
+| `coal_empire` | Empire RR: stem toward Antioch (to 38 N), West Hartley, Stewartville branch | 1878.5 / 1882 -> 1898.5 | Mt Diablo 1898 sheet |
+| `spc_boulder_creek` | Felton - Boulder Creek (3 ft until c.1909); Dougherty Extension (first 3 km) | 1885.4 -> 1934.07; 1888.4 -> 1917.9 | OSM grade + OHM |
+| `sp_loma_prieta` | Aptos - Loma Prieta; Loma Prieta - Monte Vista | 1883.8 -> 1928.13; 1884.2 -> 1902.5 | OSM grade |
+| `pvc` | Pajaro Valley Consolidated: Watsonville - Pajaro River | 1890 -> 1929.5 | OSM grade |
+| `osr_south` | Ocean Shore: Davenport - Scott Creek; Scott Creek Railway Folger - Swanton | 1906.9 / 1908.9 -> 1923.9 | OSM grade |
+| `wtc` | Watsonville Transportation Co. to Port Watsonville | 1904.4 -> 1913.8 | West Beach St / Beach Road |
+
+routes.csv: `rr_nwp_schellville` (Ignacio - Sears Point 1888; Sears Point - Schellville 1879.5; in place),
+`sr_street_railway` (horsecar 1877-1905.17), `sr_psr_fourth_st` (streetcar 1905.17-1931.5); `ir_psr` segments 2-4
+(partial Forestville stretches) removed in favour of `psr_forestville`.
+
+Gaps (not done, with what is needed): see the agent's final report.
