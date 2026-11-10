@@ -263,6 +263,69 @@ def register(src, dst):
     return n, rms
 
 
+def property_lines_x(pa, pb, reach=22):
+    """crossing of two of today's property lines, each given by a UTM point on (near) it: the boundary of the nearest
+    parcel block within `reach` m of the point's foot on it is fitted by a straight line (a frontage that survives
+    where the street it faced has no name in Overture any more, or the other frontage of the block is gone)."""
+    from shapely.geometry import Point
+    geoms, tree = parcel_blocks()
+    lines = []
+    for p in (pa, pb):
+        pt = Point(*p)
+        cand = [geoms[i] for i in tree.query(pt.buffer(15))]
+        if not cand:
+            raise ValueError(f"no parcel block within 15 m of {p}")
+        ring = min(cand, key=lambda g: g.exterior.distance(pt)).exterior
+        s0 = ring.project(pt)
+        ss = np.arange(s0 - reach, s0 + reach + 0.01, 0.5) % ring.length
+        q = np.array([ring.interpolate(s).coords[0][:2] for s in ss])
+        m = q.mean(axis=0)
+        d = np.linalg.svd(q - m)[2][0]
+        off = np.abs((q - m) @ np.array([-d[1], d[0]]))
+        if off.max() > 1.5:  # the stretch turns a corner: keep the part in line with the foot point
+            keep = off <= max(0.6, np.median(off) * 2)
+            m = q[keep].mean(axis=0)
+            d = np.linalg.svd(q[keep] - m)[2][0]
+        lines.append((m, d))
+    if abs(lines[0][1] @ lines[1][1]) > 0.9:
+        raise ValueError("property lines are parallel")
+    return E.line_x(lines[0], lines[1])
+
+
+_P_world_of = E.world_of
+
+
+def world_of(c):
+    """adds `pl`: [[E, N], [E, N]] - the crossing of the two property lines of today's parcel blocks nearest to the two
+    UTM points (see property_lines_x)."""
+    if "pl" in c:
+        return property_lines_x(c["pl"][0], c["pl"][1], c.get("reach", 22)), c.get("label", "property lines " + c.get("corner", ""))
+    return _P_world_of(c)
+
+
+E.world_of = world_of
+W.world_of = world_of
+
+
+def spec(key, s):
+    """E.spec with per-corner control overrides: a block may carry "ctl": {"NE": {control entry}} - e.g. {"tie": key of
+    a georeferenced neighbour sheet, "px_other": [x, y], "tie_block": name}, {"pl": [[E, N], [E, N]]}, {"la": .., "lb":
+    .., "off": ..} - replacing the property-corner (`pc`) rule for that corner (which may be listed under "skip")."""
+    ctl = {n: b.pop("ctl") for n, b in s["blocks"].items() if "ctl" in b}
+    for n, b in s["blocks"].items():  # an overridden corner is built like the others, then rewritten
+        b["skip"] = [c for c in b.get("skip", []) if c not in ctl.get(n, {})]
+    cfg = E.spec(key, s)
+    for b in cfg["blocks"]:
+        for c in b["corners"]:
+            o = ctl.get(b["name"], {}).get(c["corner"])
+            if o:
+                for k in ("pc", "oc", "w"):
+                    c.pop(k, None)
+                c.update(o)
+    json.dump(cfg, open(E.CONTROL / f"{key}.json", "w"), indent=1)
+    return cfg
+
+
 def run(key, s=None, stages=("refine", "georef", "extract", "overlay")):
     """one new sheet from its block spec (see spec) to footprints + a scratch overlay."""
     if s is not None:

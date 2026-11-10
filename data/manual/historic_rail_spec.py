@@ -1025,8 +1025,10 @@ route("vaca_valley_elmira", "Vaca Valley Railroad: Elmira - Vacaville (Southern 
 COAL = "https://wx4.org/to/foam/shortlines/coal/mines.html"
 route("coal_pittsburg", "Pittsburg Railroad (Mount Diablo coal field): Somersville - Pittsburg Landing", "rail", COAL, [
     seg("Somersville - Markley Canyon - Los Medanos - Pittsburg Landing", 1866.5, 1916.0,
-        topo("md1898", (-121.8680, 37.9558), (-121.8684, 37.9629), (-121.8680, 37.9680), (-121.8646, 37.9760),
-             (-121.8606, 37.9800), (-121.8600, 37.9870), (-121.8598, 37.9950), (-121.8590, 37.9995), corridor=220),
+        topo("md1898", (-121.8651, 37.9568), (-121.8647, 37.9585), (-121.8648, 37.9615), (-121.8651, 37.9649),
+             (-121.8652, 37.9687), (-121.8648, 37.9716), (-121.8635, 37.9746), (-121.8616, 37.9767),
+             (-121.8598, 37.9788), (-121.8582, 37.9809), (-121.8574, 37.9839), (-121.8571, 37.9881),
+             (-121.8570, 37.9923), (-121.8570, 37.9976), (-121.8569, 37.9998), corridor=90),
         topo("ant1908", (-121.8568, 38.0003), (-121.8562, 38.0050), (-121.8536, 38.0128), (-121.8520, 38.0189),
              (-121.8490, 38.0272), corridor=160),
         note="Standard-gauge coal railroad from the Somersville mines down Markley Canyon to Pittsburg Landing on the "
@@ -1038,15 +1040,23 @@ route("coal_pittsburg", "Pittsburg Railroad (Mount Diablo coal field): Somersvil
 route("coal_empire", "Empire Coal Mine and Railroad (Mount Diablo coal field): Stewartville / West Hartley - Antioch",
       "narrow_gauge", COAL, [
           seg("Empire Railroad: junction below the mines - north toward Antioch (to 38.0 N)", 1878.5, 1898.5,
-              topo("md1898", (-121.8087, 37.9490), (-121.8090, 37.9568), (-121.8102, 37.9655), (-121.8117, 37.9740),
-                   (-121.8163, 37.9830), (-121.8192, 37.9920), (-121.8200, 37.9998), corridor=220),
+              topo("md1898", (-121.8066, 37.9490), (-121.8060, 37.9509), (-121.8063, 37.9543), (-121.8068, 37.9577),
+                   (-121.8076, 37.9611), (-121.8082, 37.9649), (-121.8081, 37.9687), (-121.8086, 37.9720),
+                   (-121.8100, 37.9754), (-121.8119, 37.9788), (-121.8127, 37.9818), (-121.8140, 37.9851),
+                   (-121.8154, 37.9889), (-121.8167, 37.9923), (-121.8168, 37.9940), (-121.8159, 37.9953),
+                   (-121.8159, 37.9995), corridor=90),
               note="Narrow-gauge (probably 3 ft) coal railroad from the Empire and Central mines to the Antioch "
                    "waterfront; began operations 1878 (month ESTIMATED), ceased 1897, reorganised as the Antioch "
                    "Railroad in 1898 and worked only briefly that year (wx4.org). Geometry: USGS Mt Diablo 1898 sheet "
                    "('Empire R.R.'); the last 2 km to the Antioch wharf (north of 38 N) are on no survey found and are "
                    "not drawn.", confidence="estimated"),
+          seg("Empire Railroad: junction - West Hartley mine", 1878.5, 1898.5,
+              topo("md1898", (-121.8066, 37.9490), (-121.8066, 37.9476), (-121.8092, 37.9459), (-121.8124, 37.9446),
+                   (-121.8146, 37.9416), (-121.8156, 37.9400), corridor=90),
+              note="The line's upper end at the mines of West Hartley (Empire mine at Judsonville). Dates as the main "
+                   "stem (ESTIMATED). Geometry: USGS Mt Diablo 1898 sheet.", confidence="estimated"),
           seg("Empire Railroad: branch to Stewartville (Central Mine)", 1882.0, 1898.5,
-              topo("md1898", (-121.8087, 37.9490), (-121.8255, 37.9485), (-121.8400, 37.9440), (-121.8530, 37.9470),
+              topo("md1898", (-121.8066, 37.9490), (-121.8255, 37.9485), (-121.8400, 37.9440), (-121.8530, 37.9470),
                    corridor=260),
               note="Extension from the Empire mine (Judsonville) up the valley to Stewartville - year ESTIMATED (drawn "
                    "on the 1898 sheet, surveyed 1896); ceased 1897-98 (wx4.org). Geometry: USGS Mt Diablo 1898 sheet.",

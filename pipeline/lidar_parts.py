@@ -1278,21 +1278,23 @@ def interest_tree(fp_ll):
     return shapely.STRtree(g)
 
 
-def run(job, projects, fp, workers, bbox_ll=None, examples=None):
+def run(job, projects, fp, workers, bbox_ll=None, examples=None, redo_parts=False):
     import pandas as pd
     grid = job_grid(fp)
     log(f"job {job}: {len(fp)} footprints, grid {grid.w} x {grid.h} m, LiDAR {', '.join(projects)}")
     build_rasters(job, projects, grid, interest=interest_tree(fp), workers=workers)
     out_parts = INTERIM / f"{job}_lidar_parts.parquet"
     out_st = INTERIM / f"{job}_lidar_heights.parquet"
-    if out_parts.exists() and out_st.exists():
-        log(f"parts: {out_parts} exists (delete to recompute)")
+    if out_parts.exists() and out_st.exists() and not redo_parts:
+        log(f"parts: {out_parts} exists (--redo-parts to recompute)")
         import geopandas as gpd
         st, pg = pd.read_parquet(out_st), gpd.read_parquet(out_parts)
     else:
         st, pg = run_parts(job, fp, workers)
-        pg.to_parquet(out_parts)
-        st.to_parquet(out_st)
+        for frame, out in ((pg, out_parts), (st, out_st)):  # replaced whole: region_buildings may be reading
+            tmp = out.with_name(out.name + ".tmp")
+            frame.to_parquet(tmp)
+            os.replace(tmp, out)
         log(f"parts: wrote {out_parts} ({out_parts.stat().st_size / 1e6:.1f} MB, {len(pg)} parts of "
             f"{(st.status == 'split').sum()} footprints)")
     extra = []
@@ -1327,8 +1329,10 @@ def main():
     a.add_argument("--project", help="EPT project name(s), comma-separated (default: REGION_JOBS, else the "
                                      "newest covering the bbox)")
     a.add_argument("--workers", type=int, default=3)
+    a.add_argument("--redo-parts", action="store_true", help="recompute the parts on the existing rasters")
     a = sub.add_parser("jobs", help="every REGION_JOBS job whose parts are not built yet, in order")
     a.add_argument("--workers", type=int, default=3)
+    a.add_argument("--redo-parts", action="store_true", help="every listed job: recompute the parts")
     a = sub.add_parser("preview")
     a.add_argument("--job", default="sf")
     a.add_argument("--bbox", type=parse_bbox, required=True)
@@ -1342,7 +1346,7 @@ def main():
     elif args.cmd in ("region", "jobs"):
         if args.cmd == "jobs":
             todo = [(n, bb, pr) for n, (bb, pr) in REGION_JOBS.items()
-                    if not (INTERIM / f"{n}_lidar_parts.parquet").exists()]
+                    if args.redo_parts or not (INTERIM / f"{n}_lidar_parts.parquet").exists()]
         else:
             listed = REGION_JOBS.get(args.name)
             if args.bbox is None and listed is None:
@@ -1352,7 +1356,7 @@ def main():
             projects = project.split(",") if project else pick_projects(b)
             fp = load_region_footprints(b)
             cx, cy, hw, hh = (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, min(0.004, (b[2] - b[0]) / 2), min(0.003, (b[3] - b[1]) / 2)
-            run(name, projects, fp, args.workers, b, {"centre": (cx - hw, cy - hh, cx + hw, cy + hh)})
+            run(name, projects, fp, args.workers, b, {"centre": (cx - hw, cy - hh, cx + hw, cy + hh)}, args.redo_parts)
     elif args.cmd == "preview":
         import geopandas as gpd
         fp = load_sf_footprints(args.bbox) if args.job.startswith("sf") else load_region_footprints(args.bbox)

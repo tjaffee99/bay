@@ -1,7 +1,13 @@
 {
+ "scale_prior": [
+  0.2057,
+  0.0012
+ ],
  "block_cap": {
+  "13": "medium",
   "16": "medium"
  },
+ "notes": "B St south of 4th and 3rd St were widened (today's property corners at B x 4th / B x 3rd give a block 3-4 m short both ways): the 4th St frontage is tied to sheet 34 (block 12 fit), the scale is the 275 ft depth 4th - 3rd St measured on sheet 44 (Railroad Square, unchanged lines)",
  "blocks": [
   {
    "name": "13",
@@ -35,14 +41,12 @@
      "y": 900.6,
      "q": "SE",
      "corner": "NW",
-     "pc": [
-      "B Street",
-      "4th Street"
+     "tie": "005_0034",
+     "px_other": [
+      1090.0,
+      931.0
      ],
-     "w": [
-      60,
-      75
-     ],
+     "tie_block": "12",
      "norefine": 1,
      "weak": false
     },
@@ -53,50 +57,18 @@
      "corner": "NE",
      "tie": "005_0034",
      "px_other": [
-      1091,
-      460
+      1089.0,
+      461.0
      ],
      "tie_block": "12",
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 1032.7,
-     "y": 421.4,
-     "q": "NW",
-     "corner": "SE",
-     "tie": "005_0036",
-     "px_other": [
-      108,
-      425
-     ],
-     "tie_block": "3",
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1036.7,
-     "y": 895.3,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "B Street",
-      "3rd Street"
-     ],
-     "w": [
-      60,
-      70
-     ],
-     "norefine": 1,
-     "weak": false
     }
    ],
-   "w": {
-    "N": 75,
-    "S": 70,
-    "W": 60
-   },
-   "skip": [],
+   "skip": [
+    "SE",
+    "SW"
+   ],
    "px4": [
     [
      634.0,
@@ -127,14 +99,12 @@
      "y": 900.6,
      "q": "SE",
      "corner": "NW",
-     "pc": [
-      "B Street",
-      "4th Street"
+     "tie": "005_0034",
+     "px_other": [
+      1090.0,
+      931.0
      ],
-     "w": [
-      60,
-      75
-     ],
+     "tie_block": "12",
      "norefine": 1,
      "weak": false
     },
@@ -145,40 +115,10 @@
      "corner": "NE",
      "tie": "005_0034",
      "px_other": [
-      1091,
-      460
+      1089.0,
+      461.0
      ],
      "tie_block": "12",
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1032.7,
-     "y": 421.4,
-     "q": "NW",
-     "corner": "SE",
-     "tie": "005_0036",
-     "px_other": [
-      108,
-      425
-     ],
-     "tie_block": "3",
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 1036.7,
-     "y": 895.3,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "B Street",
-      "3rd Street"
-     ],
-     "w": [
-      60,
-      70
-     ],
      "norefine": 1,
      "weak": false
     }
@@ -222,14 +162,12 @@
      "y": 900.6,
      "q": "SE",
      "corner": "NW",
-     "pc": [
-      "B Street",
-      "4th Street"
+     "tie": "005_0034",
+     "px_other": [
+      1090.0,
+      931.0
      ],
-     "w": [
-      60,
-      75
-     ],
+     "tie_block": "12",
      "norefine": 1,
      "weak": false,
      "block": "13"
@@ -241,42 +179,10 @@
      "corner": "NE",
      "tie": "005_0034",
      "px_other": [
-      1091,
-      460
+      1089.0,
+      461.0
      ],
      "tie_block": "12",
-     "norefine": 1,
-     "weak": false,
-     "block": "13"
-    },
-    {
-     "x": 1032.7,
-     "y": 421.4,
-     "q": "NW",
-     "corner": "SE",
-     "tie": "005_0036",
-     "px_other": [
-      108,
-      425
-     ],
-     "tie_block": "3",
-     "norefine": 1,
-     "weak": false,
-     "block": "13"
-    },
-    {
-     "x": 1036.7,
-     "y": 895.3,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "B Street",
-      "3rd Street"
-     ],
-     "w": [
-      60,
-      70
-     ],
      "norefine": 1,
      "weak": false,
      "block": "13"

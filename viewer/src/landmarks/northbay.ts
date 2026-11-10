@@ -765,7 +765,8 @@ const sonomaMissionConvento: Landmark = {
       b.color('#5A4634');
       for (let y = -18; y <= 18; y += 3.6) b.box(5.0, y, 0, 0.3, 0.3, 2.6);
     }),
-  replaces: [rotRing(rect(0, 0, 11.5, 38.8), 93.9, 21.2, -18.8)],
+  // chapel and convento are one OSM footprint whose centroid lies in the convento
+  replaces: [rotRing(rect(0, 0, 13.5, 39.5), 93.9, 21.2, -18.8)],
   facts: {
     Built: 'the padres’ quarters: adobe building began in 1825 after the first season’s walls melted in the rains; 27 rooms by 1832 — the oldest building in Sonoma',
     Form: 'one-storey tile-roofed adobe nearly 120 ft long with a corridor on wooden posts along the street; restored 1911–13',
@@ -833,7 +834,7 @@ const sonomaCityHall: Landmark = {
       for (const [nx, ny] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as V2[]) {
         b.frame(nx * 6.7, ny * 6.7, 0, (Math.atan2(nx, ny) * 180) / Math.PI, () => {
           b.color(stone).box(0, 0, 8.8, 6.4, 0.5, 1.2);
-          b.gable(0, 0, 4.4, 0.5, 10.0, 1.3, false);
+          b.tri([-3.2, 0.26, 10.0], [3.2, 0.26, 10.0], [0, 0.26, 11.4]).tri([-3.2, -0.26, 10.0], [3.2, -0.26, 10.0], [0, -0.26, 11.4]);
           b.color('#3B3530').box(0, 0.27, 0, 2.2, 0.1, 3.6);
         });
       }
