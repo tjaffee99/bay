@@ -1,0 +1,977 @@
+{
+ "zones_only": true,
+ "residential_blocks": [
+  "57",
+  "56",
+  "68",
+  "67"
+ ],
+ "block_cap": {
+  "56": "medium",
+  "68": "medium",
+  "67": "medium"
+ },
+ "blocks": [
+  {
+   "name": "37",
+   "streets": {
+    "N": "Washington Street",
+    "S": "Western Avenue",
+    "W": "Keller Street",
+    "E": "Kentucky Street"
+   },
+   "px4_est": [
+    [
+     562,
+     428
+    ],
+    [
+     562,
+     110
+    ],
+    [
+     1447,
+     110
+    ],
+    [
+     1447,
+     428
+    ]
+   ],
+   "corners": [
+    {
+     "x": 552.2,
+     "y": 429.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 548.3,
+     "y": 113.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1448.1,
+     "y": 105.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kentucky Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1450.8,
+     "y": 422.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     552.2,
+     429.1
+    ],
+    [
+     548.3,
+     113.6
+    ],
+    [
+     1448.1,
+     105.5
+    ],
+    [
+     1450.8,
+     422.4
+    ]
+   ],
+   "edge_q": [
+    0.93,
+    0.96,
+    0.94,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 552.2,
+     "y": 429.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 548.3,
+     "y": 113.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1448.1,
+     "y": 105.5,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kentucky Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1450.8,
+     "y": 422.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    548.320623097827,
+    105.54239677027606,
+    1450.7697161772035,
+    429.11204662380584
+   ]
+  },
+  {
+   "name": "47",
+   "streets": {
+    "N": "Washington Street",
+    "S": "Western Avenue",
+    "W": "Liberty Street",
+    "E": "Keller Street"
+   },
+   "px4_est": [
+    [
+     555,
+     852
+    ],
+    [
+     555,
+     530
+    ],
+    [
+     1452,
+     530
+    ],
+    [
+     1452,
+     852
+    ]
+   ],
+   "corners": [
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "with": [
+    "57",
+    "56",
+    "68",
+    "67"
+   ],
+   "px4": [
+    [
+     554.9,
+     852.1
+    ],
+    [
+     553.6,
+     536.0
+    ],
+    [
+     1449.6,
+     528.1
+    ],
+    [
+     1450.9,
+     846.9
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    0.99,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    553.6164577694759,
+    528.073893376092,
+    1450.886952238776,
+    852.1321162083925
+   ]
+  },
+  {
+   "name": "57",
+   "streets": {
+    "N": "Washington Street",
+    "S": "Western Avenue",
+    "W": "Keokuk Street",
+    "E": "Liberty Street"
+   },
+   "px4_est": [
+    [
+     555,
+     1320
+    ],
+    [
+     555,
+     955
+    ],
+    [
+     1452,
+     955
+    ],
+    [
+     1452,
+     1320
+    ]
+   ],
+   "corners": [
+    {
+     "x": 555.6,
+     "y": 957.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    },
+    {
+     "x": 1451.2,
+     "y": 951.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    },
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    }
+   ],
+   "skip": [
+    "SW"
+   ],
+   "with": [
+    "47",
+    "56",
+    "68",
+    "67"
+   ],
+   "px4": [
+    [
+     556.9,
+     1317.8
+    ],
+    [
+     555.6,
+     957.1
+    ],
+    [
+     1451.2,
+     951.9
+    ],
+    [
+     1453.8,
+     1315.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.42
+   ],
+   "corners_all": [
+    {
+     "x": 556.9,
+     "y": 1317.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Keokuk Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [ 1.2 10.2] at Keokuk Street x Washington Street SE"
+    },
+    {
+     "x": 555.6,
+     "y": 957.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1451.2,
+     "y": 951.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    555.5997767114296,
+    951.8733399758482,
+    1453.7810308970195,
+    1317.810215335398
+   ]
+  },
+  {
+   "name": "56",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Washington Street",
+    "W": "Keokuk Street",
+    "E": "Liberty Street"
+   },
+   "px4_est": [
+    [
+     0,
+     1300
+    ],
+    [
+     0,
+     990
+    ],
+    [
+     455,
+     960
+    ],
+    [
+     455,
+     1290
+    ]
+   ],
+   "corners": [
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 555.6,
+     "y": 957.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    },
+    {
+     "x": 1451.2,
+     "y": 951.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "47",
+    "57",
+    "68",
+    "67"
+   ],
+   "px4": [
+    [
+     0.0,
+     1300.0
+    ],
+    [
+     0.0,
+     990.0
+    ],
+    [
+     455.0,
+     960.0
+    ],
+    [
+     455.0,
+     1290.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    0.0,
+    960.0,
+    455.0,
+    1300.0
+   ]
+  },
+  {
+   "name": "68",
+   "streets": {
+    "N": "Washington Street",
+    "S": "Western Avenue",
+    "W": "Howard Street",
+    "E": "Keokuk Street"
+   },
+   "px4_est": [
+    [
+     555,
+     1760
+    ],
+    [
+     555,
+     1378
+    ],
+    [
+     1095,
+     1378
+    ],
+    [
+     1095,
+     1500
+    ]
+   ],
+   "corners": [
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 555.6,
+     "y": 957.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    },
+    {
+     "x": 1451.2,
+     "y": 951.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "47",
+    "57",
+    "56",
+    "67"
+   ],
+   "px4": [
+    [
+     555.0,
+     1760.0
+    ],
+    [
+     555.0,
+     1378.0
+    ],
+    [
+     1095.0,
+     1378.0
+    ],
+    [
+     1095.0,
+     1500.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    555.0,
+    1378.0,
+    1095.0,
+    1760.0
+   ]
+  },
+  {
+   "name": "67",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Washington Street",
+    "W": "Howard Street",
+    "E": "Keokuk Street"
+   },
+   "px4_est": [
+    [
+     175,
+     1900
+    ],
+    [
+     175,
+     1410
+    ],
+    [
+     455,
+     1385
+    ],
+    [
+     455,
+     1900
+    ]
+   ],
+   "corners": [
+    {
+     "x": 554.9,
+     "y": 852.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 553.6,
+     "y": 536.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1449.6,
+     "y": 528.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 1450.9,
+     "y": 846.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "47"
+    },
+    {
+     "x": 555.6,
+     "y": 957.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    },
+    {
+     "x": 1451.2,
+     "y": 951.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Liberty Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "57"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "47",
+    "57",
+    "56",
+    "68"
+   ],
+   "px4": [
+    [
+     175.0,
+     1900.0
+    ],
+    [
+     175.0,
+     1410.0
+    ],
+    [
+     455.0,
+     1385.0
+    ],
+    [
+     455.0,
+     1900.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    175.0,
+    1385.0,
+    455.0,
+    1900.0
+   ]
+  }
+ ],
+ "pct": 25
+}

@@ -1,0 +1,620 @@
+{
+ "zones_only": true,
+ "residential": true,
+ "commercial_blocks": [
+  "17"
+ ],
+ "scale_prior": [
+  0.2045,
+  0.0015
+ ],
+ "notes": "Cedar St was a 20 ft lane north of Elm St in 1905 (widened since): no Cedar St corner north of Elm St is used",
+ "blocks": [
+  {
+   "name": "192",
+   "streets": {
+    "N": "Lincoln Street",
+    "S": "Elm Street",
+    "W": "Center Street",
+    "E": "Cedar Street"
+   },
+   "px4_est": [
+    [
+     310,
+     215
+    ],
+    [
+     745,
+     205
+    ],
+    [
+     672,
+     1060
+    ],
+    [
+     310,
+     1020
+    ]
+   ],
+   "corners": [
+    {
+     "x": 310.0,
+     "y": 215.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "192"
+    },
+    {
+     "x": 310.0,
+     "y": 1020.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "192"
+    },
+    {
+     "x": 1280.4,
+     "y": 184.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "17"
+    },
+    {
+     "x": 1282.6,
+     "y": 1132.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "17"
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "17"
+   ],
+   "px4": [
+    [
+     310.0,
+     215.0
+    ],
+    [
+     745.0,
+     205.0
+    ],
+    [
+     672.0,
+     1060.0
+    ],
+    [
+     310.0,
+     1020.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 310.0,
+     "y": 215.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 310.0,
+     "y": 1020.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    310.0,
+    205.0,
+    745.0,
+    1060.0
+   ]
+  },
+  {
+   "name": "17",
+   "streets": {
+    "N": "Lincoln Street",
+    "S": "Elm Street",
+    "W": "Cedar Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     768,
+     198
+    ],
+    [
+     1285,
+     185
+    ],
+    [
+     1282,
+     1132
+    ],
+    [
+     762,
+     1072
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1280.4,
+     "y": 184.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "17"
+    },
+    {
+     "x": 1282.6,
+     "y": 1132.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "17"
+    },
+    {
+     "x": 310.0,
+     "y": 215.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "192"
+    },
+    {
+     "x": 310.0,
+     "y": 1020.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "192"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "192"
+   ],
+   "px4": [
+    [
+     767.0,
+     201.3
+    ],
+    [
+     1280.4,
+     184.4
+    ],
+    [
+     1282.6,
+     1132.1
+    ],
+    [
+     761.0,
+     1071.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.94,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1280.4,
+     "y": 184.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1282.6,
+     "y": 1132.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    761.0007679420105,
+    184.4278330908762,
+    1282.6317451944683,
+    1132.072893676285
+   ]
+  },
+  {
+   "name": "193",
+   "streets": {
+    "N": "Elm Street",
+    "S": "Maple Street",
+    "W": "Center Street",
+    "E": "Cedar Street"
+   },
+   "px4_est": [
+    [
+     310,
+     1198
+    ],
+    [
+     670,
+     1235
+    ],
+    [
+     667,
+     1605
+    ],
+    [
+     310,
+     1590
+    ]
+   ],
+   "corners": [
+    {
+     "x": 309.5,
+     "y": 1198.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.4,
+     "y": 1239.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cedar Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 666.1,
+     "y": 1607.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 309.5,
+     "y": 1592.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     309.5,
+     1198.7
+    ],
+    [
+     670.4,
+     1239.8
+    ],
+    [
+     666.1,
+     1607.0
+    ],
+    [
+     309.5,
+     1592.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 309.5,
+     "y": 1198.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 670.4,
+     "y": 1239.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cedar Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 666.1,
+     "y": 1607.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 309.5,
+     "y": 1592.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    309.5,
+    1198.7243746753618,
+    670.3520006981666,
+    1606.9626535343773
+   ]
+  },
+  {
+   "name": "194",
+   "streets": {
+    "N": "Elm Street",
+    "S": "Maple Street",
+    "W": "Cedar Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     760,
+     1250
+    ],
+    [
+     1282,
+     1300
+    ],
+    [
+     1282,
+     1610
+    ],
+    [
+     757,
+     1605
+    ]
+   ],
+   "corners": [
+    {
+     "x": 760.0,
+     "y": 1253.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cedar Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1278.1,
+     "y": 1302.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1279.4,
+     "y": 1606.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 757.0,
+     "y": 1605.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     760.0,
+     1253.0
+    ],
+    [
+     1278.1,
+     1302.6
+    ],
+    [
+     1279.4,
+     1606.3
+    ],
+    [
+     757.0,
+     1605.2
+    ]
+   ],
+   "edge_q": [
+    0.94,
+    0.97,
+    0.96,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 760.0,
+     "y": 1253.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cedar Street",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1278.1,
+     "y": 1302.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Elm Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1279.4,
+     "y": 1606.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 757.0,
+     "y": 1605.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    756.9981097925511,
+    1253.0112933484943,
+    1279.3920678441948,
+    1606.2711840922816
+   ]
+  }
+ ],
+ "pct": 25
+}

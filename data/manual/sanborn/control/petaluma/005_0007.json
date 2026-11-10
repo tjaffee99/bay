@@ -1,0 +1,253 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.2065,
+  0.0008,
+  -67.16,
+  0.3
+ ],
+ "block_cap": {
+  "18": "medium"
+ },
+ "notes": "two pieces: block 28 (Main - Kentucky St) has four parcel corners; the river side of Main St (block 18, McNear's warehouses) has the Main x Washington corner + the scale and rotation of block 28's fit",
+ "blocks": [
+  {
+   "name": "28",
+   "streets": {
+    "N": "Washington Street",
+    "S": "Western Avenue",
+    "W": "Kentucky Street",
+    "E": "Main Street"
+   },
+   "px4_est": [
+    [
+     175,
+     1722
+    ],
+    [
+     175,
+     1398
+    ],
+    [
+     1085,
+     1398
+    ],
+    [
+     1085,
+     1722
+    ]
+   ],
+   "corners": [
+    {
+     "x": 179.1,
+     "y": 1723.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 172.6,
+     "y": 1406.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1074.2,
+     "y": 1718.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     179.1,
+     1723.6
+    ],
+    [
+     172.6,
+     1406.5
+    ],
+    [
+     1070.3,
+     1398.7
+    ],
+    [
+     1074.2,
+     1718.4
+    ]
+   ],
+   "edge_q": [
+    0.93,
+    0.98,
+    0.93,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 179.1,
+     "y": 1723.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 172.6,
+     "y": 1406.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1070.3,
+     "y": 1398.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "drop": "implausible property-line offsets [1.  7.8] at Main Street x Western Avenue NW"
+    },
+    {
+     "x": 1074.2,
+     "y": 1718.4,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Western Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    172.63247051668958,
+    1398.680295511942,
+    1074.1802022345116,
+    1723.6080270369848
+   ]
+  },
+  {
+   "name": "18",
+   "streets": {
+    "N": "Washington Street",
+    "S": "B Street",
+    "W": "Main Street",
+    "E": "Water Street"
+   },
+   "px4_est": [
+    [
+     172,
+     876
+    ],
+    [
+     172,
+     680
+    ],
+    [
+     1300,
+     680
+    ],
+    [
+     1300,
+     876
+    ]
+   ],
+   "corners": [
+    {
+     "x": 172.8,
+     "y": 877.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "px4": [
+    [
+     172.8,
+     877.4
+    ],
+    [
+     170.1,
+     670.5
+    ],
+    [
+     1313.1,
+     670.5
+    ],
+    [
+     1315.7,
+     869.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.07,
+    0.81,
+    0.98
+   ],
+   "corners_all": [
+    {
+     "x": 172.8,
+     "y": 877.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    165.0,
+    320.0,
+    1585.0,
+    905.0
+   ]
+  }
+ ],
+ "pct": 25
+}

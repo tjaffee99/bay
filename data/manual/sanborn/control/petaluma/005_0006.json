@@ -1,0 +1,776 @@
+{
+ "zones_only": true,
+ "residential_blocks": [
+  "36",
+  "46",
+  "26"
+ ],
+ "block_cap": {
+  "17": "medium"
+ },
+ "notes": "each block on its own parcel corners (Kentucky, Keller and Liberty St are not parallel to Main St; the streets between the blocks are not to scale); the river side of Main St north of Washington St (blocks 16 / 17) takes block 27's fit across Main St",
+ "blocks": [
+  {
+   "name": "27",
+   "streets": {
+    "N": "Mary Street",
+    "S": "Washington Street",
+    "W": "Kentucky Street",
+    "E": "Main Street"
+   },
+   "px4_est": [
+    [
+     1015,
+     860
+    ],
+    [
+     1015,
+     530
+    ],
+    [
+     1205,
+     515
+    ],
+    [
+     1205,
+     845
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1027.1,
+     "y": 854.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1017.0,
+     "y": 538.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1205.7,
+     "y": 516.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1201.9,
+     "y": 835.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    }
+   ],
+   "skip": [],
+   "with": [
+    "17"
+   ],
+   "px4": [
+    [
+     1027.1,
+     854.3
+    ],
+    [
+     1017.0,
+     538.4
+    ],
+    [
+     1205.7,
+     516.9
+    ],
+    [
+     1201.9,
+     835.6
+    ]
+   ],
+   "edge_q": [
+    0.93,
+    0.96,
+    0.87,
+    0.95
+   ],
+   "corners_all": [
+    {
+     "x": 1027.1,
+     "y": 854.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1017.0,
+     "y": 538.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1205.7,
+     "y": 516.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1201.9,
+     "y": 835.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1017.0035564628593,
+    516.8922378240263,
+    1205.7010497867939,
+    854.3181227415561
+   ]
+  },
+  {
+   "name": "36",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Washington Street",
+    "W": "Keller Street",
+    "E": "Kentucky Street"
+   },
+   "px4_est": [
+    [
+     300,
+     1355
+    ],
+    [
+     300,
+     1040
+    ],
+    [
+     1205,
+     945
+    ],
+    [
+     1205,
+     1285
+    ]
+   ],
+   "corners": [
+    {
+     "x": 299.2,
+     "y": 1352.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Keller Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 301.8,
+     "y": 1040.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kentucky Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1204.0,
+     "y": 941.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1204.0,
+     "y": 1282.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     299.2,
+     1352.1
+    ],
+    [
+     301.8,
+     1040.5
+    ],
+    [
+     1204.0,
+     941.9
+    ],
+    [
+     1204.0,
+     1282.1
+    ]
+   ],
+   "edge_q": [
+    0.92,
+    1.0,
+    0.9,
+    0.48
+   ],
+   "corners_all": [
+    {
+     "x": 299.2,
+     "y": 1352.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Keller Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 301.8,
+     "y": 1040.5,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Kentucky Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1204.0,
+     "y": 941.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1204.0,
+     "y": 1282.1,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    299.2088368066795,
+    941.8664866393938,
+    1204.0,
+    1352.0522342404547
+   ]
+  },
+  {
+   "name": "46",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Washington Street",
+    "W": "Liberty Street",
+    "E": "Keller Street"
+   },
+   "px4_est": [
+    [
+     300,
+     1785
+    ],
+    [
+     300,
+     1470
+    ],
+    [
+     1205,
+     1385
+    ],
+    [
+     1205,
+     1700
+    ]
+   ],
+   "corners": [
+    {
+     "x": 296.3,
+     "y": 1783.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 300.3,
+     "y": 1462.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1201.6,
+     "y": 1367.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1206.9,
+     "y": 1687.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     296.3,
+     1783.6
+    ],
+    [
+     300.3,
+     1462.2
+    ],
+    [
+     1201.6,
+     1367.0
+    ],
+    [
+     1206.9,
+     1687.5
+    ]
+   ],
+   "edge_q": [
+    0.9,
+    0.94,
+    0.93,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 296.3,
+     "y": 1783.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Liberty Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 300.3,
+     "y": 1462.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Keller Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1201.6,
+     "y": 1367.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Keller Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1206.9,
+     "y": 1687.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Liberty Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    296.29329437612455,
+    1366.999009074806,
+    1206.9221628285436,
+    1783.6451087852624
+   ]
+  },
+  {
+   "name": "26",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Martha Street",
+    "W": "Kentucky Street",
+    "E": "Main Street"
+   },
+   "px4_est": [
+    [
+     300,
+     930
+    ],
+    [
+     300,
+     600
+    ],
+    [
+     495,
+     580
+    ],
+    [
+     495,
+     905
+    ]
+   ],
+   "corners": [
+    {
+     "x": 308.0,
+     "y": 930.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 300.4,
+     "y": 616.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 494.6,
+     "y": 596.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Martha Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 486.9,
+     "y": 913.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Martha Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     308.0,
+     930.2
+    ],
+    [
+     300.4,
+     616.0
+    ],
+    [
+     494.6,
+     596.1
+    ],
+    [
+     486.9,
+     913.3
+    ]
+   ],
+   "edge_q": [
+    0.75,
+    0.36,
+    0.91,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 308.0,
+     "y": 930.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 300.4,
+     "y": 616.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Prospect Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 494.6,
+     "y": 596.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Martha Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 486.9,
+     "y": 913.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Martha Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    300.4363440613665,
+    596.1295187715731,
+    494.5555582484638,
+    930.2140442480543
+   ]
+  },
+  {
+   "name": "17",
+   "streets": {
+    "N": "Prospect Street",
+    "S": "Washington Street",
+    "W": "Main Street",
+    "E": "Water Street"
+   },
+   "px4_est": [
+    [
+     405,
+     490
+    ],
+    [
+     405,
+     190
+    ],
+    [
+     1205,
+     190
+    ],
+    [
+     1205,
+     425
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1027.1,
+     "y": 854.3,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Kentucky Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1017.0,
+     "y": 538.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Mary Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1205.7,
+     "y": 516.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    },
+    {
+     "x": 1201.9,
+     "y": 835.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Kentucky Street",
+      "Washington Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "27"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "27"
+   ],
+   "px4": [
+    [
+     405.0,
+     490.0
+    ],
+    [
+     405.0,
+     190.0
+    ],
+    [
+     1205.0,
+     190.0
+    ],
+    [
+     1205.0,
+     425.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    405.0,
+    190.0,
+    1205.0,
+    490.0
+   ]
+  }
+ ],
+ "pct": 25
+}

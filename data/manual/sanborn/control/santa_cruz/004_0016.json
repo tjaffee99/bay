@@ -1,0 +1,476 @@
+{
+ "zones_only": true,
+ "valid_poly_px": [
+  [
+   0,
+   0
+  ],
+  [
+   1613,
+   0
+  ],
+  [
+   1613,
+   1225
+  ],
+  [
+   985,
+   1225
+  ],
+  [
+   985,
+   1913
+  ],
+  [
+   0,
+   1913
+  ]
+ ],
+ "block_cap": {
+  "199": "medium"
+ },
+ "scale_prior": [
+  0.2045,
+  0.0015
+ ],
+ "confidence_cap": "medium",
+ "notes": "the inset at lower right (Myrtle / Laurel / Blackburn St) is not traced",
+ "blocks": [
+  {
+   "name": "19",
+   "streets": {
+    "N": "Cathcart Street",
+    "S": "Laurel Street",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     243,
+     462
+    ],
+    [
+     648,
+     455
+    ],
+    [
+     600,
+     1780
+    ],
+    [
+     258,
+     1780
+    ]
+   ],
+   "corners": [
+    {
+     "x": 246.0,
+     "y": 465.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    },
+    {
+     "x": 648.1,
+     "y": 453.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    },
+    {
+     "x": 665.0,
+     "y": 385.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    },
+    {
+     "x": 240.0,
+     "y": 390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    }
+   ],
+   "skip": [],
+   "with": [
+    "18s",
+    "199"
+   ],
+   "px4": [
+    [
+     246.0,
+     465.5
+    ],
+    [
+     648.1,
+     453.4
+    ],
+    [
+     599.5,
+     1794.0
+    ],
+    [
+     261.2,
+     1794.0
+    ]
+   ],
+   "edge_q": [
+    0.76,
+    0.71,
+    0.0,
+    0.79
+   ],
+   "corners_all": [
+    {
+     "x": 246.0,
+     "y": 465.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 648.1,
+     "y": 453.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 599.5,
+     "y": 1794.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 261.2,
+     "y": 1794.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    246.04049236259382,
+    453.36601818470155,
+    648.0591933034976,
+    1794.0
+   ]
+  },
+  {
+   "name": "18s",
+   "streets": {
+    "N": "Soquel Avenue",
+    "S": "Cathcart Street",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     240,
+     0
+    ],
+    [
+     680,
+     0
+    ],
+    [
+     665,
+     385
+    ],
+    [
+     240,
+     390
+    ]
+   ],
+   "corners": [
+    {
+     "x": 665.0,
+     "y": 385.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    },
+    {
+     "x": 240.0,
+     "y": 390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    },
+    {
+     "x": 246.0,
+     "y": 465.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    },
+    {
+     "x": 648.1,
+     "y": 453.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "19",
+    "199"
+   ],
+   "px4": [
+    [
+     240.0,
+     0.0
+    ],
+    [
+     680.0,
+     0.0
+    ],
+    [
+     665.0,
+     385.0
+    ],
+    [
+     240.0,
+     390.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 665.0,
+     "y": 385.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 240.0,
+     "y": 390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    240.0,
+    0.0,
+    680.0,
+    390.0
+   ]
+  },
+  {
+   "name": "199",
+   "streets": {
+    "N": "Cathcart Street",
+    "S": "Laurel Street",
+    "W": "Front Street",
+    "E": "River Street"
+   },
+   "px4_est": [
+    [
+     690,
+     0
+    ],
+    [
+     980,
+     0
+    ],
+    [
+     980,
+     1790
+    ],
+    [
+     690,
+     1790
+    ]
+   ],
+   "corners": [
+    {
+     "x": 246.0,
+     "y": 465.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    },
+    {
+     "x": 648.1,
+     "y": 453.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "19"
+    },
+    {
+     "x": 665.0,
+     "y": 385.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    },
+    {
+     "x": 240.0,
+     "y": 390.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cathcart Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18s"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "19",
+    "18s"
+   ],
+   "px4": [
+    [
+     690.0,
+     0.0
+    ],
+    [
+     980.0,
+     0.0
+    ],
+    [
+     980.0,
+     1790.0
+    ],
+    [
+     690.0,
+     1790.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    690.0,
+    0.0,
+    980.0,
+    1790.0
+   ]
+  }
+ ],
+ "pct": 25
+}

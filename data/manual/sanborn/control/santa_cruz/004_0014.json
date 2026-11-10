@@ -1,0 +1,562 @@
+{
+ "zones_only": true,
+ "blocks": [
+  {
+   "name": "7",
+   "streets": {
+    "N": "Locust Street",
+    "S": "Church Street",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     25,
+     243
+    ],
+    [
+     1228,
+     243
+    ],
+    [
+     1240,
+     545
+    ],
+    [
+     25,
+     545
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1215.5,
+     "y": 242.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "7"
+    },
+    {
+     "x": 1227.5,
+     "y": 544.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "7"
+    },
+    {
+     "x": 1223.7,
+     "y": 628.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 1219.7,
+     "y": 1151.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 245.8,
+     "y": 1242.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 1209.9,
+     "y": 1250.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 1202.9,
+     "y": 1610.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 243.2,
+     "y": 1604.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "12",
+    "16"
+   ],
+   "px4": [
+    [
+     40.8,
+     243.9
+    ],
+    [
+     1215.5,
+     242.6
+    ],
+    [
+     1227.5,
+     544.0
+    ],
+    [
+     38.2,
+     544.0
+    ]
+   ],
+   "edge_q": [
+    0.98,
+    0.83,
+    1.0,
+    0.04
+   ],
+   "corners_all": [
+    {
+     "x": 1215.5,
+     "y": 242.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1227.5,
+     "y": 544.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    38.1929243638898,
+    242.60580514445024,
+    1227.4504008044316,
+    544.0
+   ]
+  },
+  {
+   "name": "12",
+   "streets": {
+    "N": "Church Street",
+    "S": "Walnut Avenue",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     25,
+     630
+    ],
+    [
+     1237,
+     630
+    ],
+    [
+     1237,
+     1147
+    ],
+    [
+     25,
+     1147
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1223.7,
+     "y": 628.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 1219.7,
+     "y": 1151.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "12"
+    },
+    {
+     "x": 1215.5,
+     "y": 242.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "7"
+    },
+    {
+     "x": 1227.5,
+     "y": 544.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "7"
+    },
+    {
+     "x": 245.8,
+     "y": 1242.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 1209.9,
+     "y": 1250.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 1202.9,
+     "y": 1610.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    },
+    {
+     "x": 243.2,
+     "y": 1604.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "16"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "7",
+    "16"
+   ],
+   "px4": [
+    [
+     36.2,
+     629.9
+    ],
+    [
+     1223.7,
+     628.6
+    ],
+    [
+     1219.7,
+     1151.9
+    ],
+    [
+     38.8,
+     1145.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.89,
+    0.97,
+    0.02
+   ],
+   "corners_all": [
+    {
+     "x": 1223.7,
+     "y": 628.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1219.7,
+     "y": 1151.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    36.18367990096642,
+    628.6065069440161,
+    1223.7343237279038,
+    1151.9457755454816
+   ]
+  },
+  {
+   "name": "16",
+   "streets": {
+    "N": "Walnut Avenue",
+    "S": "Lincoln Street",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     245,
+     1245
+    ],
+    [
+     1212,
+     1245
+    ],
+    [
+     1205,
+     1607
+    ],
+    [
+     245,
+     1607
+    ]
+   ],
+   "corners": [
+    {
+     "x": 245.8,
+     "y": 1242.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1209.9,
+     "y": 1250.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1202.9,
+     "y": 1610.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 243.2,
+     "y": 1604.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "with": [
+    "7",
+    "12"
+   ],
+   "px4": [
+    [
+     245.8,
+     1242.6
+    ],
+    [
+     1209.9,
+     1250.4
+    ],
+    [
+     1202.9,
+     1610.1
+    ],
+    [
+     243.2,
+     1604.9
+    ]
+   ],
+   "edge_q": [
+    0.92,
+    0.91,
+    0.95,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 245.8,
+     "y": 1242.6,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1209.9,
+     "y": 1250.4,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1202.9,
+     "y": 1610.1,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 243.2,
+     "y": 1604.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    243.19977790481278,
+    1242.5594366566434,
+    1209.8946226380153,
+    1610.1202811907108
+   ]
+  }
+ ],
+ "pct": 25
+}

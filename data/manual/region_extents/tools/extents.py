@@ -4,6 +4,7 @@
   python -I extents.py build  TOWN [YEAR ...]          classify blocks, write data/manual/region_extents/<town>_<year>.geojson
   python -I extents.py check  TOWN                     validation numbers + check PNG
   python -I extents.py all    TOWN                     sheet (every sheet of every snapshot) + build + check
+  python -I extents.py nest   TOWN                     (ten-county towns, after all + sanborn_key.py + check) nested files
 
 Method (details and per-snapshot notes in ../README.md):
 
@@ -143,6 +144,9 @@ sheet("benicia1950", "CA_Benicia_288319_1950_24000_geo.tif", Q75(-122.25, 38.0),
       "aerial photographs 1948, field check 1950")
 sheet("portchicago1951", "CA_Port%20Chicago_294325_1951_24000_geo.tif", Q75(-122.125, 38.0), 24000, 1951, 1948,
       "tint", "aerial photographs 1948, survey 1950")
+
+sheet("carquinezstrait1940h", "CA_Carquinez%20Strait_297037_1940_62500_geo.tif", Q15(-122.25, 38.0), 62500, 1940, 1940,
+      "tint", "aerial photographs 1940 (1965 imprint); read with open_mm 0.26", tint="grey", open_mm=0.26)
 
 # ---- the ten-county extent (2026-11): Sonoma, Napa, Solano, Santa Cruz, east Contra Costa, south Santa Clara.
 # Survey / photo years from each scan's FGDC record (TNM). Q30: the 1:125,000 30' reconnaissance sheets.
@@ -386,7 +390,7 @@ TOWNS.update({
                       snaps={1915: ["calistoga1927"], 1943: ["calistoga1945"], 1957: ["calistoga1958"]}),
     "fairfield": dict(name="Fairfield - Suisun City", places=["0623182", "0675630"],
                       bbox=(-122.08, 38.225, -122.00, 38.275),
-                      snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940", "mtvaca1942"],
+                      snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940h", "mtvaca1942"],
                              1948: ["fairfieldsouth1949", "fairfieldnorth1951"]}),
     "vacaville": dict(name="Vacaville", places=["0681554"], bbox=(-122.02, 38.335, -121.95, 38.38),
                       snaps={1906: ["vacaville1908"], 1939: ["vacaville1941", "mtvaca1942"],
@@ -399,8 +403,7 @@ TOWNS.update({
                    snaps={1915: ["morganhill1917", "sanjuanbautista1917"],
                           1939: ["morganhill1941", "sanjuanbautista1940"], 1953: ["gilroy1955", "chittenden1955"]}),
     "morgan_hill": dict(name="Morgan Hill", places=["0649278"], bbox=(-121.68, 37.105, -121.62, 37.155),
-                        snaps={1915: ["morganhill1917"], 1939: ["morganhill1941"],
-                               1953: ["morganhill1955", "mtmadonna1955"]}),
+                        snaps={1915: ["morganhill1917"], 1953: ["morganhill1955", "mtmadonna1955"]}),
     "antioch": dict(name="Antioch", places=["0602252"], bbox=(-121.85, 37.985, -121.77, 38.03),
                     snaps={1907: ["antioch1908"], 1949: ["antiochnorth1953"]}),
     "pittsburg": dict(name="Pittsburg", places=["0657456"], bbox=(-121.92, 38.0, -121.85, 38.045),
@@ -413,9 +416,79 @@ TOWNS.update({
                      snaps={1912: ["capitola1914"], 1938: ["capitola1940"], 1952: ["soquel1954"]}),
     "boulder_creek": dict(name="Boulder Creek - Felton (San Lorenzo Valley: also Ben Lomond, Brookdale)",
                           places=["0607652", "0623826", "0605332", "0608478"], bbox=(-122.14, 37.03, -122.05, 37.14),
-                          snaps={1899: ["santacruz1902"], 1953: ["felton1955", "castlerockridge1955", "bigbasin1955"]}),
+                          snaps={1953: ["felton1955", "castlerockridge1955", "bigbasin1955"]}),
 })
 
+G125 = ("1:125,000 reconnaissance sheet: block fronts and houses are strongly generalised (read with open_mm 0.26 "
+        "on Napa 1902), alignment RMS 15-25 m")
+HOUSES = "town drawn house by house on this sheet (no urban tint): read with the frontage rule"
+NOTES.update({
+    ("santa_rosa", 1914): dict(confidence="low", min_ha=15, note=SMALL + "; parts under 15 ha dropped (the lettering "
+                               "SANTA ROSA runs east of the town along Fourth Street). After the 1906 earthquake: the "
+                               "rebuilt downtown"),
+    ("santa_rosa", 1942): dict(note="Santa Rosa 1944 edition (surveyed 1914, revised 1942): blocks and houses drawn, no tint"),
+    ("petaluma", 1912): dict(confidence="low", note=SMALL),
+    ("napa", 1899): dict(confidence="low", note=G125),
+    ("napa", 1939): dict(note="Sonoma 1942: dot-screen urban tint over central Napa (partly read as tint, partly by the "
+                              "frontage rule), houses drawn outside it"),
+    ("vallejo", 1899): dict(confidence="low", note=G125),
+    ("vallejo", 1914): dict(note="west of 122°15' W only (old Vallejo and Mare Island; the Karquines sheet east of it "
+                                 "is the 1896 survey)"),
+    ("vallejo", 1940): dict(note="east of 122°15' W only: the Mare Island 1942 edition (1937 survey) draws Vallejo as "
+                                 "streets without buildings and was not used"),
+    ("vallejo", 1948): dict(note="includes Mare Island Navy Yard and the wartime housing projects (Federal Terrace, "
+                                 "Chabot Terrace, Carquinez Heights ...), most of them cleared in the 1950s-60s"),
+    ("santa_cruz", 1899): dict(confidence="low", note=G125 + "; after the 1894 fire (downtown rebuilt by the survey); "
+                               "only the Pacific Avenue core passes the threshold"),
+    ("watsonville", 1915): dict(note="Capitola 1914 (surveyed 1912) west of 121°45' W, San Juan Bautista 1917 "
+                                     "(surveyed 1915) east of it"),
+    ("benicia", 1896): dict(confidence="low", note=SMALL),
+    ("benicia", 1948): dict(note="includes the Benicia Arsenal"),
+    ("sonoma", 1948): dict(confidence="medium", note=HOUSES),
+    ("healdsburg", 1915): dict(confidence="low", note=SMALL),
+    ("sebastopol", 1935): dict(confidence="low", note=SMALL),
+    ("st_helena", 1942): dict(confidence="low", note=SMALL + "; Sonoma 1942 south of 38°30' N (1939 photographs), "
+                              "St. Helena 1945 north of it (surveyed 1942)"),
+    ("st_helena", 1957): dict(confidence="medium", note=HOUSES + "; south of 38°30' N the Rutherford 1951 sheet "
+                              "(1948 photographs): a block built there between 1948 and 1957 is missing"),
+    ("calistoga", 1915): dict(confidence="low", note=SMALL),
+    ("calistoga", 1943): dict(confidence="low", note=SMALL),
+    ("fairfield", 1896): dict(confidence="low", note=SMALL + "; south of 38°15' N only (Suisun City and the south edge "
+                              "of Fairfield); no usable first survey north of it (Mt. Vaca 1921 reads only roads)"),
+    ("fairfield", 1940): dict(note="Carquinez Strait 1940 south of 38°15' N (read with open_mm 0.26: US 40 and the "
+                                   "railway), Mt. Vaca 1942 north of it (1939 photographs)"),
+    ("vacaville", 1949): dict(confidence="medium", min_ha=12, note="the Elmira 1953 scan has a reddish cast: parts under "
+                              "12 ha (isolated cells read as tint) dropped"),
+    ("dixon", 1906): dict(note="the strip west of the town along West A Street is road ink"),
+    ("rio_vista", 1908): dict(confidence="low", note=SMALL + "; 1:31,680 sheet"),
+    ("gilroy", 1915): dict(confidence="low", note=SMALL + "; Morgan Hill 1917 north of 37°00' N, San Juan Bautista 1917 south"),
+    ("gilroy", 1939): dict(confidence="low", note=SMALL),
+    ("morgan_hill", 1915): dict(confidence="low", note=SMALL),
+    ("morgan_hill", 1953): dict(confidence="medium", note=HOUSES),
+    ("antioch", 1907): dict(confidence="low", note=SMALL),
+    ("pittsburg", 1907): dict(confidence="low", note=SMALL + "; the town was Black Diamond until 1911"),
+    ("pittsburg", 1949): dict(note="includes Columbia Steel, Camp Stoneman (1942-54) and the wartime housing"),
+    ("brentwood", 1940): dict(confidence="low", note=SMALL),
+    ("brentwood", 1949): dict(confidence="medium", note=HOUSES),
+    ("cloverdale", 1922): dict(confidence="low", note=SMALL + "; the Hopland quadrangle has too few streets to align the "
+                               "sheet: read as published"),
+    ("cloverdale", 1942): dict(confidence="low", note=SMALL),
+    ("capitola", 1912): dict(confidence="low", note=SMALL + "; Capitola camp ground and beach, Soquel village"),
+    ("capitola", 1938): dict(confidence="low", note=SMALL),
+    ("boulder_creek", 1953): dict(confidence="medium", note=HOUSES + "; the Santa Cruz 1902 1:125,000 sheet does not "
+                                  "align in the San Lorenzo valley and was not used"),
+})
+# snapshots from Sanborn index key maps (tools/sanborn_key.py; its CFG name)
+TOWNS["santa_rosa"]["key"] = {1904: "santa_rosa_1904"}
+TOWNS["petaluma"]["key"] = {1910: "petaluma_1910"}
+TOWNS["santa_cruz"]["key"] = {1905: "santa_cruz_1905"}
+TOWNS["napa"]["key"] = {1910: "napa_1910"}
+TOWNS["vallejo"]["key"] = {1919: "vallejo_1919"}
+TOWNS["watsonville"]["key"] = {1908: "watsonville_1908"}
+TOWNS["gilroy"]["key"] = {1906: "gilroy_1906"}
+TOWNS["benicia"]["key"] = {1913: "benicia_1913"}
+TOWNS["st_helena"]["key"] = {1910: "st_helena_1910"}
+TOWNS["sebastopol"]["key"] = {1911: "sebastopol_1911"}
 for (t_, y_), v_ in NOTES.items():
     TOWNS[t_].setdefault("notes", {})[y_] = v_
 
@@ -1081,7 +1154,7 @@ def snapshot_stats(town, year):
     return bl, tot
 
 
-def extent_polys(bl, tot, clip, col="built", exclude=None):
+def extent_polys(bl, tot, clip, col="built", exclude=None, min_ha=None):
     import shapely
     g = bl.set_index("bid").geometry
     sel = list(g[tot[col].values].values)
@@ -1101,7 +1174,7 @@ def extent_polys(bl, tot, clip, col="built", exclude=None):
             return hp.area < HOLE_HA * 1e4 or hp.area / max(hp.length, 1) < 10     # specks, street strips
         keep = [h for h in p.interiors if not small(h)]
         p = shapely.Polygon(p.exterior, keep)
-        if p.area >= MIN_HA * 1e4:
+        if p.area >= (min_ha or MIN_HA) * 1e4:
             parts.append(p)
     u = shapely.union_all(parts) if parts else shapely.Polygon()
     land = land_poly(clip.bounds)
@@ -1145,7 +1218,7 @@ def export_coverage():
     for p in sorted(INT.glob("coverage_*.json")):
         d = json.loads(p.read_text())
         t, y = d["props"]["town"], d["props"]["year"]
-        if t not in TOWNS or y not in TOWNS[t]["snaps"] or not (OUT / f"{t}_{y}.geojson").exists():
+        if t not in TOWNS or not (OUT / f"{t}_{y}.geojson").exists():      # (also snapshots of sanborn_key.py)
             continue
         feats.append({"type": "Feature", "properties": d["props"], "geometry": d["geom"]})
     (OUT / "coverage.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats},
@@ -1160,10 +1233,10 @@ def build(town, years=None, meta=None):
     meta = meta or {}
     for year in (years or TOWNS[town]["snaps"]):
         bl, tot = snapshot_stats(town, year)
-        u = extent_polys(bl, tot, clip)
-        cov = coverage_poly(town, year, clip)
         keys = TOWNS[town]["snaps"][year]
         info = TOWNS[town].get("notes", {}).get(year, {})
+        u = extent_polys(bl, tot, clip, min_ha=info.get("min_ha"))
+        cov = coverage_poly(town, year, clip)
         sheets_note = "; ".join(f"{k} (1:{S[k]['scale']:,} {S[k]['edition']}): {S[k]['note']}" for k in keys)
         props = {"town": town, "year": int(year), "kind": "built_up",
                  "source": "+".join(f"usgs_htmc:{k}" for k in keys),
@@ -1198,6 +1271,55 @@ def build(town, years=None, meta=None):
         print(town, year, "built blocks", int(tot.built.sum()), "of", int((tot["cov"] >= MIN_COV).sum()),
               "read; extent", props["area_km2"], "km2; t_band", round(tot.attrs["t_band"], 1), "m")
     export_coverage()
+
+
+CORE_TOWNS = ("oakland", "berkeley", "alameda", "san_jose", "san_leandro", "hayward", "richmond", "palo_alto",
+              "redwood_city", "san_mateo", "san_rafael", "martinez")     # their files are the independent readings
+
+
+def nest(town):
+    """Make the snapshot files of a town cumulative (the towns of the ten-county extent): each file becomes its
+    own reading plus every earlier snapshot inside its area read, so a later extent contains the earlier ones
+    (a town does not un-build between two maps; the independent readings differ by threshold, alignment and
+    drawing style, see README 'How to use it'). The reading alone stays in the properties (area_read_km2) and
+    in the README tables (run check before nest). Run after build / sanborn_key; idempotent."""
+    import shapely
+    from shapely.geometry import mapping, shape
+    years = sorted(set(TOWNS[town]["snaps"]) | set(TOWNS[town].get("key", {})))
+    acc, prev = None, []
+
+    def polys(g):
+        ps = [q for q in shapely.get_parts(shapely.make_valid(g)) if q.geom_type == "Polygon" and q.area > 1]
+        ps += [r for q in shapely.get_parts(shapely.make_valid(g)) if q.geom_type in ("MultiPolygon", "GeometryCollection")
+               for r in shapely.get_parts(q) if r.geom_type == "Polygon" and r.area > 1]
+        return shapely.MultiPolygon(ps)
+    for y in years:
+        p = OUT / f"{town}_{y}.geojson"
+        fc = json.loads(p.read_text())
+        pr = fc["features"][0]["properties"]
+        g = to_utm(shape(fc["features"][0]["geometry"])).buffer(0)
+        cov = load_coverage(town, y)
+        pr.setdefault("area_read_km2", pr["area_km2"])
+        g2 = g
+        if acc is not None:
+            g2 = polys(shapely.union_all([g, acc.intersection(cov.buffer(1.0))]).buffer(0.5).buffer(-0.5))
+            if "nested:" not in pr["note"]:
+                pr["note"] += (" | nested: includes the extents of the earlier snapshots (" + ", ".join(map(str, prev))
+                               + ") inside this area read; area_read_km2 is this map alone")
+            pr["nested_from"] = prev[:]
+        pr["area_km2"] = round(g2.area / 1e6, 3)
+        fc["features"][0]["geometry"] = mapping(shapely.set_precision(to_ll(g2), 1e-7))
+        p.write_text(json.dumps(fc, separators=(",", ":")))
+        pp = OUT / f"{town}_{y}_partial.geojson"
+        if pp.exists() and acc is not None:
+            fp = json.loads(pp.read_text())
+            gp = polys(to_utm(shape(fp["features"][0]["geometry"])).buffer(0).difference(g2.buffer(0.5)))
+            fp["features"][0]["properties"]["area_km2"] = round(gp.area / 1e6, 3)
+            fp["features"][0]["geometry"] = mapping(shapely.set_precision(to_ll(gp), 1e-7))
+            pp.write_text(json.dumps(fp, separators=(",", ":")))
+        acc = g2 if acc is None else shapely.union_all([acc, g2])
+        prev.append(y)
+        print(town, y, "read", pr["area_read_km2"], "km2 -> nested", pr["area_km2"], "km2")
 
 
 # --------------------------------------------------------------------------- checks
@@ -1277,7 +1399,7 @@ def check(town):
     sb = sanborn_blocks(town, bl)
     gb = bl.set_index("bid").geometry
     rep = {"town": town, "snapshots": []}
-    years = sorted(TOWNS[town]["snaps"])
+    years = sorted(set(TOWNS[town]["snaps"]) | set(TOWNS[town].get("key", {})))     # key: sanborn_key.py snapshots
     for year in years:
         ext = load_extent(town, year)
         cov = load_coverage(town, year)
@@ -1330,7 +1452,7 @@ def check(town):
             if pb.area > 0:
                 r[f"probe_{name}_pct"] = round(100 * pb.intersection(ext).area / pb.area, 1)
         # threshold sensitivity (block area, early sheets)
-        if S[TOWNS[town]["snaps"][year][0]]["style"] == "early":
+        if year in TOWNS[town]["snaps"] and S[TOWNS[town]["snaps"][year][0]]["style"] == "early":
             ar = gb.area.reindex(cls.index).values
             rd = (cls["cov"] >= MIN_COV).values & (cls["kind"] == "block").values
             r["block_km2_at_share"] = {str(t): round(float(ar[rd & (cls.share.values >= t)].sum()) / 1e6, 1)
@@ -1383,7 +1505,7 @@ def plot(town, bl, pts, years):
         ax.scatter(old.x, old.y, s=0.3, c="k", lw=0)
         ax.set_xlim(xmin, xmax); ax.set_ylim(ymin, ymax); ax.set_aspect("equal")
         ax.set_xticks([]); ax.set_yticks([])
-        keys = TOWNS[town]["snaps"][year]
+        keys = TOWNS[town]["snaps"].get(year, ["Sanborn key map"])
         ax.set_title(f"{year}  ({ext.area / 1e6:.1f} km²)\n" + ", ".join(k_ for k_ in keys), fontsize=8)
     fig.suptitle(f"{TOWNS[town]['name']}: built-up extent per USGS topo snapshot (colour = first snapshot showing it; "
                  f"dashed = area read; dots = buildings standing today built before the map)", fontsize=8)
@@ -1432,7 +1554,7 @@ def report():
             sb = "; ".join(f"{x['area'].split('_', 1)[-1]} {x['sanborn_year']}: {x['built_in_extent_pct']:.0f}% of "
                            f"{x['built_blocks']} / {x['empty_in_extent_pct']:.0f}% of {x['empty_blocks']}"
                            for x in r.get("sanborn", []) if x["blocks"])
-            T.append(f"| {town} | {y} | {', '.join(TOWNS[town]['snaps'][y])} | {r['area_km2']} | {r.get('partial_km2', '')} | "
+            T.append(f"| {town} | {y} | {', '.join(TOWNS[town]['snaps'].get(y, ['Sanborn key map (LOC), ' + str(TOWNS[town].get('key', {}).get(y, ''))]))} | {r['area_km2']} | {r.get('partial_km2', '')} | "
                      f"{r['coverage_km2']} | {pr['confidence']} | {r['survivors_pre_inside_pct']}% "
                      f"({r.get('survivors_pre_inside_built_or_partial_pct', '')}%) ({r['survivors_pre']}) | "
                      f"{str(r.get('prev_kept_pct', '')) + '%' if 'prev_kept_pct' in r else ''} | {sb} |")
@@ -1474,6 +1596,10 @@ if __name__ == "__main__":
         check(o.town)
     elif o.cmd == "report":
         report()
+    elif o.cmd == "nest":
+        if o.town in CORE_TOWNS:
+            sys.exit("the core towns keep their independent readings")
+        nest(o.town)
     elif o.cmd == "all":
         for y, keys in TOWNS[o.town]["snaps"].items():
             for k in keys:

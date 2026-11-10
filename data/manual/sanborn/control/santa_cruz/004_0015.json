@@ -1,0 +1,844 @@
+{
+ "zones_only": true,
+ "block_cap": {
+  "14": "medium",
+  "198": "medium",
+  "21": "medium"
+ },
+ "blocks": [
+  {
+   "name": "13",
+   "streets": {
+    "N": "Cooper Street",
+    "S": "Soquel Avenue",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     265,
+     345
+    ],
+    [
+     600,
+     335
+    ],
+    [
+     725,
+     1370
+    ],
+    [
+     247,
+     1385
+    ]
+   ],
+   "corners": [
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    }
+   ],
+   "skip": [],
+   "with": [
+    "18",
+    "21",
+    "14",
+    "198"
+   ],
+   "px4": [
+    [
+     273.0,
+     344.4
+    ],
+    [
+     592.8,
+     336.1
+    ],
+    [
+     727.0,
+     1360.4
+    ],
+    [
+     255.2,
+     1375.2
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.69,
+    0.65,
+    0.61
+   ],
+   "corners_all": [
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    255.17013958508483,
+    336.0943489926075,
+    727.0371119286863,
+    1375.2389384471505
+   ]
+  },
+  {
+   "name": "18",
+   "streets": {
+    "N": "Soquel Avenue",
+    "S": "Cathcart Street",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     250,
+     1445
+    ],
+    [
+     722,
+     1460
+    ],
+    [
+     722,
+     1890
+    ],
+    [
+     250,
+     1890
+    ]
+   ],
+   "corners": [
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    }
+   ],
+   "skip": [
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "13",
+    "21",
+    "14",
+    "198"
+   ],
+   "px4": [
+    [
+     250.0,
+     1445.0
+    ],
+    [
+     722.0,
+     1460.0
+    ],
+    [
+     722.0,
+     1890.0
+    ],
+    [
+     250.0,
+     1890.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    250.0,
+    1445.0,
+    722.0,
+    1890.0
+   ]
+  },
+  {
+   "name": "21",
+   "streets": {
+    "N": "Short Street",
+    "S": "Soquel Avenue",
+    "W": "Front Street",
+    "E": "River Street"
+   },
+   "px4_est": [
+    [
+     765,
+     935
+    ],
+    [
+     1320,
+     930
+    ],
+    [
+     1300,
+     1370
+    ],
+    [
+     800,
+     1370
+    ]
+   ],
+   "corners": [
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE"
+   ],
+   "no_refine": 1,
+   "with": [
+    "13",
+    "18",
+    "14",
+    "198"
+   ],
+   "px4": [
+    [
+     765.0,
+     935.0
+    ],
+    [
+     1320.0,
+     930.0
+    ],
+    [
+     1300.0,
+     1370.0
+    ],
+    [
+     800.0,
+     1370.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 800.0,
+     "y": 1370.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    765.0,
+    930.0,
+    1320.0,
+    1370.0
+   ]
+  },
+  {
+   "name": "14",
+   "streets": {
+    "N": "Cooper Street",
+    "S": "Short Street",
+    "W": "Front Street",
+    "E": "River Street"
+   },
+   "px4_est": [
+    [
+     690,
+     330
+    ],
+    [
+     1470,
+     290
+    ],
+    [
+     1400,
+     880
+    ],
+    [
+     770,
+     880
+    ]
+   ],
+   "corners": [
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "13",
+    "18",
+    "21",
+    "198"
+   ],
+   "px4": [
+    [
+     690.0,
+     330.0
+    ],
+    [
+     1470.0,
+     290.0
+    ],
+    [
+     1400.0,
+     880.0
+    ],
+    [
+     770.0,
+     880.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    690.0,
+    290.0,
+    1470.0,
+    880.0
+   ]
+  },
+  {
+   "name": "198",
+   "streets": {
+    "N": "Soquel Avenue",
+    "S": "Cathcart Street",
+    "W": "Front Street",
+    "E": "River Street"
+   },
+   "px4_est": [
+    [
+     810,
+     1450
+    ],
+    [
+     1150,
+     1450
+    ],
+    [
+     1150,
+     1890
+    ],
+    [
+     810,
+     1890
+    ]
+   ],
+   "corners": [
+    {
+     "x": 273.0,
+     "y": 344.4,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 592.8,
+     "y": 336.1,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 727.0,
+     "y": 1360.4,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 255.2,
+     "y": 1375.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "13"
+    },
+    {
+     "x": 250.0,
+     "y": 1445.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    },
+    {
+     "x": 722.0,
+     "y": 1460.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "18"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "13",
+    "18",
+    "21",
+    "14"
+   ],
+   "px4": [
+    [
+     810.0,
+     1450.0
+    ],
+    [
+     1150.0,
+     1450.0
+    ],
+    [
+     1150.0,
+     1890.0
+    ],
+    [
+     810.0,
+     1890.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    810.0,
+    1450.0,
+    1150.0,
+    1890.0
+   ]
+  }
+ ],
+ "pct": 25
+}

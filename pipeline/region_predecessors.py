@@ -32,7 +32,9 @@ from sf_predecessors import apply_sanborn, footprint, h01, massing, strips_for_l
 
 UTM = "EPSG:32610"
 REGION_SANBORN = ("oakland", "san_jose", "berkeley", "alameda", "richmond", "san_rafael", "palo_alto",
-                  "santa_clara", "hayward", "redwood_city", "san_mateo")
+                  "santa_clara", "hayward", "redwood_city", "san_mateo",
+                  # the new counties (pipeline/sanborn_trace_newcounties.py, README_northbay.md / README_santa_cruz.md)
+                  "santa_rosa", "vallejo", "napa", "santa_cruz", "petaluma", "watsonville", "benicia")
 
 
 def load_lots():

@@ -638,3 +638,34 @@ College pattern) say "Campus-wide date" in the note; rows with an approximate ye
   Alto), semperaltius.com Palo Alto history (pier 630 × 40 ft, 1930 dates), LocalWiki Santa Cruz (Palomar, Del Mar plaque text),
   City of Capitola "Capitola Wharf Past", pierfishing.com, MTC bridge page (Antioch Bridge), johnmarshhouse.com.
 
+
+<!-- extents -->
+### region_extents — ten-county towns (2026-11) (add to the existing `region_extents` entry)
+
+* **USGS Historical Topographic Map Collection** (public domain; U.S. Geological Survey, The National Map — TNM Access
+  API `https://tnmaccess.nationalmap.gov/api/v1/products`, scans at
+  `https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/<scale>/…_geo.pdf`): 60 more sheets
+  for 24 towns of Sonoma, Napa, Solano, Santa Cruz, east Contra Costa and south Santa Clara counties — the
+  1:125,000 Napa and Santa Cruz sheets of 1902 (surveyed to 1899), the 1:62,500 first surveys of 1906-22, the
+  1:31,680 Rio Vista sheet of 1910, the 1:62,500 editions of 1933-45 and the 1:24,000 sheets of 1949-60. Survey /
+  photo years from each scan's FGDC record. Every sheet with its GeoPDF link: `data/manual/region_extents/README.md`
+  → *Maps used*. Use: built-up extent snapshots `data/manual/region_extents/<town>_<year>.geojson`
+  (`tools/extents.py`).
+* **Library of Congress, Geography and Map Division, Sanborn Maps Collection** (public domain: "The content of the
+  Library of Congress online Sanborn Maps Collection is in the public domain and is free to use and reuse"; credit
+  line: Library of Congress, Geography and Map Division, Sanborn Maps Collection): the colour key maps on the index
+  sheets of ten volumes — Santa Rosa Dec. 1904 (https://www.loc.gov/item/sanborn00838_004/), Santa Cruz 1905
+  (https://www.loc.gov/item/sanborn00833_004/), Gilroy Oct. 1906 (https://www.loc.gov/item/sanborn00566_003/),
+  Watsonville Jul. 1908 (https://www.loc.gov/item/sanborn00921_005/), Petaluma Nov. 1910
+  (https://www.loc.gov/item/sanborn00756_005/), Napa Oct. 1910 (https://www.loc.gov/item/sanborn00707_004/),
+  Saint Helena Nov. 1910 (https://www.loc.gov/item/sanborn00800_004/), Sebastopol Apr. 1911
+  (https://www.loc.gov/item/sanborn00847_006/), Benicia Aug. 1913 (https://www.loc.gov/item/sanborn00417_004/),
+  Vallejo Mar. 1919 (https://www.loc.gov/item/sanborn00905_004/). Use: the area Sanborn surveyed (blocks under the
+  key-map patches), kept where a USGS survey or buildings standing today confirm the block
+  (`data/manual/region_extents/tools/sanborn_key.py`; snapshots `<town>_<year>.geojson` with
+  `source = loc_sanborn:…`).
+* **US Census Bureau TIGER/Line 2024** area water of Santa Cruz County (`tl_2024_06087_areawater.zip`, public
+  domain; https://www2.census.gov/geo/tiger/TIGER2024/AREAWATER/): today's land for the extent polygons (the other
+  counties' files were already listed).
+* Street names and centrelines for the registration: Overture Maps roads (OpenStreetMap, ODbL) — already listed.
+

@@ -10,6 +10,12 @@ Every snapshot is read from one survey generation of the USGS topographic quadra
 `tools/extents.py` (`python -I tools/extents.py all <town>`, then `python -I tools/extents.py report x`
 for the tables below; caches in `data/interim/region_extents/`, scans in `data/raw/region_extents/`).
 
+**Ten-county extent (2026-11).** 24 more towns in Sonoma, Napa, Solano, Santa Cruz, east Contra Costa and south
+Santa Clara counties were added with the same tool (60 more sheets) and, for the years before the first usable
+survey, with a second real source: the colour key maps on the index sheets of the Sanborn fire insurance volumes
+of 1904-1919 (Library of Congress, public domain; `tools/sanborn_key.py`, ten towns). What differs from the twelve
+core towns is in the section *Ten-county towns* below; the tables hold all 36 towns.
+
 ## Files
 
 | file | content |
@@ -19,20 +25,26 @@ for the tables below; caches in `data/interim/region_extents/`, scans in `data/r
 | `coverage.geojson` | one Feature per town and snapshot: the area that snapshot **read** (the sheets' quadrangles × the town × the processing box). Outside it a snapshot says nothing (e.g. `oakland_1939` covers only Oakland east of 122°15' W and south of 37°45' N) |
 | `check/<town>.png` | the snapshots in sequence: each pixel coloured by the first snapshot whose extent holds it (dark red → light); dashed: area read; black dots: buildings standing today that predate the map |
 | `tools/extents.py` | the whole method (render, alignment, blocks, classification, checks, these tables) |
+| `tools/sanborn_key.py` | snapshots from Sanborn index key maps (`python -I tools/sanborn_key.py <town>_<year>`; control points and LOC items in its `CFG`) |
 
 Properties of a snapshot feature: `town`, `year` (what the map shows: the survey year, the year of
 the culture revision, or the year of the aerial photographs the map was compiled from), `kind`,
 `source` (`usgs_htmc:<sheet key>` joined with `+`; sheet keys in the maps table below), `source_url`
 (the GeoPDFs, space-separated), `confidence` (`high` / `medium` / `low`), `note` (town-specific
 caveats; per sheet: edition, survey / revision / photo years; the area read), `edition_years`,
-`map_years`, `method`, `area_km2`, `n_blocks`.
+`map_years`, `method`, `area_km2`, `n_blocks`. Ten-county towns also carry `area_read_km2` (this map alone) and
+`nested_from` (the earlier snapshot years included in the polygon, see *Nesting*); a Sanborn snapshot has
+`source = loc_sanborn:<LOC item>:index+usgs_htmc:<confirming sheet>`.
 
 Towns (`town` = today's TIGER 2024 places merged): `oakland` (Oakland, Emeryville, Piedmont),
 `berkeley` (Berkeley, Albany), `alameda`, `san_jose` (San José, Santa Clara), `san_leandro`, `hayward`,
 `richmond` (Richmond, El Cerrito, San Pablo), `palo_alto` (incl. Mayfield), `redwood_city`,
 `san_mateo` (San Mateo, Burlingame), `san_rafael`, `martinez`. Each is processed inside a box around
 its historic core and its growth to c. 1950 (`TOWNS[...]["bbox"]` in the tool), clipped to today's
-land (TIGER area water removed). Vallejo is outside the map.
+land (TIGER area water removed). Ten-county towns: `santa_rosa`, `petaluma`, `napa`, `vallejo`, `santa_cruz`,
+`watsonville`, `benicia`, `sonoma`, `healdsburg`, `sebastopol`, `st_helena`, `calistoga`, `fairfield` (Fairfield,
+Suisun City), `vacaville`, `dixon`, `rio_vista`, `gilroy`, `morgan_hill`, `antioch`, `pittsburg`, `brentwood`,
+`cloverdale`, `capitola` (Capitola, Soquel), `boulder_creek` (Boulder Creek, Felton, Ben Lomond, Brookdale).
 
 ## How to use it
 
@@ -102,6 +114,72 @@ land (TIGER area water removed). Vallejo is outside the map.
    10 m filled, parts under 2 ha dropped (a farm group, a single cell), clipped to the town and today's
    land, simplified 1 m. The partly-built polygons are made the same way, minus the built-up area.
 
+## Ten-county towns (2026-11): what differs
+
+* **Nesting.** The files of these 24 towns are cumulative: each polygon is its own reading plus every earlier
+  snapshot inside its area read (`python -I tools/extents.py nest <town>`, run last), so a later extent contains the
+  earlier ones. A town does not un-build between two maps; the independent readings differ by threshold, alignment
+  and drawing style (first surveys draw a small town house by house, see *How to use it*). No clearance falls
+  between two snapshots of these towns: Santa Rosa's snapshots are 1904 (before the earthquake of 18 April 1906:
+  its buildings in the destroyed business district ended then) and 1914 (the rebuilt town); Santa Cruz's first
+  snapshot (1899) is after the fire of 1894 and its last (1952) before the 1989 earthquake; Vallejo's last (1948)
+  is before the Marina Vista clearance of the 1960s and still holds the old lower Georgia Street district. The
+  tables below (areas, pre-map buildings, "prev. snapshot kept") describe each **reading alone** (`check` is run
+  before `nest`); the twelve core towns keep their independent readings.
+* **Line weight.** The editions of 1915-45 (and Napa 1902) draw streets as single lines or casings of 0.15-0.2 mm,
+  heavier than on the 1890s surveys: with the 0.15 mm opening every platted block read as a built front (Fairfield
+  1915: 1.2 km² of orchard roads; Sonoma 1939: 2.0 km²). These sheets are read with `open_mm = 0.26` (only ink
+  at least a block front thick counts); the first surveys of 1906-14 and the 1:24,000 sheets keep 0.15.
+* **1:125,000 sheets** (Napa 1902 and Santa Cruz 1902, both surveyed to 1899): block fronts and houses are
+  strongly generalised, alignment RMS 15-25 m: `low` confidence. Santa Cruz 1902 runs over its south neat line to
+  36°56' N to hold the city and is read there. Where the reading passed nothing (Sonoma, St. Helena) or did not
+  align (the San Lorenzo valley: Boulder Creek, Felton) no 1899 snapshot is given.
+* **Tint.** On scans with a reddish cast (Dixon 1952, Elmira 1953: paper R - G 12-14) the pink tint must stand 8
+  above the paper; the Elmira scan still reads isolated cells as tint, so parts under 12 ha are dropped at
+  Vacaville 1949 (`min_ha` per snapshot; also 15 ha at Santa Rosa 1914 for the lettering SANTA ROSA).
+* **Alignment.** Mountain quadrangles have too few streets for the windowed fit: 8 agreeing windows are accepted
+  (Santa Cruz 1902), then one window over the town; Hopland 1938 (Cloverdale 1922) fits neither and is read as
+  published (`low`).
+* **Sheets looked at and not used:** Petaluma 1942 (1937 photographs) and Mare Island 1942 (1937 survey) draw the
+  towns as streets without buildings (like Carquinez 1942); Mt. Vaca 1921 reads only road ink north of Fairfield;
+  Byron 1916 passes no block at Brentwood; Morgan Hill 1941 passes nothing at Morgan Hill.
+* **Sanborn key maps** (`tools/sanborn_key.py`). The index sheet of a Sanborn volume carries a key map of the
+  town with every sheet laid over the street grid as a colour patch: the area Sanborn surveyed at 50 ft to the inch,
+  i.e. the blocks holding insurable buildings (also thinly built "special" blocks: a college, a race track). The
+  half-size scan is registered to today's streets by an affine fit on 8-14 street intersections read on the map and
+  looked up by street name in today's centrelines; a block of today is *mapped* when half of it lies under a patch;
+  the snapshot keeps the mapped blocks that a USGS survey confirms as built up or partly built (the next survey
+  where it follows within ten years; otherwise the survey named below **or** three buildings standing on the block
+  today that predate the Sanborn survey, by assessor year - for those towns the "pre-map buildings inside" figure
+  is partly circular). Mapped blocks that are not confirmed are the `_partial` file. Registration worse than 12 m
+  RMS is `low` confidence.
+
+| town | year | LOC volume (index sheet) | intersections, RMS | mapped km² | kept km² | confirmed on |
+|---|---|---|---|---|---|---|
+| santa_rosa | 1904 | [Santa Rosa, Dec. 1904](https://www.loc.gov/item/sanborn00838_004/) | 9, 6 m | 4.02 | 1.92 | USGS 1914 |
+| petaluma | 1910 | [Petaluma, Nov. 1910](https://www.loc.gov/item/sanborn00756_005/) | 14, 7 m | 2.93 | 2.14 | USGS 1912 |
+| santa_cruz | 1905 | [Santa Cruz, 1905](https://www.loc.gov/item/sanborn00833_004/) | 7 of 11, 13 m | 7.0 | 2.97 | USGS 1899 or standing buildings |
+| napa | 1910 | [Napa, Oct. 1910](https://www.loc.gov/item/sanborn00707_004/) | 9, 11 m | 3.16 | 2.82 | USGS 1899 or standing buildings |
+| vallejo | 1919 | [Vallejo, Mar. 1919](https://www.loc.gov/item/sanborn00905_004/) | 12, 3 m | 4.44 | 3.13 | USGS 1914 or standing buildings |
+| watsonville | 1908 | [Watsonville, Jul. 1908](https://www.loc.gov/item/sanborn00921_005/) | 11, 18 m | 2.36 | 1.83 | USGS 1915 |
+| gilroy | 1906 | [Gilroy, Oct. 1906](https://www.loc.gov/item/sanborn00566_003/) | 14, 3 m | 1.39 | 0.92 | USGS 1915 |
+| benicia | 1913 | [Benicia, Aug. 1913](https://www.loc.gov/item/sanborn00417_004/) | 14, 11 m | 1.64 | 1.02 | USGS 1896 or standing buildings |
+| st_helena | 1910 | [Saint Helena, Nov. 1910](https://www.loc.gov/item/sanborn00800_004/) | 14, 19 m | 1.46 | 0.77 | USGS 1942 or standing buildings |
+| sebastopol | 1911 | [Sebastopol, Apr. 1911](https://www.loc.gov/item/sanborn00847_006/) | 8, 14 m | 0.64 | 0.54 | USGS 1935 or standing buildings |
+
+  Not done: Antioch 1912 (its key map names the streets Rattan, Knapp, Boobar, Galloway ...; today's are letters
+  and numbers and the correspondence was not verified), Healdsburg (LOC has only the 1941 volume online), Calistoga
+  1910 and Sonoma 1905 / 1911 (2-4 sheets, no usable key map), the volumes of the 1920s (Petaluma 1923, Napa 1924,
+  Watsonville 1920, Antioch 1926, Gilroy 1926, Santa Cruz 1928: not looked at), and the towns without a volume
+  checked (Vacaville, Dixon, Fairfield - Suisun, Rio Vista, Pittsburg, Brentwood, Morgan Hill, Cloverdale, Capitola,
+  Boulder Creek).
+* **Gaps that remain.** Two snapshots only: Antioch and Pittsburg (1907, 1949: no 15' edition between), Rio Vista
+  (1908, 1949), Sonoma (1939, 1948), Brentwood (1940, 1949), Morgan Hill (1915, 1953); one: Boulder Creek - Felton
+  (1953). Where the first snapshot is late the consumer's 25-year rule starts the town too late (Sonoma, Brentwood,
+  Boulder Creek). Between a 1905-14 snapshot and the 1949-53 sheets (Petaluma, Santa Cruz, Antioch, Pittsburg,
+  Vallejo west of 122°15') a block is only known to have been built "between the two"; the wartime camps and
+  housing of Pittsburg (Camp Stoneman 1942) and Vallejo are inside the 1948-49 extents and need researched dates.
+
 ## Validation
 
 * **Buildings standing today that predate the map** (`data/interim/region_building_points.parquet`,
@@ -166,6 +244,77 @@ land (TIGER area water removed). Vallejo is outside the map.
 | martinez | 1896 | karquines1898 | 0.19 | 0.54 | 10.31 | low | 15.7% (76.5%) (51) |  |  |
 | martinez | 1940 | carquinezstrait1940 | 1.33 | 0.71 | 10.31 | medium | 75.8% (87.4%) (1677) | 69.5% |  |
 | martinez | 1948 | benicia1950, briones1947, portchicago1951 | 2.62 | 0.96 | 12.32 | high | 89.1% (95.7%) (2245) | 93.4% |  |
+| santa_rosa | 1904 | Sanborn key map (LOC), santa_rosa_1904 | 1.92 | 1.89 | 7.4 | medium | 54.1% (82.8%) (518) |  |  |
+| santa_rosa | 1914 | santarosa1916 | 0.44 | 2.58 | 49.4 | low | 2.9% (40.7%) (1316) | 15.1% |  |
+| santa_rosa | 1942 | santarosa1944 | 3.36 | 3.68 | 49.4 | medium | 52.1% (74.8%) (5252) | 65.1% |  |
+| santa_rosa | 1952 | santarosa1954 | 11.73 | 3.81 | 49.4 | high | 81.7% (88.9%) (9688) | 92.5% |  |
+| petaluma | 1910 | Sanborn key map (LOC), petaluma_1910 | 2.14 | 0.69 | 6.03 | medium | 78.3% (90.0%) (1551) |  |  |
+| petaluma | 1912 | petaluma1914 | 1.0 | 0.73 | 21.68 | low | 30.4% (37.1%) (1686) | 38.4% |  |
+| petaluma | 1952 | petaluma1953, petalumacreek1954 | 4.6 | 1.07 | 21.68 | high | 87.3% (94.0%) (4813) | 85.1% |  |
+| napa | 1899 | napa1902 | 1.96 | 1.57 | 32.58 | low | 67.7% (79.0%) (718) |  |  |
+| napa | 1910 | Sanborn key map (LOC), napa_1910 | 2.82 | 0.27 | 6.92 | medium | 91.8% (92.4%) (1338) | 96.0% |  |
+| napa | 1939 | sonoma1942 | 3.18 | 1.78 | 32.58 | medium | 70.0% (81.0%) (3632) | 76.6% |  |
+| napa | 1948 | napa1951 | 6.01 | 3.32 | 32.58 | high | 83.4% (91.1%) (6020) | 91.9% |  |
+| vallejo | 1899 | napa1902 | 0.77 | 1.95 | 64.93 | low | 29.2% (69.7%) (449) |  |  |
+| vallejo | 1914 | mareisland1916 | 1.78 | 0.85 | 28.56 | medium | 86.9% (97.1%) (852) | 88.4% |  |
+| vallejo | 1919 | Sanborn key map (LOC), vallejo_1919 | 3.13 | 1.18 | 16.6 | medium | 93.2% (94.6%) (1892) | 88.0% |  |
+| vallejo | 1940 | carquinezstrait1940 | 4.01 | 1.97 | 36.37 | medium | 88.9% (93.7%) (3174) | 97.5% |  |
+| vallejo | 1948 | mareisland1949, benicia1950 | 14.93 | 0.54 | 49.16 | high | 90.0% (91.5%) (9252) | 98.1% |  |
+| santa_cruz | 1899 | santacruz1902 | 0.34 | 1.34 | 34.95 | low | 13.9% (43.3%) (647) |  |  |
+| santa_cruz | 1905 | Sanborn key map (LOC), santa_cruz_1905 | 2.97 | 3.76 | 15.58 | low | 78.0% (89.7%) (891) | 98.9% |  |
+| santa_cruz | 1952 | santacruz1954, soquel1954 | 12.14 | 1.29 | 35.6 | high | 94.7% (96.6%) (8793) | 97.8% |  |
+| watsonville | 1908 | Sanborn key map (LOC), watsonville_1908 | 1.83 | 0.37 | 4.29 | low | 88.1% (92.0%) (553) |  |  |
+| watsonville | 1915 | capitola1914, sanjuanbautista1917 | 1.43 | 1.12 | 16.89 | medium | 67.1% (79.8%) (1006) | 72.8% |  |
+| watsonville | 1939 | capitola1940, sanjuanbautista1940 | 2.44 | 1.1 | 16.89 | medium | 75.6% (85.9%) (3459) | 91.6% |  |
+| watsonville | 1952 | watsonvillewest1954, watsonvilleeast1955 | 4.23 | 1.08 | 16.89 | high | 89.5% (95.2%) (5155) | 91.9% |  |
+| benicia | 1896 | karquines1898 | 0.24 | 0.78 | 25.05 | low | 19.8% (69.8%) (106) |  |  |
+| benicia | 1913 | Sanborn key map (LOC), benicia_1913 | 1.02 | 0.5 | 5.19 | medium | 90.5% (91.3%) (242) | 99.9% |  |
+| benicia | 1940 | carquinezstrait1940 | 1.27 | 0.73 | 25.05 | medium | 77.8% (85.7%) (477) | 82.3% |  |
+| benicia | 1948 | benicia1950 | 3.64 | 0.3 | 23.53 | high | 87.6% (88.8%) (1276) | 82.6% |  |
+| sonoma | 1939 | sonoma1942 | 0.76 | 0.89 | 7.09 | medium | 51.0% (72.2%) (641) |  |  |
+| sonoma | 1948 | sonoma1951 | 0.68 | 1.38 | 7.09 | medium | 44.1% (78.7%) (848) | 49.4% |  |
+| healdsburg | 1915 | healdsburg1920 | 0.5 | 0.82 | 9.28 | low | 24.3% (48.2%) (552) |  |  |
+| healdsburg | 1933 | healdsburg1940 | 0.91 | 0.76 | 9.28 | medium | 71.0% (81.2%) (942) | 53.3% |  |
+| healdsburg | 1953 | healdsburg1955, guerneville1955 | 1.82 | 0.32 | 6.76 | high | 83.3% (87.8%) (1680) | 98.1% |  |
+| sebastopol | 1911 | Sanborn key map (LOC), sebastopol_1911 | 0.54 | 0.04 | 2.03 | low | 73.9% (75.2%) (303) |  |  |
+| sebastopol | 1935 | sebastopol1942 | 0.33 | 0.42 | 4.86 | low | 40.7% (73.3%) (742) | 56.6% |  |
+| sebastopol | 1952 | sebastopol1954 | 1.19 | 0.7 | 4.86 | high | 70.1% (90.2%) (1283) | 92.7% |  |
+| st_helena | 1910 | Sanborn key map (LOC), st_helena_1910 | 0.77 | 0.59 | 6.05 | low | 70.4% (73.2%) (328) |  |  |
+| st_helena | 1942 | sonoma1942, sthelena1945 | 0.27 | 0.51 | 12.59 | low | 14.6% (36.4%) (1161) | 23.4% |  |
+| st_helena | 1957 | rutherford1951, sthelena1960 | 0.99 | 0.61 | 12.59 | medium | 55.5% (60.7%) (1545) | 59.9% |  |
+| calistoga | 1915 | calistoga1927 | 0.26 | 0.38 | 6.72 | low | 44.3% (53.0%) (149) |  |  |
+| calistoga | 1943 | calistoga1945 | 0.26 | 0.26 | 6.72 | low | 44.9% (65.8%) (530) | 57.3% |  |
+| calistoga | 1957 | calistoga1958 | 0.67 | 0.34 | 6.72 | high | 65.0% (77.2%) (882) | 100.0% |  |
+| fairfield | 1896 | karquines1898 | 0.23 | 0.61 | 10.92 | low | 57.1% (96.4%) (28) |  |  |
+| fairfield | 1940 | carquinezstrait1940h, mtvaca1942 | 1.1 | 1.72 | 29.3 | medium | 79.8% (86.2%) (356) | 58.3% |  |
+| fairfield | 1948 | fairfieldsouth1949, fairfieldnorth1951 | 1.62 | 1.23 | 29.3 | high | 89.5% (95.3%) (571) | 69.4% |  |
+| vacaville | 1906 | vacaville1908 | 0.49 | 0.55 | 21.11 | medium | 86.3% (92.2%) (51) |  |  |
+| vacaville | 1939 | vacaville1941, mtvaca1942 | 0.48 | 0.51 | 27.02 | medium | 73.8% (83.1%) (195) | 72.4% |  |
+| vacaville | 1949 | elmira1953, fairfieldnorth1951 | 2.0 | 1.18 | 24.47 | medium | 87.1% (91.4%) (325) | 87.4% |  |
+| dixon | 1906 | vacaville1908 | 0.58 | 0.47 | 11.25 | medium | 84.9% (93.0%) (86) |  |  |
+| dixon | 1939 | vacaville1941 | 0.45 | 0.37 | 11.25 | medium | 59.3% (77.0%) (322) | 52.3% |  |
+| dixon | 1949 | dixon1952 | 1.19 | 0.13 | 11.25 | high | 87.4% (87.6%) (445) | 100.0% |  |
+| rio_vista | 1908 | riovista1910 | 0.11 | 0.23 | 10.01 | low | 48.8% (90.2%) (82) |  |  |
+| rio_vista | 1949 | riovista1953 | 0.87 | 0.15 | 10.01 | high | 91.4% (94.9%) (491) | 100.0% |  |
+| gilroy | 1906 | Sanborn key map (LOC), gilroy_1906 | 0.92 | 0.4 | 4.57 | medium | 90.4% (94.3%) (335) |  |  |
+| gilroy | 1915 | morganhill1917, sanjuanbautista1917 | 0.47 | 1.08 | 25.47 | low | 37.1% (79.8%) (515) | 40.5% |  |
+| gilroy | 1939 | morganhill1941, sanjuanbautista1940 | 0.61 | 0.48 | 25.47 | low | 42.6% (50.5%) (1251) | 35.5% |  |
+| gilroy | 1953 | gilroy1955, chittenden1955 | 2.14 | 0.63 | 25.47 | high | 80.7% (86.1%) (2025) | 69.1% |  |
+| morgan_hill | 1915 | morganhill1917 | 0.08 | 0.88 | 19.1 | low | 13.9% (44.4%) (144) |  |  |
+| morgan_hill | 1953 | morganhill1955, mtmadonna1955 | 0.45 | 1.14 | 18.48 | medium | 30.0% (59.1%) (783) | 47.9% |  |
+| antioch | 1907 | antioch1908 | 0.33 | 0.56 | 14.5 | low | 8.3% (51.0%) (157) |  |  |
+| antioch | 1949 | antiochnorth1953 | 2.99 | 0.46 | 14.5 | high | 89.0% (91.8%) (2537) | 87.5% |  |
+| pittsburg | 1907 | antioch1908 | 0.3 | 0.46 | 29.47 | low | 16.7% (66.7%) (6) |  |  |
+| pittsburg | 1949 | honkerbay1953, antiochnorth1953 | 5.31 | 0.86 | 29.47 | high | 93.1% (93.8%) (1589) | 100.0% |  |
+| brentwood | 1940 | byron1940 | 0.17 | 0.82 | 12.2 | low | 34.6% (69.7%) (188) |  |  |
+| brentwood | 1949 | brentwood1954 | 0.26 | 0.57 | 12.2 | medium | 50.8% (82.5%) (315) | 69.1% |  |
+| cloverdale | 1922 | hopland1938 | 0.31 | 0.15 | 6.11 | low | 48.8% (64.7%) (252) |  |  |
+| cloverdale | 1942 | hopland1944 | 0.28 | 0.32 | 6.11 | low | 39.1% (72.0%) (368) | 36.0% |  |
+| cloverdale | 1957 | cloverdale1960 | 1.19 | 0.15 | 6.11 | high | 80.9% (82.8%) (1143) | 100.0% |  |
+| capitola | 1912 | capitola1914 | 0.26 | 1.07 | 10.85 | low | 34.3% (71.6%) (67) |  |  |
+| capitola | 1938 | capitola1940 | 0.31 | 0.92 | 10.85 | low | 18.7% (51.5%) (503) | 18.1% |  |
+| capitola | 1952 | soquel1954 | 1.34 | 0.63 | 10.85 | high | 66.2% (79.8%) (1322) | 51.0% |  |
+| boulder_creek | 1953 | felton1955, castlerockridge1955, bigbasin1955 | 1.92 | 3.8 | 47.07 | medium | 31.6% (75.6%) (2704) |  |  |
 <!-- /snapshots -->
 
 ### Probes and threshold sensitivity
@@ -202,6 +351,26 @@ land (TIGER area water removed). Vallejo is outside the map.
 | san_mateo | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 0.8 / 0.4 / 0.2 |
 | san_rafael | 1895 | block km² at share 0.25 / 0.35 / 0.45 | 2.0 / 1.4 / 1.0 |
 | martinez | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 0.3 / 0.2 / 0.1 |
+| santa_rosa | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 1.5 / 0.9 / 0.4 |
+| petaluma | 1912 | block km² at share 0.25 / 0.35 / 0.45 | 1.6 / 1.0 / 0.5 |
+| napa | 1899 | block km² at share 0.25 / 0.35 / 0.45 | 2.3 / 1.8 / 1.5 |
+| vallejo | 1899 | block km² at share 0.25 / 0.35 / 0.45 | 1.2 / 0.8 / 0.4 |
+| vallejo | 1914 | block km² at share 0.25 / 0.35 / 0.45 | 1.9 / 1.6 / 1.3 |
+| santa_cruz | 1899 | block km² at share 0.25 / 0.35 / 0.45 | 0.7 / 0.3 / 0.1 |
+| watsonville | 1915 | block km² at share 0.25 / 0.35 / 0.45 | 1.6 / 1.2 / 1.1 |
+| benicia | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 0.3 / 0.2 / 0.1 |
+| healdsburg | 1915 | block km² at share 0.25 / 0.35 / 0.45 | 0.6 / 0.4 / 0.3 |
+| calistoga | 1915 | block km² at share 0.25 / 0.35 / 0.45 | 0.2 / 0.2 / 0.1 |
+| fairfield | 1896 | block km² at share 0.25 / 0.35 / 0.45 | 0.4 / 0.2 / 0.1 |
+| vacaville | 1906 | block km² at share 0.25 / 0.35 / 0.45 | 0.5 / 0.4 / 0.3 |
+| dixon | 1906 | block km² at share 0.25 / 0.35 / 0.45 | 0.6 / 0.4 / 0.3 |
+| rio_vista | 1908 | block km² at share 0.25 / 0.35 / 0.45 | 0.2 / 0.1 / 0.1 |
+| gilroy | 1915 | block km² at share 0.25 / 0.35 / 0.45 | 0.8 / 0.4 / 0.3 |
+| morgan_hill | 1915 | block km² at share 0.25 / 0.35 / 0.45 | 0.4 / 0.1 / 0.0 |
+| antioch | 1907 | block km² at share 0.25 / 0.35 / 0.45 | 0.5 / 0.4 / 0.2 |
+| pittsburg | 1907 | block km² at share 0.25 / 0.35 / 0.45 | 0.3 / 0.2 / 0.1 |
+| cloverdale | 1922 | block km² at share 0.25 / 0.35 / 0.45 | 0.2 / 0.2 / 0.1 |
+| capitola | 1912 | block km² at share 0.25 / 0.35 / 0.45 | 0.3 / 0.1 / 0.1 |
 <!-- /probes -->
 
 ## Maps used
@@ -218,17 +387,45 @@ land (TIGER area water removed). Vallejo is outside the map.
 | `tamalpais1897` | Tamalpais | 1:62,500 | 1897 | 1895 (surveyed 1895) | bands + squares | 204 m (affine, 23/27 windows, RMS 21 m) | [298980](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Tamalpais_298980_1897_62500_geo.pdf) |
 | `haywards1899` | Haywards | 1:62,500 | 1899 | 1896 (surveyed 1896 (1901 imprint)) | bands + squares | 215 m (affine, 35/57 windows, RMS 20 m) | [297665](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Haywards_297665_1899_62500_geo.pdf) |
 | `karquines1898` | Karquines | 1:62,500 | 1898 | 1896 (surveyed 1896) | bands + squares | 194 m (affine, 7/15 windows, RMS 23 m) | [297860](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Karquines_297860_1898_62500_geo.pdf) |
+| `napa1902` | Napa | 1:125,000 | 1902 | 1899 (1:125,000 30' sheet, surveyed 1896-99 (FGDC: survey year 1899)) | bands + squares | 206 m (affine, 32/141 windows, RMS 24 m) | [299520](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/125000/CA_Napa_299520_1902_125000_geo.pdf) |
+| `santacruz1902` | Santa Cruz | 1:125,000 | 1902 | 1899 (1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)) | bands + squares | 240 m (affine, 8/40 windows, RMS 15 m) | [299623](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/125000/CA_Santa%20Cruz_299623_1902_125000_geo.pdf) |
+| `vacaville1908` | Vacaville | 1:62,500 | 1908 | 1906 (surveyed 1906 (1922 imprint)) | bands + squares | 48 m (affine, 91/111 windows, RMS 14 m) | [299006](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Vacaville_299006_1908_62500_geo.pdf) |
+| `antioch1908` | Antioch | 1:62,500 | 1908 | 1907 (surveyed 1907 (1914 imprint)) | bands + squares | 48 m (affine, 5/8 windows, RMS 12 m) | [296718](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Antioch_296718_1908_62500_geo.pdf) |
+| `riovista1910` | Rio Vista | 1:31,680 | 1910 | 1908 (1:31,680 sheet, surveyed 1908) | bands + squares | 45 m (affine, 10/13 windows, RMS 10 m) | [296463](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/31680/CA_Rio%20Vista_296463_1910_31680_geo.pdf) |
+| `capitola1914` | Capitola | 1:62,500 | 1914 | 1912 (surveyed 1912 (1922 imprint)) | bands + squares | 36 m (affine, 22/26 windows, RMS 17 m) | [297018](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Capitola_297018_1914_62500_geo.pdf) |
+| `petaluma1914` | Petaluma | 1:62,500 | 1914 | 1912 (surveyed 1912 (1924 imprint)) | bands + squares | 57 m (affine, 24/31 windows, RMS 19 m) | [298524](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Petaluma_298524_1914_62500_geo.pdf) |
 | `concord1915` | Concord | 1:62,500 | 1915 | 1914 (edition of June 1915: surveyed 1893-94, culture revised in part in 1913-14 (collar note)) | bands + squares | 211 m (affine, 31/62 windows, RMS 16 m) | [297163](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Concord_297163_1915_62500_geo.pdf) |
 | `hayward1915` | Hayward | 1:62,500 | 1915 | 1914 (surveyed 1914 (1939 imprint)) | bands + squares | 217 m (affine, 41/68 windows, RMS 18 m) | [297660](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hayward_297660_1915_62500_geo.pdf) |
+| `mareisland1916` | Mare Island | 1:62,500 | 1916 | 1914 (surveyed 1914 (1927 imprint)) | bands + squares | 56 m (affine, 13/17 windows, RMS 8 m) | [298114](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Mare%20Island_298114_1916_62500_geo.pdf) |
 | `sanmateo1915` | San Mateo | 1:62,500 | 1915 | 1914 (1915 edition: surveyed 1892, culture revised in part in 1914 (collar note)) | bands + squares | 209 m (affine, 30/37 windows, RMS 8 m) | [298922](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Mateo_298922_1915_62500_geo.pdf) |
+| `santarosa1916` | Santa Rosa | 1:62,500 | 1916 | 1914 (surveyed 1914 (1927 imprint)) | bands + squares | 35 m (affine, 17/25 windows, RMS 12 m) | [298960](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Santa%20Rosa_298960_1916_62500_geo.pdf) |
 | `sf1915` | San Francisco | 1:62,500 | 1915 | 1914 (1915 edition: surveyed 1892-94, culture revised in 1914 (collar note)) | bands + squares | 223 m (affine, 105/128 windows, RMS 20 m) | [298897](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Francisco_298897_1915_62500_geo.pdf) |
+| `calistoga1927` | Calistoga | 1:62,500 | 1927 | 1915 (edition of 1927, surveyed 1915) | bands + squares | 10 m (constant, 4/8 windows, RMS 24 m) | [465409](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Calistoga_465409_1927_62500_geo.pdf) |
+| `healdsburg1920` | Healdsburg | 1:62,500 | 1920 | 1915 (edition of 1920, field check 1915) | bands + squares | 60 m (affine, 21/47 windows, RMS 23 m) | [465734](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Healdsburg_465734_1920_62500_geo.pdf) |
+| `morganhill1917` | Morgan Hill | 1:62,500 | 1917 | 1915 (surveyed 1915 (1931 imprint)) | bands + squares | 35 m (affine, 90/99 windows, RMS 17 m) | [298244](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Morgan%20Hill_298244_1917_62500_geo.pdf) |
+| `sanjuanbautista1917` | San Juan Bautista | 1:62,500 | 1917 | 1915 (surveyed 1915 (1925 imprint)) | bands + squares | 52 m (affine, 75/86 windows, RMS 20 m) | [466314](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Juan%20Bautista_466314_1917_62500_geo.pdf) |
+| `hopland1938` | Hopland | 1:62,500 | 1938 | 1922 (edition of 1938: surveyed 1916, field check 1922) | bands + squares | as published | [465760](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hopland_465760_1938_62500_geo.pdf) |
+| `healdsburg1940` | Healdsburg | 1:62,500 | 1940 | 1933 (edition of 1940, surveyed 1933) | grey tint | as published (fit 6 m, RMS 7 m) | [297672](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Healdsburg_297672_1940_62500_geo.pdf) |
+| `sebastopol1942` | Sebastopol | 1:62,500 | 1942 | 1935 (edition of 1942, surveyed 1935) | grey tint | as published (fit 6 m, RMS 7 m) | [301668](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Sebastopol_301668_1942_62500_geo.pdf) |
+| `capitola1940` | Capitola | 1:62,500 | 1940 | 1938 (aerial photographs 1938) | grey tint | 36 m (affine, 32/82 windows, RMS 6 m) | [465438](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Capitola_465438_1940_62500_geo.pdf) |
 | `concord1942` | Concord | 1:62,500 | 1942 | 1939 (aerial photographs 1939) | grey tint | 7 m (affine, 54/187 windows, RMS 7 m) | [465521](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Concord_465521_1942_62500_geo.pdf) |
 | `hayward1942` | Hayward | 1:62,500 | 1942 | 1939 (aerial photographs 1939) | grey tint | 17 m (affine, 56/135 windows, RMS 7 m) | [465728](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hayward_465728_1942_62500_geo.pdf) |
+| `morganhill1941` | Morgan Hill | 1:62,500 | 1941 | 1939 (edition of 1941: surveyed 1915, revised 1939 (aerial photographs 1939 on the 1939 edition)) | grey tint | 31 m (affine, 33/93 windows, RMS 7 m) | [465964](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Morgan%20Hill_465964_1941_62500_geo.pdf) |
+| `mtvaca1942` | Mt Vaca | 1:62,500 | 1942 | 1939 (aerial photographs 1939) | grey tint | 11 m (affine, 31/58 windows, RMS 8 m) | [466013](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Mt%20Vaca_466013_1942_62500_geo.pdf) |
 | `sanjose1943` | San Jose | 1:62,500 | 1943 | 1939 (aerial photographs 1939) | grey tint | 17 m (affine, 73/210 windows, RMS 7 m) | [466308](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Jose_466308_1943_62500_geo.pdf) |
+| `sanjuanbautista1940` | San Juan Bautista | 1:62,500 | 1940 | 1939 (aerial photographs 1939) | grey tint | 48 m (affine, 32/128 windows, RMS 8 m) | [466316](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Juan%20Bautista_466316_1940_62500_geo.pdf) |
 | `sanmateo1943` | San Mateo | 1:62,500 | 1943 | 1939 (aerial photographs 1939) | grey tint | as published (fit 5 m, RMS 7 m) | [466324](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_San%20Mateo_466324_1943_62500_geo.pdf) |
+| `sonoma1942` | Sonoma | 1:62,500 | 1942 | 1939 (aerial photographs 1939, survey 1941) | grey tint | 13 m (affine, 32/98 windows, RMS 7 m) | [301738](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Sonoma_301738_1942_62500_geo.pdf) |
 | `tamalpais1941` | Tamalpais | 1:62,500 | 1941 | 1939 (aerial photographs 1939) | grey tint | 9 m (affine, 19/64 windows, RMS 8 m) | [301788](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Tamalpais_301788_1941_62500_geo.pdf) |
+| `vacaville1941` | Vacaville | 1:62,500 | 1941 | 1939 (aerial photographs 1939) | grey tint | 53 m (affine, 54/134 windows, RMS 7 m) | [466506](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Vacaville_466506_1941_62500_geo.pdf) |
+| `byron1940` | Byron | 1:62,500 | 1940 | 1940 (aerial photographs 1940 (1943 imprint)) | grey tint | 8 m (affine, 39/95 windows, RMS 7 m) | [296942](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Byron_296942_1940_62500_geo.pdf) |
 | `carquinezstrait1940` | Carquinez Strait | 1:62,500 | 1940 | 1940 (aerial photographs 1940 (1965 imprint)) | grey tint | 8 m (affine, 21/66 windows, RMS 7 m) | [297037](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Carquinez%20Strait_297037_1940_62500_geo.pdf) |
+| `carquinezstrait1940h` | Carquinez Strait | 1:62,500 | 1940 | 1940 (aerial photographs 1940 (1965 imprint); read with open_mm 0.26) | grey tint | 8 m (affine, 21/66 windows, RMS 7 m) | [297037](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Carquinez%20Strait_297037_1940_62500_geo.pdf) |
 | `paloalto1943` | Palo Alto | 1:62,500 | 1943 | 1940 (aerial photographs 1940) | grey tint | as published (fit 6 m, RMS 8 m) | [298463](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Palo%20Alto_298463_1943_62500_geo.pdf) |
+| `hopland1944` | Hopland | 1:62,500 | 1944 | 1942 (aerial photographs 1942) | grey tint | 45 m (constant, 3/6 windows, RMS 7 m) | [465759](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Hopland_465759_1944_62500_geo.pdf) |
+| `santarosa1944` | Santa Rosa | 1:62,500 | 1944 | 1942 (edition of 1944: surveyed 1914, revised 1942) | grey tint | 43 m (affine, 49/142 windows, RMS 7 m) | [301627](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Santa%20Rosa_301627_1944_62500_geo.pdf) |
+| `sthelena1945` | St Helena | 1:62,500 | 1945 | 1942 (edition of 1945, surveyed 1942) | grey tint | as published (fit 3 m, RMS 6 m) | [466421](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_St%20Helena_466421_1945_62500_geo.pdf) |
+| `calistoga1945` | Calistoga | 1:62,500 | 1945 | 1943 (edition of 1945, surveyed 1943) | grey tint | 24 m (affine, 22/29 windows, RMS 6 m) | [296981](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/62500/CA_Calistoga_296981_1945_62500_geo.pdf) |
 | `briones1947` | Briones Valley | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 4 m, RMS 5 m) | [288606](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Briones%20Valley_288606_1947_24000_geo.pdf) |
 | `hayward1947` | Hayward | 1:24,000 | 1947 | 1946 (aerial photographs 1946, survey 1947) | pink tint | 8 m (affine, 22/26 windows, RMS 4 m) | [291242](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Hayward_291242_1947_24000_geo.pdf) |
 | `newark1947` | Newark | 1:24,000 | 1947 | 1946 (aerial photographs 1946) | pink tint | as published (fit 2 m, RMS 8 m) | [293493](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Newark_293493_1947_24000_geo.pdf) |
@@ -239,15 +436,47 @@ land (TIGER area water removed). Vallejo is outside the map.
 | `sanmateo1947` | San Mateo | 1:24,000 | 1947 | 1946 (aerial photographs 1946, field check 1947) | pink tint | as published (fit 3 m, RMS 4 m) | [300157](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Mateo_300157_1947_24000_geo.pdf) |
 | `sanquentin1948` | San Quentin | 1:24,000 | 1948 | 1947 (aerial photographs 1947) | pink tint | as published (fit 1 m, RMS 4 m) | [300194](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Quentin_300194_1948_24000_geo.pdf) |
 | `benicia1950` | Benicia | 1:24,000 | 1950 | 1948 (aerial photographs 1948, field check 1950) | pink tint | as published (fit 4 m, RMS 6 m) | [288319](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Benicia_288319_1950_24000_geo.pdf) |
+| `fairfieldnorth1951` | Fairfield North | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1951) | pink tint | as published (fit 3 m, RMS 4 m) | [290424](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Fairfield%20North_290424_1951_24000_geo.pdf) |
+| `fairfieldsouth1949` | Fairfield South | 1:24,000 | 1949 | 1948 (aerial photographs 1948, survey 1949) | pink tint | as published | [290434](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Fairfield%20South_290434_1949_24000_geo.pdf) |
+| `mareisland1949` | Mare Island | 1:24,000 | 1949 | 1948 (aerial photographs 1948, survey 1949) | pink tint | as published (fit 6 m, RMS 2 m) | [292723](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Mare%20Island_292723_1949_24000_geo.pdf) |
 | `milpitas1953` | Milpitas | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | 6 m (affine, 6/13 windows, RMS 5 m) | [292969](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Milpitas_292969_1953_24000_geo.pdf) |
 | `mountainview1953` | Mountain View | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 4 m, RMS 5 m) | [293234](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Mountain%20View_293234_1953_24000_geo.pdf) |
+| `napa1951` | Napa | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1951) | pink tint | as published (fit 3 m, RMS 5 m) | [293422](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Napa_293422_1951_24000_geo.pdf) |
 | `paloalto1953` | Palo Alto | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 1 m, RMS 4 m) | [293907](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Palo%20Alto_293907_1953_24000_geo.pdf) |
 | `portchicago1951` | Port Chicago | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1950) | pink tint | 13 m (affine, 14/22 windows, RMS 8 m) | [294325](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Port%20Chicago_294325_1951_24000_geo.pdf) |
 | `redwoodpoint1948` | Redwood Point | 1:24,000 | 1948 | 1948 (1948 edition) | pink tint | as published | [294610](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Redwood%20Point_294610_1948_24000_geo.pdf) |
+| `rutherford1951` | Rutherford | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1951) | pink tint | 6 m (affine, 8/9 windows, RMS 5 m) | [294860](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Rutherford_294860_1951_24000_geo.pdf) |
 | `sanjoseeast1953` | San Jose East | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 6 m, RMS 4 m) | [300099](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Jose%20East_300099_1953_24000_geo.pdf) |
 | `sanjosewest1953` | San Jose West | 1:24,000 | 1953 | 1948 (aerial photographs 1948, survey 1953) | pink tint | as published (fit 2 m, RMS 5 m) | [300105](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Jose%20West_300105_1953_24000_geo.pdf) |
+| `sonoma1951` | Sonoma | 1:24,000 | 1951 | 1948 (aerial photographs 1948, survey 1951) | pink tint | as published (fit 4 m, RMS 4 m) | [300595](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Sonoma_300595_1951_24000_geo.pdf) |
 | `woodside1953` | Woodside | 1:24,000 | 1953 | 1948 (aerial photographs 1948, field check 1953) | pink tint | 7 m (affine, 34/34 windows, RMS 4 m) | [301429](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Woodside_301429_1953_24000_geo.pdf) |
+| `antiochnorth1953` | Antioch North | 1:24,000 | 1953 | 1949 (aerial photographs 1949, field check 1953) | pink tint | as published (fit 0 m, RMS 4 m) | [288002](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Antioch%20North_288002_1953_24000_geo.pdf) |
+| `brentwood1954` | Brentwood | 1:24,000 | 1954 | 1949 (aerial photographs 1949, field check 1954) | pink tint | as published (fit 6 m, RMS 7 m) | [288600](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Brentwood_288600_1954_24000_geo.pdf) |
+| `dixon1952` | Dixon | 1:24,000 | 1952 | 1949 (aerial photographs 1949, survey 1952) | pink tint | as published (fit 4 m, RMS 5 m) | [465565](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Dixon_465565_1952_24000_geo.pdf) |
+| `elmira1953` | Elmira | 1:24,000 | 1953 | 1949 (aerial photographs 1949, field check 1953) | pink tint | 10 m (affine, 32/38 windows, RMS 5 m) | [303008](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Elmira_303008_1953_24000_geo.pdf) |
+| `honkerbay1953` | Honker Bay | 1:24,000 | 1953 | 1949 (aerial photographs 1949, field check 1953) | pink tint | as published (fit 6 m, RMS 8 m) | [291408](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Honker%20Bay_291408_1953_24000_geo.pdf) |
+| `riovista1953` | Rio Vista | 1:24,000 | 1953 | 1949 (aerial photographs 1949, survey 1953) | pink tint | as published (fit 4 m, RMS 6 m) | [294705](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Rio%20Vista_294705_1953_24000_geo.pdf) |
+| `chittenden1955` | Chittenden | 1:24,000 | 1955 | 1952 (aerial photographs 1952, survey 1955) | pink tint | as published (fit 3 m, RMS 4 m) | [289219](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Chittenden_289219_1955_24000_geo.pdf) |
+| `petaluma1953` | Petaluma | 1:24,000 | 1953 | 1952 (aerial photographs 1952, survey 1953) | pink tint | as published (fit 3 m, RMS 3 m) | [294061](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Petaluma_294061_1953_24000_geo.pdf) |
+| `petalumacreek1954` | Petaluma Creek | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954 (the quadrangle later named Petaluma River)) | pink tint | as published (fit 4 m, RMS 4 m) | [466127](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Petaluma%20Creek_466127_1954_24000_geo.pdf) |
 | `sanrafael1954` | San Rafael | 1:24,000 | 1954 | 1952 (aerial photographs 1952, field check 1954) | pink tint | as published (fit 5 m, RMS 4 m) | [300201](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_San%20Rafael_300201_1954_24000_geo.pdf) |
+| `santacruz1954` | Santa Cruz | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954) | pink tint | as published (fit 6 m, RMS 3 m) | [300246](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Santa%20Cruz_300246_1954_24000_geo.pdf) |
+| `santarosa1954` | Santa Rosa | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954) | pink tint | as published (fit 5 m, RMS 4 m) | [300294](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Santa%20Rosa_300294_1954_24000_geo.pdf) |
+| `sebastopol1954` | Sebastopol | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954) | pink tint | as published (fit 3 m, RMS 4 m) | [300394](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Sebastopol_300394_1954_24000_geo.pdf) |
+| `soquel1954` | Soquel | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954) | pink tint | 22 m (constant, 3/9 windows, RMS 5 m) | [300606](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Soquel_300606_1954_24000_geo.pdf) |
+| `watsonvilleeast1955` | Watsonville East | 1:24,000 | 1955 | 1952 (aerial photographs 1952, survey 1955) | pink tint | as published (fit 3 m, RMS 5 m) | [301243](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Watsonville%20East_301243_1955_24000_geo.pdf) |
+| `watsonvillewest1954` | Watsonville West | 1:24,000 | 1954 | 1952 (aerial photographs 1952, survey 1954) | pink tint | as published (fit 5 m, RMS 4 m) | [301247](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Watsonville%20West_301247_1954_24000_geo.pdf) |
+| `bigbasin1955` | Big Basin | 1:24,000 | 1955 | 1953 (aerial photographs 1953, field check 1955) | pink tint | as published (fit 2 m, RMS 6 m) | [288374](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Big%20Basin_288374_1955_24000_geo.pdf) |
+| `castlerockridge1955` | Castle Rock Ridge | 1:24,000 | 1955 | 1953 (aerial photographs 1953, field check 1955) | pink tint | as published (fit 5 m, RMS 6 m) | [289043](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Castle%20Rock%20Ridge_289043_1955_24000_geo.pdf) |
+| `felton1955` | Felton | 1:24,000 | 1955 | 1953 (aerial photographs 1953, field check 1955) | pink tint | as published (fit 6 m, RMS 6 m) | [465668](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Felton_465668_1955_24000_geo.pdf) |
+| `gilroy1955` | Gilroy | 1:24,000 | 1955 | 1953 (aerial photographs 1953, survey 1955) | pink tint | as published (fit 5 m, RMS 5 m) | [290814](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Gilroy_290814_1955_24000_geo.pdf) |
+| `guerneville1955` | Guerneville | 1:24,000 | 1955 | 1953 (aerial photographs 1953, field check 1955) | pink tint | as published (fit 3 m, RMS 4 m) | [291072](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Guerneville_291072_1955_24000_geo.pdf) |
+| `healdsburg1955` | Healdsburg | 1:24,000 | 1955 | 1953 (aerial photographs 1953, field check 1955) | pink tint | 7 m (affine, 43/43 windows, RMS 5 m) | [291252](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Healdsburg_291252_1955_24000_geo.pdf) |
+| `morganhill1955` | Morgan Hill | 1:24,000 | 1955 | 1953 (aerial photographs 1953, survey 1955) | pink tint | 34 m (affine, 9/23 windows, RMS 4 m) | [293124](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Morgan%20Hill_293124_1955_24000_geo.pdf) |
+| `mtmadonna1955` | Mt Madonna | 1:24,000 | 1955 | 1953 (aerial photographs 1953, survey 1955) | pink tint | as published (fit 0 m, RMS 4 m) | [293330](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Mt%20Madonna_293330_1955_24000_geo.pdf) |
+| `calistoga1958` | Calistoga | 1:24,000 | 1958 | 1957 (aerial photographs 1957, field check 1958) | pink tint | 7 m (affine, 6/6 windows, RMS 3 m) | [288811](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Calistoga_288811_1958_24000_geo.pdf) |
+| `cloverdale1960` | Cloverdale | 1:24,000 | 1960 | 1957 (aerial photographs 1957, field check 1960) | pink tint | as published | [289371](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_Cloverdale_289371_1960_24000_geo.pdf) |
+| `sthelena1960` | St Helena | 1:24,000 | 1960 | 1957 (aerial photographs 1957, field check 1960) | pink tint | 6 m (affine, 16/16 windows, RMS 6 m) | [295293](https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/24000/CA_St%20Helena_295293_1960_24000_geo.pdf) |
 <!-- /maps -->
 
 ## Per-town notes
@@ -290,6 +519,31 @@ land (TIGER area water removed). Vallejo is outside the map.
 * **Martinez.** 1896 = Karquines 1898; 1940 = Carquinez Strait 1940 (1940 photographs, 1965 imprint;
   houses drawn). The Carquinez 1942 edition (1937 photographs) draws the town as streets only and was
   not used. 1948 = Benicia 1950, Briones Valley 1947, Port Chicago 1951.
+* **Ten-county towns** (snapshot: sheets; details in each file's `note`):
+  * **Santa Rosa** (`santa_rosa`): 1904 = Sanborn key map; 1914 = santarosa1916; 1942 = santarosa1944; 1952 = santarosa1954.
+  * **Petaluma** (`petaluma`): 1910 = Sanborn key map; 1912 = petaluma1914; 1952 = petaluma1953, petalumacreek1954.
+  * **Napa** (`napa`): 1899 = napa1902; 1910 = Sanborn key map; 1939 = sonoma1942; 1948 = napa1951.
+  * **Vallejo** (`vallejo`): 1899 = napa1902; 1914 = mareisland1916; 1919 = Sanborn key map; 1940 = carquinezstrait1940; 1948 = mareisland1949, benicia1950.
+  * **Santa Cruz** (`santa_cruz`): 1899 = santacruz1902; 1905 = Sanborn key map; 1952 = santacruz1954, soquel1954.
+  * **Watsonville** (`watsonville`): 1908 = Sanborn key map; 1915 = capitola1914, sanjuanbautista1917; 1939 = capitola1940, sanjuanbautista1940; 1952 = watsonvillewest1954, watsonvilleeast1955.
+  * **Benicia** (`benicia`): 1896 = karquines1898; 1913 = Sanborn key map; 1940 = carquinezstrait1940; 1948 = benicia1950.
+  * **Sonoma** (`sonoma`): 1939 = sonoma1942; 1948 = sonoma1951.
+  * **Healdsburg** (`healdsburg`): 1915 = healdsburg1920; 1933 = healdsburg1940; 1953 = healdsburg1955, guerneville1955.
+  * **Sebastopol** (`sebastopol`): 1911 = Sanborn key map; 1935 = sebastopol1942; 1952 = sebastopol1954.
+  * **St. Helena** (`st_helena`): 1910 = Sanborn key map; 1942 = sonoma1942, sthelena1945; 1957 = rutherford1951, sthelena1960.
+  * **Calistoga** (`calistoga`): 1915 = calistoga1927; 1943 = calistoga1945; 1957 = calistoga1958.
+  * **Fairfield - Suisun City** (`fairfield`): 1896 = karquines1898; 1940 = carquinezstrait1940h, mtvaca1942; 1948 = fairfieldsouth1949, fairfieldnorth1951.
+  * **Vacaville** (`vacaville`): 1906 = vacaville1908; 1939 = vacaville1941, mtvaca1942; 1949 = elmira1953, fairfieldnorth1951.
+  * **Dixon** (`dixon`): 1906 = vacaville1908; 1939 = vacaville1941; 1949 = dixon1952.
+  * **Rio Vista** (`rio_vista`): 1908 = riovista1910; 1949 = riovista1953.
+  * **Gilroy** (`gilroy`): 1906 = Sanborn key map; 1915 = morganhill1917, sanjuanbautista1917; 1939 = morganhill1941, sanjuanbautista1940; 1953 = gilroy1955, chittenden1955.
+  * **Morgan Hill** (`morgan_hill`): 1915 = morganhill1917; 1953 = morganhill1955, mtmadonna1955.
+  * **Antioch** (`antioch`): 1907 = antioch1908; 1949 = antiochnorth1953.
+  * **Pittsburg** (`pittsburg`): 1907 = antioch1908; 1949 = honkerbay1953, antiochnorth1953.
+  * **Brentwood** (`brentwood`): 1940 = byron1940; 1949 = brentwood1954.
+  * **Cloverdale** (`cloverdale`): 1922 = hopland1938; 1942 = hopland1944; 1957 = cloverdale1960.
+  * **Capitola - Soquel** (`capitola`): 1912 = capitola1914; 1938 = capitola1940; 1952 = soquel1954.
+  * **Boulder Creek - Felton (San Lorenzo Valley: also Ben Lomond, Brookdale)** (`boulder_creek`): 1953 = felton1955, castlerockridge1955, bigbasin1955.
 
 ## Limits
 

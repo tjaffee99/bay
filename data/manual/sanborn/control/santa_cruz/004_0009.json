@@ -1,0 +1,569 @@
+{
+ "zones_only": true,
+ "residential_blocks": [
+  "196",
+  "197"
+ ],
+ "scale_prior": [
+  0.2045,
+  0.0015
+ ],
+ "block_cap": {
+  "6": "medium",
+  "4": "medium"
+ },
+ "notes": "two pieces: upper Pacific Av (blocks 6 and 4, the flatiron: drawn apart, Pacific Av is not to scale between them, so each has its own 2-corner fit on Locust / Cooper St + the plate scale) and Maple - Laurel St (196, 197)",
+ "blocks": [
+  {
+   "name": "6",
+   "streets": {
+    "N": "Mission Street",
+    "S": "Locust Street",
+    "W": "Vine Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     243,
+     760
+    ],
+    [
+     715,
+     800
+    ],
+    [
+     715,
+     1597
+    ],
+    [
+     243,
+     1597
+    ]
+   ],
+   "corners": [
+    {
+     "x": 715.0,
+     "y": 1597.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 243.0,
+     "y": 1597.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Vine Street",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "no_refine": 1,
+   "px4": [
+    [
+     243.0,
+     760.0
+    ],
+    [
+     715.0,
+     800.0
+    ],
+    [
+     715.0,
+     1597.0
+    ],
+    [
+     243.0,
+     1597.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 715.0,
+     "y": 1597.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 243.0,
+     "y": 1597.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Vine Street",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    243.0,
+    760.0,
+    715.0,
+    1597.0
+   ]
+  },
+  {
+   "name": "4",
+   "streets": {
+    "N": "Water Street",
+    "S": "Cooper Street",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     1115,
+     1050
+    ],
+    [
+     1150,
+     1040
+    ],
+    [
+     1445,
+     1780
+    ],
+    [
+     1115,
+     1780
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1445.0,
+     "y": 1780.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1115.0,
+     "y": 1780.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "no_refine": 1,
+   "px4": [
+    [
+     1115.0,
+     1050.0
+    ],
+    [
+     1150.0,
+     1040.0
+    ],
+    [
+     1445.0,
+     1780.0
+    ],
+    [
+     1115.0,
+     1780.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1445.0,
+     "y": 1780.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1115.0,
+     "y": 1780.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1115.0,
+    1040.0,
+    1445.0,
+    1780.0
+   ]
+  },
+  {
+   "name": "196",
+   "streets": {
+    "N": "Maple Street",
+    "S": "Laurel Street",
+    "W": "Center Street",
+    "E": "Cedar Street"
+   },
+   "px4_est": [
+    [
+     265,
+     90
+    ],
+    [
+     617,
+     97
+    ],
+    [
+     617,
+     548
+    ],
+    [
+     265,
+     520
+    ]
+   ],
+   "corners": [
+    {
+     "x": 263.2,
+     "y": 88.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 616.0,
+     "y": 97.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 616.0,
+     "y": 553.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cedar Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 265.9,
+     "y": 529.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "with": [
+    "197"
+   ],
+   "px4": [
+    [
+     263.2,
+     88.1
+    ],
+    [
+     616.0,
+     97.8
+    ],
+    [
+     616.0,
+     553.7
+    ],
+    [
+     265.9,
+     529.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 263.2,
+     "y": 88.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 616.0,
+     "y": 97.8,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 616.0,
+     "y": 553.7,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cedar Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 265.9,
+     "y": 529.8,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    263.1727881261576,
+    88.13357981415595,
+    616.0,
+    553.7211077401724
+   ]
+  },
+  {
+   "name": "197",
+   "streets": {
+    "N": "Maple Street",
+    "S": "Laurel Street",
+    "W": "Cedar Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     707,
+     100
+    ],
+    [
+     1232,
+     100
+    ],
+    [
+     1232,
+     590
+    ],
+    [
+     707,
+     557
+    ]
+   ],
+   "corners": [
+    {
+     "x": 707.0,
+     "y": 98.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1229.7,
+     "y": 97.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1232.3,
+     "y": 592.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 707.0,
+     "y": 558.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Cedar Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "with": [
+    "196"
+   ],
+   "px4": [
+    [
+     707.0,
+     98.9
+    ],
+    [
+     1229.7,
+     97.6
+    ],
+    [
+     1232.3,
+     592.9
+    ],
+    [
+     707.0,
+     558.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.94,
+    1.0,
+    0.89
+   ],
+   "corners_all": [
+    {
+     "x": 707.0,
+     "y": 98.9,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cedar Street",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1229.7,
+     "y": 97.6,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Maple Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1232.3,
+     "y": 592.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 707.0,
+     "y": 558.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Cedar Street",
+      "Laurel Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    707.0,
+    97.59794157868384,
+    1232.331556204276,
+    592.935765236213
+   ]
+  }
+ ],
+ "pct": 25
+}

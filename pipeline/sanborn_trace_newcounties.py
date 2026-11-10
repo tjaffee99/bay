@@ -358,12 +358,13 @@ def assemble():
     for (area, year), keys in sorted(E.AREAS.items()):
         f = E.OUT / f"{area}_{year}.geojson"
         fc = json.load(open(f))
-        caps, clip = {}, {}
+        caps, clip, dropc = {}, {}, {}
         for key in keys:
             cfg = json.load(open(E.CONTROL / f"{key}.json"))
             while "registered_to" in cfg:
                 cfg = json.load(open(E.CONTROL / f"{cfg['registered_to']}.json"))
             caps[key] = cfg.get("block_cap", {})
+            dropc[key] = set(cfg.get("drop_classes", ()))  # e.g. the blue water tint on a waterfront sheet
             if key.split("_")[0] in c.get("awnings", ()):
                 G = json.load(open(E.INTERIM / f"{key}.M.json"))
                 for b in G.get("blocks", []):
@@ -375,6 +376,9 @@ def assemble():
             pr = ft["properties"]
             key = pr["id"].rsplit("_", 1)[0]
             blk = pr["georef"][6:] if pr["georef"].startswith("block ") else None
+            if pr["sanborn_colour"] in dropc.get(key, ()):
+                n_drop += 1
+                continue
             cap = caps.get(key, {}).get(blk)
             if cap and rank[pr["confidence"]] < rank[cap]:
                 pr["confidence"] = cap

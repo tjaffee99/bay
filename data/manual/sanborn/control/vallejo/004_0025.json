@@ -1,0 +1,178 @@
+{
+ "zones_only": true,
+ "confidence_cap": "medium",
+ "drop_classes": [
+  "stone"
+ ],
+ "valid_poly_px": [
+  [
+   120,
+   90
+  ],
+  [
+   1580,
+   90
+  ],
+  [
+   1580,
+   1800
+  ],
+  [
+   1190,
+   1800
+  ]
+ ],
+ "notes": "the waterfront west of Branciforte St (gone): tied to the west corners of blocks 280 / 261 as drawn at the sheet's east edge (fits of sheet 26); the inset of Ohio / Trinity / Kentucky St at lower left is not traced",
+ "blocks": [
+  {
+   "name": "waterfront",
+   "streets": {
+    "N": "n",
+    "S": "s",
+    "W": "w",
+    "E": "e"
+   },
+   "px4_est": [
+    [
+     470,
+     100
+    ],
+    [
+     1581.0,
+     560.0
+    ],
+    [
+     1583.0,
+     680.0
+    ],
+    [
+     1583.0,
+     1105.0
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1581.0,
+     "y": 560.0,
+     "q": "SW",
+     "corner": "NE",
+     "tie": "004_0026",
+     "px_other": [
+      199.6,
+      1042.7
+     ],
+     "tie_block": "280",
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1583.0,
+     "y": 680.0,
+     "q": "NW",
+     "corner": "SE",
+     "tie": "004_0026",
+     "px_other": [
+      197.9,
+      1539.1
+     ],
+     "tie_block": "261",
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1583.0,
+     "y": 1105.0,
+     "q": "NE",
+     "corner": "SW",
+     "tie": "004_0026",
+     "px_other": [
+      203.2,
+      2097.4
+     ],
+     "tie_block": "261",
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW"
+   ],
+   "no_refine": 1,
+   "px4": [
+    [
+     470.0,
+     100.0
+    ],
+    [
+     1581.0,
+     560.0
+    ],
+    [
+     1583.0,
+     680.0
+    ],
+    [
+     1583.0,
+     1105.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1581.0,
+     "y": 560.0,
+     "q": "SW",
+     "corner": "NE",
+     "tie": "004_0026",
+     "px_other": [
+      199.6,
+      1042.7
+     ],
+     "tie_block": "280",
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1583.0,
+     "y": 680.0,
+     "q": "NW",
+     "corner": "SE",
+     "tie": "004_0026",
+     "px_other": [
+      197.9,
+      1539.1
+     ],
+     "tie_block": "261",
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1583.0,
+     "y": 1105.0,
+     "q": "NE",
+     "corner": "SW",
+     "tie": "004_0026",
+     "px_other": [
+      203.2,
+      2097.4
+     ],
+     "tie_block": "261",
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    130.0,
+    95.0,
+    1578.0,
+    1800.0
+   ]
+  }
+ ],
+ "pct": 25
+}

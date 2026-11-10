@@ -1,0 +1,6036 @@
+{
+ "zones_only": true,
+ "residential": true,
+ "commercial_blocks": [
+  "230",
+  "252"
+ ],
+ "scale_prior": [
+  0.2045,
+  0.002
+ ],
+ "confidence_cap": "medium",
+ "blocks": [
+  {
+   "name": "207",
+   "streets": {
+    "N": "Pearl Street",
+    "S": "Clay Street",
+    "W": "Franklin Street",
+    "E": "Randolph Street"
+   },
+   "px4_est": [
+    [
+     162,
+     575
+    ],
+    [
+     520,
+     575
+    ],
+    [
+     520,
+     935
+    ],
+    [
+     162,
+     935
+    ]
+   ],
+   "corners": [
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "208",
+    "209",
+    "228",
+    "229",
+    "230",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     160.5,
+     575.6
+    ],
+    [
+     519.0,
+     576.9
+    ],
+    [
+     519.0,
+     936.5
+    ],
+    [
+     160.5,
+     936.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 160.5,
+     "y": 575.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    160.5,
+    575.586592178771,
+    519.0,
+    936.5
+   ]
+  },
+  {
+   "name": "208",
+   "streets": {
+    "N": "Pearl Street",
+    "S": "Clay Street",
+    "W": "Randolph Street",
+    "E": "Coombs Street"
+   },
+   "px4_est": [
+    [
+     610,
+     575
+    ],
+    [
+     968,
+     575
+    ],
+    [
+     968,
+     935
+    ],
+    [
+     610,
+     935
+    ]
+   ],
+   "corners": [
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "209",
+    "228",
+    "229",
+    "230",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     609.0,
+     577.8
+    ],
+    [
+     967.0,
+     575.2
+    ],
+    [
+     967.0,
+     936.0
+    ],
+    [
+     609.0,
+     936.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    609.0,
+    575.1915613054983,
+    967.0,
+    936.0
+   ]
+  },
+  {
+   "name": "209",
+   "streets": {
+    "N": "Pearl Street",
+    "S": "Clay Street",
+    "W": "Coombs Street",
+    "E": "Brown Street"
+   },
+   "px4_est": [
+    [
+     1058,
+     575
+    ],
+    [
+     1415,
+     575
+    ],
+    [
+     1415,
+     935
+    ],
+    [
+     1058,
+     935
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "228",
+    "229",
+    "230",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     1056.4,
+     575.8
+    ],
+    [
+     1415.4,
+     573.2
+    ],
+    [
+     1414.1,
+     935.0
+    ],
+    [
+     1055.1,
+     935.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1415.4,
+     "y": 573.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1055.092105263158,
+    573.1811547798692,
+    1415.414542562939,
+    935.0
+   ]
+  },
+  {
+   "name": "228",
+   "streets": {
+    "N": "Clay Street",
+    "S": "1st Street",
+    "W": "Franklin Street",
+    "E": "Randolph Street"
+   },
+   "px4_est": [
+    [
+     162,
+     1025
+    ],
+    [
+     520,
+     1025
+    ],
+    [
+     520,
+     1385
+    ],
+    [
+     162,
+     1385
+    ]
+   ],
+   "corners": [
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "229",
+    "230",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     161.0,
+     1026.5
+    ],
+    [
+     518.7,
+     1026.5
+    ],
+    [
+     521.3,
+     1385.6
+    ],
+    [
+     161.0,
+     1386.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    161.0,
+    1026.5,
+    521.3200822620362,
+    1386.9115701264334
+   ]
+  },
+  {
+   "name": "229",
+   "streets": {
+    "N": "Clay Street",
+    "S": "1st Street",
+    "W": "Randolph Street",
+    "E": "Coombs Street"
+   },
+   "px4_est": [
+    [
+     610,
+     1025
+    ],
+    [
+     968,
+     1025
+    ],
+    [
+     968,
+     1385
+    ],
+    [
+     610,
+     1385
+    ]
+   ],
+   "corners": [
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "228",
+    "230",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     609.5,
+     1026.8
+    ],
+    [
+     967.1,
+     1024.2
+    ],
+    [
+     968.4,
+     1383.6
+    ],
+    [
+     609.5,
+     1384.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    609.5,
+    1024.1909059978811,
+    968.402743512514,
+    1384.9097324316378
+   ]
+  },
+  {
+   "name": "230",
+   "streets": {
+    "N": "Clay Street",
+    "S": "1st Street",
+    "W": "Coombs Street",
+    "E": "Brown Street"
+   },
+   "px4_est": [
+    [
+     1058,
+     1022
+    ],
+    [
+     1415,
+     1022
+    ],
+    [
+     1415,
+     1385
+    ],
+    [
+     1058,
+     1385
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "228",
+    "229",
+    "250",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     1059.6,
+     1024.9
+    ],
+    [
+     1413.3,
+     1023.6
+    ],
+    [
+     1417.3,
+     1387.7
+    ],
+    [
+     1054.4,
+     1382.3
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.88,
+    1.0,
+    0.9
+   ],
+   "corners_all": [
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1054.4073444183218,
+    1023.5983941574667,
+    1417.2526619112052,
+    1387.6647893544332
+   ]
+  },
+  {
+   "name": "250",
+   "streets": {
+    "N": "1st Street",
+    "S": "2nd Street",
+    "W": "Franklin Street",
+    "E": "Randolph Street"
+   },
+   "px4_est": [
+    [
+     165,
+     1477
+    ],
+    [
+     520,
+     1477
+    ],
+    [
+     520,
+     1835
+    ],
+    [
+     165,
+     1835
+    ]
+   ],
+   "corners": [
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "228",
+    "229",
+    "230",
+    "251",
+    "252"
+   ],
+   "px4": [
+    [
+     161.1,
+     1477.8
+    ],
+    [
+     520.5,
+     1475.2
+    ],
+    [
+     520.5,
+     1834.6
+    ],
+    [
+     162.4,
+     1835.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    161.0952099944334,
+    1475.1805040770942,
+    520.5,
+    1835.9174897447401
+   ]
+  },
+  {
+   "name": "251",
+   "streets": {
+    "N": "1st Street",
+    "S": "2nd Street",
+    "W": "Randolph Street",
+    "E": "Coombs Street"
+   },
+   "px4_est": [
+    [
+     610,
+     1475
+    ],
+    [
+     968,
+     1475
+    ],
+    [
+     968,
+     1835
+    ],
+    [
+     610,
+     1835
+    ]
+   ],
+   "corners": [
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "228",
+    "229",
+    "230",
+    "250",
+    "252"
+   ],
+   "px4": [
+    [
+     610.5,
+     1475.4
+    ],
+    [
+     968.0,
+     1474.1
+    ],
+    [
+     968.0,
+     1834.0
+    ],
+    [
+     610.5,
+     1834.0
+    ]
+   ],
+   "edge_q": [
+    0.99,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    610.5,
+    1474.092105263158,
+    968.0,
+    1834.0
+   ]
+  },
+  {
+   "name": "252",
+   "streets": {
+    "N": "1st Street",
+    "S": "2nd Street",
+    "W": "Coombs Street",
+    "E": "Brown Street"
+   },
+   "px4_est": [
+    [
+     1058,
+     1472
+    ],
+    [
+     1418,
+     1472
+    ],
+    [
+     1418,
+     1835
+    ],
+    [
+     1058,
+     1835
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "252"
+    },
+    {
+     "x": 519.0,
+     "y": 576.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 519.0,
+     "y": 936.5,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 160.5,
+     "y": 936.5,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "207"
+    },
+    {
+     "x": 609.0,
+     "y": 577.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 575.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 967.0,
+     "y": 936.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 609.0,
+     "y": 936.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "208"
+    },
+    {
+     "x": 1056.4,
+     "y": 575.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1414.1,
+     "y": 935.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 1055.1,
+     "y": 935.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "209"
+    },
+    {
+     "x": 161.0,
+     "y": 1026.5,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 518.7,
+     "y": 1026.5,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 521.3,
+     "y": 1385.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 161.0,
+     "y": 1386.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "228"
+    },
+    {
+     "x": 609.5,
+     "y": 1026.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 967.1,
+     "y": 1024.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 968.4,
+     "y": 1383.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 609.5,
+     "y": 1384.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 1059.6,
+     "y": 1024.9,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1413.3,
+     "y": 1023.6,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "Clay Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1417.3,
+     "y": 1387.7,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 1054.4,
+     "y": 1382.3,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "230"
+    },
+    {
+     "x": 161.1,
+     "y": 1477.8,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Franklin Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1475.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 520.5,
+     "y": 1834.6,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 162.4,
+     "y": 1835.9,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Franklin Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "250"
+    },
+    {
+     "x": 610.5,
+     "y": 1475.4,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Randolph Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1474.1,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 968.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    },
+    {
+     "x": 610.5,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Randolph Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "251"
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "207",
+    "208",
+    "209",
+    "228",
+    "229",
+    "230",
+    "250",
+    "251"
+   ],
+   "px4": [
+    [
+     1056.7,
+     1474.6
+    ],
+    [
+     1416.0,
+     1475.9
+    ],
+    [
+     1416.0,
+     1834.0
+    ],
+    [
+     1059.3,
+     1834.0
+    ]
+   ],
+   "edge_q": [
+    0.98,
+    0.89,
+    0.94,
+    0.95
+   ],
+   "corners_all": [
+    {
+     "x": 1056.7,
+     "y": 1474.6,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Coombs Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1416.0,
+     "y": 1475.9,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1416.0,
+     "y": 1834.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Brown Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1059.3,
+     "y": 1834.0,
+     "q": "NE",
+     "corner": "SW",
+     "oc": [
+      "Coombs Street",
+      "2nd Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1056.7029677007977,
+    1474.5873646480293,
+    1416.0,
+    1834.0
+   ]
+  }
+ ],
+ "pct": 25
+}

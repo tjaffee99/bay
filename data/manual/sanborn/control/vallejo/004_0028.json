@@ -1,0 +1,647 @@
+{
+ "scale_prior": [
+  0.2055,
+  0.001
+ ],
+ "confidence_cap": "medium",
+ "zones_only": true,
+ "residential": true,
+ "valid_px": [
+  0,
+  0,
+  1613,
+  1345
+ ],
+ "block_cap": {
+  "244": "medium",
+  "228": "medium",
+  "214": "medium"
+ },
+ "notes": "top piece only (the lower piece is Sonoma - Napa St south of Pennsylvania, not traced); Maine St west of Sacramento St is realigned today, so no Maine St corner is used (Maine x Sacramento is 15 m north of the grid position): the York St corners of block 245 + the plate scale of sheets 20 / 21",
+ "blocks": [
+  {
+   "name": "245",
+   "streets": {
+    "N": "York Street",
+    "S": "Maine Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     863,
+     100
+    ],
+    [
+     1455,
+     100
+    ],
+    [
+     1455,
+     520
+    ],
+    [
+     863,
+     520
+    ]
+   ],
+   "corners": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "SW",
+    "SE"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "229",
+    "244",
+    "228",
+    "214"
+   ],
+   "px4": [
+    [
+     863.0,
+     100.0
+    ],
+    [
+     1455.8,
+     100.0
+    ],
+    [
+     1453.2,
+     518.1
+    ],
+    [
+     863.0,
+     519.4
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.94,
+    1.0,
+    0.94
+   ],
+   "corners_all": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    863.0,
+    100.0,
+    1455.8157894736842,
+    519.4078947368421
+   ]
+  },
+  {
+   "name": "229",
+   "streets": {
+    "N": "Maine Street",
+    "S": "Pennsylvania Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     865,
+     635
+    ],
+    [
+     1455,
+     635
+    ],
+    [
+     1455,
+     1050
+    ],
+    [
+     865,
+     1050
+    ]
+   ],
+   "corners": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "245",
+    "244",
+    "228",
+    "214"
+   ],
+   "px4": [
+    [
+     863.2,
+     635.9
+    ],
+    [
+     1455.4,
+     634.6
+    ],
+    [
+     1454.1,
+     1049.2
+    ],
+    [
+     865.8,
+     1051.8
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.91,
+    0.99,
+    0.89
+   ],
+   "corners_all": [],
+   "zone_px": [
+    863.1899932233763,
+    634.5911927054151,
+    1455.4091908918663,
+    1051.812099552738
+   ]
+  },
+  {
+   "name": "244",
+   "streets": {
+    "N": "York Street",
+    "S": "Maine Street",
+    "W": "Branciforte Street",
+    "E": "Santa Clara Street"
+   },
+   "px4_est": [
+    [
+     158,
+     100
+    ],
+    [
+     748,
+     100
+    ],
+    [
+     748,
+     520
+    ],
+    [
+     158,
+     520
+    ]
+   ],
+   "corners": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "245",
+    "229",
+    "228",
+    "214"
+   ],
+   "px4": [
+    [
+     156.7,
+     101.7
+    ],
+    [
+     745.2,
+     97.8
+    ],
+    [
+     747.8,
+     519.4
+    ],
+    [
+     159.3,
+     518.1
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.91,
+    1.0,
+    0.92
+   ],
+   "corners_all": [],
+   "zone_px": [
+    156.69506525574965,
+    97.79524712565623,
+    747.8120769150368,
+    519.4074756398641
+   ]
+  },
+  {
+   "name": "228",
+   "streets": {
+    "N": "Maine Street",
+    "S": "Pennsylvania Street",
+    "W": "Branciforte Street",
+    "E": "Santa Clara Street"
+   },
+   "px4_est": [
+    [
+     30,
+     637
+    ],
+    [
+     748,
+     637
+    ],
+    [
+     748,
+     1050
+    ],
+    [
+     30,
+     1050
+    ]
+   ],
+   "corners": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "245",
+    "229",
+    "244",
+    "214"
+   ],
+   "px4": [
+    [
+     30.0,
+     637.0
+    ],
+    [
+     748.0,
+     637.0
+    ],
+    [
+     748.0,
+     1050.0
+    ],
+    [
+     30.0,
+     1050.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    30.0,
+    637.0,
+    748.0,
+    1050.0
+   ]
+  },
+  {
+   "name": "214",
+   "streets": {
+    "N": "Pennsylvania Street",
+    "S": "Maryland Street",
+    "W": "Santa Clara Street",
+    "E": "Sacramento Street"
+   },
+   "px4_est": [
+    [
+     865,
+     1167
+    ],
+    [
+     1455,
+     1167
+    ],
+    [
+     1455,
+     1340
+    ],
+    [
+     865,
+     1340
+    ]
+   ],
+   "corners": [
+    {
+     "x": 863.0,
+     "y": 100.0,
+     "q": "SE",
+     "corner": "NW",
+     "oc": [
+      "Santa Clara Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    },
+    {
+     "x": 1455.8,
+     "y": 100.0,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sacramento Street",
+      "York Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "245"
+    }
+   ],
+   "w": {
+    "N": 80,
+    "S": 80,
+    "W": 80,
+    "E": 80
+   },
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "245",
+    "229",
+    "244",
+    "228"
+   ],
+   "px4": [
+    [
+     865.0,
+     1167.0
+    ],
+    [
+     1455.0,
+     1167.0
+    ],
+    [
+     1455.0,
+     1340.0
+    ],
+    [
+     865.0,
+     1340.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    865.0,
+    1167.0,
+    1455.0,
+    1340.0
+   ]
+  }
+ ],
+ "pct": 25
+}
