@@ -86,13 +86,16 @@ export async function loadParkLabels() {
 }
 
 /** Station names, each from its opening year (a shared BART/Muni station is labelled once). */
-export function addStationLabels(rows: {name: string; system: string; lon: number; lat: number; start: number; end: number}[]) {
+export function addStationLabels(rows: {name: string; system: string; lon: number; lat: number; start: number; end: number;
+  names?: {name: string; start: number; end: number}[]}[]) {
   const bart = rows.filter(r => r.system === 'bart');
   for (const r of rows) {
     if (keepFn && !keepFn(r.lon, r.lat)) continue;
     if (r.system !== 'bart' && bart.some(b => Math.hypot(b.lon - r.lon, b.lat - r.lat) < 0.0015)) continue;
     const tier = r.system === 'bart' ? 'station' : 'station_muni';
-    places.push({name: r.name, tier, lon: r.lon, lat: r.lat, start: r.start, end: r.end, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: r.name});
+    // a renamed station is labelled with the name in use that year (Oakland West, Berkeley, ...)
+    for (const n of r.names ?? [{name: r.name, start: r.start, end: r.end}])
+      places.push({name: n.name, tier, lon: r.lon, lat: r.lat, start: n.start, end: n.end, z: 0, mx: mercX(r.lon), my: mercY(r.lat), text: n.name});
   }
   placedKey = '';
 }

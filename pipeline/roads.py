@@ -49,7 +49,7 @@ MODE_KIND = {"freeway": K_FREEWAY, "highway": K_HIGHWAY, "cable_car": K_CABLE, "
 # BART and today's Muni lines come from transit.py (transit.bin.gz) when it has run
 TRANSIT_TAKES_OVER = True
 # edge of the region extracts (download_overture.REGION_BBOX): freeway ends there are cuts
-REGION_BBOX_ROADS = (-123.2, 36.85, -121.2, 38.9)
+REGION_BBOX_ROADS = (-123.68, 36.78, -121.16, 38.91)
 # routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
 LANDMARK_ROUTES = {"fwy_embarcadero"}
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}

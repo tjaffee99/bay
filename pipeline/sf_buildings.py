@@ -706,13 +706,23 @@ def lidar_new_buildings(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     imputed = ~df.year_reason.isin(["ok", "ok_research", "ok_permit", "ok_survey"]).values
     new = imputed & np.isfinite(h23) & np.isfinite(h10) & (h23 >= 15.0) & (h23 > h10 + 8.0) \
         & (df.start_year.values < 2010) & (df.geometry.area.values >= 100.0)
-    if new.any():
-        ids = df.sf16_bldgid.astype(str).values[new]
-        df.loc[new, "start_year"] = [2012.0 + 9.0 * stable_hash01("lidar_new:" + i) for i in ids]
-        df.loc[new, "year_reason"] = "lidar_new"
-        df.loc[new, "year_confidence"] = "estimated"
+    # the DataSF footprints show the city of the 2010 survey (some updates to 2016): a sizeable building that
+    # only OSM / Overture has (no DataSF outline under it) went up afterwards (Livat / 6x6,
+    # Mosso, 50 Jones, the new SF State and City College halls). Alcatraz is not in DataSF.
+    c = df.geometry.centroid.to_crs(4326)
+    alcatraz = (c.x.values > -122.43) & (c.y.values > 37.822) & (c.x.values < -122.415)
+    hh = np.fmax(df.height.values.astype(float), np.where(np.isfinite(h23), h23, 0.0))
+    extra = imputed & df.source.isin(["overture", "osm_via_overture"]).values & (hh >= 10.0) \
+        & (df.geometry.area.values >= 200.0) & (df.start_year.values < 2010) & ~alcatraz
+    for m, tag in ((new, "lidar_new"), (extra & ~new, "after_2010_survey")):
+        if m.any():
+            ids = df.sf16_bldgid.astype(str).values[m]
+            df.loc[m, "start_year"] = [2012.0 + 9.0 * stable_hash01("lidar_new:" + i) for i in ids]
+            df.loc[m, "year_reason"] = tag
+            df.loc[m, "year_confidence"] = "estimated"
     log(f"years: {int(new.sum())} footprints without a usable year are taller in the 2023 LiDAR than anything "
-        f"the 2010 survey saw there: built since 2010 (estimated)")
+        f"the 2010 survey saw there, {int((extra & ~new).sum())} more are not in the 2010 footprints at all: "
+        f"built since 2010 (estimated)")
     return df
 
 

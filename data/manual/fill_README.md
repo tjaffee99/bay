@@ -308,6 +308,33 @@ filled (Foster City, Redwood Shores, Corte Madera: the documented fill years sta
 and 1939-photo 1:62,500 sheets), `build3.py` + `build4.py` (rows), `simnew.py` / `summ.py` / `validate.py` /
 `pavecheck.py` (checks).
 
+**Site rows from written records (2026-11, second pass; 260 rows now).** Eleven `fill` rows for documented sites on
+ground that had only a fallback year (the Palo Alto / Mountain View / Milpitas quads have no edition masks; the Point
+San Pedro tracts never read wet on an edition): `sm_bedwell_bayfront_landfill` 1957–84, `sb_palo_alto_airport`
+1934–36, `sb_palo_alto_golf_course` 1954–56, `sb_palo_alto_landfill_byxbee` 1935–91, `sb_shoreline_landfill_544`
+1971–81, `sb_shoreline_landfill_vista` 1976–84, `sb_shoreline_landfill_crittenden` 1968–88,
+`sb_newby_island_landfill` 1938–81, `mn_loch_lomond_1956_fill`, `mn_glenwood_1957_fill`,
+`mn_peacock_gap_golf_1959_fill`. Years are the documented span of landfilling or construction (Regional Water Board
+waste-discharge orders, the City of Palo Alto's timeline, the Point San Pedro Road Coalition's history of the road);
+every bracketed or assumed year says ESTIMATED in the note. Rings are the Overture / OSM outline of the park,
+landfill, golf course or airport (≤ 40 vertices) minus the existing researched zones, except Loch Lomond and Glenwood
+(the made-land cells without a researched row, identified by the street names inside them). A row only acts on cells
+that are made land in the grid, so the pond and marsh parts of Shoreline, Newby Island and Byxbee are untouched. Five
+reservoirs were added to `landscape/water_history.csv` (Lake Ranch 1877, Bear Gulch 1896, Cherry Flat 1936, Lake
+Lucerne 1938, Sandy Wool Lake 1968; years from the National Inventory of Dams). Scratch tools: `audit/land2/grid.py`
+(made-land cells without a researched row), `s2.py` / `build.py` / `verify.py`.
+
+Not covered, because no dated source was found (still fallback years): East San Rafael / the Canal east of 122.5° W
+(313 ha; developed from the 1950s on ground diked earlier — it needs a dike year and a fill span), the McNear
+brickyard / quarry flat with the Peacock Gap lagoon tract (57 ha), the Civic Center lagoon ground, Marin Lagoon /
+Smith Ranch, Bahia, Novato Creek at US-101, McCarthy Ranch and the Alviso – North San José marsh edge (about 400 ha),
+the San José – Santa Clara plant's land (143 ha), Moffett Field's north end (42 ha), the Tri-Cities landfill (22 ha)
+and Sunnyvale's landfill. Santa Venetia is documented ("built on marshland that was filled in 1914", Wikipedia) but
+has no row: the c.1800 layer has almost no marsh under it (2.7 ha of made-land cells inside the CDP), so a row would
+do nothing. The Las Gallinas / St. Vincent's diked marsh keeps the default dike year 1900 (McInnis: "diked in the
+early 1900s", county bought the marsh in 1972). Lakes without a completion year: Mallard Reservoir, Grant Lake,
+Boronda Lake (not later than the park's opening in 1965).
+
 ## Land cover table (`data/tables/landcover_history.csv`)
 
 Columns: `area_id,name,region,cover,year_start,year_end,ring_type,ring,note,source_url`. `year_start = -10000` means "since before 1769".

@@ -46,6 +46,8 @@ type Line = {
 export type Station = {
   code: string;
   name: string;
+  /** name periods of a renamed station (earlier names first); absent when it never changed */
+  names?: {name: string; start: number; end: number}[];
   system: 'bart' | 'muni';
   lon: number;
   lat: number;

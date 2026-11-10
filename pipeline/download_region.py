@@ -34,18 +34,24 @@ from common import INTERIM, RAW, log
 
 RELEASE = "2026-10-21.0"
 STATEFP = "06"
-COUNTIES = {"041": "Marin", "013": "Contra Costa", "001": "Alameda", "081": "San Mateo", "085": "Santa Clara"}
+COUNTIES_5 = {"041": "Marin", "013": "Contra Costa", "001": "Alameda", "081": "San Mateo", "085": "Santa Clara"}
+# 2026-11 expansion to ten whole counties (with San Francisco): a second download batch,
+# so everything cached for the first five stays valid
+COUNTIES_NEW = {"097": "Sonoma", "055": "Napa", "095": "Solano", "087": "Santa Cruz"}
+COUNTIES = {**COUNTIES_5, **COUNTIES_NEW}
+# Overture file prefix per batch (readers: common.region_overture_files)
+BATCHES = {"region5": COUNTIES_5, "region4": COUNTIES_NEW}
 OUT_OVERTURE = RAW / "overture" / RELEASE
 YEARS_RAW = RAW / "region_years"
 REPORTS = INTERIM / "reports"
 
 
-def county_polygons():
+def county_polygons(counties: dict | None = None):
     """{COUNTYFP: shapely geometry} from TIGER 2024 (NAD83 ~ WGS84 within ~1 m here).
     The TIGER outlines include each county's share of the bay, so piers and fill count."""
     import geopandas as gpd
     c = gpd.read_file(f"zip://{RAW / 'tiger' / 'tl_2024_us_county.zip'}")
-    c = c[(c.STATEFP == STATEFP) & c.COUNTYFP.isin(list(COUNTIES))]
+    c = c[(c.STATEFP == STATEFP) & c.COUNTYFP.isin(list(counties or COUNTIES))]
     return {r.COUNTYFP: r.geometry for r in c.itertuples()}
 
 
@@ -71,49 +77,66 @@ def duck():
 # ---------------------------------------------------------------------------
 
 def overture():
-    polys = county_polygons()
-    xmin, ymin, xmax, ymax = shapely.union_all(list(polys.values())).bounds
+    """One file pair per batch. The first five counties were fetched as one box (the
+    union's bounds); later batches query one box per county (their union's bounds would
+    re-download the whole region) and drop the rows the overlapping boxes share."""
     OUT_OVERTURE.mkdir(parents=True, exist_ok=True)
-    con = duck()
-    for typ in ("building", "building_part"):
-        out = OUT_OVERTURE / f"region5_{typ}.parquet"
-        if out.exists():
-            log(f"overture region5 {typ}: cached")
-            continue
-        stage = OUT_OVERTURE / f"_stage_region5_{typ}.parquet"
-        src = f"s3://overturemaps-us-west-2/release/{RELEASE}/theme=buildings/type={typ}/*"
-        extra = "building_id," if typ == "building_part" else "has_parts, subtype, class,"
-        if not stage.exists():
-            log(f"overture region5 {typ}: querying {src} bbox {xmin:.3f},{ymin:.3f},{xmax:.3f},{ymax:.3f}")
-            con.execute(f"""
-            COPY (
-              SELECT id, {extra} names.primary AS name, level, is_underground,
-                     height, min_height, num_floors, num_floors_underground, min_floor,
-                     roof_shape, roof_height, roof_direction, roof_orientation,
-                     facade_color, facade_material, roof_color, roof_material,
-                     sources[1].dataset AS source_dataset,
-                     sources[1].record_id AS source_record,
-                     sources[1].update_time AS source_update_time,
-                     sources[1].confidence AS source_confidence,
-                     list_filter(sources, lambda s: s.property LIKE '%height%')[1].dataset AS height_source,
-                     list_filter(sources, lambda s: s.property LIKE '%num_floors%')[1].dataset AS floors_source,
-                     ST_X(ST_PointOnSurface(geometry)) AS px, ST_Y(ST_PointOnSurface(geometry)) AS py,
-                     geometry
-              FROM read_parquet('{src}', hive_partitioning=1)
-              WHERE bbox.xmin < {xmax} AND bbox.xmax > {xmin}
-                AND bbox.ymin < {ymax} AND bbox.ymax > {ymin}
-            ) TO '{stage}' (FORMAT parquet, COMPRESSION zstd);""")
-        t = pq.read_table(stage)
-        meta = t.schema.metadata
-        cfp = assign_county(t["px"].to_numpy(), t["py"].to_numpy(), polys)
-        keep = cfp != ""
-        t = t.filter(pa.array(keep))
-        t = t.append_column("countyfp", pa.array(cfp[keep].astype(str)))
-        t = t.append_column("county", pa.array([COUNTIES[c] for c in cfp[keep]]))
-        t = t.replace_schema_metadata(meta)
-        pq.write_table(t, out, compression="zstd")
-        stage.unlink()
-        log(f"overture region5 {typ}: {t.num_rows} rows -> {out}")
+    con = None
+    for tag, counties in BATCHES.items():
+        polys = county_polygons(counties)
+        boxes = ({"": shapely.union_all(list(polys.values())).bounds} if tag == "region5"
+                 else {f"_{fp}": g.bounds for fp, g in polys.items()})
+        for typ in ("building", "building_part"):
+            out = OUT_OVERTURE / f"{tag}_{typ}.parquet"
+            if out.exists():
+                log(f"overture {tag} {typ}: cached")
+                continue
+            con = con or duck()
+            src = f"s3://overturemaps-us-west-2/release/{RELEASE}/theme=buildings/type={typ}/*"
+            extra = "building_id," if typ == "building_part" else "has_parts, subtype, class,"
+            stages = []
+            for key, (xmin, ymin, xmax, ymax) in boxes.items():
+                stage = OUT_OVERTURE / f"_stage_{tag}_{typ}{key}.parquet"
+                stages.append(stage)
+                if stage.exists():
+                    continue
+                part = stage.with_suffix(".part")
+                log(f"overture {tag} {typ}: querying {src} bbox {xmin:.3f},{ymin:.3f},{xmax:.3f},{ymax:.3f}")
+                con.execute(f"""
+                COPY (
+                  SELECT id, {extra} names.primary AS name, level, is_underground,
+                         height, min_height, num_floors, num_floors_underground, min_floor,
+                         roof_shape, roof_height, roof_direction, roof_orientation,
+                         facade_color, facade_material, roof_color, roof_material,
+                         sources[1].dataset AS source_dataset,
+                         sources[1].record_id AS source_record,
+                         sources[1].update_time AS source_update_time,
+                         sources[1].confidence AS source_confidence,
+                         list_filter(sources, lambda s: s.property LIKE '%height%')[1].dataset AS height_source,
+                         list_filter(sources, lambda s: s.property LIKE '%num_floors%')[1].dataset AS floors_source,
+                         ST_X(ST_PointOnSurface(geometry)) AS px, ST_Y(ST_PointOnSurface(geometry)) AS py,
+                         geometry
+                  FROM read_parquet('{src}', hive_partitioning=1)
+                  WHERE bbox.xmin < {xmax} AND bbox.xmax > {xmin}
+                    AND bbox.ymin < {ymax} AND bbox.ymax > {ymin}
+                ) TO '{part}' (FORMAT parquet, COMPRESSION zstd);""")
+                part.rename(stage)
+            tabs = [pq.read_table(st) for st in stages]
+            meta = tabs[0].schema.metadata
+            t = pa.concat_tables(tabs) if len(tabs) > 1 else tabs[0]
+            cfp = assign_county(t["px"].to_numpy(), t["py"].to_numpy(), polys)
+            keep = cfp != ""
+            if len(tabs) > 1:   # a footprint in two county boxes: once
+                import pandas as pd
+                keep &= ~pd.Series(t["id"].to_pandas()).duplicated().to_numpy()
+            t = t.filter(pa.array(keep))
+            t = t.append_column("countyfp", pa.array(cfp[keep].astype(str)))
+            t = t.append_column("county", pa.array([counties[c] for c in cfp[keep]]))
+            t = t.replace_schema_metadata(meta)
+            pq.write_table(t, out, compression="zstd")
+            for st in stages:
+                st.unlink()
+            log(f"overture {tag} {typ}: {t.num_rows} rows -> {out}")
 
 
 def overture_report():
@@ -234,6 +257,7 @@ ASSESSOR_RE = (r"^apn|parcel|year|yr|blt|built|eff|stor|floor|unit|use|class|sit
                r"bldg|build|area|sq|const|height|wall|bldgs|lot|acre|tra$|value|imp|land")
 # Each source: id -> (url, fields, where). Field lists keep what the year table needs
 # (+ address / use for checks) and skip owner names and mailing addresses.
+FEMA_BATCHES = {"r9": "'001','013','041','081','085'", "r9b": "'055','087','095','097'"}
 YEAR_SOURCES: dict[str, dict] = {
     # Contra Costa County DoIT/GIS, CCMAP "Assessment Parcels" (assessor roll joined to parcels)
     "contra_costa_ccmap": {
@@ -292,6 +316,24 @@ YEAR_SOURCES: dict[str, dict] = {
                      "fields": "re:" + ASSESSOR_RE + "|^hl_"},
     "south_sf_corelogic": {"url": "https://services6.arcgis.com/SAzG4Xt2MtnnJdpJ/arcgis/rest/services/SouthSFParcelAnalysis/FeatureServer/2",
                            "fields": "re:" + ASSESSOR_RE},
+    # --- 2026-11 expansion: official county rolls joined to the parcels
+    # County of Sonoma, Clerk-Recorder-Assessor "Parcels Public" (attribution "County of Sonoma")
+    "sonoma_county": {"url": "https://socogis.sonomacounty.ca.gov/map/rest/services/CRAPublic/ParcelsPublic/FeatureServer/0",
+                      "fields": ["APN", "Type", "POCity", "UseCode", "UseCodeDescription", "UseCodeType", "LandSizeAcres",
+                                 "SitusFormatted1", "SitusFormatted2", "Value601RollYear", "BuildingPrimarySize",
+                                 "BuildingPrimaryCount", "BuildingPrimaryUnitCount", "BuildingPrimaryStories",
+                                 "BuildingPrimaryYearBuilt", "BuildingPrimaryEffectiveYear", "BuildingSecondaryCount"]},
+    # Solano County "Parcels Public Aumentum" (assessor roll, maintained with Geographic Technologies Group)
+    "solano_county": {"url": "https://services2.arcgis.com/SCn6czzcqKAFwdGU/arcgis/rest/services/Parcels_Public_Aumentum/FeatureServer/0",
+                      "fields": ["parcelid", "lowparceli", "floororder", "rollyear", "acres", "lotsize", "usecode", "use_desc",
+                                 "subdiv", "qclass", "yrbuilt", "status", "p_address", "sitecity", "unitbldg", "total_area",
+                                 "stories", "govt_owned"]},
+    # Napa County "Public Parcels" (Assessor's Mapping Section / ITS-GIS parcel fabric)
+    "napa_county": {"url": "https://services1.arcgis.com/Ko5rxt00spOfjMqj/arcgis/rest/services/Napa_County_Public_Parcels/FeatureServer/1",
+                    "fields": ["ASMT", "ASMTWithDash", "asmt_status", "StreetAddr", "Community", "Zip", "Jurisdiction",
+                               "Landuse1", "LandUseDescription", "Condo_Status", "Acres", "BuildingCount", "BuildingFloorCount",
+                               "MultipleStructures", "Building_Size_SqFt", "YearBuilt", "AllStructures_YearsBuilt", "UnitCount",
+                               "DwellingUnitsCount"]},
     # --- historic resources with researched construction years (incl. demolished / moved)
     "san_jose_hri": {"url": "https://geo.sanjoseca.gov/server/rest/services/OPN/OPN_OpenDataService/MapServer/406",
                      "fields": "*"},
@@ -302,15 +344,18 @@ YEAR_SOURCES: dict[str, dict] = {
     "san_mateo_parcels": {"url": "https://gis.smcgov.org/maps/rest/services/Common/ACTIVE_PARCELS_APN/FeatureServer/0",
                           "fields": ["APN", "SITUS_ADDR", "SITUS_CITY", "UNINC", "PUCDESC"]},
     # --- FEMA Region 9 building points (Microsoft / USA Structures footprint centroids
-    # enriched with Lightbox SmartParcels assessor attributes) — all five counties, incl. Marin
-    **{f"fema_r9_{k}": {
+    # enriched with Lightbox SmartParcels assessor attributes) — all five counties, incl. Marin;
+    # fema_r9b_*: the same layers for the four counties of the 2026-11 expansion (own ids, so
+    # the cached five-county downloads stay valid)
+    **{f"fema_{b}_{k}": {
         "url": f"https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Property_Structures_Static_Points_Building_Type_R9/FeatureServer/{lid}",
         "fields": ["BUILD_GEO_ID", "COUNTYFP", "PLACE_NAME", "PARCEL_APN", "USE_CODE_MUNI_DESC", "USE_CODE_STD_DESC_LPS",
                    "USE_CODE_STD_CTGR_DESC_LPS", "STORIES_NUMBER", "YR_BLT", "YR_BLT_EFFECT", "STYLE_DESC",
                    "CONSTRUCTION_CODE_DESC", "EXTERIOR_WALL_DESC", "ROOF_COVER_DESC", "SITE_ADDR"],
-        "where": "STATEFP = '06' AND COUNTYFP IN ('001','013','041','081','085')"}
-       for k, lid in (("res", 5), ("mixed", 6), ("nonres", 7))},
+        "where": f"STATEFP = '06' AND COUNTYFP IN ({fps})"}
+       for b, fps in FEMA_BATCHES.items() for k, lid in (("res", 5), ("mixed", 6), ("nonres", 7))},
 }
+FEMA_SOURCES = [f"fema_{b}_{k}" for b in FEMA_BATCHES for k in ("res", "mixed", "nonres")]
 
 
 OVERPASS = ["https://overpass.kumi.systems/api/interpreter", "https://overpass.kumi.systems/api/interpreter",
@@ -442,10 +487,18 @@ NORM: dict[str, dict] = {
                      "addr": "city_situsaddr", "vintage": "2022"},
     "south_sf_corelogic": {**_P, "countyfp": "081", "licence": "commercial", "rank": 3, "year": "YR_BLT", "eff": "EFF_YR_BLT",
                            "stories": "STORY_NBR", "units": "UNITS_NBR", "use": "LAND_USE", "addr": "ADDR", "vintage": "2018"},
-    **{f"fema_r9_{k}": {"kind": "building_point", "licence": "commercial", "rank": 3, "year": "YR_BLT", "eff": "YR_BLT_EFFECT",
-                        "stories": "STORIES_NUMBER", "use": "USE_CODE_STD_DESC_LPS", "apn": "PARCEL_APN", "addr": "SITE_ADDR",
-                        "material": "EXTERIOR_WALL_DESC", "construction": "CONSTRUCTION_CODE_DESC", "roof": "ROOF_COVER_DESC",
-                        "vintage": "c.2020"} for k in ("res", "mixed", "nonres")},
+    "sonoma_county": {**_P, "countyfp": "097", "year": "BuildingPrimaryYearBuilt", "eff": "BuildingPrimaryEffectiveYear",
+                      "stories": "BuildingPrimaryStories", "units": "BuildingPrimaryUnitCount", "nbldg": "BuildingPrimaryCount",
+                      "use": "UseCodeDescription", "addr": "SitusFormatted1", "vintage": "2026"},
+    "solano_county": {**_P, "countyfp": "095", "apn": "parcelid", "year": "yrbuilt", "stories": "stories", "use": "use_desc",
+                      "addr": "p_address", "vintage": "2026"},
+    "napa_county": {**_P, "countyfp": "055", "apn": "ASMTWithDash", "year": "YearBuilt", "stories": "BuildingFloorCount",
+                    "units": "UnitCount", "nbldg": "BuildingCount", "use": "LandUseDescription", "addr": "StreetAddr",
+                    "vintage": "2026"},
+    **{sid: {"kind": "building_point", "licence": "commercial", "rank": 3, "year": "YR_BLT", "eff": "YR_BLT_EFFECT",
+             "stories": "STORIES_NUMBER", "use": "USE_CODE_STD_DESC_LPS", "apn": "PARCEL_APN", "addr": "SITE_ADDR",
+             "material": "EXTERIOR_WALL_DESC", "construction": "CONSTRUCTION_CODE_DESC", "roof": "ROOF_COVER_DESC",
+             "vintage": "c.2020"} for sid in FEMA_SOURCES},
     "san_jose_hri": {"kind": "historic_point", "licence": "public", "rank": 0, "countyfp": "085", "year": "TRUEYR",
                      "year_est": "ESTIMATEDYR", "stories": "STORIES", "use": "ORIGUSE", "vintage": "2023",
                      "name": "RESOURCENAME"},
@@ -465,7 +518,8 @@ def apn_key(countyfp: str, s) -> str | None:
     if not isinstance(s, str) or not s.strip():
         return None
     toks = [t for t in re.split(r"[^0-9A-Za-z]+", s.strip().upper()) if t]
-    widths = {"013": (3, 3, 3), "081": (3, 3, 3), "085": (3, 2, 3), "041": (3, 3, 2)}
+    widths = {"013": (3, 3, 3), "081": (3, 3, 3), "085": (3, 2, 3), "041": (3, 3, 2),
+              "097": (3, 3, 3), "055": (3, 3, 3), "095": (4, 3, 3), "087": (3, 3, 2)}
     if len(toks) == 1 and toks[0].isdigit() and countyfp in widths:
         d, w = toks[0], widths[countyfp]
         if len(d) not in (sum(w), sum(w) + 1):
@@ -650,9 +704,10 @@ def _fema_parcel_frame():
     of the parcel's points), so footprints get a parcel year the way SF's do."""
     import geopandas as gpd
     import pandas as pd
-    fema = pd.concat([pq.read_table(YEARS_RAW / f"fema_r9_{k}" / f"fema_r9_{k}.parquet",
+    fema = pd.concat([pq.read_table(YEARS_RAW / sid / f"{sid}.parquet",
                                     columns=["COUNTYFP", "PARCEL_APN", "YR_BLT", "YR_BLT_EFFECT", "STORIES_NUMBER",
-                                             "USE_CODE_STD_DESC_LPS"]).to_pandas() for k in ("res", "mixed", "nonres")])
+                                             "USE_CODE_STD_DESC_LPS"]).to_pandas()
+                      for sid in FEMA_SOURCES if (YEARS_RAW / sid / f"{sid}.parquet").exists()])
     frames = []
     for sid, apncol, cfp in (("marin_parcels", "Parcel", "041"), ("san_mateo_parcels", "APN", "081")):
         f = YEARS_RAW / sid / f"{sid}.parquet"
@@ -925,7 +980,7 @@ def coverage():
         # class -> sources in priority order
         "public": [s for s, sp in NORM.items() if sp["licence"] == "public" and sp["kind"] == "parcel"],
         "third_party": ["alameda_county_2021", "hillsborough"],
-        "commercial": ["fema_r9_res", "fema_r9_mixed", "fema_r9_nonres", "fema_r9_parcel", "south_sf_corelogic"],
+        "commercial": [*FEMA_SOURCES, "fema_r9_parcel", "south_sf_corelogic"],
         "historic": ["san_jose_hri", "ca_ohp_berd", "osm_start_date"],
     }
     # public sources ordered: newest / most specific first (city layers with stories, then county roll)

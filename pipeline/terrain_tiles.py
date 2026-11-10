@@ -1328,10 +1328,28 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                     keep = block_hash(np.floor((lx_ + g["tx0"] * VERTS) / (4 * lat)),
                                       np.floor((ly_ + g["ty0"] * VERTS) / (4 * lat))) >= 0.2
                     fy, fx = ly_[keep] * sub, lx_[keep] * sub
+                    t_start = np.repeat(y_start, 9)[keep.ravel()]
+                    t_end = np.repeat(y_end, 9)[keep.ravel()]
+                    # a tree goes when the ground under it (its own nearest lattice vertex, not
+                    # the vertex the block was dated from) stops being farm: in the 30 m grid a
+                    # block of trees spans four vertices, and trees stood on in streets and yards
+                    gi = np.clip(np.rint(ly_[keep]).astype(int), 0, g["rows"] - 1)
+                    gj = np.clip(np.rint(lx_[keep]).astype(int), 0, g["cols"] - 1)
+                    built = np.zeros(len(gi), bool)   # ground already city / park when the block starts
+                    for k in range(4):
+                        yk = years[k][gi, gj]
+                        ck = covers[k + 1][gi, gj]
+                        gone = np.isfinite(yk) & ~np.isin(ck, FARM_COVERS)
+                        later = gone & (yk > t_start)
+                        t_end = np.where(later, np.fmin(t_end, yk), t_end)
+                        chg = np.isfinite(yk) & (yk <= t_start)
+                        built = np.where(chg, np.isin(ck, (URBAN, SUBURB, PARK)), built)
+                    ok_t = ~built
+                    fy, fx, t_start, t_end = fy[ok_t], fx[ok_t], t_start[ok_t], t_end[ok_t]
                     kinds.append(np.full(fy.size, D_ORCHARD)); ys.append(fy); xs.append(fx)
                     sizes.append(rng.uniform(4, 6, fy.size))
-                    starts.append(np.repeat(y_start, 9)[keep.ravel()] + rng.uniform(0, 3, fy.size))
-                    ends.append(np.repeat(y_end, 9)[keep.ravel()])
+                    starts.append(t_start + rng.uniform(0, 3, fy.size))
+                    ends.append(t_end)
                 else:
                     # one farmstead per ~25 lattice cells, on a hash — except where a
                     # historical map shows where the farmsteads really were

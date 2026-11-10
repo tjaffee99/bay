@@ -505,6 +505,7 @@ def main():
 
     # ---- stations
     stations = []
+    old_names = pd.read_csv(TABLES / "transit_station_names.csv", dtype=str)
     all_xy = np.concatenate([lv_xy[li] for li in range(len(out_lines))])
     all_li = np.concatenate([np.full(len(lv_xy[li]), li) for li in range(len(out_lines))])
     all_k = np.concatenate([np.arange(len(lv_xy[li])) for li in range(len(out_lines))])
@@ -545,6 +546,14 @@ def main():
                          "heading": round(heading, 1), "kind": kind, "start": decyear(r.opened),
                          "end": decyear(r.closed) if isinstance(r.closed, str) and r.closed.strip() else 9999.0,
                          "line": ol["id"], "veh": ol["veh"]})
+        # earlier names (transit_station_names.csv): the label shows the name in use that year
+        old = old_names[(old_names.system == r.system) & (old_names.code == r.code)].sort_values("until")
+        if len(old):
+            st = stations[-1]
+            names = [{"name": o["name"], "start": round(max(st["start"], decyear(o["from"])), 2),
+                      "end": round(decyear(o["until"]), 2)} for _, o in old.iterrows()]
+            names.append({"name": r.name, "start": names[-1]["end"], "end": st["end"]})
+            st["names"] = names
     (VIEWER_DATA / "transit-stations.json").write_text(json.dumps(stations, separators=(",", ":")))
     kinds = pd.Series([s["kind"] for s in stations]).value_counts().to_dict()
     log(f"transit: {len(stations)} stations {kinds}")

@@ -31,6 +31,32 @@ CURRENT_YEAR = 2026
 for d in (RAW, INTERIM, VIEWER_DATA):
     d.mkdir(parents=True, exist_ok=True)
 
+OVERTURE_RELEASE = "2026-10-21.0"
+
+
+def region_overture_files(typ: str = "building") -> list[Path]:
+    """Overture footprints of the counties outside SF, one file per download batch
+    (download_region.py): region5_* = Marin, Contra Costa, Alameda, San Mateo, Santa Clara;
+    region4_* = Sonoma, Napa, Solano, Santa Cruz (2026-11 expansion). Same columns."""
+    d = RAW / "overture" / OVERTURE_RELEASE
+    return [f for f in (d / f"region5_{typ}.parquet", d / f"region4_{typ}.parquet") if f.exists()]
+
+
+def read_region_overture(typ: str = "building", columns=None, filters=None):
+    """All batches as one pyarrow Table (pq.read_table arguments)."""
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    return pa.concat_tables([pq.read_table(f, columns=columns, filters=filters) for f in region_overture_files(typ)])
+
+
+def read_region_overture_gdf(typ: str = "building", columns=None):
+    """All batches as one GeoDataFrame (EPSG:4326)."""
+    import geopandas as gpd
+    import pandas as pd
+    parts = [gpd.read_parquet(f, columns=columns) for f in region_overture_files(typ)]
+    parts = [g if g.crs is not None else g.set_crs(4326) for g in parts]
+    return parts[0] if len(parts) == 1 else gpd.GeoDataFrame(pd.concat(parts, ignore_index=True), geometry="geometry", crs=parts[0].crs)
+
 
 def log(*args):
     print(f"[{time.strftime('%H:%M:%S')}]", *args, file=sys.stderr, flush=True)
