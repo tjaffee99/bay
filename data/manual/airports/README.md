@@ -178,6 +178,58 @@ NE stopway (1944; Hunters Point quad not mapped in 1946) on the NE fill (c.1950)
   temporary buildings 901-919 at the field's ends (no footprints), and the field over today's Crissy Marsh
   (terrain: the marsh is water today, so the 1912-15 fill zone never makes it land - needs a terrain change).
 
+## New counties (2026-11): vanished airfields and phased pavement - `tools/newarea.py`
+
+One tool, idempotent (`python -I tools/newarea.py [QA.geojson]`; run it after `build.py`, which rewrites the SFO / OAK / SJC
+rows of `pavement_dates.csv`): it replaces only its own airfields in `../airports_extra*.geojson`, its own rows of
+`data/tables/airports.csv` and the `TRAVIS / NAPA / STS / WVI` rows of `pavement_dates.csv`. All geometry is read off USGS
+historical topographic sheets rendered in a local metre frame per field (centre `c` in the tool; the sheet is named in every
+feature's `note`); dates are from P. Freeman's *Abandoned & Little-Known Airfields* (charts, directories, Campbell &
+Campbell, *Two Hours by Crow*) and the editions. Strip widths of unpaved fields are ESTIMATED.
+
+**Vanished airfields** (`airports_extra.geojson` pieces with their own years + an outline that carries the airfield grass):
+
+| airfield | outline years | traced from | pieces |
+|---|---|---|---|
+| Santa Rosa Naval Auxiliary Air Station (Santa Rosa Air Center) | 1943-1991 | Sebastopol + Santa Rosa 1:24k 1954 (1952 photos), checked on today's orthophoto | two 7,000-ft runways (61 m): the parts that still exist end 9999, N-S south part ends 2006, E-W east part 2000 (ESTIMATED); ramp, 3 taxiways |
+| Cotati Naval Outlying Landing Field | 1942-1946 | Cotati 1:24k 1954 (1952 photos) | runways 7/25 and 13/31 + third leg, 1942-1973 (Cotati Raceway 1957-72) |
+| Santa Cruz Sky Park (Scotts Valley) | 1947-1983 | Felton 1:24k 1955 (1953 photos), 1980 PR, 1991 | first runway 1947-68, realigned runway 1968-83, apron |
+| Santa Cruz-Capitola Airport | 1925-1954 | Soquel 1:24k 1954 (1952 photos) | field boundary; two turf runways 1947-54 |
+| Rio Vista Airport (original) | 1949-1995 | Rio Vista 1:24k 1953 (1949 photos), 1978 (1974 photos) | 7/25 1949 + west extension 1968, 14/32 1958, ramp 1953, taxiway |
+| Antioch Airport | 1946-1989 | Antioch South 1:24k 1953 (1949 photos) | runway + property outline (coarse) |
+| Petaluma Sky Ranch Airport | 1949-1985 | Petaluma River 1:24k 1954 (1952 photos), 1980 PR | runway, hangar apron; **no outline** - it lies inside today's Petaluma Municipal Airport boundary (opened 1985), so the pieces join that outline and keep their own years |
+| Vallejo Sky Harbor | 1946-1953 | Cuttings Wharf 1:24k 1949 (1948 photos) | three strips |
+| Knights Airport (Vallejo) | 1935-1954 | Cuttings Wharf 1:24k 1949 (1948 photos) | three NE-SW strips + links, 1946-54 (pre-war strips not mapped) |
+| Benicia Airport | 1946-1958 | Benicia 1:24k 1950 (1948 photos) | two strips |
+| Calistoga Airpark / Gliderport | 1947-1998 | Calistoga 1:24k 1958 (1957 photos), 1980 PR | runway |
+| Santa Rosa Coddingtown Airport | 1960-1971 | Santa Rosa 1:24k 1954, 1968 PR | runway 16/34 |
+| Morgan Hill Airport | 1947-1980 | Morgan Hill 1:24k 1955 (1953 photos), 1968 / 1973 PR | strip + SE extension (1960), hangar area |
+| Watsonville Airport (original) | 1931-1945 | Capitola 1:62,500 1940 (1938 photos) | three runways 1931-43 (+-30 m) |
+| Vaca-Dixon Airport | 1947-1993 | Allendale 1:24k 1953 (1949 photos), 1973 PR | two runways (coarse) |
+| Vacaville Gliderport | 1957-1991 | Fairfield North 1:24k, 1968 + 1980 PR | runway (coarse) |
+
+**Phased pavement of standing airports** (`pavement_dates.csv`, 26 rows, all `estimated`; presence of today's runway centre
+lines on each edition with `corridor.classify`, then read by eye):
+* Travis AFB - both runways as on the first edition that maps the base (Elmira + Denverton 1953, 1949 photos) dated 1943;
+  the south-west 450 m of 03L/21R and the north-east 900 m of 03R/21L with their overruns and end taxiways c.1960 (open
+  ground in 1949, purple on the 1968 PR); the assault strip 2006 (lower bound: on no edition to the 1980 PR). Not separated:
+  the ramps and taxiway groups added between editions (they keep 1943).
+* Napa County - the 1942 triangle (01L/19R, 06/24; the east leg is a taxiway today); the north 200 m of 01L/19R and the
+  parallel 01R/19L c.1973 (not on the 1968 PR, on the 1978-photo revision).
+* Sonoma County (STS) - both runways 1942; the north-west 270 m of 14/32 and its taxiways 2014 (2013-14 extension).
+* Watsonville - three runway features 1943; no change on any edition 1952-1994, so nothing else is phased.
+
+**Airports that were at the pipeline default** (rows in `data/tables/airports.csv`, all `estimated`, evidence in the row):
+Capell Valley 1960, Monterey Bay Academy 1973 (no strip on the 1952-photo sheet: the "Camp McQuaide runway" is not confirmed
+by the maps), Q Area Heliport 1980 (lower bound), The Sea Ranch 1968, Yolo County 1942.
+
+**Looked at and left out** (no pavement or no usable drawing): Fairfield-Suisun Air Park / Brennan Airpark (1942-c.1975:
+only the name on the 1949 and 1968 sheets, sod field without a drawn boundary), Vallejo (Mini) Airport (1929-c.1944,
+boundary symbol on the 1:62,500 sheet only), Sebastopol Airport (1923-41), Santa Rosa Municipal / Steiner Field and Santa
+Rosa Airpark (boundary only), the earlier Petaluma fields, Mare Island's 1922-37 dirt field and Skaggs Island (no airfield
+on any edition), Travis Aero Club (still there, no Overture outline), Discovery Bay, Inglenook Ranch, Boulder Creek,
+Hoover Lake (not rendered).
+
 ## Limits
 
 * Runway interval ends are read to about +-75 m; the SJC 1953 sheets (1948 photos) are registered

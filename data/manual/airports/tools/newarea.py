@@ -193,8 +193,8 @@ FIELDS = [
           "1980 photorevision CA_Petaluma River_101767_1954_24000",
         csv_note="East Washington St (today's Sky Ranch Drive houses, directly south-west of the municipal airport): not on "
                  "the Feb 1949 chart, on the Sep 1949 one; Justman Flying Service; 2,100-ft runway, paved later; 'the Sky "
-                 "Ranch was dismantled, and Petaluma Municipal Airport opened in 1985' (Freeman) - the FAA activation "
-                 "06/1949 of O69 is the Sky Ranch's. Traced from the USGS Petaluma River 1:24,000 sheets (1952 photos; "
+                 "Ranch was dismantled, and Petaluma Municipal Airport opened in 1985' (Freeman) - so the FAA activation "
+                 "year 1949 of O69 is the Sky Ranch's and Wikipedia's 'founded in 1915' the first Petaluma flying field. Traced from the USGS Petaluma River 1:24,000 sheets (1952 photos; "
                  "1980 photorevision) in data/manual/airports_extra*.geojson. Earlier Petaluma fields (1915 flights; "
                  "Petaluma Airport / Skyways 1946- on the north-west side; Buck / Doolittle, Justman, Oak View) not modelled",
         pieces=[
@@ -521,19 +521,19 @@ RUNWAYS = [
          "pavement corridor from 900 m to the south-west end; dated with the opening of the base (built some time 1942-49)")]),
     ("TRAVIS", "48a0d5b9", "03R/21L", U_TRAVIS, 1960),
     ("TRAVIS", "15ce0402", "03R/21L", U_TRAVIS, 1943),
-    ("TRAVIS", "b264d934", "assault strip", U_TRAVIS, 2008),
+    ("TRAVIS", "b264d934", "assault strip", U_TRAVIS, 2006),
     ("NAPA", "b9e53d7d", "01L/19R", U_NAPA, [
         ("19R (north)", 0, 200, 1973, "estimated", "north 200 m beyond the apex of the 1942 triangle: not on the "
          "1948-photo sheet nor the 1968 photorevision, purple on the 1978-photo revision -> 1973 (" + S_NAPA + ")"),
-        ("19R (north)", 200, 1807, 1942, "documented", "west leg of the Army Air Forces triangle of 1942 "
+        ("19R (north)", 200, 1807, 1942, "estimated", "west leg of the Army Air Forces triangle of 1942 "
          "(napacounty.gov Airport History), complete on the 1948-photo sheet")]),
     ("NAPA", "a6263038", "06/24", U_NAPA, 1942),
     ("NAPA", "11a27e3b", "01R/19L", U_NAPA, 1973),
     ("STS", "2f8cd876", "14/32", U_STS, [
-        ("14 (north-west)", 0, 270, 2014, "documented", "'In August 2013 the airport began a project to separate the ends "
+        ("14 (north-west)", 0, 270, 2014, "estimated", "'In August 2013 the airport began a project to separate the ends "
          "of its two runways and lengthen runway 14/32 by 885 feet to 6,000 feet' (Wikipedia); open ground on every "
          "edition to 1993 (" + S_STS + ")"),
-        ("14 (north-west)", 270, 1819, 1942, "documented", "Santa Rosa Army Air Field, opened June 1942; complete on "
+        ("14 (north-west)", 270, 1819, 1942, "estimated", "Santa Rosa Army Air Field, opened June 1942; complete on "
          "the 1953-photo sheet")]),
     ("STS", "1ec54533", "02/20", U_STS, 1942),
     ("WVI", "902e906b", "02/20", U_WVI, 1943),
@@ -544,16 +544,17 @@ WHOLE_NOTE = {
     ("TRAVIS", 1943): ("estimated", "on the first edition that maps the base (" + S_TRAVIS + "); dated with its opening"),
     ("TRAVIS", 1960): ("estimated", "beside a runway extension that is purple on the 1968 photorevision, open ground "
                        "on the 1949-photo sheet -> c.1960 (" + S_TRAVIS + ")"),
-    ("TRAVIS", 2008): ("estimated", "assault landing strip beside 03R/21L: not on any edition to the 1980 "
-                       "photorevision; built for the C-17 crews based at Travis from 2006 - year ESTIMATED, no source found"),
-    ("NAPA", 1942): ("documented", "base of the 1942 Army Air Forces triangle, complete on the 1948-photo sheet (" + S_NAPA + ")"),
+    ("TRAVIS", 2006): ("estimated", "assault landing zone beside 03R/21L: not on any USGS edition to the 1980 "
+                       "photorevision (1978 photos); used for C-17 short-field training, C-17s based at Travis from 2006 "
+                       "(Wikipedia) -> 2006 as a lower bound, ESTIMATED: no construction record found"),
+    ("NAPA", 1942): ("estimated", "base of the 1942 Army Air Forces triangle, complete on the 1948-photo sheet (" + S_NAPA + ")"),
     ("NAPA", 1973): ("estimated", "inside the triangle: not on the 1948-photo sheet nor the 1968 photorevision, purple "
                      "on the 1978-photo revision -> 1973 (" + S_NAPA + ")"),
-    ("STS", 1942): ("documented", "Santa Rosa Army Air Field, opened June 1942; complete on the 1953-photo sheet (" + S_STS
+    ("STS", 1942): ("estimated", "Santa Rosa Army Air Field, opened June 1942; complete on the 1953-photo sheet (" + S_STS
                     + "); the 200 ft added in 2013-14 is not separated (end not identified)"),
-    ("STS", 2014): ("documented", "taxiway of the 2013-14 runway-end separation, beside the 885-ft extension of 14/32; "
+    ("STS", 2014): ("estimated", "taxiway of the 2013-14 runway-end separation, beside the 885-ft extension of 14/32; "
                     "open ground on every edition to 1993"),
-    ("WVI", 1943): ("documented", "NAAS Watsonville, commissioned 23 Oct 1943; runway complete on the 1952-photo sheet and "
+    ("WVI", 1943): ("estimated", "NAAS Watsonville, commissioned 23 Oct 1943; runway complete on the 1952-photo sheet and "
                     "unchanged on the 1968 / 1980 photorevisions and the 1994 sheet (" + S_WVI + ")"),
 }
 # taxiways / taxilanes / aprons that came with a dated extension: (airport, runway id prefix, d0, d1, reach m, year)
