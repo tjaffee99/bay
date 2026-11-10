@@ -414,38 +414,52 @@ void main(void) {
 }
 `;
 
-const WATERISH = new Set([0, 1, 14, 22]);
+const WATERISH = new Uint8Array(64);
+for (const c of [0, 1, 14, 22]) WATERISH[c] = 1;
 // farm pattern codes in the texel alpha for land (water: alpha 255); see farmPattern()
-const FARM_CODE: Record<number, number> = {10: 1, 11: 2, 12: 3, 13: 4, 3: 5, 21: 5, 2: 6, 15: 7};
-/** Current cover colour (rgb) and wetness (a) of each grid vertex — same rules as the vertex shader. */
-function coverColors(m: TerrainMesh, year: number, out: Uint8Array) {
+const FARM_CODE = new Uint8Array(64);
+for (const [c, code] of Object.entries({10: 1, 11: 2, 12: 3, 13: 4, 3: 5, 21: 5, 2: 6, 15: 7})) FARM_CODE[+c] = code;
+/**
+ * Current cover colour (rgb) and wetness (a) of each grid vertex — same rules as the vertex
+ * shader. Returns the span of years [from, to) over which the result stays the same (no
+ * cover change pending or blending in it), so a tile whose ground isn't changing is not
+ * recomputed and re-uploaded on every frame while the year runs.
+ */
+function coverColors(m: TerrainMesh, year: number, out: Uint8Array): [number, number] {
   const nn = m.n * m.n;
+  let from = -Infinity;
+  let to = Infinity;
   for (let v = 0; v < nn; v++) {
     let c = m.covers[v * 4];
     let prev = c;
     let t0 = -100000;
     for (let k = 0; k < 4; k++) {
       const yk = m.years[v * 4 + k];
-      if (yk > 0 && year >= yk) {
-        prev = c;
-        c = k < 3 ? m.covers[v * 4 + k + 1] : m.cover4[v];
-        t0 = yk;
+      if (yk > 0) {
+        if (year >= yk) {
+          prev = c;
+          c = k < 3 ? m.covers[v * 4 + k + 1] : m.cover4[v];
+          t0 = yk;
+        } else if (yk < to) to = yk;
       }
     }
     const dur = c === 23 ? 0.04 : 2.5;
     const x = Math.min(1, Math.max(0, (year - t0) / dur));
+    if (x < 1) from = Infinity; // a change is blending in: every year differs
+    else if (t0 + dur > from) from = t0 + dur;
     const kk = x * x * (3 - 2 * x);
     const p0 = PALETTE[prev] ?? PALETTE[0];
     const p1 = PALETTE[c] ?? PALETTE[0];
-    const w = (WATERISH.has(prev) ? 1 : 0) * (1 - kk) + (WATERISH.has(c) ? 1 : 0) * kk;
+    const w = WATERISH[prev] * (1 - kk) + WATERISH[c] * kk;
     out[v * 4] = Math.round((p0[0] + (p1[0] - p0[0]) * kk) * 255);
     out[v * 4 + 1] = Math.round((p0[1] + (p1[1] - p0[1]) * kk) * 255);
     out[v * 4 + 2] = Math.round((p0[2] + (p1[2] - p0[2]) * kk) * 255);
     const cur = kk >= 0.5 ? c : prev;
-    const code = FARM_CODE[cur] ?? 0;
+    const code = FARM_CODE[cur];
     // salt ponds: alpha 250 (still water to the shader), patterned as evaporators
     out[v * 4 + 3] = w > 0 ? (cur === 14 && w > 0.99 ? 250 : Math.round(w * 255)) : code * 8;
   }
+  return [from, to];
 }
 
 export type TerrainMesh = {
@@ -489,7 +503,7 @@ const meshDefaults: DefaultProps<TerrainMeshLayerProps> = {
 class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   static layerName = 'TerrainMeshLayer';
   static defaultProps = meshDefaults;
-  state!: {model?: Model; texture?: any; texYear?: number; texData?: Uint8Array};
+  state!: {model?: Model; texture?: any; texYear?: number; texSpan?: [number, number]; texData?: Uint8Array};
 
   getShaders() {
     return super.getShaders({
@@ -517,7 +531,7 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
             sampler: {minFilter: 'linear', magFilter: 'linear', addressModeU: 'clamp-to-edge', addressModeV: 'clamp-to-edge'}
           })
         : undefined;
-      this.setState({model: this._getModel(), texture, texYear: undefined, texData: m ? new Uint8Array(m.n * m.n * 4) : undefined});
+      this.setState({model: this._getModel(), texture, texYear: undefined, texSpan: undefined, texData: m ? new Uint8Array(m.n * m.n * 4) : undefined});
     }
   }
 
@@ -554,9 +568,14 @@ class TerrainMeshLayer extends Layer<TerrainMeshLayerProps> {
   draw() {
     const {model, texture, texData} = this.state;
     if (!model || !texture || !texData) return;
-    // refresh the cover texture when the year moved (cheap: 65×65 per tile)
-    if (this.state.texYear === undefined || Math.abs(this.state.texYear - terrainYear) > 0.01) {
-      coverColors(this.props.mesh, terrainYear, texData);
+    // refresh the cover texture when the year moved — and only if this tile's ground
+    // changes between the year it was built for and now (most tiles, most years: no)
+    const span = this.state.texSpan;
+    if (
+      this.state.texYear === undefined ||
+      (Math.abs(this.state.texYear - terrainYear) > 0.01 && !(span && terrainYear >= span[0] && terrainYear < span[1]))
+    ) {
+      this.state.texSpan = coverColors(this.props.mesh, terrainYear, texData);
       texture.writeData(texData);
       this.state.texYear = terrainYear;
       model.setBindings({coverTex: texture});
@@ -826,10 +845,26 @@ export function setTerrainChangeCallback(fn: () => void) {
 // the live TileLayer (deck moves state onto the newest instance passed to setProps)
 let liveTiles: TileLayer<TileContent> | null = null;
 let decoTimer = 0;
+let decoWaiting = false;
+let decoBusy: (() => boolean) | null = null;
+/** Tells the terrain when the camera is travelling (decorations are then merged less often). */
+export function setDecoBusy(fn: () => boolean) {
+  decoBusy = fn;
+}
 /** Re-merge the decorations of the tiles currently displayed (debounced). */
 export function refreshDecoSoon(delay = 120) {
+  // while the camera is travelling (a story flight, a long zoom) tiles come and go all the
+  // time: merging the trees of the visible tiles on every change copies and re-uploads up
+  // to a million instances each time — once the journey is over, or every 0.9 s, is enough
+  if (decoBusy?.()) {
+    if (decoTimer && decoWaiting) return;
+    delay = 900;
+    decoWaiting = true;
+  }
   clearTimeout(decoTimer);
   decoTimer = window.setTimeout(() => {
+    decoWaiting = false;
+    decoTimer = 0;
     const ts = (liveTiles as any)?.state?.tileset;
     if (!ts) return;
     const tiles = (ts.tiles as any[]).filter(t => t.isVisible && t.content?.deco?.length);

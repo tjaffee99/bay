@@ -10,7 +10,7 @@ import {MapboxOverlay} from '@deck.gl/mapbox';
 import {AmbientLight, DirectionalLight, LightingEffect} from '@deck.gl/core';
 import type {Layer, PickingInfo} from '@deck.gl/core';
 
-import {terrainLayer, setTerrainChangeCallback, refreshDecoSoon} from './layers/terrain';
+import {terrainLayer, setTerrainChangeCallback, setDecoBusy, refreshDecoSoon} from './layers/terrain';
 import {loadElevation} from './layers/elevation';
 import {addStationLabels, dropLabels, labelLayers, labelZoomKey, loadParkLabels, loadPlaces, placeLabelsOnTerrain, setLabelProjector} from './layers/labels';
 import {extentBounds, extentDistance, extentReady} from './layers/extent';
@@ -25,6 +25,7 @@ import {treeLod} from './layers/decoration-meshes';
 import {loadLocalStreetIndex, loadRoads, localStreetLayers, roadLayers, trafficLayers, tickTraffic, hasTraffic} from './layers/roads';
 import {events, eventTime, loadCities, localPopulationAt, story as storyStops} from './data/tables';
 import {createStory} from './story';
+import {setTimeFx, setTimeShake, timeFxActive} from './layers/time-extension';
 import {readHash, writeHash} from './url-state';
 import {installCameraControls} from './camera-controls';
 import {CONFIDENCE, CONFIDENCE_COLORS} from './palette';
@@ -74,6 +75,7 @@ if (!initial.center) {
   map.fitBounds([[-122.516, 37.706], [-122.357, 37.812]], {padding: 24, pitch: 45, bearing: -12, duration: 0});
 }
 setTerrainChangeCallback(() => render());
+setDecoBusy(() => map.isMoving());
 
 // Late-afternoon sun from the south-west and a cool skylight fill from the north-east.
 // Sun shadows are opt-in (?shadow): a deck shadow map, re-rendered only when the view
@@ -148,21 +150,41 @@ map.on('click', e => {
   showInfo((info ?? {picked: false, index: -1}) as PickingInfo);
 });
 
+let lastRender = 0;
+/** San Francisco with a margin (west, south, east, north). */
+const SF_VIEW = [-122.56, 37.68, -122.32, 37.86];
+let sfShown = true;
+function sfVisible() {
+  const b = map.getBounds();
+  return b.getEast() > SF_VIEW[0] && b.getWest() < SF_VIEW[2] && b.getNorth() > SF_VIEW[1] && b.getSouth() < SF_VIEW[3];
+}
+// the city comes into view while the map is being dragged: draw it now, not at moveend
+map.on('move', () => {
+  if (sfVisible() !== sfShown) render();
+});
 /** Extent of the terrain tiles (Sonoma/Napa to Santa Cruz). */
 const REGION: [number, number, number, number] = [-123.68, 36.78, -121.16, 38.91];
 
 function render() {
   const layers: Layer[] = [];
   const zoom = map.getZoom();
+  // the disaster in play (buildings burning / falling) and the clock that flickers flames
+  setTimeFx(state.year, performance.now() / 1000);
+  lastRender = performance.now();
   layers.push(...(terrainLayer(state.year, REGION, zoom) as any[]));
   layers.push(...groundDetailLayers(state.year, zoom));
   layers.push(...airportLayers(state.year, zoom));
   const b = map.getBounds();
   layers.push(...localStreetLayers(state.year, zoom));
   layers.push(...roadLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
-  for (const t of trees) layers.push(...treesLayer(t, state.year, zoom));
+  // San Francisco's 177k buildings and its street trees are one buffer each: not drawn
+  // (but kept on the GPU) while the city is out of view — a story stop in Sonoma or
+  // San José doesn't push them through the vertex shader on every frame
+  const sfInView = sfVisible();
+  sfShown = sfInView;
+  for (const t of trees) layers.push(...treesLayer(t, state.year, zoom, undefined, sfInView));
   layers.push(...regionTreeLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
-  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks));
+  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks, 'buildings', sfInView));
   layers.push(...regionBuildingLayers(state.year, zoom, state.quality));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   layers.push(...trafficLayers(state.year, zoom));
@@ -233,7 +255,8 @@ const story = createStory(
       setPlaying(false);
       infoBox.hidden = true;
     },
-    onExit: () => scheduleHash()
+    onExit: () => scheduleHash(),
+    shake: a => setTimeShake(a)
   },
   $<HTMLButtonElement>('story')
 );
@@ -397,6 +420,8 @@ let lastTraffic = 0;
 let lastTrain = 0;
 function trafficLoop(t: number) {
   requestAnimationFrame(trafficLoop);
+  // flames and earthquake sway move with the clock: keep drawing while they are on screen
+  if (timeFxActive() && !document.hidden && performance.now() - lastRender > 30) render();
   const z = map.getZoom();
   if (document.hidden || z < 11.5) return;
   if (hasTraffic() && z >= 12.5 && t - lastTraffic >= 33) {
@@ -483,7 +508,7 @@ async function boot() {
   (window as any).__ready = true;
   // ?story starts the tour once the map is loaded (?story=12 from the 12th stop)
   const sp = new URLSearchParams(location.search);
-  if (sp.has('story')) story.start(Math.max(0, (Number(sp.get('story')) || 1) - 1));
+  if (sp.has('story')) story.start(Number(sp.get('story')) ? Math.max(0, Number(sp.get('story')) - 1) : sp.get('story') === '' && !location.hash.includes('year=') ? 0 : undefined);
 }
 boot();
 

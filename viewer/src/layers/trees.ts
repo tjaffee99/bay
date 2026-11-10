@@ -116,13 +116,14 @@ export function decodeTrees(f: {columns: any; header: any}): {data: any; count: 
   return forms;
 }
 
-export function treesLayer(trees: TreeSet, year: number, zoom = 16, zoomIn = 11.6): Layer[] {
+export function treesLayer(trees: TreeSet, year: number, zoom = 16, zoomIn = 11.6, visible = true): Layer[] {
   const lod = treeLod(zoom);
   return trees.forms.map(
     (f, k) =>
       new DecoLayer({
         id: `trees-${trees.id}-${k}`,
         data: f.data,
+        visible,
         mesh: (lod.low ? MESHES_LOW : MESHES)[k],
         keep: lod.keep,
         zoomIn,

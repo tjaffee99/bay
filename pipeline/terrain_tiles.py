@@ -387,6 +387,16 @@ def sf_extent_years(g, h):
     return out
 
 
+def north_peninsula(lon, lat):
+    """San Francisco and the peninsula south of it to about South San Francisco (west of the
+    bay): one landscape before settlement — dunes, coastal scrub, grassland, hardly a tree.
+    The southern limit wanders between about 37.64 and 37.67 N (smooth noise of position,
+    so the region and detail grids agree)."""
+    n1 = np.sin(lon * 311.0 + 0.4) * np.cos(lat * 277.0 + 1.1) + 0.5 * np.sin(lon * 733.0 - lat * 611.0)
+    in_sf = (lon > SF_BOX[0]) & (lon < SF_BOX[2]) & (lat > SF_BOX[1]) & (lat < SF_BOX[3])
+    return in_sf | ((lat <= SF_BOX[1]) & (lat > 37.657 + 0.011 * n1) & (lon > -122.525) & (lon < -122.37))
+
+
 def histories(name, g, d):
     rows, cols = g["rows"], g["cols"]
     lon, lat = lonlat_of(g)
@@ -443,7 +453,24 @@ def histories(name, g, d):
     # Westlake, Lake Merced's shore and Fort Funston to the cliffs at Mussel Rock
     # (refined by data/manual/landscape/dunes.geojson when present)
     sf_dunes |= ~in_sf & (lat > 37.662) & (lat < 37.712) & (lon < -122.462 - (37.712 - lat) * 0.25) & (elev < 110)
-    N[in_sf & (tree | (wc == 50) | (wc == 40))] = SCRUB
+    # The northern peninsula had almost no native trees, and not only inside today's county
+    # line: the treeless country of dunes, coastal scrub and grassland ran on south over
+    # Colma and San Bruno Mountain to about South San Francisco. (The rule used to be "SF =
+    # scrub", a box: uniform scrub north of latitude 37.708 and grass with forest patches
+    # south of it — a ruler-straight seam, owner 2026-11.) Where no c.1800 map exists the
+    # cover follows the ground instead of today's land use: coastal scrub on the steeper,
+    # north- and east-facing (shaded, moist) slopes and along the ocean, grassland on the
+    # sunny slopes, ridges and valley floors (as on San Bruno Mountain today); planted
+    # eucalyptus and cypress are not natural forest. The southern edge wanders with noise.
+    north_pen = north_peninsula(lon, lat)
+    gmag = np.hypot(dx, dy) + 1e-6
+    shaded = (dy - 0.5 * dx) / gmag / 1.118      # +1: faces north-north-east … -1: south-south-west
+    _n2 = np.sin(lon * 523.0 + 2.1) * np.cos(lat * 467.0 + 0.3) + 0.6 * np.sin(lon * 1171.0 + lat * 983.0)
+    scrubby = (slope / 14.0) * (0.55 + 0.45 * shaded) + 0.35 * (coast_km < 2.5) + 0.2 * (elev > 180) + 0.16 * _n2 > 0.42
+    upland = north_pen & (tree | (wc == 50) | (wc == 40) | (wc == 30) | (wc == 20))
+    N[upland & scrubby] = SCRUB
+    N[upland & ~scrubby] = GRASS
+    del gmag, shaded, _n2, scrubby, upland
     dpath = MANUAL / "landscape" / "dunes.geojson"
     if dpath.exists():
         dn = gpd.read_file(dpath).to_crs(3857)
@@ -901,6 +928,16 @@ def histories(name, g, d):
             return ndtr(b / (b.std() + 1e-9)).astype(np.float32)
         b_share, b_orch, b_year = blob(1851, 4.0), blob(1885, 3.0), blob(1869, 6.0)
         ag = gpd.read_file(ag_path).to_crs(3857)
+        ag["in_city"] = False
+        # farm eras inside San Francisco (truck gardens, dairies, nurseries of the southern
+        # and western districts; data/manual/landscape/agriculture_sf.geojson): the farm
+        # patchwork used to stop on the county line
+        ag_sf_path = MANUAL / "landscape" / "agriculture_sf.geojson"
+        if ag_sf_path.exists():
+            ag_sf = gpd.read_file(ag_sf_path).to_crs(3857)
+            ag_sf["in_city"] = True
+            ag = gpd.GeoDataFrame(pd.concat([ag, ag_sf], ignore_index=True), geometry="geometry", crs=3857)
+            log(f"terrain {name}: {len(ag_sf)} farm-era rows inside San Francisco")
         ag = ag[ag.geometry.notna()].copy()
         ag["prio"] = ag["layer"].map(PRIO).fillna(0)
         ag = ag.sort_values(["year_start", "prio"]).reset_index(drop=True)
@@ -909,6 +946,7 @@ def histories(name, g, d):
         # district eras that end before an island was reclaimed do not apply to it)
         delta_farm = in_delta & diked & ~water_now & np.isin(N, [MARSH, FLAT]) & ~in_sf
         ag_ok |= delta_farm
+        ag_ok_sf = ~water_now & (slope < 15) & (elev < 500) & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH, ROCK, BEACH, DUNES]) & in_sf
         first_c = np.full((rows, cols), 255, np.uint8)
         first_y = np.full((rows, cols), np.nan, np.float32)
         last_c = np.full((rows, cols), 255, np.uint8)
@@ -935,7 +973,7 @@ def histories(name, g, d):
             sl = (slice(r0, r1), slice(c0, c1))
             share = pd.to_numeric(r.share, errors="coerce")
             share = 1.0 if not np.isfinite(share) else float(share)
-            m = mw & ag_ok[sl] & (b_share[sl] < share)
+            m = mw & (ag_ok_sf if bool(getattr(r, "in_city", False)) else ag_ok)[sl] & (b_share[sl] < share)
             if not m.any():
                 continue
             cc = np.full(m.shape, c, np.uint8)
@@ -1244,7 +1282,134 @@ def histories(name, g, d):
         n_all[r0:r1] = n
     n = n_all
     log(f"terrain {name}: changes per vertex " + str(np.bincount(n.ravel(), minlength=4).tolist()))
+    ground_under_buildings(name, g, covers, years)
     return covers, years, elev, slope, urban_y, park_y, wood_y
+
+
+def ground_under_buildings(name, g, covers, years):
+    """No building stands over water (owner, 2026-11). The building stages make generated
+    and imputed buildings wait for their ground (sf_export / region_buildings land checks);
+    what still stands over bay, flat, pond or reservoir when it goes up has a researched,
+    recorded or documented date — the ground yields to it here, on the assembled histories:
+
+      * a cell that becomes land later (fill, city) becomes land half a year before the
+        first building on it instead (under any part of a footprint);
+      * a cell that is water for good gets a deck (city ground) under a sizeable building's
+        middle from then on — pier sheds, wharf warehouses; small boathouses are left;
+      * before American settlement (villages, missions): the natural cover there is grass.
+
+    Landmark models (viewer anchors, not bridges) only pull an existing fill date forward."""
+    rows, cols = g["rows"], g["cols"]
+    need = np.full(rows * cols, np.inf, np.float32)     # first building start per cell (any part of a footprint)
+    core = np.full(rows * cols, np.inf, np.float32)     # ... of a sizeable building whose middle is on the cell
+    until = np.full(rows * cols, -np.inf, np.float32)   # last end of those buildings
+
+    def cells(lon, lat):
+        X = np.radians(np.asarray(lon, float)) * 6378137.0
+        Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(np.asarray(lat, float)) / 2))
+        c = np.rint((X - g["X0"]) / g["res"]).astype(np.int64)
+        r = np.rint((g["Y0"] - Y) / g["res"]).astype(np.int64)
+        ok = (c >= 0) & (r >= 0) & (c < cols) & (r < rows)
+        return r * cols + c, ok
+
+    def put(arr, lon, lat, y0, y1=None, sel=None):
+        k, ok = cells(lon, lat)
+        ok &= np.isfinite(y0)
+        if sel is not None:
+            ok &= sel
+        np.minimum.at(arr, k[ok], np.asarray(y0, np.float32)[ok])
+        if y1 is not None:
+            np.maximum.at(until, k[ok], np.asarray(y1, np.float32)[ok])
+
+    cell_m = g["res"] * 0.79
+    min_area = 150.0 if name == "detail" else 2000.0
+    p = INTERIM / "sf_export_final.parquet"
+    if p.exists():
+        b = gpd.read_parquet(p)
+        y0, y1 = b.start_year.values.astype(float), b.end_year.values.astype(float)
+        ext = [np.asarray(gm.exterior.coords)[:, :2] for gm in b.geometry.values]
+        owner = np.repeat(np.arange(len(ext)), [len(e) for e in ext])
+        allv = np.concatenate(ext)
+        put(need, allv[:, 0], allv[:, 1], y0[owner], y1[owner])
+        rp = b.geometry.representative_point()
+        put(need, rp.x.values, rp.y.values, y0, y1)
+        put(core, rp.x.values, rp.y.values, y0, sel=b.to_crs(32610).geometry.area.values >= min_area)
+        del b, ext, owner, allv
+    p = INTERIM / "region_building_points.parquet"
+    if p.exists():
+        r = pd.read_parquet(p)
+        y0, y1 = r.start_year.values.astype(float), r.end_year.values.astype(float)
+        put(need, r.lon.values, r.lat.values, y0, y1)
+        put(core, r.lon.values, r.lat.values, y0, sel=r.area_m2.values >= min_area)
+        # big footprints reach the cells around their middle
+        half = np.sqrt(r.area_m2.values) / 2.0
+        big = half > 0.6 * cell_m
+        if big.any():
+            rb = r[big]
+            hb = np.minimum(half[big], 3 * cell_m)
+            for fx, fy in ((-1, -1), (1, -1), (-1, 1), (1, 1), (0, -1), (0, 1), (-1, 0), (1, 0)):
+                dlon = fx * 0.7 * hb / (111320.0 * np.cos(np.radians(rb.lat.values)))
+                dlat = fy * 0.7 * hb / 110574.0
+                put(need, rb.lon.values + dlon, rb.lat.values + dlat, y0[big], y1[big])
+        del r
+    lm = np.full(rows * cols, np.inf, np.float32)
+    p = INTERIM / "landmark_anchors.json"
+    if p.exists():
+        import json as _json
+        rows_ = [x for x in _json.loads(p.read_text()) if x["kind"] != "bridge"]
+        put(lm, [x["lon"] for x in rows_], [x["lat"] for x in rows_], np.array([x["built"][0] for x in rows_], float))
+    WATERISH = (DEEP, SHALLOW, FLAT, RESERVOIR, SALTPOND)
+    cand = np.flatnonzero(np.isfinite(need) | np.isfinite(lm))
+    cv = covers.reshape(5, -1)
+    yv = years.reshape(4, -1)
+    moved = decks = natural = 0
+    for k in cand:
+        t_any = min(need[k], lm[k]) - 0.6
+        seq = [(float(yv[j, k]), int(cv[j + 1, k])) for j in range(4) if np.isfinite(yv[j, k])]
+        nat = int(cv[0, k])
+        state = nat
+        for y, c in seq:
+            if y <= t_any:
+                state = c
+        if state not in WATERISH:
+            continue
+        earlier = [e for e in seq if e[0] <= t_any]
+        later = [e for e in seq if e[0] > t_any]
+        j = next((i for i, e in enumerate(later) if e[1] not in WATERISH), None)
+        if t_any <= 1800.0:
+            # a village, a mission building: the spot was dry ground
+            if np.isfinite(need[k]) and (j is not None or np.isfinite(core[k])):
+                nat = GRASS
+                new = [e for e in seq if not (e[1] in WATERISH and e[0] < until[k])]
+                natural += 1
+            else:
+                continue
+        elif j is not None:
+            new = earlier + [(t_any, later[j][1])] + later[j + 1:]
+            moved += 1
+        elif np.isfinite(core[k]):
+            tc = float(core[k]) - 0.6
+            new = [e for e in seq if e[0] <= tc] + [(tc, URBAN if tc >= 1849.0 else GRASS)] \
+                + [e for e in seq if e[0] > tc and not (e[1] in WATERISH and e[0] < until[k])]
+            decks += 1
+        else:
+            continue
+        # drop repeats, keep at most four changes (the first and the last three)
+        out, last = [], nat
+        for y, c in new:
+            if c != last:
+                out.append((y, c))
+                last = c
+        if len(out) > 4:
+            out = out[:1] + out[-3:]
+        cv[0, k] = nat
+        for s_ in range(4):
+            if s_ < len(out):
+                yv[s_, k], cv[s_ + 1, k] = out[s_]
+            else:
+                yv[s_, k], cv[s_ + 1, k] = np.nan, 0
+    log(f"terrain {name}: ground under buildings: {moved} cells become land earlier (a building stood on them before "
+        f"their fill date), {decks} water cells get a deck under a building, {natural} cells of pre-1800 sites are dry ground")
 
 
 def write_tiles(name, g, covers, years, elev, deco_fn=None, zooms=None):
@@ -1357,7 +1522,8 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
     mapped = real_farmsteads(g, covers, years, park_y)
     # San Francisco's planted forests (Sutro, Presidio, Golden Gate Park on dunes / scrub)
     lon_g, lat_g = lonlat_of(g)
-    in_sf_g = (lon_g > SF_BOX[0]) & (lon_g < SF_BOX[2]) & (lat_g > SF_BOX[1]) & (lat_g < SF_BOX[3])
+    # (the treeless northern peninsula: today's trees there were planted)
+    in_sf_g = north_peninsula(lon_g, lat_g)
     del lon_g, lat_g
     mapped_mask = mapped[1] if mapped is not None else np.zeros((g["rows"], g["cols"]), bool)
     # generated farmsteads only where no real building is known: within ~300 m of any real
@@ -1398,7 +1564,7 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             start = np.where(np.isfinite(wy), wy + rng.uniform(0, 4, len(fy)), start)
             start = np.where(np.isnan(start) & np.isfinite(py), py + rng.uniform(2, 12, len(fy)), start)
             start = np.where(np.isnan(start) & np.isfinite(uy), uy + rng.uniform(5, 25, len(fy)), start)
-            planted_sf = np.isnan(start) & np.isin(nat, [DUNES, SCRUB]) & at_vertex(in_sf_g, fy, fx)
+            planted_sf = np.isnan(start) & np.isin(nat, [DUNES, SCRUB, GRASS]) & at_vertex(in_sf_g, fy, fx)
             start = np.where(planted_sf, 1890 + rng.uniform(0, 40, len(fy)), start)
             # trees on made land (bay, flats, marsh until filled) can't predate the land
             ly = at_vertex(land_year, fy, fx)
@@ -1864,6 +2030,9 @@ def main():
         write_tiles(name, g, covers, years, elev, deco, zooms)
         write_elevation_lookup(name, g, elev, step)
         np.save(INTERIM / f"grid_{name}_landyear.npy", land_year_of(covers, years))
+        # the assembled histories, for the audits (audit_ground.py: no building over water)
+        np.save(INTERIM / f"grid_{name}_covers.npy", covers)
+        np.save(INTERIM / f"grid_{name}_years.npy", years)
         meta[name] = {"z": g["z"], "tx0": g["tx0"], "ty0": g["ty0"], "tx1": g["tx1"], "ty1": g["ty1"], "zooms": zooms}
     merge_detail_deco()
     prune_unseen_deco()

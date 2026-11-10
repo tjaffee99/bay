@@ -202,10 +202,11 @@ function fmtYear(y: number) {
   return Math.floor(y).toString();
 }
 
-export function buildingsLayer(set: BuildingSet, year: number, quality: boolean, hideReplaced: boolean, id = 'buildings') {
+export function buildingsLayer(set: BuildingSet, year: number, quality: boolean, hideReplaced: boolean, id = 'buildings', visible = true) {
   const colors = quality ? set.qualityColors : set.colors;
   const common = {
     id,
+    visible,
     extruded: true,
     pickable: true,
     material: BUILDING_MATERIAL,

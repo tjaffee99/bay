@@ -54,3 +54,6 @@ soquel_high_building_2
 soquel_high_building_3
 scotts_valley_high_gym
 scotts_valley_high_building_2
+angel_island_detention_barracks
+angel_island_station_hospital
+angel_island_station_power_house

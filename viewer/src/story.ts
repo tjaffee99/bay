@@ -2,10 +2,12 @@
  * Story mode: a guided tour through the map's history (data/tables/story.csv).
  *
  * Each stop has a year, a camera target and a caption. The engine flies to the stop while
- * the year runs to the stop's year, then holds for a reading time (5 s + 55 ms per
- * character, 8–16 s) while the camera turns slowly and — where the stop has a `year_end` —
- * the year runs on, so a building goes up or a district burns and is rebuilt on screen.
- * Any drag, wheel or slider input pauses the tour; it never fights the visitor.
+ * the year runs to the stop's year, then holds for a reading time (2 s + 50 ms per
+ * character, 6–16 s, or the stop's `dwell_s`) while the camera turns slowly and — where the
+ * stop has a `year_end` — the year runs on, so a building goes up or a district burns and
+ * is rebuilt on screen. A `quake` stop shakes the view when the year passes `effect_year`.
+ * The tour starts at the stop of the year the map is showing. Any drag, wheel or slider
+ * input pauses it; it never fights the visitor.
  *
  * Nothing here draws on the map: the engine only moves the camera (MapLibre) and sets the
  * year through the callbacks of main.ts.
@@ -23,6 +25,8 @@ export type StoryHooks = {
   onStart: () => void;
   /** the tour ended or was left */
   onExit: () => void;
+  /** earthquake: 0..1 while the view shakes (the buildings sway with it) */
+  shake?: (amount: number) => void;
 };
 
 export type Story = {
@@ -35,11 +39,12 @@ export type Story = {
   interrupt: () => void;
 };
 
-const FLY_MIN = 3200;
-const FLY_MAX = 7000;
+const FLY_MIN = 2600;
+const FLY_MAX = 5500;
 
+/** Time to hold a stop: the caption is already up during the flight, so this is short. */
 export function readingMs(text: string): number {
-  return Math.max(8000, Math.min(16000, 5000 + 55 * text.length));
+  return Math.max(6000, Math.min(16000, 2000 + 50 * text.length));
 }
 
 function kmBetween(a: [number, number], b: [number, number]): number {
@@ -88,6 +93,41 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   let dur = 0; // length of the current phase, ms
   let done = 0; // share of the dwell already shown when it was paused
   let yearFrom = 0;
+  let yearSetAt = 0; // last year update during a flight (they are spaced out: tiles are loading)
+  let shook = false; // the stop's earthquake has fired
+  let shakeRaf = 0;
+
+  /** The stop to start from when the map shows year y: the one whose years contain or follow it. */
+  function indexForYear(y: number): number {
+    const last = stops.length - 1;
+    if (last < 0 || y >= stops[last].year - 0.5) return 0; // at "today": from the beginning
+    for (let i = 0; i <= last; i++) if ((stops[i].yearEnd ?? stops[i].year) >= y - 0.05) return i;
+    return 0;
+  }
+
+  /** Earthquake: the whole view shakes for a few seconds (and the buildings sway). */
+  function quake(ms = 3000) {
+    if (still) return;
+    const el = map.getContainer();
+    const t1 = performance.now();
+    cancelAnimationFrame(shakeRaf);
+    const step = (t: number) => {
+      const k = (t - t1) / ms;
+      if (k >= 1 || phase === 'off') {
+        el.style.transform = '';
+        hooks.shake?.(0);
+        return;
+      }
+      const env = Math.pow(Math.sin(Math.PI * Math.min(1, k * 1.1)), 0.6) * (1 - 0.35 * k);
+      const a = 7 * env;
+      const dx = a * Math.sin(t * 0.047) + 0.5 * a * Math.sin(t * 0.113 + 2);
+      const dy = a * Math.sin(t * 0.061 + 1) + 0.4 * a * Math.sin(t * 0.127);
+      el.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(1.014)`;
+      hooks.shake?.(env);
+      shakeRaf = requestAnimationFrame(step);
+    };
+    shakeRaf = requestAnimationFrame(step);
+  }
 
   function show(i: number) {
     const s = stops[i];
@@ -112,7 +152,7 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
 
   function camera(opts: Record<string, unknown>, ms: number, fly: boolean) {
     if (still || ms <= 0) map.jumpTo(opts as any);
-    else if (fly) map.flyTo({...opts, duration: ms, essential: true, curve: 1.25} as any);
+    else if (fly) map.flyTo({...opts, duration: ms, essential: true, curve: 1.1} as any);
     else map.easeTo({...opts, duration: ms, essential: true, easing: (t: number) => t} as any);
   }
 
@@ -124,11 +164,14 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
     show(idx);
     const c = map.getCenter();
     const km = kmBetween([c.lng, c.lat], [s.lon, s.lat]);
-    dur = Math.max(FLY_MIN, Math.min(FLY_MAX, FLY_MIN + km * 45)) / speed;
+    dur = Math.max(FLY_MIN, Math.min(FLY_MAX, FLY_MIN + km * 40)) / speed;
     yearFrom = hooks.getYear();
+    yearSetAt = 0;
+    shook = false;
     phase = 'fly';
     setPauseLabel(false);
     t0 = performance.now();
+    // a low arc: fewer zoom levels of tiles to load on the way
     camera({center: [s.lon, s.lat], zoom: s.zoom, pitch: s.pitch, bearing: s.bearing}, dur, true);
     raf = requestAnimationFrame(frame);
   }
@@ -136,7 +179,7 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   function dwell(from: number) {
     const s = stops[idx];
     done = from;
-    dur = (readingMs(s.text) * (1 - from)) / speed;
+    dur = ((s.dwell != null ? s.dwell * 1000 : readingMs(s.text)) * (1 - from)) / speed;
     phase = 'dwell';
     setPauseLabel(false);
     t0 = performance.now();
@@ -149,14 +192,24 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
     const s = stops[idx];
     const k = dur > 0 ? Math.min(1, (t - t0) / dur) : 1;
     if (phase === 'fly') {
-      hooks.setYear(yearFrom + (s.year - yearFrom) * ease(k));
+      // the camera is moving and tiles are loading: the year moves in steps (about ten a
+      // second), not on every frame
+      if (k >= 1 || t - yearSetAt >= 90) {
+        yearSetAt = t;
+        hooks.setYear(yearFrom + (s.year - yearFrom) * ease(k));
+      }
       if (k >= 1) {
         dwell(0);
         return;
       }
     } else {
       const kk = done + (1 - done) * k;
-      if (s.yearEnd != null && s.yearEnd > s.year) hooks.setYear(s.year + (s.yearEnd - s.year) * kk);
+      const yNow = s.yearEnd != null && s.yearEnd > s.year ? s.year + (s.yearEnd - s.year) * kk : s.year;
+      if (s.yearEnd != null && s.yearEnd > s.year) hooks.setYear(yNow);
+      if (s.effect === 'quake' && !shook && (s.effectYear == null ? kk > 0.08 : yNow >= s.effectYear)) {
+        shook = true;
+        quake();
+      }
       elBar.style.width = `${(kk * 100).toFixed(1)}%`;
       if (k >= 1) {
         if (idx + 1 < stops.length) go(idx + 1);
@@ -210,8 +263,9 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
     (window as any).__storyDone = true;
   }
 
-  function start(i = 0) {
+  function start(i?: number) {
     if (!stops.length) return;
+    if (i === undefined) i = indexForYear(hooks.getYear());
     hooks.onStart();
     card.hidden = false;
     card.classList.remove('story-end');
@@ -224,6 +278,9 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   function exit() {
     if (phase === 'off') return;
     cancelAnimationFrame(raf);
+    cancelAnimationFrame(shakeRaf);
+    map.getContainer().style.transform = '';
+    hooks.shake?.(0);
     phase = 'off';
     map.stop();
     card.hidden = true;
@@ -243,7 +300,7 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   q<HTMLButtonElement>('.story-prev').addEventListener('click', () => go(idx - 1));
   q<HTMLButtonElement>('.story-next').addEventListener('click', () => (idx + 1 < stops.length ? go(idx + 1) : finish()));
   elPause.addEventListener('click', toggle);
-  button?.addEventListener('click', () => (phase === 'off' ? start(0) : exit()));
+  button?.addEventListener('click', () => (phase === 'off' ? start() : exit()));
   if (button) button.hidden = !stops.length;
 
   // the visitor takes the camera (drag, wheel, touch, a click on the map): pause

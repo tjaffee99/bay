@@ -163,22 +163,44 @@ def main():
     if ly_path.exists():
         g = grid_def("detail")
         ly = np.load(ly_path)
+
+        def land_at(lon_, lat_):
+            X = np.radians(lon_) * 6378137.0
+            Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(lat_) / 2))
+            c = np.clip(np.rint((X - g["X0"]) / g["res"]).astype(int), 0, g["cols"] - 1)
+            r = np.clip(np.rint((g["Y0"] - Y) / g["res"]).astype(int), 0, g["rows"] - 1)
+            return ly[r, c]
+
         rp = df.geometry.representative_point()
-        X = np.radians(rp.x.values) * 6378137.0
-        Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(rp.y.values) / 2))
-        c = np.clip(np.rint((X - g["X0"]) / g["res"]).astype(int), 0, g["cols"] - 1)
-        r = np.clip(np.rint((g["Y0"] - Y) / g["res"]).astype(int), 0, g["rows"] - 1)
-        land = ly[r, c]
+        land = land_at(rp.x.values, rp.y.values)
+        # ... under the whole footprint, not only its middle: the latest ground any corner
+        # stands on (a warehouse half on the 1870s fill and half on the 1890s fill)
+        ext = [np.asarray(gm.exterior.coords)[:, :2] for gm in df.geometry.values]
+        owner = np.repeat(np.arange(len(ext)), [len(e) for e in ext])
+        allv = np.concatenate(ext)
+        lv = land_at(allv[:, 0], allv[:, 1])
+        corner = np.full(len(df), -np.inf)
+        okv = np.isfinite(lv)
+        np.maximum.at(corner, owner[okv], lv[okv])
+        land = np.where(np.isfinite(corner), np.fmax(land, corner), land)
         early = np.isfinite(land) & (df.start_year.values < land - 0.5)
         soft = early & (df.year_confidence.values != "exact")
-        # wharves, piers, beached ships, gold-rush buildings on piles over the cove (1852 chart)
-        documented = df.source.fillna("").isin(["early_sf", "notable_pre1906", "ohm_sf_goldrush"]).values
+        # wharves, piers, beached ships, gold-rush buildings on piles over the cove (1852
+        # chart): the terrain stage gives these their ground (terrain_tiles.ground_under_buildings).
+        # Not the tent camps and other groups scattered at random round a point: a tent that
+        # the dice put in the cove waits for the fill like any generated building.
+        documented = df.source.fillna("").isin(["early_sf", "notable_pre1906", "ohm_sf_goldrush"]).values \
+            & ~df.sf16_bldgid.astype(str).str.startswith("pred:n:").values
         fix = soft & ~documented
         df.loc[fix, "start_year"] = land[fix] + 0.5 + (df.index.values[fix] % 7) * 0.3
         drop = fix & (df.start_year.values >= df.end_year.values - 0.5)
         log(f"export: land check: {early.sum()} buildings predate their ground; moved {fix.sum()} generated/imputed "
-            f"(dropped {drop.sum()} that no longer fit), kept {(early & ~fix).sum()} exact/documented (piers, wharves)")
+            f"(dropped {drop.sum()} that no longer fit), kept {(early & ~fix).sum()} exact/documented (the ground yields)")
         df = df[~drop].reset_index(drop=True)
+    # the buildings as exported (after the land check), for the terrain stage's
+    # "no building over water" pass and the audits
+    keep_cols = [c for c in ("start_year", "end_year", "source", "year_confidence", "year_reason", "sf16_bldgid", "geometry") if c in df.columns]
+    df[keep_cols].to_parquet(_I / "sf_export_final.parquet")
 
     n = len(df)
     log(f"export: {n} polygons")

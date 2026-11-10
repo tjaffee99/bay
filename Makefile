@@ -4,7 +4,7 @@
 PY := .venv/bin/python
 P  := cd pipeline &&
 
-.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads transit ground-detail region-download region region-trees airports dev build deploy shots clean-interim
+.PHONY: setup sf download land fire overture join buildings predecessors export trees ground terrain baylands grid tiles roads transit ground-detail region-download region region-trees airports landmark-ground dev build deploy shots clean-interim
 
 setup:
 	python3 -m venv .venv
@@ -65,6 +65,12 @@ ground-detail: export
 # opening year (data/tables/airports.csv); airport outlines turn the terrain to airfield grass
 airports: grid
 	$(P) ../$(PY) airports.py
+
+# fine ground elevation around every landmark model (the viewer's coarse lookup buried
+# Fort Ross and Lick Observatory): rerun after the terrain grids or the landmarks change
+landmark-ground:
+	cd viewer && node scripts/landmark_anchors.mjs
+	$(P) ../$(PY) landmark_ground.py
 
 # ---- five counties around SF (Phase 5): Overture footprints + assessor / survey years
 # (data/research/region_buildings.md), z13 building tiles (not committed, shipped by deploy)

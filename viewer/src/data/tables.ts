@@ -101,6 +101,11 @@ export type StoryStop = {
   title: string;
   text: string;
   source: string;
+  /** 'quake': the view shakes when the year passes effectYear */
+  effect: string;
+  effectYear: number | null;
+  /** seconds to hold the stop (null: by the length of the text) */
+  dwell: number | null;
 };
 
 const num = (v: string | undefined, d: number) => (v !== undefined && v !== '' && Number.isFinite(+v) ? +v : d);
@@ -117,7 +122,10 @@ export const story: StoryStop[] = table('story')
     orbit: num(r.orbit, 20),
     title: r.title,
     text: r.text,
-    source: r.source_url || ''
+    source: r.source_url || '',
+    effect: (r.effect || '').trim(),
+    effectYear: r.effect_year ? +r.effect_year : null,
+    dwell: r.dwell_s ? +r.dwell_s : null
   }))
   .filter(s => Number.isFinite(s.year) && Number.isFinite(s.lon) && Number.isFinite(s.lat) && s.title);
 

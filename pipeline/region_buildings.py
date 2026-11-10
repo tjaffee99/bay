@@ -450,19 +450,29 @@ def write_recorded_points(g, year, conf):
     log(f"region: {int(ex.sum())} recorded years written for the terrain's ground evidence")
 
 
-def land_check(g, year):
-    p = INTERIM / "grid_region_landyear.npy"
-    if not p.exists():
+def land_under(geoms):
+    """Year the ground under each footprint became dry land (NaN: always land, or still
+    water): the latest of its middle and four points toward its corners, on the finest
+    terrain grid there (airports.land_year: 30 m detail grid, then the 60 m region grid)."""
+    import shapely
+    from airports import land_year
+    geoms = np.asarray(geoms)
+    rp = shapely.point_on_surface(geoms)
+    cx, cy = shapely.get_x(rp), shapely.get_y(rp)
+    b = shapely.bounds(geoms)
+    out = land_year(cx, cy)
+    for fx, fy in ((0.15, 0.15), (0.85, 0.15), (0.15, 0.85), (0.85, 0.85)):
+        ly = land_year(b[:, 0] + fx * (b[:, 2] - b[:, 0]), b[:, 1] + fy * (b[:, 3] - b[:, 1]))
+        out = np.where(np.isfinite(ly), np.fmax(out, ly), out)
+    return out
+
+
+def land_check(g, year, land=None):
+    """Nothing stands before its ground: buildings on made land wait for it. (Researched
+    dates are not passed here: the terrain stage gives those their ground.)"""
+    if not (INTERIM / "grid_region_landyear.npy").exists():
         return year
-    from terrain_grid import grid_def
-    gR = grid_def("region")
-    ly = np.load(p)
-    rp = g.geometry.representative_point()
-    X = np.radians(rp.x.values) * 6378137.0
-    Y = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(rp.y.values) / 2))
-    c = np.clip(np.rint((X - gR["X0"]) / gR["res"]).astype(int), 0, gR["cols"] - 1)
-    r = np.clip(np.rint((gR["Y0"] - Y) / gR["res"]).astype(int), 0, gR["rows"] - 1)
-    land = ly[r, c]
+    land = land_under(g.geometry.values) if land is None else land
     early = np.isfinite(land) & (year < land - 0.5)
     year = np.where(early, land + 0.5, year)
     log(f"region: land check moved {early.sum()} buildings onto ground that existed")
@@ -632,8 +642,12 @@ def main():
     # zones are coarse: the Richmond shipyard box pushed the 1931 Ford plant to 1941)
     known = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
     write_recorded_points(g, year, conf)
-    year = np.where(known, year, land_check(g, year))
+    land = land_under(g.geometry.values) if (INTERIM / "grid_region_landyear.npy").exists() else np.full(len(g), np.nan)
+    year = np.where(known, year, land_check(g, year, land))
     start = row_timing(g, year)
+    # (the sub-year timing must not put a building back before its ground)
+    start = np.where(~known & np.isfinite(land) & (start < land + 0.05), land + 0.05 + 0.4 * (start % 1.0), start)
+    del land
     # stepped massing from airborne LiDAR in the downtowns (lidar_parts.py region jobs):
     # footprints with several roof levels become parts that keep their building's years
     g, rows, lidar_h, lgroup = lidar_parts_region(g, start)
@@ -686,6 +700,19 @@ def main():
         pred = pred.assign(height=pred.height.values + (pmean - pmin) + 1.0, base=pmin - 1.0, raw_year=0,
                            mat=pmat.astype(np.uint8), roof=proof, fid_key=pred.mapblklot.astype(str),
                            stories=pred.stories.fillna(2).values)
+        # generated and traced vanished buildings wait for their ground too (documented ones
+        # — researched tables — keep their dates: the terrain stage gives them their ground)
+        if (INTERIM / "grid_region_landyear.npy").exists():
+            pland = land_under(pred.geometry.values)
+            psrc = pred.get("source", pd.Series("", index=pred.index)).fillna("").astype(str)
+            # (groups scattered at random round a point — camps, villages — are not evidence)
+            pdoc = psrc.str.startswith(("notable", "early", "known")).values & ~pred.mapblklot.astype(str).str.startswith("n:").values
+            pearly = np.isfinite(pland) & (pred.start_year.values.astype(float) < pland + 0.05) & ~pdoc
+            pred.loc[pearly, "start_year"] = pland[pearly] + 0.3
+            pgone = pearly & (pred.start_year.values.astype(float) >= pred.end_year.values.astype(float) - 0.5)
+            log(f"region: land check moved {int(pearly.sum())} vanished buildings onto ground that existed "
+                f"({int(pgone.sum())} dropped: gone before their ground)")
+            pred = pred[~pgone]
         pc_ = pred[cols].set_crs(4326, allow_override=True)
         g = gpd.GeoDataFrame(pd.concat([g.set_crs(4326, allow_override=True), pc_], ignore_index=True), geometry="geometry", crs=4326)
         log(f"region: + {len(pred)} vanished buildings ({pred.year_confidence.value_counts().to_dict()})")

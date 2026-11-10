@@ -69,7 +69,8 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
     colors: new Float32Array(total * 3),
     times: new Float32Array(total * 4),
     pickingColors: new Float32Array(total * 3),
-    builds: new Float32Array(total)
+    builds: new Float32Array(total),
+    heights: new Float32Array(total)
   };
   let o = 0;
   LANDMARKS.forEach((lm, idx) => {
@@ -82,6 +83,9 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
     const ax = lm.anchor[0] - ORIGIN[0];
     const ay = lm.anchor[1] - ORIGIN[1];
     const pc = [(idx + 1) % 256, Math.floor((idx + 1) / 256) % 256, Math.floor((idx + 1) / 65536) % 256];
+    // the model's full height (it rises to it while under construction)
+    let top = 1;
+    for (let v = 0; v < n; v++) top = Math.max(top, pos[v * 3 + 2]);
     for (let v = 0; v < n; v++) {
       const k = o + v;
       merged.positions[k * 3] = ax + pos[v * 3] / kx;
@@ -92,6 +96,7 @@ export async function loadLandmarks(): Promise<LandmarkSet> {
       merged.times[k * 4 + 2] = lm.end;
       merged.times[k * 4 + 3] = base;
       merged.builds![k] = lm.kind === 'bridge' ? 1 : 0;
+      merged.heights![k] = top + 0.5;
       merged.pickingColors[k * 3] = pc[0];
       merged.pickingColors[k * 3 + 1] = pc[1];
       merged.pickingColors[k * 3 + 2] = pc[2];
