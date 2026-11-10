@@ -83,6 +83,7 @@ PROJECT_DATES = {
     # collection start .. end of the work unit (USGS WESM.csv, rockyweb.usgs.gov/vdelivery/Datasets/
     # Staged/Elevation/metadata/WESM.csv), mid-date
     "CA_NorthernCA_1_B22": 2022.78,        # 2022-09-13 .. 2022-11-11, QL1 (Sonoma County)
+    "USGS_LPC_CA_Sonoma_A4_2013_LAS_2017": 2013.8,  # 2013-09-28 .. 2013-11-11, QL2 (Sonoma Veg Map)
     "CA_SolanoCounty_1_A23": 2023.04,      # 2022-12-26 .. 2023-02-06, QL1
     "CA_NorthCoastRanges_2_B23": 2023.83,  # 2023-09-16 .. 2023-12-15, QL1 (Napa County)
     "CA_SantaCruzCounty_2020": 2020.26,    # 2020-03-22 .. 2020-04-15, QL1
