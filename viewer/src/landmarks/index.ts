@@ -19,6 +19,8 @@ import {BATCH4} from './batch4';
 import {EASTBAY} from './eastbay';
 import {SOUTHBAY} from './southbay';
 import {PORTS} from './ports';
+import {NORTHBAY} from './northbay';
+import {COASTSOUTH} from './coastsouth';
 
 export const LANDMARKS: Landmark[] = [
   goldenGateBridge,
@@ -35,7 +37,9 @@ export const LANDMARKS: Landmark[] = [
   ...BATCH4,
   ...EASTBAY,
   ...SOUTHBAY,
-  ...PORTS
+  ...PORTS,
+  ...NORTHBAY,
+  ...COASTSOUTH
 ];
 
 export type LandmarkSet = {
