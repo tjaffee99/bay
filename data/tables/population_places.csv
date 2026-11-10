@@ -1654,8 +1654,7 @@ Ben Lomond,cdp,Santa Cruz,2020,6337,https://dof.ca.gov/media/docs/forecasting/De
 Bonny Doon,cdp,Santa Cruz,2010,2678,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607470
 Bonny Doon,cdp,Santa Cruz,2020,2868,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607470
 Boulder Creek,cdp,Santa Cruz,1890,489,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place reported as a town (legal status unclear before 1900) (Gibson 2007, township and place tables)",0607652
-Boulder Creek,cdp,Santa Cruz,1910,544,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated i. 1902/ 
-d.1915",0607652
+Boulder Creek,cdp,Santa Cruz,1910,544,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated town 1902-1915 (disincorporated; a CDP today)",0607652
 Boulder Creek,cdp,Santa Cruz,1950,1497,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0607652
 Boulder Creek,cdp,Santa Cruz,1970,1806,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boulder Creek CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607652
 Boulder Creek,cdp,Santa Cruz,1980,5662,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boulder Creek CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607652
@@ -1675,8 +1674,7 @@ Day Valley,cdp,Santa Cruz,1990,2842,https://www2.census.gov/library/publications
 Day Valley,cdp,Santa Cruz,2000,3587,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0618153
 Day Valley,cdp,Santa Cruz,2010,3409,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0618153
 Day Valley,cdp,Santa Cruz,2020,3410,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0618153
-Felton,cdp,Santa Cruz,1880,271,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated i. ~1875/ 
-d.1917",0623826
+Felton,cdp,Santa Cruz,1880,271,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated town c.1875-1917 (disincorporated; a CDP today)",0623826
 Felton,cdp,Santa Cruz,1890,259,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623826
 Felton,cdp,Santa Cruz,1970,2062,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Felton CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0623826
 Felton,cdp,Santa Cruz,1980,4564,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Felton CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0623826

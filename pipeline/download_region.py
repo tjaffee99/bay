@@ -386,6 +386,15 @@ def osm_start_date():
     tiles_dir = YEARS_RAW / "osm_start_date" / "tiles"
     tiles_dir.mkdir(parents=True, exist_ok=True)
     s = _session()
+    # fail fast when no endpoint answers (otherwise every tile waits out its retries)
+    for u in dict.fromkeys(OVERPASS):
+        try:
+            if s.post(u, data={"data": "[out:json][timeout:10];node(1);out ids;"}, timeout=30).ok:
+                break
+        except Exception:
+            pass
+    else:
+        raise RuntimeError("no Overpass endpoint reachable")
     step = 0.25
     elements, base = {}, None
     for tag, counties in BATCHES.items():

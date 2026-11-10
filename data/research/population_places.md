@@ -1,5 +1,9 @@
 # Population by place, 1850–2026 (`data/tables/population_places.csv`)
 
+> **Ten-county extension (2026-11-10).** The table now also covers Napa, Santa Cruz, Solano and Sonoma, and the region
+> row is `Bay Area (10 counties)`. See *Ten-county extension* at the end; the text in between describes the original
+> six-county table and still holds for those rows.
+
 Census populations for every city, town and census-designated place (CDP) in the six counties that the map covers
 (San Francisco, San Mateo, Santa Clara, Alameda, Contra Costa, Marin), the six counties, and their sum. The
 counter can show the population of the city under the camera when zoomed in, and the six-county total when
@@ -172,7 +176,43 @@ Each place and year takes its value from the first source in this list that has 
   The 1970 report's OCR text is too noisy to parse automatically, and the
   1980 report (*Number of Inhabitants*, `1980a_caab-*.pdf`) is a scan with no text layer. More values could be read
   from those pages by hand.
-* Napa, Solano and Sonoma counties are not covered (the buildings layer doesn't cover them yet either).
+* Napa, Solano and Sonoma counties were not covered at first; they and Santa Cruz are since 2026-11-10 (next section).
+
+## Ten-county extension (2026-11-10)
+
+658 rows were added for **Napa, Santa Cruz, Solano and Sonoma** with the same sources, precedence and note wording
+(built by the scratch script `pop_build.py` from the cached downloads; values were not typed by hand):
+
+* **4 counties**, every census 1850–2020 and the 2026 E-1 estimate (76 rows). All four have federal 1850 counts
+  (Napa 405, Santa Cruz 643, Solano 580, Sonoma 560).
+* **25 incorporated places** (353 rows): Napa 5 (American Canyon, Calistoga, Napa, St. Helena, Yountville), Santa Cruz 4
+  (Capitola, Santa Cruz, Scotts Valley, Watsonville), Solano 7 (Benicia, Dixon, Fairfield, Rio Vista, Suisun City,
+  Vacaville, Vallejo), Sonoma 9 (Cloverdale, Cotati, Healdsburg, Petaluma, Rohnert Park, Santa Rosa, Sebastopol, Sonoma
+  and the town of Windsor). DOF from incorporation plus a 2026 estimate; 22 earlier counts from Gibson's township and
+  place tables (Napa 1870; Santa Cruz, Watsonville, Santa Rosa and Healdsburg 1860; Fairfield, Vacaville, Rio Vista,
+  Dixon 1870–90; Yountville 1880 / 1890 / 1940; Calistoga 1880; Sebastopol 1880; Windsor 1880 / 1940) and the CPH-2
+  counts of the places that were CDPs in 1970–90 (American Canyon, Windsor, Scotts Valley 1970, …).
+* **65 CDPs** (229 rows), i.e. every TIGER 2024 CDP of the four counties, not only those above 5,000: 2020 for all,
+  2010 for 62, 2000 for 31, 1970–90 from CPH-2 Table 9 where the CDP then existed under the same name, and 11 Gibson
+  counts of unincorporated places (Soquel 1880 / 1940, Guerneville 1880 / 1940, Boulder Creek 1890 / 1950, Elmira 1880 /
+  1890, Freedom 1940 / 1950, El Verano 1940). Felton (1880, 1890) and Boulder Creek (1910) also have DOF rows from
+  their years as incorporated towns (Felton c.1875–1917, Boulder Creek 1902–1915).
+* **Region**: the 19 region rows were renamed `Bay Area (10 counties)` and recomputed as the sum of the ten county rows
+  (2020: 8,036,501 = the nine-county 7,765,640 of `population.csv` + Santa Cruz 270,861; 2026: 7,940,673). 1850 is the sum
+  of the eight counties that existed (48,215: five federal counts + the three 1852 substitutes).
+  `pipeline/cities.py` no longer reads the region rows: it sums the county rows of its `COUNTIES` list and writes the
+  label `Bay Area (N counties)`, so the viewer's wording follows the mapped counties (the viewer never held the text
+  "(6 counties)"; it shows `region_label` from `cities.json`). The region rows stay in the CSV as a cross-check
+  (cities.py logs a difference).
+* **Places outside the mapped counties** (Winters, Davis, Pajaro, Tracy … inside the extent's margin) are not in
+  `cities.json`: `cities.py` keeps a TIGER place only when its interior point lies in one of the ten counties.
+
+Differences left as they are (DOF kept, as for the six counties): St. Helena 1930 is 1,701 in DOF and 1,582 in Gibson;
+the 1970 values of Napa (35,978 / 36,103), Sonoma (4,112 / 4,259) and Watsonville (14,569 / 14,719) differ between DOF
+and the 1990 CPH-2 re-tabulation. Not TIGER 2024 places, so no rows: Roseland and South Santa Rosa CDPs (annexed by
+Santa Rosa), Opal Cliffs CDP, Suscol / Soscol 1880 (332), Silveyville 1870 (279), Batavia 1870 (200), South Park 1950,
+Boyes Springs-Fetters Springs 1950 (2,391), Twin Lakes-Delmar 1950 (6,733). Gibson's rows for Santa Cruz city by
+township part (1880–1910) were not used.
 
 ## Using it in the viewer (suggestion)
 

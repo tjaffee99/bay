@@ -70,7 +70,7 @@ function tileLayer(
     visibleMinZoom: loadFrom,
     visibleMaxZoom: loadTo,
     maxCacheSize: 900,
-    extent: [-123.2, 36.85, -121.2, 38.9],
+    extent: [-123.68, 36.78, -121.16, 38.91],
     getTileData: async ({index: t}: any) => {
       if (!set.has(`${t.x}/${t.y}`)) return null;
       // outside the map's extent (Morgan Hill, Antioch, …): not drawn

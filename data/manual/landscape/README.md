@@ -15,6 +15,7 @@ Built by `pipeline/landscape.py` (dunes), `pipeline/landscape_water.py`, `pipeli
 | `agriculture.geojson` | Dated agricultural land use for the five modelled counties' farm belts, plus the south Santa Clara Valley. One feature per (place, era). |
 | `broek_1931_landscape_types.geojson` | A tracing of Broek's (1932) *Schematic map of landscape types of the Santa Clara Valley, 1931*. It covers all classes, including bay marshes, cities and the range-front "border landscapes". |
 | `dunes.geojson` | The historic (pre-urban) sand dunes of the region. |
+| `valley_floor_extra.geojson` | **Estimated** farm-ground outlines where no Quaternary map exists (Santa Cruz County: Pajaro Valley floor and bottoms, the coast terraces) or where the farm belt lies on low hills mapped as bedrock (Gold Ridge, Montezuma Hills). Derived from the terrain grid; read by `landscape_agriculture.valley_floor()`. See *Ten-county extension*. |
 | `water_history.csv` | Dated water: lakes and reservoirs, the dredged estuary and harbours, the Tidal Canal, salt-pond complexes and diked baylands. |
 | `south_bay_salt_phases.geojson` | The South Bay salt-pond and diked-bayland phases (San Lorenzo Creek → Ravenswood), dated from the USGS 1896–1961 sheets, the 1907 Coast Survey chart and the salt-industry histories; source of the `sb_*` rows of `water_history.csv`. See `README_south_bay_baylands.md` (decade-by-decade history, evidence, recommended code changes). |
 
@@ -35,7 +36,7 @@ Built by `pipeline/landscape.py` (dunes), `pipeline/landscape_water.py`, `pipeli
 | `orchard_share` | For `farm_mixed` only: the part of `share` that should be drawn as orchard trees. |
 | `layer` | The evidence behind the feature (next table). |
 | `district` | The farm district id (see the districts table). |
-| `confidence` | `mapped_1940s`, `mapped_1931` or `estimated` (geometry and/or dates generalised). |
+| `confidence` | `mapped_1940s`, `mapped_1931`, `mapped_today` (OpenStreetMap outline, estimated dates) or `estimated` (geometry and/or dates generalised). |
 | `snapshot_year` | 1931 for Broek features. |
 | `source`, `source_url`, `note` | Where the feature comes from, and why. |
 
@@ -47,6 +48,7 @@ Built by `pipeline/landscape.py` (dunes), `pipeline/landscape_water.py`, `pipeli
 | `broek_1931` | **Traced.** Broek's 1931 landscape types for Palo Alto → Gilroy (→ Hollister): orchard formation, orchards mixed with small crops, small crops, pastures, and the northern Santa Cruz foothills. Pieces covered by a topo orchard are removed, because the topo is more precise. | `year_start`/`year_full` come from the district history. |
 | `district_era` | **Estimated generalisation.** A district's era painted on its valley floor. The valley floor is the USGS Quaternary geology (Witter et al. 2006, plus Knudsen et al. 2000 outside it). It is split by soil drainage: **fan** (Holocene fans, levees, terraces: the loams of the wheat belt and later the orchards); **basin** (basin clays near the bay, "adobe": pasture, hay, dairies, truck crops); **upper_fan** (Pleistocene fans and terraces at the foothills: the gravelly belt, brush until about 1870, then vineyards). | Researched per district, with the source in `source_url` / `note`. |
 | `special` | Estimated rings around documented special crops: Pleasanton hops, the Niles nursery, Redwood City flower nurseries, Bay Farm Island asparagus, Alvarado sugar beets. | As cited. |
+| `osm_today` | **Real, but today's.** Vineyards and orchards as mapped in OpenStreetMap (`landuse=vineyard` / `orchard`, via Overture `region5_land_use.parquet`), merged across block roads; only in the districts of the ten-county extension. Not restricted to the valley floor (hill vineyards are real). | `year_start` / `year_full` = the district's modern planting era (`osm` in the district dict) - **estimated**; `confidence` = `mapped_today`. |
 
 **How features combine.** At a given year, a cell takes the active feature with the latest `year_start`. On ties, use the order `special` > `topo_1940s` > `broek_1931` > `district_era`. A feature with `share` < 1 applies only to its share of the cells; the remaining cells keep the earlier feature. So the grain era is the base layer, and orchards, vineyards and truck crops are drawn over it. The valley-floor geology is the extent of "flat farmland". All features are clipped off the SFEI c.1800 bay, flats, marsh and natural salt ponds; diked baylands are in `water_history.csv`. Hills stay natural or grazed grassland, which is what they were. Grazing does not change the look, so there are no hill features except West Marin's dairy valleys.
 
@@ -93,6 +95,32 @@ All dates are `estimated` unless the row's `note` cites a dated event. Sources a
 | `mn_novato` | 1856→62 | pasture 1856 | 1858→70, estimated 15 % (LOW) | – | |
 | `mn_san_rafael` | 1855→60 | dairy 1855 | – | – | |
 | `mn_west` (Point Reyes, Nicasio, Tomales) | – | dairy 1857 | – | – | Shafter–Howard dairy leases from 1857 |
+| **Ten-county extension** (below: further eras as *crop start→full, share*) | | | | | |
+| `son_petaluma` | 1852→58 | pasture / dairy 1855 | – | OSM 1975→2005 | chicken ranches 1885→1915 (60 %, to 1965; Byce incubator 1879); dairy pasture again 1958→75 |
+| `son_sonoma_valley` | 1850→58 | hay 1860 | prunes / pears / hay mixed 1895→1920, 50 % of the fans | benches 1858→80, 50 %; fans 1860→80, 25 %; replanting 1968→95, 55 % + OSM | Buena Vista 1857; ~4,000 acres of vines by 1900 |
+| `son_santa_rosa_plain` | 1853→60 | pasture / dairy 1855 | prunes, pears, apples 1890→1915, 35 % | 1972→2000, 12 % + OSM | hops 1880→95 (10 %, to 1950); pasture / rural after 1962→80 |
+| `son_gold_ridge` (Sebastopol, Graton, Forestville) | 1855→65 (potatoes, grain) | pasture 1855 | **Gravenstein apples 1890→1915, 60 %** | OSM 1985→2010 | ground = estimated outline of the low hills; orchards pulled 1975→2005 |
+| `son_russian_river` (Healdsburg, Windsor) | 1856→62 | pasture 1856 | prunes 1895→1925, 50 % ("Buckle of the Prune Belt") | benches 1872–, 40 %; replanting 1970→95, 60 % + OSM | hops 1880→95 (15 %, to 1952) |
+| `son_dry_creek` | 1858→65 | pasture 1858 | prunes 1900→25, 60 % | benches 1870–, 35 %; 1972→95, 70 % + OSM | |
+| `son_alexander_valley` (Geyserville, Cloverdale) | 1856→65 | pasture 1856 | prunes 1895→1925, 50 % | benches 1881– (Asti), 35 %; 1965→95, 65 % + OSM | hops 1885→1900 (10 %, to 1950) |
+| `son_coast_dairy` (Bodega, Valley Ford, Bloomfield, Tomales) | 1853→60 (potatoes, oats) | pasture 1855 | – | – | dairy pasture on the whole floor 1865 |
+| `son_coast_north` (Jenner → Gualala terraces) | – | – | – | – | sheep / cattle pasture 1860 |
+| `napa_lower` (Napa, Carneros, American Canyon) | 1850→56 | hay 1856 | prunes, pears, cherries 1890→1915, 25 % | benches 1868–, 30 %; OSM 1968→95 | |
+| `napa_valley_mid` (Yountville → St. Helena) | 1852→58 | pasture 1855 | prunes / walnuts 1898→1925, 20 % | **first boom 1868→85, 50 %**; OSM 1965→90 | 443 vineyards by 1880; phylloxera 1890s; Prohibition 1920 |
+| `napa_calistoga` (+ Knights Valley) | 1855→62 | pasture 1855 | prunes / walnuts 1900→25, 20 % | 1875→90, 35 %; OSM 1968→95 | |
+| `napa_pope_berryessa` | 1866→72 | pasture 1860 | – | OSM 1975→2000 | Berryessa Valley floor is under the lake (not drawn) |
+| `sol_benicia_vallejo` | 1850→56 | pasture 1855 | – | – | |
+| `sol_suisun_green_valley` | 1852→58 | pasture 1855 | cherries, pears, apricots 1880→1900, 45 % + OSM | benches 1860–1920, 20 %; OSM 1975→2005 | |
+| `sol_vaca_valley` | 1851→58 | pasture 1855 | **early fruit 1875→90, 40 %** + OSM | – | pasture after 1955→80 (30 %) |
+| `sol_dixon` (Dixon, Elmira, Maine Prairie) | 1855→65 (dry-farmed) | pasture 1860 | OSM orchards (walnuts, almonds) 1965→2005 | – | irrigated alfalfa, dairies, beets, tomatoes 1915→65 (60 %) |
+| `sol_montezuma_hills` | dry-farmed wheat / barley with sheep 1862→75, 60 % | pasture 1860 | – | – | ground = estimated outline; years UNVERIFIED |
+| `sol_delta` (Rio Vista, Ryer Island, Cache Slough) | – | swamp pasture 1862 | – | – | reclaimed: asparagus, beans, corn, grain 1872→1915 (90 %) |
+| `cc_delta_islands` (Jersey → Byron tracts, Bethel Island) | – | swamp pasture 1860 | – | – | reclaimed peat: asparagus, potatoes, beans, celery 1872→1915 (90 %) |
+| `scz_pajaro_valley` | 1852→58 (wheat, potatoes) | pasture 1855 | **apples 1890→1910, 50 %** + OSM | – | sugar beets 1888→92 (30 %, to 1900; Spreckels factory 1888–98); berries / lettuce 1925→65 (40 %) |
+| `scz_soquel_aptos` | 1855→65 | pasture 1855 | orchards / poultry / bulbs mixed 1900→20, 50 % | – | |
+| `scz_north_coast` (Santa Cruz → Waddell terraces) | – | – | – | – | dairy pasture 1860; Brussels sprouts / artichokes 1920→40 (55 %) |
+| `scz_mountains` | – | – | OSM 1885→1905 | OSM 1970→95 | logging: `landcover_history.csv` `scz_*` |
+| `scv_gilroy` (addition) | | | | | seed farms, garlic, row crops 1945→70 (50 %) |
 
 ### Broek 1931 tracing (`broek_1931_landscape_types.geojson`)
 
@@ -122,6 +150,43 @@ The class raster then gets two majority filters. Town blobs smaller than 0.4 km�
 - Units are generalised. The orchard formation includes farmsteads, roads and villages.
 - The bottom of the map (Bolsa de San Felipe, Hollister) is San Benito County and lies outside the model.
 - Broek's Map II (simplified soils, after Cosby) was **not** traced. Its belts are the same as the geology split used here.
+
+### Ten-county extension (2026-11)
+
+Districts were added for Sonoma, Napa, Solano and Santa Cruz counties, the Delta tracts of Contra Costa and the Montezuma Hills (24 districts, table above), in the same form as the first 33. What is different:
+
+- **Farm region** (`farm_region()`): the hand outline of the first five counties plus the whole of Sonoma, Napa, Solano and Santa Cruz and the rest of Marin, Contra Costa and Santa Clara (TIGER county outlines) - without the Diablo Range valleys of Henry Coe State Park. New seeds change the Voronoi cells of four old districts on purpose: `mn_novato` no longer paints Petaluma and the Sonoma Valley baylands, `mn_west` ends near the county line (Tomales goes with the Bodega dairy belt), `cc_oakley_antioch` / `cc_brentwood_byron` give the Delta tracts to `cc_delta_islands`.
+- **Valley floor**: USGS OF 00-444 (Knudsen 2000) covers Sonoma, Napa, Solano, east Contra Costa and south Santa Clara with the same classes. Santa Cruz County is "not mapped" there, and two farm belts lie on low hills the map shows as bedrock. For these `valley_floor_extra.geojson` holds **estimated** outlines (83 polygons), made from the terrain grid (USGS 3DEP, 76 m cells: `data/interim/grid_region_elev.npy`) and ESA WorldCover 2021 inside hand-drawn rings, used only where the geology gives no valley floor:
+
+  | `area` | class | rule inside the ring | km² |
+  |---|---|---|---|
+  | `pajaro_valley_floor` | fan | 8–70 m, slope < 2.5°, no tree cover, Santa Cruz County side of the river | 56 |
+  | `pajaro_valley_bottom` | basin | 1.5–8 m, slope < 2° (Watsonville / Harkins / Struve sloughs) | 13 |
+  | `santa_cruz_north_coast_terraces` | upper_fan | 10–150 m, slope < 5°, no tree cover (Wilder Ranch → Waddell Creek) | 15 |
+  | `santa_cruz_mid_county_terraces` | upper_fan | 6–130 m, slope < 4°, no tree cover (Live Oak, Soquel, Aptos, La Selva) | 20 |
+  | `gold_ridge` | upper_fan | 25–280 m, slope < 8° (Wilson Grove Formation sandy loam west of the Laguna de Santa Rosa) | 130 |
+  | `montezuma_hills` | upper_fan | 6–100 m, slope < 9°, WorldCover grass / cropland | 231 |
+
+  The real maps to replace them: Brabb (1997), *Geologic map of Santa Cruz County* (USGS OF 97-489, digital) for the alluvium and marine terraces; the USDA soil surveys (Goldridge series, Sonoma County 1972; Solano County 1977).
+- **`eras`**: a district can list further eras (hops, prunes, apples, poultry, row crops, replanting …), each on named soil classes with a share. The shares are nested (the terrain uses one blob field), so a later era with a larger share replaces an earlier one with a smaller share on the same soil - prunes over the phylloxera / Prohibition vineyards, vineyards over the prunes after 1965. Hops are drawn as `vineyard` (trellis rows), like Pleasanton's.
+- **`osm_today`**: today's vineyards and orchards are real OpenStreetMap outlines (Napa 191 km² of vineyards - about the county's bearing acreage; Sonoma 107 km², roughly half of it; Solano orchards 136 km²), dated by the district's modern planting era. Where OSM is thin (Sonoma) a district-level replanting era fills in by share.
+- **Checked against acreage** (district eras × share): Napa first-boom vineyards 73 km² (≈ 18,000 acres c.1890), Napa prunes / walnuts 53 km², Sonoma prunes and other tree fruit ≈ 120 km², Sonoma hops ≈ 20 km², Gold Ridge apples 77 km², Pajaro apples 28 km² (Santa Cruz County side), Petaluma chicken ranches 54 km².
+- **Related rows elsewhere**: redwood logging and second growth in `data/tables/landcover_history.csv` (`scz_san_lorenzo_redwoods` –1905, `scz_aptos_soquel_redwoods` –1923, `scz_north_coast_redwoods` –1915, `son_russian_river_redwoods` –1900, `son_coast_redwoods` –1910; only the Nisene Marks dates are documented, the others estimated); Suisun Marsh diking in `water_history_extra.csv` (`suisun_marsh_diked`, 1890, LOW).
+
+**What the terrain does with it - needs a change in `terrain_tiles.py`.** The terrain keeps, per cell, only the *first* and the *last* farm era of this file. The new valleys have three or four (grain → vineyards / hops → prunes or apples → vineyards or pasture), so the middle eras - the prune and apple decades of 1900–1965 - are dropped wherever a later era or an OSM vineyard covers the cell. The terrain has four change slots per cell; keeping the era before the last one as well (first, previous, last) shows the full sequence. Once that is in, the four ring rows `napa_vineyards_first_boom`, `napa_orchards_prohibition`, `napa_vineyards_modern` and `sonoma_valley_vineyards` of `landcover_history.csv` should go: they paint every cell of their rings, hills included, and override the shares and the real vineyard outlines.
+
+**Not drawn / needs real mapping later**
+
+- **The Delta's natural state and per-island reclamation years.** The c.1800 layers stop at Suisun Bay; the tule marsh of the Delta tracts has no natural cover here, and each tract has its own levee history (Bethel Island 1859–70, Franks Tract 1902–06 and flooded 1938, Big Break flooded 1928). Source to trace: the Delta Atlas (DWR 1995) or Thompson (1957), *The settlement geography of the Sacramento–San Joaquin Delta*; SFEI's Delta historical ecology GIS (2012) for the c.1800 habitats.
+- **East Contra Costa orchards and the Oakley vineyards** stay on the first pass (share of the fans); the 1950s–70s USGS sheets (Brentwood, Woodward Island, Antioch South) carry the orchard tint.
+- **Orchard, hop-yard and vineyard extents before 1960 in the four new counties** are shares, not mapped extents. The 1:62,500 and 1:24,000 topo editions of 1942–58 (Sebastopol, Healdsburg, Santa Rosa, Rutherford, St. Helena, Fairfield, Vacaville, Watsonville West / East …) print the green orchard / vineyard pattern and can go through `topo_farmsteads.py` like the first 68 sheets; for the 1870s–90s the Thompson (1877) and Reynolds & Proctor (1897) atlases of Sonoma County and the 1895 Napa County map.
+- **Berryessa Valley** (wheat farms 1866–1957) lies under the lake; the 1940s Capell Valley / Lake Berryessa sheets would give the valley floor.
+- **Fort Ross**: the Russian fields and orchard (1812–41, a few hundred acres) on the terrace around the fort.
+- **Petaluma's chicken ranches** stood mostly on the low hills west and north of the town (Two Rock, Penngrove, Cotati), which are bedrock on the geology map and not painted; the 1942–54 topo sheets show the long hen houses.
+- **Santa Cruz Mountains ridge-top vineyards and orchards** of 1860–1920 (Vine Hill, Ben Lomond Mountain, Skyline, Corralitos) - only today's mapped ones are drawn.
+- **Coast dairies on the hills** (Marin–Sonoma, Santa Cruz north coast above the terraces) and the **sheep range of the Montezuma Hills and Carneros** look like grassland and have no feature, as in West Marin.
+- **Natural cover of the new valleys** (valley-oak savanna of the Santa Rosa Plain and Napa Valley, the Laguna de Santa Rosa wetlands, the Pajaro sloughs) is left to the terrain's general rules; only Napa has a `landcover_history.csv` oak row.
+- **Dates marked UNVERIFIED** in the notes: Montezuma Hills grain, Dixon irrigation, the Sonoma coast and Santa Cruz north-coast redwood end years.
 
 ### Known limits of the agriculture layer
 

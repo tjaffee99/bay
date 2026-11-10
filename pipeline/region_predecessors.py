@@ -36,8 +36,11 @@ REGION_SANBORN = ("oakland", "san_jose", "berkeley", "alameda", "richmond", "san
 
 
 def load_lots():
-    ry = gpd.read_parquet(INTERIM / "region_years.parquet", columns=["src", "kind", "geometry"])
-    lots = ry[(ry.kind == "parcel") & ry.geometry.geom_type.isin(["Polygon", "MultiPolygon"])]
+    # parcels only (the table also holds ~2 M building points), and no second name for the
+    # lon/lat frame: with nine counties (2.6 M parcels) each copy of the geometry is > 1 GB
+    lots = gpd.read_parquet(INTERIM / "region_years.parquet", columns=["src", "kind", "geometry"],
+                            filters=[("kind", "==", "parcel")])
+    lots = lots[lots.geometry.geom_type.isin(["Polygon", "MultiPolygon"])]
     lots = lots.to_crs(UTM)
     lots = lots.explode(index_parts=False)
     lots = lots[lots.geometry.geom_type == "Polygon"]

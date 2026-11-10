@@ -622,7 +622,7 @@ def load_sources() -> pd.DataFrame:
         d = NORMALISE[sid](g.reset_index(drop=True))
         d["source"], d["prio"], d["inland"] = sid, prio, bool(src.get("inland", False))
         n0 = len(d)
-        d = d[d.alive & d.lon.between(-123.2, -121.2) & d.lat.between(36.8, 38.9)]
+        d = d[d.alive & d.lon.between(-123.68, -121.16) & d.lat.between(36.78, 38.91)]
         if sid != "scc_county":
             # stray records far outside the city (bad coordinates): keep the city's own box + ~3 km
             lo, hi = d[["lon", "lat"]].quantile(0.002), d[["lon", "lat"]].quantile(0.998)

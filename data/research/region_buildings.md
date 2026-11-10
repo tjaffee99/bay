@@ -1,6 +1,7 @@
-# Five-county buildings: footprints, construction years, heights, historic records
+# County buildings: footprints, construction years, heights, historic records
 
-Research for Phase 5 (Marin 041, Contra Costa 013, Alameda 001, San Mateo 081, Santa Clara 085).
+Research for Phase 5 (Marin 041, Contra Costa 013, Alameda 001, San Mateo 081, Santa Clara 085;
+since the 2026-11-10 expansion also Sonoma 097, Napa 055, Solano 095, Santa Cruz 087 — section 0).
 Compiled 2026-11-08. Script: `pipeline/download_region.py`
 (`overture | years | osm | heights | normalise | coverage`, each cached / idempotent).
 Reports: `data/interim/reports/region5_overture.json`, `region_years_sources.json`,
@@ -16,12 +17,76 @@ records exist, imputation only where they don't. Bottom line:
 | Alameda | 517,755 | 37.2 % | **91.4 %** | 94.3 % | 96.9 % |
 | San Mateo | 235,581 | 20.5 % | 22.4 % | **86.2 %** | 96.6 % |
 | Marin | 115,638 | 0 % | 0 % | **82.1 %** | 92.4 % |
-| **Total** | 1,861,043 | 63.3 % | 78.7 % | 93.0 % (93.4 % of footprints ≥ 40 m²) | 96.0 % |
+| **Total (five)** | 1,861,043 | 63.3 % | 78.7 % | 93.0 % (93.4 % of footprints ≥ 40 m²) | 96.0 % |
+| Sonoma | 292,228 | **87.2 %** | 87.2 % | 89.3 % | 88.4 % |
+| Solano | 160,091 | **89.1 %** | 89.1 % | 90.5 % | 89.7 % |
+| Napa | 71,126 | **76.0 %** | 76.0 % | 79.4 % | 85.6 % |
+| Santa Cruz | 111,093 | 5.1 % | 5.1 % | **86.1 %** | 93.5 % |
+| **Total (nine)** | 2,495,581 | 65.6 % | 77.0 % | 91.7 % (92.3 % of footprints ≥ 40 m²) | 94.3 % |
 
 ("Footprint gets a year" = the footprint's point-on-surface lies in a parcel with a year, or a
 building/historic point with a year lies inside the footprint. Shares are of all Overture
 footprints incl. sheds/garages; the remaining 7 % are mostly outbuildings on parcels whose year
 went to the main building, open-space/exempt parcels and footprints straddling parcel lines.)
+
+---
+
+## 0. 2026-11-10 expansion: Sonoma, Napa, Solano, Santa Cruz (whole Contra Costa / Santa Clara)
+
+The map grew from the core Bay Area to ten whole counties. Contra Costa and Santa Clara were
+already whole counties in every file here (fetched by county polygon; only `extent.py` cut
+them: 106,764 and 51,638 footprints lay outside the old line). The four new counties are a
+**second download batch**, so nothing cached for the first five was touched:
+
+* **Footprints** — `region4_building.parquet` (634,538: Sonoma 292,228, Solano 160,091, Santa
+  Cruz 111,093, Napa 71,126; 89 MB) and `region4_building_part.parquet` (795), same Overture
+  release, query, columns and county assignment as `region5_*` (one bbox query per county,
+  duplicates dropped). Readers go through `common.region_overture_files()` /
+  `read_region_overture()` / `read_region_overture_gdf()`. Heights in Overture: Solano 84 %,
+  Santa Cruz 81 %, Napa 72 %, Sonoma 58 % (no county LiDAR footprints added).
+* **Years** — new sources (ids in `YEAR_SOURCES` / `NORM`):
+
+| id | Publisher / URL | Rows (with year) | Vintage | Year field (+ others) | Licence / terms |
+|---|---|---:|---|---|---|
+| `sonoma_county` | County of Sonoma, Clerk-Recorder-Assessor "Parcels Public" (ISD-GIS) — https://socogis.sonomacounty.ca.gov/map/rest/services/CRAPublic/ParcelsPublic/FeatureServer/0 | 189,239 (157,980) | 2026 roll | `BuildingPrimaryYearBuilt`, `BuildingPrimaryEffectiveYear`, `BuildingPrimaryStories` (99 %), `BuildingPrimaryUnitCount`, `BuildingPrimaryCount`, `UseCodeDescription` | public; "You must source attribution 'County of Sonoma' when distributing" |
+| `solano_county` | Solano County "Parcels Public Aumentum" (assessor roll; maintained with Geographic Technologies Group) — https://services2.arcgis.com/SCn6czzcqKAFwdGU/arcgis/rest/services/Parcels_Public_Aumentum/FeatureServer/0 | 153,430 (134,430) | roll year 2026 | `yrbuilt`, `stories` (3 %), `use_desc`, `total_area` | public county layer, no licence stated (tax maps are authoritative) |
+| `napa_county` | Napa County "Public Parcels" (Assessor's Mapping Section / ITS-GIS parcel fabric) — https://services1.arcgis.com/Ko5rxt00spOfjMqj/arcgis/rest/services/Napa_County_Public_Parcels/FeatureServer/1 | 54,281 (40,843) | current parcels; **years stop at 2014** | `YearBuilt` (`AllStructures_YearsBuilt` adds 51 parcels: not used), `BuildingFloorCount` (27 %), `UnitCount`, `BuildingCount`, `LandUseDescription` | public county layer, no licence stated |
+| `scotts_valley` | City of Scotts Valley public parcel viewer — https://services6.arcgis.com/B40wkQx76bHpW2GH/arcgis/rest/services/PUBLIC_Scotts_Valley_Parcel_Viewer_V26_06_15_WFL1/FeatureServer/3 | 5,471 (4,650) | tax year 2025 | `BldgYearBuilt`, `NumberOfUnits`, `BldgNumber` (owner fields not requested) | city layer, none stated |
+| `santa_cruz_parcels` | County of Santa Cruz Assessor parcels — https://services1.arcgis.com/jJfZghspGKh8J9Jm/arcgis/rest/services/Assessor_Parcels/FeatureServer/10 | 97,183 (no years) | current | `APN`, `SITEADD`, `USECDDESC` — FEMA years attached by APN → `fema_r9_parcel` (64,430 parcels) | "County of Santa Cruz, Assessor's Office, ISD"; none stated |
+| `fema_r9b_res` / `_nonres` / `_mixed` | the FEMA Region 9 layers of `fema_r9_*`, `COUNTYFP IN ('055','087','095','097')` | 446,295 / 56,783 / 331 (424,612 / 28,146 / 197) | c.2020 (years ≤ 2020) | as `fema_r9_*` | as `fema_r9_*` (Lightbox-derived: commercial) |
+| `ca_ohp_berd` | + `Sonoma.csv`, `Napa.csv`, `Solano.csv`, `Santa_Cruz.csv` (`/pages/1068/files/Santa%20Cruz.csv`) | 12,353 resources (10,945 with a year; 6,953 located: Sonoma 2,707, Solano 1,899, Napa 1,438, Santa Cruz 909) | export 2026-02-02 | as above | as above |
+
+  Spike years flagged: Sonoma 1870–1920 (3,312 rows), Solano 1880–1920 (1,361), Napa
+  1880–1930 (1,456), FEMA res 1850–1910 (7,596). Median years: Sonoma 1978, Solano 1985, Napa
+  1972, Scotts Valley 1981. APN keys (`apn_key`): Sonoma `044-031-048` (3-3-3), Napa
+  `038-422-003-000` / 12 digits (3-3-3 + suffix), Solano 10 digits (4-3-3), Santa Cruz
+  `015-101-10` (3-3-2).
+* **Roll vs FEMA/Lightbox** on the same footprint: Napa 97.2 % same year, Sonoma 95.4 %,
+  Solano 94.9 %, Scotts Valley 90.7 % (five counties 98–99 %). The 2026 rolls are newer than
+  FEMA's c.2020 attributes: houses rebuilt after the 2017 Tubbs / Nuns fires (Santa Rosa's
+  Coffey Park and Fountaingrove, Glen Ellen) and the 2020 Glass and CZU fires carry the
+  rebuild year in the roll — the house that burned is a vanished building, not in these files.
+* **Searched and not found** (2026-11-10): a year-built field on Santa Cruz County's own
+  layers (`gis.santacruzcounty.us` `data` / `giswebp`: APN, use and planning overlays only) or
+  on City of Santa Cruz, Capitola or Watsonville layers (Watsonville publishes two small
+  historic-district layers); the cities of Sonoma, Napa and Solano counties republish their
+  county's roll (Santa Rosa, Fairfield, Dixon, Rio Vista, Suisun Valley, City of Napa: same
+  years, not added). Antioch / Brentwood / Pittsburg and Gilroy / Morgan Hill are covered by
+  the county rolls already downloaded (`contra_costa_ccmap`, `santa_clara_county`).
+* **OSM `start_date`**: still not downloaded — every Overpass endpoint is unreachable from the
+  build machine (connection closed / timeout, 2026-11-10); `osm_start_date()` now keeps one
+  tile grid per batch and records the batches it holds.
+* **HISDAC FBUY** (`data/raw/hisdac/FBUY/data/FBUY.tif`, 19 MB, national 250 m grid) covers
+  the new counties: a first-built-up year under 85.6 % (Napa) to 93.5 % (Santa Cruz) of
+  footprints.
+* **Region extracts** (`download_overture.py`, `REGION_BBOX` now -123.68, 36.78, -121.16,
+  38.91; `python download_overture.py refetch` replaces a cached extract only when the new one
+  holds the old rows): freeways 13,827 → 14,009, rail 7,518 → 7,584, roads_local 326,820 →
+  334,689, roads_region 130,849 → 133,368, region_airports 3,213 → 3,297, region5_land_use
+  108,073 → 157,291 (it had been cut at the five counties' bounds).
+* **Memory**: `normalise` now cleans one source at a time and joins the parts as Arrow tables
+  (peak 3.6 GB; the single GeoDataFrame needed > 12.5 GB with nine counties and was killed);
+  `coverage` reads `region_years.parquet` per source (peak 3.9 GB).
 
 ---
 
@@ -338,9 +403,10 @@ than FBUY's single first year.
 | Class | Sources | Use |
 |---|---|---|
 | Open / no constraints | Santa Clara County Planning ("no Use Constraints"); OHP BERD; TIGER (public domain); OSM (ODbL); Overture (ODbL) | ship |
-| Public government layers, no licence stated | CCMAP + CCCFPD, city layers (Sunnyvale, Milpitas, Saratoga, Los Gatos, Union City, Zone 7, Berkeley, Albany, Emeryville, San Mateo, Belmont, San Bruno, Portola Valley), San Mateo / Marin county parcels and footprints, San José HRI | ship with attribution ("County of X Assessor via City of Y"); construction years are facts |
+| Public government layers, attribution required | sonoma_county ("County of Sonoma") | ship with attribution |
+| Public government layers, no licence stated | solano_county, napa_county, scotts_valley, santa_cruz_parcels (2026-11 expansion); CCMAP + CCCFPD, city layers (Sunnyvale, Milpitas, Saratoga, Los Gatos, Union City, Zone 7, Berkeley, Albany, Emeryville, San Mateo, Belmont, San Bruno, Portola Valley), San Mateo / Marin county parcels and footprints, San José HRI | ship with attribution ("County of X Assessor via City of Y"); construction years are facts |
 | Third-party public copies | alameda_county_2021 (MNS Engineers), hillsborough (HLA) | the Alameda County Assessor sells characteristics; the copy is publicly shared without terms. Medium risk; attribute; owner's decision (alternative: buy the county extract) |
-| Commercial-derived | fema_r9_* / fema_r9_parcel (Lightbox SmartParcels via FEMA), south_sf_corelogic | publicly readable but vendor attributes; High risk to ship raw. Recommended: validation + imputation prior, or ship as `year_confidence = estimated`, `source = fema_lightbox`, after the owner decides |
+| Commercial-derived | fema_r9_* / fema_r9b_* / fema_r9_parcel (Lightbox SmartParcels via FEMA), south_sf_corelogic | publicly readable but vendor attributes; High risk to ship raw. Recommended: validation + imputation prior, or ship as `year_confidence = estimated`, `source = fema_lightbox`, after the owner decides |
 
 Personal data: no owner names / mailing addresses requested or stored.
 

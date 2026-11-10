@@ -148,7 +148,7 @@ map.on('click', e => {
 });
 
 /** Extent of the terrain tiles (Sonoma/Napa to Santa Cruz). */
-const REGION: [number, number, number, number] = [-123.2, 36.85, -121.2, 38.9];
+const REGION: [number, number, number, number] = [-123.68, 36.78, -121.16, 38.91];
 
 function render() {
   const layers: Layer[] = [];

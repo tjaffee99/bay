@@ -72,7 +72,10 @@ def load_footprints():
     per download batch, region5_* and region4_*), joined to the per-footprint candidate years
     (region5_footprint_years.parquet, all counties)."""
     from common import read_region_overture_gdf
-    g = read_region_overture_gdf("building")
+    # only the columns this stage uses: the other 20 (per-row source ids, roof / facade tags)
+    # cost > 1 GB at 2.5 M footprints and are copied by every merge / explode below
+    g = read_region_overture_gdf("building", ["id", "subtype", "class", "name", "is_underground", "has_parts", "height",
+                                              "num_floors", "countyfp", "county", "geometry"])
     fy = pd.read_parquet(INTERIM / "region5_footprint_years.parquet")
     fy = fy.drop(columns=[c for c in ("county",) if c in fy])
     only = __import__("os").environ.get("REGION_COUNTY")  # e.g. REGION_COUNTY=Marin for a test run
@@ -587,6 +590,17 @@ def use_codes(g, area):
     return use
 
 
+def ring_ground(ground, geoms):
+    """Lowest and mean ground height under each polygon's outer ring (vectorised: 2.4 M
+    footprints as one coordinate array, not a Python list of rings)."""
+    xy, idx = shapely.get_coordinates(shapely.get_exterior_ring(np.asarray(geoms, dtype=object)), return_index=True)
+    gz = ground(xy[:, 0], xy[:, 1])
+    del xy
+    first = np.flatnonzero(np.r_[True, idx[1:] != idx[:-1]])
+    counts = np.diff(np.r_[first, len(idx)])
+    return np.minimum.reduceat(gz, first), np.add.reduceat(gz, first) / counts
+
+
 def main():
     from roads import Ground
     g = load_footprints()
@@ -618,13 +632,7 @@ def main():
                 arr[has] = arr[pick]
     # foundation at the lowest corner, roof at mean ground + height
     ground = Ground()
-    ext = [np.asarray(gm.exterior.coords)[:, :2] for gm in g.geometry.values]
-    counts = np.array([len(e) for e in ext])
-    allc = np.concatenate(ext)
-    gz = ground(allc[:, 0], allc[:, 1])
-    splits = np.cumsum(counts)[:-1]
-    gmin = np.array([a.min() for a in np.split(gz, splits)])
-    gmean = np.array([a.mean() for a in np.split(gz, splits)])
+    gmin, gmean = ring_ground(ground, g.geometry.values)
     # LiDAR part heights are above their footprint's ground: all parts of one footprint
     # stand on the group's (area-weighted) mean ground so the roofs stay where measured
     if (lgroup != "").any():
@@ -651,12 +659,7 @@ def main():
         pmat = np.where(dm == "brick", M_BRICK, np.where(dm == "stone", M_CIVIC, np.where(dm == "wharf", M_EARLY, pmat)))
         # adobe, tule and canvas of the early settlements: the early-town palette
         pmat = np.where(np.isin(dm, ["adobe", "tule", "canvas tent"]), M_EARLY, pmat)
-        pext = [np.asarray(gm.exterior.coords)[:, :2] for gm in pred.geometry.values]
-        pc = np.array([len(e) for e in pext])
-        pz = ground(*np.concatenate(pext).T)
-        psplit = np.cumsum(pc)[:-1]
-        pmin = np.array([a.min() for a in np.split(pz, psplit)])
-        pmean = np.array([a.mean() for a in np.split(pz, psplit)])
+        pmin, pmean = ring_ground(ground, pred.geometry.values)
         pred = pred.assign(height=pred.height.values + (pmean - pmin) + 1.0, base=pmin - 1.0, raw_year=0,
                            mat=pmat.astype(np.uint8), roof=proof, fid_key=pred.mapblklot.astype(str),
                            stories=pred.stories.fillna(2).values)
