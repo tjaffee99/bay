@@ -279,7 +279,7 @@ html, body {
 body.story-on #info { left: auto; right: 28px; top: 130px; }
 
 @media (max-width: 640px) {
-  #story-card { left: 12px; top: 64px; width: calc(100vw - 24px); padding: 10px 12px 8px; }
+  #story-card { left: 12px; top: 88px; width: calc(100vw - 24px); padding: 10px 12px 8px; }
   #story { padding: 0 10px; font-size: 15px; }
   body.story-on #info { left: 12px; right: 12px; top: auto; }
 }
