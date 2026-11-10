@@ -55,7 +55,7 @@ CITIES = {
         "loc": "00838", "area": "santa_rosa_downtown",
         "volumes": {"004": (1904, "Dec 1904"), "005": (1908, "1908"), "006": (1950, "1908 - 1950 (corrected to 1950)")},
         "parcels": RY / "sonoma_county/sonoma_county.parquet", "pid": "APN",
-        "bbox": (-122.730, 38.430, -122.700, 38.450),
+        "bbox": (-122.730, 38.430, -122.700, 38.450), "plate_scale": 0.2045,
         "awnings": ("004",),  # the Dec 1904 sheets draw the wooden sidewalk awnings (yellow strips in the street)
         "fireproof_years": (1908, 1950),
     },
@@ -63,25 +63,27 @@ CITIES = {
         "loc": "00905", "area": "vallejo_downtown",
         "volumes": {"003": (1901, "Jul 1901"), "004": (1919, "Mar 1919"), "005": (1950, "1919 - Mar 1950 (corrected to Mar 1950)")},
         "parcels": RY / "solano_county/solano_county.parquet", "pid": "parcelid",
-        "bbox": (-122.275, 38.090, -122.240, 38.115),
+        "bbox": (-122.275, 38.090, -122.240, 38.115), "plate_scale": 0.2060,
     },
     "napa": {
         "loc": "00707", "area": "napa_downtown",
         "volumes": {"003": (1901, "Jun 1901"), "004": (1910, "Oct 1910")},
         "parcels": RY / "napa_county/napa_county.parquet", "pid": "ASMT",
-        "bbox": (-122.300, 38.285, -122.270, 38.310),
+        "bbox": (-122.300, 38.285, -122.270, 38.310), "plate_scale": 0.2045,
+        "awnings": ("003",),  # the 1901 sheets draw the sidewalk awnings along Main St
     },
     "santa_cruz": {
         "loc": "00833", "area": "santa_cruz_downtown",
         "volumes": {"003": (1892, "Jul 1892"), "004": (1905, "1905")},
         "parcels": RY / "santa_cruz_parcels/santa_cruz_parcels.parquet", "pid": "APN",
-        "bbox": (-122.040, 36.955, -122.010, 36.985),
+        "bbox": (-122.040, 36.955, -122.010, 36.985), "plate_scale": 0.2045,
+        "awnings": ("003",),  # the 1892 sheets draw the sidewalk awnings along Pacific Av
     },
     "petaluma": {
         "loc": "00756", "area": "petaluma_downtown",
         "volumes": {"004": (1906, "Nov 1906"), "005": (1910, "Nov 1910")},
         "parcels": RY / "sonoma_county/sonoma_county.parquet", "pid": "APN",
-        "bbox": (-122.655, 38.225, -122.625, 38.245),
+        "bbox": (-122.655, 38.225, -122.625, 38.245), "plate_scale": 0.2045,
     },
     "watsonville": {
         "loc": "00921", "area": "watsonville_downtown",
@@ -127,6 +129,24 @@ def setup(city):
     if al.exists():
         E.ALIASES.update(json.load(open(al)))
     return c
+
+
+_E_index = E.index
+
+
+def index():
+    """E.index; the older LOC file names of some volumes (Watsonville 1902-1920: sb000010 = sheet 1, sb000020 = sheet
+    2 ...) are renamed to the usual <city>_<year>-<sheet> form, so keys stay <volume>_<sheet>."""
+    idx = _E_index()
+    for vol, recs in idx.items():
+        for r in recs:
+            if r["id"].startswith("sb") and "-" not in r["id"]:
+                r["id"] = f"{E.CITY}_{E.VOLUMES[vol][0]}-{int(r['id'][2:7]):04d}"
+    W._index = idx
+    return idx
+
+
+E.index = index
 
 
 def parcel_blocks():
@@ -351,6 +371,9 @@ def assemble():
     import shapely
     from pyproj import Transformer
     from shapely.geometry import Polygon, mapping, shape
+    for keys in E.AREAS.values():  # P.assemble reads each scan's size: fetch again what was deleted after tracing
+        for key in keys:
+            image(key)
     P.assemble()
     c = CITIES[P.CITY_NAME]
     rank = {"high": 0, "medium": 1, "low": 2}

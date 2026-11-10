@@ -1,0 +1,583 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.2075,
+  0.003
+ ],
+ "confidence_cap": "medium",
+ "notes": "N. Main St from Stuart (Clinton) St to 1st St (the 1910 sheet 14); Spanish Town east of West St (blocks 334, 41, 48) is not traced",
+ "blocks": [
+  {
+   "name": "39",
+   "streets": {
+    "N": "Pearl Street",
+    "S": "1st Street",
+    "W": "Brown Street",
+    "E": "Main Street"
+   },
+   "px4_est": [
+    [
+     628,
+     1645
+    ],
+    [
+     628,
+     1447
+    ],
+    [
+     1435,
+     1447
+    ],
+    [
+     1435,
+     1645
+    ]
+   ],
+   "corners": [
+    {
+     "x": 634.0,
+     "y": 1452.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1426.4,
+     "y": 1455.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1425.2,
+     "y": 1630.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NW"
+   ],
+   "px4": [
+    [
+     634.0,
+     1629.6
+    ],
+    [
+     634.0,
+     1452.7
+    ],
+    [
+     1426.4,
+     1455.3
+    ],
+    [
+     1425.2,
+     1630.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.98,
+    0.82,
+    0.69
+   ],
+   "corners_all": [
+    {
+     "x": 634.0,
+     "y": 1452.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1426.4,
+     "y": 1455.3,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1425.2,
+     "y": 1630.9,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Brown Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    634.0,
+    1452.7037761690472,
+    1426.3528203645947,
+    1630.8918930726154
+   ]
+  },
+  {
+   "name": "24",
+   "streets": {
+    "N": "Clinton Street",
+    "S": "Pearl Street",
+    "W": "Brown Street",
+    "E": "Main Street"
+   },
+   "px4_est": [
+    [
+     155,
+     1650
+    ],
+    [
+     155,
+     1447
+    ],
+    [
+     505,
+     1447
+    ],
+    [
+     505,
+     1650
+    ]
+   ],
+   "corners": [
+    {
+     "x": 154.8,
+     "y": 1448.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Clinton Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 506.7,
+     "y": 1452.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     152.0,
+     1666.0
+    ],
+    [
+     154.8,
+     1448.3
+    ],
+    [
+     506.7,
+     1452.2
+    ],
+    [
+     504.0,
+     1666.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.54
+   ],
+   "corners_all": [
+    {
+     "x": 154.8,
+     "y": 1448.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Main Street",
+      "Clinton Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 506.7,
+     "y": 1452.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    150.0,
+    1440.0,
+    510.0,
+    1700.0
+   ]
+  },
+  {
+   "name": "40",
+   "streets": {
+    "N": "Pearl Street",
+    "S": "1st Street",
+    "W": "Main Street",
+    "E": "West Street"
+   },
+   "px4_est": [
+    [
+     632,
+     1100
+    ],
+    [
+     632,
+     740
+    ],
+    [
+     1428,
+     740
+    ],
+    [
+     1428,
+     1100
+    ]
+   ],
+   "corners": [
+    {
+     "x": 633.4,
+     "y": 1097.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1425.2,
+     "y": 1101.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Main Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "px4": [
+    [
+     633.4,
+     1097.8
+    ],
+    [
+     632.1,
+     742.1
+    ],
+    [
+     1427.8,
+     743.4
+    ],
+    [
+     1425.2,
+     1101.7
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.2,
+    0.67,
+    0.99
+   ],
+   "corners_all": [
+    {
+     "x": 633.4,
+     "y": 1097.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1425.2,
+     "y": 1101.7,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Main Street",
+      "1st Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    622.0,
+    590.0,
+    1445.0,
+    1105.0
+   ]
+  },
+  {
+   "name": "23",
+   "streets": {
+    "N": "Clinton Street",
+    "S": "Pearl Street",
+    "W": "Main Street",
+    "E": "West Street"
+   },
+   "px4_est": [
+    [
+     155,
+     1100
+    ],
+    [
+     155,
+     740
+    ],
+    [
+     505,
+     740
+    ],
+    [
+     505,
+     1100
+    ]
+   ],
+   "corners": [
+    {
+     "x": 154.2,
+     "y": 1096.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Clinton Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 506.0,
+     "y": 1099.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "w": {
+    "N": 60,
+    "S": 60,
+    "W": 60,
+    "E": 60
+   },
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "px4": [
+    [
+     154.2,
+     1096.7
+    ],
+    [
+     156.8,
+     739.2
+    ],
+    [
+     506.0,
+     741.8
+    ],
+    [
+     506.0,
+     1099.3
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 154.2,
+     "y": 1096.7,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Clinton Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 506.0,
+     "y": 1099.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Main Street",
+      "Pearl Street"
+     ],
+     "w": [
+      60,
+      60
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    154.20849225628456,
+    739.197907163349,
+    506.0,
+    1099.3233082706768
+   ]
+  }
+ ],
+ "pct": 25
+}

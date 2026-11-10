@@ -1,0 +1,557 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.206,
+  0.003
+ ],
+ "block_cap": {
+  "7": "medium",
+  "12": "medium"
+ },
+ "notes": "Pacific Av from Cooper / Locust St to Soquel Av / Lincoln St before the fire of 14 April 1894 (courthouse block 13: Cooper - Soquel, Pacific - Front)",
+ "blocks": [
+  {
+   "name": "13",
+   "streets": {
+    "N": "Cooper Street",
+    "S": "Soquel Avenue",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     312,
+     742
+    ],
+    [
+     312,
+     415
+    ],
+    [
+     1300,
+     250
+    ],
+    [
+     1300,
+     742
+    ]
+   ],
+   "corners": [
+    {
+     "x": 311.5,
+     "y": 744.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 311.5,
+     "y": 427.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1307.3,
+     "y": 261.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1299.6,
+     "y": 736.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     311.5,
+     744.5
+    ],
+    [
+     311.5,
+     427.2
+    ],
+    [
+     1307.3,
+     261.0
+    ],
+    [
+     1299.6,
+     736.6
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.44,
+    1.0,
+    0.93
+   ],
+   "corners_all": [
+    {
+     "x": 311.5,
+     "y": 744.5,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 311.5,
+     "y": 427.2,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1307.3,
+     "y": 261.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1299.6,
+     "y": 736.6,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Soquel Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    311.5,
+    260.9517990613874,
+    1307.2716335195541,
+    744.4513637332196
+   ]
+  },
+  {
+   "name": "7",
+   "streets": {
+    "N": "Locust Street",
+    "S": "Church Street",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     127,
+     1810
+    ],
+    [
+     127,
+     848
+    ],
+    [
+     420,
+     848
+    ],
+    [
+     420,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 129.6,
+     "y": 844.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 419.8,
+     "y": 844.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     123.0,
+     1799.6
+    ],
+    [
+     129.6,
+     844.0
+    ],
+    [
+     419.8,
+     844.0
+    ],
+    [
+     417.2,
+     1800.9
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.94,
+    1.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 129.6,
+     "y": 844.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 419.8,
+     "y": 844.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    123.03182593015376,
+    844.0,
+    419.8267315898895,
+    1800.8953615795276
+   ]
+  },
+  {
+   "name": "12",
+   "streets": {
+    "N": "Church Street",
+    "S": "Walnut Avenue",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     500,
+     1810
+    ],
+    [
+     500,
+     848
+    ],
+    [
+     1005,
+     848
+    ],
+    [
+     1005,
+     1810
+    ]
+   ],
+   "corners": [
+    {
+     "x": 501.7,
+     "y": 844.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1006.4,
+     "y": 840.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "px4": [
+    [
+     497.8,
+     1801.5
+    ],
+    [
+     501.7,
+     844.7
+    ],
+    [
+     1006.4,
+     840.8
+    ],
+    [
+     1005.1,
+     1801.5
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.93,
+    1.0,
+    0.07
+   ],
+   "corners_all": [
+    {
+     "x": 501.7,
+     "y": 844.7,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Church Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1006.4,
+     "y": 840.8,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    497.811193784878,
+    840.7652335315755,
+    1006.4177901937691,
+    1801.5
+   ]
+  },
+  {
+   "name": "16",
+   "streets": {
+    "N": "Walnut Avenue",
+    "S": "Lincoln Street",
+    "W": "Center Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     1100,
+     1808
+    ],
+    [
+     1100,
+     848
+    ],
+    [
+     1450,
+     848
+    ],
+    [
+     1450,
+     1808
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1096.2,
+     "y": 1816.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1098.8,
+     "y": 848.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1447.4,
+     "y": 847.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1446.1,
+     "y": 1809.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     1096.2,
+     1816.1
+    ],
+    [
+     1098.8,
+     848.9
+    ],
+    [
+     1447.4,
+     847.6
+    ],
+    [
+     1446.1,
+     1809.5
+    ]
+   ],
+   "edge_q": [
+    0.94,
+    0.95,
+    0.95,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 1096.2,
+     "y": 1816.1,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Center Street",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1098.8,
+     "y": 848.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Pacific Avenue",
+      "Walnut Avenue"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1447.4,
+     "y": 847.6,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1446.1,
+     "y": 1809.5,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Center Street",
+      "Lincoln Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    1096.1619747340562,
+    847.6018479682346,
+    1447.408440449605,
+    1816.1116170162773
+   ]
+  }
+ ],
+ "pct": 25
+}

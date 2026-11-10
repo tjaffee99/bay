@@ -1,0 +1,338 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.206,
+  0.003
+ ],
+ "confidence_cap": "medium",
+ "block_cap": {
+  "3": "low"
+ },
+ "notes": "block 6 (Vine - Pacific, north of Locust St), the flatiron (block 4) and the Front St Chinatown (block 3, burned 1894): the Chinatown side of Front St is placed by the flatiron's fit across the street (low)",
+ "blocks": [
+  {
+   "name": "6",
+   "streets": {
+    "N": "Mission Street",
+    "S": "Locust Street",
+    "W": "Vine Street",
+    "E": "Pacific Avenue"
+   },
+   "px4_est": [
+    [
+     160,
+     890
+    ],
+    [
+     628,
+     890
+    ],
+    [
+     628,
+     1592
+    ],
+    [
+     160,
+     1592
+    ]
+   ],
+   "corners": [
+    {
+     "x": 624.7,
+     "y": 1588.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 161.5,
+     "y": 1597.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Vine Street",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "px4": [
+    [
+     161.5,
+     881.5
+    ],
+    [
+     614.1,
+     881.5
+    ],
+    [
+     624.7,
+     1588.2
+    ],
+    [
+     161.5,
+     1597.3
+    ]
+   ],
+   "edge_q": [
+    0.53,
+    0.94,
+    0.89,
+    0.91
+   ],
+   "corners_all": [
+    {
+     "x": 624.7,
+     "y": 1588.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Pacific Avenue",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 161.5,
+     "y": 1597.3,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Vine Street",
+      "Locust Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    150.0,
+    740.0,
+    640.0,
+    1600.0
+   ]
+  },
+  {
+   "name": "4",
+   "streets": {
+    "N": "Water Street",
+    "S": "Cooper Street",
+    "W": "Pacific Avenue",
+    "E": "Front Street"
+   },
+   "px4_est": [
+    [
+     710,
+     1045
+    ],
+    [
+     750,
+     1045
+    ],
+    [
+     1032,
+     1772
+    ],
+    [
+     710,
+     1772
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1032.0,
+     "y": 1772.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 710.0,
+     "y": 1772.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE"
+   ],
+   "no_refine": 1,
+   "px4": [
+    [
+     710.0,
+     1045.0
+    ],
+    [
+     750.0,
+     1045.0
+    ],
+    [
+     1032.0,
+     1772.0
+    ],
+    [
+     710.0,
+     1772.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [
+    {
+     "x": 1032.0,
+     "y": 1772.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 710.0,
+     "y": 1772.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    695.0,
+    1030.0,
+    1045.0,
+    1785.0
+   ]
+  },
+  {
+   "name": "3",
+   "streets": {
+    "N": "Water Street",
+    "S": "Cooper Street",
+    "W": "Front Street",
+    "E": "River Street"
+   },
+   "px4_est": [
+    [
+     880,
+     1000
+    ],
+    [
+     1420,
+     1000
+    ],
+    [
+     1420,
+     1800
+    ],
+    [
+     880,
+     1800
+    ]
+   ],
+   "corners": [
+    {
+     "x": 1032.0,
+     "y": 1772.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Front Street",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "4"
+    },
+    {
+     "x": 710.0,
+     "y": 1772.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Pacific Avenue",
+      "Cooper Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "4"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "4"
+   ],
+   "px4": [
+    [
+     880.0,
+     1000.0
+    ],
+    [
+     1420.0,
+     1000.0
+    ],
+    [
+     1420.0,
+     1800.0
+    ],
+    [
+     880.0,
+     1800.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    880.0,
+    1000.0,
+    1420.0,
+    1800.0
+   ]
+  }
+ ],
+ "pct": 25
+}
