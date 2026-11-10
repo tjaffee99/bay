@@ -115,9 +115,21 @@ TNM_API = "https://tnmaccess.nationalmap.gov/api/v1/products"
 # towns have the 2022 QL1 survey, so the 2013 Sonoma Veg Map survey is not used anywhere.
 #   python lidar_parts.py region --name santa_rosa      (bbox / project from this list)
 #   python lidar_parts.py jobs                          (every listed job not built yet, one at a time)
-# The nine earlier jobs (oakland, berkeley, emeryville, san_jose, walnut_creek, palo_alto, san_mateo,
-# redwood_city, mountain_view) were run with --bbox; their grids are in data/interim/lidar/<job>/meta.json.
+# The nine earlier jobs (oakland ... mountain_view) were run with --bbox before this list existed and
+# before the canopy / newer-than-survey rules: `jobs` leaves them alone (their parts exist),
+# `jobs --redo-parts` recomputes them too on their cached rasters with today's rules.
 REGION_JOBS = {
+    # the nine earlier downtowns (boxes recovered from their outputs: the same footprint sets)
+    "oakland": ((-122.29, 37.79, -122.252, 37.818), "CA_AlamedaCo_2_2021,CA_AlamedaCo_3_2021"),
+    "berkeley": ((-122.275, 37.86, -122.248, 37.878), "CA_AlamedaCo_3_2021,CA_AlamedaCo_2_2021"),
+    "emeryville": ((-122.3, 37.828, -122.282, 37.845), "CA_AlamedaCo_2_2021,CA_AlamedaCo_3_2021"),
+    "san_jose": ((-121.905, 37.32, -121.875, 37.345), "CA_SantaClaraCounty_2020"),
+    "walnut_creek": ((-122.07, 37.892, -122.052, 37.908), "USGS_LPC_CA_NoCAL_Wildfires_B5b_2018"),
+    "palo_alto": ((-122.168, 37.436, -122.15, 37.452), "CA_SantaClaraCounty_2020"),
+    "san_mateo": ((-122.332, 37.558, -122.314, 37.572), "CA_CaliforniaGaps_3_B23"),
+    "redwood_city": ((-122.238, 37.478, -122.222, 37.492), "CA_CaliforniaGaps_3_B23"),
+    "mountain_view": ((-122.09, 37.388, -122.072, 37.4), "CA_SantaClaraCounty_2020"),
+    # 2026-11 expansion
     "santa_rosa": ((-122.730, 38.428, -122.695, 38.460), "CA_NorthernCA_1_B22"),      # downtown, Railroad Sq, Memorial Hospital, SRJC
     "vallejo": ((-122.2645, 38.092, -122.240, 38.112), "CA_SolanoCounty_1_A23"),      # downtown + waterfront
     "napa": ((-122.300, 38.288, -122.272, 38.308), "CA_NorthCoastRanges_2_B23"),

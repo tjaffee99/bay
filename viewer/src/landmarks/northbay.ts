@@ -121,7 +121,9 @@ function slopedCap(b: MeshBuilder, ring: V2[], zf: (x: number, y: number) => num
 // The 1958 bridge is placed on Overture's eastbound carriageway (bridge flag: 1,097 m from
 // 38.065543 N to 38.055645 N; the 3DEP surface puts the north bluff at 51 m and open water
 // from 75 m to 1,040 m along it, so pier 2 stands in the water and pier 5 on the Crockett
-// shore, as HAER says); the 1927 bridge 61 m west of it.
+// shore, as HAER says); the 1927 bridge 61 m west of it. Six OSM pier outlines on the 1958 line
+// lie 6, 157, 489, 535, 868 and 1,021 m from the north end — the HAER stations 0, 152, 488, 533,
+// 869 and 1,021 m.
 const CQ58_N: V2 = [-122.225577, 38.065543];
 const CQ58_S: V2 = [-122.224759, 38.056229];
 const CQ_OFF = 61 / (111_320 * Math.cos((38.0609 * Math.PI) / 180));
@@ -230,6 +232,7 @@ const carquinez1927: Landmark = {
 };
 
 // eastbound viaduct from pier 5 up the Crockett hillside (Overture bridge segment; 3DEP ground 3 m at the shore, 50 m at the far end)
+const CQ58_PIERS: V2[] = [[-122.225577, 38.065485], [-122.22546, 38.064124], [-122.225183, 38.061125], [-122.225148, 38.060707], [-122.224888, 38.057691], [-122.22477, 38.056308]];
 const CQ58_VIADUCT: V2[] = [[-122.224768, 38.056331], [-122.224759, 38.056229], [-122.224749, 38.055759], [-122.22476, 38.055646], [-122.224801, 38.055473], [-122.224857, 38.055223], [-122.224926, 38.055024], [-122.225005, 38.054839], [-122.225099, 38.054657], [-122.225246, 38.05441], [-122.22538, 38.05424], [-122.22552, 38.054072], [-122.225637, 38.053951], [-122.225816, 38.053788], [-122.226021, 38.053623], [-122.226367, 38.053378], [-122.228025, 38.052208], [-122.228057, 38.052184]];
 const carquinez1958: Landmark = {
   id: 'carquinez_bridge_1958',
@@ -243,11 +246,16 @@ const carquinez1958: Landmark = {
     b.frame(0, 0, 0, a.bearing, () => carquinezCantilever(b, 17, '#8D9895', true));
     viaduct(b, CQ58_N, CQ58_VIADUCT, cqChord(CQ_P[5]) + 1.5, 50.7, 17, '#B9B6AD');
   },
+  // the piers are generic footprints in the building data: hide them
+  replaces: CQ58_PIERS.map(p => {
+    const l = lngLatToLocal(CQ58_N, p);
+    return rect(l[0], l[1], 40, 30);
+  }),
   facts: {
     Opened: 'Nov 25, 1958, 200 ft upstream (east) of the 1927 bridge; four lanes, eastbound since the ramps were finished',
     Form: 'cantilever through truss with the same span lengths, pier locations and superstructure height as the 1927 bridge (HAER CA-297): 500 + 1,100 + 150 + 1,100 + 500 ft; 3,300 ft, 52 ft wide, 140 ft clear (Wikipedia)',
     Retrofit: 'seismic retrofit, deck and superstructure rehabilitation after the Zampa bridge opened in 2003',
-    Model: 'alignment from OpenStreetMap; truss spacing (17 m), the south viaduct’s columns and the construction start are estimated'
+    Model: 'alignment from OpenStreetMap, whose pier outlines fall within 5 m of the HAER span lengths; truss spacing (17 m), the south viaduct’s columns and the construction start are estimated'
   },
   sources: CQ_SRC
 };
@@ -257,10 +265,12 @@ const carquinez1958: Landmark = {
 // 148 ft clear; "consists of the south anchorage, a transition pier, the South and North
 // towers, and the north anchorage. It has spans of 147 m, 728 m, and 181 m"; dedicated Nov 8,
 // opened Nov 11, 2003. Overture's westbound bridge segment is 1,078 m (38.056220 → 38.065951);
-// the 1,056 m of spans are centred on it, which puts the south tower at the Crockett shore
-// and the north tower in the water ≈90 m off the Vallejo bluff (3DEP: water from 50 m to 950 m).
+// the two towers are OSM outlines (337 and 363 m², 724.8 m apart — the 728 m main span), 170 m
+// and 895 m along it, so the 181 m north side span ends exactly at the segment's north end and
+// the south anchorage stands 21 m inside its south end (3DEP: water from 50 m to 950 m).
 const ZAMPA_S: V2 = [-122.225941, 38.05622];
 const ZAMPA_N: V2 = [-122.226682, 38.065951];
+const ZAMPA_TOWERS: V2[] = [[-122.226138, 38.057753], [-122.226599, 38.064298]];
 const ZAMPA_VIADUCT: V2[] = [[-122.225941, 38.05622], [-122.225925, 38.055968], [-122.225926, 38.055688], [-122.225943, 38.055351], [-122.226011, 38.055005], [-122.226181, 38.054693], [-122.226292, 38.054447], [-122.226425, 38.054208], [-122.22667, 38.053862], [-122.226805, 38.0537], [-122.227016, 38.053488], [-122.227273, 38.05327], [-122.227633, 38.052997], [-122.228339, 38.052458], [-122.228386, 38.052422]];
 const zampaBridge: Landmark = {
   id: 'alfred_zampa_memorial_bridge',
@@ -271,14 +281,16 @@ const zampaBridge: Landmark = {
   anchor: ZAMPA_S,
   build: b => {
     const a = along(ZAMPA_S, ZAMPA_S, ZAMPA_N);
-    const y0 = (a.length - 1056) / 2;
-    const yT1 = y0 + 147;
+    const yT1 = 168.35; // towers at their OSM outlines: 169.8 m and 894.9 m along the segment
+    const y0 = yT1 - 147;
     const yT2 = yT1 + 728;
     const yEnd = y0 + 1056;
     const zd = (y: number) => lerpAt([[0, 44.5], [yT1 + 364, 49.0], [a.length, 48.7]], y);
     const grey = '#C4C8C9';
     const TOP = 410 * FT;
-    b.frame(0, 0, 0, a.bearing, () => {
+    // the structure's centre line runs ≈6 m west of the traffic lanes' (the path is on the west side): OSM tower outlines
+    const br = (a.bearing * Math.PI) / 180;
+    b.frame(-6 * Math.cos(br), 6 * Math.sin(br), 0, a.bearing, () => {
       // orthotropic steel box girder, 84 ft wide
       const n = 14;
       for (let i = 0; i < n; i++) {
@@ -317,12 +329,17 @@ const zampaBridge: Landmark = {
     });
     viaduct(b, ZAMPA_S, ZAMPA_VIADUCT, 44.5, 49.7, 84 * FT, '#B9B6AD', 50);
   },
+  // the towers are generic footprints in the building data (120 m prisms): hide them
+  replaces: ZAMPA_TOWERS.map(p => {
+    const l = lngLatToLocal(ZAMPA_S, p);
+    return rect(l[0], l[1], 40, 40);
+  }),
   facts: {
     Opened: 'dedicated Nov 8, opened Nov 11, 2003 (westbound I-80 and a bicycle / pedestrian path), replacing the 1927 cantilever',
     Form: 'suspension bridge with concrete towers and an orthotropic steel box deck: spans 147 + 728 + 181 m (main span 2,387 ft); 3,465 ft long, 84 ft wide',
     Towers: '410 ft (125 m); 148 ft clear above the strait',
     Namesake: 'Al Zampa, an ironworker on the 1927 Carquinez Bridge and the Golden Gate Bridge',
-    Model: 'alignment from OpenStreetMap, the spans centred on the bridge segment; tower sections, anchorage blocks, cable sag and deck heights estimated; construction start from the Jan 2000 contract award'
+    Model: 'alignment and tower positions from OpenStreetMap (towers 725 m apart); tower sections, anchorage blocks, cable sag and deck heights estimated; construction start from the Jan 2000 contract award'
   },
   sources: [WIKI + 'Carquinez_Bridge']
 };
@@ -1574,7 +1591,7 @@ const WIND_FACING = 245;
 
 function turbine(b: MeshBuilder, x: number, y: number, z0: number, hub: number, rotor: number, phase: number) {
   const s = rotor / 90;
-  b.color('#E9EAE8').frustum(x, y, 2.0 * s + 0.4, 1.1 * s + 0.3, z0 - 3, z0 + hub - 1.6 * s, 6, false);
+  b.color('#E9EAE8').frustum(x, y, 2.0 * s + 0.4, 1.1 * s + 0.3, z0 - 8, z0 + hub - 1.6 * s, 6, false);
   b.frame(x, y, z0 + hub, WIND_FACING, () => {
     b.color('#DFE1DF').box(0, -2.4 * s, -1.8 * s, 3.6 * s, 9.6 * s, 3.6 * s);
     const yr = 3.3 * s;

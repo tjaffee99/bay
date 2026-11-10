@@ -37,7 +37,7 @@
      "y": 478.7,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Virginia Street"
      ],
@@ -53,7 +53,7 @@
      "y": 474.8,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Virginia Street"
      ],
@@ -69,7 +69,7 @@
      "y": 1034.8,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -85,7 +85,7 @@
      "y": 1038.7,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -104,6 +104,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "280"
+   ],
    "px4": [
     [
      1155.2,
@@ -134,7 +143,7 @@
      "y": 478.7,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Virginia Street"
      ],
@@ -150,7 +159,7 @@
      "y": 474.8,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Virginia Street"
      ],
@@ -166,7 +175,7 @@
      "y": 1034.8,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -182,7 +191,7 @@
      "y": 1038.7,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -233,7 +242,7 @@
      "y": 478.9,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Virginia Street"
      ],
@@ -250,7 +259,7 @@
      "y": 1038.8,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -267,7 +276,7 @@
      "y": 478.7,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Virginia Street"
      ],
@@ -284,7 +293,7 @@
      "y": 474.8,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Virginia Street"
      ],
@@ -301,7 +310,7 @@
      "y": 1034.8,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -318,7 +327,7 @@
      "y": 1038.7,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -339,6 +348,12 @@
    },
    "skip": [
     "NW",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
     "SW"
    ],
    "with": [
@@ -374,7 +389,7 @@
      "y": 478.9,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Virginia Street"
      ],
@@ -390,7 +405,7 @@
      "y": 1038.8,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -441,7 +456,7 @@
      "y": 1532.0,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -457,7 +472,7 @@
      "y": 1532.0,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -473,7 +488,7 @@
      "y": 2092.2,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "York Street"
      ],
@@ -489,7 +504,7 @@
      "y": 2094.8,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "York Street"
      ],
@@ -508,6 +523,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "261"
+   ],
    "px4": [
     [
      1158.2,
@@ -538,7 +562,7 @@
      "y": 1532.0,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -554,7 +578,7 @@
      "y": 1532.0,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -570,7 +594,7 @@
      "y": 2092.2,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "York Street"
      ],
@@ -586,7 +610,7 @@
      "y": 2094.8,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "York Street"
      ],
@@ -637,7 +661,7 @@
      "y": 1533.9,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -654,7 +678,7 @@
      "y": 2096.1,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "York Street"
      ],
@@ -671,7 +695,7 @@
      "y": 1532.0,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -688,7 +712,7 @@
      "y": 1532.0,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -705,7 +729,7 @@
      "y": 2092.2,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "York Street"
      ],
@@ -722,7 +746,7 @@
      "y": 2094.8,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "York Street"
      ],
@@ -743,6 +767,12 @@
    },
    "skip": [
     "NW",
+    "SW"
+   ],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
     "SW"
    ],
    "with": [
@@ -778,7 +808,7 @@
      "y": 1533.9,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "Georgia Street"
      ],
@@ -794,7 +824,7 @@
      "y": 2096.1,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Santa Clara Street",
       "York Street"
      ],

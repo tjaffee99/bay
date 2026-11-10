@@ -152,7 +152,7 @@ sheet("napa1902", "CA_Napa_299520_1902_125000_geo.tif", Q30(-122.5, 38.0), 12500
       "1:125,000 30' sheet, surveyed 1896-99 (FGDC: survey year 1899)", open_mm=0.26)
 # (the sheet runs over its south neat line to 36°56' N to hold the city of Santa Cruz and Point Santa Cruz)
 sheet("santacruz1902", "CA_Santa%20Cruz_299623_1902_125000_geo.tif", (-122.5, 36.93, -122.0, 37.5), 125000, 1902, 1899,
-      "early", "1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)", open_mm=0.26)
+      "early", "1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)")
 sheet("santarosa1916", "CA_Santa%20Rosa_298960_1916_62500_geo.tif", Q15(-122.75, 38.25), 62500, 1916, 1914, "early",
       "surveyed 1914 (1927 imprint)")
 sheet("petaluma1914", "CA_Petaluma_298524_1914_62500_geo.tif", Q15(-122.75, 38.0), 62500, 1914, 1912, "early",
@@ -167,8 +167,6 @@ sheet("morganhill1917", "CA_Morgan%20Hill_298244_1917_62500_geo.tif", Q15(-121.7
       "surveyed 1915 (1931 imprint)")
 sheet("vacaville1908", "CA_Vacaville_299006_1908_62500_geo.tif", Q15(-122.0, 38.25), 62500, 1908, 1906, "early",
       "surveyed 1906 (1922 imprint)")
-sheet("mtvaca1921", "CA_Mt%20Vaca_466014_1921_62500_geo.tif", Q15(-122.25, 38.25), 62500, 1921, 1915, "early",
-      "edition of 1921, field check 1915", open_mm=0.26)
 sheet("antioch1908", "CA_Antioch_296718_1908_62500_geo.tif", Q15(-122.0, 38.0), 62500, 1908, 1907, "early",
       "surveyed 1907 (1914 imprint)")
 sheet("riovista1910", "CA_Rio%20Vista_296463_1910_31680_geo.tif", Q75(-121.75, 38.125), 31680, 1910, 1908, "early",
@@ -375,20 +373,20 @@ TOWNS.update({
     "benicia": dict(name="Benicia", places=["0605290"], bbox=(-122.19, 38.04, -122.12, 38.085),
                     snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940"], 1948: ["benicia1950"]}),
     "sonoma": dict(name="Sonoma", places=["0672646"], bbox=(-122.49, 38.27, -122.43, 38.315),
-                   snaps={1899: ["napa1902"], 1939: ["sonoma1942"], 1948: ["sonoma1951"]}),
+                   snaps={1939: ["sonoma1942"], 1948: ["sonoma1951"]}),
     "healdsburg": dict(name="Healdsburg", places=["0633056"], bbox=(-122.90, 38.59, -122.84, 38.64),
                        snaps={1915: ["healdsburg1920"], 1933: ["healdsburg1940"],
                               1953: ["healdsburg1955", "guerneville1955"]}),
     "sebastopol": dict(name="Sebastopol", places=["0670770"], bbox=(-122.85, 38.385, -122.80, 38.42),
                        snaps={1935: ["sebastopol1942"], 1952: ["sebastopol1954"]}),
     "st_helena": dict(name="St. Helena", places=["0664140"], bbox=(-122.50, 38.485, -122.44, 38.53),
-                      snaps={1899: ["napa1902"], 1942: ["sonoma1942", "sthelena1945"],
+                      snaps={1942: ["sonoma1942", "sthelena1945"],
                              1957: ["rutherford1951", "sthelena1960"]}),
     "calistoga": dict(name="Calistoga", places=["0609892"], bbox=(-122.61, 38.56, -122.55, 38.60),
                       snaps={1915: ["calistoga1927"], 1943: ["calistoga1945"], 1957: ["calistoga1958"]}),
     "fairfield": dict(name="Fairfield - Suisun City", places=["0623182", "0675630"],
                       bbox=(-122.08, 38.225, -122.00, 38.275),
-                      snaps={1896: ["karquines1898"], 1915: ["mtvaca1921"], 1940: ["carquinezstrait1940", "mtvaca1942"],
+                      snaps={1896: ["karquines1898"], 1940: ["carquinezstrait1940", "mtvaca1942"],
                              1948: ["fairfieldsouth1949", "fairfieldnorth1951"]}),
     "vacaville": dict(name="Vacaville", places=["0681554"], bbox=(-122.02, 38.335, -121.95, 38.38),
                       snaps={1906: ["vacaville1908"], 1939: ["vacaville1941", "mtvaca1942"],
@@ -566,7 +564,7 @@ def tint_mask(img, kind, res, scale):
     # tint must stand 8 above the paper (20th percentile of R - G over the bright, non-green pixels)
     sub = img[::7, ::7].astype(np.int16)
     br = sub.sum(2)
-    pp = sub[(br > 0.85 * paper) & (sub[:, :, 0] - sub[:, :, 1] >= -3)]
+    pp = sub[(br > 0.85 * paper) & (br < 765) & (sub[:, :, 0] - sub[:, :, 1] >= -3)]     # 765: outside the sheet
     rg0 = float(np.percentile(pp[:, 0] - pp[:, 1], 20)) if len(pp) > 100 else 0.0
     rg_min = 10.0 if rg0 <= 6 else rg0 + 8.0
 

@@ -33,7 +33,7 @@
      "y": 328.3,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Virginia Street"
      ],
@@ -49,7 +49,7 @@
      "y": 332.2,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Virginia Street"
      ],
@@ -65,7 +65,7 @@
      "y": 747.5,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -81,7 +81,7 @@
      "y": 754.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -100,6 +100,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "283"
+   ],
    "px4": [
     [
      147.4,
@@ -130,7 +139,7 @@
      "y": 328.3,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Virginia Street"
      ],
@@ -146,7 +155,7 @@
      "y": 332.2,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Virginia Street"
      ],
@@ -162,7 +171,7 @@
      "y": 747.5,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -178,7 +187,7 @@
      "y": 754.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -229,9 +238,41 @@
      "y": 329.8,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1463.6,
+     "y": 327.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sonoma Street",
+      "Virginia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1464.9,
+     "y": 749.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Sonoma Street",
+      "Georgia Street"
      ],
      "w": [
       80,
@@ -245,7 +286,7 @@
      "y": 749.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -264,6 +305,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "282"
+   ],
    "px4": [
     [
      866.2,
@@ -294,7 +344,7 @@
      "y": 329.8,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Virginia Street"
      ],
@@ -310,7 +360,7 @@
      "y": 327.2,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sonoma Street",
       "Virginia Street"
      ],
@@ -319,15 +369,14 @@
       80
      ],
      "norefine": 1,
-     "weak": false,
-     "drop": "\"unknown street 'Sonoma Street'\""
+     "weak": false
     },
     {
      "x": 1464.9,
      "y": 749.0,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sonoma Street",
       "Georgia Street"
      ],
@@ -336,15 +385,14 @@
       80
      ],
      "norefine": 1,
-     "weak": false,
-     "drop": "\"unknown street 'Sonoma Street'\""
+     "weak": false
     },
     {
      "x": 868.8,
      "y": 749.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -395,7 +443,7 @@
      "y": 1125.0,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -411,7 +459,7 @@
      "y": 1118.5,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -427,7 +475,7 @@
      "y": 1541.1,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "York Street"
      ],
@@ -443,7 +491,7 @@
      "y": 1542.4,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "York Street"
      ],
@@ -462,6 +510,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "264"
+   ],
    "px4": [
     [
      149.9,
@@ -492,7 +549,7 @@
      "y": 1125.0,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "Georgia Street"
      ],
@@ -508,7 +565,7 @@
      "y": 1118.5,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -524,7 +581,7 @@
      "y": 1541.1,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Marin Street",
       "York Street"
      ],
@@ -540,7 +597,7 @@
      "y": 1542.4,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Sacramento Street",
       "York Street"
      ],
@@ -591,9 +648,41 @@
      "y": 1121.8,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1464.5,
+     "y": 1119.2,
+     "q": "SW",
+     "corner": "NE",
+     "oc": [
+      "Sonoma Street",
+      "Georgia Street"
+     ],
+     "w": [
+      80,
+      80
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 1464.5,
+     "y": 1541.0,
+     "q": "NW",
+     "corner": "SE",
+     "oc": [
+      "Sonoma Street",
+      "York Street"
      ],
      "w": [
       80,
@@ -607,7 +696,7 @@
      "y": 1541.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "York Street"
      ],
@@ -626,6 +715,15 @@
     "E": 80
    },
    "skip": [],
+   "oc": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "with": [
+    "263"
+   ],
    "px4": [
     [
      865.2,
@@ -656,7 +754,7 @@
      "y": 1121.8,
      "q": "SE",
      "corner": "NW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "Georgia Street"
      ],
@@ -672,7 +770,7 @@
      "y": 1119.2,
      "q": "SW",
      "corner": "NE",
-     "pc": [
+     "oc": [
       "Sonoma Street",
       "Georgia Street"
      ],
@@ -681,15 +779,14 @@
       80
      ],
      "norefine": 1,
-     "weak": false,
-     "drop": "\"unknown street 'Sonoma Street'\""
+     "weak": false
     },
     {
      "x": 1464.5,
      "y": 1541.0,
      "q": "NW",
      "corner": "SE",
-     "pc": [
+     "oc": [
       "Sonoma Street",
       "York Street"
      ],
@@ -698,15 +795,14 @@
       80
      ],
      "norefine": 1,
-     "weak": false,
-     "drop": "\"unknown street 'Sonoma Street'\""
+     "weak": false
     },
     {
      "x": 867.8,
      "y": 1541.0,
      "q": "NE",
      "corner": "SW",
-     "pc": [
+     "oc": [
       "Marin Street",
       "York Street"
      ],

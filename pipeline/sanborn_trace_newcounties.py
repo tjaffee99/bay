@@ -210,7 +210,7 @@ def sift(key, mask_box=None):
     return cv2.SIFT_create(nfeatures=12000).detectAndCompute(A, m)
 
 
-def match(fa, fb, bin_px=24):
+def match(fa, fb, bin_px=24, scale0=1.0):
     """SIFT matches between two states of one plate: the pairs whose displacement falls in the fullest 3 x 3 cells of
     a displacement histogram (a corrected plate is shifted by tens of pixels, hardly scaled or rotated; without this
     vote RANSAC finds degenerate transforms on sheets whose buildings all changed), then a RANSAC similarity.
@@ -221,7 +221,7 @@ def match(fa, fb, bin_px=24):
     if len(good) < 12:
         return 0, None, 0
     pa = np.float32([ka[g.queryIdx].pt for g in good]); pb = np.float32([kb[g.trainIdx].pt for g in good])
-    d = np.floor((pb - pa) / bin_px).astype(int)
+    d = np.floor((pb - pa * scale0) / bin_px).astype(int)  # scale0: the two scans differ in resolution
     cells, cnt = np.unique(d, axis=0, return_counts=True)
     c = cells[int(np.argmax(cnt))]
     sel = (np.abs(d - c) <= 1).all(axis=1)
@@ -255,9 +255,9 @@ def partner(src, vol, sheets=None, feats=None):
     return sorted(out, reverse=True)
 
 
-def register(src, dst):
+def register(src, dst, scale0=1.0):
     """W.register with the displacement vote of `match`: writes the control file of `src` (registered_to dst)."""
-    n, T, rms = match(sift(src), sift(dst))
+    n, T, rms = match(sift(src), sift(dst), scale0=scale0)
     if T is None:
         raise ValueError(f"{src} does not match {dst}")
     json.dump({"registered_to": dst, "T": T.tolist(), "reg_inliers": n, "reg_rms_px": round(rms, 2)}, open(E.CONTROL / f"{src}.json", "w"), indent=1)
@@ -441,7 +441,7 @@ def main():
             print(*r)
         return
     if stage == "register":
-        register(sys.argv[3], sys.argv[4])
+        register(sys.argv[3], sys.argv[4], float(sys.argv[5]) if len(sys.argv) > 5 else 1.0)
         return
     keys = sys.argv[3:] or E.all_keys()
     if stage in ("all", "fetch"):

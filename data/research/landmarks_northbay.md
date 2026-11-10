@@ -57,7 +57,9 @@ anchor, `height_m` = model top; the dam's is its structural height, the turbines
   1958; 1927 bridge dismantled by Sep 4, 2007 (Wikipedia).
   Placement: the 1958 bridge on Overture's eastbound segment (1,097 m bridge flag, 38.065543 → 38.055645 N); the 3DEP
   profile along it is 51 / 35 / 10 m on the north bluff, water from 75 m to ≈1,040 m, 3–4 m on the Crockett flat —
-  pier 2 (152 m) in the water, pier 5 (1,021 m) at the shore, as HAER describes. The 1927 bridge 61 m west. The
+  pier 2 (152 m) in the water, pier 5 (1,021 m) at the shore, as HAER describes. Independent check: the building data
+  holds six OSM pier outlines on this line, 6, 157, 489, 535, 868 and 1,021 m from the north end (HAER stations 0, 152,
+  488, 533, 869, 1,021 m); they are hidden by `replaces`. The 1927 bridge 61 m west. The
   bottom chord runs from 51.0 m at the north abutment to 39.8 m at pier 5 (41.5 m = 135 ft + ≈0.4 m at pier 4), peaks
   92–101 m. Not from sources: truss depth at the abutments (12 m), 1958 truss spacing (17 m; Wikipedia gives 52 ft
   overall width). The 1927 bridge's own Crockett approach (HAER: "from the south end of the bridge at pier 5, the
@@ -67,9 +69,10 @@ anchor, `height_m` = model top; the dam's is its structural height, the turbines
   USGS quadrangles); the 1958 model carries
   today's eastbound viaduct on its Overture line up to the 50 m hillside.
 - **Alfred Zampa Memorial Bridge** — Wikipedia: spans 147 + 728 + 181 m, towers 410 ft, 84 ft wide, 148 ft clear,
-  3,465 ft; opened Nov 11, 2003. The 1,056 m of spans centred on Overture's 1,078 m westbound segment put the towers
-  158 m and 886 m from its south end; 3DEP water runs from ≈50 m to ≈950 m, so the south tower stands at the Crockett
-  shore and the north one in the water off the bluff. Estimated: leg sections, struts, anchorage blocks, cable sag,
+  3,465 ft; opened Nov 11, 2003. The towers are in the building data as two OSM outlines (337 and 363 m², 724.8 m
+  apart — the 728 m main span), 170 m and 895 m along Overture's 1,078 m westbound segment; with them the 181 m
+  north side span ends at the segment's north end and the south anchorage 21 m inside its south end (3DEP water
+  from ≈50 m to ≈950 m). Both tower footprints are hidden by `replaces`. Estimated: leg sections, struts, anchorage blocks, cable sag,
   deck 44.5 → 49 → 48.7 m.
 - **Martinez–Benicia railroad bridge** — S. A. Roake, *Engineering News-Record*, June 4, 1931, pp. 918–922 (scan at
   historicbridges.org), table "Principal data on superstructure", distances from the south abutment: viaduct to 560 ft;

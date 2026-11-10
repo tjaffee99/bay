@@ -51,11 +51,12 @@ TRANSIT_TAKES_OVER = True
 # edge of the region extracts (download_overture.REGION_BBOX): freeway ends there are cuts
 REGION_BBOX_ROADS = (-123.68, 36.78, -121.16, 38.91)
 # routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
-LANDMARK_ROUTES = {"fwy_embarcadero"}
+LANDMARK_ROUTES = {"fwy_embarcadero", "br_carquinez_1927"}
 # bridge decks drawn by a landmark model (lon0, lat0, lon1, lat1): the generic deck slabs and
 # bents of the freeway layer are left out inside the box
 LANDMARK_BRIDGE_BOXES = [
     (-121.7560, 38.0167, -121.7470, 38.0427),   # Antioch Bridge 1978 (landmarks/coastsouth.ts)
+    (-122.1302, 38.0486, -122.1262, 38.0514),   # I-780 connector of the 2007 Benicia span (landmarks/northbay.ts)
 ]
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
 WIDTH = {K_STREET: 9, K_MAJOR: 14, K_FREEWAY: 24, K_HIGHWAY: 16, K_CABLE: 3, K_STREETCAR: 3, K_RAIL: 4,
@@ -396,7 +397,7 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
             la_ = np.array([p.y for p in ll])
             over_water = ground(lo_, la_) < 2.0
             bay_bridge = (lo_ > -122.392) & (lo_ < -122.298) & (la_ > 37.783) & (la_ < 37.832)
-            if "Golden Gate Bridge" in nm:
+            if "Golden Gate Bridge" in nm or "Carquinez Bridge" in nm or "Benicia-Martinez Bridge" in nm:
                 tn = tn | br
             tn = tn | (br & bay_bridge & over_water)
             # other bridges with a landmark model: the whole modelled structure (approach
