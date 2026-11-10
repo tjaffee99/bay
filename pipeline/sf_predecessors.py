@@ -532,7 +532,9 @@ def apply_sanborn(pred, today, fire, areas, include=None):
                     for poly, cs, ce, _fab, _aid in areas:
                         if c.within(poly) and cs > y:
                             ends.append(cs + (ce - cs) * h01(key, "c"))
-                    end = min(ends) if ends else max(y + 15, 1960.0)
+                    # nothing on its ground today, no later map and no dated clearance: gone
+                    # some time after the last map - spread, not all in one year (estimated)
+                    end = min(ends) if ends else max(y + 15, 1960.0) + 25.0 * h01(key, "d")
                 # 1906: a building first mapped after the fire inside the burned district was
                 # built after it (not when the fabric it replaced was); one mapped before AND
                 # after it, deep inside the burn, is a rebuild on the same lot — the old one

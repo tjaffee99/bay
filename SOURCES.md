@@ -669,3 +669,45 @@ College pattern) say "Campus-wide date" in the note; rows with an approximate ye
   counties' files were already listed).
 * Street names and centrelines for the registration: Overture Maps roads (OpenStreetMap, ODbL) — already listed.
 
+
+<!-- sanborn -->
+### Sanborn maps of the new counties (Santa Rosa, Vallejo, Napa, Petaluma, Santa Cruz, Watsonville)
+
+* **Sanborn Map Company, Insurance Maps** — Library of Congress, Geography and Map Division, Sanborn Maps Collection
+  (public domain; IIIF images via `https://www.loc.gov/item/<id>/?fo=json`). Volumes traced by
+  `pipeline/sanborn_trace_newcounties.py` (details, sheets and fits: `data/manual/sanborn/README_northbay.md`,
+  `README_santa_cruz.md`):
+  Santa Rosa `sanborn00838_004` (Dec 1904), `_005` (1908), `_006` (1908 corrected to 1950);
+  Vallejo `sanborn00905_003` (Jul 1901), `_004` (Mar 1919), `_005` (1919 corrected to Mar 1950);
+  Napa `sanborn00707_003` (Jun 1901), `_004` (Oct 1910);
+  Petaluma `sanborn00756_005` (Nov 1910);
+  Santa Cruz `sanborn00833_003` (Jul 1892), `_004` (1905);
+  Watsonville `sanborn00921_006` (Dec 1920), `_007` (1920 corrected to Dec 1962).
+  Use: footprints of vanished buildings (`data/manual/sanborn/<town>_downtown_<year>.geojson`, `_coverage.geojson`),
+  merged by `sf_predecessors.apply_sanborn` through `region_predecessors.REGION_SANBORN`.
+  Attribution: "Library of Congress, Geography and Map Division, Sanborn Maps Collection".
+* Control geometry for the tracing: Overture Maps transportation segments and buildings, release 2026-10-21.0 (ODbL,
+  (c) OpenStreetMap contributors / Overture); county parcel layers already listed (Sonoma, Solano, Napa, Santa Cruz).
+* **Clearances** (`data/manual/redevelopment_areas.csv`, rows `val_marina_vista`, `sr_urban_renewal_phase1`,
+  `sr_urban_renewal_mall`, `sr_us101_viaduct`, `napa_town_center`, `sc_san_lorenzo_park_plaza`; source URLs in each row):
+  * ESA, *Vallejo Ferry Terminal Reconfiguration Project: Cultural Resources Survey Report*, April 2024 (CEQAnet
+    attachment, pp. 20-23: Marina Vista Redevelopment Project, adopted 1960, 600 structures, 125 acres, 24 blocks, seawall
+    1966; fig. 9 = the 1967 site plan with the project boundary, fig. 10 = aerial view of May 1965) — https://files.ceqanet.lci.ca.gov/300424-1/attachment/YJM2lmLy00GH6JH8-0EBw6umsZQ6PpfDGFUFPJ5NM55hIiF-cR3zSk1laG2VGONDEva753A2MCL8c34M0 ;
+    *Historical Articles of Solano County*, "Georgia St. has pioneers" (15 Mar 1964) — https://www.solanoarticles.com/history/index.php/weblog4/more/georgia_st_has_pioneers/
+  * Jeff Elliott, *Santa Rosa History* (comstockhousehistory.blogspot.com / santarosahistory.com): "It will be a resplendent
+    city" (2019: Urban Renewal Agency 1958, Phase I = 40 acres, Third St - Sonoma Av, Santa Rosa Av - E St), "Road to the
+    mall" series (2022: ordinance 1439 of 10 Mar 1970, wrecking from 1972); Wikipedia, "Santa Rosa Plaza" (opened 1983,
+    Macy's 1981); Cinema Treasures no. 28446 (California Theatre closed 1977).
+  * US 101 in Santa Rosa: AARoads, "U.S. 101 North - Sonoma County" (downtown viaduct built 1968) —
+    https://www.aaroads.com/california/us-101nl_ca.html ; Gribblenation, "The California State Route 12 freeway" (Santa Rosa
+    Freeway opening 20 May 1949).
+  * Napa: California Planning & Development Report, "Napa uncorks new downtown ..." (33-block redevelopment area, 1969) —
+    https://www.cp-dr.com/post/napa-uncorks-new-downtown-to-tap-tourist-wine-industries ; Napa County Landmarks, "Dwight
+    Murray Plaza and Kohl's" (Migliavacca Building razed 1973); Napa County Historical Society, "Napa Redevelopment, 1974".
+  * Santa Cruz: Santa Cruz Public Library local history clippings (Santa Cruz Sentinel 18 Mar 1956 "Santa Cruz
+    Redevelopment Gets Under Way: Flood-Hit Area is Initial Target", Sep 1956 plans approved, Dec 1959 call for proposals,
+    22 Oct 1970 "SC Redevelopment Agency ... Closes") — https://history.santacruzpl.org/omeka/items/show/92142 , /103434 ,
+    /92523 , /92571 ; Coastal Watershed Council, "Abating flooding along an urban river" (levees 1957-59).
+    Only the catalogue records (title, date) of the clippings were read, not the article texts: the row's years are
+    ESTIMATED from those dates.
+

@@ -27,7 +27,7 @@ import pandas as pd
 import shapely
 from scipy.spatial import cKDTree
 
-from common import INTERIM, TABLES, log
+from common import INTERIM, MANUAL, TABLES, log
 from sf_predecessors import apply_sanborn, footprint, h01, massing, strips_for_lot, table_buildings
 
 UTM = "EPSG:32610"
@@ -744,8 +744,16 @@ def region_predecessors(today):
         pred = gpd.GeoDataFrame(pd.concat([pred, d], ignore_index=True), geometry="geometry", crs=UTM)
         log(f"region predecessors: {len(d)} documented demolished buildings")
     tu = today.to_crs(UTM).reset_index(drop=True)
-    no_fire = gpd.GeoDataFrame(geometry=[], crs=UTM)
-    pred = apply_sanborn(pred, tu, no_fire, areas, include=lambda area: area.startswith(REGION_SANBORN))
+    # the earthquake of 18 April 1906 outside San Francisco: where a district was destroyed
+    # (data/manual/fires/quake_1906_*.geojson - Santa Rosa's business blocks), the traced
+    # buildings mapped before it end that day and those mapped after it are the rebuilt town,
+    # exactly as inside San Francisco's burned district
+    qfiles = sorted((MANUAL / "fires").glob("quake_1906_*.geojson"))
+    if qfiles:
+        quake = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in qfiles], ignore_index=True), crs=4326).to_crs(UTM)[["geometry"]]
+    else:
+        quake = gpd.GeoDataFrame(geometry=[], crs=UTM)
+    pred = apply_sanborn(pred, tu, quake, areas, include=lambda area: area.startswith(REGION_SANBORN))
     # buildings of vanished large sites (data/manual/vanished_sites/buildings.geojson:
     # traced from aerials / topo maps — racetrack grandstands, office campuses, factories)
     vb = INTERIM.parent / "manual" / "vanished_sites" / "buildings.geojson"

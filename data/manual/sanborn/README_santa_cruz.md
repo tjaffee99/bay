@@ -36,28 +36,30 @@ modern data. A traced building of the last map year with no later building on it
 ends at apply_sanborn's default (`max(map year + 15, 1960)`): where a town's last map is 1905-1910 that is a heap of
 buildings vanishing in 1960 - every dated clearance row removes part of it (see each town's limits).
 
-## Santa Cruz (`santa_cruz_downtown`: Jul 1892, 1905)
+## Santa Cruz (`santa_cruz_downtown`: Jul 1892, 1905; `santa_cruz_beach`: 1905)
 
-Pacific Avenue from Mission / Water St to Laurel St with the blocks west to Center St and east to Front St and the river: the later Pacific Garden Mall blocks (hit on 17 Oct 1989), the courthouse block and the Front St Chinatown that burned on 14 April 1894 (1892 edition).
+Pacific Avenue from Mission / Water St to Laurel St with the blocks west to Center St and east to Front St and the river: the later Pacific Garden Mall blocks (hit on 17 Oct 1989), the courthouse block and the Front St Chinatown that burned on 14 April 1894 (1892 edition). `santa_cruz_beach` is the beach flat on the 1905 sheet 28: Tent City, the cottages between Cliff St and Riverside Av, and the Neptune Casino, baths and pleasure wharf of 1904 (burned 22 June 1906; today's Casino and Plunge of 1907 stand on the site).
 
 | edition | LOC item | sheets used |
 |---|---|---|
 | Jul 1892 (30 sheets) | https://www.loc.gov/item/sanborn00833_003/ | 4, 6 (key on sheet 1) |
-| 1905 (73 sheets + key) | https://www.loc.gov/item/sanborn00833_004/ | 9, 14, 15, 16, 20 (key map `0000`) |
+| 1905 (73 sheets + key) | https://www.loc.gov/item/sanborn00833_004/ | 9, 14, 15, 16, 20 (downtown), 28 (beach; key map `0000`) |
 
 The 1928, 1950 and 1971 volumes (`_005`-`_010`) have no images, so 1905 is the last map year.
 
 | file | features | high / medium / low | materials | uses | area (1000 m2) | modern_overlap >= 0.5 |
 |---|---|---|---|---|---|---|
+| santa_cruz_beach_1905 | 66 | 0 / 57 / 9 | frame 66 | dwelling 34, shed 24, store 5, warehouse 3 | 8.0 | 19 |
 | santa_cruz_downtown_1892 | 476 | 81 / 122 / 273 | frame 428, brick 24, iron 24 | shed 238, store 226, warehouse 12 | 42.3 | 324 |
 | santa_cruz_downtown_1905 | 841 | 511 / 330 / 0 | frame 764, iron 33, brick 27, unknown 9, adobe 6, stone 2 | shed 395, store 322, dwelling 91, warehouse 24, other 9 | 80.5 | 502 |
 
 Coverage: 1892: 15 ha, 1905: 34 ha.
 
-**Georeferencing.** 1905 (north up, Pacific Av vertical): parcel corners; sheets 14 and 20 fit to 0.4-1.1 m (Cedar St was a 20 ft lane north of Elm St - 'Vine St' north of Locust St - and is not used there), sheet 15 (Cooper St - Soquel Av, Pacific Av - Front St and the flat east of Front St) as one group 2.0 m, sheet 9's two pieces each on two corners + the plate scale (the flatiron between Pacific Av and Front St on its Cooper St corners, block 6 on its Locust St corners - Pacific Av is not to scale between them), sheet 16 (Cathcart - Laurel St) on the Cathcart St corners + scale (`medium`). 1892 is another drawing: sheet 6 (Pacific Av horizontal) on parcel corners (0.7-0.9 m west of Pacific Av; the courthouse block 13 has 3.5 m RMS on four corners, its Soquel Av corners 4.6 m off - `low`), sheet 4 like the 1905 sheet 9, with the Front St Chinatown carried across Front St by the flatiron's fit (`low`). 72 % of the 1892 footprints are found again on the 1905 map.
+**Georeferencing.** 1905 (north up, Pacific Av vertical): parcel corners; sheets 14 and 20 fit to 0.4-1.1 m (Cedar St was a 20 ft lane north of Elm St - 'Vine St' north of Locust St - and is not used there), sheet 15 (Cooper St - Soquel Av, Pacific Av - Front St and the flat east of Front St) as one group 2.0 m, sheet 9's two pieces each on two corners + the plate scale (the flatiron between Pacific Av and Front St on its Cooper St corners, block 6 on its Locust St corners - Pacific Av is not to scale between them), sheet 16 (Cathcart - Laurel St) on the Cathcart St corners + scale (`medium`). 1892 is another drawing: sheet 6 (Pacific Av horizontal) on parcel corners (0.7-0.9 m west of Pacific Av; the courthouse block 13 has 3.5 m RMS on four corners, its Soquel Av corners 4.6 m off - `low`), sheet 4 like the 1905 sheet 9, with the Front St Chinatown carried across Front St by the flatiron's fit (`low`). 72 % of the 1892 footprints are found again on the 1905 map. The beach sheet 28 (sheet-left = north): blocks 227 / 229 west of Cliff St on five parcel corners (1.4 m), the Tent City block on its two 2nd St corners + the plate scale, the casino strip beyond the Southern Pacific track by the fit of the blocks across it (`low`); today's Beach St frontage is 4-5 m off the 1905 Esplanade line and is not used.
 
 | sheet (key) | map year | fits | RMS / max (m) per fit | scale (m/px), rotation | footprints |
 |---|---|---|---|---|---|
+| 004_0028 | 1905 | 3 fit(s), 4 block zones | 231: 2 pts 0.02/0.02; 229: 5 pts 1.37/2.44; 232: 5 pts 1.65/2.91 | 0.2031, -68.7 deg | 66 |
 | 003_0004 | 1892 | 2 fit(s), 3 block zones | 6: 2 pts 0.38/0.38; 4: 2 pts 0.03/0.03 | 0.2052, 14.2 deg | 134 |
 | 003_0006 | 1892 | 4 fit(s), 4 block zones | 13: 4 pts 3.54/4.71; 7: 2 pts 0.74/0.74; 12: 2 pts 0.80/0.80; 16: 4 pts 0.92/1.14 | 0.2081, -76.4 deg | 342 |
 | 004_0009 | 1905 | 4 fit(s), 4 block zones | 6: 2 pts 1.02/1.02; 4: 2 pts 0.55/0.55; 196: 4 pts 1.24/1.60; 197: 4 pts 0.54/0.89 | 0.2038, 13.1 deg | 179 |
@@ -66,9 +68,9 @@ Coverage: 1892: 15 ha, 1905: 34 ha.
 | 004_0016 | 1905 | 1 fit(s), 3 block zones | 19: 4 pts 2.45/3.31 | 0.2071, 13.4 deg | 71 |
 | 004_0020 | 1905 | 3 fit(s), 4 block zones | 192: 4 pts 0.40/0.64; 193: 4 pts 0.74/1.02; 194: 4 pts 0.99/1.34 | 0.2033, 12.3 deg | 174 |
 
-**apply_sanborn test.** 1892: 476 footprints (23 awning strips dropped), 341 matched on 1905; 1905: 841; 976 vanished buildings emitted (135 only on the 1892 map); 18 of the 38 inside `sc_san_lorenzo_park_plaza` end in its years, 264 end at the default 1960. 'Standing' could not be measured in the test: the Santa Cruz parcel layer carries no year, so every footprint of today was dated 1950 (the real stage has the years); `modern_overlap >= 0.5` in the tables is the proxy.
+**apply_sanborn test.** 1892: 476 footprints (23 awning strips dropped), 341 matched on 1905; 1905: 841; 976 vanished buildings emitted (135 only on the 1892 map); 18 of the 38 inside `sc_san_lorenzo_park_plaza` end in its years, 264 end at the default 1960. 'Standing' could not be measured in the test: the Santa Cruz parcel layer carries no year, so every footprint of today was dated 1950 (the real stage has the years); `modern_overlap >= 0.5` in the tables is the proxy. Beach: 66 footprints, 66 emitted (the casino complex ends when the real stage finds today's 1907 building on its ground, else at the default 1960 - a dated row for the fire of 22 June 1906 is a lead / fires item).
 
-**Limits / not done.** The 1894 fire: a building on the 1892 map that is gone in 1905 ends at a hashed year between the maps (1895-1903); the fire hook would need the burned blocks (Pacific Av / Cooper St / Front St) at 1894.29 - not entered here. No map after 1905: the 1989 losses are buildings of today's data or of the lead's disaster rows, not of these files. Not traced: the beach flat and the boardwalk (1905 sheets 22-28), Mission Hill, the east side, the 1892 sheets 5, 7, 8, the 1886 / 1888 editions.
+**Limits / not done.** The 1894 fire: a building on the 1892 map that is gone in 1905 ends at a hashed year between the maps (1895-1903); the fire hook would need the burned blocks (Pacific Av / Cooper St / Front St) at 1894.29 - not entered here. No map after 1905: the 1989 losses are buildings of today's data or of the lead's disaster rows, not of these files. Not traced: the rest of the beach flat (1905 sheets 22-27: almost empty lots in 1905), Mission Hill, the east side, the 1892 sheets 5, 7, 8, the 1886 / 1888 editions.
 
 ## Watsonville (`watsonville_downtown`: Dec 1920, Dec 1962)
 

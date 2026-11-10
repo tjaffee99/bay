@@ -9,6 +9,7 @@ Areas (data/manual/sanborn/README_northbay.md, README_santa_cruz.md):
   napa_downtown         Main St and the river front, Clinton - 5th St, west to Franklin St: Jun 1901 (Main St), Oct 1910
   petaluma_downtown     the iron-front blocks and McNear's warehouses: Nov 1910
   santa_cruz_downtown   Pacific Avenue, Mission / Water St - Laurel St: Jul 1892 (before the fire of 1894), 1905
+  santa_cruz_beach      the beach flat: Tent City and the Neptune Casino / baths of 1904 (1905 sheet 28)
   watsonville_downtown  Main St, Lake Av - 1st St, and the plaza: Dec 1920, 1920 corrected to Dec 1962
   benicia_downtown      configured (LOC ids, parcels), not traced
 
@@ -447,6 +448,29 @@ def assemble():
         E.log(area, year, len(out), "features after block rules:", n_cap, "capped,", n_drop, "awning strips dropped")
 
 
+def georef_order(keys):
+    """keys ordered so that a sheet comes after the sheets it is registered onto or tied to (a clean run of `all`)."""
+    deps = {}
+    for k in keys:
+        cfg = json.load(open(E.CONTROL / f"{k}.json"))
+        d = {cfg["registered_to"]} if "registered_to" in cfg else set()
+        for b in cfg.get("blocks", []):
+            d |= {c["tie"] for c in b.get("corners", []) + b.get("corners_all", []) if "tie" in c}
+        deps[k] = d
+    out = []
+
+    def visit(k, stack=()):
+        if k in out or k in stack:
+            return
+        for d in sorted(deps.get(k, ())):
+            if d in deps:
+                visit(d, stack + (k,))
+        out.append(k)
+    for k in keys:
+        visit(k)
+    return out
+
+
 def set_areas(d):
     """control/<town>/areas.json: {"<area>_<year>": [keys]}"""
     p = E.CONTROL / "areas.json"
@@ -493,7 +517,7 @@ def main():
         for k in keys:
             E.refine(k)
     if stage in ("all", "georef"):
-        for k in E.base_first(keys):
+        for k in georef_order(keys):
             P._georef(k)
     if stage in ("all", "extract"):
         for k in keys:
