@@ -651,7 +651,7 @@ def rebuild_years(g, xy, year, conf, end, src=None):
                     claimed.add(j)
                     n_fb += 1
     else:
-        ids = np.array([], dtype=object)
+        ids, cy, cexact = np.array([], dtype=object), np.array([]), np.array([], bool)
     has = fp >= 0
     j = np.maximum(fp, 0)
     # one structure speaks for a footprint: the house before the shed, the later fire before the earlier
@@ -749,7 +749,8 @@ def rebuild_years(g, xy, year, conf, end, src=None):
         reb[i] = year[fi] if status[i] != "gone" else np.nan
         n_set[status[i]] += 1
     m = status == "rebuilt"
-    reb[m] = cy[j][m]
+    if m.any():
+        reb[m] = cy[j][m]
     tab = pd.DataFrame({"sid": st.id.values, "fire_id": fire, "date": date, "status": status,
                         "fid": np.where(has, ids[j] if len(ids) else "", ""), "old_year": old, "old_src": old_src,
                         "rebuild_year": reb, "permit_year": py, "structure_type": st.structure_type.values, "main": main,

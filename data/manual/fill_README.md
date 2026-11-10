@@ -363,6 +363,38 @@ lies inside that row's 1870–1930. Delta islands, Discovery Bay, Santa Cruz har
 lie outside the c.1800 baylands layer (east of 121.82° W, south of 37.29° N), so no fill, dike or excavation row can
 act there yet. Scratch tools: `audit/land2/nidjoin.py`, `wbuild.py`, `n3.py`, `b1.py`, `b2.py`.
 
+**The Delta and the new waterfronts (2026-11, ship pass; 303 rows).** See `data/manual/delta/README.md` for the
+c.1800 layer (SFEI's Delta study, 66,700 ha of tule marsh inside the map) and the island outlines.
+
+* **`dl_*` (30 rows, `diked_marsh`, region "Delta"):** one row per Delta island or tract inside the map with the
+  year(s) it was leveed, from Thompson (1957, 2006) — Sherman 1868–69, Twitchell 1869, Brannan–Andrus 1871–72,
+  Jersey 1872–73, Bethel 1872–75, Byron 1874–1900, Coney 1893–97, Clifton Court 1898–99, Veale 1900, Franks
+  1902–06, Palm–Orwood 1902–06, Woodward 1902, Victoria 1905, Holland 1910, Webb 1912, Egbert 1870–1912, Hastings /
+  Prospect / Liberty / Cache–Haas 1914–18, Netherlands 1916–18, Bacon 1916, Mandeville 1918, Grand 1855–75, Sutter
+  1880–96, Union 1876–78; ESTIMATED: Ryer (1865–1900), Bradford (1871, continuity), Hotchkiss and Quimby (1897–1918).
+  These rows only work with the `terrain_tiles.py` change of this pass (scratch `ship/land/terrain_tiles_delta.patch`):
+  the c.1998 layer that says what is diked today stops at Antioch, so inside `delta/delta_zone.geojson` the diked
+  land is what the `dl_*` rings hold, c.1800 marsh outside every ring stays marsh, and the drowned parts of a ring
+  (Franks Tract, Liberty Island, Clifton Court) are farm land from the levee year to the year of their
+  `water_history.csv` row. Without that change the islands turn into "fill" at the 1950 default.
+* **Edition-dated rows on the region grid (11 rows `tp_*`, 126 ha, ESTIMATED):** same method as above on the 76 m
+  grid for the quads Mare Island, Benicia, Port Chicago / Vine Hill, Honker Bay, Antioch North, Fairfield South and
+  Cuttings Wharf (24 of 32 editions pass the reference test; Petaluma River, Napa and Cordelia have too little open
+  bay), plus the 1940 1:62,500 Carquinez Strait sheet as an earlier date: Mare Island's south end 1948–58 (56 ha),
+  Benicia 1940–58, Port Chicago 1940–58, Vallejo 1940–58, Suisun City 1940–48 and 1948–68. Most of the new
+  waterfronts' made land is already dry on the first usable edition (Mare Island 453 ha by 1948, Pittsburg – Antioch
+  about 500 ha by 1949 / 1968, Suisun City 146 ha, Vallejo 280 ha, Benicia 89 ha) and stays on fallback years: the
+  1896–1916 sheets print open water without a blue tint, so the classifier cannot read them.
+* **`nb_napa_pond_3_restored` (2006):** the pond west of the old restoration ring (identified by size and position).
+
+Left as they are, no dated source or no usable sheet: Mare Island before 1948, Vallejo (the 1914 bulkhead: the
+fallback already gives about 1912), Pittsburg – Antioch, Petaluma, the Napa flood-project wetlands, East San
+Rafael, McNear's, the Alviso – North San José marsh edge, Tolay Lake (only "about 1850"). Central Grizzly Island
+(about 1,600 ha) is shallow bay in both SFEI's Suisun study and the poster — marsh that grew after 1850 — and keeps
+its fallback year. Santa Cruz harbor gets no row: Woods Lagoon was water before the harbor was dug (1962–64, upper
+harbor 1973). Scratch tools: `ship/land/` (`dsim.py`, `isl.py`, `ed_r.py`, `asm_r.py`, `tp_r.py`, `ptest.py`,
+`peval.py`, `verify3.py`).
+
 ## Land cover table (`data/tables/landcover_history.csv`)
 
 Columns: `area_id,name,region,cover,year_start,year_end,ring_type,ring,note,source_url`. `year_start = -10000` means "since before 1769".

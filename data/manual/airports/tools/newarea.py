@@ -375,26 +375,30 @@ def write_fields(g):
         geoms, outline = local_geom(f)
         ol = to_ll(outline, f["c"])
         # never overlap a standing airport's outline of another name (Petaluma Sky Ranch / Petaluma Municipal)
+        k = kfac(f["c"][1]) * 110574
+        full = ol.area
         for nm, tg in zip(today.name, today.geometry):
             if tg.intersects(ol):
-                k = kfac(f["c"][1]) * 110574
                 a0 = ol.intersection(tg).area * k / 1e4
                 ol = ol.difference(tg.buffer(0.0001))
                 if ol.geom_type == "MultiPolygon":
                     ol = max(ol.geoms, key=lambda q: q.area)
                 print(f"  {f['name']}: outline clipped by {nm} ({a0:.1f} ha overlap)")
+        # a field that lies inside today's airport of another name (Petaluma Sky Ranch inside the municipal
+        # airport's boundary) gets no outline of its own: its pieces keep their years, the ground is today's airport's
+        has_outline = (not ol.is_empty) and ol.area > 0.3 * full
         for p, gm in zip(f["pieces"], geoms):
-            L = round(max(gm.minimum_rotated_rectangle.length / 2 - (p["w"] or 0), 0)) if not p["poly"] else None
             props = {"airport": f["name"], "kind": p["kind"], "start_year": p["start"], "end_year": p["end"],
                      "width_m": p["w"], "confidence": p["conf"], "source_url": f["src"],
                      "note": p["note"] + ". " + f["S"]}
             ft = {"type": "Feature", "properties": props, "geometry": mapping(to_ll(gm, f["c"]))}
             d["features"].append(ft); qa.append(ft)
         op = {"name": f["name"], "class": f["cls"]}
-        o["features"].append({"type": "Feature", "properties": op, "geometry": mapping(shapely.set_precision(ol, 1e-7))})
-        qa.append({"type": "Feature", "properties": op, "geometry": mapping(ol)})
-        k = kfac(f["c"][1]) * 110574
-        print(f"  {f['name']}: {len(geoms)} pieces, outline {ol.area * k / 1e4:.1f} ha, {f['opened']}-{f['closed']}")
+        if has_outline:
+            o["features"].append({"type": "Feature", "properties": op, "geometry": mapping(shapely.set_precision(ol, 1e-7))})
+            qa.append({"type": "Feature", "properties": op, "geometry": mapping(ol)})
+        print(f"  {f['name']}: {len(geoms)} pieces, outline " + (f"{ol.area * k / 1e4:.1f} ha" if has_outline else "none (inside a standing airport)")
+              + f", {f['opened']}-{f['closed']}")
     tag = "Vanished airfields of the 2026-11 map extension"
     if tag not in d.get("description", ""):
         d["description"] = d.get("description", "") + (
