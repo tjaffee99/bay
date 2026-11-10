@@ -99,3 +99,33 @@ Seen and not exported: the 1915 PPIE buildings (batch4.ts has the PPIE from the 
 Fargo / Pacific Telephone, Western Merchandise Mart floors), business founding years (City Lights, Green Apple),
 OHM street "opening" years 1847 / 1857 (the O'Farrell / Eddy plans, not openings), SFO Museum's terminal floor-plan
 snapshots 1927-2021 (by period, not by building).
+
+## The counties added in 2026-11 (Sonoma, Napa, Solano, Santa Cruz, east Contra Costa, south Santa Clara)
+
+Same endpoint (the OHM Overpass API above; the main OSM Overpass is blocked by the proxy), four more bbox chunks
+(`NEW_AREA_BOXES` in `ohm_import.py`, downloaded 2026-11-10). What OHM holds inside the ten-county extent but
+outside the core: 14,400 undated waterways, 285 dated railway ways (752 km) and 85 other dated features - nothing
+like the gold-rush or Stanford imports. **Nothing was imported wholesale; no OHM date was used.**
+
+| file | what |
+|---|---|
+| `rail_review_ohm.csv` | regenerated for the ten counties: 221 dated OHM railway / tram / ferry ways not in `historic_rail.geojson` / `routes.csv` (the lines below are now ours and dropped out of it) |
+| `new_area_review_ohm.csv` | the 85 dated features that are not railways or roads (`python pipeline/ohm_import.py newarea`): 16 outlines from Thompson's 1876 map of Santa Rosa (colleges, schools, hotels, the plaza - "1876" is the map year), 5 downtown Santa Cruz buildings (Hall of Records 1882, Leonard Building 1894, two banks 1910; no sources on the ways), Gilroy / Morgan Hill (Wheeler Hospital 1929, Dixon House 1887-1906, Saint Louise hospital 1987-89; newspaper-cited), Duncans Mills (1877 buildings, Scotta School 1877-2020), the Calistoga depot 1868, Mission San Francisco Solano 1823, the SS Palo Alto 1929 and its pier 1930, Monticello cemetery 1870-1953 and the Putah Creek stone bridge 1896-1956 (under Lake Berryessa), 18 Pacheco Pass highway bridges (Caltrans log), 14 `landuse=residential` town outlines, 10 `route=road`. For the building-date and landmark tables to check - not merged anywhere. |
+| `routes_ohm.csv` | + Santa Rosa: the horse-car line on Fourth Street and McDonald Avenue of the 1876 Thompson map (`sr_street_railway`, 1877-1905, start ESTIMATED from the map; OHM's "1854" is a placeholder) and the Petaluma & Santa Rosa electric cars on Fourth Street (`sr_psr_fourth_st`, 1905-1931). Both rows are in `routes.csv`. `(route_id, segment_seq)` is now unique (the electric period of `sj_santa_clara_horse` is segment 2). |
+| `data/raw/historic_rail/h2_ohm_newarea.json` (raw, not committed) | `python pipeline/ohm_import.py railextract`: 61 OHM way pieces of railways whose track is gone, clipped to three boxes, in the Overpass JSON that `historic_rail_trace.py`'s `rail` method reads next to the OSM grades. The routes that follow them are in `data/manual/historic_rail_spec.py` with our own dates and sections. |
+
+OHM geometry used through that extract (each cited in the segment's `source_url` / note): North Pacific Coast narrow
+gauge Valley Ford - Occidental - Monte Rio - Duncans Mills (ways 202387713 / 202387715; "USGS topographic maps; USGS
+3DEP"), the Guerneville branch (202387871, "USGS 3DEP") and its approximate Monte Rio ways (2003720xx, tagged "routes
+are approximate" - LOW confidence), the SF&NP Sebastopol branch and the P&SR Forestville line (202387872), Southern
+Pacific's Santa Rosa branch through the Valley of the Moon (200461230, from the USGS Santa Rosa 1916 sheet), the
+Boulder Creek branch and the Dougherty Extension (200444390, 200446467-92, cited to santacruztrains.com). OHM dates
+that were wrong or placeholders and were replaced: Guerneville branch end "1940 (approximate)" -> rails removed 1935;
+Boulder Creek branch start "1880-05" (the main line's date) -> 1885; Dougherty Extension end "1934" -> scrapped late
+1917; Sebastopol branch end "1980 (arbitrary)" -> 1984-89; SP Santa Rosa branch "1935" -> 1935 north of Glen Ellen,
+1942 south of it; Santa Rosa street railway "1854" -> by 1877.
+
+Seen and not exported: the Sacramento Northern ways (OSM has the same grades; OHM's 1950 / 1960 / 1980 / 1990 ends
+are decade bins), the SP Walnut Grove branch (outside the extent), the Alameda & San Joaquin coal line to Tesla
+(outside), spurs at Bohemian Grove (approximate, unsourced), SP / NWP / Santa Fe main lines still in place (dated in
+`routes.csv`).

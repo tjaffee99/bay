@@ -44,6 +44,14 @@ Usage (from pipeline/):
       any other area: the newest survey year whose EPT projects cover the bbox (e.g. Oakland
       CA_AlamedaCo_2_2021 + _3_2021, San Jose CA_SantaClaraCounty_2020) or --project;
       footprints = Overture region buildings (download_region.py) inside the bbox.
+  python lidar_parts.py region --name santa_rosa [--redo-parts]
+  python lidar_parts.py jobs [--redo-parts]
+      the listed jobs of the 2026-11 expansion (REGION_JOBS: box + survey per town / campus /
+      plant), one or all in order. Surveys that are not on the EPT bucket are read from their
+      LAZ tiles ("tnm:" projects, Antioch / Pittsburg); a survey in feet needs PROJECT_Z_FACTOR
+      (the stage stops when single-level roofs read ~3.3 x the footprints' own heights).
+      Single-level footprints seen through tree canopy get status "canopy" (no height), and
+      footprints with a recorded year after the survey are skipped (newer_than_survey).
   python lidar_parts.py preview --job sf --bbox lon0,lat0,lon1,lat1 --out file.png
       top-down height maps: LiDAR | one prism per footprint | with the LiDAR parts.
 
@@ -89,6 +97,11 @@ PROJECT_DATES = {
     "CA_SantaCruzCounty_2020": 2020.26,    # 2020-03-22 .. 2020-04-15, QL1
     "tnm:CA_Central_Valley_LiDAR_2016_D16/CA_Sacramento_2017": 2018.0,  # 2017-12-09 .. 2018-01-21, QL2
 }
+# EPT projects whose z is not metres: the bucket's EPT is EPSG:3857 horizontally but keeps the
+# survey's vertical unit. The 2013 Sonoma County survey (Sonoma Veg Map) is in US survey feet
+# (checked 2026-11: roofs read 3.3 x their Overture height). run() stops when a job's heights
+# look like another unit.
+PROJECT_Z_FACTOR = {"USGS_LPC_CA_Sonoma_A4_2013_LAS_2017": 1200 / 3937}
 # A project "tnm:<project>/<work unit>" is a survey that is not on the EPT bucket: its LAZ tiles
 # (rockyweb.usgs.gov/vdelivery/Datasets/Staged/Elevation/LPC/Projects/<project>/<work unit>/LAZ/)
 # are listed by the TNM Access API for the job's box and binned like EPT nodes (east Contra Costa:
@@ -119,7 +132,9 @@ REGION_JOBS = {
     "watsonville": ((-121.770, 36.902, -121.745, 36.920), "CA_SantaCruzCounty_2020"),
     "benicia": ((-122.170, 38.042, -122.145, 38.060), "CA_SolanoCounty_1_A23"),
     "sonoma_state": ((-122.685, 38.334, -122.665, 38.347), "CA_NorthernCA_1_B22"),    # Rohnert Park: Sonoma State University
-    "graton": ((-122.735, 38.352, -122.718, 38.364), "CA_NorthernCA_1_B22"),          # Rohnert Park: Graton Resort & Casino
+    # Graton Resort & Casino: the 2022 survey leaves the rancheria (tribal trust land) blank, so the 2013
+    # survey (US survey feet) is used; the 2016 hotel tower is newer and keeps its Overture height
+    "graton": ((-122.735, 38.352, -122.718, 38.364), "USGS_LPC_CA_Sonoma_A4_2013_LAS_2017"),
     "ucsc": ((-122.072, 36.975, -122.045, 37.003), "CA_SantaCruzCounty_2020"),        # UC Santa Cruz
     "travis_afb": ((-121.970, 38.255, -121.920, 38.280), "CA_SolanoCounty_1_A23"),    # hangar line, David Grant Medical Center
     "mare_island": ((-122.290, 38.085, -122.2645, 38.110), "CA_SolanoCounty_1_A23"),  # shipyard core
@@ -471,7 +486,8 @@ def _bin_unit(unit):
     for _, data in _W["pool"].map(_fetch, [f"{url}/ept-data/{k}.laz" for k in keys]):
         if data is None:
             continue
-        p = _bin_points(laspy.read(io.BytesIO(data), decompression_selection=sel), g, to_utm)
+        p = _bin_points(laspy.read(io.BytesIO(data), decompression_selection=sel), g, to_utm,
+                        PROJECT_Z_FACTOR.get(url.rsplit("/", 1)[-1], 1.0))
         if p is not None:
             parts.append(p)
     if not parts:
@@ -984,7 +1000,7 @@ def load_sf_footprints(bbox_ll=None):
 
 
 def load_region_footprints(bbox_ll):
-    """Overture footprints of the five counties (download_region.py) whose centroid lies in the bbox."""
+    """Overture footprints of the counties (download_region.py) whose centroid lies in the bbox."""
     import geopandas as gpd
     import pandas as pd
     import shapely
@@ -1292,6 +1308,13 @@ def run(job, projects, fp, workers, bbox_ll=None, examples=None, redo_parts=Fals
         st, pg = pd.read_parquet(out_st), gpd.read_parquet(out_parts)
     else:
         st, pg = run_parts(job, fp, workers)
+        # unit check: single-level roofs against the footprints' own heights (Overture / DataSF)
+        both = st[st.status == "single"].merge(fp[["key", "height"]], on="key")
+        both = both[(both.height > 2) & (both.lidar_height_m.astype(float) > 2)]
+        ratio = float((both.lidar_height_m.astype(float) / both.height).median()) if len(both) >= 30 else 1.0
+        if not 0.6 < ratio < 1.6:
+            raise SystemExit(f"{job}: LiDAR / footprint height ratio {ratio:.2f} over {len(both)} footprints: wrong "
+                             f"vertical unit? (feet -> add the project to PROJECT_Z_FACTOR); nothing written")
         for frame, out in ((pg, out_parts), (st, out_st)):  # replaced whole: region_buildings may be reading
             tmp = out.with_name(out.name + ".tmp")
             frame.to_parquet(tmp)
