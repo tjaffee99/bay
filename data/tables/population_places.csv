@@ -1,23 +1,23 @@
 place,kind,county,year,population,source_url,note,geoid
-Bay Area (6 counties),region,,1850,46027,https://www2.census.gov/library/publications/decennial/1990/population-of-states-and-counties-us-1790-1990/population-of-states-and-counties-of-the-united-states-1790-1990.pdf,"estimate: Marin 1850 census (323) + 1852 state census for Contra Costa, San Francisco and Santa Clara (1850 returns lost or burned); Alameda and San Mateo not yet formed (their territory is included)",
-Bay Area (6 counties),region,,1860,89517,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1870,221955,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1880,364492,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1890,477540,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1900,579037,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1910,829955,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1920,1069541,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1930,1452056,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1940,1587635,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1950,2426481,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1960,3291077,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1970,4174562,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1980,4545676,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,1990,5184169,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,2000,5806327,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,2010,6117033,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,2020,6685267,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the six county counts,
-Bay Area (6 counties),region,,2026,6607158,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,estimate: sum of the six county CA DOF E-1 estimates for 1 Jan 2026,
+Bay Area (10 counties),region,,1850,48215,https://www2.census.gov/library/publications/decennial/1990/population-of-states-and-counties-us-1790-1990/population-of-states-and-counties-of-the-united-states-1790-1990.pdf,"estimate: 1850 census counts of Marin (323), Napa (405), Santa Cruz (643), Solano (580) and Sonoma (560) + 1852 state census for Contra Costa, San Francisco and Santa Clara (1850 returns lost or burned); Alameda and San Mateo not yet formed (their territory is included)",
+Bay Area (10 counties),region,,1860,119018,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1870,274551,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1880,434930,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1890,566888,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1900,679623,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1910,951848,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1920,1209180,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1930,1615442,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1940,1779365,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1950,2747856,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1960,3723158,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1970,4754366,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1980,5367900,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,1990,6253311,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,2000,7039364,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,2010,7413121,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,2020,8036501,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; sum of the ten county counts,
+Bay Area (10 counties),region,,2026,7940673,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,estimate: sum of the ten county CA DOF E-1 estimates for 1 Jan 2026,
 Alameda,county,Alameda,1860,8927,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06001
 Alameda,county,Alameda,1870,24237,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06001
 Alameda,county,Alameda,1880,62976,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06001
@@ -74,6 +74,25 @@ Marin,county,Marin,2000,247289,https://dof.ca.gov/media/docs/reports/demographic
 Marin,county,Marin,2010,252409,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06041
 Marin,county,Marin,2020,262321,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06041
 Marin,county,Marin,2026,250823,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 253,171)",06041
+Napa,county,Napa,1850,405,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1860,5521,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1870,7163,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1880,13235,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1890,16411,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1900,16451,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1910,19800,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1920,20678,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1930,22897,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1940,28503,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1950,46603,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1960,65890,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1970,79140,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1980,99199,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,1990,110765,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,2000,124279,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,2010,136484,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06055
+Napa,county,Napa,2020,138019,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06055
+Napa,county,Napa,2026,136374,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 136,620)",06055
 San Francisco,county,San Francisco,1850,36154,https://www2.census.gov/library/publications/decennial/1990/population-of-states-and-counties-us-1790-1990/population-of-states-and-counties-of-the-united-states-1790-1990.pdf,"estimate: 1850 federal census returns were destroyed by fire; value is the 1852 California state census count (Census Bureau, Forstall 1996, California notes); county then also covered today's San Mateo County (split off 1856)",06075
 San Francisco,county,San Francisco,1860,56802,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; city and county consolidated 1856,06075
 San Francisco,county,San Francisco,1870,149473,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; city and county consolidated 1856,06075
@@ -130,6 +149,63 @@ Santa Clara,county,Santa Clara,2000,1682585,https://dof.ca.gov/media/docs/report
 Santa Clara,county,Santa Clara,2010,1781642,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06085
 Santa Clara,county,Santa Clara,2020,1936259,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06085
 Santa Clara,county,Santa Clara,2026,1932468,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 1,928,029)",06085
+Santa Cruz,county,Santa Cruz,1850,643,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1860,4944,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1870,8743,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1880,12802,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1890,19270,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1900,21512,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1910,26140,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1920,26269,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1930,37433,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1940,45057,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1950,66534,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1960,84219,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1970,123790,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1980,188141,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,1990,229734,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,2000,255602,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,2010,262382,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06087
+Santa Cruz,county,Santa Cruz,2020,270861,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06087
+Santa Cruz,county,Santa Cruz,2026,261069,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 262,693)",06087
+Solano,county,Solano,1850,580,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1860,7169,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1870,16871,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1880,18475,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1890,20946,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1900,24143,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1910,27559,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1920,40602,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1930,40834,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1940,49118,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1950,104833,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1960,134597,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1970,171989,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1980,235203,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,1990,340421,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,2000,394542,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,2010,413344,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06095
+Solano,county,Solano,2020,453491,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06095
+Solano,county,Solano,2026,452050,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 453,579)",06095
+Sonoma,county,Sonoma,1850,560,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1860,11867,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1870,19819,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1880,25926,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1890,32721,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1900,38480,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1910,48394,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1920,52090,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1930,62222,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1940,69052,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1950,103405,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1960,147375,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1970,204885,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1980,299681,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,1990,388222,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,2000,458614,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,2010,483878,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),06097
+Sonoma,county,Sonoma,2020,488863,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,06097
+Sonoma,county,Sonoma,2026,484022,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 484,764)",06097
 Alameda,city,Alameda,1860,460,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1854,0600562
 Alameda,city,Alameda,1870,1557,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0600562
 Alameda,city,Alameda,1880,5708,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0600562
@@ -900,6 +976,89 @@ Woodacre,cdp,Marin,1990,1478,https://www2.census.gov/library/publications/decenn
 Woodacre,cdp,Marin,2000,1393,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0686216
 Woodacre,cdp,Marin,2010,1348,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0686216
 Woodacre,cdp,Marin,2020,1410,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0686216
+American Canyon,city,Napa,1980,5712,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, American Canyon CDP; before incorporation (1992); boundaries not comparable (1990 CPH-2-6, Table 9)",0601640
+American Canyon,city,Napa,1990,7706,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, American Canyon CDP (1990 CPH-2-6, Table 9)",0601640
+American Canyon,city,Napa,2000,9774,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1992,0601640
+American Canyon,city,Napa,2010,19454,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0601640
+American Canyon,city,Napa,2020,21837,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0601640
+American Canyon,city,Napa,2026,22619,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 22,588)",0601640
+Calistoga,city,Napa,1880,467,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1886); boundaries not comparable (Gibson 2007, township and place tables)",0609892
+Calistoga,city,Napa,1900,690,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1886,0609892
+Calistoga,city,Napa,1910,751,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1920,850,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1930,1000,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1940,1124,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1950,1418,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1960,1514,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1970,1882,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1980,3879,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,1990,4468,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,2000,5190,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,2010,5155,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0609892
+Calistoga,city,Napa,2020,5228,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0609892
+Calistoga,city,Napa,2026,5282,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 5,162)",0609892
+Napa,city,Napa,1870,1879,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1872); boundaries not comparable (Gibson 2007, township and place tables)",0650258
+Napa,city,Napa,1880,3731,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1872,0650258
+Napa,city,Napa,1890,4395,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1900,4036,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1910,5791,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1920,6757,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1930,6437,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1940,7740,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1950,13579,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1960,22170,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1970,35978,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1980,50879,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,1990,61842,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,2000,72585,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,2010,76915,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0650258
+Napa,city,Napa,2020,79246,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0650258
+Napa,city,Napa,2026,77803,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 78,045)",0650258
+St. Helena,city,Napa,1880,1339,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1876,0664140
+St. Helena,city,Napa,1890,1705,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1900,1582,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1910,1603,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1920,1346,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1930,1701,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1940,1758,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1950,2297,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1960,2722,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1970,3173,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1980,4898,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,1990,4990,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,2000,5950,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,2010,5814,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0664140
+St. Helena,city,Napa,2020,5430,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0664140
+St. Helena,city,Napa,2026,5317,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 5,339)",0664140
+Yountville,city,Napa,1880,256,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1965); boundaries not comparable (Gibson 2007, township and place tables)",0686930
+Yountville,city,Napa,1890,231,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place reported as a town (legal status unclear before 1900); before incorporation (1965); boundaries not comparable (Gibson 2007, township and place tables)",0686930
+Yountville,city,Napa,1940,517,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1965); boundaries not comparable (Gibson 2007, township and place tables)",0686930
+Yountville,city,Napa,1970,2332,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1965,0686930
+Yountville,city,Napa,1980,2893,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0686930
+Yountville,city,Napa,1990,3259,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0686930
+Yountville,city,Napa,2000,3297,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0686930
+Yountville,city,Napa,2010,2933,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0686930
+Yountville,city,Napa,2020,3436,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0686930
+Yountville,city,Napa,2026,2567,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 2,618)",0686930
+Angwin,cdp,Napa,1970,2690,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Angwin CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0602168
+Angwin,cdp,Napa,1980,3526,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Angwin CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0602168
+Angwin,cdp,Napa,1990,3503,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Angwin CDP (1990 CPH-2-6, Table 9)",0602168
+Angwin,cdp,Napa,2000,3148,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0602168
+Angwin,cdp,Napa,2010,3051,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0602168
+Angwin,cdp,Napa,2020,2633,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0602168
+Deer Park,cdp,Napa,1980,1454,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Deer Park CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0618324
+Deer Park,cdp,Napa,1990,1825,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Deer Park CDP (1990 CPH-2-6, Table 9)",0618324
+Deer Park,cdp,Napa,2000,1433,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0618324
+Deer Park,cdp,Napa,2010,1267,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0618324
+Deer Park,cdp,Napa,2020,1294,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0618324
+Moskowite Corner,cdp,Napa,2010,211,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0649432
+Moskowite Corner,cdp,Napa,2020,237,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0649432
+Oakville,cdp,Napa,2010,71,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0653196
+Oakville,cdp,Napa,2020,49,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0653196
+Rutherford,cdp,Napa,2010,164,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0663400
+Rutherford,cdp,Napa,2020,115,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0663400
+Silverado Resort,cdp,Napa,2010,1095,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0671927
+Silverado Resort,cdp,Napa,2020,948,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0671927
 San Francisco,city,San Francisco,1850,34776,https://www2.census.gov/library/publications/decennial/1990/population-of-states-and-counties-us-1790-1990/population-of-states-and-counties-of-the-united-states-1790-1990.pdf,"estimate: 1850 federal census returns were destroyed by fire; value is the 1852 California state census count (Census Bureau, Forstall 1996, California notes) for the city (as in population.csv; the Census Bureau footnotes the same figure); incorporated 1850",0667000
 San Francisco,city,San Francisco,1860,56802,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1850,0667000
 San Francisco,city,San Francisco,1870,149473,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0667000
@@ -1421,3 +1580,504 @@ Stanford,cdp,Santa Clara,1990,18097,https://www2.census.gov/library/publications
 Stanford,cdp,Santa Clara,2000,13315,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0673906
 Stanford,cdp,Santa Clara,2010,13809,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0673906
 Stanford,cdp,Santa Clara,2020,21150,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0673906
+Capitola,city,Santa Cruz,1950,1848,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1949,0611040
+Capitola,city,Santa Cruz,1960,2021,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,1970,5080,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,1980,9095,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,1990,10171,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,2000,10033,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,2010,9918,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0611040
+Capitola,city,Santa Cruz,2020,9938,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0611040
+Capitola,city,Santa Cruz,2026,9669,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 9,697)",0611040
+Santa Cruz,city,Santa Cruz,1860,950,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1866); boundaries not comparable (Gibson 2007, township and place tables)",0669112
+Santa Cruz,city,Santa Cruz,1870,2561,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1866,0669112
+Santa Cruz,city,Santa Cruz,1880,3898,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1890,5596,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1900,5659,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1910,11146,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1920,10917,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1930,14395,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1940,16896,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1950,21970,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1960,25596,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1970,32076,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1980,41483,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,1990,49040,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,2000,54593,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,2010,59946,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0669112
+Santa Cruz,city,Santa Cruz,2020,62956,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0669112
+Santa Cruz,city,Santa Cruz,2026,63065,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 62,999)",0669112
+Scotts Valley,city,Santa Cruz,1970,3621,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1966,0670588
+Scotts Valley,city,Santa Cruz,1980,6891,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670588
+Scotts Valley,city,Santa Cruz,1990,8615,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670588
+Scotts Valley,city,Santa Cruz,2000,11385,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670588
+Scotts Valley,city,Santa Cruz,2010,11580,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0670588
+Scotts Valley,city,Santa Cruz,2020,12224,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670588
+Scotts Valley,city,Santa Cruz,2026,11578,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 11,699)",0670588
+Watsonville,city,Santa Cruz,1860,398,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1868); boundaries not comparable (Gibson 2007, township and place tables)",0683668
+Watsonville,city,Santa Cruz,1870,1151,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1868,0683668
+Watsonville,city,Santa Cruz,1880,1799,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1890,2149,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1900,3528,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1910,4446,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1920,5013,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1930,8344,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1940,8937,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1950,11572,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1960,13293,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1970,14569,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1980,23662,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,1990,31099,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,2000,44265,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,2010,51199,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0683668
+Watsonville,city,Santa Cruz,2020,52590,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0683668
+Watsonville,city,Santa Cruz,2026,50454,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 50,826)",0683668
+Amesti,cdp,Santa Cruz,2000,2436,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0601651
+Amesti,cdp,Santa Cruz,2010,3478,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0601651
+Amesti,cdp,Santa Cruz,2020,2637,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0601651
+Aptos,cdp,Santa Cruz,1970,8704,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Aptos CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0602378
+Aptos,cdp,Santa Cruz,1980,7039,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Aptos CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0602378
+Aptos,cdp,Santa Cruz,1990,9061,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Aptos CDP (1990 CPH-2-6, Table 9)",0602378
+Aptos,cdp,Santa Cruz,2000,9396,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0602378
+Aptos,cdp,Santa Cruz,2010,6220,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0602378
+Aptos,cdp,Santa Cruz,2020,6664,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0602378
+Aptos Hills-Larkin Valley,cdp,Santa Cruz,1990,2205,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Aptos Hills-Larkin Valley CDP (1990 CPH-2-6, Table 9)",0602382
+Aptos Hills-Larkin Valley,cdp,Santa Cruz,2000,2361,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0602382
+Aptos Hills-Larkin Valley,cdp,Santa Cruz,2010,2381,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0602382
+Aptos Hills-Larkin Valley,cdp,Santa Cruz,2020,2383,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0602382
+Ben Lomond,cdp,Santa Cruz,1970,2793,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Ben Lomond CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0605332
+Ben Lomond,cdp,Santa Cruz,1980,7238,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Ben Lomond CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0605332
+Ben Lomond,cdp,Santa Cruz,1990,7884,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Ben Lomond CDP (1990 CPH-2-6, Table 9)",0605332
+Ben Lomond,cdp,Santa Cruz,2000,2364,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0605332
+Ben Lomond,cdp,Santa Cruz,2010,6234,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0605332
+Ben Lomond,cdp,Santa Cruz,2020,6337,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0605332
+Bonny Doon,cdp,Santa Cruz,2010,2678,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607470
+Bonny Doon,cdp,Santa Cruz,2020,2868,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607470
+Boulder Creek,cdp,Santa Cruz,1890,489,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place reported as a town (legal status unclear before 1900) (Gibson 2007, township and place tables)",0607652
+Boulder Creek,cdp,Santa Cruz,1910,544,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated i. 1902/ 
+d.1915",0607652
+Boulder Creek,cdp,Santa Cruz,1950,1497,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0607652
+Boulder Creek,cdp,Santa Cruz,1970,1806,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boulder Creek CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607652
+Boulder Creek,cdp,Santa Cruz,1980,5662,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boulder Creek CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607652
+Boulder Creek,cdp,Santa Cruz,1990,6725,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boulder Creek CDP (1990 CPH-2-6, Table 9)",0607652
+Boulder Creek,cdp,Santa Cruz,2000,4081,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0607652
+Boulder Creek,cdp,Santa Cruz,2010,4923,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607652
+Boulder Creek,cdp,Santa Cruz,2020,5429,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607652
+Brookdale,cdp,Santa Cruz,2010,1991,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0608478
+Brookdale,cdp,Santa Cruz,2020,2043,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0608478
+Corralitos,cdp,Santa Cruz,1990,2513,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Corralitos CDP (1990 CPH-2-6, Table 9)",0616434
+Corralitos,cdp,Santa Cruz,2000,2431,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0616434
+Corralitos,cdp,Santa Cruz,2010,2326,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0616434
+Corralitos,cdp,Santa Cruz,2020,2342,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0616434
+Davenport,cdp,Santa Cruz,2010,408,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0618086
+Davenport,cdp,Santa Cruz,2020,388,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0618086
+Day Valley,cdp,Santa Cruz,1990,2842,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Day Valley CDP (1990 CPH-2-6, Table 9)",0618153
+Day Valley,cdp,Santa Cruz,2000,3587,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0618153
+Day Valley,cdp,Santa Cruz,2010,3409,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0618153
+Day Valley,cdp,Santa Cruz,2020,3410,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0618153
+Felton,cdp,Santa Cruz,1880,271,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,"decennial census; incorporated i. ~1875/ 
+d.1917",0623826
+Felton,cdp,Santa Cruz,1890,259,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623826
+Felton,cdp,Santa Cruz,1970,2062,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Felton CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0623826
+Felton,cdp,Santa Cruz,1980,4564,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Felton CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0623826
+Felton,cdp,Santa Cruz,1990,5350,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Felton CDP (1990 CPH-2-6, Table 9)",0623826
+Felton,cdp,Santa Cruz,2000,1051,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0623826
+Felton,cdp,Santa Cruz,2010,4057,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0623826
+Felton,cdp,Santa Cruz,2020,4489,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0623826
+Freedom,cdp,Santa Cruz,1940,826,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0625576
+Freedom,cdp,Santa Cruz,1950,2765,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0625576
+Freedom,cdp,Santa Cruz,1970,5563,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Freedom CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0625576
+Freedom,cdp,Santa Cruz,1980,6416,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Freedom CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0625576
+Freedom,cdp,Santa Cruz,1990,8361,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Freedom CDP (1990 CPH-2-6, Table 9)",0625576
+Freedom,cdp,Santa Cruz,2000,6000,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0625576
+Freedom,cdp,Santa Cruz,2010,3070,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0625576
+Freedom,cdp,Santa Cruz,2020,3835,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0625576
+Interlaken,cdp,Santa Cruz,1990,6404,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Interlaken CDP (1990 CPH-2-6, Table 9)",0636613
+Interlaken,cdp,Santa Cruz,2000,7328,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0636613
+Interlaken,cdp,Santa Cruz,2010,7321,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0636613
+Interlaken,cdp,Santa Cruz,2020,7368,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0636613
+La Selva Beach,cdp,Santa Cruz,2010,2843,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0640508
+La Selva Beach,cdp,Santa Cruz,2020,2531,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0640508
+Live Oak,cdp,Santa Cruz,1970,6443,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Live Oak CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0641922
+Live Oak,cdp,Santa Cruz,1980,11482,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Live Oak CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0641922
+Live Oak,cdp,Santa Cruz,1990,15212,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Live Oak CDP (1990 CPH-2-6, Table 9)",0641922
+Live Oak,cdp,Santa Cruz,2000,16628,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0641922
+Live Oak,cdp,Santa Cruz,2010,17158,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0641922
+Live Oak,cdp,Santa Cruz,2020,17038,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0641922
+Lompico,cdp,Santa Cruz,2010,1137,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0642510
+Lompico,cdp,Santa Cruz,2020,1154,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0642510
+Mount Hermon,cdp,Santa Cruz,2010,1037,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0649796
+Mount Hermon,cdp,Santa Cruz,2020,1110,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0649796
+Pajaro Dunes,cdp,Santa Cruz,2010,144,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0655048
+Pajaro Dunes,cdp,Santa Cruz,2020,122,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0655048
+Paradise Park,cdp,Santa Cruz,2010,389,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0655604
+Paradise Park,cdp,Santa Cruz,2020,367,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0655604
+Pasatiempo,cdp,Santa Cruz,2010,1041,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0656028
+Pasatiempo,cdp,Santa Cruz,2020,1093,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0656028
+Pleasure Point,cdp,Santa Cruz,2020,5821,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0657825
+Rio del Mar,cdp,Santa Cruz,1980,7067,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Rio del Mar CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0660928
+Rio del Mar,cdp,Santa Cruz,1990,8919,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Rio del Mar CDP (1990 CPH-2-6, Table 9)",0660928
+Rio del Mar,cdp,Santa Cruz,2000,9198,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0660928
+Rio del Mar,cdp,Santa Cruz,2010,9216,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0660928
+Rio del Mar,cdp,Santa Cruz,2020,9128,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0660928
+Seacliff,cdp,Santa Cruz,2010,3267,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0670644
+Seacliff,cdp,Santa Cruz,2020,3280,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0670644
+Soquel,cdp,Santa Cruz,1880,328,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0672688
+Soquel,cdp,Santa Cruz,1940,1037,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0672688
+Soquel,cdp,Santa Cruz,1970,5795,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Soquel CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0672688
+Soquel,cdp,Santa Cruz,1980,6212,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Soquel CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0672688
+Soquel,cdp,Santa Cruz,1990,9188,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Soquel CDP (1990 CPH-2-6, Table 9)",0672688
+Soquel,cdp,Santa Cruz,2000,5081,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0672688
+Soquel,cdp,Santa Cruz,2010,9644,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0672688
+Soquel,cdp,Santa Cruz,2020,9980,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0672688
+Twin Lakes,cdp,Santa Cruz,1970,3012,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Twin Lakes CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0681050
+Twin Lakes,cdp,Santa Cruz,1980,4502,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Twin Lakes CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0681050
+Twin Lakes,cdp,Santa Cruz,1990,5379,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Twin Lakes CDP (1990 CPH-2-6, Table 9)",0681050
+Twin Lakes,cdp,Santa Cruz,2000,5533,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0681050
+Twin Lakes,cdp,Santa Cruz,2010,4917,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0681050
+Twin Lakes,cdp,Santa Cruz,2020,4944,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0681050
+Zayante,cdp,Santa Cruz,2010,705,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0687090
+Zayante,cdp,Santa Cruz,2020,729,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0687090
+Benicia,city,Solano,1850,480,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1850,0605290
+Benicia,city,Solano,1860,1470,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1870,1656,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1880,1794,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1890,2361,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1900,2751,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1910,2360,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1920,2693,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1930,2913,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1940,2419,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1950,7284,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1960,6070,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1970,7349,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1980,15376,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,1990,24437,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,2000,26865,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,2010,26997,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0605290
+Benicia,city,Solano,2020,27131,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0605290
+Benicia,city,Solano,2026,26074,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 26,315)",0605290
+Dixon,city,Solano,1870,317,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1878); boundaries not comparable (Gibson 2007, township and place tables)",0619402
+Dixon,city,Solano,1890,1082,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1878,0619402
+Dixon,city,Solano,1900,783,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1910,827,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1920,926,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1930,1000,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1940,1108,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1950,1714,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1960,2970,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1970,4432,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1980,7541,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,1990,10401,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,2000,16103,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,2010,18351,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0619402
+Dixon,city,Solano,2020,18988,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0619402
+Dixon,city,Solano,2026,20567,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 20,380)",0619402
+Fairfield,city,Solano,1870,329,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1903); boundaries not comparable (Gibson 2007, township and place tables)",0623182
+Fairfield,city,Solano,1880,424,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1903); boundaries not comparable (Gibson 2007, township and place tables)",0623182
+Fairfield,city,Solano,1890,505,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place reported as a town (legal status unclear before 1900); before incorporation (1903); boundaries not comparable (Gibson 2007, township and place tables)",0623182
+Fairfield,city,Solano,1910,834,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1903,0623182
+Fairfield,city,Solano,1920,1008,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1930,1131,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1940,1312,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1950,3118,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1960,14968,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1970,44146,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1980,58099,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,1990,77211,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,2000,96178,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,2010,105321,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0623182
+Fairfield,city,Solano,2020,119881,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0623182
+Fairfield,city,Solano,2026,121389,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 122,063)",0623182
+Rio Vista,city,Solano,1870,319,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1894); boundaries not comparable (Gibson 2007, township and place tables)",0660984
+Rio Vista,city,Solano,1880,666,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1894); boundaries not comparable (Gibson 2007, township and place tables)",0660984
+Rio Vista,city,Solano,1890,648,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the village (unincorporated); before incorporation (1894); boundaries not comparable (Gibson 2007, township and place tables)",0660984
+Rio Vista,city,Solano,1900,682,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1894,0660984
+Rio Vista,city,Solano,1910,884,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1920,1104,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1930,1309,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1940,1666,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1950,1831,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1960,2616,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1970,3135,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1980,3142,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,1990,3316,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,2000,4571,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,2010,7360,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0660984
+Rio Vista,city,Solano,2020,10005,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0660984
+Rio Vista,city,Solano,2026,10345,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 10,382)",0660984
+Suisun City,city,Solano,1870,462,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1868,0675630
+Suisun City,city,Solano,1880,554,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1890,499,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1900,625,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1910,641,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1920,769,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1930,905,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1940,706,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1950,946,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1960,2470,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1970,2917,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1980,11087,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,1990,22686,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,2000,26118,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,2010,28111,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0675630
+Suisun City,city,Solano,2020,29518,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0675630
+Suisun City,city,Solano,2026,29720,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 29,405)",0675630
+Vacaville,city,Solano,1870,343,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1892); boundaries not comparable (Gibson 2007, township and place tables)",0681554
+Vacaville,city,Solano,1880,361,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1892); boundaries not comparable (Gibson 2007, township and place tables)",0681554
+Vacaville,city,Solano,1890,725,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the village (unincorporated); before incorporation (1892); boundaries not comparable (Gibson 2007, township and place tables)",0681554
+Vacaville,city,Solano,1900,1220,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1892,0681554
+Vacaville,city,Solano,1910,1177,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1920,1254,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1930,1556,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1940,1614,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1950,3169,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1960,10898,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1970,21690,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1980,43367,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,1990,71479,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,2000,88625,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,2010,92428,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0681554
+Vacaville,city,Solano,2020,102386,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681554
+Vacaville,city,Solano,2026,103195,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 103,743)",0681554
+Vallejo,city,Solano,1880,5987,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1868,0681666
+Vallejo,city,Solano,1890,6343,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1900,7965,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1910,11340,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1920,21107,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1930,16072,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1940,20072,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1950,26038,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1960,60877,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1970,71710,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1980,80303,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,1990,109199,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,2000,116760,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,2010,115942,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0681666
+Vallejo,city,Solano,2020,126090,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0681666
+Vallejo,city,Solano,2026,122702,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 123,140)",0681666
+Allendale,cdp,Solano,2010,1506,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0600996
+Allendale,cdp,Solano,2020,1651,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0600996
+Elmira,cdp,Solano,1880,240,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0622146
+Elmira,cdp,Solano,1890,317,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the village (unincorporated) (Gibson 2007, township and place tables)",0622146
+Elmira,cdp,Solano,2000,205,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0622146
+Elmira,cdp,Solano,2010,188,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0622146
+Elmira,cdp,Solano,2020,193,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0622146
+Green Valley,cdp,Solano,2000,1859,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0631099
+Green Valley,cdp,Solano,2010,1625,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0631099
+Green Valley,cdp,Solano,2020,1654,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0631099
+Hartley,cdp,Solano,2010,2510,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0632340
+Hartley,cdp,Solano,2020,2430,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0632340
+Cloverdale,city,Sonoma,1880,430,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1872,0614190
+Cloverdale,city,Sonoma,1890,763,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1900,750,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1910,823,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1920,718,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1930,759,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1940,809,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1950,1292,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1960,2848,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1970,3251,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1980,3989,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,1990,4924,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,2000,6831,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,2010,8618,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0614190
+Cloverdale,city,Sonoma,2020,8996,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0614190
+Cloverdale,city,Sonoma,2026,8719,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 8,729)",0614190
+Cotati,city,Sonoma,1970,1368,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1963,0616560
+Cotati,city,Sonoma,1980,3346,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0616560
+Cotati,city,Sonoma,1990,5714,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0616560
+Cotati,city,Sonoma,2000,6471,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0616560
+Cotati,city,Sonoma,2010,7265,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0616560
+Cotati,city,Sonoma,2020,7584,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0616560
+Cotati,city,Sonoma,2026,7264,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 7,325)",0616560
+Healdsburg,city,Sonoma,1860,334,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1867); boundaries not comparable (Gibson 2007, township and place tables)",0633056
+Healdsburg,city,Sonoma,1870,959,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1867,0633056
+Healdsburg,city,Sonoma,1880,1133,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1890,1485,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1900,1869,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1910,2011,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1920,2412,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1930,2296,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1940,2507,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1950,3258,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1960,4816,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1970,5438,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1980,7217,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,1990,9469,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,2000,10722,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,2010,11254,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0633056
+Healdsburg,city,Sonoma,2020,11340,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0633056
+Healdsburg,city,Sonoma,2026,11205,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 11,156)",0633056
+Petaluma,city,Sonoma,1860,1505,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1858,0656784
+Petaluma,city,Sonoma,1880,3326,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1890,3692,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1900,3871,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1910,5880,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1920,6226,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1930,8245,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1940,8034,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1950,10315,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1960,14035,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1970,24870,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1980,33834,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,1990,43184,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,2000,54548,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,2010,57941,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0656784
+Petaluma,city,Sonoma,2020,59776,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0656784
+Petaluma,city,Sonoma,2026,59160,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 59,395)",0656784
+Rohnert Park,city,Sonoma,1970,6133,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1962,0662546
+Rohnert Park,city,Sonoma,1980,22965,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0662546
+Rohnert Park,city,Sonoma,1990,36326,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0662546
+Rohnert Park,city,Sonoma,2000,42236,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0662546
+Rohnert Park,city,Sonoma,2010,40794,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0662546
+Rohnert Park,city,Sonoma,2020,44390,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0662546
+Rohnert Park,city,Sonoma,2026,44191,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 44,318)",0662546
+Santa Rosa,city,Sonoma,1860,425,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the place listed in the census (status not stated); before incorporation (1868); boundaries not comparable (Gibson 2007, township and place tables)",0670098
+Santa Rosa,city,Sonoma,1870,2898,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1868,0670098
+Santa Rosa,city,Sonoma,1880,3616,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1890,5220,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1900,6673,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1910,7817,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1920,8758,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1930,10636,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1940,12605,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1950,17902,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1960,31027,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1970,50006,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1980,82658,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,1990,113313,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,2000,147595,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,2010,167815,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0670098
+Santa Rosa,city,Sonoma,2020,178127,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670098
+Santa Rosa,city,Sonoma,2026,179798,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 178,786)",0670098
+Sebastopol,city,Sonoma,1880,197,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1902); boundaries not comparable (Gibson 2007, township and place tables)",0670770
+Sebastopol,city,Sonoma,1910,1233,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1902,0670770
+Sebastopol,city,Sonoma,1920,1493,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1930,1762,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1940,1856,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1950,2601,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1960,2694,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1970,3993,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1980,5595,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,1990,7004,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,2000,7774,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,2010,7379,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0670770
+Sebastopol,city,Sonoma,2020,7521,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0670770
+Sebastopol,city,Sonoma,2026,7350,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 7,407)",0670770
+Sonoma,city,Sonoma,1890,757,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1883,0672646
+Sonoma,city,Sonoma,1900,652,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1910,957,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1920,801,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1930,980,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1940,1158,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1950,2015,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1960,3023,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1970,4112,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1980,6054,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,1990,8121,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,2000,9128,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,2010,10648,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0672646
+Sonoma,city,Sonoma,2020,10739,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0672646
+Sonoma,city,Sonoma,2026,10528,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 10,575)",0672646
+Windsor,town,Sonoma,1880,120,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1992); boundaries not comparable (Gibson 2007, township and place tables)",0685922
+Windsor,town,Sonoma,1940,1047,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place; before incorporation (1992); boundaries not comparable (Gibson 2007, township and place tables)",0685922
+Windsor,town,Sonoma,1990,13371,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Windsor CDP (1990 CPH-2-6, Table 9)",0685922
+Windsor,town,Sonoma,2000,22744,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census; incorporated 1992,0685922
+Windsor,town,Sonoma,2010,26801,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census (incl. Count Question Resolution corrections),0685922
+Windsor,town,Sonoma,2020,26344,https://dof.ca.gov/media/docs/reports/demographic-reports/2020-1850_STCO_IncCities.xlsx,decennial census,0685922
+Windsor,town,Sonoma,2026,25498,https://dof.ca.gov/media/docs/forecasting/Demographics/estimates-e1/E-1_2026_InternetVersion.xlsx,"estimate (CA DOF E-1, 1 Jan 2026, released 1 May 2026; 1 Jan 2025 = 25,650)",0685922
+Bloomfield,cdp,Sonoma,2010,345,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607036
+Bloomfield,cdp,Sonoma,2020,338,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607036
+Bodega,cdp,Sonoma,2010,220,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607246
+Bodega,cdp,Sonoma,2020,211,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607246
+Bodega Bay,cdp,Sonoma,1990,1127,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Bodega Bay CDP (1990 CPH-2-6, Table 9)",0607260
+Bodega Bay,cdp,Sonoma,2000,1423,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0607260
+Bodega Bay,cdp,Sonoma,2010,1077,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607260
+Bodega Bay,cdp,Sonoma,2020,912,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607260
+Boyes Hot Springs,cdp,Sonoma,1970,3558,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boyes Hot Springs CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607848
+Boyes Hot Springs,cdp,Sonoma,1980,4177,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boyes Hot Springs CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0607848
+Boyes Hot Springs,cdp,Sonoma,1990,5973,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Boyes Hot Springs CDP (1990 CPH-2-6, Table 9)",0607848
+Boyes Hot Springs,cdp,Sonoma,2000,6665,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0607848
+Boyes Hot Springs,cdp,Sonoma,2010,6656,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0607848
+Boyes Hot Springs,cdp,Sonoma,2020,6215,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0607848
+Carmet,cdp,Sonoma,2010,47,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0611376
+Carmet,cdp,Sonoma,2020,55,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0611376
+Cazadero,cdp,Sonoma,2010,354,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0612146
+Cazadero,cdp,Sonoma,2020,298,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0612146
+El Verano,cdp,Sonoma,1940,796,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0622510
+El Verano,cdp,Sonoma,1970,1753,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, El Verano CDP; 1970 figure as carried in the 1990 report (may be re-tabulated to 1980 boundaries); CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0622510
+El Verano,cdp,Sonoma,1980,2384,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, El Verano CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0622510
+El Verano,cdp,Sonoma,1990,3498,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, El Verano CDP (1990 CPH-2-6, Table 9)",0622510
+El Verano,cdp,Sonoma,2000,3954,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0622510
+El Verano,cdp,Sonoma,2010,4123,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0622510
+El Verano,cdp,Sonoma,2020,3867,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0622510
+Eldridge,cdp,Sonoma,1990,1144,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Eldridge CDP (1990 CPH-2-6, Table 9)",0621894
+Eldridge,cdp,Sonoma,2000,1534,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0621894
+Eldridge,cdp,Sonoma,2010,1233,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0621894
+Eldridge,cdp,Sonoma,2020,1312,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0621894
+Fetters Hot Springs-Agua Caliente,cdp,Sonoma,1980,1675,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Fetters Hot Springs-Agua Caliente CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0623973
+Fetters Hot Springs-Agua Caliente,cdp,Sonoma,1990,2024,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Fetters Hot Springs-Agua Caliente CDP (1990 CPH-2-6, Table 9)",0623973
+Fetters Hot Springs-Agua Caliente,cdp,Sonoma,2000,2505,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0623973
+Fetters Hot Springs-Agua Caliente,cdp,Sonoma,2010,4144,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0623973
+Fetters Hot Springs-Agua Caliente,cdp,Sonoma,2020,4233,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0623973
+Forestville,cdp,Sonoma,1990,2443,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Forestville CDP (1990 CPH-2-6, Table 9)",0624960
+Forestville,cdp,Sonoma,2000,2370,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0624960
+Forestville,cdp,Sonoma,2010,3293,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0624960
+Forestville,cdp,Sonoma,2020,3264,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0624960
+Fulton,cdp,Sonoma,2010,541,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0628014
+Fulton,cdp,Sonoma,2020,551,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0628014
+Geyserville,cdp,Sonoma,2010,862,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0629420
+Geyserville,cdp,Sonoma,2020,861,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0629420
+Glen Ellen,cdp,Sonoma,1980,1014,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Glen Ellen CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0630028
+Glen Ellen,cdp,Sonoma,1990,1191,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Glen Ellen CDP (1990 CPH-2-6, Table 9)",0630028
+Glen Ellen,cdp,Sonoma,2000,992,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0630028
+Glen Ellen,cdp,Sonoma,2010,784,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0630028
+Glen Ellen,cdp,Sonoma,2020,714,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0630028
+Graton,cdp,Sonoma,1980,1286,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Graton CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0630812
+Graton,cdp,Sonoma,1990,1409,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Graton CDP (1990 CPH-2-6, Table 9)",0630812
+Graton,cdp,Sonoma,2000,1815,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0630812
+Graton,cdp,Sonoma,2010,1707,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0630812
+Graton,cdp,Sonoma,2020,1683,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0630812
+Guerneville,cdp,Sonoma,1880,363,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0631470
+Guerneville,cdp,Sonoma,1940,1089,https://dof.ca.gov/media/docs/reports/demographic-reports/Populations-Township_and_Place_1850-1950.zip,"census count of the unincorporated place (Gibson 2007, township and place tables)",0631470
+Guerneville,cdp,Sonoma,1980,1525,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Guerneville CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0631470
+Guerneville,cdp,Sonoma,1990,1966,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Guerneville CDP (1990 CPH-2-6, Table 9)",0631470
+Guerneville,cdp,Sonoma,2000,2441,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0631470
+Guerneville,cdp,Sonoma,2010,4534,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0631470
+Guerneville,cdp,Sonoma,2020,4552,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0631470
+Jenner,cdp,Sonoma,2010,136,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0637274
+Jenner,cdp,Sonoma,2020,122,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0637274
+Kenwood,cdp,Sonoma,2010,1028,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0638156
+Kenwood,cdp,Sonoma,2020,852,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0638156
+Larkfield-Wikiup,cdp,Sonoma,1990,6779,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Larkfield-Wikiup CDP (1990 CPH-2-6, Table 9)",0640426
+Larkfield-Wikiup,cdp,Sonoma,2000,7479,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0640426
+Larkfield-Wikiup,cdp,Sonoma,2010,8884,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0640426
+Larkfield-Wikiup,cdp,Sonoma,2020,8492,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0640426
+Monte Rio,cdp,Sonoma,1980,1137,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Monte Rio CDP; CDP boundaries are redrawn each census (1990 CPH-2-6, Table 9)",0648928
+Monte Rio,cdp,Sonoma,1990,1058,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Monte Rio CDP (1990 CPH-2-6, Table 9)",0648928
+Monte Rio,cdp,Sonoma,2000,1104,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0648928
+Monte Rio,cdp,Sonoma,2010,1152,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0648928
+Monte Rio,cdp,Sonoma,2020,1080,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0648928
+Occidental,cdp,Sonoma,1990,1300,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Occidental CDP (1990 CPH-2-6, Table 9)",0653266
+Occidental,cdp,Sonoma,2000,1272,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0653266
+Occidental,cdp,Sonoma,2010,1115,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0653266
+Occidental,cdp,Sonoma,2020,1132,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0653266
+Penngrove,cdp,Sonoma,2010,2522,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0656476
+Penngrove,cdp,Sonoma,2020,2637,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0656476
+Petaluma Center,cdp,Sonoma,2020,709,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0656786
+Salmon Creek,cdp,Sonoma,2010,86,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0664252
+Salmon Creek,cdp,Sonoma,2020,111,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0664252
+Sea Ranch,cdp,Sonoma,2010,1305,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0670712
+Sea Ranch,cdp,Sonoma,2020,1169,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0670712
+Sereno del Mar,cdp,Sonoma,2010,126,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0671000
+Sereno del Mar,cdp,Sonoma,2020,107,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0671000
+Sonoma State University,cdp,Sonoma,2020,2679,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0672654
+Temelec,cdp,Sonoma,1990,1594,https://www2.census.gov/library/publications/decennial/1990/cph-2/cph-2-06.pdf,"decennial census, Temelec CDP (1990 CPH-2-6, Table 9)",0678126
+Temelec,cdp,Sonoma,2000,1556,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/places2k.zip,"decennial census, CDP (Census 2000 gazetteer)",0678126
+Temelec,cdp,Sonoma,2010,1441,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0678126
+Temelec,cdp,Sonoma,2020,1500,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0678126
+Timber Cove,cdp,Sonoma,2010,164,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0678715
+Timber Cove,cdp,Sonoma,2020,171,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0678715
+Valley Ford,cdp,Sonoma,2010,147,https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2010_place_list_06.txt,"decennial census, CDP (Census 2010 gazetteer)",0681778
+Valley Ford,cdp,Sonoma,2020,148,https://dof.ca.gov/media/docs/forecasting/Demographics/2020-census-data/2020Census_C1_Summary_RedistrictingFile.xlsx,"decennial census, CDP (2020 P.L. 94-171 as tabulated by CA DOF)",0681778

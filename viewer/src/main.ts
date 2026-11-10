@@ -60,7 +60,7 @@ const map = new maplibregl.Map({
   pitch: initial.pitch ?? 58,
   bearing: initial.bearing ?? -22,
   maxPitch: 80,
-  minZoom: 9,
+  minZoom: 8,
   maxZoom: 19,
   // MapLibre only paints the flat water background here: no need for retina pixels
   pixelRatio: 1,

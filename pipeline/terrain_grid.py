@@ -33,7 +33,8 @@ ORIGIN_SHIFT = math.pi * R  # 20037508.34
 
 GRIDS = {
     # name: (zoom of the lattice tiles, lon_min, lat_min, lon_max, lat_max)
-    "region": (13, -123.20, 36.85, -121.20, 38.90),
+    # ten counties: Sonoma (to the Gualala River) and Napa to Santa Cruz / Gilroy, Solano and the Delta edge
+    "region": (13, -123.68, 36.78, -121.16, 38.91),
     # 30 m: San Francisco and the urban bay plain (Richmond / San Rafael to San José,
     # the Peninsula, the East Bay down to Fremont, Walnut Creek and the Tri-Valley)
     "detail": (14, -122.62, 37.22, -121.75, 37.98),

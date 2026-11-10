@@ -1,9 +1,11 @@
-"""Stage: data foundation for the five-county expansion (Phase 5).
+"""Stage: data foundation for the counties around San Francisco (Phase 5).
 
-Counties: Marin (041), Contra Costa (013), Alameda (001), San Mateo (081), Santa Clara (085).
+Counties: Marin (041), Contra Costa (013), Alameda (001), San Mateo (081), Santa Clara (085)
+(first batch, files region5_*), and since the 2026-11 expansion Sonoma (097), Napa (055),
+Solano (095), Santa Cruz (087) (second batch, files region4_*).
 
-  overture   Overture Maps buildings + building parts clipped to the five counties
-             -> data/raw/overture/<release>/region5_{building,building_part}.parquet
+  overture   Overture Maps buildings + building parts clipped to the counties
+             -> data/raw/overture/<release>/region{5,4}_{building,building_part}.parquet
   years      public per-parcel / per-building year-built sources (county assessors,
              city open data) -> data/raw/region_years/<source>/ (raw, untouched)
   osm        OSM buildings with start_date (Overpass, tiled; part of `years`)
@@ -30,7 +32,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import shapely
 
-from common import INTERIM, RAW, log
+from common import INTERIM, RAW, log, read_region_overture_gdf, region_overture_files
 
 RELEASE = "2026-10-21.0"
 STATEFP = "06"
@@ -142,7 +144,7 @@ def overture():
 def overture_report():
     rep = {}
     for typ in ("building", "building_part"):
-        f = OUT_OVERTURE / f"region5_{typ}.parquet"
+        f = "read_parquet([" + ", ".join(f"'{x}'" for x in region_overture_files(typ)) + "])"
         con = duckdb.connect()
         rows = con.execute(f"""
           SELECT county, count(*) n,
@@ -156,10 +158,10 @@ def overture_report():
                  avg((height IS NOT NULL AND height_source IS NULL AND source_dataset = 'OpenStreetMap')::int) share_height_osm,
                  avg((height_source = 'Microsoft ML Buildings')::int) share_height_ms,
                  avg((height_source = 'USGS Lidar')::int) share_height_usgs_lidar
-          FROM '{f}' GROUP BY county ORDER BY n DESC""").fetchdf()
+          FROM {f} GROUP BY county ORDER BY n DESC""").fetchdf()
         rep[typ] = rows.round(4).to_dict(orient="records")
         rep[f"{typ}_datasets"] = con.execute(
-            f"SELECT source_dataset, count(*) n FROM '{f}' GROUP BY 1 ORDER BY 2 DESC").fetchall()
+            f"SELECT source_dataset, count(*) n FROM {f} GROUP BY 1 ORDER BY 2 DESC").fetchall()
     REPORTS.mkdir(parents=True, exist_ok=True)
     (REPORTS / "region5_overture.json").write_text(json.dumps(rep, indent=1, default=str))
     log(json.dumps(rep, indent=1, default=str))
@@ -334,6 +336,11 @@ YEAR_SOURCES: dict[str, dict] = {
                                "Landuse1", "LandUseDescription", "Condo_Status", "Acres", "BuildingCount", "BuildingFloorCount",
                                "MultipleStructures", "Building_Size_SqFt", "YearBuilt", "AllStructures_YearsBuilt", "UnitCount",
                                "DwellingUnitsCount"]},
+    # Santa Cruz County publishes no year built with its parcels; the City of Scotts Valley's
+    # public parcel viewer carries the roll's year (owner fields not requested)
+    "scotts_valley": {"url": "https://services6.arcgis.com/B40wkQx76bHpW2GH/arcgis/rest/services/PUBLIC_Scotts_Valley_Parcel_Viewer_V26_06_15_WFL1/FeatureServer/3",
+                      "fields": ["APN", "APNNODASH", "UseCode", "BldgNumber", "BldgMainArea", "BldgYearBuilt", "NumberOfUnits",
+                                 "ParcelSizeSqFt", "TaxYear"]},
     # --- historic resources with researched construction years (incl. demolished / moved)
     "san_jose_hri": {"url": "https://geo.sanjoseca.gov/server/rest/services/OPN/OPN_OpenDataService/MapServer/406",
                      "fields": "*"},
@@ -343,6 +350,9 @@ YEAR_SOURCES: dict[str, dict] = {
                       "fields": ["Parcel", "Prop_ID"]},
     "san_mateo_parcels": {"url": "https://gis.smcgov.org/maps/rest/services/Common/ACTIVE_PARCELS_APN/FeatureServer/0",
                           "fields": ["APN", "SITUS_ADDR", "SITUS_CITY", "UNINC", "PUCDESC"]},
+    # County of Santa Cruz Assessor parcels (APN, situs, use; no years) — same role
+    "santa_cruz_parcels": {"url": "https://services1.arcgis.com/jJfZghspGKh8J9Jm/arcgis/rest/services/Assessor_Parcels/FeatureServer/10",
+                           "fields": ["APN", "APNNODASH", "SITEADD", "USECDDESC", "CITYLIMITS"]},
     # --- FEMA Region 9 building points (Microsoft / USA Structures footprint centroids
     # enriched with Lightbox SmartParcels assessor attributes) — all five counties, incl. Marin;
     # fema_r9b_*: the same layers for the four counties of the 2026-11 expansion (own ids, so
@@ -364,48 +374,50 @@ OVERPASS = ["https://overpass.kumi.systems/api/interpreter", "https://overpass.k
 
 def osm_start_date():
     """OSM buildings tagged start_date / construction_date (mappers' researched years:
-    landmarks, NRHP buildings, campus buildings) in the five counties, via Overpass in
-    0.25 deg tiles (cached per tile, so an interrupted run resumes). ODbL."""
+    landmarks, NRHP buildings, campus buildings) in the counties, via Overpass in
+    0.25 deg tiles (cached per tile, so an interrupted run resumes; one tile grid per
+    download batch, so adding counties keeps the tiles of the earlier ones). ODbL."""
     import time
     out = YEARS_RAW / "osm_start_date" / "osm_start_date.json"
-    if out.exists() and out.stat().st_size > 10_000:
+    if (out.exists() and out.stat().st_size > 10_000
+            and set(BATCHES) <= set(json.loads(out.read_text()).get("batches", ["region5"]))):
         log("osm_start_date: cached")
         return
     tiles_dir = YEARS_RAW / "osm_start_date" / "tiles"
     tiles_dir.mkdir(parents=True, exist_ok=True)
     s = _session()
-    polys = county_polygons()
-    region = shapely.union_all(list(polys.values()))
-    x0, y0, x1, y1 = region.bounds
     step = 0.25
     elements, base = {}, None
-    for ty in np.arange(y0, y1, step):
-        for tx in np.arange(x0, x1, step):
-            box = shapely.box(tx, ty, tx + step, ty + step)
-            if not box.intersects(region):
-                continue
-            tf = tiles_dir / f"{tx:.2f}_{ty:.2f}.json"
-            if not tf.exists():
-                b = f"{ty},{tx},{ty + step},{tx + step}"
-                q = (f'[out:json][timeout:180];(way["building"]["start_date"]({b});'
-                     f'relation["building"]["start_date"]({b});way["building"]["construction_date"]({b}););'
-                     f'out center tags;')
-                for attempt in range(4):
-                    try:
-                        j = s.post(OVERPASS[attempt % len(OVERPASS)], data={"data": q}, timeout=240).json()
-                        tf.write_text(json.dumps(j))
-                        break
-                    except Exception as e:
-                        log(f"  overpass tile {tf.stem} retry {attempt}: {str(e)[:100]}")
-                        time.sleep(15 * (attempt + 1))
-                else:
-                    raise RuntimeError(f"overpass failed for tile {tf.stem}")
-            j = json.loads(tf.read_text())
-            base = j.get("osm3s", {}).get("timestamp_osm_base") or base
-            for el in j["elements"]:
-                elements[f"{el['type']}/{el['id']}"] = el
-            log(f"osm_start_date tile {tf.stem}: {len(j['elements'])}")
-    out.write_text(json.dumps({"timestamp_osm_base": base, "elements": list(elements.values())}))
+    for tag, counties in BATCHES.items():
+        region = shapely.union_all(list(county_polygons(counties).values()))
+        x0, y0, x1, y1 = region.bounds
+        for ty in np.arange(y0, y1, step):
+            for tx in np.arange(x0, x1, step):
+                box = shapely.box(tx, ty, tx + step, ty + step)
+                if not box.intersects(region):
+                    continue
+                tf = tiles_dir / f"{tx:.2f}_{ty:.2f}.json"
+                if not tf.exists():
+                    b = f"{ty},{tx},{ty + step},{tx + step}"
+                    q = (f'[out:json][timeout:180];(way["building"]["start_date"]({b});'
+                         f'relation["building"]["start_date"]({b});way["building"]["construction_date"]({b}););'
+                         f'out center tags;')
+                    for attempt in range(4):
+                        try:
+                            j = s.post(OVERPASS[attempt % len(OVERPASS)], data={"data": q}, timeout=240).json()
+                            tf.write_text(json.dumps(j))
+                            break
+                        except Exception as e:
+                            log(f"  overpass tile {tf.stem} retry {attempt}: {str(e)[:100]}")
+                            time.sleep(15 * (attempt + 1))
+                    else:
+                        raise RuntimeError(f"overpass failed for tile {tf.stem}")
+                j = json.loads(tf.read_text())
+                base = j.get("osm3s", {}).get("timestamp_osm_base") or base
+                for el in j["elements"]:
+                    elements[f"{el['type']}/{el['id']}"] = el
+                log(f"osm_start_date tile {tf.stem}: {len(j['elements'])}")
+    out.write_text(json.dumps({"timestamp_osm_base": base, "batches": list(BATCHES), "elements": list(elements.values())}))
     log(f"osm_start_date: {len(elements)} -> {out}")
 
 
@@ -495,6 +507,8 @@ NORM: dict[str, dict] = {
     "napa_county": {**_P, "countyfp": "055", "apn": "ASMTWithDash", "year": "YearBuilt", "stories": "BuildingFloorCount",
                     "units": "UnitCount", "nbldg": "BuildingCount", "use": "LandUseDescription", "addr": "StreetAddr",
                     "vintage": "2026"},
+    "scotts_valley": {**_P, "countyfp": "087", "year": "BldgYearBuilt", "units": "NumberOfUnits", "nbldg": "BldgNumber",
+                      "use": "UseCode", "vintage": "2025"},
     **{sid: {"kind": "building_point", "licence": "commercial", "rank": 3, "year": "YR_BLT", "eff": "YR_BLT_EFFECT",
              "stories": "STORIES_NUMBER", "use": "USE_CODE_STD_DESC_LPS", "apn": "PARCEL_APN", "addr": "SITE_ADDR",
              "material": "EXTERIOR_WALL_DESC", "construction": "CONSTRUCTION_CODE_DESC", "roof": "ROOF_COVER_DESC",
@@ -522,6 +536,8 @@ def apn_key(countyfp: str, s) -> str | None:
               "097": (3, 3, 3), "055": (3, 3, 3), "095": (4, 3, 3), "087": (3, 3, 2)}
     if len(toks) == 1 and toks[0].isdigit() and countyfp in widths:
         d, w = toks[0], widths[countyfp]
+        if countyfp == "055" and len(d) == 12:      # Napa assessment number: book page parcel + 3-digit suffix
+            d = d[:9]
         if len(d) not in (sum(w), sum(w) + 1):
             return None
         toks = [d[:w[0]], d[w[0]:w[0] + w[1]], d[w[0] + w[1]:]]
@@ -699,7 +715,7 @@ def _addr_key(s) -> str | None:
 
 
 def _fema_parcel_frame():
-    """Marin and San Mateo have no public year-built roll: attach the FEMA / Lightbox
+    """Marin, San Mateo and Santa Cruz have no public year-built roll: attach the FEMA / Lightbox
     building-point attributes to the county parcel polygons by APN (most common year
     of the parcel's points), so footprints get a parcel year the way SF's do."""
     import geopandas as gpd
@@ -709,7 +725,8 @@ def _fema_parcel_frame():
                                              "USE_CODE_STD_DESC_LPS"]).to_pandas()
                       for sid in FEMA_SOURCES if (YEARS_RAW / sid / f"{sid}.parquet").exists()])
     frames = []
-    for sid, apncol, cfp in (("marin_parcels", "Parcel", "041"), ("san_mateo_parcels", "APN", "081")):
+    for sid, apncol, cfp, addrcol in (("marin_parcels", "Parcel", "041", None), ("san_mateo_parcels", "APN", "081", "SITUS_ADDR"),
+                                      ("santa_cruz_parcels", "APN", "087", "SITEADD")):
         f = YEARS_RAW / sid / f"{sid}.parquet"
         if not f.exists():
             continue
@@ -729,9 +746,9 @@ def _fema_parcel_frame():
             "src": "fema_r9_parcel", "rank": 3, "licence": "commercial", "kind": "parcel", "vintage": "c.2020",
             "apn": par[apncol].astype(str).to_numpy(), "year_raw": par.yr.to_numpy(), "eff_year": par.eff.to_numpy(),
             "remodel_year": np.nan, "stories": par.st.to_numpy(), "units": np.nan, "n_buildings": par.nb.to_numpy(),
-            "use": par.use.to_numpy(), "address": par["SITUS_ADDR"].to_numpy() if "SITUS_ADDR" in par else None,
+            "use": par.use.to_numpy(), "address": par[addrcol].to_numpy() if addrcol else None,
             "confidence": "exact"}), geometry=par.geometry.values, crs=4326))
-        log(f"fema_r9_parcel {COUNTIES[cfp]}: {len(par)} of {len(par) + 0} parcels matched by APN")
+        log(f"fema_r9_parcel {COUNTIES[cfp]}: {len(par)} parcels matched by APN")
     return pd.concat(frames, ignore_index=True) if frames else None
 
 
@@ -921,7 +938,7 @@ def plot_histograms(hist: dict, stats: dict):
     fig.legend(handles=[Patch(color=base, label="year built (count per year)"),
                         Patch(color=spike, label="placeholder spike year (flagged)")],
                loc="upper right", fontsize=8, frameon=False, labelcolor=ink)
-    fig.suptitle("Construction years per source, five-county region (grey lines: 1906, 1950, 2000)",
+    fig.suptitle("Construction years per source, nine counties around San Francisco (grey lines: 1906, 1950, 2000)",
                  fontsize=10, color=ink, x=0.01, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.96))
     fig.savefig(REPORTS / "region_years_hist.png", dpi=110, facecolor=surface)
@@ -955,8 +972,7 @@ def coverage():
     import geopandas as gpd
     import pandas as pd
 
-    fp = gpd.read_parquet(OUT_OVERTURE / "region5_building.parquet",
-                          columns=["id", "county", "countyfp", "px", "py", "height", "source_dataset", "geometry"])
+    fp = read_region_overture_gdf("building", ["id", "county", "countyfp", "px", "py", "height", "source_dataset", "geometry"])
     fp = fp.reset_index(drop=True)
     fp["area_m2"] = fp.geometry.to_crs(32610).area.round(1)
     pts = gpd.GeoDataFrame({"fid": fp.index}, geometry=gpd.points_from_xy(fp.px, fp.py), crs=4326)

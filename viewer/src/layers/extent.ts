@@ -1,5 +1,5 @@
 /**
- * The map's extent (pipeline/extent.py → data/map-extent.json): the core Bay Area.
+ * The map's extent (pipeline/extent.py → data/map-extent.json): ten counties, Sonoma and Napa to Santa Cruz.
  * A signed-distance grid (km, positive inside) lets the terrain fade out over the last
  * few km inside the line, like the edge of an old game map, and lets other layers drop
  * what lies outside.
