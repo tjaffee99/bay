@@ -329,10 +329,10 @@ def known_dates(g, year, conf, src):
     refineries, plants, bases dated by the USGS topo editions that first draw them): every
     footprint containing a row's point takes its year (and end year)."""
     end = np.full(len(g), 9999.0)
-    tabs = [pd.read_csv(p) for p in (TABLES / "known_building_dates_region.csv",
-                                    MANUAL / "industrial_sites" / "known_dates_industrial.csv",
-                                    MANUAL / "ohm" / "known_dates_ohm.csv",
-                                    MANUAL / "airports" / "buildings.csv") if p.exists()]
+    tabs = [pd.read_csv(p).assign(_tab=p.name) for p in (TABLES / "known_building_dates_region.csv",
+                                                         MANUAL / "industrial_sites" / "known_dates_industrial.csv",
+                                                         MANUAL / "ohm" / "known_dates_ohm.csv",
+                                                         MANUAL / "airports" / "buildings.csv") if p.exists()]
     if not tabs:
         return year, conf, src, end
     k = pd.concat(tabs, ignore_index=True)
@@ -342,6 +342,15 @@ def known_dates(g, year, conf, src):
     # two map editions); anything else is a documented year
     k["conf"] = np.where(k.get("confidence", pd.Series("", index=k.index)).fillna("").astype(str).eq("estimated"),
                          "estimated", "exact")
+    # also estimated: the industrial audit's edition rows (year = between the last map edition
+    # without the building and the first with it; its researched rows are ind_* / indx_*), and
+    # the rows listed in known_dates_estimated_ids.txt (a campus's opening year standing in
+    # for each of its first buildings, "c." dates)
+    ids_ = k.id.astype(str)
+    edition = (k._tab == "known_dates_industrial.csv") & ~ids_.str.startswith(("ind_", "indx_"))
+    est_p = TABLES / "known_dates_estimated_ids.txt"
+    listed = ids_.isin(set(est_p.read_text().split())) if est_p.exists() else False
+    k.loc[edition | listed, "conf"] = "estimated"
     pts = gpd.GeoDataFrame(k[["id", "start_year", "end_year", "conf"]].reset_index(drop=True),
                            geometry=gpd.points_from_xy(k.lon.astype(float), k.lat.astype(float)), crs=4326)
     j = gpd.sjoin(pts, g[["geometry"]].set_crs(4326, allow_override=True), predicate="within", how="inner")
