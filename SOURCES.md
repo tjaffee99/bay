@@ -365,3 +365,276 @@ Built by `pipeline/landscape.py`, `landscape_water.py`, `landscape_broek.py`, `l
 - **County rolls of the new counties** — see `sonoma_county`, `solano_county`, `napa_county`, `scotts_valley`, `santa_cruz_parcels` and `fema_r9b_*` above and `data/research/region_buildings.md`.
 - **Place names, census series, farm districts** — sources per row in `data/tables/places.csv`, `population_places.csv` (DOF historical census table, Census CPH-2 / gazetteer, Gibson's early counts; `data/research/population_places.md`) and per feature in `data/manual/landscape/agriculture.geojson` (README there); OSM vineyard / orchard outlines (ODbL) via Overture `land_use`.
 - **Freeways, bridges and railways of the new counties** — `fhwa_nbi` (year built of each section's own structures, 2024 and 2008 files), Wikipedia route / railroad articles and Gribblenation, URL per row in `data/manual/routes.csv`; geometry is the Overture line of each road / track.
+
+## Ship-quality pass for the new counties (2026-11) — sources added
+
+<!-- villages -->
+### Contact-era Native villages and first colonial places of the ten-county extension (2026-11)
+
+`data/manual/ohlone/villages.csv` (40 new rows; README there), `data/tables/early_region.csv` (16 new rows, 2 corrected; `data/research/early_region.md`).
+
+| Source | URL | Licence | Use |
+|---|---|---|---|
+| S. A. Barrett, *The Ethno-geography of the Pomo and Neighboring Indians*, UC Publications in American Archaeology and Ethnology 6(1), 1908 | https://archive.org/details/ethnogeographyp00barrgoog | public domain | Village places (bearing and distance from the towns of 1903-06) of the Coast Miwok of Sonoma County, Southern Pomo, Kashaya, Wappo and southern Patwin; house types (pp. 25, 124). Facts only, re-stated; a village is entered only where Milliken ties it to a community of the contact years. |
+| R. Milliken, *Ethnohistory and Ethnogeography of the Coast Miwok and their Neighbors, 1783-1840* (NPS / GGNRA 2009), ch. 10-12 | https://www.nps.gov/goga/learn/historyculture/upload/2009-Final-Coast-Miwok-Report.pdf | US government report | Which Barrett villages are the communities of the mission registers; baptism years (= end years) for the Petaluma, Sonoma, Bodega Bay, Bloomfield / Cotati, Pomo and Wappo communities. Already listed for the core. |
+| R. Milliken, L. Shoup, B. Ortiz, *Ohlone/Costanoan Indians of the San Francisco Peninsula and their Neighbors* (NPS / GGNRA 2009), ch. 5-7 | https://npshistory.com/publications/goga/ohlone-indians.pdf | US government report | Patwin (Suisun, Napa), Wappo, Delta, Awaswas and Mutsun-area migrations to the missions (end years). Already listed for the core. |
+| Fr. J. Crespi (1769, 1772) and Fr. F. Palou (1774) in Palou, *Historical Memoirs of New California*, ed. H. E. Bolton, vols ii-iii (1926) | https://archive.org/details/historicalmemoir0000fray , https://archive.org/details/historicalmemoir0003herb | public domain | Villages on the Pajaro River, San Lorenzo River, Soquel-Aptos, Scott Creek, at Gilroy and San Felipe Lake; Bolton's route notes for the positions. Vol. iii is new. |
+| J. B. de Anza and P. Font (1776) in H. E. Bolton, *Anza's California Expeditions* iii-iv (1930) | https://archive.org/details/anzascaliforniae03bolt , https://archive.org/details/anzascaliforniae04bolt | public domain (already listed) | The village of about 400 at Antioch; the village near Gilroy. |
+| A. L. Kroeber, *The Patwin and their Neighbors*, UCPAAE 29(4), 1932 | https://digitalassets.lib.berkeley.edu/anthpubs/ucb/text/ucp029-005.pdf | UC Berkeley digital assets | Southern Patwin towns (Suskol, Tuluka, Chimenukme at Napa). |
+| H. E. Driver, *Wappo Ethnography*, UCPAAE 36(3), 1936 | https://digitalassets.lib.berkeley.edu/anthpubs/ucb/text/ucp036-004.pdf | UC Berkeley digital assets | Wappo house type. |
+| O. C. Stewart, *Notes on Pomo Ethnogeography*, UCPAAE 40(2), 1943 | https://digitalassets.lib.berkeley.edu/anthpubs/ucb/text/ucp040-003.pdf | UC Berkeley digital assets | Pomo community names (as cited by Milliken). |
+| Fort Ross Conservancy, "Ranch era" | https://www.fortross.org/ranch-era | (c) Fort Ross Conservancy; one fact | The Kashaya sent away from Metini after the 1867 sale (read as a search summary; the site was unreachable). |
+| California Office of Historic Preservation, California Historical Landmarks nos. 17, 501, 667, 835 (Sonoma), 564, 682 (Napa), 534 (Solano), 342, 469, 998 (Santa Cruz) | https://ohp.parks.ca.gov/ListedResources/Detail/<n> | State of California | Official landmark texts: dates of the Blue Wing Inn, Salvador Vallejo and Nash adobes, Cooper's sawmill, Yount's blockhouse / adobe / mills, York's cabin, the Pena Adobe, the Castro Adobe; Mission Santa Cruz and the Villa de Branciforte. |
+| Wikipedia: "Sonoma State Historic Park", "Blue Wing Inn", "Branciforte Adobe", "Pena Adobe", "Rancho Los Putos", and the lists "California Historical Landmarks in ... County" | https://en.wikipedia.org/wiki/Sonoma_State_Historic_Park | CC BY-SA 4.0 (facts only) | La Casa Grande (1836-40, tower about 1843, fire of 12 Feb 1867, surviving servants' wing); landmark coordinates; cross-checks. |
+| Visit Santa Cruz County, "The Historic Adobes of Santa Cruz County" | https://www.santacruz.org/blog/the-historic-adobes-of-santa-cruz-county/ | (c) Visit Santa Cruz County; facts only | Mission Adobe (built 1822-24, 7 of 17 rooms), Branciforte Adobe ("Spanish period (1797-1821)"), Castro Adobe ("1848 or 1849"). |
+| Overture Maps buildings, `region4_building.parquet` | (already listed) | ODbL / CDLA | Size and bearing of the eight surviving adobes, measured only. |
+
+
+<!-- sites -->
+### Military and industrial sites of the ten-county extent (`data/manual/industrial_sites/`, README section "Ten-county extent")
+
+Added 2026-11 for Solano, Napa, Sonoma, Santa Cruz, east Contra Costa and south Santa Clara (definitions and
+sources per site in `tools/industrial_def_ext.py`; every feature / row carries its `source_url`).
+
+* **Outlines:** OpenStreetMap land-use outlines via Overture `base/land_use` 2026-10-21.0 (ODbL, © OpenStreetMap
+  contributors); outlines of vanished sites and growth stages read on USGS historical topographic maps
+  (public domain; https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/): Mare Island
+  1:62,500 1916 / 1942 and 1:24k 1951 / 1959; Benicia 1950 / 1959 (PR 1968, 1979); Vacaville 1:62,500 1953 and
+  Elmira 1:24k 1953 (PR 1968–78); Sears Point 1951; Honker Bay and Antioch North 1953 / 1978; Davenport 1955 /
+  1991; Felton 1955; Chittenden 1955 (PR 1980); Watsonville West 1954 (PR 1978); Napa 1951 (PR 1978); Cuttings
+  Wharf 1949; Morgan Hill 1955 (PR 1978); Two Rock 1954. Footprints: Overture buildings (OSM / ML, ODbL / CDLA).
+* **Facts (years; facts only):**
+  * Wikipedia (CC BY-SA): Mare Island Naval Shipyard; Benicia Arsenal; Benicia, California; Benicia Refinery;
+    Travis Air Force Base; Skaggs Island Naval Communication Station; Training Center Petaluma; Camp Stoneman;
+    Columbia Steel Company; Gaylord Container Corporation; Davenport, California; California Powder Works;
+    Graniterock; Basalt Rock Company; California Medical Facility; California State Prison, Solano; Fairfield,
+    California (https://en.wikipedia.org/wiki/…).
+  * National Park Service, Mare Island Naval Shipyard: https://www.nps.gov/places/mare-island-naval-shipyard.htm ;
+    National Historic Landmark listing summary (areas A–D, building years):
+    https://noehill.com/solano/nat1975002103.aspx
+  * Center for Land Use Interpretation: https://clui.org/ludb/site/dow-chemical-pittsburg ,
+    https://clui.org/ludb/site/pittsburg-power-plant
+  * Contra Costa Health, Corteva / Dow Pittsburg risk-management page (Dow bought the plant in 1939):
+    https://www.cchealth.org/health-and-safety-information/hazmat-programs/refinery-and-industry-safety-reports/rmp-corteva-agriscience
+  * California Public Utilities Commission decisions 50035 (1954, Pittsburg Steam Plant units 1–4) and 63489
+    (1962, Contra Costa Power Plant units of 1951 / 1953): https://files.cpuc.ca.gov/LegacyCPUCDecisionsAndResolutions/Decisions/
+  * DTSC fact sheet, DuPont Oakley (plant 1956–1997):
+    https://dtsc.ca.gov/wp-content/uploads/sites/31/2018/01/DuPont_FS_CorAction_0206.pdf
+  * San Francisco Bay Regional Water Quality Control Board: Potrero Hills Landfill (opened August 1986)
+    https://www.waterboards.ca.gov/sanfranciscobay/board_decisions/tentative_orders/Potrero_Hills/Potrero_Hills.pdf ;
+    Kirby Canyon (landfilling since 1986)
+    https://www.waterboards.ca.gov/sanfranciscobay/board_info/agendas/2018/March/KirbyCanyon/2018_Kirby_TO.pdf
+  * Santa Cruz LocalWiki, Lockheed Martin (test base established 1957): https://localwiki.org/santacruz/Lockheed_Martin
+  * Morgan Hill Times, "UTC shutting down its Coyote Valley plant" (after about 45 years of rocket testing):
+    https://morganhilltimes.com/utc-shutting-down-its-coyote-valley-plant/
+  * CEQAnet, Syar Lake Herman Quarry expansion (SCH 2000072074): https://ceqanet.lci.ca.gov/2000072074
+* **Use:** ground cover per site part and period, `site` map labels, founding-year floors for footprints inside a
+  site (`building_dates.csv`), footprint years from the map editions and researched buildings
+  (`known_dates_industrial.csv`). Licence of the derived files: ODbL (OSM outlines / footprints); USGS maps public
+  domain.
+
+
+<!-- fires -->
+### Wildfires and other disasters (`pipeline/fires.py`, `data/manual/fires/`, README there)
+
+* **CAL FIRE Damage Inspection (DINS) structure points** — ArcGIS service `POSTFIRE_MASTER_DATA_SHARE`
+  (https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/POSTFIRE_MASTER_DATA_SHARE/FeatureServer/0;
+  data.ca.gov "CAL FIRE Damage Inspection (DINS) Data"). Public state data (no licence text on the service —
+  check the data.ca.gov page). Attribution: CAL FIRE. Use: the 12,934 structures inspected as destroyed in the
+  ten counties since 2015 (`destroyed_structures.csv`): today's footprint there is the rebuild or ends at the fire,
+  and a predecessor stands until the fire date.
+* **CAL FIRE FRAP fire perimeters, "California Fire Perimeters (all)"** —
+  https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/California_Historic_Fire_Perimeters/FeatureServer/0
+  (https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters). Public domain.
+  Attribution: CAL FIRE FRAP. Use: 441 perimeters 1923–2025 (`perimeters.geojson`), the ring of the 1991 Tunnel fire.
+* **MTBS (Monitoring Trends in Burn Severity), thematic burn severity mosaics** — USGS / USDA Forest Service,
+  https://www.mtbs.gov, image service
+  https://imagery.geoplatform.gov/iipp/rest/services/Fire_Aviation/USFS_EDW_MTBS_CONUS/ImageServer. Public domain.
+  Use: high-severity (class 4) patches of 55 fires 1985–2020 (`severity_high.geojson`) for the terrain.
+* **Permit Sonoma, "Wildfire Rebuild Permits" (public view layer)** —
+  https://services1.arcgis.com/P5Mv5GY5S66M8Z1Q/arcgis/rest/services/Wildfire_Rebuild_Permits_Public_View_Layer/FeatureServer/0.
+  Public county service (no licence text). Use: completed rebuild permits per parcel in unincorporated Sonoma County
+  (`rebuild_permits.csv`; year = issue date + 1, estimated).
+* **Santa Cruz County GIS, "Recovery Permit Center" (CZU fire)** —
+  https://sccgis.santacruzcountyca.gov/server/rest/services/czucleanup/MapServer/5. Public county service (no
+  licence text). Use: closed dwelling rebuild permits per parcel with the closing date (`rebuild_permits.csv`).
+* Researched dates and names (`fire_dates.csv`), the Tunnel fire clearance (`clearances.csv`) and the fire events in
+  `data/tables/events.csv`: Wikipedia articles cited per row (Tubbs, Atlas, Kincade, Glass, LNU / CZU / SCU Lightning
+  Complex fires, October 2017 Northern California wildfires, Oakland firestorm of 1991, 1923 Berkeley fire, Mount
+  Vision Fire).
+
+
+<!-- land -->
+### `sfei_delta_historical_ecology` — SFEI Sacramento–San Joaquin Delta Historical Ecology (2012) and Laguna de Santa Rosa
+- Whipple, Grossinger, Rankin, Stanford, Askevold 2012, *Sacramento–San Joaquin Delta Historical Ecology Investigation: Exploring Pattern and Process*, SFEI-ASC; and the Central Laguna de Santa Rosa study. Taken from SFEI's Historical Ecology GIS data compilation (https://www.sfei.org/data/historical-ecology-gis-data-compilation, GPL v3, cite SFEI-ASC) as served by CDFW BIOS, dataset ds3201: https://services2.arcgis.com/Uq9r85Potqm3MfRV/arcgis/rest/services/biosds3201_fpu/FeatureServer/0 — fetched by `data/manual/delta/fetch_sfei_compilation.py` into `data/raw/sfei_historical_ecology/delta.geojson` and `laguna_de_santa_rosa.geojson`.
+- Use: c.1800 habitat of the Delta inside the map (tidal freshwater marsh, channels, riparian forest, wet meadow, dunes) and of the Laguna near Sebastopol; same class mapping as the other SFEI studies.
+
+### `dsc_delta_islands` — Delta Stewardship Council, Delta Levees Investment Strategy islands and tracts
+- https://services5.arcgis.com/netd7RBEFAa05HUC/arcgis/rest/services/DLIS_Island_Priority/FeatureServer/0 (170 polygons of Delta and Suisun Marsh islands and tracts; "DLIS Team and Delta Stewardship Council, 2017", public agency data).
+- Use: outlines of the 30 island rows `dl_*` in `data/manual/fill_zones.csv` and of three flooded tracts in `water_history.csv`; `data/manual/delta/delta_zone.geojson`.
+
+### `thompson_delta` — John Thompson on the reclamation of the Delta
+- *The Settlement Geography of the Sacramento–San Joaquin Delta, California*, Ph.D. dissertation, Stanford University, 1957 (scan filed as a State Water Board exhibit: https://www.waterboards.ca.gov/waterrights/water_issues/programs/hearings/pak_young/exhibits/pakyoung_3j.pdf), pp. 469–504; "Early Reclamation and Abandonment of the Central Sacramento–San Joaquin Delta", Sacramento History Journal VI (2006) (https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/california_waterfix/exhibits/docs/SHR/SHR-201.pdf).
+- Use: year each island or tract was leveed, abandoned, reclaimed for good or flooded (`dl_*` rows, Sherman Lake, Franks Tract).
+
+### `nid` — National Inventory of Dams (US Army Corps of Engineers)
+- https://nid.sec.usace.army.mil/api/nation/csv (California rows; public domain). Use: completion year of the dam of every reservoir of 7.5 ha and more in the new counties (`data/manual/landscape/water_history.csv`), joined to the Overture / OSM lake polygon by distance.
+
+### Other sources of this pass (one per row in the tables)
+- USGS historical topographic maps, 1:24,000 editions 1948–1997 of the Mare Island, Benicia, Port Chicago / Vine Hill, Honker Bay, Antioch North, Fairfield South and Cuttings Wharf quadrangles and the 1940 1:62,500 Carquinez Strait sheet (TNM, public domain): `tp_*` rows on the region grid.
+- State Coastal Conservancy, Napa River Salt Marsh Restoration Project (Pond 3, 2006); NOAA (Cullinan Ranch breach, 6 Jan 2015); East Contra Costa Historical Society (Discovery Bay, first bay dug from 1968); Trust for Public Land (Liberty Island, 1997–98); J. Lund, California WaterBlog 2011 (Mildred Island, 1983); Wikipedia (Franks Tract 1938, Little Franks Tract 1982, Big Break 1928).
+
+
+<!-- airfields -->
+### Airfields of the new counties (2026-11) — `data/manual/airports/tools/newarea.py`
+
+* **USGS Historical Topographic Map Collection** (TNM Access, GeoTIFFs under
+  `https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/GeoTIFF/CA/`; public domain). Sheets used to trace
+  vanished airfields and to date pavement (aerial-photo / photorevision year in brackets): Sebastopol and Santa Rosa
+  1:24,000 1954 (1952; PR 1968, 1980), Cotati 1954 (1952; PR 1968, 1980), Felton 1955 (1953; PR 1968, 1980) and 1991,
+  Soquel 1954 (1952; PR 1968), Capitola 1:62,500 1940 (1938), Rio Vista 1953 (1949; PR 1968) and 1978 (1974), Antioch
+  South 1953 (1949; PR to 1980), Petaluma River / Glen Ellen / Cotati / Petaluma 1954 (1952; PR 1968, 1980), Cuttings Wharf
+  1949 (1948; PR 1968, 1981), Benicia 1950 (1948), 1959 (1958; PR 1968), Calistoga 1958 (1957; PR 1980), Morgan Hill 1955
+  (1953; PR 1968, 1973, 1980), Allendale 1953 (1949; PR 1968, 1973), Fairfield North / South 1951 / 1949 (1948; PR 1968,
+  1973, 1980), Elmira and Denverton 1953 (1949; PR 1968, 1973, 1980), Healdsburg 1955 (1953; PR 1980) and 1993, Watsonville
+  West 1954 (1952; PR 1968, 1980, 1994), Capell Valley 1951 (1948; PR 1968), Port Chicago 1951 / 1959 / 1968 and Vine Hill
+  1959 (PR 1980), Stewarts Point 1943 and 1978 (1971), Mare Island 1949-1980, Sears Point 1951 (PR 1968).
+  Use: outlines and runways of 16 vanished airfields (`data/manual/airports_extra*.geojson`), runway phases of Travis AFB,
+  Napa County, Sonoma County and Watsonville (`data/manual/airports/pavement_dates.csv`), opening years of five small
+  airports (`data/tables/airports.csv`).
+* **Paul Freeman, Abandoned & Little-Known Airfields** — California pages `Airfields_CA_SantaRosa_N.htm`,
+  `_SantaRosa_S.htm`, `_Monterey.htm`, `_Oakland_N.htm`, `_SacramentoSW.htm`, `_SanJose_E.htm` under
+  `https://www.airfields-freeman.com/CA/` (© Paul Freeman; facts and dates only, no text or images copied). Use: opening /
+  closing years and runway lengths of the vanished airfields (it quotes sectional charts, airport directories, and
+  H. & J. Campbell, *Two Hours by Crow*); each row of `data/tables/airports.csv` names the statement used.
+* **Wikipedia** (CC BY-SA; facts only): Charles M. Schulz–Sonoma County Airport (1939 county purchase, Army field June
+  1942, 2013–14 extension of runway 14/32), Travis Air Force Base (construction 1942; C-17s from 2006), Naval Auxiliary
+  Landing Field Santa Rosa (two 7,000-ft concrete runways, commissioned 1943), Yolo County Airport (Winters-Davis Flight
+  Strip, c.1942), Monterey Bay Academy (Camp McQuaide).
+* **Esri World Imagery** (viewed only, nothing copied): check of the surviving pavement of NAAS Santa Rosa (north half of
+  the N-S runway, west end of the E-W runway, ramp and taxiways) — which pieces end 9999.
+* **OpenStreetMap** (via Overture 2026-10-21.0 `region_airports.parquet`; © OpenStreetMap contributors, ODbL): today's
+  runway / taxiway lines of Travis AFB, Napa County, Sonoma County and Watsonville (dated per piece in
+  `pavement_dates.csv`); the lines of two surviving taxiways of NAAS Santa Rosa in `airports_extra.geojson`; the OSM lines
+  of the surviving NAAS Santa Rosa pavement were used to check the tracing (agreement within a few metres).
+
+
+<!-- rail -->
+### Lost railways of the new counties (2026-11; `data/manual/historic_rail.geojson`, `historic_rail_spec.py`, `routes.csv`)
+
+* **Geometry** — OpenStreetMap abandoned / disused railway grades via Overture `rail.parquet` 2026-10-21.0 (ODbL) and the
+  2026-11 Overpass extracts in `data/raw/historic_rail/`; OpenHistoricalMap ways (CC0 1.0, https://www.openhistoricalmap.org/,
+  OHM Overpass API https://overpass-api.openhistoricalmap.org/api/interpreter, downloaded 2026-11-10; way ids in each
+  segment's note); USGS Historical Topographic Map Collection (public domain, GeoPDFs from
+  https://prd-tnm.s3.amazonaws.com/StagedProducts/Maps/HistoricalTopo/PDF/CA/): Vacaville 1908 1:62,500 (TNM 299005; Elmira -
+  Vacaville "Clear Lake Branch"), Mt Diablo 1898 (298276) and Antioch 1908 (296717) (Pittsburg R.R., Empire R.R.); today's
+  street centrelines (Overture roads) for the Port Watsonville line and Guerneville - Northwood.
+* **Dates** — Wikipedia: Northwestern Pacific Railroad; San Francisco and North Pacific Railroad; North Pacific Coast
+  Railroad; Petaluma and Santa Rosa Railroad; Santa Rosa and Carquinez Railroad; Vaca Valley and Clear Lake Railroad;
+  Sacramento Northern Railway; Ocean Shore Railroad; Watsonville Traction Company; San Francisco, Napa and Calistoga Railway
+  (checked, not drawn). santacruztrains.com (Derek R. Whaley): Boulder Creek stations
+  (https://www.santacruztrains.com/2019/03/stations-boulder-creek.html), Dougherty Extension Railroad, Loma Prieta Branch,
+  Pajaro Valley Consolidated Railroad, Scott Creek Railway / San Vicente Lumber Company, Swanton (site search pages cited
+  in the rows). abandonedrails.com: Glen Ellen Branch (https://www.abandonedrails.com/glen-ellen-branch), Calistoga Branch
+  (https://www.abandonedrails.com/calistoga-branch; ICC docket 25306 of 18 Sept 1968). wx4.org "Mount Diablo coal mine
+  railroads" (https://wx4.org/to/foam/shortlines/coal/mines.html) for the Pittsburg and Empire railroads. Thos. H. Thompson,
+  Map of the City of Santa Rosa, 1876 (Historical Atlas of Sonoma County, 1877; David Rumsey
+  https://www.davidrumsey.com/maps2368.html) for the Santa Rosa horse railway.
+
+
+<!-- dates -->
+### Researched construction years, new counties (2026-11 ship pass) — `data/tables/known_building_dates_region.csv` (+181 rows), `data/tables/notable_demolished_region.csv` (+15 rows)
+
+Construction / opening years of exempt, institutional and other notable buildings of Sonoma, Napa, Solano, Santa Cruz,
+east Contra Costa and south Santa Clara counties that the assessor rolls do not date (one row per Overture footprint;
+source URL and wording in each row). Sources, by use:
+
+* **Wikipedia** (CC BY-SA 4.0; articles and infoboxes, incl. the NRHP county lists and "List of Carnegie libraries in
+  California") and **Wikidata** (CC0; inception / opening dates, coordinates) — schools, colleges, hospitals, wineries,
+  theatres, NRHP buildings, lost hotels. https://en.wikipedia.org/ · https://www.wikidata.org/
+* **National Register of Historic Places** records (NPS NPGallery, public domain): Veterans Home chapel (79000510), Santa
+  Cruz Veterans Memorial Building (92000423), Santa Cruz post office (85000139). https://npgallery.nps.gov/
+* **Institutions' own histories** (facts only): Sonoma State University timeline (sonoma.edu/history,
+  music.sonoma.edu/about/history); Santa Rosa Junior College building pages (maps.santarosa.edu); UC Santa Cruz "UCSC at 60"
+  (magazine.ucsc.edu) and timeline (ucsc.edu/60-years/timeline); City of Morgan Hill public facilities; Sonoma County
+  (Petaluma Veterans Memorial Building; Sheriff's facilities); Solano County Library; Santa Clara County Library District;
+  Superior Court of Santa Clara County; Judicial Council of California (Arnason Justice Center); Dignity Health (Dominican
+  Hospital); NorthBay Health; Tannery Arts Center; Vacaville Performing Arts Theatre.
+* **Local history and press** (facts only): Santa Cruz LocalWiki (CC BY 4.0; downtown buildings, Cooper House, St. George
+  Hotel, Neptune Casino, Calvary Church); Santa Cruz Public Libraries local history (Carnegie library 1904-1966, Sea Beach
+  Hotel fire 1912); PCAD — Pacific Coast Architecture Database (Sonoma County courthouses of 1884 and 1909); Living New
+  Deal (Sonoma County Hospital 1937); Historical Marker Database; NoeHill (Sonoma Carnegie library); Solano history columns
+  (solanoarticles.com: Fairfield civic center 1971); Western City (Solano County Government Center 2005); Napa Wine
+  Project, Napa County Landmarks, The Clio (Sterling, Clos Pegase, Inglenook); Pajaronian, Gilroy Dispatch, Morgan Hill
+  Life, Tradeline, Healthcare Design, Tricycle (single opening dates).
+
+Rows whose year is the opening of a whole campus (high schools, Solano Community College, Cabrillo College — the Laney
+College pattern) say "Campus-wide date" in the note; rows with an approximate year say ESTIMATE. Demolished rows give
+`footprint_m` as WxD estimates (no county parcel layer is needed) and say how certain the position is.
+
+
+<!-- lm_north -->
+## North Bay landmark reconstructions (`viewer/src/landmarks/northbay.ts`, `data/research/landmarks_northbay.md`, `data/tables/landmarks_northbay.csv`)
+
+* **National Register of Historic Places / National Historic Landmark nomination forms** (National Park Service,
+  NPGallery; US government works, public domain) — `https://npgallery.nps.gov/NRHP/GetAsset/NRHP/<refnum>_text`
+  (`NHLS/` for landmarks). Used for dimensions and histories: Fort Ross 66000239, Fort Ross Commander's House
+  70000150, Sonoma Plaza 75000489, Petaluma Adobe 70000151, Benicia Capitol 71000204, Benicia Arsenal 76000534,
+  Mare Island Naval Shipyard 75002103, Greystone Cellars 78000725, Rhine House 72000242, Bale Mill 72000240, Napa
+  County Courthouse Plaza 92000778, Napa Opera House 73000414, De Turk Round Barn 04000334, Free Public Library of
+  Petaluma 88000925, Condominium 1 05000731 (Guerneville Bridge 89000945 and Jack London Ranch 66000240 were read but
+  not modelled).
+* **HAER CA-297, Carquinez Bridge** (Historic American Engineering Record, Library of Congress; public domain) —
+  https://www.loc.gov/pictures/item/ca3089/ (data pages `ca3089data.pdf`). Span lengths, truss depths, pier
+  arrangement and clearances of the 1927 cantilever; relation of the 1958 bridge to it.
+* **S. A. Roake, "Design and erection of the Martinez-Benicia bridge superstructure", Engineering News-Record,
+  June 4, 1931, pp. 918–922** (and C. R. Harding, ENR Jan 30, 1930), scans at
+  https://historicbridges.org/california/martinezrr/benicia.pdf — span table of the 1930 railroad bridge. Facts only.
+* **US Wind Turbine Database v9.1** (USGS, Lawrence Berkeley National Laboratory, American Clean Power Association;
+  public domain; Hoen et al., doi:10.5066/F7TX3DN0) — https://eerscmap.usgs.gov/uswtdb/ (CSV of 2026-09-28 from
+  https://energy.usgs.gov/uswtdb/assets/data/uswtdbCSV.zip). Position, project year, model, hub height, rotor
+  diameter and tip height of the 527 Solano County turbines drawn as landmarks (their offsets are embedded in
+  `northbay.ts`).
+* **USGS 3DEP elevation** (public domain) — https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer
+  (`getSamples`): shore positions along the bridge alignments, ground heights at the bridge approaches, the crest line
+  and crest elevation of Monticello Dam.
+* **OpenStreetMap** (© OpenStreetMap contributors, ODbL) via Overture 2026-10-21.0 for building outlines and bridge
+  alignments; via Nominatim (https://nominatim.openstreetmap.org) for the outline of the Monticello Dam spillway
+  ("Morning Glory Spillway Opening", way 138525103) and the dam line (way 604427590).
+* **California State Parks, Fort Ross State Historic Park** — https://www.parks.ca.gov/?page_id=449 and the park
+  brochure (`/pages/449/files/FortRossSHPFinalWebLayout113018.pdf`): founding party of 1812. Facts only.
+* **Wikipedia** (CC BY-SA 4.0; facts only) — Carquinez Bridge, Benicia–Martinez Bridge, Fort Ross, Rotchev House,
+  Mission San Francisco Solano, Sonoma Barracks, Sonoma City Hall, Rancho Petaluma Adobe, Benicia Capitol State
+  Historic Park, Benicia Arsenal, St. Peter's Chapel (Mare Island), The Culinary Institute of America at Greystone,
+  Inglenook (winery), Beringer Vineyards, Bale Grist Mill State Historic Park, Napa County Courthouse Plaza, Napa
+  Valley Opera House, Monticello Dam, Church of One Tree, Free Public Library of Petaluma, St. Teresa of Avila Church
+  (Bodega), Condominium 1, Sea Ranch, Shiloh wind power plant. Reference photographs from Wikimedia Commons were
+  viewed for proportions only (file names in `landmarks_northbay.md`); none is redistributed.
+
+
+<!-- lm_south -->
+### Landmarks — Santa Cruz County, south Santa Clara Valley, east Contra Costa (`viewer/src/landmarks/coastsouth.ts`)
+
+- `data/research/landmarks_coastsouth.md` (`viewer/src/landmarks/coastsouth.ts`, `data/tables/landmarks_coastsouth.csv`): 34 models —
+  Santa Cruz Beach Boardwalk (Giant Dipper, Sky Glider, Casino / Cocoanut Grove, the Plunge, Looff Carousel), Santa Cruz Wharf,
+  Mission Santa Cruz (1794 church, Holy Cross 1889, 1931 replica), Santa Cruz lighthouses (1869, Mark Abbott 1967, Walton 2001),
+  SS Palo Alto and its pier, Capitola Wharf and Venetian Court, Felton Covered Bridge, Town Clock, Hotel Palomar, Del Mar Theatre,
+  St. Patrick's Watsonville (1903 / 1994), Gilroy Old City Hall, Villa Mira Monte, Antioch Bridge (1978), John Marsh Stone House
+  and its tower, seven Altamont / Vasco wind-turbine groups. Sources per model in the table's `year_source_url` / notes.
+- **OpenStreetMap** outlines via the OSM API (downloaded 2026-11-10) and Overture 2026-10-21.0 — © OpenStreetMap contributors,
+  **ODbL** (attribution; the landmark file is offered under ODbL like the other landmark files).
+- `usgs_3dep_lpc_santacruz2020`, `usgs_3dep_lpc_santaclara2020`, `usgs_3dep_lpc_contracosta2022` — **USGS 3DEP lidar point clouds**
+  `CA_SantaCruzCounty_2020`, `CA_SantaClaraCounty_2020`, `CA_ContraCosta_1_2022`, read as Entwine Point Tiles from the public bucket
+  `https://s3-us-west-2.amazonaws.com/usgs-lidar-public/<project>/` (small windows round each landmark). **Public domain**
+  (U.S. Geological Survey, 3D Elevation Program). Use: roof, tower, spire and deck heights, plan placement, track heights.
+- `uswtdb` — **U.S. Wind Turbine Database** (Hoen, B.D., Diffendorfer, J.E., Rand, J.T., Kramer, L.A., Garrity, C.P., Hunt, H.E.:
+  United States Wind Turbine Database, U.S. Geological Survey, American Clean Power Association and Lawrence Berkeley National
+  Laboratory data release, https://doi.org/10.5066/F7TX3DN0; viewer https://energy.usgs.gov/uswtdb/ ; API
+  `https://energy.usgs.gov/api/uswtdb/v1/turbines`, queried 2026-11-10 for FIPS 06013 and 06001). **Public domain** (cite as above).
+  Use: turbine positions, hub heights, rotor diameters, project years.
+- Text sources (facts only, no data copied): Wikipedia (CC BY-SA; articles named per model), lighthousefriends.com (Santa Cruz
+  light history), ibiblio.org Lighthouse Directory (tower heights), californiamissions.com (mission church dimensions), Pacific Coast
+  Architecture Database (St. Patrick's, Hotel Palomar, Felton bridge), Santa Cruz Public Libraries local history (Town Clock, SS Palo
+  Alto), semperaltius.com Palo Alto history (pier 630 × 40 ft, 1930 dates), LocalWiki Santa Cruz (Palomar, Del Mar plaque text),
+  City of Capitola "Capitola Wharf Past", pierfishing.com, MTC bridge page (Antioch Bridge), johnmarshhouse.com.
+
