@@ -321,7 +321,7 @@ landfill, golf course or airport (≤ 40 vertices) minus the existing researched
 (the made-land cells without a researched row, identified by the street names inside them). A row only acts on cells
 that are made land in the grid, so the pond and marsh parts of Shoreline, Newby Island and Byxbee are untouched. Five
 reservoirs were added to `landscape/water_history.csv` (Lake Ranch 1877, Bear Gulch 1896, Cherry Flat 1936, Lake
-Lucerne 1938, Sandy Wool Lake 1968; years from the National Inventory of Dams). Scratch tools: `audit/land2/grid.py`
+Lucerne 1938 — corrected to 1923 in the third pass, Sandy Wool Lake 1968; years from the National Inventory of Dams). Scratch tools: `audit/land2/grid.py`
 (made-land cells without a researched row), `s2.py` / `build.py` / `verify.py`.
 
 Not covered, because no dated source was found (still fallback years): East San Rafael / the Canal east of 122.5° W
@@ -338,9 +338,9 @@ Boronda Lake (not later than the park's opening in 1965).
 **Ten-county extent (2026-11, third pass; 261 rows).** For the new area (Sonoma, Napa, Solano, Santa Cruz, east Contra
 Costa, south Santa Clara) the lakes were dated in bulk: every Overture / OSM lake or reservoir of 7.5 ha and more
 was joined by distance to the National Inventory of Dams (`nid.sec.usace.army.mil/api/nation/csv`, California rows;
-dam within 170 m, most within 30 m) and 38 got a `lake` row in `landscape/water_history.csv` with the inventory's
+dam within 170 m, most within 30 m) and 36 got a `lake` row in `landscape/water_history.csv` with the inventory's
 completion year (Lake Berryessa 1957, Lake Sonoma 1983, Lake Hennessey 1946, Lake Curry 1926, Loch Lomond 1960,
-Pacheco 1939 …; also Mallard Reservoir 1930 and Grant Lake 1927 in the old area). Rings are the lake outline
+Pacheco 1939 …); the same join dated Mallard Reservoir (1930) and Grant Lake (1927) in the old area. Rings are the lake outline
 buffered 60–100 m and simplified (the pipeline intersects them with today's water, so they only have to contain the
 lake). Natural lakes are written like Lake Merced, `year_start` 1700: Pinto, College, Kelly, San Felipe, Laguna
 (Chileno Valley). Three rows were wrong and are corrected: `lake_lake_chabot_2` is Vallejo's Lake Chabot (1870), not
