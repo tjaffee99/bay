@@ -1,0 +1,614 @@
+{
+ "zones_only": true,
+ "scale_prior": [
+  0.2045,
+  0.002
+ ],
+ "confidence_cap": "medium",
+ "residential": true,
+ "commercial_blocks": [
+  "232"
+ ],
+ "block_cap": {
+  "232": "low"
+ },
+ "notes": "the beach flat: Tent City (block 231 / 765: Cliff St - 2nd St - Riverside Av - the Southern Pacific track along the Esplanade = Beach St), blocks 227 / 229 west of Cliff St, and the Neptune Casino, baths and pleasure wharf of 1904 on the beach side of the track (block 232), placed by the fit of the blocks across the track; the Cliff St x Esplanade corner is not used (today's Beach St frontage is 4-5 m off the 1905 line)",
+ "blocks": [
+  {
+   "name": "231",
+   "streets": {
+    "N": "2nd Street",
+    "S": "Esplanade",
+    "W": "Cliff Street",
+    "E": "Riverside Avenue"
+   },
+   "px4_est": [
+    [
+     133,
+     1297
+    ],
+    [
+     135,
+     197
+    ],
+    [
+     975,
+     272
+    ],
+    [
+     895,
+     1297
+    ]
+   ],
+   "corners": [
+    {
+     "x": 132.0,
+     "y": 1296.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 134.0,
+     "y": 198.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Riverside Avenue",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "skip": [],
+   "px4": [
+    [
+     132.0,
+     1296.8
+    ],
+    [
+     134.0,
+     198.9
+    ],
+    [
+     977.3,
+     274.2
+    ],
+    [
+     897.7,
+     1294.2
+    ]
+   ],
+   "edge_q": [
+    0.36,
+    0.74,
+    0.0,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 132.0,
+     "y": 1296.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 134.0,
+     "y": 198.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Riverside Avenue",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 977.3,
+     "y": 274.2,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Riverside Avenue",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": true
+    },
+    {
+     "x": 897.7,
+     "y": 1294.2,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Cliff Street",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": true
+    }
+   ],
+   "zone_px": [
+    132.00032699827239,
+    198.91835883008537,
+    977.3346153318399,
+    1296.8192418600695
+   ]
+  },
+  {
+   "name": "229",
+   "streets": {
+    "N": "1st Street",
+    "S": "Esplanade",
+    "W": "Westbrook Street",
+    "E": "Cliff Street"
+   },
+   "px4_est": [
+    [
+     522,
+     1760
+    ],
+    [
+     522,
+     1393
+    ],
+    [
+     885,
+     1393
+    ],
+    [
+     885,
+     1760
+    ]
+   ],
+   "corners": [
+    {
+     "x": 521.9,
+     "y": 1759.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Westbrook Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 520.6,
+     "y": 1392.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 890.1,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Westbrook Street",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 132.2,
+     "y": 1394.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "227"
+    },
+    {
+     "x": 431.5,
+     "y": 1394.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "227"
+    }
+   ],
+   "skip": [
+    "SE"
+   ],
+   "with": [
+    "227"
+   ],
+   "px4": [
+    [
+     521.9,
+     1759.0
+    ],
+    [
+     520.6,
+     1392.9
+    ],
+    [
+     884.8,
+     1391.6
+    ],
+    [
+     890.1,
+     1759.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    0.96,
+    0.77,
+    1.0
+   ],
+   "corners_all": [
+    {
+     "x": 521.9,
+     "y": 1759.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Westbrook Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 520.6,
+     "y": 1392.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 890.1,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Westbrook Street",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    520.5917933427297,
+    1391.5926553636311,
+    890.1172379176825,
+    1759.0
+   ]
+  },
+  {
+   "name": "227",
+   "streets": {
+    "N": "2nd Street",
+    "S": "1st Street",
+    "W": "Westbrook Street",
+    "E": "Cliff Street"
+   },
+   "px4_est": [
+    [
+     133,
+     1740
+    ],
+    [
+     133,
+     1395
+    ],
+    [
+     432,
+     1395
+    ],
+    [
+     432,
+     1740
+    ]
+   ],
+   "corners": [
+    {
+     "x": 132.2,
+     "y": 1394.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "227"
+    },
+    {
+     "x": 431.5,
+     "y": 1394.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "227"
+    },
+    {
+     "x": 521.9,
+     "y": 1759.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Westbrook Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 520.6,
+     "y": 1392.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 890.1,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Westbrook Street",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    }
+   ],
+   "skip": [
+    "NW",
+    "SW"
+   ],
+   "with": [
+    "229"
+   ],
+   "px4": [
+    [
+     134.8,
+     1738.0
+    ],
+    [
+     132.2,
+     1394.0
+    ],
+    [
+     431.5,
+     1394.0
+    ],
+    [
+     431.5,
+     1738.0
+    ]
+   ],
+   "edge_q": [
+    1.0,
+    1.0,
+    1.0,
+    0.36
+   ],
+   "corners_all": [
+    {
+     "x": 132.2,
+     "y": 1394.0,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    },
+    {
+     "x": 431.5,
+     "y": 1394.0,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false
+    }
+   ],
+   "zone_px": [
+    132.17658276125096,
+    1394.0,
+    431.5,
+    1738.0
+   ]
+  },
+  {
+   "name": "232",
+   "streets": {
+    "N": "2nd Street",
+    "S": "Esplanade",
+    "W": "Cliff Street",
+    "E": "Riverside Avenue"
+   },
+   "px4_est": [
+    [
+     925,
+     1480
+    ],
+    [
+     925,
+     380
+    ],
+    [
+     1260,
+     380
+    ],
+    [
+     1260,
+     1480
+    ]
+   ],
+   "corners": [
+    {
+     "x": 132.0,
+     "y": 1296.8,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Cliff Street",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "231"
+    },
+    {
+     "x": 134.0,
+     "y": 198.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Riverside Avenue",
+      "2nd Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "231"
+    },
+    {
+     "x": 521.9,
+     "y": 1759.0,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Westbrook Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 520.6,
+     "y": 1392.9,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Cliff Street",
+      "1st Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    },
+    {
+     "x": 890.1,
+     "y": 1759.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Westbrook Street",
+      "Esplanade"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "229"
+    }
+   ],
+   "skip": [
+    "NW",
+    "NE",
+    "SE",
+    "SW"
+   ],
+   "no_refine": 1,
+   "with": [
+    "231",
+    "229"
+   ],
+   "px4": [
+    [
+     925.0,
+     1480.0
+    ],
+    [
+     925.0,
+     380.0
+    ],
+    [
+     1260.0,
+     380.0
+    ],
+    [
+     1260.0,
+     1480.0
+    ]
+   ],
+   "edge_q": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "corners_all": [],
+   "zone_px": [
+    925.0,
+    380.0,
+    1260.0,
+    1480.0
+   ]
+  }
+ ],
+ "pct": 25
+}

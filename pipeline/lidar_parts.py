@@ -390,7 +390,7 @@ def _reduce(parts):
 
 
 def _bin_laz_tile(uid, url):
-    """One LAZ tile (its own CRS, read from the header), decoded in chunks of 4 M points."""
+    """One LAZ tile (its own CRS, read from the header), decoded in chunks of 2 M points."""
     import laspy
     import pyproj
     path = _download(url, LIDAR_RAW / "_tiles" / url.rsplit("/", 1)[-1])
@@ -406,6 +406,8 @@ def _download(url, path, tries=600):
     """A big file to disk, resumed with HTTP Range after every break: rockyweb.usgs.gov answers
     429 in bursts (a queue page) and serves ~0.1 MB/s per connection through the proxy."""
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():  # complete, left by an interrupted run
+        return path
     part = path.with_name(path.name + ".part")
     total = None
     for attempt in range(tries):
@@ -457,7 +459,7 @@ def _bin_laz_file(path):
         def to_utm(x, y):
             return ll_utm.transform(*to_ll.transform(x, y))
 
-        for pts in rd.chunk_iterator(4_000_000):
+        for pts in rd.chunk_iterator(2_000_000):
             p = _bin_points(pts, _W["grid"], to_utm, zfac)
             if p is not None:
                 reds.append(_reduce([p]))

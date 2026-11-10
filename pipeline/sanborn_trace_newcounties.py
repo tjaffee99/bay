@@ -2,33 +2,43 @@
 Congress Sanborn maps.
 
 Areas (data/manual/sanborn/README_northbay.md, README_santa_cruz.md):
-  santa_rosa_downtown   the courthouse-square blocks, 4th St from the railroad to E St (Dec 1904 = before the earthquake
-                        of 18 Apr 1906, 1908 = the rebuilt town)
-  vallejo_downtown      Georgia / Virginia / Marin St down to Mare Island Strait: the old downtown and waterfront, most
-                        of it razed for the Marina Vista redevelopment
-  napa_downtown         Main / First / Second / Third St and the river front
-  santa_cruz_downtown   Pacific Avenue and the blocks around it
-  petaluma_downtown, watsonville_downtown, benicia_downtown   (configured; traced only as far as the README says)
+  santa_rosa_downtown   the courthouse-square blocks, 4th St from Wilson St to E St, 5th - 1st St: Dec 1904 (before the
+                        earthquake of 18 Apr 1906), 1908 (the rebuilt town), 1908 corrected to 1950
+  vallejo_downtown      Lower Georgia St and the waterfront (Florida - Maine St, Mare Island Strait - Sonoma St), most of
+                        it razed for the Marina Vista redevelopment: Jul 1901 (one sheet), Mar 1919, 1919 corrected to 1950
+  napa_downtown         Main St and the river front, Clinton - 5th St, west to Franklin St: Jun 1901 (Main St), Oct 1910
+  petaluma_downtown     the iron-front blocks and McNear's warehouses: Nov 1910
+  santa_cruz_downtown   Pacific Avenue, Mission / Water St - Laurel St: Jul 1892 (before the fire of 1894), 1905
+  watsonville_downtown  Main St, Lake Av - 1st St, and the plaza: Dec 1920, 1920 corrected to Dec 1962
+  benicia_downtown      configured (LOC ids, parcels), not traced
 
 This is a thin extension of pipeline/sanborn_trace_peninsula.py (-> sanborn_trace_eastbay.py -> sanborn_trace_waterfront.py):
 the same block specs (four streets + estimated pixel corners), `refine`, property corners from today's parcels (`pc`),
 offset corners from centrelines + printed street widths (`oc`), similarity fits per block / group, colour segmentation
-with partition-wall splitting, SIFT registration of an edition onto a later state of the same plate, and the same output
-schema and confidence rules. What changes is the per-town configuration:
-  * street centrelines: Overture transportation segments, release 2026-10-21.0 (roads_local.parquet + roads_region.parquet),
-    clipped to the town box;
-  * property lines: the county parcel layers in data/raw/region_years/{sonoma_county, solano_county, napa_county,
-    santa_cruz_parcels} (their parcel-id column differs per county: `pid`);
-  * today's footprints for modern_overlap: Overture buildings of the four new counties (region4_building.parquet);
-  * `partner`: finds the sheet of another edition that shows the same ground (SIFT inliers), for towns whose sheets were
-    renumbered between editions.
+with partition-wall splitting, SIFT registration of an edition onto another state of the same plate, and the same output
+schema and confidence rules. What changes:
+  * per-town configuration (CITIES): LOC ids and volumes, the county parcel layer in data/raw/region_years/{sonoma_county,
+    solano_county, napa_county, santa_cruz_parcels} and its parcel-id column (`pid`), the plate scale of the 25 % scans,
+    street centrelines from Overture (roads_local.parquet + roads_region.parquet), today's footprints for modern_overlap
+    from region4_building.parquet;
+  * `image` / `normalise`: the scans of these volumes are dark; a per-channel gain brings the paper to cream before the
+    colour thresholds (the normalised copy is INTERIM/<key>_25n.jpg; raw and normalised scans can be deleted after
+    tracing and are fetched again when a stage needs them);
+  * `index`: LOC's older file names (sb000010 = sheet 1) are renamed, so keys stay <volume>_<sheet>;
+  * `spec`: per-corner control overrides ("ctl": a `tie` to a georeferenced neighbour sheet, `pl` = crossing of two of
+    today's property lines given by points, any waterfront-tool entry) beside the block's `pc` / `oc` corners;
+  * `match` / `partner` / `register`: plate matching with a displacement vote before RANSAC (editions whose buildings
+    all changed, scans of different resolution: `scale0`), and the search for the partner of a renumbered sheet;
+  * `assemble`: per-block confidence caps (`block_cap`), sidewalk awnings clipped / dropped on the editions that draw
+    them (CITIES[..]["awnings"]), `drop_classes` (water tint), brown = fire-proof concrete where the edition's key says
+    so (`fireproof_years`), blue = concrete on the editions corrected to 1950 / 1962.
 
 Usage:  python pipeline/sanborn_trace_newcounties.py <town> all            # fetch + georef + extract + assemble + check
         python pipeline/sanborn_trace_newcounties.py <town> sheets          # sheets of each volume
         python pipeline/sanborn_trace_newcounties.py <town> grid 005_0003 [x0 y0 x1 y1]
         python pipeline/sanborn_trace_newcounties.py <town> refine|georef|extract|overlay 005_0003
         python pipeline/sanborn_trace_newcounties.py <town> partner 004_0003 005   # which sheet of volume 005 matches
-        python pipeline/sanborn_trace_newcounties.py <town> register 004_0003 005_0004
+        python pipeline/sanborn_trace_newcounties.py <town> register 004_0003 005_0004 [scale0]
         python pipeline/sanborn_trace_newcounties.py <town> assemble|check|tables
 <town> = santa_rosa | vallejo | napa | santa_cruz | petaluma | watsonville | benicia. Keys are <LOC item suffix>_<sheet>,
 e.g. 005_0003 = sanborn00838_005 (Santa Rosa, 1908) sheet 3. Downloads go to data/raw/sanborn_loc/newcounties/<town>/
@@ -39,6 +49,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -399,6 +410,8 @@ def assemble():
             pr = ft["properties"]
             key = pr["id"].rsplit("_", 1)[0]
             blk = pr["georef"][6:] if pr["georef"].startswith("block ") else None
+            if pr["sanborn_colour"] == "fireproof" and re.search(r"_f\d+$", pr["id"]):
+                pr["id"] = re.sub(r"_f(\d+)$", r"_p\1", pr["id"])  # the extract numbers frame and fire-proof fills alike (f<n>)
             if pr["sanborn_colour"] in dropc.get(key, ()):
                 n_drop += 1
                 continue

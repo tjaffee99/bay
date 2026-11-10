@@ -959,6 +959,13 @@ def histories(name, g, d):
             my, mcv = mid_y[sl], mid_c[sl]
             my[push], mcv[push] = ly[push], lcv[push]
             ly[later], lcv[later], lp[later] = yy[later], cc[later], r.prio
+        # leveed Delta island ground outside the district outlines (those were cut to the valley
+        # floor before the islands had a c.1800 layer): the same reclaimed-island farming
+        # (asparagus, potatoes, beans, corn — districts sol_delta / cc_delta_islands), from
+        # the island's own levee year
+        rest = delta_farm & np.isnan(first_y) & (b_share < 0.9)
+        first_c[rest] = FARM
+        first_y[rest] = (dike_year + 1.0 + 2.0 * b_year)[rest]
         has_first = np.isfinite(first_y)
         event(has_first, first_c, first_y)
         has_last = np.isfinite(last_y) & (last_c != first_c) & (last_y > first_y)
