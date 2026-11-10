@@ -391,3 +391,96 @@ Raw inputs are in `data/raw/landscape/`, which is gitignored:
 | `sbsprp_salt_appendixE.txt`, `bcdc_salt_ponds_2005.txt` | Text of the salt-pond histories |
 
 OFR 2006-1037 is in `data/raw/usgs_ofr2006_1037/`.
+
+---
+
+## San Francisco: `agriculture_sf.geojson` (2026-11)
+
+`agriculture.geojson` stops at the county line (its farm region excludes San Francisco) and the terrain masks farm cover inside the city, so around 1880–1900 the Colma truck gardens ended on a ruler-straight line at lat 37.708. This file holds the farm history of the land inside San Francisco: 66 `district_era` features in 17 districts, 1,956 ha of distinct ground, in the columns of `agriculture.geojson` (same order, same `kind` words, EPSG:4326, 5 decimals).
+
+Farmland in the city was real and large: market gardens round the Mission and in Hayes Valley and "Spring Valley" (Cow Hollow) in the 1850s, dairies after them, and from the 1860s to the 1940s the truck gardens, dairies and flower nurseries of the southern valleys, from Lake Merced to Visitacion Valley.
+
+### What differs from `agriculture.geojson`
+
+- **Every row has a `year_end`.** In the counties an empty `year_end` means "until the buildings come". Inside the city about 4 % of the farm ground never gets a building or a park (freeway verges, campus lawns, school yards, reservoir banks), so each row carries the year the last farms of its district went. It is researched where a source gives it, else **estimated** and said so in `note`. Buildings and parks still end the farm cover earlier, cell by cell.
+- **`confidence`** has two new values beside `estimated`:
+  - `mapped_1857`: the outline is the cultivated-ground symbol of the 1857 Coast Survey sheet (`snapshot_year` 1857). Dates are estimated.
+  - `mapped_1900`: the outline is traced from Dondero's map of the farming and dairy areas of 1900 (`snapshot_year` 1900). Dates are estimated.
+- **`source`**: `uscs_sf_1857`, `dondero_1953`, `landscape_sf_district_history` (text sources; the URL of the main one is in `source_url`, the others are named in `note`).
+- **Stabilised dune sand is farm ground where a source says so.** The sandy soil south of Sloat Boulevard, at West Portal and in Ocean View was the potato and vegetable land ("the sandy soil was ideal for vegetables, particularly potatoes"). Mobile dunes, c.1800 water, marsh, ponds and wet meadows are cut out of every outline.
+- No row starts before 1850 (decision 13b: the mission and rancho range is open grassland).
+
+### Three kinds of outline
+
+**1. `mapped_1857` — US Coast Survey, *City of San Francisco and its vicinity*, 1857** (A. F. Rodgers plane-table survey, 1:10,000; Rumsey 6811.000). The sheet draws cultivated ground as ladders of short dashes with rows of dots between them. 337 ha in three districts.
+
+- *Georeference.* North is to the right. The 1′ graticule was read from the margins (37°45′ at x = 1204 px, 2180 px per minute of latitude; a longitude line at y = 1236 px, 1727 px per minute of longitude; 0.85 m per px). The sheet's longitudes are on an old datum, about 1′ off today's, as on the 1869 sheet. The offset was fixed by laying today's street centrelines (DataSF) into the blank street corridors north of Market Street: mean ink under the lines 0.16 at the best fit against a median of 0.34 over all trial shifts. Error about ±20 m in the city, more toward the sheet edge.
+- *Detection.* Ink = paper tone minus grey > 40. A cell of 3.4 m is field when the mean ink over 37 m is 0.17–0.50, the strokes share one direction (structure-tensor coherence > 0.30 over 17 m) and there is no solid black (buildings) within about 30 m. Pieces under 0.6 ha and strips narrower than 28 m (road edges, hill shading) are dropped. Of 464 ha detected on the whole sheet, the 337 ha inside the three district boxes are kept; the rest is the line shading of the Mission Bay marsh, hill shading and half-built city blocks.
+- *Limits.* Parcels are merged, with the roads and houses between them. The densest hatching (the infields of the Union and Pioneer race courses) is not detected. Not checked parcel by parcel. Fields at the foot of Potrero Hill (east of −122.4035) were left out as unverified.
+
+**2. `mapped_1900` — R. S. Dondero, *The Italian Settlement of San Francisco* (MA thesis, UC Berkeley, 1953), p. 57**: a map of the "large farming and dairy areas" of 1900, known here only as reproduced in the OMI historic context statement (Brandi & LaBounty 2010, p. 10), a 374 × 227 px figure covering Lake Merced to Mission Street. 426 ha in five districts.
+
+- *Georeference.* A north-up fit with 18.25 m per px east–west and 18.5 m north–south, anchored at 19th Avenue and Sloat Boulevard, checked against Sunset Boulevard, Junipero Serra Boulevard, Ocean Avenue, Alemany Boulevard and Mission Street (about ±50 m).
+- *Trace.* The green wash was segmented (G − max(R, B) > 18), closed and vectorised. The areas are schematic; they are cut only where the ground is water, marsh, mobile dune or steeper than 15°.
+- The Parkside context statement gives the same source in words: "By 1900, Italian-operated farms stretched from today's Villas Parkmerced, east to Urbano Drive, north to Sloat Boulevard, and west to Sunset Boulevard."
+
+**3. `estimated` — a documented tract or valley cut to farmable ground.** A ring of streets or ridges taken from the text source (for example the University Mound Survey: Oxford Street, San Bruno Avenue, Silver Avenue, Olmstead Street), cut to ground that could be farmed: not water, marsh, pond or mobile dune (SFEI Hidden Nature SF, the terrain's c.1800 layer, USGS OF 98-354), slope under 12° (`grid_detail_elev.npy`, the terrain's own slope formula), and either on the Quaternary valley floor of USGS OF 2006-1037 (the classes `agriculture.geojson` paints on) or under 7°. The outline follows the ground; the ring, the shares and most dates are the generalisation. 1,496 ha.
+
+### Districts
+
+`start→full` as in `agriculture.geojson`; `end` = `year_end`. Areas are the district's distinct ground.
+
+| District | Rows (kind, start→full, share, end) | ha | Outline | Main sources |
+|---|---|---|---|---|
+| `sf_mission_valley` | vegetables 1850→56, 0.9, 1885 | 249 | mapped 1857 | Coast Survey 1857; Market & Octavia, Showplace Square and Mission District context statements |
+| `sf_hayes_valley` | vegetables 1851→56, 0.9, 1875 | 26 | mapped 1857 | Coast Survey 1857 |
+| `sf_cow_hollow` | vegetables 1851→56, 0.9, 1890 (57 ha, mapped 1857); dairy pasture 1861→72, 0.7, 1890 (88 ha, estimated: Van Ness – Lyon, Pacific Ave to the sand north of Lombard) | 87 | mapped 1857 + estimated | Coast Survey 1857; *And they called it "Cow Hollow"* (Chronicle 1947, on FoundSF) |
+| `sf_eureka_noe_valley` | dairy pasture 1860→70, 0.5, 1890 | 88 | estimated, LOW | Market & Octavia context statement |
+| `sf_presidio_border` | vegetables 1870→85, 0.35, 1900 | 54 | estimated, LOW | Chronicle 17 Nov 1889 (in the Bayview–Hunters Point statement); Presidio Terrace "on former vegetable gardens" |
+| `sf_west_portal` | vegetables (potatoes) 1870→87, 0.85, 1916 | 41 | estimated: Portola, Kensington, Taraval, Wawona | Brandi, *Farms, Fire and Forest* (2003) |
+| `sf_lake_merced` | grain / potatoes 1855→68, 0.5; vegetables 1880→90, 0.9; 1939 | 163 | mapped 1900 | Dondero; Parkside and OMI context statements |
+| `sf_lake_merced_south` | grain 1858→65, 1.0; vegetables 1870→80, 0.8; 1915 | 125 | estimated, LOW | Parkside and OMI context statements; Coast Survey 1869 (fences, farmhouses) |
+| `sf_westwood` | vegetables 1865→80, 0.9, 1920 | 30 | mapped 1900 | Dondero; OMI context statement |
+| `sf_ocean_view` | grain 1858→65, 1.0; vegetables 1870→80, 0.8 (estimated bench, 156 ha); vegetables 1865→80, 0.9 (mapped 1900, 42 ha); 1945 | 154 | mapped 1900 + estimated | Dondero; OMI context statement |
+| `sf_islais_valley` | vegetables 1860→72, 0.9, 1945 | 165 | mapped 1900 | Dondero; Ingleside Light, *A brief history of the Excelsior and Outer Mission districts* |
+| `sf_outer_mission` | grain 1858→65, 1.0; vegetables 1870→80, 0.8; 1930 (176 ha); vegetables 1860→72, 0.9, 1945 (mapped 1900, 22 ha) | 174 | mapped 1900 + estimated | Dondero; Ingleside Light, *A brief history of the Excelsior and Outer Mission districts* |
+| `sf_glen_park` | dairy pasture 1859→70, 0.6, 1905 | 35 | estimated | Wikipedia *Glen Park*; FoundSF *Glen Park: SF's 'Little Switzerland'* |
+| `sf_excelsior` | dairy pasture 1862→72, 0.8; vegetables 1869→85, 0.45; 1930 | 105 | estimated | Ingleside Light (as above); Wikipedia *Excelsior District* |
+| `sf_portola` | dairy pasture / corrals 1867→75, 0.8, 1921; vegetables 1875→95, 0.5, 1940; nurseries 1880→1925, 0.3, 1990 | 96 | estimated: University Mound Survey | 770 Woolsey Street landmark designation report (2019); FoundSF *The Portola District* |
+| `sf_bayview` | dairy pasture 1855→68, 0.7; vegetables 1872→90, 0.55; 1950 | 182 | estimated | Bayview–Hunters Point context statement (2010) |
+| `sf_visitacion_valley` | grain 1858→65, 1.0; vegetables 1870→80, 0.8; 1941 | 176 | estimated | SF Heritage / Wikipedia; Brandi 2003, note 43 |
+
+Dates that come from a source: Hatman's dairy 1861 and "at least 30 dairies by the early seventies" (Cow Hollow); University Mound Survey 1862–63, Perini's dairy 1867, 11 milk dealers by 1880, no dairy after 1921, first nursery 1865, 16 nurseries in 1900, 21 on "upwards of thirty blocks" in 1925, the last closed 1990 (Portola); Excelsior Homestead 1869; Ulshofer's milch ranch 1859–60 (Glen Park); Burfiend's potato ranch 1860 and the Lagomarsinos by 1887 (West Portal); Spring Valley's leases "from the late 1880s" and the 1928 aerial with the land south of Sloat still cultivated (Lake Merced); farms "until the 1940s" (Ocean View, San Jose Avenue); the Sunnydale project 1941. Everything else is estimated.
+
+### The county line
+
+The four districts on the line (`sf_lake_merced_south`, `sf_ocean_view`, `sf_outer_mission`, `sf_visitacion_valley`) carry the eras of `pen_colma` across it: grain 1858→65 on all the ground, truck gardens 1870→80 on 80 %. In their first 370 m they use the ground rule of the rows to the south (valley floor of OF 2006-1037, slope under 15°), and their polygons start at lat 37.7076, just south of the terrain's San Francisco box, so no cell row is left between the two files. The terrain's share and year noise are continuous fields, so equal shares and dates give an unbroken pattern.
+
+Checked by emulating the terrain's farm loop on the detail grid: in the three cell rows either side of 37.7080, 598 of 900 farmable cells are farm to the north and 583 of 842 to the south, with median first years 1861.7 and 1860.8. One gap is left, 8 columns wide at −122.492 to −122.489: the south tip of Lake Merced and the Olympic Club dunes west of it, where the Daly City side is painted and the San Francisco side is water and sand.
+
+### What the terrain has to do
+
+1. Read this file with `agriculture.geojson` (same columns; `layer` is `district_era`, priority 0).
+2. Let these rows through inside San Francisco. The old rows can keep the `~in_sf` mask.
+3. Do not add a dune exclusion for these rows: the sand they cover is meant.
+4. Honour `year_end` for these rows: where a cell has no city or park year before it, the farm cover goes back to the natural cover at `year_end`. Without it 72–155 ha stay farmland after 1960. The event must not be written on cells that are city or park by then.
+5. `sf_mission_fields` in `data/tables/landcover_history.csv` (farmland 1776–1860 on a rectangle in the Mission valley) is now redundant after 1850 and contradicts decision 13b before it.
+
+Emulated farm and pasture cover inside the city, with `year_end` honoured: 204 ha in 1855, 1,380 ha in 1870, 1,161 ha in 1890, 883 ha in 1910, 400 ha in 1930, 12 ha in 1950, none after 1960. Without `year_end`: 1,310 ha in 1890, 935 ha in 1910, 578 ha in 1930, 331 ha in 1950, 155 ha in 1960, 72 ha today. The emulation dates city ground from today's buildings only, so the terrain stage will differ a little.
+
+### Not drawn, or not sourced
+
+- **Dondero's whole map.** Only the crop in the OMI statement was found; the thesis (reprinted by R & E Research Associates, 1974) is not online. East of Mission Street (Excelsior, Portola, Bayview, Visitacion Valley) the outlines are therefore estimated rings. Maps that would replace them: Dondero p. 57 in full; the 1883 and 1901 Coast Survey sheets, which the Bayview–Hunters Point statement reads for market gardens; the 1899–1900 and 1913–15 Sanborn volumes, which label vegetable gardens, pasture and every greenhouse; the 1938 aerial photographs (Rumsey).
+- **Which Portola blocks held nurseries.** The row is a 30 % share of the survey's ground. Table 1 of the landmark report gives an address and years for each known grower, 1865–1990.
+- **The Sunset and Richmond.** Scattered dairies and chicken ranches on the sand (Larsen's ranch c.1898) are not field farming; the Parkside statement says the Sunset and Parkside "were not used for agriculture during the 19th century". The Greene ranch north of Sloat Boulevard (barley and potatoes from the 1850s, Stern Grove to the beach) is not drawn for the same reason; the two statements disagree.
+- **Potrero Hill and Bernal Heights.** Cattle and dairy pasture of the 1850s–60s on open grass; it looks like the natural grassland, as the rancho range does elsewhere.
+- **Mission fields before 1834.** Not drawn (decision 13b).
+- **Small gardens.** The Chinese gardens at Black Point and on the blocks at Market, 14th and Dolores (1889 Sanborn), and the Butchertown stock yards. Hog ranches in the Excelsior in the 1890s turned up only in a search summary, with no page behind it, and are not in the data.
+- **The 1869 Coast Survey sheet** (1:40,000, interior surveyed 1867–68) draws fences, houses and roads but no cultivation symbol. It was georeferenced (graticule crosses, then 425 px east and 70 px south, nine summits within about 50 m) and used as a check only. The 1861 Langley and 1873 Bancroft maps were not consulted; the USGS 1895 and 1915 quadrangles carry no crop symbols.
+- **Acreage.** "As late as 1910 1,200 Italian giardinieri (truck farmers) worked some 8,000 acres on San Francisco's south side" (Ingleside Light), which must include northern San Mateo County. This file gives about 880 ha (2,200 acres) of farm cover inside the city in 1910.
+- **Unverified dates:** the end of the Cow Hollow dairies ("the '80s"), every `year_end` not listed above, and the start years of the mapped rows.
+- **Unverified statements**, seen only as search summaries because the pages would not load: four dairies along Islais Creek on an 1861 survey and dairies moving from Cow Hollow to Glen Park (Glen Park Neighborhoods History Project). They are marked UNVERIFIED in the note and no date rests on them.
+
+### How it was built
+
+Scratch scripts, not in the repository: `hatch57f.py` and `vec57.py` (1857 fields), `dondero_trace.py` (1900 areas), `build_sf_farms.py` (rings, ground rule, rows, writer), `check.py` and `simulate.py` (the checks above). The two map scans are not redistributed.

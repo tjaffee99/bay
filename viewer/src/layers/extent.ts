@@ -4,6 +4,8 @@
  * few km inside the line, like the edge of an old game map, and lets other layers drop
  * what lies outside.
  */
+import {dataUrl} from '../data/columnar';
+
 type Extent = {ring: [number, number][]; fadeKm: number};
 
 let ext: Extent | null = null;
@@ -33,7 +35,7 @@ function distToRing(x: number, y: number, ring: [number, number][]) {
 
 export const extentReady: Promise<void> = (async () => {
   try {
-    const r = await fetch('data/map-extent.json');
+    const r = await fetch(dataUrl('data/map-extent.json'));
     if (!r.ok) return;
     const j = await r.json();
     ext = {ring: j.ring, fadeKm: j.fade_km ?? 4};

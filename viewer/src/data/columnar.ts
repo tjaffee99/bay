@@ -17,6 +17,20 @@
  * the gzip (Content-Encoding) we detect that from the magic bytes.
  */
 
+/**
+ * Data paths are relative to the page. In a worker a relative fetch would resolve against
+ * the worker script instead, so workers are started with the page's base URL as their
+ * name (terrain.ts) and every data fetch goes through here.
+ */
+export function dataUrl(path: string): string {
+  const base = typeof document === 'undefined' ? (globalThis as any).name : document.baseURI;
+  try {
+    return base ? new URL(path, base).href : path;
+  } catch {
+    return path;
+  }
+}
+
 export type Columns = Record<string, Float32Array | Float64Array | Uint32Array | Int32Array | Uint16Array | Int16Array | Uint8Array>;
 
 export type ColumnarFile = {
@@ -48,7 +62,7 @@ async function gunzip(buf: ArrayBuffer): Promise<ArrayBuffer> {
 }
 
 export async function loadColumnar(url: string, onProgress?: (frac: number) => void): Promise<ColumnarFile> {
-  const res = await fetch(url);
+  const res = await fetch(dataUrl(url));
   if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
   let raw: ArrayBuffer;
   const total = Number(res.headers.get('content-length')) || 0;

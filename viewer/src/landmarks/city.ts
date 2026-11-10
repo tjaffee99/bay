@@ -26,84 +26,298 @@ function deck(b: MeshBuilder, p: V3, q: V3, width: number, depth: number, color:
 }
 
 // =========================================================== Bay Bridge
-const BB_ANCHOR: V2 = [-122.377877, 37.798119]; // centre anchorage W4
-const BB_W = {
-  sfAnch: [-122.3905, 37.7867] as V2,
-  w1: [-122.388471, 37.78831] as V2,
-  w2: [-122.385856, 37.790764] as V2,
-  w3: [-122.380677, 37.7956] as V2,
-  w4: [-122.377877, 37.798119] as V2,
-  w5: [-122.375112, 37.8008] as V2,
-  w6: [-122.369929, 37.805635] as V2,
-  w7: [-122.367179, 37.808179] as V2
-};
+// Rebuilt 2026-11 (owner: "fix the Bay Bridge shape") on surveyed geometry; numbers and sources in
+// data/research/landmarks.md "San Francisco–Oakland Bay Bridge":
+//  * plan: tower / anchorage centres are the centroids of the OSM footprints (Overture 2026-10-21); the
+//    2013 east span and the island structures follow the OSM centrelines of the two roadways, curves
+//    included; the 1936 east span follows the axis of the structure itself in the 2010 USGS lidar
+//    (ARRA-CA_GoldenGate_2010, ARRA-CA_SanFranCoast_2010) and the three foundations kept for the 2020
+//    observation pier (2021 lidar) — it ran SOUTH of today's span, 50 m off along the causeway and up to 200 m
+//    at the through trusses;
+//  * heights: NAVD88 metres read off the 2023 / 2021 / 2010 USGS 3DEP point clouds (the bay there is at
+//    0): roadway profile, tower tops, cable low points, anchorages, truss chords.
+// West-span stations are metres from tower W2 along the axis W2 -> W6 (bearing 40.4°); east-span (1936)
+// stations are metres from the main pier E2 along its alignment.
 const STEEL_GREY = '#A9AEB2';
-const BB_DECK = 58; // upper deck (estimate; towers 160 m)
+const BB_CONC = '#BDB8AE';
+const BB_ROAD = '#5A5753';
+const BB_OLD = '#9A9FA3';
+const BB_LIDAR = 'https://www.usgs.gov/3d-elevation-program (lidar point clouds CA_SanFrancisco_1_B23, CA_AlamedaCo_2_2021, ARRA-CA_GoldenGate_2010, ARRA-CA_SanFranCoast_2010)';
+const BB_OSM = 'https://www.openstreetmap.org/copyright (I-80 centrelines, tower and anchorage footprints via Overture 2026-10-21)';
+const BB_WIKI = WIKI + 'San_Francisco%E2%80%93Oakland_Bay_Bridge';
+const BB_WIKI_EAST = WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge';
 
-function bbTower(b: MeshBuilder, p: V2, bearing: number) {
-  b.frame(p[0], p[1], 0, bearing, () => {
-    b.color('#BDB8AE').box(0, 0, 0, 34, 16, 10);
-    b.color(STEEL_GREY);
-    for (const x of [-12, 12]) {
-      b.box(x, 0, 10, 6, 9, 70);
-      b.box(x, 0, 80, 5, 7.5, 80);
-    }
-    // X-braced (not portal-strutted) between the legs
-    for (const [z0, z1] of [
-      [12, 46],
-      [64, 100],
-      [104, 140]
-    ])
-      b.beam([-12, 0, z0], [12, 0, z1], 1.6).beam([12, 0, z0], [-12, 0, z1], 1.6);
-    b.box(0, 0, 155, 30, 7, 5);
-  });
+type Tab = [number, number][];
+/** Piecewise-linear table lookup. */
+function tab(t: Tab, s: number): number {
+  if (s <= t[0][0]) return t[0][1];
+  for (let i = 1; i < t.length; i++) {
+    if (s <= t[i][0]) return t[i - 1][1] + ((t[i][1] - t[i - 1][1]) * (s - t[i - 1][0])) / (t[i][0] - t[i - 1][0]);
+  }
+  return t[t.length - 1][1];
 }
 
-function bayBridgeWest(b: MeshBuilder) {
-  const L = (p: V2) => lngLatToLocal(BB_ANCHOR, p);
-  const pts = [BB_W.sfAnch, BB_W.w1, BB_W.w2, BB_W.w3, BB_W.w4, BB_W.w5, BB_W.w6, BB_W.w7].map(L);
-  const a = along(BB_ANCHOR, BB_W.w2, BB_W.w6);
-  for (const t of [pts[2], pts[3], pts[5], pts[6]]) bbTower(b, t, a.bearing);
-  // centre anchorage ("Moran's Island")
-  b.frame(pts[4][0], pts[4][1], 0, a.bearing, () => {
-    b.color('#BDB8AE').box(0, 0, 0, 40, 69, 52);
-    b.color(STEEL_GREY).box(0, 0, 52, 26, 30, 15);
+/** Polyline with stations (metres along it); `s0` = station of its first point. */
+type BBPath = {pts: V2[]; cum: number[]; s0: number; s1: number};
+function bbPath(pts: V2[], s0 = 0): BBPath {
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  return {pts, cum, s0, s1: s0 + cum[cum.length - 1]};
+}
+function bbPos(p: BBPath, s: number): V2 {
+  const c = Math.min(Math.max(s - p.s0, 0), p.cum[p.cum.length - 1]);
+  let i = 1;
+  while (i < p.cum.length - 1 && p.cum[i] < c) i++;
+  const t = (c - p.cum[i - 1]) / (p.cum[i] - p.cum[i - 1] || 1);
+  return [p.pts[i - 1][0] + (p.pts[i][0] - p.pts[i - 1][0]) * t, p.pts[i - 1][1] + (p.pts[i][1] - p.pts[i - 1][1]) * t];
+}
+/** Unit tangent at s (the bisector at a vertex). */
+function bbDir(p: BBPath, s: number): V2 {
+  const a = bbPos(p, s - 0.5);
+  const c = bbPos(p, s + 0.5);
+  const l = Math.hypot(c[0] - a[0], c[1] - a[1]) || 1;
+  return [(c[0] - a[0]) / l, (c[1] - a[1]) / l];
+}
+/** Point at station s, `off` metres to the right of the path. */
+function bbAt(p: BBPath, s: number, off = 0): V2 {
+  const q = bbPos(p, s);
+  if (!off) return q;
+  const d = bbDir(p, s);
+  return [q[0] + d[1] * off, q[1] - d[0] * off];
+}
+/** Compass bearing of the path at s. */
+function bbBearing(p: BBPath, s: number) {
+  const d = bbDir(p, s);
+  return (Math.atan2(d[0], d[1]) * 180) / Math.PI;
+}
+/** Stations between a and c: both ends, every `step`, the path's own vertices and `extra`. */
+function bbStations(p: BBPath, a: number, c: number, step: number, extra: number[] = []): number[] {
+  const all = [...extra];
+  for (let s = a + step; s < c; s += step) all.push(s);
+  for (const v of p.cum) all.push(p.s0 + v);
+  const mid = all.filter(s => s > a + 1 && s < c - 1).sort((x, y) => x - y);
+  const out = [a];
+  for (const s of mid) if (s - out[out.length - 1] > 1) out.push(s);
+  out.push(c);
+  return out;
+}
+type Sweep = {half: number; off?: number; top: (s: number) => number; depth: number | ((s: number) => number); color: string; road?: string; step?: number; extra?: number[]; ends?: boolean};
+/** Box section (deck slab, girder, chord) swept along a path between stations a and c. */
+function bbSweep(b: MeshBuilder, p: BBPath, a: number, c: number, o: Sweep) {
+  const off = o.off ?? 0;
+  const sec = bbStations(p, a, c, o.step ?? 1e9, o.extra).map(s => {
+    const l = bbAt(p, s, off - o.half);
+    const r = bbAt(p, s, off + o.half);
+    const zt = o.top(s);
+    const zb = zt - (typeof o.depth === 'number' ? o.depth : o.depth(s));
+    return {lt: [l[0], l[1], zt] as V3, rt: [r[0], r[1], zt] as V3, lb: [l[0], l[1], zb] as V3, rb: [r[0], r[1], zb] as V3};
   });
-  // double-deck truss along the whole crossing (two levels ~ 10 m apart)
-  for (let i = 0; i < pts.length - 1; i++) {
-    const p = pts[i];
-    const q = pts[i + 1];
-    const z0 = i === 0 ? 40 : BB_DECK;
-    deck(b, [p[0], p[1], z0], [q[0], q[1], BB_DECK], 20, 10, STEEL_GREY);
+  for (let i = 0; i < sec.length - 1; i++) {
+    const A = sec[i];
+    const B = sec[i + 1];
+    b.color(o.road ?? o.color).quad(A.lt, A.rt, B.rt, B.lt);
+    b.color(o.color).quad(A.lb, A.rb, B.rb, B.lb).quad(A.lb, A.lt, B.lt, B.lb).quad(A.rb, A.rt, B.rt, B.rb);
   }
-  // cables: anchorage -> towers -> centre anchorage -> towers -> YBI
-  b.color(STEEL_GREY);
-  const top = 157;
-  const off = (p: V2, s: number): V2 => {
-    const r = ((a.bearing + 90) * Math.PI) / 180;
-    return [p[0] + Math.sin(r) * s, p[1] + Math.cos(r) * s];
-  };
-  for (const s of [-10, 10]) {
-    const c = (p: V2, z: number): V3 => {
-      const o = off(p, s);
-      return [o[0], o[1], z];
-    };
-    const spans: [V3, V3, number][] = [
-      [c(pts[0], BB_DECK - 5), c(pts[2], top), BB_DECK + 25],
-      [c(pts[2], top), c(pts[3], top), BB_DECK + 6],
-      [c(pts[3], top), c(pts[4], 66), BB_DECK + 22],
-      [c(pts[4], 66), c(pts[5], top), BB_DECK + 22],
-      [c(pts[5], top), c(pts[6], top), BB_DECK + 6],
-      [c(pts[6], top), c(pts[7], BB_DECK - 5), BB_DECK + 25]
-    ];
-    for (const [p, q, mid] of spans) {
-      const curve = parabola(p, q, Math.min(mid, (p[2] + q[2]) / 2 - 2), 18);
-      b.polyline(curve, 1.4);
-      for (let i = 1; i < curve.length - 1; i += 1) {
-        if (curve[i][2] - BB_DECK > 2) b.beam([curve[i][0], curve[i][1], BB_DECK], curve[i], 0.4);
+  if (o.ends) {
+    const A = sec[0];
+    const B = sec[sec.length - 1];
+    b.color(o.color).quad(A.lb, A.rb, A.rt, A.lt).quad(B.lb, B.rb, B.rt, B.lt);
+  }
+}
+/** Flat member (2 triangles) in the vertical plane through p -> q; `h` = that plane's horizontal
+ *  direction when the member is vertical. Truss webs and suspenders: edge-on from above, like the real ones. */
+function bbWeb(b: MeshBuilder, p: V3, q: V3, w: number, h: V2 = [0, 1]) {
+  const hl = Math.hypot(q[0] - p[0], q[1] - p[1]);
+  const ux = hl > 1e-6 ? (q[0] - p[0]) / hl : h[0];
+  const uy = hl > 1e-6 ? (q[1] - p[1]) / hl : h[1];
+  const dz = q[2] - p[2];
+  const L = Math.hypot(hl, dz) || 1;
+  const n: V3 = [((-dz * ux) / L) * (w / 2), ((-dz * uy) / L) * (w / 2), (hl / L) * (w / 2)];
+  b.quad([p[0] - n[0], p[1] - n[1], p[2] - n[2]], [p[0] + n[0], p[1] + n[1], p[2] + n[2]], [q[0] + n[0], q[1] + n[1], q[2] + n[2]], [q[0] - n[0], q[1] - n[1], q[2] - n[2]]);
+}
+/** Slender member as two crossed flat strips (4 triangles): cables and chords, visible from every side. */
+function bbRod(b: MeshBuilder, p: V3, q: V3, w: number) {
+  bbWeb(b, p, q, w);
+  const hl = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1;
+  const nx = (((q[1] - p[1]) / hl) * w) / 2;
+  const ny = ((-(q[0] - p[0]) / hl) * w) / 2;
+  b.quad([p[0] - nx, p[1] - ny, p[2]], [p[0] + nx, p[1] + ny, p[2]], [q[0] + nx, q[1] + ny, q[2]], [q[0] - nx, q[1] - ny, q[2]]);
+}
+/** Two truss planes at x = ±half in the current frame (+y along the bridge): top chord through the
+ *  nodes, a vertical at every node, diagonals alternating between them, struts across the top. */
+function bbTruss(b: MeshBuilder, half: number, nodes: {y: number; zb: number; zt: number}[], strutEvery = 2) {
+  for (const x of [-half, half]) {
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      if (n.zt - n.zb > 3) bbWeb(b, [x, n.y, n.zb], [x, n.y, n.zt], 0.9);
+      if (i === nodes.length - 1) break;
+      const m = nodes[i + 1];
+      bbRod(b, [x, n.y, n.zt], [x, m.y, m.zt], 1.5);
+      if (n.zt - n.zb > 3 || m.zt - m.zb > 3) {
+        if (i % 2 === 0) bbWeb(b, [x, n.y, n.zb], [x, m.y, m.zt], 0.9);
+        else bbWeb(b, [x, n.y, n.zt], [x, m.y, m.zb], 0.9);
       }
     }
   }
+  for (let i = 0; i < nodes.length; i += strutEvery) {
+    const n = nodes[i];
+    if (n.zt - n.zb > 12) b.beam([-half, n.y, n.zt], [half, n.y, n.zt], 1.2);
+  }
+}
+
+// --------------------------------------------------------------- west span (1936)
+const BB_ANCHOR: V2 = [-122.377877, 37.798119]; // frame origin (centre anchorage W4)
+const BB_W2: V2 = [-122.385823, 37.790753];
+const BB_W3: V2 = [-122.380648, 37.795588];
+const BB_W4: V2 = [-122.37786, 37.79819];
+const BB_W5: V2 = [-122.37508, 37.800787];
+const BB_W6: V2 = [-122.3699, 37.805622];
+/** Upper roadway (station from W2, m NAVD88), 2023 lidar: 2.9 % up from the San Francisco anchorage,
+ *  level at 79.4 m across the centre anchorage, 2.8 % down to the island. */
+const BB_WEST_Z: Tab = [
+  [-789, 41.5], [-725, 43.4], [-665, 45], [-610, 46.4], [-510, 49.6], [-410, 52.6], [-357, 54], [-250, 57.4], [-150, 60.4], [-50, 63.1], [0, 64.8],
+  [100, 67.9], [200, 70.6], [300, 72.9], [400, 74.9], [500, 76.5], [600, 77.5], [700, 78.3], [800, 78.9], [900, 79.2], [1000, 79.4], [1280, 79.4],
+  [1350, 79.1], [1450, 78.4], [1550, 77.6], [1650, 76.6], [1750, 75.1], [1850, 73.1], [1950, 70.9], [2050, 68.1], [2165, 64.8], [2250, 62.4],
+  [2350, 59.1], [2450, 56.1], [2530, 53.9], [2600, 53], [2656, 52.4]
+];
+const BB_DECKS = 7.9; // lower roadway below the upper one (lidar, island viaduct; elsewhere hidden — estimated)
+const BB_TRUSS = 10; // stiffening truss, top of roadway to bottom chord (lidar; 30 ft trusses)
+const BB_HALF = 10.3; // cable and truss planes: 20.6 m apart (lidar; 66 ft documented)
+/** Stations of the structures on the axis (lidar). */
+const BB_S = {anchW: -665, anchE: -610, bent: -490, w1: -357, w4a: 1055, w4b: 1112, ybi: 2520, portalW: 2656, portalE: 2826};
+
+/** Frame of the west span: origin at tower W2, +y along the axis to W6, +x to the south-east. `k` turns
+ *  surveyed metres along the axis into the frame's (the kit's local metres are ≈ 0.3 % long on this bearing,
+ *  7 m at the island): W2 – W6 is 2,164.9 m in the survey. */
+function bbWestFrame(b: MeshBuilder, fn: (st: (p: V2) => number, k: number) => void) {
+  const a = along(BB_ANCHOR, BB_W2, BB_W6);
+  const r = (a.bearing * Math.PI) / 180;
+  const st = (p: V2) => {
+    const l = lngLatToLocal(BB_ANCHOR, p);
+    return (l[0] - a.origin[0]) * Math.sin(r) + (l[1] - a.origin[1]) * Math.cos(r);
+  };
+  b.frame(a.origin[0], a.origin[1], 0, a.bearing, () => fn(st, st(BB_W6) / 2164.9));
+}
+
+/** Steel tower on its concrete pier, in a frame at the tower centre (+y along the bridge). Lidar: fender
+ *  skirt ~55 × 30 m, pier top 37 × 18 m at +12 m; legs 27 m apart at the pier and 20.5 m at the top;
+ *  X-bracing in one bay below the roadway and three above; deep strut under the saddles. */
+function bbTower(b: MeshBuilder, top: number, deck: number) {
+  b.color(BB_CONC).prism(roundedRect(0, 0, 55, 30, 9, 2), 0, 5).box(0, 0, 5, 37, 18, 7);
+  b.color(STEEL_GREY);
+  const z0 = 12;
+  const xc = (z: number) => 13.6 - (3.3 * (z - z0)) / (top - z0);
+  for (const sx of [-1, 1]) {
+    b.loft([rect(sx * xc(z0), 0, 5.2, 9.5), rect(sx * xc(top - 3), 0, 4, 6.5)], [z0, top - 3], {top: false});
+    b.box(sx * xc(top), 0, top - 3, 5, 7.5, 3); // cable saddle
+  }
+  const a0 = deck + 8.5;
+  const a1 = top - 9.5;
+  const bays: [number, number][] = [[19, deck - 16]];
+  for (let k = 0; k < 3; k++) bays.push([a0 + ((a1 - a0) * k) / 3, a0 + ((a1 - a0) * (k + 1)) / 3]);
+  for (const [za, zb] of bays) {
+    b.beam([-xc(za), 0, za], [xc(zb), 0, zb], 3, 1.3).beam([xc(za), 0, za], [-xc(zb), 0, zb], 3, 1.3);
+    b.beam([-xc(za), 0, za], [xc(za), 0, za], 3, 1.5);
+  }
+  b.beam([-xc(deck - 16), 0, deck - 16], [xc(deck - 16), 0, deck - 16], 3, 1.5);
+  b.box(0, 0, a1, 2 * xc(a1), 4, 7); // portal strut under the saddles
+}
+
+function bayBridgeWest(b: MeshBuilder) {
+  bbWestFrame(b, (st, k) => {
+    const [sW3, sW4, sW5, sW6] = [BB_W3, BB_W4, BB_W5, BB_W6].map(st);
+    const S = Object.fromEntries(Object.entries(BB_S).map(([n, v]) => [n, v * k])) as typeof BB_S;
+    const zU = (s: number) => tab(BB_WEST_Z, s / k);
+    const sc = (pts: V2[]): V2[] => pts.map(([x, y]) => [x, y * k]);
+    // centreline: straight from the San Francisco anchorage to the tunnel; west of the anchorage the
+    // upper-deck viaduct swings west toward Fifth Street (OSM way, 2023 lidar)
+    const curve = sc([[-23, -789], [-8.5, -725], [-1.5, -665], [0, -620]]);
+    const path = bbPath([...curve, [0, S.portalW]]);
+    path.s0 = -620 * k - path.cum[curve.length - 1];
+    path.s1 = path.s0 + path.cum[path.cum.length - 1];
+    // the lower deck comes off Rincon Hill on its own curve (OSM way) and is under the upper one from the anchorage
+    const lowCurve = sc([[-14.9, -765.5], [-8.1, -739.9], [-3.6, -714.8], [-0.6, -690], [0, -660]]);
+    const lowPath = bbPath([...lowCurve, [0, S.portalW]]);
+    lowPath.s0 = -660 * k - lowPath.cum[lowCurve.length - 1];
+    lowPath.s1 = lowPath.s0 + lowPath.cum[lowPath.cum.length - 1];
+    const zNodes = BB_WEST_Z.map(r => r[0] * k);
+
+    // --- double deck: upper roadway on the top chords, lower one on the bottom chords
+    bbSweep(b, path, path.s0, S.portalW, {half: BB_HALF, top: zU, depth: 1.6, color: STEEL_GREY, road: BB_ROAD, extra: zNodes});
+    bbSweep(b, lowPath, lowPath.s0, S.portalW, {half: BB_HALF, top: s => zU(s) - BB_DECKS, depth: BB_TRUSS - BB_DECKS, color: STEEL_GREY, road: BB_ROAD, extra: zNodes});
+    // stiffening / deck trusses from the anchorage to the island (Warren webs, drawn every 15 m)
+    b.color(STEEL_GREY);
+    for (const x of [-BB_HALF, BB_HALF]) {
+      let up = true;
+      for (let y = S.anchE; y < S.ybi - 1; y += 15) {
+        const y1 = Math.min(y + 15, S.ybi);
+        const lo: V3 = [x, up ? y : y1, zU(up ? y : y1) - BB_DECKS];
+        const hi: V3 = [x, up ? y1 : y, zU(up ? y1 : y) - 1.6];
+        bbWeb(b, lo, hi, 0.8);
+        up = !up;
+      }
+    }
+
+    // --- towers: W2 / W6 146.5 m, W3 / W5 159.5 m above the bay (lidar; 526 ft documented)
+    for (const [y, top] of [[0, 146.5], [sW3, 159.5], [sW5, 159.5], [sW6, 146.5]]) b.frame(0, y, 0, 0, () => bbTower(b, top, zU(y)));
+
+    // --- centre anchorage W4 (lidar): 28 × 60 m at the water, 25.5 × 57 m above 30 m, up to the roadway,
+    // which runs through it between cable housings 86 m high
+    b.frame(0, sW4, 0, 0, () => {
+      b.color(BB_CONC).prism(roundedRect(0, 0, 44, 70, 8, 2), 0, 6.5).box(0, 0, 6.5, 28, 60, 23.5).box(0, 0, 30, 25.5, 57, 48.4);
+      for (const sx of [-1, 1]) b.box(sx * 11.4, 0, 78.4, 2.7, 57, 8);
+      for (const sy of [-1, 1]) b.box(0, sy * 24, 86.4, 25.5, 4, 2.6);
+    });
+
+    // --- San Francisco end: anchorage on Rincon Hill (28 × 55 m block under the deck trusses), steel
+    // bent, cable bent W1 (the side span ends there; the cables run on under the roadway)
+    b.color(BB_CONC).box(0, (S.anchW + S.anchE) / 2, 0, 28, S.anchE - S.anchW, 37);
+    b.box(-6, -716 * k, 0, 26, 100, zU(-716 * k) - BB_TRUSS);
+    for (const y of [-745 * k, -772 * k]) {
+      for (const o of [-7, 7]) {
+        const c = bbAt(path, y, o);
+        b.box(c[0], c[1], 18, 2.6, 2.6, zU(y) - 1.6 - 18, {top: false});
+      }
+    }
+    b.box(0, S.w1, 0, 27, 9, zU(S.w1) - BB_TRUSS);
+    for (const sx of [-1, 1]) b.box(sx * BB_HALF, S.w1, zU(S.w1) - BB_TRUSS, 3.2, 6, BB_TRUSS + 3);
+    b.color(STEEL_GREY);
+    const zBent = zU(S.bent) - BB_TRUSS;
+    for (const sx of [-1, 1]) b.beam([sx * BB_HALF, S.bent, 4], [sx * BB_HALF, S.bent, zBent], 1.8);
+    b.beam([-BB_HALF, S.bent, 6], [BB_HALF, S.bent, zBent - 2], 2, 1).beam([BB_HALF, S.bent, 6], [-BB_HALF, S.bent, zBent - 2], 2, 1);
+
+    // --- island end: cable anchorage in the rock of Yerba Buena Island, 321 ft concrete viaduct to the tunnel
+    b.color(BB_CONC).box(0, S.ybi + 13, 15, 28, 26, zU(S.ybi + 13) - 1.6 - 15);
+    for (const y of [2575 * k, 2602 * k, 2629 * k]) for (const sx of [-1, 1]) b.box(sx * 7.5, y, 20, 3, 3, zU(y) - BB_TRUSS - 20, {top: false});
+
+    // --- the two cables and their suspenders (drawn every ≈ 17 m)
+    b.color(STEEL_GREY);
+    const zs = 57.5; // at the cable bents
+    const spans: [number, number, number, number, number, number, boolean][] = [
+      // y0, z0, y1, z1, height at mid-span, segments, suspenders
+      [S.anchE, 13.5, S.w1, zs, (13.5 + zs) / 2, 1, false],
+      [S.w1, zs, 0, 143, 81.5, 7, true],
+      [0, 143, sW3, 155.5, 77.5, 14, true],
+      [sW3, 155.5, S.w4a, 84, 100.7, 7, true],
+      [S.w4a, 84, S.w4b, 84, 84, 1, false],
+      [S.w4b, 84, sW5, 155.5, 100.7, 7, true],
+      [sW5, 155.5, sW6, 143, 78.2, 14, true],
+      [sW6, 143, S.ybi, zs, 80.3, 7, true],
+      [S.ybi, zs, S.ybi + 14, zs - 6, zs - 3, 1, false]
+    ];
+    for (const x of [-BB_HALF, BB_HALF]) {
+      for (const [y0, z0, y1, z1, mid, n, hang] of spans) {
+        const curve3 = parabola([x, y0, z0], [x, y1, z1], mid, n * 3);
+        for (let i = 0; i < curve3.length - 1; i += 3) bbRod(b, curve3[i], curve3[i + 3], 1.5);
+        if (!hang) continue;
+        for (let i = 1; i < curve3.length - 1; i++) {
+          const c = curve3[i];
+          const zd = zU(c[1]);
+          if (c[2] - zd > 4) bbWeb(b, [c[0], c[1], zd], c, 0.55);
+        }
+      }
+    }
+  });
 }
 
 const bayBridgeWestSpan: Landmark = {
@@ -114,94 +328,240 @@ const bayBridgeWestSpan: Landmark = {
   end: 9999,
   anchor: BB_ANCHOR,
   build: bayBridgeWest,
-  // generic footprints of the towers / centre anchorage (OSM building parts, split by the
+  // generic footprints of the towers / centre anchorage (OSM bridge structures, split by the
   // 2023 LiDAR into 80-85 m prisms) stand inside the model: hide them
-  replaces: [BB_W.w2, BB_W.w3, BB_W.w4, BB_W.w5, BB_W.w6].map(p => {
+  replaces: [BB_W2, BB_W3, BB_W4, BB_W5, BB_W6].map(p => {
     const l = lngLatToLocal(BB_ANCHOR, p);
     return rect(l[0], l[1], 90, 90);
   }),
   facts: {
     Construction: 'Jul 9, 1933 – Nov 12, 1936',
-    Form: 'two suspension bridges in series sharing a centre anchorage',
-    'Main spans': '2 × 704 m (2,310 ft)',
-    Towers: '160 m above water',
-    Model: 'tower and anchorage positions from OSM; deck height estimated'
+    Form: 'two suspension bridges in series sharing a centre anchorage; double deck',
+    'Main spans': '2 × 704 m (2,310 ft); side spans 354 m (1,160 ft)',
+    Towers: 'W3 and W5 160 m (526 ft) above the water, W2 and W6 146.5 m',
+    Roadway: 'upper deck 46 m at the San Francisco anchorage, 79 m at the centre anchorage (67 m / 220 ft clear below), 52 m at the island',
+    'Centre anchorage': 'concrete pier 28 × 60 m at the water, 86 m high; the roadway runs through it',
+    Model: 'plan from the OSM tower and anchorage footprints; roadway profile, tower tops, cables and anchorages measured on the 2023 USGS lidar; lower deck height and member sizes estimated'
   },
-  sources: [WIKI + 'San_Francisco%E2%80%93Oakland_Bay_Bridge']
+  sources: [BB_WIKI, BB_LIDAR, BB_OSM]
 };
 
-// --- original east span (1936–2013), dismantled in stages Nov 2013 – Mar 2017 (steel) and to Nov 2017 (piers):
-// cantilever gone by Jun 12, 2015 (Wikipedia); the five 504 ft trusses lowered Feb 4 – Aug 2016; the last of
-// the fourteen 288 ft causeway trusses removed Mar 13, 2017 (ABC7 / KTVU)
-const YBI_EAST: V2 = [-122.3607, 37.8152];
-const OAK_MOLE: V2 = [-122.3277, 37.8238];
-function eastOldPart(part: 'cantilever' | 'trusses' | 'causeway') {
+// --------------------------------------------------------------- Yerba Buena Island tunnel (1936)
+/** Portal ring in a frame whose +y points INTO the hill: bore 76 ft wide × 58 ft high outside,
+ *  66 × 53 ft inside, lower roadway at z0. */
+function bbPortal(b: MeshBuilder, z0: number) {
+  const ring = (hw: number, zw: number, zc: number, zf: number): V2[] => {
+    const out: V2[] = [[-hw, zf]];
+    for (let i = 0; i <= 6; i++) {
+      const a = Math.PI - (Math.PI * i) / 6;
+      out.push([Math.cos(a) * hw, zw + Math.sin(a) * (zc - zw)]);
+    }
+    out.push([hw, zf]);
+    return out;
+  };
+  const outer = ring(11.6, z0 + 9.5, z0 + 17.7, z0 - 1.5);
+  const inner = ring(10.05, z0 + 9, z0 + 16.2, z0 - 1.5);
+  const at = (r: V2[], y: number): V3[] => r.map(([x, z]) => [x, y, z] as V3);
+  b.color(BB_CONC).ribbon(at(outer, 0), at(inner, 0)).ribbon(at(outer, 0), at(outer, 8)).ribbon(at(inner, 0), at(inner, 8));
+  // headwall around the bore
+  for (const sx of [-1, 1]) b.box(sx * 17.5, 1.5, z0 - 1.5, 12, 3, 21.5);
+  b.box(0, 1.5, z0 + 17.7, 47, 3, 4);
+}
+const bayBridgeTunnel: Landmark = {
+  id: 'bay_bridge_ybi_tunnel',
+  name: 'Yerba Buena Tunnel (Bay Bridge)',
+  kind: 'bridge',
+  built: [1933.52, 1936.87],
+  end: 9999,
+  anchor: BB_ANCHOR,
+  build: b =>
+    bbWestFrame(b, (_, k) => {
+      b.frame(0, BB_S.portalW * k, 0, 0, () => bbPortal(b, tab(BB_WEST_Z, BB_S.portalW) - BB_DECKS));
+      b.frame(0, BB_S.portalE * k, 0, 180, () => bbPortal(b, 56.6 - BB_DECKS));
+    }),
+  facts: {
+    Opened: 'Nov 12, 1936 (with the bridge)',
+    Form: 'double-deck bore through Yerba Buena Island between the two crossings',
+    Length: '165 m (540 ft)',
+    Bore: '23 m wide × 18 m high (76 × 58 ft), 20 × 16 m inside',
+    Model: 'portals only (the bore is inside the hill); positions from the 2023 USGS lidar; headwalls schematic'
+  },
+  sources: [BB_WIKI, BB_LIDAR]
+};
+
+// --------------------------------------------------------------- original east span (1936–2013)
+// dismantled in stages Nov 2013 – Mar 2017 (steel) and to Nov 2017 (piers): cantilever gone by Jun 12, 2015
+// (Wikipedia); the five 504 ft trusses lowered Feb 4 – Aug 2016; the last of the fourteen 288 ft causeway
+// trusses removed Mar 13, 2017 (ABC7 / KTVU)
+const BB_E2: V2 = [-122.358551, 37.814304]; // west main pier of the cantilever (frame origin)
+/** 1936 alignment: tunnel portal, viaduct curve on the island (R ≈ 550 m), piers E1 … E23, landfall. */
+const BB_OLD_LL: V2[] = [
+  [-122.365028, 37.810156], [-122.362654, 37.812371], [-122.362402, 37.812593], [-122.362132, 37.812803], [-122.361848, 37.813], [-122.361549, 37.813182],
+  [-122.361237, 37.81335], [-122.360913, 37.813503], [-122.360578, 37.81364], [-122.360233, 37.813761],
+  [-122.36018, 37.813778], BB_E2, [-122.35406, 37.815753], [-122.352418, 37.816283], [-122.350801, 37.816804], [-122.349184, 37.817326],
+  [-122.347567, 37.817847], [-122.345951, 37.818369], [-122.344334, 37.81889], [-122.343366, 37.819162], [-122.342378, 37.819384], [-122.341371, 37.819542],
+  [-122.340364, 37.8197], [-122.339356, 37.819858], [-122.338349, 37.820016], [-122.337342, 37.820173], [-122.336335, 37.820331], [-122.335327, 37.820489],
+  [-122.33432, 37.820647], [-122.333313, 37.820805], [-122.332306, 37.820962], [-122.331298, 37.82112], [-122.330291, 37.821278], [-122.326445, 37.82188]
+];
+const BB_OLD_E1 = 10; // index of pier E1 in BB_OLD_LL (E2 = 11 … E23 = 32)
+/** Temporary bypass ("S-curve", Sep 2009 – Aug 2013) from the tunnel to pier E1, up to 58 m south-east of the
+ *  original viaduct: centre of the structure in the 2010 lidar; the reverse curve in the first 130 m at the
+ *  tunnel is hidden among ground returns there and drawn as a smooth S. */
+const BB_SCURVE_LL: V2[] = [
+  [-122.365028, 37.810156], [-122.364823, 37.810324], [-122.364596, 37.810473], [-122.364352, 37.810608], [-122.363323, 37.811102], [-122.36308, 37.811238],
+  [-122.362855, 37.811388], [-122.362651, 37.811557], [-122.362215, 37.811973], [-122.361498, 37.812729], [-122.360976, 37.813264], [-122.360854, 37.81336],
+  [-122.360723, 37.813446], [-122.360325, 37.813701], [-122.36018, 37.813778]
+];
+const BB_SCURVE_Z: Tab = [[0, 56.6], [270, 61.5], [397, 63.6], [457, 64.4], [517, 65.1], [593, 66.6]];
+/** Upper roadway of the 1936 east span (station from E2, m NAVD88): 2010 lidar; 2.7 % down from pier E7. */
+const BB_OLD_Z: Tab = [
+  [-748, 56.6], [-155, 66.6], [0, 68.5], [106, 69.5], [212, 69.9], [318, 69.5], [427, 68.4], [583, 66.4], [738, 64.4], [892, 62.4], [969, 61], [1046, 59.4],
+  [1125, 57.1], [2364, 23.4], [2616, 16.6], [2730, 13.2], [2830, 9.2], [2875, 7.2], [2961, 4.6]
+];
+function bbOldPath() {
+  const p = bbPath(BB_OLD_LL.map(q => lngLatToLocal(BB_E2, q)));
+  p.s0 = -p.cum[BB_OLD_E1 + 1];
+  p.s1 = p.s0 + p.cum[p.cum.length - 1];
+  return {p, pier: (k: number) => p.s0 + p.cum[BB_OLD_E1 + k - 1], zU: (s: number) => tab(BB_OLD_Z, s)};
+}
+/** Concrete pier under the double-deck trusses, standing in the bay: frame at the pier, +y along the bridge. */
+function bbOldPier(b: MeshBuilder, zTop: number, sx: number, sy: number, base = true) {
+  b.color(BB_CONC);
+  if (base) b.box(0, 0, 0, sx + 10, sy + 8, 6);
+  b.loft([rect(0, 0, sx, sy), rect(0, 0, sx - 3, sy - 2.5)], [base ? 6 : 0, zTop], {top: false});
+}
+function eastOldPart(part: 'viaduct' | 'detour' | 'cantilever' | 'trusses' | 'causeway' | 'approach') {
   return (b: MeshBuilder) => {
-    const a = along(YBI_EAST, YBI_EAST, OAK_MOLE);
-    b.frame(0, 0, 0, a.bearing, () => {
-      const grey = '#9A9FA3';
-      const W = 20;
+    const {p, pier, zU} = bbOldPath();
+    const zN = BB_OLD_Z.map(r => r[0]);
+    const decks = (a: number, c: number, color: string, extra: number[] = []) => {
+      bbSweep(b, p, a, c, {half: BB_HALF, top: zU, depth: 1.6, color, road: BB_ROAD, extra: [...zN, ...extra], ends: true});
+      bbSweep(b, p, a, c, {half: BB_HALF, top: s => zU(s) - BB_DECKS, depth: BB_TRUSS - BB_DECKS, color, road: BB_ROAD, extra: [...zN, ...extra], ends: true});
+    };
+    const frameAt = (s: number, fn: () => void) => {
+      const q = bbPos(p, s);
+      b.frame(q[0], q[1], 0, bbBearing(p, s), fn);
+    };
+    if (part === 'detour') {
+      // temporary double-deck steel viaduct on steel bents
+      const q = bbPath(BB_SCURVE_LL.map(c => lngLatToLocal(BB_E2, c)));
+      const z = (s: number) => tab(BB_SCURVE_Z, s);
+      const zs = BB_SCURVE_Z.map(r => r[0]);
+      bbSweep(b, q, 0, q.s1, {half: BB_HALF, top: z, depth: 1.6, color: STEEL_GREY, road: BB_ROAD, extra: zs, ends: true});
+      bbSweep(b, q, 0, q.s1, {half: BB_HALF, top: s => z(s) - BB_DECKS, depth: 2.1, color: STEEL_GREY, road: BB_ROAD, extra: zs, ends: true});
+      b.color(STEEL_GREY);
+      for (let s = 40; s < q.s1 - 20; s += 55) {
+        const c = bbPos(q, s);
+        b.frame(c[0], c[1], 0, bbBearing(q, s), () => {
+          for (const x of [-8.5, 8.5]) b.box(x, 0, 0, 2, 2, z(s) - BB_TRUSS, {top: false});
+        });
+      }
+      return;
+    }
+    if (part === 'viaduct') {
+      // island viaduct: 790.8 ft of concrete, then 1,169.7 ft of curved steel deck trusses to pier E1
+      const sC = pier(1) - 356.5;
+      decks(p.s0, sC, BB_CONC);
+      decks(sC, pier(1), BB_OLD);
+      for (let s = p.s0 + 30; s < sC; s += 35) frameAt(s, () => b.color(BB_CONC).box(0, 0, 0, 16, 3, zU(s) - BB_TRUSS, {top: false}));
+      b.color(BB_OLD);
+      for (let s = sC; s < pier(1) - 20; s += 59.4) {
+        frameAt(s, () => {
+          for (const x of [-8, 8]) b.beam([x, 0, 0], [x * 0.9, 0, zU(s) - BB_TRUSS], 2.2);
+        });
+      }
+      for (const o of [-BB_HALF, BB_HALF]) {
+        let up = true;
+        for (let s = sC; s < pier(1) - 1; s += 17.8) {
+          const s1 = Math.min(s + 17.8, pier(1));
+          const [sl, sh] = up ? [s, s1] : [s1, s];
+          const lo = bbAt(p, sl, o);
+          const hi = bbAt(p, sh, o);
+          bbWeb(b, [lo[0], lo[1], zU(sl) - BB_DECKS], [hi[0], hi[1], zU(sh) - 1.6], 0.8);
+          up = !up;
+        }
+      }
+      return;
+    }
+    if (part === 'approach') {
+      // girder spans from pier E23 down to the Oakland fill; the lower roadway reaches the ground first
+      const s23 = pier(23);
+      const sLow = 2762;
+      bbSweep(b, p, s23, p.s1, {half: BB_HALF, top: zU, depth: 2, color: BB_OLD, road: BB_ROAD, extra: zN, ends: true});
+      bbSweep(b, p, s23, sLow, {half: BB_HALF, top: s => zU(s) - BB_DECKS, depth: 1.4, color: BB_OLD, road: BB_ROAD, extra: zN, ends: true});
+      for (let s = s23 + 30; s < p.s1 - 60; s += 30) frameAt(s, () => b.color(BB_CONC).box(0, 0, 0, 19, 2, zU(s) - 2, {top: false}));
+      return;
+    }
+    if (part === 'causeway') {
+      // fourteen deck-truss spans E9 – E23 round the bend
+      decks(pier(9), pier(23), BB_OLD);
+      b.color(BB_OLD);
+      for (const o of [-BB_HALF, BB_HALF]) {
+        for (let k = 9; k < 23; k++) {
+          const a = pier(k);
+          const step = (pier(k + 1) - a) / 4;
+          for (let i = 0; i < 4; i++) {
+            const [sl, sh] = i % 2 === 0 ? [a + i * step, a + (i + 1) * step] : [a + (i + 1) * step, a + i * step];
+            const lo = bbAt(p, sl, o);
+            const hi = bbAt(p, sh, o);
+            bbWeb(b, [lo[0], lo[1], zU(sl) - BB_DECKS], [hi[0], hi[1], zU(sh) - 1.6], 0.8);
+          }
+        }
+      }
+      for (let k = 10; k <= 23; k++) frameAt(pier(k), () => bbOldPier(b, zU(pier(k)) - BB_TRUSS, 20, 6.5, false));
+      return;
+    }
+    // cantilever and through trusses: one straight frame, +y from E2 toward E3
+    b.frame(0, 0, 0, bbBearing(p, 200), () => {
+      const s = bbPath([[0, pier(1)], [0, pier(9)]], pier(1));
+      const slabs = (a: number, c: number) => {
+        bbSweep(b, s, a, c, {half: BB_HALF, top: zU, depth: 1.6, color: BB_OLD, road: BB_ROAD, extra: zN, ends: true});
+        bbSweep(b, s, a, c, {half: BB_HALF, top: y => zU(y) - BB_DECKS, depth: BB_TRUSS - BB_DECKS, color: BB_OLD, road: BB_ROAD, extra: zN, ends: true});
+      };
       if (part === 'cantilever') {
-        // double balanced cantilever: main span 427 m between the main piers
-        const y0 = 120;
-        const y1 = y0 + 427;
-        for (const yp of [y0, y1]) {
-          b.color('#BDB8AE').box(0, yp, 0, 30, 20, 12);
-        }
-        deck(b, [0, 0, 50], [0, y1 + 150, 50], W, 9, grey);
-        // deep truss over the piers, shallow at mid-span
-        const prof: [number, number][] = [
-          [0, 60],
-          [y0, 92],
-          [y0 + 110, 64],
-          [(y0 + y1) / 2, 60],
-          [y1 - 110, 64],
-          [y1, 92],
-          [y1 + 150, 60]
+        // 508 ft anchor arm, 1,400 ft main span, 512 ft anchor arm; top chord from the 2010 lidar: 87–95 m on
+        // the arms, 100–103 m over the main piers, 90 m on the suspended span
+        const e1 = pier(1);
+        const e3 = pier(3);
+        const e4 = pier(4);
+        slabs(e1, e4);
+        const top: Tab = [
+          [e1, 67.5], [e1 + 9, 68], [e1 + 28, 87], [-97, 89.5], [-70, 94.5], [-38, 103], [0, 103], [30, 100], [52, 99.5], [75, 95], [95, 91.5], [125, 90.2],
+          [300, 90.2], [330, 91.5], [350, 94.5], [372, 99.5], [e3, 100.5], [476, 99.5], [500, 93.5], [525, 89.5], [552, 87], [e4 - 11, 68], [e4, 67]
         ];
-        for (const x of [-W / 2, W / 2]) {
-          for (let i = 0; i < prof.length - 1; i++) b.beam([x, prof[i][0], prof[i][1]], [x, prof[i + 1][0], prof[i + 1][1]], 1.6);
-          for (let y = 0; y <= y1 + 150; y += 25) {
-            let zt = 60;
-            for (let i = 0; i < prof.length - 1; i++) {
-              if (y >= prof[i][0] && y <= prof[i + 1][0]) {
-                const t = (y - prof[i][0]) / (prof[i + 1][0] - prof[i][0]);
-                zt = prof[i][1] + (prof[i + 1][1] - prof[i][1]) * t;
-              }
-            }
-            b.beam([x, y, 41], [x, y, zt], 0.8);
-            b.beam([x, y, 41], [x, y + 25, zt], 0.6);
+        const ys = [e1 + 9, e1 + 28, -97, -70, -38, 0, 30, 52, 75, 95, 125, 160, 195, 230, 265, 300, 330, 350, 372, 399, e3, 454, 476, 500, 525, 552, e4 - 11];
+        b.color(BB_OLD);
+        bbTruss(
+          b,
+          BB_HALF,
+          ys.map(y => ({y, zb: zU(y) - BB_TRUSS, zt: tab(top, y)}))
+        );
+        // main posts over E2 / E3 spread from the pier to the top chord
+        for (const y of [0, e3])
+          for (const x of [-BB_HALF, BB_HALF]) {
+            const zb = zU(y) - BB_TRUSS;
+            bbRod(b, [x, y, zb], [x, y - 32, tab(top, y - 32)], 2.4);
+            bbRod(b, [x, y, zb], [x, y + 30, tab(top, y + 30)], 2.4);
           }
-        }
-        for (const yp of [y0, y1]) for (const x of [-W / 2, W / 2]) b.beam([x, yp, 12], [x, yp, 41], 3);
-      } else if (part === 'trusses') {
-        // five 509 ft (155 m) through-truss spans
-        const ys = 697;
-        deck(b, [0, ys, 44], [0, ys + 5 * 155, 34], W, 9, grey);
-        for (let k = 0; k <= 5; k++) {
-          const y = ys + k * 155;
-          const z = 44 - (10 * k) / 5;
-          b.color('#BDB8AE').box(0, y, 0, 26, 12, z - 9);
-          if (k < 5) {
-            b.color(grey);
-            for (const x of [-W / 2, W / 2]) {
-              b.beam([x, y + 6, z + 18], [x, y + 149, z - 2 + 18], 1.4);
-              for (let s = 0; s < 155; s += 31) b.beam([x, y + s, z], [x, y + s + 31, z + 18], 0.7).beam([x, y + s, z], [x, y + s, z + 18], 0.6);
-            }
-          }
-        }
+        b.frame(0, e1, 0, 0, () => bbOldPier(b, zU(e1) - BB_TRUSS, 22, 7, false));
+        b.frame(0, 0, 0, 0, () => bbOldPier(b, zU(0) - BB_TRUSS, 26, 13));
+        b.frame(0, e3, 0, 0, () => bbOldPier(b, zU(e3) - BB_TRUSS, 28, 15));
+        b.frame(0, e4, 0, 0, () => bbOldPier(b, zU(e4) - BB_TRUSS, 24, 10));
       } else {
-        // deck-truss causeway descending to the Oakland mole
-        const y0 = 697 + 775;
-        const y1 = a.length;
-        const n = 14;
-        for (let k = 0; k < n; k++) {
-          const ya = y0 + ((y1 - y0) * k) / n;
-          const yb = y0 + ((y1 - y0) * (k + 1)) / n;
-          const za = 34 - (28 * k) / n;
-          const zb = 34 - (28 * (k + 1)) / n;
-          deck(b, [0, ya, za], [0, yb, zb], W, 7, grey);
-          b.color('#BDB8AE').box(0, yb, 0, 18, 6, Math.max(zb - 7, 0.5));
+        // five 504 ft through trusses E4 – E9: top chord 16.3 m above the upper roadway, end posts raked over 25 m
+        slabs(pier(4), pier(9));
+        b.color(BB_OLD);
+        for (let k = 4; k < 9; k++) {
+          const a = pier(k);
+          const L = pier(k + 1) - a;
+          const ys = [0, 1, 2, 3, 4, 5, 6].map(i => a + (L * i) / 6);
+          bbTruss(
+            b,
+            BB_HALF,
+            ys.map((y, i) => ({y, zb: zU(y) - BB_TRUSS, zt: i === 0 || i === 6 ? zU(y) + 0.5 : zU(y) + 16.3})),
+            1
+          );
+          b.frame(0, a + L, 0, 0, () => bbOldPier(b, zU(a + L) - BB_TRUSS, 22, 9));
         }
       }
     });
@@ -209,27 +569,145 @@ function eastOldPart(part: 'cantilever' | 'trusses' | 'causeway') {
 }
 const eastFacts = {
   Opened: 'Nov 12, 1936',
-  'Main span': '427 m (1,400 ft) double balanced cantilever, then five 504 ft (154 m) through-trusses and a causeway of fourteen 288 ft deck trusses',
-  '1989': 'a 15 m section of upper deck collapsed in the Loma Prieta quake',
+  Form: 'double-deck: island viaduct, cantilever (508 + 1,400 + 512 ft, main span 427 m), five 504 ft (154 m) through trusses, fourteen 288 ft deck trusses, girder spans to the Oakland fill',
+  Clearance: '58 m (191 ft) under the cantilever; trusses 100–103 m high over the main piers',
+  '1989': 'a 15 m section of upper deck at pier E9 collapsed in the Loma Prieta quake',
   Replaced: 'closed Aug 28, 2013; dismantled Nov 2013 – Nov 2017: cantilever gone by Jun 12, 2015, the five 504 ft trusses lowered Feb – Aug 2016, the last 288 ft truss removed Mar 2017, the piers imploded Nov 2015 – Nov 2017',
-  Model: 'APPROXIMATE alignment (~100 m north of today’s skyway); truss heights estimated'
+  Model:
+    'alignment (south of today’s span: 50 m off along the causeway, up to 200 m at the through trusses) and heights from the 2010 USGS lidar of the standing bridge and the three foundations kept for the 2020 observation pier; the 11° bend east of pier E9 lies in a gap of the 2010 surveys and is spread over piers E9–E11, the fourteen deck spans over the surveyed distance (90 m each) — estimated; member sizes estimated'
 };
-const eastSrc = [
-  WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge',
-  'https://www.cbsnews.com/sanfrancisco/news/demolition-of-old-bay-bridge-to-take-years',
-  'https://abc7news.com/demolition-of-old-span-bay-bridge-project/1799171/'
-];
+const eastSrc = [BB_WIKI_EAST, BB_WIKI, BB_LIDAR, 'https://www.cbsnews.com/sanfrancisco/news/demolition-of-old-bay-bridge-to-take-years', 'https://abc7news.com/demolition-of-old-span-bay-bridge-project/1799171/'];
 const bayBridgeEastOld: Landmark[] = [
-  {id: 'bay_bridge_east_1936_cantilever', name: 'Bay Bridge east span (1936) — cantilever', kind: 'bridge', built: [1933.52, 1936.87], end: 2015.45, anchor: YBI_EAST, build: eastOldPart('cantilever'), facts: eastFacts, sources: eastSrc},
-  {id: 'bay_bridge_east_1936_trusses', name: 'Bay Bridge east span (1936) — truss spans', kind: 'bridge', built: [1933.52, 1936.87], end: 2016.6, anchor: YBI_EAST, build: eastOldPart('trusses'), facts: eastFacts, sources: eastSrc},
-  {id: 'bay_bridge_east_1936_causeway', name: 'Bay Bridge east span (1936) — causeway', kind: 'bridge', built: [1933.52, 1936.87], end: 2017.2, anchor: YBI_EAST, build: eastOldPart('causeway'), facts: eastFacts, sources: eastSrc}
+  {
+    id: 'bay_bridge_ybi_viaduct_1936',
+    name: 'Bay Bridge east span (1936) — Yerba Buena Island viaduct',
+    kind: 'bridge',
+    built: [1933.52, 1936.87],
+    end: 2009.68,
+    anchor: BB_E2,
+    build: eastOldPart('viaduct'),
+    facts: {
+      Opened: 'Nov 12, 1936',
+      Form: 'double-deck viaduct from the tunnel to the cantilever: 241 m (790.8 ft) of concrete, then 357 m (1,169.7 ft) of curved steel deck trusses',
+      Replaced: 'a 300 ft section by the tunnel was renewed over Labor Day 2007; in Sep 2009 traffic moved to a temporary bypass and the viaduct was taken down for the transition structure of the new span',
+      Model: 'tangent – curve (R ≈ 550 m) – tangent between the tunnel axis and the cantilever axis of the 2010 lidar (the viaduct itself was gone by then); piers schematic'
+    },
+    sources: [BB_WIKI, BB_WIKI_EAST, BB_LIDAR]
+  },
+  {
+    id: 'bay_bridge_ybi_detour_2009',
+    name: 'Bay Bridge — Yerba Buena Island temporary bypass ("S-curve")',
+    kind: 'bridge',
+    built: [2008.0, 2009.68],
+    end: 2013.66,
+    anchor: BB_E2,
+    build: eastOldPart('detour'),
+    facts: {
+      'In service': 'Sep 2009 – Aug 28, 2013',
+      Form: 'temporary double-deck steel viaduct swinging south of the old one between the tunnel and the cantilever, so the transition structure of the new span could be built in its place',
+      Known: 'for its tight reverse curve: 40 mph limit after a fatal accident',
+      Model: 'centreline and roadway heights (57–66 m) from the 2010 USGS lidar; the reverse curve at the tunnel smoothed; start of construction estimated; bents schematic'
+    },
+    sources: [BB_WIKI_EAST, BB_LIDAR]
+  },
+  {id: 'bay_bridge_east_1936_cantilever', name: 'Bay Bridge east span (1936) — cantilever', kind: 'bridge', built: [1933.52, 1936.87], end: 2015.45, anchor: BB_E2, build: eastOldPart('cantilever'), facts: eastFacts, sources: eastSrc},
+  {id: 'bay_bridge_east_1936_trusses', name: 'Bay Bridge east span (1936) — truss spans', kind: 'bridge', built: [1933.52, 1936.87], end: 2016.6, anchor: BB_E2, build: eastOldPart('trusses'), facts: eastFacts, sources: eastSrc},
+  {id: 'bay_bridge_east_1936_causeway', name: 'Bay Bridge east span (1936) — causeway', kind: 'bridge', built: [1933.52, 1936.87], end: 2017.2, anchor: BB_E2, build: eastOldPart('causeway'), facts: eastFacts, sources: eastSrc},
+  {
+    id: 'bay_bridge_east_1936_approach',
+    name: 'Bay Bridge east span (1936) — Oakland approach spans',
+    kind: 'bridge',
+    built: [1933.52, 1936.87],
+    end: 2012.13,
+    anchor: BB_E2,
+    build: eastOldPart('approach'),
+    facts: {
+      Opened: 'Nov 12, 1936',
+      Form: 'low girder spans from the last deck truss (pier E23) down to the fill of the Oakland approach',
+      Replaced: 'the eastbound touchdown of the new span stands on the same ground: traffic was moved to temporary detours and the spans removed before the touchdown was finished in 2013',
+      Model: 'alignment and roadway heights (17 m at E23 to the ground, 2.7 %) from the 2010 USGS lidar; removal dated to the second stage of the touchdown work (Feb 19, 2012) — estimated; the detour roads are not modelled; bents schematic'
+    },
+    sources: [BB_WIKI_EAST, BB_LIDAR]
+  }
 ];
 
-// --- new east span (2013): skyway (2002–2007) + self-anchored suspension span (2009–2013)
-const SAS_W: V2 = [-122.3602, 37.8143];
-const SAS_E: V2 = [-122.3543, 37.8176];
+// --------------------------------------------------------------- new east span (2013)
+// island transition structure (2010–13), self-anchored suspension span (2009–13), skyway (2002–07) and
+// Oakland touchdown: the OSM centrelines of the westbound (north) and eastbound (south) roadways
 const SAS_TOWER: V2 = [-122.358479, 37.815265];
-const OAK_TOUCH: V2 = [-122.3277, 37.8222];
+const SAS_CX = 1.35; // the bridge centreline passes 1.35 m south-east of the OSM tower centroid (lidar)
+const BB_WHITE = '#F1F1EE';
+const BB_NEWDECK = '#C9CDD0';
+const YBITS_WB: V2[] = [
+  [-122.365053, 37.810174], [-122.364722, 37.810474], [-122.364471, 37.810711], [-122.363962, 37.811202], [-122.363652, 37.81151], [-122.362513, 37.812749],
+  [-122.362315, 37.812951], [-122.36211, 37.81315], [-122.361787, 37.813436], [-122.361317, 37.813815], [-122.360846, 37.814138], [-122.360592, 37.814299],
+  [-122.360305, 37.814471]
+];
+const YBITS_EB: V2[] = [
+  [-122.365024, 37.810153], [-122.36469, 37.810457], [-122.364032, 37.81107], [-122.363126, 37.81194], [-122.362835, 37.812202], [-122.362609, 37.812396],
+  [-122.362386, 37.812579], [-122.362153, 37.812763], [-122.361802, 37.813028], [-122.361316, 37.813371], [-122.360943, 37.813617], [-122.360688, 37.813777],
+  [-122.360432, 37.813932], [-122.360027, 37.814164]
+];
+const SKY_WB: V2[] = [
+  [-122.355096, 37.817447], [-122.354819, 37.817601], [-122.354544, 37.817746], [-122.353977, 37.818018], [-122.353689, 37.818144], [-122.353394, 37.818265],
+  [-122.353088, 37.818384], [-122.352797, 37.818488], [-122.352181, 37.818687], [-122.351873, 37.818774], [-122.351558, 37.818857], [-122.350923, 37.819003],
+  [-122.350605, 37.819066], [-122.350281, 37.81912], [-122.333686, 37.821549], [-122.332754, 37.821678], [-122.331781, 37.821801], [-122.331127, 37.821877],
+  [-122.329817, 37.822015], [-122.329161, 37.822075], [-122.328175, 37.822157], [-122.324869, 37.822408]
+];
+const SKY_EB: V2[] = [
+  [-122.354819, 37.817141], [-122.35453, 37.8173], [-122.354254, 37.817444], [-122.353832, 37.817648], [-122.353528, 37.817782], [-122.353237, 37.817904],
+  [-122.352944, 37.818019], [-122.352644, 37.818128], [-122.352187, 37.81828], [-122.351874, 37.818373], [-122.351563, 37.818458], [-122.35125, 37.818537],
+  [-122.350932, 37.81861], [-122.350297, 37.818733], [-122.34999, 37.818781], [-122.333602, 37.821178], [-122.332283, 37.82136], [-122.331631, 37.821443],
+  [-122.330629, 37.821561], [-122.329012, 37.821722], [-122.327715, 37.821831], [-122.325392, 37.821999]
+];
+// roadway heights (m NAVD88, 2023 / 2021 lidar) by distance along each path
+const YBITS_WB_Z: Tab = [[0, 56.6], [35, 57.4], [75, 58.1], [115, 58.6], [155, 59.4], [195, 60.1], [235, 60.6], [275, 61.1], [315, 61.1], [515, 59.6], [595, 58.6], [637, 58.1]];
+const YBITS_EB_Z: Tab = [[0, 48.7], [325, 52.9], [405, 53.4], [445, 53.9], [485, 54.6], [565, 55.6], [605, 56.1], [628, 56.1]];
+const SAS_WB_Z: Tab = [[-181, 58.1], [-101, 57.1], [-21, 56.1], [59, 55.4], [139, 54.4], [219, 53.4], [299, 52.1], [385, 50.8]];
+const SAS_EB_Z: Tab = [[-181, 56.1], [-124, 56.1], [-44, 55.6], [36, 54.6], [116, 53.9], [196, 52.9], [276, 51.6], [385, 50]];
+const SKY_WB_Z: Tab = [
+  [0, 50.8], [34, 50.4], [314, 46.6], [514, 43.4], [674, 40.9], [834, 38.1], [994, 35.6], [1154, 32.9], [1314, 29.9], [1474, 27.1], [1634, 24.1], [1794, 20.9],
+  [1954, 17.9], [2114, 14.6], [2274, 11.6], [2394, 9.4], [2494, 7.4], [2554, 6.1], [2634, 5.4], [2694, 4.6], [2734, 4.4]
+];
+const SKY_EB_Z: Tab = [
+  [0, 50], [51, 49.4], [131, 48.1], [251, 46.6], [411, 44.4], [531, 42.6], [691, 40.4], [851, 37.6], [1011, 35.1], [1171, 32.1], [1331, 29.4], [1491, 26.4],
+  [1651, 23.1], [1811, 20.1], [1971, 17.1], [2131, 14.1], [2291, 10.9], [2411, 8.6], [2511, 6.9], [2571, 5.9], [2611, 5.4], [2661, 4.9]
+];
+const SAS_W2 = -180; // west pier (back span 180 m)
+const SAS_E2 = 385; // east pier (main span 385 m)
+const SAS_DECK_X = 21.6; // centres of the two 28 m box girders either side of the centreline (lidar)
+
+const ybits: Landmark = {
+  id: 'bay_bridge_east_2013_ybits',
+  name: 'Bay Bridge east span (2013) — Yerba Buena Island transition structure',
+  kind: 'bridge',
+  built: [2010.0, 2013.67],
+  end: 9999,
+  anchor: SAS_TOWER,
+  build: b => {
+    for (const [ll, zt, wb] of [[YBITS_WB, YBITS_WB_Z, true], [YBITS_EB, YBITS_EB_Z, false]] as [V2[], Tab, boolean][]) {
+      const p = bbPath(ll.map(q => lngLatToLocal(SAS_TOWER, q)));
+      const z = (s: number) => tab(zt, s);
+      // the roadways leave the tunnel stacked (westbound above) and fan out to the two decks of the span
+      const half = (s: number) => 10.3 + (3.7 * s) / p.s1;
+      const st = bbStations(p, 0, p.s1, 60, zt.map(r => r[0]));
+      for (let i = 0; i < st.length - 1; i++)
+        bbSweep(b, p, st[i], st[i + 1], {half: half((st[i] + st[i + 1]) / 2), off: wb ? 0.85 : 1.5, top: z, depth: 3.2, color: BB_CONC, road: BB_ROAD});
+      for (let s = wb ? 60 : 95; s < p.s1 - 20; s += 70) {
+        const q = bbAt(p, s, wb ? 0.85 : 1.5);
+        b.frame(q[0], q[1], 0, bbBearing(p, s), () => b.color(BB_CONC).box(0, 0, 0, 7, 3, z(s) - 3.2, {top: false}));
+      }
+    }
+  },
+  facts: {
+    Opened: 'Sep 2, 2013',
+    Form: 'concrete box-girder viaducts carrying the stacked roadways of the tunnel out to the side-by-side decks of the suspension span',
+    Length: '≈ 630 m',
+    Model: 'OSM centrelines; heights from the 2023 USGS lidar (westbound 57–61 m, eastbound 48–56 m); the eastbound roadway under the westbound one east of the tunnel is hidden from the lidar and interpolated; columns schematic'
+  },
+  sources: [BB_WIKI_EAST, BB_LIDAR, BB_OSM]
+};
+
 const sasSpan: Landmark = {
   id: 'bay_bridge_east_2013_sas',
   name: 'Bay Bridge east span (2013) — self-anchored suspension span',
@@ -238,62 +716,139 @@ const sasSpan: Landmark = {
   end: 9999,
   anchor: SAS_TOWER,
   build: b => {
-    const a = along(SAS_TOWER, SAS_W, SAS_E);
-    const p0 = lngLatToLocal(SAS_TOWER, SAS_W);
-    b.frame(p0[0], p0[1], 0, a.bearing, () => {
-      const t = Math.hypot(...lngLatToLocal(SAS_TOWER, SAS_W)); // tower position along the span
-      for (const x of [-20, 20]) deck(b, [x, 0, 50], [x, a.length, 48], 26, 5, '#C9CDD0');
-      // single tower: four tapered legs joined by shear links, 160 m
-      b.color('#F1F1EE');
-      for (const x of [-4, 4]) for (const y of [-4, 4]) b.loft([rect(x * 1.6, t + y * 1.4, 5.5, 5.5), rect(x, t + y, 3, 3)], [0, 160], {top: true});
-      for (let z = 30; z < 160; z += 22) b.box(0, t, z, 14, 2, 1.5);
-      // one continuous cable from the west end over the tower, looping around the east end
-      for (const x of [-7, 7]) {
-        const w: V3 = [x * 3.4, 0, 52];
-        const tt: V3 = [x, t, 158];
-        const e: V3 = [x * 3.4, a.length, 50];
-        const c1 = parabola(w, tt, 75, 10);
-        const c2 = parabola(tt, e, 80, 16);
-        b.polyline(c1, 1.4).polyline(c2, 1.4);
-        for (const c of [...c1, ...c2]) if (c[2] > 56) b.beam([c[0], c[1], 50], c, 0.35);
+    // frame: +y along the straight span (OSM centreline of the eastbound roadway), +x to the south-east
+    b.frame(0, 0, 0, along(SAS_TOWER, [-122.360101, 37.814122], [-122.354804, 37.81715]).bearing, () => {
+      const axis = bbPath([[SAS_CX, SAS_W2], [SAS_CX, SAS_E2]], SAS_W2);
+      const zW = (y: number) => tab(SAS_WB_Z, y);
+      const zE = (y: number) => tab(SAS_EB_Z, y);
+      // twin steel box girders (28 m each, 5.5 m deep) tied by crossbeams every 30 m; bike path on the south side
+      bbSweep(b, axis, SAS_W2, SAS_E2, {half: 14, off: -SAS_DECK_X, top: zW, depth: 5.5, color: BB_NEWDECK, road: BB_ROAD, extra: SAS_WB_Z.map(r => r[0]), ends: true});
+      bbSweep(b, axis, SAS_W2, SAS_E2, {half: 14, off: SAS_DECK_X, top: zE, depth: 5.5, color: BB_NEWDECK, road: BB_ROAD, extra: SAS_EB_Z.map(r => r[0]), ends: true});
+      bbSweep(b, axis, SAS_W2, SAS_E2, {half: 2.35, off: SAS_DECK_X + 18, top: y => zE(y) - 0.3, depth: 1, color: BB_NEWDECK, road: '#8A8D8C', extra: SAS_EB_Z.map(r => r[0])});
+      b.color(BB_NEWDECK);
+      for (let y = SAS_W2 + 25; y < SAS_E2; y += 30) if (Math.abs(y) > 12) b.box(SAS_CX, y, zE(y) - 5, 2 * (SAS_DECK_X - 14), 3, 4, {top: false});
+      // piers: W2 on the island (cap beam where the cable turns back), E2 in the bay
+      b.color(BB_CONC).box(SAS_CX, SAS_W2 - 4, zE(SAS_W2) - 12, 76, 10, 11);
+      for (const sx of [-1, 1]) b.box(SAS_CX + sx * SAS_DECK_X, SAS_W2 - 4, 0, 10, 8, zE(SAS_W2) - 12, {top: false});
+      b.box(SAS_CX, SAS_E2, zE(SAS_E2) - 10.7, 72, 6, 5);
+      for (const sx of [-1, 1]) b.box(SAS_CX + sx * SAS_DECK_X, SAS_E2, 0, 9, 7, zE(SAS_E2) - 10.7, {top: false});
+      // single tower: four legs tied by shear links, 525 ft; lidar: 13 m wide at the roadway, 9 m at the top (163 m)
+      b.color(BB_CONC).box(SAS_CX, 0, 0, 39, 30, 4.5);
+      b.color(BB_WHITE);
+      const top = 158;
+      const lc = (z: number) => 4.2 - (1.4 * (z - 4.5)) / (top - 4.5);
+      for (const sx of [-1, 1]) for (const sy of [-1, 1]) b.loft([rect(SAS_CX + sx * lc(4.5), sy * lc(4.5), 5.4, 5.4), rect(SAS_CX + sx * lc(top), sy * lc(top), 3.4, 3.4)], [4.5, top], {top: false});
+      for (let z = 22; z < top - 6; z += 18) b.box(SAS_CX, 0, z, 2 * lc(z), 1.3, 2.4).box(SAS_CX, 0, z, 1.3, 2 * lc(z), 2.4);
+      b.box(SAS_CX, 0, top, 9.4, 9.4, 5);
+      // one cable: anchored in the deck at the east pier, over the tower, round the west end and back
+      const edge = SAS_DECK_X + 13.2; // the suspenders hold the outer edges of the two girders
+      for (const sx of [-1, 1]) {
+        const cable = (y0: number, y1: number, x1: number, z1: number, sagX: number, sagZ: number, n: number): V3[] => {
+          const out: V3[] = [];
+          for (let i = 0; i <= n; i++) {
+            const t = i / n;
+            const k = 4 * t * (1 - t);
+            out.push([SAS_CX + sx * (2.4 + (x1 - 2.4) * t + sagX * k), y0 + (y1 - y0) * t, top + 1 + (z1 - top - 1) * t - sagZ * k]);
+          }
+          return out;
+        };
+        const back = cable(0, SAS_W2, edge, zE(SAS_W2) + 2.5, 1.4, 6.3, 8);
+        const main = cable(0, 300, edge, zE(300) + 2.5, 5, 18.5, 12);
+        b.color(BB_WHITE);
+        for (const c of [back, main]) {
+          for (let i = 0; i < c.length - 1; i++) bbRod(b, c[i], c[i + 1], 1.3);
+          for (let i = 1; i < c.length - 1; i++) {
+            const zd = (sx < 0 ? zW : zE)(c[i][1]);
+            if (c[i][2] - zd > 5) bbRod(b, [SAS_CX + sx * edge, c[i][1], zd], c[i], 0.5);
+          }
+        }
+        const e = main[main.length - 1];
+        bbRod(b, e, [e[0], SAS_E2 - 4, zE(SAS_E2) + 0.5], 1.3);
       }
+      const zl = zE(SAS_W2) + 2.5;
+      bbRod(b, [SAS_CX - edge, SAS_W2, zl], [SAS_CX - edge, SAS_W2 - 7, zl - 1.5], 1.3);
+      bbRod(b, [SAS_CX + edge, SAS_W2, zl], [SAS_CX + edge, SAS_W2 - 7, zl - 1.5], 1.3);
+      bbRod(b, [SAS_CX - edge, SAS_W2 - 7, zl - 1.5], [SAS_CX + edge, SAS_W2 - 7, zl - 1.5], 1.3);
     });
   },
-  // the tower's generic footprint (OSM part, a 53 m LiDAR prism) stands inside the model
+  // the tower's generic footprint (OSM bridge structure, a 53 m LiDAR prism) stands inside the model
   replaces: [rect(0, 0, 120, 120)],
   facts: {
     Opened: 'Sep 2, 2013',
-    Form: 'single-tower self-anchored suspension span (world’s largest)',
-    Tower: '160 m (525 ft), four legs with shear links',
-    'Main span': '385 m'
+    Form: 'single-tower self-anchored suspension span (world’s largest): one cable anchored in the deck at the east pier, over the tower and looped round the west end',
+    Tower: '160 m (525 ft), four legs with shear links; top 163 m above the bay',
+    Spans: 'main span 385 m (1,263 ft), back span 180 m; 624 m in all',
+    Decks: 'two steel box girders side by side, 78.7 m over all (258 ft) with the bike path; roadway 50–58 m above the bay (58 m / 191 ft clear)',
+    Model: 'tower from the OSM footprint; decks, cable and heights measured on the 2023 USGS lidar; piers and member sizes estimated'
   },
-  sources: [WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge']
+  sources: [BB_WIKI_EAST, BB_LIDAR, BB_OSM]
 };
+
+/** One roadway of the skyway / Oakland touchdown between distances a and c along its OSM centreline. */
+const SKY_LEN = 2103; // 6,900 ft of skyway; beyond it the low touchdown spans, then fill
+const SKY_EB_2007 = 2300; // the eastbound roadway ended here until the old approach was out of the way (2010 lidar)
+function bbSkyDeck(b: MeshBuilder, wb: boolean, a: number, c: number) {
+  const p = bbPath((wb ? SKY_WB : SKY_EB).map(q => lngLatToLocal(SAS_TOWER, q)));
+  const zt = wb ? SKY_WB_Z : SKY_EB_Z;
+  const z = (s: number) => tab(zt, s);
+  const off = wb ? 0.85 : 1.5;
+  const SPAN = 160; // 525 ft, fourteen piers
+  const fill = wb ? 2560 : 2480; // from here the road is on the touchdown fill
+  const end = Math.min(c, p.s1);
+  // haunched box girder: 5.5 m at mid-span, 9 m over the piers (estimated)
+  const depth = (s: number) => {
+    if (s > fill) return Math.max(z(s) - 2.5, 1);
+    if (s > SKY_LEN) return 3;
+    return 5.5 + 3.5 * Math.abs((2 * (s % SPAN)) / SPAN - 1);
+  };
+  const extra = zt.map(r => r[0]).filter(s => s < 300 || s > SKY_LEN);
+  for (let s = SPAN / 2; s < SKY_LEN; s += SPAN / 2) extra.push(s);
+  extra.push(SKY_LEN, SKY_LEN + 1.5, fill, fill + 1.5);
+  bbSweep(b, p, a, end, {half: 13.8, off, top: z, depth, color: BB_NEWDECK, road: BB_ROAD, extra, ends: true});
+  if (!wb && a < fill) bbSweep(b, p, a, Math.min(end, fill), {half: 2.35, off: off + 16.3, top: s => z(s) - 0.3, depth: 1, color: BB_NEWDECK, road: '#8A8D8C', step: 320});
+  const piers: number[] = [];
+  for (let s = SPAN; s < SKY_LEN; s += SPAN) piers.push(s);
+  for (let s = SKY_LEN + 50; s < fill - 20; s += 62) piers.push(s);
+  for (const s of piers) {
+    if (s < a || s > end) continue;
+    const q = bbAt(p, s, off);
+    b.frame(q[0], q[1], 0, bbBearing(p, s), () => b.color('#BDBAB3').box(0, 0, 0, s < SKY_LEN ? 8.5 : 6, s < SKY_LEN ? 6 : 2.5, z(s) - depth(s), {top: false}));
+  }
+}
 const skyway: Landmark = {
   id: 'bay_bridge_east_2013_skyway',
   name: 'Bay Bridge east span (2013) — skyway',
   kind: 'bridge',
   built: [2002.08, 2007.5],
   end: 9999,
-  anchor: SAS_E,
+  anchor: SAS_TOWER,
   build: b => {
-    const a = along(SAS_E, SAS_E, OAK_TOUCH);
-    b.frame(0, 0, 0, a.bearing, () => {
-      const n = 16;
-      for (let k = 0; k < n; k++) {
-        const ya = (a.length * k) / n;
-        const yb = (a.length * (k + 1)) / n;
-        const za = 48 - (42 * k) / n;
-        const zb = 48 - (42 * (k + 1)) / n;
-        for (const x of [-20, 20]) {
-          deck(b, [x, ya, za], [x, yb, zb], 26, 5, '#C9CDD0');
-          b.color('#BDBAB3').box(x, yb, 0, 6, 6, Math.max(zb - 5, 0.5));
-        }
-      }
-    });
+    bbSkyDeck(b, true, 0, 1e9);
+    bbSkyDeck(b, false, 0, SKY_EB_2007);
   },
-  facts: {Construction: '2002 – 2007 (opened with the SAS span, Sep 2013)', Form: 'twin concrete viaducts, ~2 km'},
-  sources: [WIKI + 'Eastern_span_replacement_of_the_San_Francisco%E2%80%93Oakland_Bay_Bridge']
+  facts: {
+    Construction: '2002 – 2007 (opened with the suspension span, Sep 2, 2013)',
+    Form: 'twin precast segmental concrete box-girder viaducts, 2.1 km (6,900 ft), typical span 160 m (525 ft); then the low spans of the Oakland touchdown',
+    Grade: '1.8 % down from 50 m at the suspension span to the Oakland shore',
+    Model: 'OSM centrelines of the two roadways (curve at the island end included); heights from the 2023 and 2021 USGS lidar; girder depth and piers estimated; the westbound touchdown is dated with the skyway'
+  },
+  sources: [BB_WIKI_EAST, 'https://asbi-assoc.org/project/san-francisco-oakland-bay-bridge-new-east-span-skyway-san-francisco-and-oakland-california/', BB_LIDAR, BB_OSM]
+};
+const touchdown: Landmark = {
+  id: 'bay_bridge_east_2013_touchdown',
+  name: 'Bay Bridge east span (2013) — eastbound Oakland touchdown',
+  kind: 'bridge',
+  built: [2012.13, 2013.67],
+  end: 9999,
+  anchor: SAS_TOWER,
+  build: b => bbSkyDeck(b, false, SKY_EB_2007, 1e9),
+  facts: {
+    Opened: 'Sep 2, 2013',
+    Form: 'last 360 m of the eastbound roadway, low spans and fill, on the ground of the old bridge’s approach',
+    Construction: 'on the ground of the old approach once it was out of the way: second stage of the touchdown work Feb 19, 2012, finished Mar 2013',
+    Model: 'OSM centreline; heights from the 2021 USGS lidar (9 m down to 5 m); the split from the skyway is where the eastbound roadway ended in the 2010 lidar'
+  },
+  sources: [BB_WIKI_EAST, BB_LIDAR, BB_OSM]
 };
 
 // =========================================================== Ferry Building
@@ -1351,9 +1906,12 @@ const calAcademy: Landmark = {
 
 export const CITY_LANDMARKS: Landmark[] = [
   bayBridgeWestSpan,
+  bayBridgeTunnel,
   ...bayBridgeEastOld,
+  ybits,
   sasSpan,
   skyway,
+  touchdown,
   ferryBuilding,
   cityHall,
   oldCityHall,

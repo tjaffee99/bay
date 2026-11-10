@@ -421,7 +421,14 @@ let lastTrain = 0;
 function trafficLoop(t: number) {
   requestAnimationFrame(trafficLoop);
   // flames and earthquake sway move with the clock: keep drawing while they are on screen
-  if (timeFxActive() && !document.hidden && performance.now() - lastRender > 30) render();
+  // (a redraw with the new clock, not a rebuild of the layer list)
+  if (timeFxActive() && !document.hidden && performance.now() - lastRender > 30) {
+    lastRender = performance.now();
+    setTimeFx(state.year, lastRender / 1000);
+    const deck = (overlay as any)._deck;
+    if (deck?.redraw) deck.redraw('fx');
+    else render();
+  }
   const z = map.getZoom();
   if (document.hidden || z < 11.5) return;
   if (hasTraffic() && z >= 12.5 && t - lastTraffic >= 33) {
@@ -435,6 +442,46 @@ function trafficLoop(t: number) {
   }
 }
 if (!new URLSearchParams(location.search).has('notraffic')) requestAnimationFrame(trafficLoop);
+
+// ---------------------------------------------------------------- adaptive resolution
+// While the map animates (story, time-lapse, a drag) every frame redraws everything. If
+// the graphics card cannot keep ~30 frames a second at full resolution, draw at fewer
+// device pixels (2 -> 1.5 -> 1: most of the cost is per pixel, the terrain shader above
+// all) rather than stutter; the sharp picture comes back when the map has been still for a
+// moment. `?dpr=N` fixes the ratio instead.
+const DPR_FULL = Math.min(2, window.devicePixelRatio || 1);
+const DPR_FIXED = Number(new URLSearchParams(location.search).get('dpr')) || 0;
+let dprNow = DPR_FULL;
+let slowFrames = 0;
+let stillSince = 0;
+let lastFrameAt = 0;
+function setDpr(r: number) {
+  if (r === dprNow) return;
+  dprNow = r;
+  overlay.setProps({useDevicePixels: r} as any);
+}
+function governor(t: number) {
+  requestAnimationFrame(governor);
+  const dt = t - lastFrameAt;
+  lastFrameAt = t;
+  if (document.hidden || dt > 1000) return;
+  const animating = story.isRunning() || state.playing || map.isMoving();
+  if (!animating) {
+    slowFrames = 0;
+    if (!stillSince) stillSince = t;
+    else if (t - stillSince > 1200) setDpr(DPR_FULL);
+    return;
+  }
+  stillSince = 0;
+  // a run of slow frames, not one hitch (a tile upload, a label pass)
+  slowFrames = dt > 34 ? slowFrames + 1 : Math.max(0, slowFrames - 2);
+  if (slowFrames > 36 && dprNow > 1) {
+    setDpr(Math.max(1, dprNow - 0.5));
+    slowFrames = 0;
+  }
+}
+if (DPR_FIXED) setDpr(Math.max(0.5, Math.min(3, DPR_FIXED)));
+else if (DPR_FULL > 1) requestAnimationFrame(governor);
 
 // ---------------------------------------------------------------- attribution
 $('attribution').innerHTML =

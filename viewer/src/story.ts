@@ -33,6 +33,8 @@ export type Story = {
   start: (index?: number) => void;
   exit: () => void;
   isActive: () => boolean;
+  /** flying or holding a stop (not paused) */
+  isRunning: () => boolean;
   /** keyboard: returns true when the key was used */
   key: (e: KeyboardEvent) => boolean;
   /** the visitor took the controls (drag, wheel, slider): pause */
@@ -331,5 +333,5 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   // for automated checks
   (window as any).__story = {start, exit, state: () => ({phase, idx, n: stops.length})};
 
-  return {start, exit, isActive: () => phase !== 'off', key, interrupt};
+  return {start, exit, isActive: () => phase !== 'off', isRunning: () => phase === 'fly' || phase === 'dwell', key, interrupt};
 }

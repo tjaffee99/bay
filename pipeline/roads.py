@@ -58,6 +58,21 @@ LANDMARK_BRIDGE_BOXES = [
     (-121.7560, 38.0167, -121.7470, 38.0427),   # Antioch Bridge 1978 (landmarks/coastsouth.ts)
     (-122.1302, 38.0486, -122.1262, 38.0514),   # I-780 connector of the 2007 Benicia span (landmarks/northbay.ts)
 ]
+# the Bay Bridge model's reach along I-80 (data/research/landmarks.md, "Bay Bridge": what the
+# freeway layer must leave out) and the roadway heights (m NAVD88, USGS 3DEP lidar) where the
+# generic freeway and the ramps meet the model: (lon, lat, z)
+BAY_BRIDGE_MODEL_BOX = (-122.39185, 37.785, -122.3260, 37.824)
+BAY_BRIDGE_JOINTS = [
+    (-122.391830, 37.785473, 41.5),   # upper deck, Rincon Hill
+    (-122.391580, 37.785582, 34.3),   # lower deck, Rincon Hill
+    (-122.390902, 37.786017, 36.4),   # Sterling Street on-ramp
+    (-122.367291, 37.808078, 54.1),   # island west, upper deck
+    (-122.367194, 37.808121, 46.0),   # island west, lower deck
+    (-122.364690, 37.810457, 49.3),   # east of the tunnel, eastbound
+    (-122.364471, 37.810711, 58.1),   # east of the tunnel, westbound
+    (-122.361426, 37.813295, 54.4),   # island east, eastbound
+    (-122.361317, 37.813815, 59.5),   # island east, westbound
+]
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
 WIDTH = {K_STREET: 9, K_MAJOR: 14, K_FREEWAY: 24, K_HIGHWAY: 16, K_CABLE: 3, K_STREETCAR: 3, K_RAIL: 4,
          K_KEY: 4, K_BART: 5, K_FERRY: 6, K_LIGHTRAIL: 3}
@@ -391,7 +406,8 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
         tn_real = tn.copy()
         # the Bay Bridge and Golden Gate Bridge decks belong to their landmark models
         nm = str(row["name"] or "")
-        if br.any():
+        crossing = row["class"] == "motorway" and row.subclass != "link" and "Eisenhower" in nm
+        if br.any() or crossing:
             ll = [row.geometry.interpolate(x, normalized=True) for x in f]
             lo_ = np.array([p.x for p in ll])
             la_ = np.array([p.y for p in ll])
@@ -400,6 +416,15 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
             if "Golden Gate Bridge" in nm or "Carquinez Bridge" in nm or "Benicia-Martinez Bridge" in nm:
                 tn = tn | br
             tn = tn | (br & bay_bridge & over_water)
+            # the whole Bay Bridge crossing is the landmark model (landmarks/city.ts, rebuilt on
+            # the surveyed geometry 2026-11): the San Francisco anchorage and its approach from
+            # Rincon Hill, both suspension spans, the Yerba Buena Island viaducts and tunnel,
+            # the east span and the Oakland touchdown — every mainline vertex (bridge, tunnel or
+            # at grade) inside the box, not only the ones over water (the generic deck used to
+            # run beside and under the model on the island and at both shores). Ramps stay.
+            if crossing:
+                x0_, y0_, x1_, y1_ = BAY_BRIDGE_MODEL_BOX
+                tn = tn | ((lo_ > x0_) & (lo_ < x1_) & (la_ > y0_) & (la_ < y1_))
             # other bridges with a landmark model: the whole modelled structure (approach
             # spans included), by the box of its deck
             for x0_, y0_, x1_, y1_ in LANDMARK_BRIDGE_BOXES:
@@ -784,7 +809,31 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
                     hmax = float(Hh[sl].max())
                     items.append((lon[sl], lat[sl], z[sl], k, width, y0, 9999.0, 2 if hmax > 4 else 0))
                 start = None
-    log(f"roads: {len(items)} freeway / ramp paths in 3D")
+    # roads that end on the Bay Bridge model meet its roadway: a path with a vertex within
+    # 30 m of a joint is shifted to the joint's surveyed height there, the shift dying away
+    # over 350 m along the path (the level-rule heights were up to 20 m off on Rincon Hill
+    # and the island)
+    joined = 0
+    for n_, it in enumerate(items):
+        lon_i, lat_i = np.asarray(it[0], float), np.asarray(it[1], float)
+        if lon_i.max() < BAY_BRIDGE_MODEL_BOX[0] - 0.01 or lon_i.min() > BAY_BRIDGE_MODEL_BOX[2] + 0.01:
+            continue
+        z_i = np.array(it[2], float)
+        dxm = np.diff(lon_i) * 111320.0 * np.cos(np.radians(lat_i[:-1]))
+        dym = np.diff(lat_i) * 110574.0
+        s_i = np.concatenate([[0.0], np.cumsum(np.hypot(dxm, dym))])
+        hit = False
+        for jx, jy, jz in BAY_BRIDGE_JOINTS:
+            d = np.hypot((lon_i - jx) * 111320.0 * np.cos(np.radians(jy)), (lat_i - jy) * 110574.0)
+            k_ = int(np.argmin(d))
+            if d[k_] > 30.0:
+                continue
+            z_i = z_i + (jz - z_i[k_]) * np.clip(1.0 - np.abs(s_i - s_i[k_]) / 350.0, 0.0, 1.0)
+            hit = True
+        if hit:
+            items[n_] = (it[0], it[1], z_i, it[3], it[4], it[5], it[6], 2 if float((z_i - ground(lon_i, lat_i)).max()) > 4 else it[7])
+            joined += 1
+    log(f"roads: {len(items)} freeway / ramp paths in 3D ({joined} meet the Bay Bridge model at its surveyed heights)")
     return items
 
 

@@ -946,7 +946,10 @@ def histories(name, g, d):
         # district eras that end before an island was reclaimed do not apply to it)
         delta_farm = in_delta & diked & ~water_now & np.isin(N, [MARSH, FLAT]) & ~in_sf
         ag_ok |= delta_farm
-        ag_ok_sf = ~water_now & (slope < 15) & (elev < 500) & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH, ROCK, BEACH, DUNES]) & in_sf
+        # (no dune exclusion: the San Francisco outlines already leave out the mobile dunes and
+        # include stabilised sand on purpose — the potato and vegetable land round Lake Merced)
+        ag_ok_sf = ~water_now & (slope < 15) & (elev < 500) & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH, ROCK, BEACH]) & in_sf
+        sf_end = np.full((rows, cols), np.nan, np.float32)   # year the farming ended (San Francisco rows carry it)
         first_c = np.full((rows, cols), 255, np.uint8)
         first_y = np.full((rows, cols), np.nan, np.float32)
         last_c = np.full((rows, cols), 255, np.uint8)
@@ -976,6 +979,10 @@ def histories(name, g, d):
             m = mw & (ag_ok_sf if bool(getattr(r, "in_city", False)) else ag_ok)[sl] & (b_share[sl] < share)
             if not m.any():
                 continue
+            ye_ = pd.to_numeric(getattr(r, "year_end", np.nan), errors="coerce")
+            if bool(getattr(r, "in_city", False)) and np.isfinite(ye_):
+                se = sf_end[sl]
+                se[m] = np.fmax(se[m], ye_)
             cc = np.full(m.shape, c, np.uint8)
             osh = pd.to_numeric(getattr(r, "orchard_share", np.nan), errors="coerce")
             if str(r.kind) == "farm_mixed" and np.isfinite(osh):
@@ -1010,6 +1017,12 @@ def histories(name, g, d):
         has_mid = has_last & np.isfinite(mid_y) & (mid_c != first_c) & (mid_c != last_c) & (mid_y > first_y) & (mid_y < last_y)
         event(has_mid, mid_c, mid_y)
         event(has_last, last_c, last_y)
+        # farm ground in San Francisco that never became city or park by the year its
+        # farming ended (campus lawns, freeway verges, the lake shore) goes back to its
+        # natural cover then, over a few years
+        back = np.isfinite(sf_end) & has_first & ~(urban & np.isfinite(urban_y) & (urban_y <= sf_end + 0.5)) \
+            & ~(is_park & (park_y <= sf_end + 0.5))
+        event(back, N, sf_end + 3.0 * b_year)
         log(f"terrain {name}: farm history from researched eras: {int(has_first.sum())} cells, "
             f"{int(has_last.sum())} with a later farm era")
     else:
@@ -1294,8 +1307,8 @@ def ground_under_buildings(name, g, covers, years):
 
       * a cell that becomes land later (fill, city) becomes land half a year before the
         first building on it instead (under any part of a footprint);
-      * a cell that is water for good gets a deck (city ground) under a sizeable building's
-        middle from then on — pier sheds, wharf warehouses; small boathouses are left;
+      * a cell that is water for good gets a deck (city ground) under a building's middle
+        from then on — pier sheds, wharf warehouses, houseboats, lagoon-side houses;
       * before American settlement (villages, missions): the natural cover there is grass.
 
     Landmark models (viewer anchors, not bridges) only pull an existing fill date forward."""
@@ -1322,7 +1335,10 @@ def ground_under_buildings(name, g, covers, years):
             np.maximum.at(until, k[ok], np.asarray(y1, np.float32)[ok])
 
     cell_m = g["res"] * 0.79
-    min_area = 150.0 if name == "detail" else 2000.0
+    # every building whose middle is over water for good gets its deck / shore: houseboats
+    # and covered berths, lagoon and waterfront houses whose cell the coarse grid reads as
+    # water (a size limit left ~1,600 of them standing in the water)
+    min_area = 0.0
     p = INTERIM / "sf_export_final.parquet"
     if p.exists():
         b = gpd.read_parquet(p)
@@ -1362,37 +1378,43 @@ def ground_under_buildings(name, g, covers, years):
     cand = np.flatnonzero(np.isfinite(need) | np.isfinite(lm))
     cv = covers.reshape(5, -1)
     yv = years.reshape(4, -1)
-    moved = decks = natural = 0
+    moved = decks = natural = kept = 0
     for k in cand:
         t_any = min(need[k], lm[k]) - 0.6
         seq = [(float(yv[j, k]), int(cv[j + 1, k])) for j in range(4) if np.isfinite(yv[j, k])]
-        nat = int(cv[0, k])
+        nat0 = nat = int(cv[0, k])
         state = nat
         for y, c in seq:
             if y <= t_any:
                 state = c
-        if state not in WATERISH:
-            continue
-        earlier = [e for e in seq if e[0] <= t_any]
-        later = [e for e in seq if e[0] > t_any]
-        j = next((i for i, e in enumerate(later) if e[1] not in WATERISH), None)
-        if t_any <= 1800.0:
-            # a village, a mission building: the spot was dry ground
-            if np.isfinite(need[k]) and (j is not None or np.isfinite(core[k])):
-                nat = GRASS
-                new = [e for e in seq if not (e[1] in WATERISH and e[0] < until[k])]
-                natural += 1
-            else:
-                continue
-        elif j is not None:
-            new = earlier + [(t_any, later[j][1])] + later[j + 1:]
-            moved += 1
-        elif np.isfinite(core[k]):
-            tc = float(core[k]) - 0.6
-            new = [e for e in seq if e[0] <= tc] + [(tc, URBAN if tc >= 1849.0 else GRASS)] \
-                + [e for e in seq if e[0] > tc and not (e[1] in WATERISH and e[0] < until[k])]
-            decks += 1
-        else:
+        new = seq
+        if state in WATERISH:
+            earlier = [e for e in seq if e[0] <= t_any]
+            later = [e for e in seq if e[0] > t_any]
+            j = next((i for i, e in enumerate(later) if e[1] not in WATERISH), None)
+            if t_any <= 1800.0:
+                # a village, a mission building: the spot was dry ground
+                if np.isfinite(need[k]) and (j is not None or np.isfinite(core[k])):
+                    nat = GRASS
+                    new = [e for e in seq if not (e[1] in WATERISH and e[0] < until[k])]
+                    natural += 1
+            elif j is not None:
+                new = earlier + [(t_any, later[j][1])] + later[j + 1:]
+                moved += 1
+            elif np.isfinite(core[k]):
+                tc = float(core[k]) - 0.6
+                new = [e for e in seq if e[0] <= tc] + [(tc, URBAN if tc >= 1849.0 else GRASS)] + [e for e in seq if e[0] > tc]
+                decks += 1
+        # ... and while a building's middle stands on a cell, the cell does not turn to water
+        # (a salt pond or reservoir dated after the houses on its edge, a later building on a
+        # cell that had been flooded since the first one)
+        if np.isfinite(core[k]):
+            tc0 = float(core[k]) - 0.6
+            dry = [e for e in new if not (e[1] in WATERISH and tc0 <= e[0] < until[k])]
+            if len(dry) != len(new):
+                new = dry
+                kept += 1
+        if new == seq and nat == nat0:
             continue
         # drop repeats, keep at most four changes (the first and the last three)
         out, last = [], nat
@@ -1409,7 +1431,8 @@ def ground_under_buildings(name, g, covers, years):
             else:
                 yv[s_, k], cv[s_ + 1, k] = np.nan, 0
     log(f"terrain {name}: ground under buildings: {moved} cells become land earlier (a building stood on them before "
-        f"their fill date), {decks} water cells get a deck under a building, {natural} cells of pre-1800 sites are dry ground")
+        f"their fill date), {decks} water cells get a deck under a building, {natural} cells of pre-1800 sites are dry ground, "
+        f"{kept} cells stay dry under a standing building")
 
 
 def write_tiles(name, g, covers, years, elev, deco_fn=None, zooms=None):
