@@ -212,11 +212,18 @@ function updateOverlays() {
   const y = Math.floor(state.year);
   yearLabel.textContent = String(y);
   if (document.activeElement !== slider || state.playing) slider.value = String(state.year);
+  // the place under the centre is a point-in-polygon search over ~500 outlines: only when
+  // the centre, the zoom band or the quarter of the year changes, not on every frame
   const c = map.getCenter();
+  const key = `${Math.floor(state.year * 4)}|${c.lng.toFixed(3)}|${c.lat.toFixed(3)}|${map.getZoom() >= 11.5}|${popEpoch}`;
+  if (key === popKey) return;
+  popKey = key;
   const pop = localPopulationAt(state.year, c.lng, c.lat, map.getZoom());
   popValue.textContent = pop == null ? '—' : Math.round(pop.value).toLocaleString('en-US');
   popArea.textContent = pop == null ? '' : pop.label;
 }
+let popKey = '';
+let popEpoch = 0;
 
 slider.addEventListener('input', () => {
   story.interrupt();
@@ -497,7 +504,10 @@ async function boot() {
   loadPlaces();
   const transitP = loadTransit().then(() => addStationLabels(stations));
   loadRegionIndex().then(render);
-  loadCities().then(updateOverlays);
+  loadCities().then(() => {
+    popEpoch++;
+    updateOverlays();
+  });
   // the counter follows the place under the centre of the map
   map.on('moveend', updateOverlays);
   extentReady.then(() => {

@@ -189,7 +189,10 @@ def main():
         okv = np.isfinite(lv)
         np.maximum.at(corner, owner[okv], lv[okv])
         land = np.where(np.isfinite(corner), np.fmax(land, corner), land)
-        early = np.isfinite(land) & (df.start_year.values < land - 0.5)
+        # a building waits for its ground and for its own construction time on it: the frame
+        # goes up over build_years() before start_year, on ground that has been there a while
+        lead = 0.8 + build_years(df.height.values)
+        early = np.isfinite(land) & (df.start_year.values < land + lead)
         soft = early & (df.year_confidence.values != "exact")
         # wharves, piers, beached ships, gold-rush buildings on piles over the cove (1852
         # chart): the terrain stage gives these their ground (terrain_tiles.ground_under_buildings).
@@ -198,9 +201,7 @@ def main():
         documented = df.source.fillna("").isin(["early_sf", "notable_pre1906", "ohm_sf_goldrush"]).values \
             & ~df.sf16_bldgid.astype(str).str.startswith("pred:n:").values
         fix = soft & ~documented
-        # ... and not its construction either: the frame goes up over build_years() before
-        # start_year (the viewer's rule), on ground that has been there half a year
-        df.loc[fix, "start_year"] = land[fix] + 0.8 + build_years(df.height.values[fix]) + (df.index.values[fix] % 7) * 0.3
+        df.loc[fix, "start_year"] = (land + lead)[fix] + (df.index.values[fix] % 7) * 0.3
         drop = fix & (df.start_year.values >= df.end_year.values - 0.5)
         log(f"export: land check: {early.sum()} buildings predate their ground; moved {fix.sum()} generated/imputed "
             f"(dropped {drop.sum()} that no longer fit), kept {(early & ~fix).sum()} exact/documented (the ground yields)")
