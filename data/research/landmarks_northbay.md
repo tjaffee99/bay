@@ -11,8 +11,9 @@ anchor, `height_m` = model top; the dam's is its structural height, the turbines
 - **Footprints**: OpenStreetMap outlines via Overture 2026-10-21.0 (`data/raw/overture/2026-10-21.0/region4_building.parquet`,
   `region5_building.parquet`; © OpenStreetMap contributors, ODbL), read with pyarrow filters on `px` / `py` around each
   site. Each model is built in a frame aligned with the building (`b.frame(cx, cy, 0, bearing)`: +y at `bearing`,
-  +x at `bearing + 90°`); the anchor is the Overture `px, py` point of the footprint, the frame origin the centre of
-  the building's own rectangle. Which way a building faces was taken from the street it stands on (nearest named
+  +x at `bearing + 90°`); the anchor is the Overture `px, py` point of the footprint (Fort Ross: a point inside the
+  stockade; the dam: Wikipedia's coordinates; bridges: an end of the Overture bridge segment), the frame origin the
+  centre of the building's own rectangle. Which way a building faces was taken from the street it stands on (nearest named
   Overture road segment) and, where the outline is ambiguous, from a photograph (below).
 - **Dimensions**: National Register / National Historic Landmark nomination texts from NPGallery
   (`https://npgallery.nps.gov/NRHP/GetAsset/NRHP/<refnum>_text`, `NHLS/` for landmarks), HAER CA-297, Engineering
@@ -59,8 +60,11 @@ anchor, `height_m` = model top; the dam's is its structural height, the turbines
   pier 2 (152 m) in the water, pier 5 (1,021 m) at the shore, as HAER describes. The 1927 bridge 61 m west. The
   bottom chord runs from 51.0 m at the north abutment to 39.8 m at pier 5 (41.5 m = 135 ft + ≈0.4 m at pier 4), peaks
   92–101 m. Not from sources: truss depth at the abutments (12 m), 1958 truss spacing (17 m; Wikipedia gives 52 ft
-  overall width). The 1927 bridge's own Crockett approach (HAER: four deck-truss and three girder spans on steel
-  towers curving to the hillside) has no geometry in the sources and is **not modelled**; the 1958 model carries
+  overall width). The 1927 bridge's own Crockett approach (HAER: "from the south end of the bridge at pier 5, the
+  viaduct roadway curves about 45 degrees to a southwesterly alignment where it meets San Pablo Avenue" over towers
+  and bents 6–11 — four deck-truss and three girder spans; in the 1990s the southbound exit ramp) has no surveyed line
+  in the sources and is **not modelled** (the 1927 model ends at pier 5; the line could be traced from the 1949 / 1959
+  USGS quadrangles); the 1958 model carries
   today's eastbound viaduct on its Overture line up to the 50 m hillside.
 - **Alfred Zampa Memorial Bridge** — Wikipedia: spans 147 + 728 + 181 m, towers 410 ft, 84 ft wide, 148 ft clear,
   3,465 ft; opened Nov 11, 2003. The 1,056 m of spans centred on Overture's 1,078 m westbound segment put the towers
@@ -148,7 +152,36 @@ anchor, `height_m` = model top; the dam's is its structural height, the turbines
 ## Numeric check
 Model plan (rotated rectangle of the mesh's hull) against the Overture footprints under it.
 
-<!-- @@TABLE@@ -->
+| id | built – end | model plan (m, bearing) | OSM footprint (m, bearing) | IoU | centroid offset | model top (m) |
+|---|---|---|---|---|---|---|
+| `fort_ross_stockade_1812` | 1812.2–1812.7 – 1906.3 | 118.5 × 89.3, 21.6° | 116.4 × 89.7, 22.2° | 0.99 | 0.4 m | 9.2 |
+| `fort_ross_russian_buildings` | 1812.2–1814 – 1842 | 87.9 × 49.3, 28.9° | 90.6 × 46.3, 36.6° | 0.96 | 0.0 m | 10.0 |
+| `fort_ross_rotchev_house` | 1835.5–1836.5 – today | 18.4 × 11.2, 25.6° | — (hull under the model also holds the stockade sliver) | — | — | 7.8 |
+| `fort_ross_chapel_1825` | 1824.5–1825.5 – 1906.3 | 10.8 × 8.9, 117.0° | 10.0 × 8.1, 117.3° | 0.85 | 0.0 m | 10.7 |
+| `fort_ross_chapel_1917` | 1916–1917.5 – 1970.76 | 10.8 × 8.9, 117.0° | 10.0 × 8.1, 117.3° | 0.85 | 0.0 m | 10.7 |
+| `fort_ross_chapel` | 1972.5–1973.9 – today | 10.8 × 8.9, 117.0° | 10.0 × 8.1, 117.3° | 0.85 | 0.0 m | 10.7 |
+| `fort_ross_stockade` | 1955–1957 – today | 118.5 × 89.3, 21.6° | 116.4 × 89.7, 22.2° | 0.99 | 0.4 m | 9.2 |
+| `mission_san_francisco_solano_chapel` | 1840–1841.5 – today | 33.7 × 9.8, 4.1° | — (footprint centroid lies in the convento) | — | — | 10.6 |
+| `mission_san_francisco_solano_convento` | 1825–1832 – today | 38.4 × 10.9, 93.9° | 45.5 × 35.3, 94.0° (chapel + convento are one OSM footprint) | 0.35 | 12.0 m | 5.3 |
+| `sonoma_barracks` | 1837–1841 – today | 39.7 × 18.9, 97.7° | 38.6 × 18.5, 97.7° | 0.91 | 0.6 m | 9.6 |
+| `sonoma_city_hall` | 1906.15–1908.69 – today | 22.1 × 21.7, 7.6° | 21.0 × 20.9, 7.4° | 0.91 | 0.0 m | 17.0 |
+| `rancho_petaluma_adobe` | 1836–1846 – today | 61.3 × 33.8, 26.0° | 60.4 × 32.9, 26.0° | 0.95 | 0.1 m | 8.1 |
+| `benicia_capitol` | 1852–1852.95 – today | 28.9 × 15.0, 29.8° | 28.3 × 15.2, 29.9° | 0.94 | 0.5 m | 12.4 |
+| `benicia_arsenal_camel_barns` | 1853.5–1855 – today | 100.5 × 13.4, 22.6° | 100.5 × 14.3, 22.4° | 0.94 | 0.3 m | 10.5 |
+| `st_peters_chapel_mare_island` | 1900.95–1901.78 – today | 28.5 × 16.8, 94.4° | 27.5 × 16.1, 95.5° | 0.91 | 0.2 m | 14.0 |
+| `greystone_cellars` | 1888–1889.6 – today | 124.6 × 32.4, 144.1° | 123.6 × 31.6, 144.1° | 0.96 | 0.1 m | 20.6 |
+| `inglenook_chateau` | 1883–1887.5 – today | 67.3 × 29.2, 144.1° | 66.4 × 27.7, 144.2° | 0.93 | 0.2 m | 19.2 |
+| `beringer_rhine_house` | 1883–1884.5 – today | 33.4 × 24.9, 148.6° | 32.5 × 23.2, 148.5° | 0.91 | 0.7 m | 17.5 |
+| `bale_grist_mill` | 1846–1846.9 – today | 53.4 × 22.6, 148.9° | 23.1 × 21.1, 168.7° (model hull includes the wheel and flume) | 0.48 | 9.6 m | 12.9 |
+| `napa_county_courthouse` | 1877.6–1878.9 – today | 30.6 × 30.4, 148.4° | 57.1 × 31.1, 58.3° (1878 block = NE half of the footprint) | 0.45 | 15.8 m | 14.5 |
+| `napa_county_courthouse_annex` | 1977–1978.5 – today | 31.0 × 30.8, 148.3° | 57.1 × 31.1, 58.3° (1978 block = SW half of the footprint) | 0.52 | 13.5 m | 9.5 |
+| `napa_valley_opera_house` | 1879.7–1880.12 – today | 37.9 × 20.5, 57.9° | 37.3 × 20.2, 57.8° | 0.97 | 0.2 m | 14.2 |
+| `church_of_one_tree` | 1957–1957.6 – today | 22.6 × 14.7, 163.3° | 21.2 × 13.9, 163.5° | 0.90 | 0.1 m | 21.0 |
+| `deturk_round_barn` | 1890.6–1891.6 – today | 23.9 × 23.9, 128.7° | 24.3 × 24.2, 50.4° | 0.98 | 0.1 m | 13.4 |
+| `petaluma_carnegie_library` | 1904.4–1906.1 – today | 23.7 × 21.7, 25.7° | 21.6 × 21.5, 25.8° | 0.91 | 0.4 m | 12.5 |
+| `st_teresa_of_avila_bodega` | 1860–1861.42 – today | 25.3 × 10.0, 135.6° | 25.0 × 9.4, 135.5° | 0.93 | 0.2 m | 22.7 |
+| `sea_ranch_condominium_one` | 1964.6–1965.8 – today | 49.6 × 47.6, 50.2° | 49.5 × 47.6, 50.1° | 1.00 | 0.0 m | 11.0 |
+| `sea_ranch_chapel` | 1984.9–1985.95 – today | 10.6 × 10.1, 80.3° | 9.8 × 9.3, 79.6° | 0.86 | 0.0 m | 11.0 |
 
 Bridges: mesh lengths 1,021 m (Carquinez cantilevers; 3,350 ft = 1,021 m), 1,056 m of spans on 1,078 m (Zampa), 1,708 m
 (railroad; 5,603 ft), 1,881 m (1962), 2,680 m (2007); tops 101 m (cantilever peaks: 168 ft above a bottom chord at

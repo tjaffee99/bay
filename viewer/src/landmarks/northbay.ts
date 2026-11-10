@@ -859,7 +859,7 @@ const sonomaCityHall: Landmark = {
 };
 
 // ------------------------------------------------------------ Rancho Petaluma Adobe
-// NHL nomination (70000151): "the two-story house is built in [adobe] … form three sides of
+// National Register form (70000151): "the two-story house is built in [adobe] … form three sides of
 // a quadrangle measuring 200 by 145 feet … [walls] 20 feet high. A broad two-story veranda
 // ran around"; Wikipedia: built 1836–46, "what remains of the Petaluma Adobe is only half
 // its former size" (the south-east half decayed under the Bliss family; bought by the Native
@@ -898,7 +898,7 @@ const petalumaAdobe: Landmark = {
     Remains: 'the standing half: Vallejo sold it about 1857 and the south-east half decayed; the Native Sons of the Golden West bought the rest in 1910; now a state historic park',
     Model: OSM_NOTE + ' (main wing 60 × 15 m); the lost south-east half is not modelled (no plan or date of loss found); roof and veranda details from photographs'
   },
-  sources: [WIKI + 'Rancho_Petaluma_Adobe', NRHP('70000151', true)]
+  sources: [WIKI + 'Rancho_Petaluma_Adobe', NRHP('70000151')]
 };
 
 // =================================================================== BENICIA AND MARE ISLAND
