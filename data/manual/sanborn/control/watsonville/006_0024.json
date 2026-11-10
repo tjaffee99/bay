@@ -1,10 +1,15 @@
 {
  "zones_only": true,
  "refine_R": 24,
+ "scale_prior": [
+  0.1545,
+  0.0015
+ ],
  "block_cap": {
-  "103": "medium"
+  "103": "medium",
+  "74": "medium"
  },
- "notes": "Bridge St is today's Riverside Drive (realigned): block 103 on its Central Av corners + block 100",
+ "notes": "block 74 on its two Main St corners + the plate scale (Rodriguez St realigned); Bridge St is today's Riverside Drive (realigned): block 103 on its Central Av corners + block 100",
  "blocks": [
   {
    "name": "74",
@@ -34,18 +39,6 @@
    ],
    "corners": [
     {
-     "x": 213.6,
-     "y": 451.3,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "2nd Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 818.0,
      "y": 459.6,
      "q": "SW",
@@ -68,21 +61,12 @@
      ],
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 192.9,
-     "y": 1748.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Rodriguez Street",
-      "1st Street"
-     ],
-     "norefine": 1,
-     "weak": false
     }
    ],
-   "skip": [],
+   "skip": [
+    "NW",
+    "SW"
+   ],
    "px4": [
     [
      213.6,
@@ -109,18 +93,6 @@
    ],
    "corners_all": [
     {
-     "x": 213.6,
-     "y": 451.3,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "2nd Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 818.0,
      "y": 459.6,
      "q": "SW",
@@ -139,18 +111,6 @@
      "corner": "SE",
      "pc": [
       "Main Street",
-      "1st Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 192.9,
-     "y": 1748.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Rodriguez Street",
       "1st Street"
      ],
      "norefine": 1,

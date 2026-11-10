@@ -1172,9 +1172,10 @@ def histories(name, g, d):
     covers[0] = N
     n_all = np.zeros((rows, cols), np.int8)
     # only the events that touch a chunk are expanded there (dense arrays for every event
-    # of the region in every chunk ran out of memory once the site layers came in)
-    for r0 in range(0, rows, 192):
-        r1 = min(rows, r0 + 192)
+    # of the region in every chunk ran out of memory once the site layers came in; 48 rows at a
+    # time since the fire, Delta and new-county site events: the sort of a chunk is the peak)
+    for r0 in range(0, rows, 48):
+        r1 = min(rows, r0 + 48)
         a0, a1 = r0 * cols, r1 * cols
         act = []
         for (idx, cv), yv in zip(ev_cover, ev_year):

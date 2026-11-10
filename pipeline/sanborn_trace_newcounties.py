@@ -89,7 +89,7 @@ CITIES = {
         "loc": "00921", "area": "watsonville_downtown",
         "volumes": {"004": (1902, "Dec 1902"), "005": (1908, "Jul 1908"), "006": (1920, "Dec 1920"), "007": (1962, "1920 - Dec 1962")},
         "parcels": RY / "santa_cruz_parcels/santa_cruz_parcels.parquet", "pid": "APN",
-        "bbox": (-121.775, 36.900, -121.745, 36.920),
+        "bbox": (-121.775, 36.900, -121.745, 36.920), "plate_scale": 0.1545,  # the 1902-1920 scans are larger
     },
     "benicia": {
         "loc": "00417", "area": "benicia_downtown",
@@ -408,6 +408,8 @@ def assemble():
                 n_cap += 1
             if pr["sanborn_colour"] == "fireproof" and year in c.get("fireproof_years", ()):
                 pr["material"] = "concrete"  # brown = "fire proof construction" on this edition's key (not adobe)
+            if pr["sanborn_colour"] == "stone" and year >= 1940:
+                pr["material"] = "concrete"  # blue on the corrected 1950 / 1962 editions = reinforced concrete, concrete block
             if (key, blk) in clip:
                 g = shape(ft["geometry"])
                 gi = g.intersection(clip[(key, blk)])

@@ -1,13 +1,19 @@
 {
  "zones_only": true,
  "refine_R": 24,
+ "scale_prior": [
+  0.1545,
+  0.0015
+ ],
  "block_cap": {
-  "95": "medium"
+  "95": "medium",
+  "72": "medium",
+  "73": "medium"
  },
  "residential_blocks": [
   "95"
  ],
- "notes": "two halves (west and east of Main St); the plaza (block 94) has no buildings; the houses and library east of Union St (95 / 98) take the fit of blocks 92 + 97",
+ "notes": "two halves (west and east of Main St); Rodriguez St is realigned between Lake Av and 2nd St and Alexander St does not keep its 1920 line: the west half (blocks 72, 73) is fitted block by block on the two Main St corners of each block + the plate scale (W. 3rd St is not drawn to scale between them), block 92 on its Main St corners + block 97; the plaza (block 94) has no buildings; the houses and library east of Union St (95 / 98) take the fit of blocks 92 + 97",
  "blocks": [
   {
    "name": "72",
@@ -37,18 +43,6 @@
    ],
    "corners": [
     {
-     "x": 105.0,
-     "y": 162.8,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "Lake Avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 820.3,
      "y": 155.1,
      "q": "SW",
@@ -73,7 +67,10 @@
      "weak": false
     }
    ],
-   "skip": [],
+   "skip": [
+    "NW",
+    "SW"
+   ],
    "px4": [
     [
      105.0,
@@ -100,18 +97,6 @@
    ],
    "corners_all": [
     {
-     "x": 105.0,
-     "y": 162.8,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "Lake Avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 820.3,
      "y": 155.1,
      "q": "SW",
@@ -134,19 +119,6 @@
      ],
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 105.0,
-     "y": 1342.9,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Rodriguez Street",
-      "Beach Street"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [4.4 1.1] at Rodriguez Street x Beach Street NE"
     }
    ],
    "zone_px": [
@@ -184,18 +156,6 @@
    ],
    "corners": [
     {
-     "x": 90.0,
-     "y": 1461.4,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "Beach Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 825.9,
      "y": 1453.5,
      "q": "SW",
@@ -218,21 +178,12 @@
      ],
      "norefine": 1,
      "weak": false
-    },
-    {
-     "x": 83.3,
-     "y": 2430.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Rodriguez Street",
-      "2nd Street"
-     ],
-     "norefine": 1,
-     "weak": false
     }
    ],
-   "skip": [],
+   "skip": [
+    "NW",
+    "SW"
+   ],
    "px4": [
     [
      90.0,
@@ -259,18 +210,6 @@
    ],
    "corners_all": [
     {
-     "x": 90.0,
-     "y": 1461.4,
-     "q": "SE",
-     "corner": "NW",
-     "pc": [
-      "Rodriguez Street",
-      "Beach Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
      "x": 825.9,
      "y": 1453.5,
      "q": "SW",
@@ -289,18 +228,6 @@
      "corner": "SE",
      "pc": [
       "Main Street",
-      "2nd Street"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 83.3,
-     "y": 2430.0,
-     "q": "NE",
-     "corner": "SW",
-     "pc": [
-      "Rodriguez Street",
       "2nd Street"
      ],
      "norefine": 1,
@@ -351,19 +278,8 @@
       "Lake Avenue"
      ],
      "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 2041.0,
-     "y": 1328.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "Alexander Street",
-      "Beach Street"
-     ],
-     "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "92"
     },
     {
      "x": 1180.8,
@@ -375,10 +291,69 @@
       "Beach Street"
      ],
      "norefine": 1,
-     "weak": false
+     "weak": false,
+     "block": "92"
+    },
+    {
+     "x": 1187.3,
+     "y": 2020.2,
+     "q": "SE",
+     "corner": "NW",
+     "pc": [
+      "Main Street",
+      "Peck Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "97"
+    },
+    {
+     "x": 1715.4,
+     "y": 2016.3,
+     "q": "SW",
+     "corner": "NE",
+     "pc": [
+      "Union Street",
+      "Peck Street"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "97"
+    },
+    {
+     "x": 1720.5,
+     "y": 2350.9,
+     "q": "NW",
+     "corner": "SE",
+     "pc": [
+      "Union Street",
+      "Maple Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "97"
+    },
+    {
+     "x": 1191.2,
+     "y": 2356.0,
+     "q": "NE",
+     "corner": "SW",
+     "pc": [
+      "Main Street",
+      "Maple Avenue"
+     ],
+     "norefine": 1,
+     "weak": false,
+     "block": "97"
     }
    ],
-   "skip": [],
+   "skip": [
+    "NE",
+    "SE"
+   ],
+   "with": [
+    "97"
+   ],
    "px4": [
     [
      1171.6,
@@ -412,31 +387,6 @@
      "pc": [
       "Main Street",
       "Lake Avenue"
-     ],
-     "norefine": 1,
-     "weak": false
-    },
-    {
-     "x": 2034.4,
-     "y": 149.0,
-     "q": "SW",
-     "corner": "NE",
-     "pc": [
-      "Alexander Street",
-      "Lake Avenue"
-     ],
-     "norefine": 1,
-     "weak": false,
-     "drop": "implausible property-line offsets [ 8.  37.4] at Alexander Street x Lake Avenue SW"
-    },
-    {
-     "x": 2041.0,
-     "y": 1328.0,
-     "q": "NW",
-     "corner": "SE",
-     "pc": [
-      "Alexander Street",
-      "Beach Street"
      ],
      "norefine": 1,
      "weak": false
