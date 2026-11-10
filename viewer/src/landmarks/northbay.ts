@@ -220,9 +220,9 @@ const carquinez1927: Landmark = {
     b.frame(0, 0, 0, a.bearing, () => carquinezCantilever(b, 42 * FT, '#7E8A86', false));
   },
   facts: {
-    Built: '1923–27 by the American Toll Bridge Company (Robinson & Steinman, designers; Charles Derleth Jr., chief engineer); dedicated May 21, 1927 — the first highway bridge across an arm of San Francisco Bay',
+    Built: '1923–27 by the American Toll Bridge Company (Robinson & Steinman, designers; Charles Derleth Jr., chief engineer); dedicated May 21, 1927 — the first major crossing of San Francisco Bay’s waters, on the direct road to Sacramento',
     Form: 'double cantilever through truss, 3,350 ft: two 1,100 ft main spans, a 150 ft tower span, two 500 ft anchor arms; trusses 42 ft apart; 135 ft clear; peaks 168 ft above the roadway (HAER CA-297)',
-    Later: 'westbound only after the 1958 bridge opened; carried eastbound traffic 2003–06 while the 1958 span was retrofitted',
+    Later: 'westbound only after the 1958 bridge opened; once the Zampa bridge was open it carried eastbound traffic for a time while the 1958 span was retrofitted',
     Removed: 'replaced by the Alfred Zampa Memorial Bridge (Nov 2003) and dismantled span by span; completed Sep 4, 2007',
     Model: 'placed 200 ft (61 m) west of the 1958 bridge (HAER); truss depth at the abutments estimated; the curved Crockett approach viaduct (four deck trusses and three girder spans on steel towers) is not modelled; one end date for all spans'
   },
@@ -246,7 +246,7 @@ const carquinez1958: Landmark = {
   facts: {
     Opened: 'Nov 25, 1958, 200 ft upstream (east) of the 1927 bridge; four lanes, eastbound since the ramps were finished',
     Form: 'cantilever through truss with the same span lengths, pier locations and superstructure height as the 1927 bridge (HAER CA-297): 500 + 1,100 + 150 + 1,100 + 500 ft; 3,300 ft, 52 ft wide, 140 ft clear (Wikipedia)',
-    Retrofit: 'seismic retrofit and new deck after the Zampa bridge opened (2003–06)',
+    Retrofit: 'seismic retrofit, deck and superstructure rehabilitation after the Zampa bridge opened in 2003',
     Model: 'alignment from OpenStreetMap; truss spacing (17 m), the south viaduct’s columns and the construction start are estimated'
   },
   sources: CQ_SRC
@@ -321,7 +321,7 @@ const zampaBridge: Landmark = {
     Opened: 'dedicated Nov 8, opened Nov 11, 2003 (westbound I-80 and a bicycle / pedestrian path), replacing the 1927 cantilever',
     Form: 'suspension bridge with concrete towers and an orthotropic steel box deck: spans 147 + 728 + 181 m (main span 2,387 ft); 3,465 ft long, 84 ft wide',
     Towers: '410 ft (125 m); 148 ft clear above the strait',
-    Namesake: 'Al Zampa (1905–2000), ironworker on the 1927 Carquinez Bridge, the Bay Bridge and the Golden Gate Bridge',
+    Namesake: 'Al Zampa, an ironworker on the 1927 Carquinez Bridge and the Golden Gate Bridge',
     Model: 'alignment from OpenStreetMap, the spans centred on the bridge segment; tower sections, anchorage blocks, cable sag and deck heights estimated; construction start from the Jan 2000 contract award'
   },
   sources: [WIKI + 'Carquinez_Bridge']
@@ -575,7 +575,7 @@ const FR_W: V2 = [-45.5, -33.7];
 const REDWOOD = '#74685A';
 const REDWOOD_DK = '#62584C';
 const PLANK = '#877D6F';
-const FR_SRC = [NRHP('66000239', true), NRHP('70000150'), WIKI + 'Fort_Ross,_California'];
+const FR_SRC = [NRHP('66000239', true), NRHP('70000150'), WIKI + 'Fort_Ross,_California', 'https://www.parks.ca.gov/?page_id=449'];
 
 function frStockade(b: MeshBuilder) {
   const wall = (p: V2, q: V2, t0 = 0, t1 = 1) =>
@@ -628,7 +628,7 @@ const frStockade1812: Landmark = {
   anchor: FR,
   build: frStockade,
   facts: {
-    Founded: '1812 by Ivan Kuskov and the Russian-American Company: 25 Russians and some 80 Alaska Natives built the stockaded fort on the Kashaya Pomo site of Metini',
+    Founded: '1812 by Ivan Kuskov of the Russian-American Company, who brought 25 Russians and 80 Alaskans to build houses and a stockade at Metini, in Kashaya Pomo country',
     Stockade: 'about 276 × 312 ft of hand-hewn redwood timbers, 12 ft high, with three sally ports and a seven-sided and an eight-sided two-storey blockhouse at opposite corners (National Historic Landmark nomination)',
     After: 'sold to John Sutter in December 1841; a ranch until 1903. The original blockhouses and parts of the stockade stood until the 1906 earthquake',
     Model: 'corners and blockhouse outlines from the reconstructed fort in OpenStreetMap; blockhouse heights from photographs. LOW CONFIDENCE: how much of the wall still stood through the ranch years'
@@ -666,7 +666,7 @@ const frRotchev: Landmark = {
   facts: {
     Built: 'renovated about 1836 from an existing building for Alexander Rotchev, the last manager — the only original Russian building left at the fort (National Historic Landmark, 1970)',
     Form: 'one storey of hand-squared redwood timbers notched at the corners under a steep hip roof of split redwood planks up to 23 ft long; the nomination gives about 36 × 48 ft',
-    Fire: 'its roof was damaged by the fires of 1970–71; opened as a house museum in 2010',
+    Fire: 'its roof was damaged in the fires of 1970; opened as a house museum in 2010',
     Model: OSM_NOTE + ' (17.5 × 10.5 m); wall and roof heights from a photograph'
   },
   sources: [NRHP('70000150'), WIKI + 'Rotchev_House']
@@ -744,7 +744,7 @@ const sonomaMissionChapel: Landmark = {
   facts: {
     Mission: 'founded July 4, 1823 by José Altimira — the 21st and last California mission, the only one founded under Mexican rule; secularized 1834',
     Chapel: 'built in 1841 by order of Mariano Vallejo as the parish church, on the site of the first wooden mission chapel (the large adobe mission church, at the convento’s east end, was already in ruins)',
-    Later: 'sold in 1881 (hay barn, winery, blacksmith shop); bought by the Historic Landmarks League in 1903, damaged in 1906 and restored by the State 1911–13',
+    Later: 'sold in 1881 (hay barn, winery, blacksmith shop); bought by the California Historic Landmarks League in 1903 and restored by the State in 1911–13',
     Model: OSM_NOTE + ' (8.9 × 33 m); wall and ridge heights from a photograph; construction start estimated'
   },
   sources: [WIKI + 'Mission_San_Francisco_Solano', PLAZA_SRC]
@@ -768,7 +768,7 @@ const sonomaMissionConvento: Landmark = {
   // chapel and convento are one OSM footprint whose centroid lies in the convento
   replaces: [rotRing(rect(0, 0, 13.5, 39.5), 93.9, 21.2, -18.8)],
   facts: {
-    Built: 'the padres’ quarters: adobe building began in 1825 after the first season’s walls melted in the rains; 27 rooms by 1832 — the oldest building in Sonoma',
+    Built: 'the padres’ quarters: three adobe buildings ready for roofing at the end of 1824 melted in the rains; the rebuilt convento had 27 rooms by 1832',
     Form: 'one-storey tile-roofed adobe nearly 120 ft long with a corridor on wooden posts along the street; restored 1911–13',
     Model: OSM_NOTE + ' (37.8 × 10.5 m); heights from a photograph; LOW CONFIDENCE construction years (between the 1825 start and the 1832 inventory)'
   },
@@ -849,7 +849,7 @@ const sonomaCityHall: Landmark = {
   replaces: [rotRing(rect(0, 0, 21.8, 21.8), 7.4, 0.3, -0.1)],
   facts: {
     Built: 'cornerstone Feb 22, 1906; dedicated Sep 9, 1908 (Adolph C. Lutgens, architect)',
-    Form: 'Mission Revival in local basalt: two storeys, four identical fronts — so that no merchant on the Plaza faced its back — a bell cupola and tile roofs; the fire engines once left through its arched doors',
+    Form: 'Mission Revival in local basalt: two storeys, four identical fronts each with an arched doorway, a bell cupola and tile roofs; the fire department’s horse-drawn wagons once left by any side',
     Model: OSM_NOTE + '; heights scaled from a photograph (eaves ≈8.8 m, cupola ≈13.9 m)'
   },
   sources: [WIKI + 'Sonoma_City_Hall', PLAZA_SRC]
@@ -890,9 +890,9 @@ const petalumaAdobe: Landmark = {
   // the three wings, not the courtyard (the U-shaped footprint's centroid lies in the main wing)
   replaces: [rotRing(rect(0, 3.7, 16, 61.4), 26.0), rotRing(rect(16.45, 27.2, 18.9, 14.6), 26.0), rotRing(rect(16.4, -10.9, 18.9, 14), 26.0)],
   facts: {
-    Built: '1836–46 for Mariano Vallejo as the headquarters of the 66,000-acre Rancho Petaluma — the largest private adobe building in California; never quite finished',
+    Built: '1836–46 for Mariano Vallejo as the headquarters of Rancho Petaluma — the largest privately owned adobe building in California',
     Form: 'two storeys of adobe on redwood framing around a courtyard about 200 × 145 ft, walls 20 ft high, with broad two-storey verandas and a low shingled roof',
-    Remains: 'the standing half: Vallejo sold it about 1857 and the south-east half decayed; the Native Sons of the Golden West bought the rest in 1910; state historic park since 1951',
+    Remains: 'the standing half: Vallejo sold it about 1857 and the south-east half decayed; the Native Sons of the Golden West bought the rest in 1910; now a state historic park',
     Model: OSM_NOTE + ' (main wing 60 × 15 m); the lost south-east half is not modelled (no plan or date of loss found); roof and veranda details from photographs'
   },
   sources: [WIKI + 'Rancho_Petaluma_Adobe', NRHP('70000151', true)]
@@ -934,7 +934,7 @@ const beniciaCapitol: Landmark = {
   facts: {
     Built: '1852 as Benicia’s city hall; California’s third capitol — the Legislature met here Feb 3, 1853 – Feb 24, 1854, then moved to Sacramento',
     Form: 'two-storey red-brick temple front: two fluted white columns between brick piers under a pediment, granite stairs (National Register)',
-    Today: 'the only pre-Sacramento capitol still standing; restored as a state historic park (1958)',
+    Today: 'the only pre-Sacramento capitol that remains; restored as a state historic park',
     Model: OSM_NOTE + ' (28.3 × 15.2 m with stairs and cornice); cornice height from the LiDAR-derived OSM height (9.3 m); pediment and portico proportions from a photograph'
   },
   sources: [WIKI + 'Benicia_Capitol_State_Historic_Park', NRHP('71000204')]
@@ -976,7 +976,7 @@ const camelBarns: Landmark = {
     Built: 'two sandstone storehouses of the Benicia Arsenal (Buildings 7 and 9), 1853–55; the National Register form dates Building 7 to 1854',
     Camels: 'the Army’s experimental camel herd was stabled here in 1863–64 before it was auctioned off',
     Form: 'two storeys, 40.6 × 100 ft, walls 2 ft 6 in thick, gabled roofs; seven arched double doors on the north-west side',
-    Today: 'the Benicia Historical Museum',
+    Today: 'the Museum of History Benicia',
     Model: OSM_NOTE + '; eaves and ridge heights estimated (7.5 / 10.5 m); the small building between the barns from its OSM outline'
   },
   sources: [NRHP('76000534'), WIKI + 'Benicia_Arsenal']
@@ -1065,9 +1065,9 @@ const greystone: Landmark = {
     }),
   replaces: [rotRing(rect(3, 0, 33, 125.5), 324.1, -15.2, 21.0)],
   facts: {
-    Built: '1888–89 for William Bourn II and Everett Wise as a cooperative wine cellar (Percy & Hamilton, architects) — then the largest stone winery in the world',
+    Built: '1888–89 for William Bourn II and Everett Wise as a cooperative wine cellar (Percy & Hamilton, architects); George Percy called it the largest wine cellar in California, if not the world',
     Size: '400 × 78 ft, three storeys of local tufa, with a 50 × 20 ft entrance block and a tower 20 ft square rising a storey above the roof; thirteen tunnels run into the hill behind (National Register)',
-    Owners: 'Christian Brothers 1950–89; the Culinary Institute of America’s Greystone campus since 1995',
+    Owners: 'leased by the Christian Brothers in 1940, bought in 1945 and used for sparkling wine 1950–89; sold to the Culinary Institute of America in 1993',
     Model: OSM_NOTE + ' (123.5 × 25.4 m); eaves, ridge and tower heights estimated from a photograph (12 / 16.5 / 20.6 m); construction start estimated'
   },
   sources: [NRHP('78000725'), WIKI + 'The_Culinary_Institute_of_America_at_Greystone']
@@ -1109,7 +1109,7 @@ const inglenook: Landmark = {
   replaces: [rotRing(rect(-4, 0, 29, 67.5), 324.2, 1.25, 1.7)],
   facts: {
     Built: 'the stone winery of Gustave Niebaum’s Inglenook estate at Rutherford, designed by his winemaker Hamden McIntyre as a gravity-flow cellar',
-    Later: 'sold by the family in 1964; the château was reunited with the vineyards by Francis Ford Coppola in 1995 and the Inglenook name restored in 2011',
+    Later: 'sold to Allied Grape Growers in 1964; Francis Ford Coppola bought much of the estate in 1975 and later reunited it with the château',
     Model: OSM_NOTE + ' (66.3 × 19.5 m); LOW CONFIDENCE construction years (commonly given as 1883–87, not confirmed in the sources used); heights and roof forms estimated from a photograph'
   },
   sources: [WIKI + 'Inglenook_(winery)']
@@ -1118,7 +1118,7 @@ const inglenook: Landmark = {
 // ------------------------------------------------------------ Rhine House (Beringer)
 // NRHP 72000242: "Approximately 45′ × 60′. Ceilings 12′ high. 2½ stories high … Constructed
 // of white oak imported from Germany and stone, hand cut from Napa County quarry …
-// Pennsylvania slate roof"; Wikipedia: built 1883–84, Albert Schroepfer, 17 rooms. OSM
+// Pennsylvania slate roof"; Wikipedia: built 1883–84, Albert Schroepfer. OSM
 // outline: main block 27.1 × 13.4 m on a 328.6° axis (front toward Main Street, north-east)
 // and a 15.3 × 9.8 m wing behind.
 const rhineHouse: Landmark = {
@@ -1149,7 +1149,7 @@ const rhineHouse: Landmark = {
     }),
   replaces: [rotRing(rect(-4, -3.8, 26, 34.5), 328.6, 0.4, -0.7)],
   facts: {
-    Built: '1883–84 for Frederick Beringer (Albert Schroepfer, architect), recalling the family house at Mainz on the Rhine; 17 rooms',
+    Built: '1883–84 for Frederick Beringer (Albert Schroepfer, architect)',
     Form: 'about 45 × 60 ft, 2½ storeys: Napa stone below, half-timbered upper walls, Pennsylvania slate roofs (National Register)',
     Model: 'LOW CONFIDENCE massing — ' + OSM_NOTE + ' (main block 27 × 13 m with later additions); towers, gables and all heights simplified from a photograph'
   },
@@ -1199,8 +1199,8 @@ const baleMill: Landmark = {
   replaces: [rotRing(rect(0, 0, 9, 14.5), 79.7, -0.03, 0.15), rotRing(rect(11.25, 4.6, 9.2, 21.8), 79.7, -0.03, 0.15), rotRing(rect(-5.8, -1.3, 5, 7), 79.7, -0.03, 0.15)],
   facts: {
     Built: '1846 for Dr. Edward Turner Bale on his Rancho Carne Humana; mill and granary of local Douglas fir and redwood',
-    Wheel: '36 ft overshot wheel fed by a wooden flume from the mill pond (it replaced the first, smaller wheel in the 1850s) — one of two water-driven grist mills left west of the Mississippi; still grinds',
-    Park: 'given to the Native Sons of the Golden West in 1923; state historic park since 1974',
+    Wheel: '36 ft overshot wheel fed by a wooden flume from Mill Creek — one of only two water-driven mills left west of the Mississippi',
+    Park: 'deeded to the Native Sons of the Golden West, who restored it in the late 1960s and early 1970s; now a state historic park',
     Model: OSM_NOTE + '; building heights from a photograph; the wheel’s exact place on the north side and the flume’s line are approximate. The 1972 National Register form gives the wheel as 45 ft'
   },
   sources: [WIKI + 'Bale_Grist_Mill_State_Historic_Park', NRHP('72000240')]
@@ -1233,10 +1233,10 @@ const napaCourthouse: Landmark = {
     }),
   replaces: [rotRing(rect(0, 0, 33, 59), 58.3, 2.7, 1.6)],
   facts: {
-    Built: '1878 (Samuel and Joseph Newsom with Ira Gilchrist), replacing the 1856 courthouse on the same square',
+    Built: '1878 (Samuel and Joseph Newsom with Ira Gilchrist, architects), replacing the 1856 courthouse',
     Form: 'High Victorian Italianate, two storeys of brick and stucco, 86 × 95 ft, under a hipped roof (National Register)',
     Tower: 'a tower 20 ft square with a bulb-shaped cupola rose over the east front until 1931, when it was taken down and the pediment added — not modelled (no height found)',
-    Later: 'addition of 1978 behind; damaged by the South Napa earthquake of Aug 24, 2014 and repaired',
+    Later: 'addition of 1978 behind; damaged by the South Napa earthquake of 2014',
     Model: OSM_NOTE + ' (the north-east 26 m of the block); wall height from the OSM height (11.9 m); roof and pediment from a photograph; construction start estimated'
   },
   sources: [NRHP('92000778'), WIKI + 'Napa_County_Courthouse_Plaza']
@@ -1265,7 +1265,7 @@ const napaOperaHouse: Landmark = {
   id: 'napa_valley_opera_house',
   name: 'Napa Valley Opera House',
   kind: 'building',
-  built: [1879.2, 1880.12],
+  built: [1879.7, 1880.12],
   end: 9999,
   anchor: [-122.285516, 38.299678],
   build: b =>
@@ -1281,9 +1281,9 @@ const napaOperaHouse: Landmark = {
     }),
   replaces: [rotRing(rect(0, 0, 21.2, 38.3), 237.8)],
   facts: {
-    Built: '1879–80 (Samuel and Joseph Newsom with Ira Gilchrist): shops below, the opera house on the upper floor',
+    Built: 'late 1879 (Samuel and Joseph Newsom, architects); opened Feb 13, 1880 with HMS Pinafore — the opera house is the upper floor',
     Form: 'two-storey Italianate brick, 60 ft on Main Street by 100 ft deep; auditorium 54½ × 76 ft (National Register)',
-    Later: 'closed in 1914; saved from demolition in the 1970s and reopened in 2003 after restoration',
+    Later: 'closed in 1914 (National Register form); since restored as a theatre',
     Model: OSM_NOTE + ' (37.3 × 20.2 m with the rear addition); cornice height scaled from a photograph; construction months estimated'
   },
   sources: [NRHP('73000414'), WIKI + 'Napa_Valley_Opera_House']
@@ -1374,8 +1374,8 @@ const churchOfOneTree: Landmark = {
   replaces: [rotRing(rect(0.6, -1.2, 15.5, 22), 343.4, -0.93, 2.98)],
   facts: {
     Built: '1873–74 for the First Baptist Church of Santa Rosa on B Street, entirely of lumber from one redwood felled near Guerneville (275 ft tall, 18 ft in diameter, 78,000 board feet)',
-    Moved: 'to Juilliard Park in 1957; long the Ripley “Believe It or Not!” museum (Robert Ripley grew up in Santa Rosa); restored by the city in 2009',
-    Model: OSM_NOTE + ' at the park; heights scaled from a c. 1918 postcard. Only the present site is modelled — the 1873–1957 position on B Street was not located; LOW CONFIDENCE year of the move (not in the sources used)'
+    Moved: 'to Juilliard Park to save it from demolition (1957 — LOW CONFIDENCE year, not in the sources used); the Ripley Memorial Museum from 1970 to 1998 (Robert Ripley, a Santa Rosa native, featured it in “Believe It or Not!”)',
+    Model: OSM_NOTE + ' at the park; heights scaled from a c. 1918 postcard. Only the present site is modelled — the 1873–1957 position on B Street was not located'
   },
   sources: [WIKI + 'Church_of_One_Tree']
 };
@@ -1403,9 +1403,9 @@ const deTurkBarn: Landmark = {
   },
   replaces: [circle(0, 0, 13, 16)],
   facts: {
-    Built: '1891 for the winemaker Isaac DeTurk to stable his champion trotting horses, a block from his winery',
+    Built: '1891 for the winemaker Isaac DeTurk’s trotting horses, across Donahue Street from the old Santa Rosa Winery',
     Form: 'truly round, 76 ft in diameter, two storeys of redwood shiplap under a broad conical roof; 32 ft high to the vented cupola, with a thin spire (National Register)',
-    Later: 'city property since the 1940s (a Parks Department shop); restored and reopened as a community hall in 2011',
+    Later: 're-acquired by the city in 1996 and restored (National Register, 2004)',
     Model: 'diameter and height from the National Register form; wall height and spire length estimated; construction months estimated'
   },
   sources: [NRHP('04000334')]
@@ -1441,8 +1441,8 @@ const petalumaLibrary: Landmark = {
   replaces: [rotRing(rect(0, 1, 22.5, 22.8), 25.8)],
   facts: {
     Built: 'cornerstone 1904, opened early 1906 with a Carnegie grant; Brainerd Jones’s first major commission',
-    Form: 'Neo-Classical Revival, 60 × 60 ft, two storeys on a high basement, faced in local stone and Alameda pressed brick, with a four-column pedimented portico and a stained-glass dome inside',
-    Today: 'the Petaluma Historical Library and Museum (since 1978)',
+    Form: 'Neo-Classical Revival, 60 × 60 ft, two storeys on a high basement, faced in local stone and Alameda pressed brick, with a four-column pedimented portico',
+    Today: 'a Carnegie library until 1976; since then the Petaluma Historical Library and Museum',
     Model: OSM_NOTE + ' (19.5 m square); cornice and roof heights estimated from a photograph'
   },
   sources: [NRHP('88000925'), WIKI + 'Free_Public_Library_of_Petaluma']
@@ -1480,7 +1480,7 @@ const stTeresaBodega: Landmark = {
     }),
   replaces: [rotRing(rect(0, -1.5, 11, 26), 315.5, -0.05, -0.03)],
   facts: {
-    Built: 'by ship’s carpenters in 1860 on land given by Jasper O’Farrell; dedicated by Archbishop Alemany on June 2, 1861 — in continuous use since',
+    Built: 'by ship’s carpenters in 1860 on land given by Jasper O’Farrell; dedicated by Archbishop Alemany on June 2, 1861 — the oldest church in continuous use in Sonoma County',
     Form: 'white redwood church with an engaged front tower, belfry and octagonal spire; photographed by Ansel Adams in 1953',
     Model: OSM_NOTE + ' (nave 19.7 × 9.4 m); heights scaled from a 2023 photograph (ridge ≈10 m, spire ≈21.5 m)'
   },
@@ -1509,7 +1509,7 @@ const condominiumOne: Landmark = {
   },
   replaces: [rect(9.5, 1.5, 52, 60)],
   facts: {
-    Built: '1965 (designed 1963–64 by Charles Moore, Donlyn Lyndon, William Turnbull and Richard Whitaker — MLTW; Matthew Sylvia, builder): the first building of The Sea Ranch',
+    Built: '1965 (designed 1963–64 by Charles Moore, Donlyn Lyndon, William Turnbull and Richard Whitaker — MLTW; Matthew Sylvia, builder): the first unit of the Sea Ranch development',
     Form: 'ten units, each a 24 ft cube framed in heavy fir timbers and clad in unstained redwood boards, gathered around two courts under shed roofs that climb the slope from the cliff edge (National Register, 2005)',
     Model: OSM_NOTE + '; LOW CONFIDENCE massing — the stepped shed roofs and the two towers at the crest are merged into one roof plane rising inland (≈5.5 → 11 m)'
   },
@@ -1530,7 +1530,7 @@ const seaRanchChapel: Landmark = {
   },
   replaces: [rect(0.1, -0.7, 11.5, 11.5)],
   facts: {
-    Built: 'completed December 1985 (James Hubbell, artist-architect), the gift of Robert and Betty Buffum in memory of Kirk Ditzler; non-denominational',
+    Built: 'completed December 1985, the gift of Sea Ranch residents Robert and Betty Buffum in memory of Kirk Ditzler; non-denominational',
     Form: 'a hand-built sculptural shell of cedar shingles on a stone base, its roof sweeping up to a plume of bronze fins',
     Model: 'LOW CONFIDENCE — ' + OSM_NOTE + ' (≈10 m across); the free-form roof is reduced to a skewed cone and its height (≈8 m, fins to ≈11 m) is estimated from a photograph'
   },
