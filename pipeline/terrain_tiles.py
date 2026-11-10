@@ -1305,8 +1305,9 @@ def ground_under_buildings(name, g, covers, years):
     what still stands over bay, flat, pond or reservoir when it goes up has a researched,
     recorded or documented date — the ground yields to it here, on the assembled histories:
 
-      * a cell that becomes land later (fill, city) becomes land half a year before the
-        first building on it instead (under any part of a footprint);
+      * a cell that becomes land later (fill, city) becomes land before the first building
+        on it starts to go up instead (0.8 years before its construction frame: the viewer
+        brings made land in over half a year) (under any part of a footprint);
       * a cell that is water for good gets a deck (city ground) under a building's middle
         from then on — pier sheds, wharf warehouses, houseboats, lagoon-side houses;
       * before American settlement (villages, missions): the natural cover there is grass.
@@ -1334,6 +1335,10 @@ def ground_under_buildings(name, g, covers, years):
         if y1 is not None:
             np.maximum.at(until, k[ok], np.asarray(y1, np.float32)[ok])
 
+    def lead(height):
+        # construction period before start_year (the viewer draws the rising frame then)
+        return np.clip(0.25 + np.nan_to_num(np.asarray(height, float), nan=7.0) / 55.0, 0.33, 3.0)
+
     cell_m = g["res"] * 0.79
     # every building whose middle is over water for good gets its deck / shore: houseboats
     # and covered berths, lagoon and waterfront houses whose cell the coarse grid reads as
@@ -1342,7 +1347,8 @@ def ground_under_buildings(name, g, covers, years):
     p = INTERIM / "sf_export_final.parquet"
     if p.exists():
         b = gpd.read_parquet(p)
-        y0, y1 = b.start_year.values.astype(float), b.end_year.values.astype(float)
+        # (the ground is there before the construction frame goes up, not only by start_year)
+        y0, y1 = b.start_year.values.astype(float) - lead(b.height.values if "height" in b else np.full(len(b), 7.0)), b.end_year.values.astype(float)
         ext = [np.asarray(gm.exterior.coords)[:, :2] for gm in b.geometry.values]
         owner = np.repeat(np.arange(len(ext)), [len(e) for e in ext])
         allv = np.concatenate(ext)
@@ -1354,7 +1360,7 @@ def ground_under_buildings(name, g, covers, years):
     p = INTERIM / "region_building_points.parquet"
     if p.exists():
         r = pd.read_parquet(p)
-        y0, y1 = r.start_year.values.astype(float), r.end_year.values.astype(float)
+        y0, y1 = r.start_year.values.astype(float) - lead(r.height.values if "height" in r else np.full(len(r), 7.0)), r.end_year.values.astype(float)
         put(need, r.lon.values, r.lat.values, y0, y1)
         put(core, r.lon.values, r.lat.values, y0, sel=r.area_m2.values >= min_area)
         # big footprints reach the cells around their middle
@@ -1380,7 +1386,7 @@ def ground_under_buildings(name, g, covers, years):
     yv = years.reshape(4, -1)
     moved = decks = natural = kept = 0
     for k in cand:
-        t_any = min(need[k], lm[k]) - 0.6
+        t_any = min(need[k], lm[k]) - 0.8
         seq = [(float(yv[j, k]), int(cv[j + 1, k])) for j in range(4) if np.isfinite(yv[j, k])]
         nat0 = nat = int(cv[0, k])
         state = nat
@@ -1402,14 +1408,14 @@ def ground_under_buildings(name, g, covers, years):
                 new = earlier + [(t_any, later[j][1])] + later[j + 1:]
                 moved += 1
             elif np.isfinite(core[k]):
-                tc = float(core[k]) - 0.6
+                tc = float(core[k]) - 0.8
                 new = [e for e in seq if e[0] <= tc] + [(tc, URBAN if tc >= 1849.0 else GRASS)] + [e for e in seq if e[0] > tc]
                 decks += 1
         # ... and while a building's middle stands on a cell, the cell does not turn to water
         # (a salt pond or reservoir dated after the houses on its edge, a later building on a
         # cell that had been flooded since the first one)
         if np.isfinite(core[k]):
-            tc0 = float(core[k]) - 0.6
+            tc0 = float(core[k]) - 0.8
             dry = [e for e in new if not (e[1] in WATERISH and tc0 <= e[0] < until[k])]
             if len(dry) != len(new):
                 new = dry

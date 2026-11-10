@@ -26,6 +26,12 @@ from common import INTERIM as _I
 _GRID = None
 
 
+def build_years(height):
+    """Construction period drawn before start_year (viewer/src/layers/time-extension.ts):
+    ~4 months for a house, ~1 year at 40 m, 3 years for a tower."""
+    return np.clip(0.25 + np.nan_to_num(np.asarray(height, float), nan=7.0) / 55.0, 0.33, 3.0)
+
+
 def ground_sampler():
     """Bilinear sampler of the 30 m detail DEM (same lattice as the terrain tiles)."""
     global _GRID
@@ -192,14 +198,16 @@ def main():
         documented = df.source.fillna("").isin(["early_sf", "notable_pre1906", "ohm_sf_goldrush"]).values \
             & ~df.sf16_bldgid.astype(str).str.startswith("pred:n:").values
         fix = soft & ~documented
-        df.loc[fix, "start_year"] = land[fix] + 0.5 + (df.index.values[fix] % 7) * 0.3
+        # ... and not its construction either: the frame goes up over build_years() before
+        # start_year (the viewer's rule), on ground that has been there half a year
+        df.loc[fix, "start_year"] = land[fix] + 0.8 + build_years(df.height.values[fix]) + (df.index.values[fix] % 7) * 0.3
         drop = fix & (df.start_year.values >= df.end_year.values - 0.5)
         log(f"export: land check: {early.sum()} buildings predate their ground; moved {fix.sum()} generated/imputed "
             f"(dropped {drop.sum()} that no longer fit), kept {(early & ~fix).sum()} exact/documented (the ground yields)")
         df = df[~drop].reset_index(drop=True)
     # the buildings as exported (after the land check), for the terrain stage's
     # "no building over water" pass and the audits
-    keep_cols = [c for c in ("start_year", "end_year", "source", "year_confidence", "year_reason", "sf16_bldgid", "geometry") if c in df.columns]
+    keep_cols = [c for c in ("start_year", "end_year", "height", "source", "year_confidence", "year_reason", "sf16_bldgid", "geometry") if c in df.columns]
     df[keep_cols].to_parquet(_I / "sf_export_final.parquet")
 
     n = len(df)

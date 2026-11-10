@@ -655,6 +655,18 @@ def main():
         year, raw, conf, end, start, src = (np.asarray(a)[rows] for a in (year, raw, conf, end, start, src))
     H, stories, area = heights(g)
     H = np.where(np.isfinite(lidar_h), lidar_h, H)
+    # the construction frame (build_years before start_year) must stand on ground too, and
+    # ground that has been there half a year: buildings on made land start that much later
+    # (researched dates are left: the terrain stage gives those their ground in time)
+    if (INTERIM / "grid_region_landyear.npy").exists():
+        from sf_export import build_years
+        known_ = pd.Series(src).astype(str).str.startswith(("known:", "early:")).values
+        land_ = land_under(g.geometry.values)
+        lead_ = 0.8 + build_years(H)
+        late_ = ~known_ & np.isfinite(land_) & (start < land_ + lead_)
+        start = np.where(late_, land_ + lead_ + 0.4 * (start % 1.0), start)
+        log(f"region: {int(late_.sum())} buildings on made land start after their ground and their construction time")
+        del land_, lead_, late_, known_
     stories = np.where(np.isfinite(lidar_h), np.maximum(1, np.round(lidar_h / 3.6)), stories)
     use = use_codes(g, area)
     mat, roof = materials(start, H, area, use)
@@ -708,7 +720,10 @@ def main():
             # (groups scattered at random round a point — camps, villages — are not evidence)
             pdoc = psrc.str.startswith(("notable", "early", "known")).values & ~pred.mapblklot.astype(str).str.startswith("n:").values
             pearly = np.isfinite(pland) & (pred.start_year.values.astype(float) < pland + 0.05) & ~pdoc
-            pred.loc[pearly, "start_year"] = pland[pearly] + 0.3
+            from sf_export import build_years
+            plead = 0.8 + build_years(pred.height.values.astype(float))
+            pearly = np.isfinite(pland) & (pred.start_year.values.astype(float) < pland + plead) & ~pdoc
+            pred.loc[pearly, "start_year"] = (pland + plead)[pearly]
             pgone = pearly & (pred.start_year.values.astype(float) >= pred.end_year.values.astype(float) - 0.5)
             log(f"region: land check moved {int(pearly.sum())} vanished buildings onto ground that existed "
                 f"({int(pgone.sum())} dropped: gone before their ground)")
@@ -724,7 +739,7 @@ def main():
     # building points for the terrain stage (city ground follows the buildings; suburban
     # vs urban ground from how much of it buildings cover)
     pd.DataFrame({"lon": rp.x.values, "lat": rp.y.values, "start_year": g.start_year.values,
-                  "end_year": g.end_year.values,
+                  "end_year": g.end_year.values, "height": g.height.values.astype(float),
                   "area_m2": g.to_crs(UTM).geometry.area.values}).to_parquet(INTERIM / "region_building_points.parquet")
     OUT.mkdir(parents=True, exist_ok=True)
     index = []

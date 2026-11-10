@@ -249,6 +249,9 @@ export function localPopulationAt(year: number, lon: number, lat: number, zoom: 
       const v = seriesAt(year, cities.pop[`county:${county.name.replace(/ County$/, '')}`] ?? cities.pop[`county:${county.name}`]);
       if (v != null) return {value: v, label: county.name};
       if (county.name === 'San Francisco') return populationLabelAt(year);
+      // zoomed in on a place outside San Francisco before its first count: no figure
+      // (the early estimates are San Francisco's — "Mission Dolores" over Fort Ross)
+      return null;
     }
   }
   const v = seriesAt(year, cities.region);

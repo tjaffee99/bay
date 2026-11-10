@@ -48,8 +48,14 @@ def cover_at(lon, lat, t):
     return out
 
 
+def build_years(height):
+    return np.clip(0.25 + np.nan_to_num(np.asarray(height, float), nan=7.0) / 55.0, 0.33, 3.0)
+
+
 def report(name, d, lon, lat, start, by):
-    cov = cover_at(np.asarray(lon, float), np.asarray(lat, float), np.asarray(start, float) + 0.05)
+    # from the moment the construction frame starts to rise (build_years before start_year)
+    t = np.asarray(start, float) - (build_years(d.height.values) if "height" in d.columns else 0.33) + 0.02
+    cov = cover_at(np.asarray(lon, float), np.asarray(lat, float), t)
     bad = np.isin(cov, WATERISH)
     log(f"audit ground: {name}: {len(d)} checked, {int(bad.sum())} over water when they go up")
     if bad.any():

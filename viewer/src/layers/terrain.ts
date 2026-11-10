@@ -106,6 +106,8 @@ float coverZ(float c, float z) {
   return max(z, 0.9);                              // land
 }
 float waterness(float c) { return (c < 1.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? 1.0 : 0.0; }
+// bay, tidal flat, salt pond, reservoir: what a building must not stand on
+float openWater(float c) { return (c < 2.5 || abs(c - 22.0) < 0.5 || abs(c - 14.0) < 0.5) ? 1.0 : 0.0; }
 void main(void) {
   float y = terrain.year;
   float c = covers.x;
@@ -116,6 +118,9 @@ void main(void) {
   if (years.z > 0.0 && y >= years.z) { prev = c; c = covers.w; t0 = years.z; }
   if (years.w > 0.0 && y >= years.w) { prev = c; c = cover4; t0 = years.w; }
   float dur = abs(c - 23.0) < 0.5 ? 0.04 : 2.5;
+  // made land is there within half a year (a 2.5-year fade left buildings standing on
+  // half-blue ground for a year or two after their fill date)
+  if (openWater(prev) > 0.5 && openWater(c) < 0.5) dur = 0.5;
   float k = smoothstep(0.0, 1.0, clamp((y - t0) / dur, 0.0, 1.0));
   float wet = mix(waterness(prev), waterness(c), k);
   float z = mix(coverZ(prev, positions.z), coverZ(c, positions.z), k) * terrain.exaggeration;
@@ -415,6 +420,8 @@ void main(void) {
 
 const WATERISH = new Uint8Array(64);
 for (const c of [0, 1, 14, 22]) WATERISH[c] = 1;
+const OPEN_WATER = new Uint8Array(64);
+for (const c of [0, 1, 2, 14, 22]) OPEN_WATER[c] = 1;
 // farm pattern codes in the texel alpha for land (water: alpha 255); see farmPattern()
 const FARM_CODE = new Uint8Array(64);
 for (const [c, code] of Object.entries({10: 1, 11: 2, 12: 3, 13: 4, 3: 5, 21: 5, 2: 6, 15: 7})) FARM_CODE[+c] = code;
@@ -442,7 +449,8 @@ function coverColors(m: TerrainMesh, year: number, out: Uint8Array): [number, nu
         } else if (yk < to) to = yk;
       }
     }
-    const dur = c === 23 ? 0.04 : 2.5;
+    // (same rule as the vertex shader: the burn is instant, made land comes in half a year)
+    const dur = c === 23 ? 0.04 : OPEN_WATER[prev] && !OPEN_WATER[c] ? 0.5 : 2.5;
     const x = Math.min(1, Math.max(0, (year - t0) / dur));
     if (x < 1) from = Infinity; // a change is blending in: every year differs
     else if (t0 + dur > from) from = t0 + dur;
