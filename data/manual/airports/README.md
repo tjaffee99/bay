@@ -223,8 +223,8 @@ lines on each edition with `corridor.classify`, then read by eye):
 Capell Valley 1960, Monterey Bay Academy 1973 (no strip on the 1952-photo sheet: the "Camp McQuaide runway" is not confirmed
 by the maps), Q Area Heliport 1980 (lower bound), The Sea Ranch 1968, Yolo County 1942.
 
-**Looked at and left out** (no pavement or no usable drawing): Fairfield-Suisun Air Park / Brennan Airpark (1942-c.1975:
-only the name on the 1949 and 1968 sheets, sod field without a drawn boundary), Vallejo (Mini) Airport (1929-c.1944,
+**Looked at and left out** (no pavement or no usable drawing): Fairfield-Suisun Air Park / Brennan Airpark (from 1942; only
+the name on the 1948-photo sheet and the 1968 PR, a sod field without a drawn boundary; streets on the 1980 PR), Vallejo (Mini) Airport (1929-c.1944,
 boundary symbol on the 1:62,500 sheet only), Sebastopol Airport (1923-41), Santa Rosa Municipal / Steiner Field and Santa
 Rosa Airpark (boundary only), the earlier Petaluma fields, Mare Island's 1922-37 dirt field and Skaggs Island (no airfield
 on any edition), Travis Aero Club (still there, no Overture outline), Discovery Bay, Inglenook Ranch, Boulder Creek,

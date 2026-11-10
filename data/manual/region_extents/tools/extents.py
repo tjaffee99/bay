@@ -55,9 +55,10 @@ RES = 2.5
 S = {}
 
 
-def sheet(key, file, quad, scale, edition, year, style, note="", tint="pink"):
+def sheet(key, file, quad, scale, edition, year, style, note="", tint="pink", **kw):
+    """kw: open_mm = line weight (mm on paper) below which ink is a line, not a building (default 0.15)."""
     S[key] = dict(key=key, file=file, quad=quad, scale=scale, edition=edition, year=year, style=style, note=note,
-                  tint=tint)
+                  tint=tint, **kw)
 
 
 Q15 = lambda w, s: (w, s, w + 0.25, s + 0.25)      # noqa: E731
@@ -148,10 +149,10 @@ sheet("portchicago1951", "CA_Port%20Chicago_294325_1951_24000_geo.tif", Q75(-122
 Q30 = lambda w, s: (w, s, w + 0.5, s + 0.5)        # noqa: E731
 # first surveys (houses drawn one by one, block fronts as bands)
 sheet("napa1902", "CA_Napa_299520_1902_125000_geo.tif", Q30(-122.5, 38.0), 125000, 1902, 1899, "early",
-      "1:125,000 30' sheet, surveyed 1896-99 (FGDC: survey year 1899)")
+      "1:125,000 30' sheet, surveyed 1896-99 (FGDC: survey year 1899)", open_mm=0.26)
 # (the sheet runs over its south neat line to 36°56' N to hold the city of Santa Cruz and Point Santa Cruz)
 sheet("santacruz1902", "CA_Santa%20Cruz_299623_1902_125000_geo.tif", (-122.5, 36.93, -122.0, 37.5), 125000, 1902, 1899,
-      "early", "1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)")
+      "early", "1:125,000 30' sheet, surveyed to 1899 (1904 imprint); read over its south edge (the city of Santa Cruz)", open_mm=0.26)
 sheet("santarosa1916", "CA_Santa%20Rosa_298960_1916_62500_geo.tif", Q15(-122.75, 38.25), 62500, 1916, 1914, "early",
       "surveyed 1914 (1927 imprint)")
 sheet("petaluma1914", "CA_Petaluma_298524_1914_62500_geo.tif", Q15(-122.75, 38.0), 62500, 1914, 1912, "early",
@@ -167,46 +168,44 @@ sheet("morganhill1917", "CA_Morgan%20Hill_298244_1917_62500_geo.tif", Q15(-121.7
 sheet("vacaville1908", "CA_Vacaville_299006_1908_62500_geo.tif", Q15(-122.0, 38.25), 62500, 1908, 1906, "early",
       "surveyed 1906 (1922 imprint)")
 sheet("mtvaca1921", "CA_Mt%20Vaca_466014_1921_62500_geo.tif", Q15(-122.25, 38.25), 62500, 1921, 1915, "early",
-      "edition of 1921, field check 1915")
+      "edition of 1921, field check 1915", open_mm=0.26)
 sheet("antioch1908", "CA_Antioch_296718_1908_62500_geo.tif", Q15(-122.0, 38.0), 62500, 1908, 1907, "early",
       "surveyed 1907 (1914 imprint)")
-sheet("byron1916", "CA_Byron_296940_1916_62500_geo.tif", Q15(-121.75, 37.75), 62500, 1916, 1911, "early",
-      "surveyed 1911")
 sheet("riovista1910", "CA_Rio%20Vista_296463_1910_31680_geo.tif", Q75(-121.75, 38.125), 31680, 1910, 1908, "early",
       "1:31,680 sheet, surveyed 1908")
 sheet("healdsburg1920", "CA_Healdsburg_465734_1920_62500_geo.tif", Q15(-123.0, 38.5), 62500, 1920, 1915, "early",
-      "edition of 1920, field check 1915")
+      "edition of 1920, field check 1915", open_mm=0.26)
 sheet("calistoga1927", "CA_Calistoga_465409_1927_62500_geo.tif", Q15(-122.75, 38.5), 62500, 1927, 1915, "early",
-      "edition of 1927, surveyed 1915")
+      "edition of 1927, surveyed 1915", open_mm=0.26)
 sheet("hopland1938", "CA_Hopland_465760_1938_62500_geo.tif", Q15(-123.25, 38.75), 62500, 1938, 1922, "early",
-      "edition of 1938: surveyed 1916, field check 1922")
+      "edition of 1938: surveyed 1916, field check 1922", open_mm=0.26)
 # 1:62,500 editions of 1933-43 (resurveys and editions compiled from 1937-42 aerial photographs)
 sheet("healdsburg1940", "CA_Healdsburg_297672_1940_62500_geo.tif", Q15(-123.0, 38.5), 62500, 1940, 1933, "tint",
-      "edition of 1940, surveyed 1933", tint="grey")
+      "edition of 1940, surveyed 1933", tint="grey", open_mm=0.26)
 sheet("sebastopol1942", "CA_Sebastopol_301668_1942_62500_geo.tif", Q15(-123.0, 38.25), 62500, 1942, 1935, "tint",
-      "edition of 1942, surveyed 1935", tint="grey")
+      "edition of 1942, surveyed 1935", tint="grey", open_mm=0.26)
 sheet("capitola1940", "CA_Capitola_465438_1940_62500_geo.tif", Q15(-122.0, 36.75), 62500, 1940, 1938, "tint",
-      "aerial photographs 1938", tint="grey")
+      "aerial photographs 1938", tint="grey", open_mm=0.26)
 sheet("sanjuanbautista1940", "CA_San%20Juan%20Bautista_466316_1940_62500_geo.tif", Q15(-121.75, 36.75), 62500, 1940,
-      1939, "tint", "aerial photographs 1939", tint="grey")
+      1939, "tint", "aerial photographs 1939", tint="grey", open_mm=0.26)
 sheet("morganhill1941", "CA_Morgan%20Hill_465964_1941_62500_geo.tif", Q15(-121.75, 37.0), 62500, 1941, 1939, "tint",
-      "edition of 1941: surveyed 1915, revised 1939 (aerial photographs 1939 on the 1939 edition)", tint="grey")
+      "edition of 1941: surveyed 1915, revised 1939 (aerial photographs 1939 on the 1939 edition)", tint="grey", open_mm=0.26)
 sheet("sonoma1942", "CA_Sonoma_301738_1942_62500_geo.tif", Q15(-122.5, 38.25), 62500, 1942, 1939, "tint",
-      "aerial photographs 1939, survey 1941", tint="grey")
+      "aerial photographs 1939, survey 1941", tint="grey", open_mm=0.26)
 sheet("mtvaca1942", "CA_Mt%20Vaca_466013_1942_62500_geo.tif", Q15(-122.25, 38.25), 62500, 1942, 1939, "tint",
-      "aerial photographs 1939", tint="grey")
+      "aerial photographs 1939", tint="grey", open_mm=0.26)
 sheet("vacaville1941", "CA_Vacaville_466506_1941_62500_geo.tif", Q15(-122.0, 38.25), 62500, 1941, 1939, "tint",
-      "aerial photographs 1939", tint="grey")
+      "aerial photographs 1939", tint="grey", open_mm=0.26)
 sheet("byron1940", "CA_Byron_296942_1940_62500_geo.tif", Q15(-121.75, 37.75), 62500, 1940, 1940, "tint",
-      "aerial photographs 1940 (1943 imprint)", tint="grey")
+      "aerial photographs 1940 (1943 imprint)", tint="grey", open_mm=0.26)
 sheet("santarosa1944", "CA_Santa%20Rosa_301627_1944_62500_geo.tif", Q15(-122.75, 38.25), 62500, 1944, 1942, "tint",
-      "edition of 1944: surveyed 1914, revised 1942", tint="grey")
+      "edition of 1944: surveyed 1914, revised 1942", tint="grey", open_mm=0.26)
 sheet("sthelena1945", "CA_St%20Helena_466421_1945_62500_geo.tif", Q15(-122.5, 38.5), 62500, 1945, 1942, "tint",
-      "edition of 1945, surveyed 1942", tint="grey")
+      "edition of 1945, surveyed 1942", tint="grey", open_mm=0.26)
 sheet("hopland1944", "CA_Hopland_465759_1944_62500_geo.tif", Q15(-123.25, 38.75), 62500, 1944, 1942, "tint",
-      "aerial photographs 1942", tint="grey")
+      "aerial photographs 1942", tint="grey", open_mm=0.26)
 sheet("calistoga1945", "CA_Calistoga_296981_1945_62500_geo.tif", Q15(-122.75, 38.5), 62500, 1945, 1943, "tint",
-      "edition of 1945, surveyed 1943", tint="grey")
+      "edition of 1945, surveyed 1943", tint="grey", open_mm=0.26)
 # 1:24,000 sheets of 1949-60 (first imprints, before the photorevisions)
 sheet("mareisland1949", "CA_Mare%20Island_292723_1949_24000_geo.tif", Q75(-122.375, 38.0), 24000, 1949, 1948, "tint",
       "aerial photographs 1948, survey 1949")
@@ -409,7 +408,7 @@ TOWNS.update({
     "pittsburg": dict(name="Pittsburg", places=["0657456"], bbox=(-121.92, 38.0, -121.85, 38.045),
                       snaps={1907: ["antioch1908"], 1949: ["honkerbay1953", "antiochnorth1953"]}),
     "brentwood": dict(name="Brentwood", places=["0608142"], bbox=(-121.72, 37.915, -121.67, 37.95),
-                      snaps={1911: ["byron1916"], 1940: ["byron1940"], 1949: ["brentwood1954"]}),
+                      snaps={1940: ["byron1940"], 1949: ["brentwood1954"]}),
     "cloverdale": dict(name="Cloverdale", places=["0614190"], bbox=(-123.04, 38.785, -122.99, 38.825),
                        snaps={1922: ["hopland1938"], 1942: ["hopland1944"], 1957: ["cloverdale1960"]}),
     "capitola": dict(name="Capitola - Soquel", places=["0611040", "0672688"], bbox=(-121.98, 36.965, -121.93, 37.005),
@@ -563,9 +562,17 @@ def tint_mask(img, kind, res, scale):
 
     # light pink / salmon ground + red dot screen; the paper is white to yellowish (R - G 0-6 on every
     # 1:24,000 sheet used, from the sheets' R - G histograms), woodland green, contours thin orange
+    # a scan with a reddish cast (Dixon 1952, Elmira 1953: paper R - G ~ 12-20) is not tinted: on those the
+    # tint must stand 8 above the paper (20th percentile of R - G over the bright, non-green pixels)
+    sub = img[::7, ::7].astype(np.int16)
+    br = sub.sum(2)
+    pp = sub[(br > 0.85 * paper) & (sub[:, :, 0] - sub[:, :, 1] >= -3)]
+    rg0 = float(np.percentile(pp[:, 0] - pp[:, 1], 20)) if len(pp) > 100 else 0.0
+    rg_min = 10.0 if rg0 <= 6 else rg0 + 8.0
+
     def pink(b):
         R, G, B = b[:, :, 0], b[:, :, 1], b[:, :, 2]
-        return (R - G > 10) & (R > 195) & (B > 100) & (G - B < 50)
+        return (R - G > rg_min) & (R > 195) & (B > 100) & (G - B < 50)
 
     def grey(b):
         R, G, B = b[:, :, 0], b[:, :, 1], b[:, :, 2]
@@ -597,7 +604,9 @@ def heavy_and_bands(ink, res, sh):
     """Heavy ink (thin lines removed) and its elongated part (bands: built frontage)."""
     import cv2
     mm = sh["scale"] / 1000.0                 # metres per paper mm
-    r_open = max(1, int(round(0.15 * mm / res / 2)))      # remove lines thinner than ~0.15 mm
+    # remove lines thinner than ~0.15 mm; open_mm 0.26 on the editions of 1915-45 and the 1:125,000 sheets, whose
+    # street lines / casings are heavier (0.15-0.2 mm: every platted block would read as a built front)
+    r_open = max(1, int(round(sh.get("open_mm", 0.15) * mm / res / 2)))
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r_open + 1,) * 2)
     heavy = cv2.morphologyEx(ink.astype(np.uint8), cv2.MORPH_OPEN, k)
     L = 40.0 / res if sh["scale"] >= 62500 else 30.0 / res

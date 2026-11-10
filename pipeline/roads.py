@@ -52,6 +52,11 @@ TRANSIT_TAKES_OVER = True
 REGION_BBOX_ROADS = (-123.68, 36.78, -121.16, 38.91)
 # routes drawn by a landmark model instead (double-deck viaduct in landmarks/city.ts)
 LANDMARK_ROUTES = {"fwy_embarcadero"}
+# bridge decks drawn by a landmark model (lon0, lat0, lon1, lat1): the generic deck slabs and
+# bents of the freeway layer are left out inside the box
+LANDMARK_BRIDGE_BOXES = [
+    (-121.7560, 38.0167, -121.7470, 38.0427),   # Antioch Bridge 1978 (landmarks/coastsouth.ts)
+]
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
 WIDTH = {K_STREET: 9, K_MAJOR: 14, K_FREEWAY: 24, K_HIGHWAY: 16, K_CABLE: 3, K_STREETCAR: 3, K_RAIL: 4,
          K_KEY: 4, K_BART: 5, K_FERRY: 6, K_LIGHTRAIL: 3}
@@ -394,6 +399,10 @@ def freeway_items(ground, fw_routes, buildings=None, streets=None):
             if "Golden Gate Bridge" in nm:
                 tn = tn | br
             tn = tn | (br & bay_bridge & over_water)
+            # other bridges with a landmark model: the whole modelled structure (approach
+            # spans included), by the box of its deck
+            for x0_, y0_, x1_, y1_ in LANDMARK_BRIDGE_BOXES:
+                tn = tn | (br & (lo_ > x0_) & (lo_ < x1_) & (la_ > y0_) & (la_ < y1_))
         conns = [(c["connector_id"], float(c["at"])) for c in (row.connectors if row.connectors is not None else [])]
         for cid, _ in conns:
             conn_count[cid] = conn_count.get(cid, 0) + 1
