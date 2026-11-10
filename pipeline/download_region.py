@@ -759,101 +759,174 @@ def place_polygons():
     return p
 
 
+def _berd_keys():
+    """The (countyfp, APN key) and (countyfp, address key) pairs the BERD rows can be located
+    by: normalise() keeps a point only for these, not for every parcel of the region."""
+    import pandas as pd
+    name2fp = {v.upper(): k for k, v in COUNTIES.items()}
+    apn, addr = set(), set()
+    for f in sorted((YEARS_RAW / "ca_ohp_berd").glob("*.csv")):
+        fp = name2fp.get(f.stem.replace("_", " ").upper())
+        d = pd.read_csv(f, dtype=str, encoding="latin-1", usecols=["Parcel Num", "St Number", "St Name"]).dropna(how="all")
+        for v in d["Parcel Num"].dropna():
+            apn.update((fp, k) for k in (apn_key(fp, x) for x in re.split(r"\s*\|\s*", v)) if k)
+        for num, street in zip(d["St Number"], d["St Name"]):
+            k = _addr_key(f"{num} {street}") if isinstance(num, str) and isinstance(street, str) else None
+            if k:
+                addr.add((fp, k))
+    return apn, addr
+
+
+# columns of region_years.parquet (+ geometry) and their pandas dtypes
+_STR_COLS = ("src", "licence", "kind", "vintage", "apn", "use", "address", "name", "material", "construction", "roof",
+             "confidence", "start_date_tag", "osm_id", "countyfp", "county", "place", "year_flag", "berd_flag",
+             "berd_status", "located_by")
+_YEARS_COLS = ["src", "rank", "licence", "kind", "vintage", "apn", "year_raw", "eff_year", "remodel_year", "stories", "units",
+               "n_buildings", "use", "address", "name", "material", "construction", "roof", "confidence", "demolished",
+               "moved", "start_date_tag", "osm_id", "countyfp", "county", "place", "incorporated", "year_built",
+               "year_flag", "berd_flag", "is_building", "berd_status", "located_by"]
+
+
 def normalise():
+    """One source at a time (the nine counties' parcels and building points together do not
+    fit in memory as one GeoDataFrame): each source is cleaned, written as a part, and the
+    parts are joined as Arrow tables at the end."""
+    import shutil
+
     import geopandas as gpd
     import pandas as pd
 
     out_path = INTERIM / "region_years.parquet"
+    parts_dir = INTERIM / "_region_years_parts"
+    shutil.rmtree(parts_dir, ignore_errors=True)
+    parts_dir.mkdir(parents=True)
     polys = county_polygons()
-    frames, report = [], {"sources": {}}
-    for sid, spec in NORM.items():
-        f = YEARS_RAW / sid / f"{sid}.parquet"
-        if not f.exists():
-            log(f"normalise: {sid} missing, skipped")
-            continue
-        g = gpd.read_parquet(f)
-        if "join" in spec:
-            j = spec["join"]
-            jt = gpd.read_parquet(YEARS_RAW / j["sid"] / f"{j['sid']}.parquet").drop(columns="geometry")
-            jt = jt[[j["on"], *j["cols"]]].drop_duplicates(j["on"]).rename(columns={k: f"_j_{k}" for k in j["cols"]})
-            g = g.merge(jt, on=j["on"], how="left")
-            for k, role in j["cols"].items():
-                if role in spec and spec[role] in g:
-                    continue
-                spec = {**spec, role: f"_j_{k}"}
-        d = _std_frame(sid, spec, g)
-        frames.append(d)
-    fpar = _fema_parcel_frame()
-    if fpar is not None:
-        frames.append(fpar)
-    osm = _osm_frame()
-    if osm is not None:
-        frames.append(osm)
-    d = pd.concat(frames, ignore_index=True)
-    d = gpd.GeoDataFrame(d, geometry="geometry", crs=4326)
-    d = d[d.geometry.notna() & ~d.geometry.is_empty]
-
-    # county from the representative point; city / CDP from TIGER places
-    rp = d.geometry.representative_point()
-    x, y = rp.x.to_numpy(), rp.y.to_numpy()
-    d["countyfp"] = assign_county(x, y, polys)
-    d = d[d.countyfp != ""].copy()
-    rp = d.geometry.representative_point()
-    d["county"] = d.countyfp.map(COUNTIES)
     places = place_polygons()
-    pts = gpd.GeoDataFrame(geometry=rp.values, crs=4326, index=d.index)
-    hit = gpd.sjoin(pts, places, how="left", predicate="within")
-    hit = hit[~hit.index.duplicated(keep="first")]
-    d["place"] = hit["NAME"].reindex(d.index)
-    d["incorporated"] = hit["incorporated"].reindex(d.index).fillna(False).astype(bool)
+    berd_apn, berd_addr = _berd_keys()
+    report, stats, hist, parts, located = {"sources": {}}, {}, {}, [], []
 
-    # zero / missing raw year: dropped (counted); then plausibility and spikes per source
-    stats = {}
-    for sid, grp in d.groupby("src"):
-        r = grp.year_raw.to_numpy()
-        stats[sid] = {"rows": int(len(grp)), "zero_or_missing": int((~np.isfinite(r) | (r <= 0)).sum())}
-    d = d[np.isfinite(d.year_raw) & (d.year_raw > 0)].copy()
-    year, flag = _clean_years(d.year_raw.to_numpy())
-    d["year_built"], d["year_flag"] = year, flag
-    if "berd_flag" in d:
-        d.loc[d.berd_flag == "range", "year_flag"] = "range"
-    for col in ("eff_year", "remodel_year"):
-        v = d[col].to_numpy(dtype=float).copy()
-        v[(v < MIN_YEAR) | (v > CURRENT_YEAR) | (v <= 0)] = np.nan
-        d[col] = v
-    d.loc[d.stories <= 0, "stories"] = np.nan
-    d.loc[d.units <= 0, "units"] = np.nan
-    d.loc[d.n_buildings <= 0, "n_buildings"] = np.nan
-    hist = {}
-    for sid, grp in d.groupby("src"):
-        yb = grp.year_built.to_numpy()
+    def source_frames():
+        for sid, spec in NORM.items():
+            f = YEARS_RAW / sid / f"{sid}.parquet"
+            if not f.exists():
+                log(f"normalise: {sid} missing, skipped")
+                continue
+            g = gpd.read_parquet(f)
+            if "join" in spec:
+                j = spec["join"]
+                jt = gpd.read_parquet(YEARS_RAW / j["sid"] / f"{j['sid']}.parquet").drop(columns="geometry")
+                jt = jt[[j["on"], *j["cols"]]].drop_duplicates(j["on"]).rename(columns={k: f"_j_{k}" for k in j["cols"]})
+                g = g.merge(jt, on=j["on"], how="left")
+                for k, role in j["cols"].items():
+                    if role in spec and spec[role] in g:
+                        continue
+                    spec = {**spec, role: f"_j_{k}"}
+            yield _std_frame(sid, spec, g)
+        fpar = _fema_parcel_frame()
+        if fpar is not None:
+            yield fpar
+        osm = _osm_frame()
+        if osm is not None:
+            yield osm
+
+    def write_part(d):
+        """Compact geometry (parcels simplified to ~0.2 m, coordinates to 1e-7 deg), fixed
+        columns and dtypes -> one part file."""
+        is_poly = d.geom_type.isin(["Polygon", "MultiPolygon"]).to_numpy()
+        geoms = np.asarray(d.geometry.to_numpy(), dtype=object)
+        geoms[is_poly] = shapely.simplify(geoms[is_poly], 2e-6, preserve_topology=True)
+        d = pd.DataFrame(d.drop(columns="geometry")).reset_index(drop=True)
+        for c in _YEARS_COLS:
+            if c not in d:
+                d[c] = None
+        for c in ("year_built", "eff_year", "remodel_year", "n_buildings"):
+            d[c] = pd.to_numeric(d[c], errors="coerce").round().astype("Int16")
+        for c in ("year_raw", "units"):
+            d[c] = pd.to_numeric(d[c], errors="coerce").round().astype("Int32")
+        d["stories"] = pd.to_numeric(d.stories, errors="coerce").astype("float64")
+        d["rank"] = d["rank"].astype("int64")
+        d["incorporated"] = d.incorporated.astype(bool)
+        for c in ("demolished", "moved", "is_building"):
+            d[c] = d[c].astype("boolean")
+        for c in _STR_COLS:
+            d[c] = d[c].astype("string").replace({"None": pd.NA, "nan": pd.NA, "": pd.NA})
+        d = gpd.GeoDataFrame(d[_YEARS_COLS], geometry=shapely.set_precision(geoms, 1e-7, mode="pointwise"), crs=4326)
+        f = parts_dir / f"{len(parts):02d}.parquet"
+        d.to_parquet(f, compression="zstd")
+        parts.append(f)
+
+    for d in source_frames():
+        d = gpd.GeoDataFrame(d, geometry="geometry", crs=4326)
+        d = d[d.geometry.notna() & ~d.geometry.is_empty]
+        if d.empty:
+            continue
+        sid = d.src.iloc[0]
+        for c in ("year_raw", "eff_year", "remodel_year", "stories", "units", "n_buildings"):
+            d[c] = pd.to_numeric(d[c], errors="coerce") if c in d else np.nan
+        # county from the representative point; city / CDP from TIGER places
+        rp = d.geometry.representative_point()
+        d["countyfp"] = assign_county(rp.x.to_numpy(), rp.y.to_numpy(), polys)
+        keep = (d.countyfp != "").to_numpy()
+        d, rp = d[keep].copy(), rp[keep]
+        if d.empty:
+            continue
+        d["county"] = d.countyfp.map(COUNTIES)
+        hit = gpd.sjoin(gpd.GeoDataFrame(geometry=rp.values, crs=4326, index=d.index), places, how="left", predicate="within")
+        hit = hit[~hit.index.duplicated(keep="first")]
+        d["place"] = hit["NAME"].reindex(d.index)
+        d["incorporated"] = hit["incorporated"].reindex(d.index).fillna(False).astype(bool)
+        del rp, hit
+
+        # zero / missing raw year: dropped (counted); then plausibility and spikes per source
+        r = d.year_raw.to_numpy(dtype=float)
+        stats[sid] = {"rows": int(len(d)), "zero_or_missing": int((~np.isfinite(r) | (r <= 0)).sum())}
+        d = d[np.isfinite(r) & (r > 0)].copy()
+        if d.empty:
+            continue
+        year, flag = _clean_years(d.year_raw.to_numpy(dtype=float))
+        d["year_built"], d["year_flag"] = year, flag
+        for col in ("eff_year", "remodel_year"):
+            v = d[col].to_numpy(dtype=float).copy()
+            v[(v < MIN_YEAR) | (v > CURRENT_YEAR) | (v <= 0)] = np.nan
+            d[col] = v
+        d.loc[d.stories <= 0, "stories"] = np.nan
+        d.loc[d.units <= 0, "units"] = np.nan
+        d.loc[d.n_buildings <= 0, "n_buildings"] = np.nan
+        yb = d.year_built.to_numpy()
         sp = spike_years(yb) if sid not in ("san_jose_hri", "ca_ohp_berd", "osm_start_date") else set()
         is_sp = np.isin(yb, list(sp))
-        d.loc[grp.index[is_sp], "year_flag"] = "spike"
-        d.loc[grp.index[is_sp], "confidence"] = "estimated"
-        fl = d.loc[grp.index, "year_flag"].value_counts().to_dict()
+        d.loc[is_sp, "year_flag"] = "spike"
+        d.loc[is_sp, "confidence"] = "estimated"
         ok = yb[np.isfinite(yb)]
         stats[sid].update({
             "with_year": int(np.isfinite(yb).sum()),
-            "flags": {k: int(v) for k, v in fl.items()},
+            "flags": {k: int(v) for k, v in d.year_flag.value_counts().to_dict().items()},
             "spike_years": sorted(sp),
             "median_year": float(np.median(ok)) if len(ok) else None,
             "share_pre1906": round(float((ok < 1906).mean()), 4) if len(ok) else None,
             "max_year": int(ok.max()) if len(ok) else None,
-            "share_eff_year": round(float(np.isfinite(grp.eff_year).mean()), 4),
-            "share_stories": round(float(np.isfinite(grp.stories).mean()), 4),
-            "county": grp.county.value_counts().to_dict(),
+            "share_eff_year": round(float(np.isfinite(d.eff_year).mean()), 4),
+            "share_stories": round(float(np.isfinite(d.stories).mean()), 4),
+            "county": d.county.value_counts().to_dict(),
         })
         hist[sid] = {int(k): int(v) for k, v in pd.Series(ok.astype(int)).value_counts().sort_index().items()}
+        # points OHP BERD rows can be located by (APN / address of FEMA points and parcels)
+        if sid.startswith("fema_r9") or d.kind.iloc[0] == "parcel":
+            ak = [apn_key(c, a) for c, a in zip(d.countyfp, d.apn)] if "apn" in d else [None] * len(d)
+            dk = [_addr_key(a) for a in d.address] if "address" in d else [None] * len(d)
+            m = np.array([(k is not None and (c, k) in berd_apn) or (q is not None and (c, q) in berd_addr)
+                          for c, k, q in zip(d.countyfp, ak, dk)], dtype=bool)
+            if m.any():
+                located.append(pd.DataFrame({
+                    "countyfp": d.countyfp.to_numpy()[m], "apn_key": np.array(ak, dtype=object)[m],
+                    "addr_key": np.array(dk, dtype=object)[m], "pt": d.geometry[m].representative_point().values}))
+        write_part(d)
+        log(f"normalise {sid}: {len(d)} rows with a year of {stats[sid]['rows']}")
+        del d
 
     # OHP BERD located through APN / address of the rows above
-    loc = d[d.src.str.startswith("fema_r9") | (d.kind == "parcel")]
-    lrp = loc.geometry.representative_point()
-    located = pd.DataFrame({
-        "countyfp": loc.countyfp.to_numpy(),
-        "apn_key": [apn_key(c, a) for c, a in zip(loc.countyfp, loc.apn)],
-        "addr_key": [_addr_key(a) for a in loc.address],
-        "pt": lrp.values})
+    located = (pd.concat(located, ignore_index=True) if located
+               else pd.DataFrame({"countyfp": [], "apn_key": [], "addr_key": [], "pt": []}))
     berd, berd_stats = _berd_frame(located)
     if berd is not None:
         brp = berd.geometry
@@ -867,31 +940,36 @@ def normalise():
         yb, fl = _clean_years(berd.year_raw.to_numpy())
         berd["year_built"] = yb
         berd["year_flag"] = np.where(berd.berd_flag == "range", "range", fl)
-        stats["ca_ohp_berd"] = {"rows": int(sum(s["rows"] for s in berd_stats.values())),
+        stats["ca_ohp_berd"] = {"rows": int(sum(st["rows"] for st in berd_stats.values())),
                                 "with_year": int(np.isfinite(yb).sum()), "located": berd_stats,
                                 "flags": berd.year_flag.value_counts().to_dict(),
                                 "county": berd.county.value_counts().to_dict()}
         ok = yb[np.isfinite(yb)]
         hist["ca_ohp_berd"] = {int(k): int(v) for k, v in pd.Series(ok.astype(int)).value_counts().sort_index().items()}
-        d = pd.concat([d, berd], ignore_index=True)
+        write_part(berd)
 
-    # compact geometry: parcels simplified to ~0.2 m, coordinates to 1e-7 deg
-    is_poly = d.geom_type.isin(["Polygon", "MultiPolygon"]).to_numpy()
-    geoms = np.asarray(d.geometry.to_numpy(), dtype=object)
-    geoms[is_poly] = shapely.simplify(geoms[is_poly], 2e-6, preserve_topology=True)
-    d = gpd.GeoDataFrame(d.drop(columns="geometry"), geometry=shapely.set_precision(geoms, 1e-7, mode="pointwise"), crs=4326)
-    for c in ("year_built", "eff_year", "remodel_year"):
-        d[c] = d[c].round().astype("Int16")
-    d["year_raw"] = d.year_raw.round().astype("Int32")
-    d["units"] = d.units.round().astype("Int32")
-    d["n_buildings"] = d.n_buildings.round().astype("Int16")
-    for c in ("apn", "use", "address", "name", "material", "construction", "roof", "start_date_tag", "osm_id",
-              "berd_status", "located_by", "berd_flag", "vintage", "place"):
-        if c in d:
-            d[c] = d[c].astype("string").replace({"None": pd.NA, "nan": pd.NA, "": pd.NA})
-    d = d.reset_index(drop=True)
-    d.to_parquet(out_path, compression="zstd")
-    log(f"region_years: {len(d)} rows -> {out_path}")
+    # parts -> one GeoParquet file (Arrow tables: no geometry objects), replaced atomically
+    tabs = [pq.read_table(f) for f in parts]
+    meta = tabs[0].schema.metadata
+    geo, types, bbox = json.loads(meta[b"geo"]), set(), None
+    for t in tabs:
+        gc = json.loads(t.schema.metadata[b"geo"])["columns"]["geometry"]
+        types |= set(gc.get("geometry_types") or [])
+        bb = gc.get("bbox")
+        if bb:
+            bbox = bb if bbox is None else [min(bbox[0], bb[0]), min(bbox[1], bb[1]), max(bbox[2], bb[2]), max(bbox[3], bb[3])]
+    geo["columns"]["geometry"].update({"geometry_types": sorted(types), "bbox": bbox})
+    t = pa.concat_tables([x.replace_schema_metadata(None) for x in tabs], promote_options="permissive")
+    pm = json.loads(meta[b"pandas"])
+    for ic in pm.get("index_columns", []):
+        if isinstance(ic, dict) and ic.get("kind") == "range":
+            ic.update({"start": 0, "stop": t.num_rows, "step": 1})
+    t = t.replace_schema_metadata({b"geo": json.dumps(geo).encode(), b"pandas": json.dumps(pm).encode()})
+    tmp = out_path.with_suffix(".part")
+    pq.write_table(t, tmp, compression="zstd", row_group_size=200_000)
+    tmp.replace(out_path)
+    shutil.rmtree(parts_dir, ignore_errors=True)
+    log(f"region_years: {t.num_rows} rows -> {out_path}")
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     report["sources"] = stats
@@ -976,14 +1054,22 @@ def coverage():
     fp = fp.reset_index(drop=True)
     fp["area_m2"] = fp.geometry.to_crs(32610).area.round(1)
     pts = gpd.GeoDataFrame({"fid": fp.index}, geometry=gpd.points_from_xy(fp.px, fp.py), crs=4326)
-    ry = gpd.read_parquet(INTERIM / "region_years.parquet")
-    ry = ry[ry.year_built.notna()]
-    # BERD: only building resources with a construction date (not periods of significance)
-    berd = ry.src == "ca_ohp_berd"
-    not_bldg = ~ry.is_building.fillna(False).astype(bool) & (ry.use.fillna("").str.len() > 0)
-    ry = ry[~(berd & ((ry.year_flag == "range") | not_bldg))].reset_index(drop=True)
-    ry["yb"] = ry.year_built.astype(float)
-    ry["is_spike"] = ry.year_flag == "spike"
+    ry_file = INTERIM / "region_years.parquet"
+    have = set(pq.read_table(ry_file, columns=["src"])["src"].unique().to_pylist())
+
+    def source_rows(sid):
+        """Rows of one source with a year (read per source: the whole table with its
+        geometry does not fit in memory beside 2.5 M footprints)."""
+        r = gpd.read_parquet(ry_file, columns=["src", "kind", "year_built", "year_flag", "is_building", "use", "geometry"],
+                             filters=[("src", "==", sid)])
+        r = r[r.year_built.notna()]
+        if sid == "ca_ohp_berd":   # only building resources with a construction date (not periods of significance)
+            not_bldg = ~r.is_building.fillna(False).astype(bool) & (r.use.fillna("").str.len() > 0)
+            r = r[~((r.year_flag == "range") | not_bldg)]
+        r = r.reset_index(drop=True)
+        r["yb"] = r.year_built.astype(float)
+        r["is_spike"] = (r.year_flag == "spike").to_numpy()
+        return r
 
     # city / CDP of each footprint
     places = place_polygons()
@@ -1010,7 +1096,9 @@ def coverage():
         src = np.full(len(fp), None, dtype=object)
         spike = np.zeros(len(fp), bool)
         for s in srcs:
-            r = ry[ry.src == s]
+            if s not in have:
+                continue
+            r = source_rows(s)
             if r.empty:
                 continue
             if r.kind.iloc[0] == "parcel":
