@@ -887,7 +887,8 @@ const petalumaAdobe: Landmark = {
       wing(16.45, 27.2, 17.9, 13.6);
       wing(16.4, -10.9, 17.9, 13.0);
     }),
-  replaces: [rotRing(rect(9, 3.7, 35, 62), 26.0)],
+  // the three wings, not the courtyard (the U-shaped footprint's centroid lies in the main wing)
+  replaces: [rotRing(rect(0, 3.7, 16, 61.4), 26.0), rotRing(rect(16.45, 27.2, 18.9, 14.6), 26.0), rotRing(rect(16.4, -10.9, 18.9, 14), 26.0)],
   facts: {
     Built: '1836–46 for Mariano Vallejo as the headquarters of the 66,000-acre Rancho Petaluma — the largest private adobe building in California; never quite finished',
     Form: 'two storeys of adobe on redwood framing around a courtyard about 200 × 145 ft, walls 20 ft high, with broad two-storey verandas and a low shingled roof',
@@ -1360,8 +1361,14 @@ const churchOfOneTree: Landmark = {
       b.color(white).box(0, 0, -1, 13, 18.5, 6.5, {top: false});
       b.color(roof).gable(0, 0, 13.8, 19.1, 5.5, 6.0, true);
       b.color(white).tri([-6.5, 9.27, 5.5], [6.5, 9.27, 5.5], [0, 9.27, 11.5]).tri([-6.5, -9.27, 5.5], [6.5, -9.27, 5.5], [0, -9.27, 11.5]);
-      for (const sx of [-1, 1]) for (const y of [-6, -2, 2, 6]) b.box(sx * 6.4, y, 5.2, 0.5, 1.6, 2.3);
-      b.box(5.44, -10.57, -1, 4.6, 4.6, 11.5);
+      // four gabled wall dormers on each side
+      for (const sx of [-1, 1]) {
+        for (const y of [-6, -2, 2, 6]) {
+          b.color(white).box(sx * 6.3, y, 5.2, 0.5, 1.4, 1.8);
+          b.color(roof).gable(sx * 5.6, y, 2.0, 1.7, 7.0, 0.9, false);
+        }
+      }
+      b.color(white).box(5.44, -10.57, -1, 4.6, 4.6, 11.5);
       b.color(roof).pyramid(ngon(5.44, -10.57, 2.6, 8), 10.5, [5.44, -10.57, 21.0]);
     }),
   replaces: [rotRing(rect(0.6, -1.2, 15.5, 22), 343.4, -0.93, 2.98)],
@@ -1429,7 +1436,7 @@ const petalumaLibrary: Landmark = {
       b.box(0, 10.7, 8.6, 8.1, 2.3, 1.1);
       b.tri([-4.05, 11.86, 9.7], [4.05, 11.86, 9.7], [0, 11.86, 11.6]);
       b.color(stone).box(0, 10.7, -1.5, 8.1, 2.3, 3.1);
-      b.color('#BDB39A').box(0, 13.4, -1, 6, 3, 2.2);
+      b.color('#BDB39A').box(0, 12.6, -1, 6, 1.6, 2.2);
     }),
   replaces: [rotRing(rect(0, 1, 22.5, 22.8), 25.8)],
   facts: {

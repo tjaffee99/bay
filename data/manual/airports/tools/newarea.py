@@ -83,7 +83,11 @@ FIELDS = [
                        (275, 650), (270, 600)], 1.9, 1450)),
             P("taxiway", 1943, 9999, "taxiway parallel to the N-S runway (west side) and its link to the north turnaround "
               "(orthophoto, still there)", line=[(-355, 350), (-327, 960), (-317, 978), (-263, 1075)], w=20),
-            P("taxiway", 1943, 9999, "ramp - parallel taxiway link (orthophoto)", line=[(-447, 715), (-350, 735)], w=20),
+            P("taxiway", 1943, 9999, "ramp - parallel taxiway link (line as in OpenStreetMap, (c) OpenStreetMap contributors, "
+              "ODbL; orthophoto)", line=[(-433, 686), (-400, 659), (-339, 725)], w=20),
+            P("taxiway", 1943, 9999, "taxiway from the west end of the E-W runway to the south-west end of the ramp (line as "
+              "in OpenStreetMap, (c) OpenStreetMap contributors, ODbL; orthophoto)",
+              line=[(-972, 165), (-891, 265), (-897, 325)], w=20),
             P("taxiway", 1943, 9999, "taxiway from the ramp south-east to the runway crossing (orthophoto, still there)",
               line=[(-600, 500), (-400, 355), (-310, 335)], w=23),
         ],
@@ -561,10 +565,20 @@ WHOLE_NOTE = {
 NEAR = [("TRAVIS", "47d9d0c9", 2900, 3660, 300, 1960), ("TRAVIS", "a4201b40", -310, 900, 300, 1960),
         ("NAPA", "b9e53d7d", -60, 200, 150, 1973), ("NAPA", "11a27e3b", 0, 764, 60, 1973),
         ("STS", "2f8cd876", -60, 270, 160, 2014)]
+# Overture / OSM pavement that pipeline/airports.py would attach to one of the new outlines (nearest airport within
+# 1.5 km) and draw a second time or wrongly: kept off the map with start_year 9998 (never reached by the slider).
+# Not needed any more if airports.py stops attaching Overture pavement to the manual outlines.
+SR_DUP = ("surviving pavement of NAAS Santa Rosa as mapped in OpenStreetMap: the same pavement is drawn from the traced "
+          "pieces of data/manual/airports_extra.geojson (documented 200-ft runway width, ramp polygon), which the OSM "
+          "lines confirm to a few metres - not drawn twice (start 9998 = never shown)")
+RC = ("two crossing 70-m strips in Lagoon Valley Park (a model-aircraft field, not an airport), 930 m from the Vacaville "
+      "Gliderport outline whose years they would take - not drawn (start 9998 = never shown)")
+SUPPRESS = [("SRNAAS", i, SR_DUP) for i in ("7d410ee9", "51619610", "9bcdcee8", "b82abea0", "9ebbe73f", "a8ec88ba",
+                                            "9c52be79", "8aff5bfa", "beac620b")] + [("VCVRC", "2471d7ed", RC), ("VCVRC", "7a256d7d", RC)]
 COLS = ["airport", "feature_class", "overture_id", "runway", "name", "lon", "lat", "part", "clip_zone", "from_end",
         "d0_m", "d1_m", "part_lon0", "part_lat0", "part_lon1", "part_lat1", "start_year", "end_year", "confidence",
         "source_url", "evidence"]
-CODES = ("TRAVIS", "NAPA", "STS", "WVI")
+CODES = ("TRAVIS", "NAPA", "STS", "WVI", "SRNAAS", "VCVRC")
 AP_NAME = {"TRAVIS": "Travis Air Force Base", "NAPA": "Napa County Airport", "STS": "Sonoma County Airport",
            "WVI": "Watsonville Municipal Airport"}
 
@@ -637,6 +651,13 @@ def write_pavement(g):
                              lon=lon, lat=lat, part="whole", clip_zone="", from_end="", d0_m="", d1_m="", part_lon0="",
                              part_lat0="", part_lon1="", part_lat1="", start_year=yr, end_year=9999, confidence=conf,
                              source_url=dict(TRAVIS=U_TRAVIS, NAPA=U_NAPA, STS=U_STS, WVI=U_WVI)[ap], evidence=ev))
+    for code, pref, why in SUPPRESS:
+        i = find(pref); cls, nm, gm = by[i]
+        lon, lat = ll(gm.representative_point())
+        rows.append(dict(airport=code, feature_class=cls, overture_id=i, runway="", name="", lon=lon, lat=lat, part="whole",
+                         clip_zone="", from_end="", d0_m="", d1_m="", part_lon0="", part_lat0="", part_lon1="", part_lat1="",
+                         start_year=9998, end_year=9999, confidence="estimated",
+                         source_url=FR + ("SantaRosa_N.htm" if code == "SRNAAS" else "SacramentoSW.htm"), evidence=why))
     p = HERE.parent / "pavement_dates.csv"
     raw = p.read_bytes().decode()
     nl = "\r\n" if "\r\n" in raw else "\n"

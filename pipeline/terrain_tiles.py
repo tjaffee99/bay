@@ -488,6 +488,17 @@ def histories(name, g, d):
     hist = d["hist"]
     N = np.where(hist > 0, hist.astype(np.int16) - 1, N).astype(np.uint8)
     N[water_now & (hist == 0) & (elev <= 2)] = DEEP
+    # a dated lake / shallow_water row of water_history.csv (a harbour or lagoon dug, a tract
+    # flooded) wins over "water at sea level is natural" where no c.1800 map exists: before
+    # its year the ground is the land around it
+    dated_w = np.zeros((rows, cols), bool)
+    for r_, poly_ in polygon_table(MANUAL / "landscape" / "water_history.csv", g):
+        if str(r_.cover).strip() in ("lake", "shallow_water") and pd.to_numeric(r_.year_start, errors="coerce") > 1769:
+            dated_w |= raster_mask(g, poly_)
+    dated_low = dated_w & water_now & (hist == 0) & (elev <= 2)
+    # the Delta, which the c.1998 baylands layer does not reach (data/manual/delta/delta_zone.geojson)
+    dz_ = gpd.read_file(MANUAL / "delta" / "delta_zone.geojson").to_crs(3857)
+    in_delta = rasterize_on(g, [(gm_, 1) for gm_ in dz_.geometry], fill=0, dtype="uint8").astype(bool)
     # mapped marsh / flat well above the tides is a registration error of the historical
     # layers (e.g. downtown San Rafael at 15 m): dry ground
     N[np.isin(N, [MARSH, FLAT]) & (elev > 6) & ~water_now] = GRASS
@@ -501,8 +512,8 @@ def histories(name, g, d):
     # appear in the post-war decades (gravel pits, ponds)
     # (also where the c.1800 maps draw dry ground: 540 ha of gravel pits and ponds around
     # Pleasanton, Livermore, Sunol and the valley percolation ponds stayed land for good)
-    mapped_dry = water_now & (hist > 0) & (elev > 2) & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
-    later_water = water_now & (N == RESERVOIR) & (hist == 0) & (elev > 2)
+    mapped_dry = water_now & (hist > 0) & ((elev > 2) | in_delta) & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
+    later_water = (water_now & (N == RESERVOIR) & (hist == 0) & (elev > 2)) | dated_low
     if later_water.any():
         land_ok = ~water_now & ~np.isin(N, list(WET) + [RESERVOIR, DEEP, SHALLOW])
         N[later_water] = nearest_fill(N, land_ok)[later_water]
@@ -652,6 +663,16 @@ def histories(name, g, d):
     dike_year = np.full((rows, cols), 1900.0, np.float32)
     salt = np.isin(b18, [3, 4, 6]) & np.isin(b98, [6, 11])
     diked = np.isin(b18, [3, 4, 6]) & np.isin(b98, [9, 10])
+    # the Delta has no c.1998 layer: its leveed islands are the diked_marsh rows dl_* of
+    # fill_zones.csv (Delta Stewardship Council outlines, Thompson's reclamation years);
+    # the parts under water today (Franks Tract, Liberty Island, Clifton Court) were farm
+    # land between the levee year and the flood / forebay year of their water_history row
+    delta_flooded = np.zeros((rows, cols), bool)
+    for r_, poly_ in polygon_table(MANUAL / "fill_zones.csv", g):
+        if str(r_.zone_id).startswith("dl_") and str(r_.kind).strip() == "diked_marsh":
+            m_ = raster_mask(g, poly_) & in_delta
+            diked |= m_ & ~water_now & np.isin(N, [MARSH, FLAT, DEEP, SHALLOW])   # levees stand in the old channel edge
+            delta_flooded |= m_ & water_now & np.isin(N, [MARSH, FLAT])
     zones_fill = np.full((rows, cols), np.nan, np.float32)
     pier_y = np.full((rows, cols), np.nan, np.float32)
     # per-cell spread of dated changes: field-sized patches of rank noise (the old hash
@@ -694,7 +715,7 @@ def histories(name, g, d):
             y = np.full((rows, cols), np.nan, np.float32)
             y[m] = ys + (ye - ys) * np.clip(dz / span, 0, 1)
         if k == "diked_marsh":
-            sel = m & (salt | diked)
+            sel = m & (salt | diked | delta_flooded)
             dike_year[sel] = y[sel]
             later = m & ~(salt | diked) & was_wet0
             dike_fill_y[later] = np.fmin(dike_fill_y[later], y[later])
@@ -755,7 +776,8 @@ def histories(name, g, d):
     # still baylands in SFEI c.1998 (flat, marsh, pond, moist grassland) are not fill:
     # levees, marsh plain and dried pond beds read as land in WorldCover, but nobody
     # filled them (they were the yellow "grass" patches along the South Bay ponds)
-    still_bay = was_wet & ~water_now & ~salt & ~diked & np.isin(b98, [3, 4, 5, 8])
+    still_bay = was_wet & ~water_now & ~salt & ~diked & (np.isin(b98, [3, 4, 5, 8])
+                                                          | (in_delta & np.isin(N, [MARSH, FLAT]) & ~researched_fill))
     filled = was_wet & ~water_now & ~salt & ~diked & ~is_pier & ~still_bay
     fill_y = np.where(np.isfinite(zones_fill), zones_fill, np.where(urban, urban_y - 3, np.nan))
     fill_y = np.where(filled & np.isnan(fill_y), 1950.0, fill_y)
@@ -825,7 +847,7 @@ def histories(name, g, d):
     # tide made them flicker between water and mud in the 1870s-80s)
     became &= ~np.isin(b98, [3, 4])
     broad = ndimage.binary_opening(became, iterations=2)
-    N[became & ~broad] = SHALLOW
+    N[became & ~broad & ~(dated_w & in_delta)] = SHALLOW
     researched_water = np.zeros((rows, cols), bool)
     # one event per kind (an event is a full grid: one per area would exhaust memory)
     lake_y = np.full((rows, cols), np.nan, np.float32)
@@ -846,8 +868,11 @@ def histories(name, g, d):
     event(np.isfinite(lake_y), RESERVOIR, lake_y)
     event(np.isfinite(shal_y), SHALLOW, shal_y)
     del lake_y, shal_y
+    delta_flooded &= np.isin(N, [MARSH, FLAT])
+    event(delta_flooded, DIKED, dike_year)
+    event(delta_flooded & ~researched_water, SHALLOW, 1975.0 + 20.0 * h)
     event(later_water & ~researched_water, RESERVOIR, 1945.0 + 20.0 * h)
-    event(broad & ~researched_water, SHALLOW, 1870.0 + 20.0 * h)
+    event(broad & ~researched_water & ~delta_flooded, SHALLOW, 1870.0 + 20.0 * h)
 
     # ---- agriculture (outside SF)
     flat = slope < 6
@@ -880,6 +905,10 @@ def histories(name, g, d):
         ag["prio"] = ag["layer"].map(PRIO).fillna(0)
         ag = ag.sort_values(["year_start", "prio"]).reset_index(drop=True)
         ag_ok = ~water_now & (slope < 15) & (elev < 500) & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH, ROCK, BEACH]) & ~in_sf
+        # the Delta islands were tule marsh: they are farmed once their levees stand (the
+        # district eras that end before an island was reclaimed do not apply to it)
+        delta_farm = in_delta & diked & ~water_now & np.isin(N, [MARSH, FLAT]) & ~in_sf
+        ag_ok |= delta_farm
         first_c = np.full((rows, cols), 255, np.uint8)
         first_y = np.full((rows, cols), np.nan, np.float32)
         last_c = np.full((rows, cols), 255, np.uint8)
@@ -914,6 +943,12 @@ def histories(name, g, d):
             if str(r.kind) == "farm_mixed" and np.isfinite(osh):
                 cc = np.where(b_orch[sl] < osh, ORCHARD, FARM).astype(np.uint8)
             yy = (ys + (yf - ys) * b_year[sl]).astype(np.float32)
+            dfm = delta_farm[sl] & m
+            if dfm.any():
+                m = m & ~(dfm & (yf < dike_year[sl]))
+                yy = np.where(dfm, np.fmax(yy, dike_year[sl] + 1.0 + 2.0 * b_year[sl]), yy).astype(np.float32)
+                if not m.any():
+                    continue
             fy, fcv = first_y[sl], first_c[sl]
             unset = m & np.isnan(fy)
             fy[unset], fcv[unset] = yy[unset], cc[unset]

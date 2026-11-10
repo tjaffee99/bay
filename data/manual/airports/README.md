@@ -219,6 +219,13 @@ lines on each edition with `corridor.classify`, then read by eye):
 * Sonoma County (STS) - both runways 1942; the north-west 270 m of 14/32 and its taxiways 2014 (2013-14 extension).
 * Watsonville - three runway features 1943; no change on any edition 1952-1994, so nothing else is phased.
 
+**Rows with `start_year` 9998** (`SRNAAS`, `VCVRC`; 11 rows): `pipeline/airports.py` gives every Overture runway / taxiway /
+apron the years of the nearest airport outline within 1.5 km, so the new outlines would pick up (a) the surviving pavement of
+NAAS Santa Rosa that OpenStreetMap maps as 3 runways + 6 taxiways (already drawn from the traced pieces: the OSM lines agree
+with them to a few metres, and one OSM "runway" is the ramp) and (b) two 70-m model-aircraft strips in Lagoon Valley Park,
+930 m from the Vacaville Gliderport. These rows keep them off the map (never reached by the slider). They become
+unnecessary if `airports.py` joins Overture pavement only to Overture outlines (and the manual pieces to all outlines).
+
 **Airports that were at the pipeline default** (rows in `data/tables/airports.csv`, all `estimated`, evidence in the row):
 Capell Valley 1960, Monterey Bay Academy 1973 (no strip on the 1952-photo sheet: the "Camp McQuaide runway" is not confirmed
 by the maps), Q Area Heliport 1980 (lower bound), The Sea Ranch 1968, Yolo County 1942.

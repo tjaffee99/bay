@@ -979,14 +979,22 @@ route("pvc", "Pajaro Valley Consolidated Railroad (narrow gauge): Watsonville - 
       ])
 
 route("osr_south", "Ocean Shore Railway, Southern Division (Santa Cruz - Davenport - Swanton)", "rail",
-      WIKI + "Ocean_Shore_Railroad", [
-          seg("Davenport - Scott Creek - Swanton", 1906.4, 1923.0,
-              rail((-122.19709, 37.01269), (-122.21617, 37.02844), (-122.2293, 37.0501), join=250.0),
-              note="The southern section opened to Swanton in May 1906 (regular service from June); main-line service "
-                   "ended in 1920 and the line north from Santa Cruz was leased to the San Vicente Lumber Company, "
-                   "which used the tracks until 1923 (month ESTIMATED) (Wikipedia, Ocean Shore Railroad). Santa Cruz - "
-                   "Davenport ran beside the Coast Line Railroad (routes.csv rr_santa_cruz) and is not drawn twice. "
-                   "Geometry: OSM abandoned grade.", confidence="estimated"),
+      SCT + "search?q=ocean+shore+railway+swanton", [
+          seg("Davenport - Scott Creek (Scott / Folger)", 1906.9, 1923.9,
+              rail((-122.19709, 37.01269), (-122.20756, 37.02034), (-122.21617, 37.02845), (-122.22735, 37.03779), (-122.2268, 37.04077), join=250.0),
+              note="The Ocean Shore's southern crews reached the south bank of Scott Creek north of Davenport by late "
+                   "1906 (month ESTIMATED) and turned up the creek to Folger in 1907; the Ocean Shore gave up its "
+                   "Southern Division in 1920-21, the San Vicente Lumber Company bought it and ran it until its mill "
+                   "closed in December 1923 (santacruztrains.com; Wikipedia has the section open to Swanton in May "
+                   "1906). Santa Cruz - Davenport ran beside the Coast Line Railroad (routes.csv rr_santa_cruz) and is "
+                   "not drawn twice. Geometry: OSM abandoned grade.", confidence="estimated"),
+          seg("Scott Creek Railway: Folger - Swanton", 1908.9, 1923.9,
+              rail((-122.2268, 37.04077), (-122.22527, 37.05071), (-122.22678, 37.06278), join=250.0),
+              note="Extension up Scott Creek to Swanton for the San Vicente Lumber Company (incorporated 8 May 1908): "
+                   "Scott Creek Railway incorporated June 1908, built by about the end of November 1908, first load "
+                   "of logs 29 March 1909; abandoned December 1923 (santacruztrains.com). The lumber company's "
+                   "logging lines above Swanton (Little Creek) are not drawn. Geometry: OSM abandoned grade.",
+              confidence="estimated", source_url=SCT + "search?q=san+vicente+lumber+company+railroad+swanton"),
       ])
 
 route("wtc", "Watsonville Transportation Company (Watsonville Railway & Navigation Co.): Watsonville - Port Watsonville",

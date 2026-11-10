@@ -1233,6 +1233,22 @@ ROUTE_PICK = [
     ([199812812], "sj_north_side_horse", "North Side Horse Railroad (San Jose)", "horsecar", 1875.0, 1901.0,
      "Horse railroad 1875-1901 (OHM; start cited to the NRHP nomination on NPGallery). Geometry: OHM.",
      "https://npgallery.nps.gov/GetAsset/f0a732a6-9b37-4887-98b7-a355da88df8"),
+    # Santa Rosa (new counties, 2026-11): OHM's dates on these ways are placeholders ("1854"), ours are below
+    ([198305780, 198305783], "sr_street_railway", "Santa Rosa Street Railway (horse cars): Fourth Street and McDonald "
+     "Avenue", "horsecar", 1877.0, 1905.17,
+     "Horse-car line along Fourth Street from the railroad depot and out McDonald Avenue, drawn on Thos. H. "
+     "Thompson's Map of the City of Santa Rosa of 1876 (Historical Atlas of Sonoma County, 1877): in service by "
+     "1877 (start ESTIMATED from the map). The Santa Rosa horse lines were consolidated into the Petaluma & Santa "
+     "Rosa Railway on 20 June 1903 and replaced by its electric cars, downtown from 1 March 1905 (Wikipedia, "
+     "Petaluma and Santa Rosa Railroad). Geometry: OHM, from the 1876 map.",
+     "https://www.davidrumsey.com/maps2368.html"),
+    ([198305780], "sr_psr_fourth_st", "Petaluma & Santa Rosa electric cars on Fourth Street (Santa Rosa)", "streetcar",
+     1905.17, 1931.5,
+     "The interurban reached downtown Santa Rosa when its crossing of the steam railroad was installed on 1 March "
+     "1905; 'the Santa Rosa line was dismantled from McDonald Avenue to Olive Street in 1931' (Wikipedia; month "
+     "ESTIMATED). Fourth Street between the depot and McDonald Avenue is drawn; the approach from Sebastopol Avenue "
+     "is not. Geometry: OHM (the horse-car line of the 1876 map).",
+     "https://en.wikipedia.org/wiki/Petaluma_and_Santa_Rosa_Railroad"),
 ]
 
 
@@ -1257,13 +1273,15 @@ def write_rail_picks(g):
     rg = gpd.GeoDataFrame(rows, crs=UTM)
     _write_geojson(rg, OHM_OUT / "historic_rail_ohm.geojson", "historic_rail_ohm")
     out = []
+    seq = {}     # (route_id, segment_seq) stays unique when one route has several periods
     for ways, rid, name, mode, y0, y1, note, url in ROUTE_PICK:
         geom = _line_of(ways, g)
         if geom is None:
             continue
         geom = gpd.GeoSeries([geom], crs=UTM).to_crs(4326).iloc[0].simplify(0.00002)
         lines = list(geom.geoms) if geom.geom_type == "MultiLineString" else [geom]
-        for k, ln in enumerate(lines, 1):
+        for ln in lines:
+            k = seq[rid] = seq.get(rid, 0) + 1
             out.append({"route_id": rid, "name": name, "mode": mode, "year_start": y0, "year_end": y1,
                         "elevated": "ground", "segment_seq": k, "geom_type": "lonlat",
                         "geom": "; ".join(f"{x:.6f} {y:.6f}" for x, y in ln.coords),
