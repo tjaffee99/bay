@@ -1085,6 +1085,48 @@ def histories(name, g, d):
         event(burned_area, BURNED, 1906.29)
         rebuilt = 1907.4 + 1.2 * h
         event(burned_area, URBAN, np.where(urban & (urban_y > rebuilt), urban_y, rebuilt))
+    # wildfires in built-up ground (data/manual/fires: CAL FIRE damage inspections since 2013):
+    # cells with two or more destroyed structures within about 60 m go dark on the fire date
+    # and are city ground again when the houses around were rebuilt (mean rebuild year of the
+    # structures there, region_buildings' fire_structures.parquet), else return to the natural
+    # cover — as the 1906 district does
+    fs_path = MANUAL / "fires" / "destroyed_structures.csv"
+    if fs_path.exists():
+        fs = pd.read_csv(fs_path, usecols=["id", "date", "lon", "lat"])
+        rb_path = INTERIM / "fire_structures.parquet"
+        if rb_path.exists():
+            rb = pd.read_parquet(rb_path, columns=["sid", "rebuild_year"]).drop_duplicates("sid").set_index("sid").rebuild_year
+            fs["rebuild"] = fs.id.map(rb).astype(float)
+        else:
+            fs["rebuild"] = np.nan
+        fx = np.radians(fs.lon.values) * 6378137.0
+        fyy = 6378137.0 * np.log(np.tan(np.pi / 4 + np.radians(fs.lat.values) / 2))
+        fc = np.rint((fx - g["X0"]) / g["res"]).astype(int)
+        fr = np.rint((g["Y0"] - fyy) / g["res"]).astype(int)
+        okp = (fc >= 0) & (fc < cols) & (fr >= 0) & (fr < rows)
+        fr, fc, fd, frb = fr[okp], fc[okp], fs.date.values[okp].astype(np.float32), fs.rebuild.values[okp]
+        win = 3 if g["z"] == 13 else 5
+        cnt = np.zeros((rows, cols), np.float32)
+        np.add.at(cnt, (fr, fc), 1.0)
+        dmax = np.zeros((rows, cols), np.float32)
+        np.maximum.at(dmax, (fr, fc), fd)
+        rsum = np.zeros((rows, cols), np.float32)
+        rcnt = np.zeros((rows, cols), np.float32)
+        hasr = np.isfinite(frb)
+        np.add.at(rsum, (fr[hasr], fc[hasr]), frb[hasr].astype(np.float32))
+        np.add.at(rcnt, (fr[hasr], fc[hasr]), 1.0)
+        k2 = float(win * win)
+        near = ndimage.uniform_filter(cnt, win, mode="constant") * k2
+        fdate = ndimage.maximum_filter(dmax, win, mode="constant")
+        rs_, rc_ = ndimage.uniform_filter(rsum, win, mode="constant") * k2, ndimage.uniform_filter(rcnt, win, mode="constant") * k2
+        burned_town = (near >= 1.5) & urban & (urban_y < fdate - 1.0) & ~water_now
+        rebuilt_y = np.where(rc_ >= 0.5, rs_ / np.maximum(rc_, 1e-6), np.nan).astype(np.float32)
+        back = burned_town & np.isfinite(rebuilt_y)
+        event(burned_town, BURNED, fdate)
+        event(back, np.where(suburb, SUBURB, URBAN).astype(np.uint8), np.fmax(rebuilt_y, fdate + 0.8))
+        event(burned_town & ~back, N, fdate + 1.5 + 1.0 * h)
+        log(f"terrain {name}: {int(burned_town.sum())} built-up cells burned in wildfires ({int(back.sum())} rebuilt)")
+        del cnt, dmax, rsum, rcnt, near, fdate, rs_, rc_
     event(is_park, PARK, park_y)
     event(is_park & np.isfinite(green_close_y) & (green_close_y > park_y), GRASS, green_close_y)
     event(np.isfinite(wood_y), FOREST, wood_y)
@@ -1158,6 +1200,100 @@ def histories(name, g, d):
     n = n_all
     log(f"terrain {name}: changes per vertex " + str(np.bincount(n.ravel(), minlength=4).tolist()))
     return covers, years, elev, slope, urban_y, park_y, wood_y
+
+
+def apply_fires(name, g, covers, years):
+    """Wildfire scars on open land (data/manual/fires/perimeters.geojson: CAL FIRE FRAP
+    perimeters; severity_high.geojson: MTBS high-severity patches, 1985 on). Inside a
+    perimeter grass, scrub, oak woodland, forest and riparian ground is burned on the fire
+    date; grass is back the next season, scrub after about three years, woodland after a
+    year or so where the fire ran low — in a high-severity patch the woodland comes back as
+    brush, and as woodland again after 20-25 years (redwood country resprouts in about five).
+    Only where the cell's history has room for it (a burn and its recovery take two of the
+    four changes a cell holds), the latest fire first, and an earlier fire of the same ground
+    only if 15 years lie between them; fires of 1,000 acres or more, or with destroyed
+    structures. Farm, park, city and wet ground is not touched here (built-up cells with
+    destroyed structures burn in histories())."""
+    pf = MANUAL / "fires" / "perimeters.geojson"
+    if not pf.exists():
+        return
+    per = gpd.read_file(pf).to_crs(3857)
+    per = per[(per.acres >= 1000) | (per.destroyed > 0)].sort_values("year", ascending=False)
+    sp = MANUAL / "fires" / "severity_high.geojson"
+    sev = gpd.read_file(sp).to_crs(3857) if sp.exists() else None
+    rows, cols = covers.shape[1:]
+    res, X0, Y0 = g["res"], g["X0"], g["Y0"]
+    n = np.isfinite(years).sum(axis=0).astype(np.int8)
+    rr, cc = np.indices((rows, cols))
+    cur = covers[n, rr, cc]
+    last_y = np.where(n > 0, years[np.maximum(n - 1, 0), rr, cc], -np.inf)
+    burnable = np.isin(cur, [GRASS, SCRUB, OAK, FOREST, RIPARIAN])
+    hh = ((rr * 7919 + cc * 104729) % 997) / 997.0
+    f1 = np.full((rows, cols), np.nan, np.float32)   # the latest fire of each cell
+    f1_high = np.zeros((rows, cols), bool)
+    f0 = np.full((rows, cols), np.nan, np.float32)   # an earlier one, 15+ years before
+
+    def window(geom):
+        x0, y0, x1, y1 = geom.bounds
+        c0, c1 = max(int((x0 - X0) / res) - 1, 0), min(int((x1 - X0) / res) + 2, cols)
+        r0, r1 = max(int((Y0 - y1) / res) - 1, 0), min(int((Y0 - y0) / res) + 2, rows)
+        if c0 >= c1 or r0 >= r1:
+            return None, None
+        tw = Affine(res, 0, X0 - res / 2 + c0 * res, 0, -res, Y0 + res / 2 - r0 * res)
+        m = features.rasterize([(geom, 1)], out_shape=(r1 - r0, c1 - c0), transform=tw, fill=0, dtype="uint8").astype(bool)
+        return (slice(r0, r1), slice(c0, c1)), m
+
+    n_fires = 0
+    for r in per.itertuples():
+        if r.geometry is None or r.geometry.is_empty:
+            continue
+        sl, m = window(r.geometry)
+        if sl is None:
+            continue
+        ok = m & burnable[sl] & (last_y[sl] < r.year - 0.5)
+        free = 4 - n[sl]
+        a = ok & np.isnan(f1[sl]) & (free >= 2)
+        if a.any():
+            f1[sl][a] = r.year
+            if sev is not None:
+                for sg in sev.geometry[sev.fire_id == r.fire_id]:
+                    s2, m2 = window(sg)
+                    if s2 is not None:
+                        f1_high[s2] |= m2 & (f1[s2] == np.float32(r.year))
+        b = ok & ~a & np.isfinite(f1[sl]) & np.isnan(f0[sl]) & (free >= 4) & (f1[sl] - r.year >= 15)
+        f0[sl][b] = r.year
+        n_fires += int(a.any() or b.any())
+
+    def put(mask, cover, year):
+        i, j = np.nonzero(mask)
+        if not len(i):
+            return
+        k = n[i, j].astype(int)
+        covers[k + 1, i, j] = cover[i, j] if isinstance(cover, np.ndarray) else cover
+        years[k, i, j] = year[i, j] if isinstance(year, np.ndarray) else year
+        n[i, j] += 1
+
+    back_after = np.select([cur == GRASS, cur == SCRUB, cur == OAK], [0.6, 3.0, 1.0], 1.5).astype(np.float32) + 0.4 * hh
+    NOW = 2026.9
+    m0 = np.isfinite(f0)
+    put(m0, BURNED, f0)
+    put(m0, cur, f0 + back_after)
+    m1 = np.isfinite(f1)
+    put(m1, BURNED, f1)
+    wood = np.isin(cur, [OAK, FOREST, RIPARIAN])
+    hi = m1 & f1_high & wood
+    y_low = (f1 + back_after).astype(np.float32)
+    put(m1 & ~hi & (y_low <= NOW), cur, y_low)
+    y_brush = (f1 + 3.0 + 0.5 * hh).astype(np.float32)
+    put(hi & (y_brush <= NOW), SCRUB, y_brush)
+    # woodland again: redwoods of the Santa Cruz Mountains resprout within a few years
+    lon = np.degrees((X0 + cc * res) / 6378137.0)
+    lat = np.degrees(2 * np.arctan(np.exp((Y0 - rr * res) / 6378137.0)) - np.pi / 2)
+    redwood = (cur == FOREST) & (lat < 37.45) & (lon < -121.75)
+    y_wood = (f1 + np.where(redwood, 5.0, 20.0) + 5.0 * hh).astype(np.float32)
+    put(hi & (y_brush <= NOW) & (y_wood <= NOW) & (n < 4), cur, y_wood)
+    log(f"terrain {name}: {n_fires} wildfires burn {int(m1.sum())} open cells ({int(hi.sum())} at high severity; "
+        f"{int(m0.sum())} cells burned twice)")
 
 
 def write_tiles(name, g, covers, years, elev, deco_fn=None, zooms=None):
@@ -1733,6 +1869,7 @@ def main():
     for name, zooms, step in (("region", [8, 9, 10, 11, 12, 13], 4), ("detail", [14], 2)):
         g, d = load_grid(name)
         covers, years, elev, slope, urban_y, park_y, wood_y = histories(name, g, d)
+        apply_fires(name, g, covers, years)
         if name == "region":
             elev = region_under_detail(g, elev)
         deco = decorations(name, g, covers, years, elev, urban_y, park_y, wood_y)

@@ -1062,3 +1062,23 @@ route("coal_empire", "Empire Coal Mine and Railroad (Mount Diablo coal field): S
                    "on the 1898 sheet, surveyed 1896); ceased 1897-98 (wx4.org). Geometry: USGS Mt Diablo 1898 sheet.",
               confidence="estimated"),
       ])
+
+
+route("psr_forestville", "Petaluma & Santa Rosa Railroad: Sebastopol - Graton - Forestville branch", "interurban", PSRW, [
+    seg("Sebastopol - Graton - (2 miles short of Forestville)", 1905.54, 1984.0,
+        rail((-122.82039, 38.39995), (-122.83756, 38.41226), (-122.85769, 38.42438), (-122.87052, 38.43894), (-122.8788, 38.45051), join=250.0),
+        note="Branch from Sebastopol to Forestville opened 15 July 1905; trolley service ended 1 July 1932, freight "
+             "afterwards (diesel from 1947); the remaining line went with the Santa Rosa - Sebastopol track in "
+             "1984-89 (end year ESTIMATED; now the West County Trail). Replaces the three partial stretches of "
+             "routes.csv ir_psr. Geometry: OSM abandoned grade and OpenHistoricalMap way 202387872 (CC0).",
+        confidence="estimated", geometry_confidence="medium"),
+    seg("Second mile from the Forestville end (to the Sebastopol Apple Growers' Union plant)", 1905.54, 1969.0,
+        rail((-122.8788, 38.45051), (-122.88628, 38.46509), join=250.0),
+        note="The Forestville line 'was shortened by another mile to the Sebastopol Apple Growers' Union plant in "
+             "1969' (Wikipedia); cut placed 2 miles from the end of the line along the track.",
+        geometry_confidence="medium"),
+    seg("Last mile into Forestville (beyond Ross)", 1905.54, 1961.0,
+        rail((-122.88628, 38.46509), (-122.8887, 38.47457), join=250.0),
+        note="The Forestville line 'was shortened by 1 mile to Ross in 1961' (Wikipedia); cut placed 1 mile from the "
+             "end of the line along the track.", geometry_confidence="medium"),
+])

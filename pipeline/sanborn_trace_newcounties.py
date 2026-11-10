@@ -56,6 +56,8 @@ CITIES = {
         "volumes": {"004": (1904, "Dec 1904"), "005": (1908, "1908"), "006": (1950, "1908 - 1950 (corrected to 1950)")},
         "parcels": RY / "sonoma_county/sonoma_county.parquet", "pid": "APN",
         "bbox": (-122.730, 38.430, -122.700, 38.450),
+        "awnings": ("004",),  # the Dec 1904 sheets draw the wooden sidewalk awnings (yellow strips in the street)
+        "fireproof_years": (1908, 1950),
     },
     "vallejo": {
         "loc": "00905", "area": "vallejo_downtown",
@@ -340,6 +342,69 @@ def run(key, s=None, stages=("refine", "georef", "extract", "overlay")):
         return E.overlay(key, scale=float(os.environ.get("SCALE", 0.6)))
 
 
+def assemble():
+    """P.assemble, then this tool's per-block rules:
+      * `block_cap` {block: "medium" | "low"} of a sheet's control file (inherited by the editions registered onto it):
+        blocks placed by a neighbour's fit (no control of their own today: the mall, the freeway) are capped;
+      * volumes listed under the town's `awnings` draw the wooden sidewalk awnings as yellow strips outside the block
+        line: footprints are clipped to their block and strips lying in the street are dropped."""
+    import shapely
+    from pyproj import Transformer
+    from shapely.geometry import Polygon, mapping, shape
+    P.assemble()
+    c = CITIES[P.CITY_NAME]
+    rank = {"high": 0, "medium": 1, "low": 2}
+    to_ll = Transformer.from_crs(32610, 4326, always_xy=True)
+    for (area, year), keys in sorted(E.AREAS.items()):
+        f = E.OUT / f"{area}_{year}.geojson"
+        fc = json.load(open(f))
+        caps, clip = {}, {}
+        for key in keys:
+            cfg = json.load(open(E.CONTROL / f"{key}.json"))
+            while "registered_to" in cfg:
+                cfg = json.load(open(E.CONTROL / f"{cfg['registered_to']}.json"))
+            caps[key] = cfg.get("block_cap", {})
+            if key.split("_")[0] in c.get("awnings", ()):
+                G = json.load(open(E.INTERIM / f"{key}.M.json"))
+                for b in G.get("blocks", []):
+                    x0, y0, x1, y1 = b["rect_px"]
+                    q = W.apply(np.array(b["M"]), [[x0, y0], [x1, y0], [x1, y1], [x0, y1]])
+                    clip[(key, b["name"])] = Polygon(np.column_stack(to_ll.transform(q[:, 0], q[:, 1]))).buffer(4e-6)
+        out, n_cap, n_drop = [], 0, 0
+        for ft in fc["features"]:
+            pr = ft["properties"]
+            key = pr["id"].rsplit("_", 1)[0]
+            blk = pr["georef"][6:] if pr["georef"].startswith("block ") else None
+            cap = caps.get(key, {}).get(blk)
+            if cap and rank[pr["confidence"]] < rank[cap]:
+                pr["confidence"] = cap
+                n_cap += 1
+            if pr["sanborn_colour"] == "fireproof" and year in c.get("fireproof_years", ()):
+                pr["material"] = "concrete"  # brown = "fire proof construction" on this edition's key (not adobe)
+            if (key, blk) in clip:
+                g = shape(ft["geometry"])
+                gi = g.intersection(clip[(key, blk)])
+                if gi.geom_type != "Polygon":
+                    polys = [q for q in getattr(gi, "geoms", []) if q.geom_type == "Polygon"]
+                    gi = max(polys, key=lambda q: q.area) if polys else None
+                if gi is None or gi.area < 0.5 * g.area or gi.area < 6e-10:
+                    n_drop += 1
+                    continue
+                if gi.area < 0.995 * g.area:
+                    pr["area_m2"] = round(pr["area_m2"] * gi.area / g.area, 1)
+                    ft["geometry"] = json.loads(json.dumps(mapping(shapely.set_precision(gi, 1e-7))), parse_float=lambda v: round(float(v), 7))
+            out.append(ft)
+        fc["features"] = out
+        json.dump(fc, open(f, "w"))
+        cf = E.OUT / f"{area}_coverage.geojson"
+        cov = json.load(open(cf))
+        for ft in cov["features"]:
+            if ft["properties"]["map_year"] == year:
+                ft["properties"]["features"] = len(out)
+        json.dump(cov, open(cf, "w"))
+        E.log(area, year, len(out), "features after block rules:", n_cap, "capped,", n_drop, "awning strips dropped")
+
+
 def set_areas(d):
     """control/<town>/areas.json: {"<area>_<year>": [keys]}"""
     p = E.CONTROL / "areas.json"
@@ -395,7 +460,7 @@ def main():
         for k in keys:
             print(E.overlay(k, scale=float(os.environ.get("SCALE", 0.5))))
     if stage in ("all", "assemble"):
-        P.assemble()
+        assemble()
     if stage in ("all", "check"):
         print(P.check())
 

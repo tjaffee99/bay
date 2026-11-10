@@ -1719,5 +1719,11 @@
    ]
   }
  ],
- "pct": 25
+ "pct": 25,
+ "zones_only": true,
+ "residential": true,
+ "commercial_blocks": [
+  "10",
+  "plaza"
+ ]
 }

@@ -296,6 +296,62 @@ FIELDS = [
                  "data/manual/airports_extra*.geojson",
         pieces=[P("runway", 1957, 1991, "Runway 2/20, 645 m on the 1968 / 1980 photorevisions (coarse); width ESTIMATED",
                   a=(193, -3), b=(-46, -605), w=15)], margin=40),
+    dict(
+        name="Knights Airport", cls="airport", c=(-122.2675, 38.1293),
+        opened=1935, closed=1954, src=FR + "Oakland_N.htm",
+        S="USGS 1:24,000 Cuttings Wharf 1949 (1948 photos, 'Knights Airport') CA_Cuttings Wharf_289711_1949_24000; boundary "
+          "with airport symbol on the 1:62,500 Mare Island 1942 (1937 survey); gone on the 1968 photorevision",
+        csv_note="Vallejo, on the Napa River flat north-west of Sears Point Rd (SR-37) at Sacramento St (Knights Airport / "
+                 "Stan's Airpark): a 1935 photo is the earliest record (start ESTIMATED from it; on the May 1936 chart), "
+                 "closed during the war (off the charts Aug 1943 - Feb 1946), 2,300-ft unpaved runway in 1948; 'by 1954 "
+                 "the runways were deteriorating & the Napa County Airport was a better choice so this field was closed' "
+                 "(Campbell via Freeman). Strips traced from the USGS Cuttings Wharf 1:24,000 sheet of 1949 (1948 "
+                 "photos) in data/manual/airports_extra*.geojson; the pre-war strips are not mapped (the field is airfield "
+                 "grass from 1935, the traced strips from 1946)",
+        pieces=[
+            P("runway", 1946, 1954, "middle NE-SW runway of the 1948-photo sheet, 470 m; widths as drawn",
+              a=px([(450, 1000)], 0.55, 400)[0], b=px([(1035, 378)], 0.55, 400)[0], w=25),
+            P("runway", 1946, 1954, "west NE-SW strip from the south-west turnaround, 490 m",
+              a=px([(45, 1160)], 0.55, 400)[0], b=px([(605, 475)], 0.55, 400)[0], w=14),
+            P("runway", 1946, 1954, "east NE-SW strip along the highway, 410 m",
+              a=px([(600, 1170)], 0.55, 400)[0], b=px([(1045, 595)], 0.55, 400)[0], w=20),
+            P("taxiway", 1946, 1954, "north strip from the west turnaround and the link along the heads of the runways",
+              line=px([(275, 400), (745, 425), (610, 480), (980, 480), (1110, 560)], 0.55, 400)[:2], w=14),
+            P("taxiway", 1946, 1954, "link along the north-east heads of the runways to the highway side",
+              line=px([(610, 480), (980, 480), (1110, 560)], 0.55, 400), w=14),
+            P("taxiway", 1946, 1954, "cross strip at the south-west ends", a=px([(320, 900)], 0.55, 400)[0],
+              b=px([(560, 1130)], 0.55, 400)[0], w=20),
+        ], margin=25),
+    dict(
+        name="Benicia Airport", cls="airport", c=(-122.1895, 38.0755),
+        opened=1946, closed=1958, src=FR + "Oakland_N.htm",
+        S="USGS 1:24,000 Benicia 1950 (1948 photos, 'Benicia Airport', two strips) CA_Benicia_288319_1950_24000; 1959 (1958 photos, still labelled); under I-780 on the 1968 photorevision",
+        csv_note="west edge of Benicia between Benicia Rd and the Southampton Bay marsh (Benicia Airport / Air Harbor; "
+                 "I-780 runs over it): 'in 1946, when the runway was opened' (Campbell via Freeman; not on the 1946 chart, "
+                 "on the 1948 one), 2,400-ft unpaved runway; last on the Sep 1957 chart, off the Apr 1958 one -> closed "
+                 "1957-58 (still labelled on the 1958-photo USGS sheet, abandoned on a 1965 aerial). Two strips traced "
+                 "from the USGS Benicia 1:24,000 sheet of 1950 (1948 photos) in data/manual/airports_extra*.geojson",
+        pieces=[
+            P("runway", 1946, 1958, "main strip along the road, 600 m on the 1950 sheet; width as drawn (20-30 m)",
+              a=px([(490, 388)], 0.55, 400)[0], b=px([(962, 1378)], 0.55, 400)[0], w=22),
+            P("runway", 1946, 1958, "short cross strip into the marsh edge, 240 m",
+              a=px([(417, 922)], 0.55, 400)[0], b=px([(800, 1125)], 0.55, 400)[0], w=16),
+        ], margin=20),
+    dict(
+        name="Santa Rosa Coddingtown Airport", cls="airport", c=(-122.74097, 38.475),
+        opened=1960, closed=1971, src=FR + "SantaRosa_N.htm",
+        S="USGS 1:24,000 Santa Rosa 1954, 1968 photorevision (runway outline in purple) CA_Santa Rosa_300296_1954_24000; "
+          "buildings over it on the 1980 photorevision",
+        csv_note="north-west Santa Rosa between Piner Rd and Guerneville Rd, west of today's Coddingtown (Santa Rosa "
+                 "Metropolitan / Coddingtown Airport): 'built off of Piner Road in 1960' (Sonoma County Historical "
+                 "Society via Freeman), dedicated 1960, 3,050-ft paved Runway 16/34 (1967-68); sold 1971 - 'the main "
+                 "portion of the field became a parking lot for the buses of the Golden Gate Transit District', 'closed "
+                 "by 1972' (a heliport stayed into the 1980s). Runway traced from the 1968 photorevision of the USGS "
+                 "Santa Rosa 1:24,000 sheet (920 m) in data/manual/airports_extra*.geojson. The earlier fields on the "
+                 "same ground (Santa Rosa Municipal / Steiner Field 1929-, Santa Rosa Airpark c.1953) are not modelled: "
+                 "the 1:62,500 sheet of 1944 shows only a boundary, the 1954 sheet nothing",
+        pieces=[P("runway", 1960, 1971, "Runway 16/34, 920 m x 22 m on the 1968 photorevision", a=(-6.25, 427.75),
+                  b=(-6.25, -494.75), w=22, conf="documented")], margin=25),
 ]
 
 # airports still at the pipeline default (1950): name (Overture), opened, source, note
@@ -316,6 +372,10 @@ UNDATED = [
     ("The Sea Ranch Airport", 1968, tnm("CA_Stewarts Point_300674_1978_24000"),
      "estimated: not on the USGS Stewarts Point 1:24,000 sheet of 1943; 'Sea Ranch Airport' with the first streets on "
      "the 1978 edition (1971 photos); The Sea Ranch was laid out from 1964-65 -> midpoint 1968"),
+    ("Yolo County Airport", 1942, "https://en.wikipedia.org/wiki/Yolo_County_Airport",
+     "estimated: 'built by the United States Army Air Forces and the United States Army Corps of Engineers about 1942 "
+     "with a 6000 by 150 foot asphalt-concrete north-south runway, and was known as Winters-Davis Flight Strip' "
+     "(Wikipedia); lies in the faded band just outside the map line"),
 ]
 
 
@@ -403,7 +463,8 @@ def write_fields(g):
     if tag not in d.get("description", ""):
         d["description"] = d.get("description", "") + (
             f" {tag} (NAAS Santa Rosa, NOLF Cotati, Santa Cruz Sky Park, Capitola, old Rio Vista, Antioch, Petaluma Sky "
-            "Ranch, Vallejo Sky Harbor, Calistoga, Morgan Hill, old Watsonville, Vaca-Dixon, Vacaville Gliderport): "
+            "Ranch, Vallejo Sky Harbor, Calistoga, Morgan Hill, old Watsonville, Vaca-Dixon, Vacaville Gliderport, Knights, "
+            "Benicia, Coddingtown): "
             "runway / taxiway / apron polygons traced on USGS historical topographic sheets (sheet per feature in `note`), "
             "each with its own start_year / end_year (data/manual/airports/tools/newarea.py).")
     if tag not in o.get("description", ""):

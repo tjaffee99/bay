@@ -765,6 +765,72 @@ const palomar = landmark(
   [rotPoly(PALOMAR_OUTLINE, 346)]
 );
 
+// ---- Venetian Court (Capitola, 1924–), frame 23.6° (+y north-north-east along the rows, +x toward the creek mouth and beach)
+const VENETIAN: V2 = [-121.95335, 36.97178];
+/** Rows of units (OSM outlines) with their roof level above the beach (lidar): three tiers stepping up from the sand. */
+const VENETIAN_ROWS: {o: V2[]; h: number; c: string}[] = [
+  {o: [[9.8, -3.2], [20.0, -3.1], [20.1, -16.0], [18.6, -16.0], [18.6, -19.3], [17.6, -19.3], [17.7, -21.9], [11.9, -35.4], [10.5, -35.5], [10.0, -34.2]], h: 3.1, c: '#E9B7A6'},
+  {o: [[10.6, 43.3], [11.5, 43.3], [17.5, 32.4], [17.4, 25.0], [18.7, 25.0], [18.7, 12.4], [19.9, 12.4], [19.9, -0.2], [10.4, -0.2]], h: 3.1, c: '#F0D58C'},
+  {o: [[-2.7, -3.5], [7.5, -3.4], [7.4, -42.1], [6.3, -42.1], [6.3, -45.3], [5.0, -45.3], [5.0, -49.3], [3.6, -49.3], [3.6, -51.7], [2.1, -51.7], [2.1, -55.1], [1.1, -56.3], [-1.6, -56.7], [-2.7, -55.7]], h: 5.2, c: '#A9CFE0'},
+  {o: [[-2.2, -0.5], [7.2, -0.4], [7.3, 50.0], [6.5, 51.6], [4.5, 51.7], [4.4, 53.0], [3.3, 54.0], [-0.3, 53.9], [-1.1, 53.4], [-1.2, 52.1], [-2.1, 52.3]], h: 5.2, c: '#BFD8B0'},
+  {o: [[-18.3, -16.5], [-18.1, -3.9], [-27.0, -3.9], [-24.6, -16.5]], h: 8.0, c: '#F2C9A0'},
+  {o: [[-8.0, 54.1], [-14.5, 46.4], [-14.9, -0.2], [-5.1, -0.3], [-4.6, 54.1]], h: 8.0, c: '#E8E0CC'}
+];
+const venetianCourt = landmark(
+  'venetian_court_capitola',
+  'Venetian Court (Capitola)',
+  'building',
+  [1924.3, 1925.9],
+  9999,
+  VENETIAN,
+  b => {
+    b.frame(0, 0, 0, 23.6, () => {
+      for (const r of VENETIAN_ROWS) {
+        b.color(r.c).prism(r.o, 0, r.h);
+        b.color(TILE).walls(r.o, r.h, r.h + 0.35); // tiled parapet
+      }
+    });
+  },
+  {
+    Built: 'begun 1924 (National Register: 1925) and built over several years — rows of stucco units in Mediterranean / Spanish Colonial / Mission Revival styles on the beach at the mouth of Soquel Creek; architects Henry J. Roth and Wolfe & Higgins; one of the first seaside condominium developments in California; National Register district 1987',
+    Model:
+      'six rows from OpenStreetMap (© OSM contributors, ODbL; the two beach rows, the hotel row and the rows behind); roof levels 3.1, 5.2 and 8.0 m above the beach — three tiers stepping up the slope — measured on the 2020 USGS lidar; each unit is painted its own colour: one schematic pastel per row here; later alterations not dated'
+  },
+  [WIKI + 'Venetian_Court', LIDAR_SC],
+  VENETIAN_ROWS.map(r => rotPoly(r.o, 23.6))
+);
+
+// ---- Del Mar Theatre (Santa Cruz, 1936), frame 75.8° (+y east-north-east to the stage; Pacific Avenue front at −y)
+const DEL_MAR: V2 = [-122.025327, 36.972521];
+const delMar = landmark(
+  'del_mar_theatre_santa_cruz',
+  'Del Mar Theatre (Santa Cruz)',
+  'building',
+  [1935.7, 1936.6],
+  9999,
+  DEL_MAR,
+  b => {
+    b.frame(0, 0, 0, 75.8, () => {
+      const WALL = '#E3D7BE';
+      b.color(WALL);
+      boxR(b, [-12.2, 11, -20.5, 20.5], 0, 13.8);
+      boxR(b, [-12.2, 11, -20.5, -14], 13.8, 15.8); // lobby front
+      b.color('#CFC3AA');
+      boxR(b, [-12.2, 10.4, 20.5, 26.7], 0, 19.4); // stage house
+      // vertical blade sign over the entrance (lidar: top 18.2 m) and the marquee
+      b.color('#C2473A').box(-0.35, -21.4, 7.5, 0.6, 1.8, 10.7);
+      b.color('#B9AE98').box(-0.35, -21.9, 3.6, 9, 2.8, 0.9);
+    });
+  },
+  {
+    Built: '1936: the Golden State Theatre chain replaced its 700-seat Unique Theatre with the 1,500-seat Del Mar on Pacific Avenue (plaque on the building); Art Deco movie palace, still a cinema',
+    Height: 'auditorium 13.8 m, lobby front 15.8 m, stage house 19.4 m (parapet to 21 m), blade sign 18.2 m — measured on the 2020 USGS lidar',
+    Model: 'placed from the lidar (47 m long, 23 m wide), ≈ 3 m east of the OpenStreetMap outline (24.3 × 47.4 m, used for the footprint it replaces); marquee, sign colour and wall colours estimated; construction start estimated'
+  },
+  ['https://localwiki.org/santacruz/Del_Mar_Theatre', LIDAR_SC],
+  [rotPoly(rect(0.05, 0, 24.3, 47.4), 75.8)]
+);
+
 // =================================================================== WATSONVILLE
 
 // ---- St. Patrick's Church (1903; rebuilt to the same design 1994), frame 55.4° (+y north-east toward the front)
@@ -1125,6 +1191,8 @@ export const COASTSOUTH: Landmark[] = [
   feltonBridge,
   townClock,
   palomar,
+  delMar,
+  venetianCourt,
   stPatrick1903,
   stPatrick1994,
   gilroyOldCityHall,
