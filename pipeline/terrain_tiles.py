@@ -417,9 +417,25 @@ def histories(name, g, d):
     N[bare & baylands] = FLAT
     tree = wc == 10
     trees_near = ndimage.binary_dilation(tree, iterations=2)
-    inland = lon > -122.30
-    N[tree & inland & (elev < 700)] = OAK
-    N[tree & ~(inland & (elev < 700))] = FOREST
+    # conifer / redwood forest in the coastal fog belt and on the high ground behind it,
+    # oak woodland inland and on the foothills. (Was a fixed meridian, lon > -122.30 = oak:
+    # a ruler-straight edge down the Santa Cruz Mountains.) Fog belt = within ~12 km of the
+    # outer coast, or above ~250 m within ~32 km of it (the bay side of the Santa Cruz
+    # Mountains, Mount Tamalpais, the crest of the Oakland hills), or above 700 m anywhere;
+    # both limits wander with smooth noise so the edge follows the country, not a line
+    # (the outer coast as a function of latitude and the noise as a function of position,
+    # so the region and detail grids agree cell for cell)
+    COAST = [(36.85, -121.90), (37.00, -122.18), (37.11, -122.33), (37.20, -122.41), (37.40, -122.43), (37.50, -122.51),
+             (37.70, -122.50), (37.80, -122.52), (37.83, -122.53), (37.90, -122.65), (38.00, -122.80), (38.10, -122.95),
+             (38.33, -123.05), (38.50, -123.25), (38.90, -123.70)]
+    coast_lon = np.interp(lat, [c[0] for c in COAST], [c[1] for c in COAST])
+    coast_km = (lon - coast_lon) * 111.32 * np.cos(np.radians(lat))
+    _fz = np.sin(lon * 97.0 + 1.3) * np.cos(lat * 83.0 + 0.7) + 0.6 * np.sin(lon * 211.0 + lat * 173.0) \
+        + 0.4 * np.cos(lon * 431.0 - lat * 389.0)
+    fog = (coast_km < 12.0 + 2.5 * _fz) | ((elev > 250.0 + 50.0 * _fz) & (coast_km < 32.0 + 3.0 * _fz)) | (elev >= 700)
+    del _fz
+    N[tree & ~fog] = OAK
+    N[tree & fog] = FOREST
     # San Francisco had almost no native trees: planted forests and the city sit on
     # dunes (west) and grassy/scrubby hills (east)
     sf_dunes = in_sf & (lon < -122.445) & (elev < 120)

@@ -331,6 +331,7 @@ def main():
     df["use"] = df.use_code.map(USE_MAP).fillna(0).astype(int)
     df["kind"] = "building"
 
+    df = lidar_new_buildings(df)
     # ---------------------------------------------------------------- OSM 3D parts
     df = apply_parts(df)
     # ---------------------------------------------------------------- LiDAR stepped massing
@@ -686,6 +687,33 @@ def apply_lidar_parts(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     df = df.drop(df.index[sorted(drop)])
     df = pd.concat([df, gpd.GeoDataFrame(add, crs=UTM)], ignore_index=True)
     return gpd.GeoDataFrame(df, geometry="geometry", crs=UTM)
+
+
+def lidar_new_buildings(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Buildings put up since the 2010 LiDAR (2026-11). A footprint without a usable
+    assessor / permit / researched year takes the years of its neighbours — which dated new
+    apartment blocks and towers (1950 Mission, 455 Fell, 390 First) to the 1910s of the
+    houses around them. Where the 2023 survey measures a building at least 15 m high and
+    8 m above the highest point the 2010 survey saw on the same footprint, the building is
+    newer than 2010: its year is estimated inside 2012-2021 (the surveys bracket it; the
+    2016 footprint snapshot may show either the old or the new outline)."""
+    p = INTERIM / "sf_lidar_heights.parquet"
+    if not p.exists() or "hgt_max_m" not in df:
+        return df
+    lh = pd.read_parquet(p, columns=["key", "lidar_height_m"]).drop_duplicates("key").set_index("key").lidar_height_m
+    h23 = df.sf16_bldgid.map(lh).astype(float).values
+    h10 = pd.to_numeric(df.hgt_max_m, errors="coerce").values
+    imputed = ~df.year_reason.isin(["ok", "ok_research", "ok_permit", "ok_survey"]).values
+    new = imputed & np.isfinite(h23) & np.isfinite(h10) & (h23 >= 15.0) & (h23 > h10 + 8.0) \
+        & (df.start_year.values < 2010) & (df.geometry.area.values >= 100.0)
+    if new.any():
+        ids = df.sf16_bldgid.astype(str).values[new]
+        df.loc[new, "start_year"] = [2012.0 + 9.0 * stable_hash01("lidar_new:" + i) for i in ids]
+        df.loc[new, "year_reason"] = "lidar_new"
+        df.loc[new, "year_confidence"] = "estimated"
+    log(f"years: {int(new.sum())} footprints without a usable year are taller in the 2023 LiDAR than anything "
+        f"the 2010 survey saw there: built since 2010 (estimated)")
+    return df
 
 
 def parts_years(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:

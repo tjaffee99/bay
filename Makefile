@@ -109,7 +109,7 @@ deploy: build
 	cd viewer/dist && export GIT_DIR=$$(mktemp -d) GIT_WORK_TREE=. && \
 	  git init -q -b gh-pages && git add -A && \
 	  git commit -q -m "Deploy $(DEPLOY_SHA)" && \
-	  git push -f $(DEPLOY_URL) gh-pages
+	  git push -f $(DEPLOY_URL) gh-pages; s=$$?; rm -rf "$$GIT_DIR"; exit $$s
 
 clean-interim:
 	rm -rf data/interim/*
