@@ -275,10 +275,13 @@ html, body {
 .story-ctrl button:hover, .story-exit:hover { background: rgba(47, 42, 36, 0.1); }
 .story-source { margin-left: auto; font-size: 12px; font-style: italic; color: var(--ink-soft); }
 #story-card.story-paused .story-bar i { background: var(--ink-soft); }
+/* the object pop-up moves out from under the card while the tour is on */
+body.story-on #info { left: auto; right: 28px; top: 130px; }
 
 @media (max-width: 640px) {
   #story-card { left: 12px; top: 64px; width: calc(100vw - 24px); padding: 10px 12px 8px; }
   #story { padding: 0 10px; font-size: 15px; }
+  body.story-on #info { left: 12px; right: 12px; top: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   #story-card.story-in .story-title, #story-card.story-in .story-text { animation: none; }

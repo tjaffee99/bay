@@ -252,6 +252,10 @@ export function createStory(map: MlMap, stops: StoryStop[], hooks: StoryHooks, b
   };
   const el = map.getCanvasContainer();
   for (const ev of ['mousedown', 'wheel', 'touchstart'] as const) el.addEventListener(ev, interrupt, {passive: true});
+  // a hidden tab draws no frames: wait there instead of skipping the stop on return
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) interrupt();
+  });
 
   function key(e: KeyboardEvent): boolean {
     if (phase === 'off') return false;
