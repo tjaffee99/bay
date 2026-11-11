@@ -1,7 +1,7 @@
 """Build data/manual/industrial_sites/{sites.geojson, building_dates.csv, known_dates_industrial.csv,
 traced/audit.csv} from industrial_def.py.
 
-  cd data/manual/industrial_sites && ../../../.venv/bin/python -I tools/build.py [site_id ...] [--redate]
+  cd data/manual/industrial_sites && ../../../.venv/bin/python -I tools/build.py [site_id ...] [--redate] [--merge]
 
 * parts: OSM land_use outlines (Overture 2026-10-21.0), rings traced on USGS sheets, tint.py outlines
 * sites with `date=True`: today's footprints inside (footprints.py) are checked against every USGS
@@ -242,8 +242,27 @@ def main():
                               applies_to="named", max_year="",
                               evidence="footprints dated by the USGS editions that first draw them: "
                                        "known_dates_industrial.csv", source_url=s["src"]))
+    if args and "--merge" in sys.argv:
+        # a partial run that writes: the named sites' parts, dated footprints and rules replace
+        # their old rows; everything else (also the sites of build_ext.py) stays as it is
+        old = json.loads((OUTD / "sites.geojson").read_text())["features"]
+        feats = [f for f in old if f["properties"]["site_id"] not in args] + feats
+        feats.sort(key=lambda f: (f["properties"]["site_id"], f["properties"]["part_id"]))
+        (OUTD / "sites.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
+        kd0 = pd.read_csv(OUTD / "known_dates_industrial.csv")
+        mine = kd0["id"].astype(str).map(lambda v: any(v.startswith(a + "_") for a in args))
+        kd = pd.DataFrame(known)
+        if len(kd):
+            dup = kd.groupby("id").cumcount()
+            kd.loc[dup > 0, "id"] = kd.loc[dup > 0, "id"] + "_" + dup[dup > 0].astype(str)
+        pd.concat([kd0[~mine], kd], ignore_index=True).to_csv(OUTD / "known_dates_industrial.csv", index=False)
+        r0 = pd.read_csv(OUTD / "building_dates.csv")
+        pd.concat([r0[~r0.site_id.isin(args)], pd.DataFrame(rules)], ignore_index=True).to_csv(OUTD / "building_dates.csv", index=False)
+        print(f"merged {args}: {len(feats)} parts in all, {len(known)} dated footprints (replacing {int(mine.sum())}), {len(rules)} rules")
+        print(pd.DataFrame(audit).to_string())
+        return
     if args:
-        print("partial run: not writing outputs")
+        print("partial run: not writing outputs (--merge writes the named sites into the tables)")
         print(pd.DataFrame(audit).to_string())
         return
     feats.sort(key=lambda f: (f["properties"]["site_id"], f["properties"]["part_id"]))

@@ -448,6 +448,59 @@ sand quarries (Hanson, Olympia, Quail Hollow), Dimeo Lane landfill; the Navy's D
 Napa State Hospital, Sonoma Developmental Center, NAAS Santa Rosa and the Montezuma Hills belong to other
 passes. `traced/audit_terrain.csv` was not re-run for the new parts.
 
+## Vanished buildings of the sites (2026-11)
+
+`vanished_buildings.geojson` (573 buildings, 18 sites; `tools/trace_vanished.py`, targets in `tools/targets.py`;
+per-site tracings in `traced/<site>_<year>.json`, symbols that are a footprint of today in
+`traced/<site>_standing.csv`). The sites above carried ground and a label, and their surviving footprints were
+dated, but the buildings that are gone were missing — Kaiser's Richmond yards stood empty through the war.
+
+Method: the first 1:24,000 USGS sheet after a site's founding is rendered at 1 m per pixel over the site's
+outline (or a zone read on the sheet, `targets.py`). Building symbols are solid black blocks (ink opened by 5 m,
+at least 180 m2, 11 m wide, not longer than 9 widths, compact) and large buildings printed as a dot screen
+(detached specks of ink at one per ~60 m2 over at least 25 m). Left out: tanks (round), rails and road casings
+(long strokes), lettering (in the water tint or ragged), symbols inside the red built-up tint. A symbol that
+overlaps a footprint of today by more than half (or is covered by several) is that building — unless today's
+building is younger than the map, then the symbol is what stood there before and ends a year before it.
+Dates come from the editions (`date_editions.presence`): start = between the last sheet that does not draw the
+symbol and the first that does, else the site's founding (when the first sheet follows it within 15 years) or
+halfway; end = between the last sheet that draws it and the first that does not, or the site's closing year +
+0.5–3.5 years when that lies between the two; a symbol drawn to the last edition and missing today ends
+halfway to 2012. All rows are `estimated`; heights are one tall storey by area (6 / 9 / 13 m), ESTIMATED.
+
+| site | buildings | sheet |
+|---|---|---|
+| Kaiser Richmond Shipyards 1, 2, prefabrication plant, docks | 94 | Richmond 1947 (1946 photos) |
+| Kaiser Shipyard No. 3 (Point Potrero) | 29 | Richmond 1947 |
+| Kaiser Shipyard No. 4 (Santa Fe Channel) | 15 | Richmond 1947 |
+| Marinship, Sausalito | 17 | San Francisco North 1947 |
+| Moore Dry Dock, Oakland | 13 | Oakland West 1949 |
+| Oakland Army Base | 174 | Oakland West 1949 |
+| Southern Pacific Oakland Mole | 4 | Oakland West 1949 |
+| Bethlehem Alameda | 2 | Oakland West 1949 |
+| Selby smelter | 21 | Benicia 1950 |
+| Giant Powder, Point Pinole | 15 | Richmond 1947 |
+| Hercules Powder | 38 | Mare Island 1951 |
+| Pullman shops, Richmond | 1 | Richmond 1947 |
+| Skaggs Island | 8 | Sears Point 1951 |
+| Bayshore yard | 14 | San Francisco South 1947 |
+| Camp Stoneman | 8 | Antioch North 1953 |
+| Camp Parks | 122 | Dublin 1953 |
+
+Kaiser yards: positions from the coordinates of https://en.wikipedia.org/wiki/Richmond_Shipyards (Yard 1 at
+700 Wright Ave on the Parr Canal, Yard 2 on the north shore of the Inner Harbor Basin, Yard 3 at Point Potrero,
+Yard 4 at 800 Wharf St on the Santa Fe Channel) and
+https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm ; outlines read on the 1947
+sheet in the frame `RICH` of `tools/industrial_def.py`. The earlier outlines were wrong (Yard 1 missing, Yard 3
+an 8 ha OSM polygon north of the yard). Which building belonged to which yard is by position (ESTIMATED).
+`tools/build.py <site_id ...> --merge` rewrites single sites in `sites.geojson` and the two date tables.
+
+Limits: slanted dot screens are missed (two warehouses north of the Ford plant); a few sheds at rail junctions
+may be map symbols, not buildings; barracks smaller than 180 m2 are not traced (Camp Stoneman's and Camp Parks'
+rows of small barracks are mostly below that on the sheet); shipways, graving basins, cranes and piers are not
+modelled; Port Chicago (Concord NWS) and Schlage Lock (San Francisco) are not done; Basalt Rock (Napa) and
+DuPont Oakley gave no symbols on their sheets.
+
 ## Licences
 USGS topographic maps: public domain. Outlines from OpenStreetMap via Overture (`osm` / `osm_box` parts,
 the hull outlines' footprints, the footprint ids and points in `known_dates_industrial.csv`): ODbL 1.0,

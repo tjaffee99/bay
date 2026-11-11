@@ -17,7 +17,7 @@ import {extentBounds, extentDistance, extentReady} from './layers/extent';
 import {hasTransit, loadTransit, stations, tickTransit, transitLayers} from './layers/transit';
 import {loadRegionIndex, regionBuildingLayers, setRegionLandmarks} from './layers/region-buildings';
 import {airportLayers, groundDetailLayers, loadAirports, loadGroundDetail, setGroundDetailRedraw} from './layers/ground-detail';
-import {loadBuildings, buildingsLayer, type BuildingSet} from './layers/buildings';
+import {loadBuildings, buildingsLayers, pickedBuilding, visibleChunks, type BuildingSet} from './layers/buildings';
 import {landmarkLayers, landmarkInfo, loadLandmarks, occupiedMask, replacedMask, type LandmarkSet} from './landmarks';
 import {loadTrees, treesLayer, type TreeSet} from './layers/trees';
 import {loadRegionTreeIndex, regionTreeLayers, regionTreesReady} from './layers/region-trees';
@@ -137,6 +137,28 @@ const overlay = new MapboxOverlay({
   deviceProps: {powerPreference: 'high-performance', webgl: {antialias: true}}
 } as any);
 map.addControl(overlay as any);
+// One draw per animation frame. The overlay redraws at once on every map 'render' (a camera
+// move) and deck.gl's own loop redraws when layers changed or something asked for a redraw
+// (a year step, traffic, a tile): while the camera moved AND the year ran — every frame of
+// the story — the whole scene was drawn twice a frame (profile, 2026-11). The second
+// request within a frame is put off to the next one (MapLibre draws nothing under the
+// overlay but the background, so a frame's delay between the two does not show).
+{
+  const deck = (overlay as any)._deck;
+  if (deck?._drawLayers) {
+    const draw = deck._drawLayers.bind(deck);
+    let drawnAt: unknown = -1;
+    deck._drawLayers = (reason: string, opts?: unknown) => {
+      const now = document.timeline?.currentTime ?? performance.now(); // the same for all callbacks of a frame
+      if (now === drawnAt) {
+        deck._needsRedraw = reason;
+        return;
+      }
+      drawnAt = now;
+      draw(reason, opts);
+    };
+  }
+}
 let shadowsOn = false;
 function setShadows(z: number) {
   const on = wantShadow(z);
@@ -158,9 +180,14 @@ function sfVisible() {
   const b = map.getBounds();
   return b.getEast() > SF_VIEW[0] && b.getWest() < SF_VIEW[2] && b.getNorth() > SF_VIEW[1] && b.getSouth() < SF_VIEW[3];
 }
-// the city comes into view while the map is being dragged: draw it now, not at moveend
+let chunkKey = '';
+// the city, or another block of it, comes into view while the map is being dragged: draw it
+// now, not at moveend
 map.on('move', () => {
-  if (sfVisible() !== sfShown) render();
+  if (sfVisible() !== sfShown) return render();
+  if (!buildings?.chunks || !sfShown) return;
+  const b = map.getBounds();
+  if (visibleChunks(buildings, state.year, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]).join('') !== chunkKey) render();
 });
 /** Extent of the terrain tiles (Sonoma/Napa to Santa Cruz). */
 const REGION: [number, number, number, number] = [-123.68, 36.78, -121.16, 38.91];
@@ -184,7 +211,11 @@ function render() {
   sfShown = sfInView;
   for (const t of trees) layers.push(...treesLayer(t, state.year, zoom, undefined, sfInView));
   layers.push(...regionTreeLayers(state.year, zoom, [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]));
-  if (buildings) layers.push(buildingsLayer(buildings, state.year, state.quality, !!landmarks, 'buildings', sfInView));
+  if (buildings) {
+    const view: [number, number, number, number] | null = sfInView ? [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()] : null;
+    layers.push(...buildingsLayers(buildings, state.year, state.quality, !!landmarks, view));
+    chunkKey = visibleChunks(buildings, state.year, view).join('');
+  }
   layers.push(...regionBuildingLayers(state.year, zoom, state.quality));
   if (landmarks) layers.push(...landmarkLayers(landmarks, state.year, state.quality));
   layers.push(...trafficLayers(state.year, zoom));
@@ -365,8 +396,8 @@ function showInfo(info: PickingInfo) {
   }
   let title = 'Building';
   let rows: Record<string, string | number> = {};
-  if (info.layer?.id === 'buildings' && buildings) {
-    rows = buildings.info(info.index);
+  if (info.layer?.id.startsWith('buildings') && buildings) {
+    rows = buildings.info(pickedBuilding(buildings, info.layer.id, info.index));
   } else if (info.layer?.id.startsWith('landmark') && landmarks) {
     const r = landmarkInfo(landmarks, info);
     if (!r) return;

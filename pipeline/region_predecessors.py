@@ -767,6 +767,13 @@ def region_predecessors(today):
         ab = INTERIM.parent / "manual" / "airports" / "vanished_buildings.geojson"
         if ab.exists():
             v = gpd.GeoDataFrame(pd.concat([v, gpd.read_file(ab).to_crs(UTM)], ignore_index=True), geometry="geometry", crs=UTM)
+        # + the shops, warehouses and barracks of shipyards, works and camps that are gone
+        # (Kaiser's Richmond yards, Marinship, Moore Dry Dock, Oakland Army Base, Camp Parks ...):
+        # building symbols traced from the USGS 1:24,000 sheets, dated by the editions
+        # (data/manual/industrial_sites/tools/trace_vanished.py)
+        ib = INTERIM.parent / "manual" / "industrial_sites" / "vanished_buildings.geojson"
+        if ib.exists():
+            v = gpd.GeoDataFrame(pd.concat([v, gpd.read_file(ib).to_crs(UTM)], ignore_index=True), geometry="geometry", crs=UTM)
         v = v[v.geometry.notna() & v.geometry.geom_type.isin(["Polygon", "MultiPolygon"])].explode(index_parts=False)
         USE = {"dwelling": "dwelling", "office": "office", "factory": "factory", "warehouse": "warehouse",
                "grandstand": "hall", "hall": "hall", "other": "shed"}

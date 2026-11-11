@@ -23,6 +23,9 @@ W = "https://en.wikipedia.org/wiki/"
 IND = ("industrial", "works", "brownfield", "railway", "military", "base", "quarry", "landfill", "construction")
 
 
+RICH = (-122.3630, 37.9105)  # frame of the rings read on the Richmond sheet of 1947
+
+
 def site(site_id, name, label, kind, cover, start, end, conf, src, note, county, parts, **kw):
     d = dict(site_id=site_id, name=name, label=label, kind=kind, cover=cover, start=start, end=end, conf=conf,
              src=src, note=note, county=county, parts=parts)
@@ -146,23 +149,46 @@ SITES = [
     site("keller_canyon_landfill", "Keller Canyon Landfill", "Keller Canyon Landfill", "other", "landfill", 1992, 9999,
          "exact", "https://www.contracosta.ca.gov/", "Opened 1992 (county-permitted canyon landfill near Bay Point).",
          "Contra Costa", [osm("5e6f81ab")], date=False),
-    site("kaiser_yard3", "Kaiser Richmond Shipyard No. 3 (and No. 4), Point Potrero", "Kaiser Shipyard No. 3",
+    # Kaiser's four Richmond yards: positions from the Wikipedia article's coordinates, outlines read on
+    # the Richmond 1:24,000 sheet of 1947 (1946 photos) in the frame RICH (rings: tools/targets.py uses
+    # the same ones to trace the yards' vanished buildings). The earlier outlines were wrong: Yard 3 was
+    # an 8 ha OSM polygon north of the yard, and Yard 1 (at the head of the Harbor Channel) was missing.
+    site("kaiser_yard3", "Kaiser Richmond Shipyard No. 3, Point Potrero", "Kaiser Shipyard No. 3",
          "shipyard", "industrial", 1942, 9999, "exact",
          "https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm",
-         "Permanent yard with five graving basins built 1942 by Permanente Metals; Yard 4 (small craft) beside it; "
-         "the yards closed 1945-46. Point Potrero then Port of Richmond terminals and the Navy's Richmond "
-         "(reserve-fleet) annex - industrial ground continues (end = the shipyard). Outline: today's OSM industrial "
-         "polygons on Point Potrero.", "Contra Costa",
-         [box(-122.3740, 37.9010, -122.3600, 37.9150, exclude=("4959cec7",))], label_years=(1942, 1946), date=True, founded=1942),
+         "Permanent yard with five graving basins built 1942 by Kaiser Co.; closed 1946. Its basins, machine shop, "
+         "general warehouse, forge, first-aid station and cafeteria stand (Rosie the Riveter / WWII Home Front NHP); "
+         "Point Potrero is the Port of Richmond's terminal today - industrial ground continues (label = the "
+         "shipyard). Outline read on the 1947 sheet, +-40 m.", "Contra Costa",
+         [traced(RICH, [(-740, -680), (0, -680), (0, 20), (-200, 40), (-280, -20), (-320, -20), (-740, -220)],
+                 T + "CA_Richmond_294667_1947_24000_geo.tif")], label_years=(1942, 1946), date=True, founded=1942),
+    site("kaiser_yard4", "Kaiser Richmond Shipyard No. 4, Santa Fe Channel", "Kaiser Shipyard No. 4", "shipyard",
+         "industrial", 1942.8, 9999, "estimated", W + "Richmond_Shipyards",
+         "Kaiser Cargo's yard for landing ships (LSTs), frigates and small freighters on the south side of the "
+         "Santa Fe Channel (800 Wharf St), 1942-45; port and industrial ground since. Outline read on the 1947 "
+         "sheet, +-50 m.", "Contra Costa",
+         [traced(RICH, [(-1150, 1240), (-1000, 1400), (-800, 1300), (-460, 1020), (-360, 960), (-600, 780),
+                        (-860, 820), (-1040, 960)], T + "CA_Richmond_294667_1947_24000_geo.tif")],
+         label_years=(1942.8, 1945.6), date=False),
     site("kaiser_yards_1_2", "Kaiser Richmond Shipyards No. 1 and 2", "Kaiser Shipyards 1 & 2", "shipyard",
          "industrial", 1941, 1946, "estimated", W + "Richmond_Shipyards",
-         "Yard 1 (Todd-California, from Jan 1941) and Yard 2 (1941) on the Inner Harbor basin; 747 ships in the four "
-         "yards; closed 1945-46; the ground became Marina Bay (housing from the 1980s). Outline read on the Richmond "
-         "1:24k sheet (1946 photos): Yard 1 west of the Inner Harbor Basin next to the Ford plant (the plant itself "
-         "is left out), Yard 2's shops and outfitting piers east of it, the ways along the shore - +-50 m.", "Contra Costa",
-         [traced((-122.345, 37.910), [(-1100, -250), (-1100, 450), (-700, 520), (-250, 520), (0, 560), (350, 560),
-                                      (450, 300), (450, -100), (100, -270), (-400, -280), (-850, -220)],
-                 T + "CA_Richmond_294667_1947_24000_geo.tif")],
+         "Yard 1 (Todd-California, from January 1941; 7 ways) at the head of the Harbor Channel on the Parr Canal, "
+         "Yard 2 (April 1941; 12 ways) on the north shore of the Inner Harbor Basin with the prefabrication plant "
+         "between them; 747 ships in the four yards; closed 1946. Yard 2's ground became Marina Bay (housing from "
+         "the 1980s). Outlines read on the Richmond 1:24k sheet (1946 photos), the Ford plant left out - +-50 m.",
+         "Contra Costa",
+         [traced(RICH, [(-360, 1620), (0, 1620), (0, 1330), (620, 1330), (620, 760), (40, 760), (40, 940),
+                        (-280, 940), (-360, 1020)], T + "CA_Richmond_294667_1947_24000_geo.tif",
+                 end=9999, label_years=(1941, 1946),
+                 note="Yard 1; the ground stayed port and industrial (Parr-Richmond Terminal) after 1946"),
+          traced(RICH, [(560, 820), (760, 960), (1480, 960), (1560, 800), (1560, 420), (1920, 400), (1960, -140),
+                        (1500, -160), (1500, 200), (1320, 200), (1320, 400), (800, 400), (780, 300), (560, 300)],
+                 T + "CA_Richmond_294667_1947_24000_geo.tif",
+                 note="Yard 2: the twelve ways on the basin's north shore, the assembly ground behind them, the "
+                      "outfitting piers and shops on its east side"),
+          traced(RICH, [(40, 760), (560, 820), (560, 300), (540, 200), (60, 200), (40, 400)],
+                 T + "CA_Richmond_294667_1947_24000_geo.tif", end=9999, label_years=(1941, 1946),
+                 note="prefabrication plant and shops between the yards, north of the Ford plant; industrial since")],
          date=False),
     site("ford_richmond", "Ford Richmond Assembly Plant (Ford Point / Craneway)", "Ford Assembly Plant", "factory",
          "industrial", 1931, 1956, "exact", W + "Ford_Assembly_Building_(Richmond,_California)",

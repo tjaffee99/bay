@@ -105,11 +105,14 @@ function shrubLow() {
 }
 export const DECO_MESHES_LOW = [broadleafLow(), coniferLow(), palmLow(), orchardLow(), farmstead(), shrubLow(), farmyard()];
 
-/** Level of detail for all tree-like instances at a map zoom: low-poly below 15, thinned below 14. */
+/** Level of detail for all tree-like instances at a map zoom: low-poly below 16.6, thinned below 14. */
 export function treeLod(zoom: number): {low: boolean; keep: number} {
   // keep = share of trees left when zoomed out; the shader (deco-layer.ts) thins
-  // continuously from zoom 14.3 down to 12.5
-  return {low: zoom < 15, keep: 0.4};
+  // continuously from zoom 14.3 down to 12.5.
+  // The full meshes (~140 vertices a tree) only close up, where a crown is tens of pixels
+  // across: at zoom 15.4 the 137,000 street trees of San Francisco alone were 20 M vertices
+  // a frame, more than all its buildings (profile, 2026-11)
+  return {low: zoom < 16.6, keep: 0.4};
 }
 
 export const DECO_COLORS: [number, number, number][][] = [

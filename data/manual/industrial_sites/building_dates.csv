@@ -13,8 +13,6 @@ ch_crockett,site,1898.0,named,,footprints dated by the USGS editions that first 
 concord_nws,site,1942.0,all_pre,,Concord Naval Weapons Station founded 1942: no footprint inside can be older,https://en.wikipedia.org/wiki/Concord_Naval_Weapons_Station
 concord_nws,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Concord_Naval_Weapons_Station
 keller_canyon_landfill,site,1992.0,all_pre,,Keller Canyon Landfill founded 1992: no footprint inside can be older,https://www.contracosta.ca.gov/
-kaiser_yard3,site,1942.0,all_pre,,Kaiser Shipyard No. 3 founded 1942: no footprint inside can be older,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
-kaiser_yard3,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
 santa_fe_richmond,site,1900.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Richmond,_California"
 point_molate,site,1907.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,"https://en.wikipedia.org/wiki/Winehaven,_California"
 oakland_army_base,site,1941.95,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://en.wikipedia.org/wiki/Oakland_Army_Base
@@ -76,3 +74,5 @@ csp_solano,site,1984.6,all_pre,,"California State Prison, Solano founded 1984.6:
 anheuser_busch_fairfield,site,1976.0,all_pre,,Anheuser-Busch Brewery founded 1976: no footprint inside can be older,"https://en.wikipedia.org/wiki/Fairfield,_California"
 potrero_hills_landfill,site,1986.6,all_pre,,Potrero Hills Landfill founded 1986.6: no footprint inside can be older,https://www.waterboards.ca.gov/sanfranciscobay/board_decisions/tentative_orders/Potrero_Hills/Potrero_Hills.pdf
 kirby_canyon_landfill,site,1986.0,all_pre,,Kirby Canyon Landfill founded 1986: no footprint inside can be older,https://www.waterboards.ca.gov/sanfranciscobay/board_info/agendas/2018/March/KirbyCanyon/2018_Kirby_TO.pdf
+kaiser_yard3,site,1942.0,all_pre,,Kaiser Shipyard No. 3 founded 1942: no footprint inside can be older,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
+kaiser_yard3,site,1942.0,named,,footprints dated by the USGS editions that first draw them: known_dates_industrial.csv,https://www.nps.gov/rori/learn/historyculture/historic-richmond-shipyards.htm
