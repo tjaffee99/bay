@@ -2,8 +2,8 @@
   "name": "bay-through-time-viewer",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "node scripts/sources_html.mjs && vite",
+    "build": "node scripts/sources_html.mjs && tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc"
   },
@@ -19,6 +19,7 @@
     "maplibre-gl": "^5.24.0"
   },
   "devDependencies": {
+    "marked": "^16.3.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.7"
   },

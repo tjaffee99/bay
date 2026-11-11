@@ -46,3 +46,4 @@ viewer/public/tiles/
 
 # agents' download caches next to their tools
 data/manual/*/tools/cache/
+viewer/public/sources.html

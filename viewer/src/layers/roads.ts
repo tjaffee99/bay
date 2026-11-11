@@ -513,7 +513,14 @@ function tramMesh() {
   b.color('#E8E2D6').box(0, 0, 3.0, 2.4, 12.6, 0.3);
   return b.build();
 }
+/** One box per car: what a car is from above until it is ~10 px long (a quarter of the vertices). */
+function carMeshLow() {
+  const b = new MeshBuilder();
+  b.color('#F4F5F6').box(0, 0, 0.3, 1.9, 4.4, 1.25);
+  return b.build();
+}
 const CAR = carMesh();
+const CAR_LOW = carMeshLow();
 const TRAM = tramMesh();
 
 const PALETTES: [number, number, number][][] = [
@@ -738,7 +745,7 @@ export function trafficLayers(year: number, zoom: number): Layer[] {
       new TrafficLayer({
         id: `traffic-${kind}`,
         data: fleetData(kind, f, eraOf(year)),
-        mesh: kind === 'car' ? CAR : TRAM,
+        mesh: kind === 'car' ? (zoom < 16.6 ? CAR_LOW : CAR) : TRAM, // same step as the tree LOD (main.ts zoom key)
         coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
         coordinateOrigin: [origin[0], origin[1], 0],
         year,

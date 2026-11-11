@@ -526,7 +526,9 @@ $('attribution').innerHTML =
   'Buildings &amp; trees: <a href="https://datasf.org/opendata/" target="_blank" rel="noopener">DataSF</a> · ' +
   'Street trees outside SF: city, county and campus inventories (San José CC BY 4.0, Oakland, Berkeley, Palo Alto, Mountain View and others) · ' +
   'Shoreline: US Census TIGER/Line · Landmarks reconstructed from cited references · ' +
-  '<a href="https://github.com/tjaffee99/bay/blob/main/SOURCES.md" target="_blank" rel="noopener">Sources</a>';
+  // (sources.html is SOURCES.md, built into the site by scripts/sources_html.mjs: the link
+  // used to point at a GitHub branch that does not exist)
+  '<a href="sources.html" target="_blank" rel="noopener">Sources</a>';
 
 // ---------------------------------------------------------------- load
 const loading = $('loading');
