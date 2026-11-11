@@ -319,6 +319,41 @@ def park_layers(g):
     return park, wood
 
 
+def ggp_front(g, park, wood=None):
+    """Golden Gate Park was not a park in a day: the east end was graded and planted from
+    1871, the middle by about 1880, and the dunes of the west end were only won in the
+    1890s-1900s. Its ground turns to park along the planting front of ground.py (GGP_FRONT:
+    longitude -> year, research synthesis, medium confidence), a year ahead of the trees,
+    with a ragged edge - not everywhere in 1870 (owner, 2026-11)."""
+    path = VIEWER_DATA / "sf-ground.json"
+    if not path.exists():
+        return park
+    try:
+        from ground import GGP_FRONT
+    except Exception:  # noqa: BLE001
+        GGP_FRONT = [(-122.4545, 1872.0), (-122.4720, 1880.0), (-122.4920, 1895.0), (-122.5105, 1908.0)]
+    gj = gpd.read_file(path)
+    sub = gj[(gj.kind == "park") & (gj.name.fillna("").str.strip().str.lower() == "golden gate park")].to_crs(3857)
+    if not len(sub):
+        return park
+    m = rasterize_on(g, [(geom, 1) for geom in sub.geometry], fill=0, dtype="uint8").astype(bool)
+    if not m.any():
+        return park
+    lon, _lat = lonlat_of(g)
+    xs, ys = zip(*sorted(GGP_FRONT))
+    front = np.interp(lon[m], xs, ys).astype(np.float32)
+    rr, cc = np.nonzero(m)
+    jit = ((rr * 7919 + cc * 104729) % 997) / 997.0     # +-1.5 years, cell by cell
+    out = park.copy()
+    out[m] = np.maximum(front - 1.0 + 3.0 * (jit - 0.5), 1870.5)
+    if wood is not None:
+        # the ground is park before its trees are planted (a wood cell must end as forest)
+        w = np.isfinite(wood) & m
+        out[w] = np.minimum(out[w], wood[w] - 0.6)
+    log(f"terrain: Golden Gate Park ground follows the planting front: {int(m.sum())} cells, {np.nanmin(out[m]):.0f}-{np.nanmax(out[m]):.0f}")
+    return out
+
+
 def polygon_table(path, g):
     """Rows of a researched table with their ring as an EPSG:3857 polygon (lonlat or streets rings)."""
     if not path.exists():
@@ -624,6 +659,7 @@ def histories(name, g, d):
 
     # ---- parks (SF)
     park_y, wood_y = park_layers(g)
+    park_y = ggp_front(g, park_y, wood_y)
     golf_y = golf_years(g)
     park_y = np.where(np.isfinite(golf_y) & (np.isnan(park_y) | (golf_y < park_y)), golf_y, park_y)
     park_y = np.where(np.isnan(park_y), ext_green_y, park_y)
@@ -1033,6 +1069,12 @@ def histories(name, g, d):
         c = LANDCOVER_TABLE.get(str(r.cover).strip())
         ys = pd.to_numeric(r.get("year_start"), errors="coerce")
         if c is None or not np.isfinite(ys) or ys <= 1769:
+            continue
+        if c == GRASS:
+            # open cattle range (the mission and rancho herds from 1777) is not a change of
+            # cover: the valley's oaks and willows stood until the farms of the 1850s. The row
+            # used to turn the whole Santa Clara Valley to bare grass in 1777-83 (owner,
+            # 2026-11: "the south bay magically clearing itself in ~1780").
             continue
         m = organic_mask(g, poly) & ~water_now & ~np.isin(N, [DEEP, SHALLOW, FLAT, MARSH])
         if c in (FOREST, OAK):
@@ -1570,6 +1612,21 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         real_near = ndimage.maximum_filter(real_near, size=2 * rr_ + 1)
         del bb, bj, bi
     real_near = real_near.astype(bool)
+    # ranch land (dairy and cattle pasture: Point Reyes, the Marin and Sonoma coast) was held
+    # in ranches of a thousand acres and more whose headquarters mostly stand today: no
+    # generated farmstead within ~1.2 km of a real building there
+    rf_ = int(np.ceil(1200.0 / (g["res"] * 0.79)))
+    real_far = ndimage.maximum_filter(real_near.astype(np.uint8), size=2 * (rf_ - rr_) + 1).astype(bool) if bpp.exists() else real_near
+    # one generated farmstead per holding: ~30 ha of grain / row crops, ~20 ha of vineyard,
+    # ~600 ha of ranch pasture (it was one per 9 ha of anything: the Point Reyes peninsula,
+    # about thirty ranches, stood covered in farmhouses - owner, 2026-11)
+    cell_ha = (g["res"] * 0.79) ** 2 / 1e4
+    FARMSTEAD_EVERY = {FARM: max(int(round(30.0 / cell_ha)), 1), VINEYARD: max(int(round(20.0 / cell_ha)), 1),
+                       PASTURE: max(int(round(600.0 / cell_ha)), 1)}
+    TREE_COVERS = (FOREST, OAK, RIPARIAN)
+    # natural trees per lattice cell where the woodland of the c.1800 maps is gone
+    lost_scale = 1.0 if name == "detail" else 1.0
+    LOST_PER_CELL = {OAK: 0.5 * lost_scale, FOREST: (1.0 if name == "detail" else 0.8), RIPARIAN: (1.0 if name == "detail" else 0.6)}
 
     def fn(tx, ty):
         r0 = (ty - g["ty0"]) * VERTS * sub
@@ -1608,6 +1665,34 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
         # --- orchards and farmsteads: dated farm cells (procedural placement)
         cv = covers[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
         yv = years[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
+        # --- natural woodland that is gone: oak woodland, forest and willow thickets of the
+        # c.1800 maps (SFEI historical ecology, Hidden Nature SF) that farms and cities
+        # replaced had no trees at all - trees stood only on today's canopy pixels, so San
+        # Francisco before the city and the valley oak lands were bare (owner, 2026-11).
+        # Procedural positions inside the mapped cover, standing until the cover changes.
+        if cv.shape[1] and cv.shape[2]:
+            last = cv[0].copy()
+            for e in range(1, 5):
+                last = np.where(np.isfinite(yv[e - 1]), cv[e], last)
+            lost = np.isin(cv[0], TREE_COVERS) & np.isfinite(yv[0]) & ~np.isin(cv[1], TREE_COVERS) & ~np.isin(last, TREE_COVERS)
+            if lost.any():
+                vy, vx = np.nonzero(lost)
+                nat0 = cv[0][lost]
+                lam = np.select([nat0 == OAK, nat0 == FOREST], [LOST_PER_CELL[OAK], LOST_PER_CELL[FOREST]], LOST_PER_CELL[RIPARIAN])
+                cnt = np.floor(lam).astype(int) + (rng.random(len(lam)) < (lam - np.floor(lam)))
+                rep = np.repeat(np.arange(len(vy)), cnt)
+                if len(rep):
+                    fy = (vy[rep] + max(r0 // sub, 0) + rng.uniform(-0.5, 0.5, len(rep))) * sub
+                    fx = (vx[rep] + max(c0 // sub, 0) + rng.uniform(-0.5, 0.5, len(rep))) * sub
+                    nk = nat0[rep]
+                    kind = np.where((nk == FOREST) & (rng.random(len(rep)) < 0.6), D_CONIFER, D_BROADLEAF)
+                    low = at_vertex(in_sf_g, fy, fx)      # the wind-pruned oaks and willows of the peninsula's tip
+                    size = np.select([kind == D_CONIFER, nk == RIPARIAN], [rng.uniform(14, 24, len(rep)), rng.uniform(7, 11, len(rep))],
+                                     rng.uniform(8, 14, len(rep)))
+                    size = np.where(low, np.minimum(size, rng.uniform(6, 9, len(rep))), size)
+                    kinds.append(kind); ys.append(fy); xs.append(fx); sizes.append(size)
+                    starts.append(np.full(len(rep), np.nan))
+                    ends.append(yv[0][lost][rep] - rng.uniform(0, 4, len(rep)))
         for kind_code, deco in ((ORCHARD, D_ORCHARD), (FARM, D_FARMHOUSE), (VINEYARD, D_FARMHOUSE), (PASTURE, D_FARMHOUSE)):
             for e in range(1, 5):
                 m = cv[e] == kind_code
@@ -1661,9 +1746,9 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
                 else:
                     # one farmstead per ~25 lattice cells, on a hash — except where a
                     # historical map shows where the farmsteads really were
-                    pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % (100 if g["z"] == 14 else 25)) == 0
+                    pick = ((vy * 31 + vx * 17 + tx * 7 + ty * 13) % FARMSTEAD_EVERY[kind_code]) == 0
                     pick &= ~mapped_mask[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
-                    pick &= ~real_near[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
+                    pick &= ~(real_far if kind_code == PASTURE else real_near)[vy + max(r0 // sub, 0), vx + max(c0 // sub, 0)]
                     if not pick.any():
                         continue
                     fy = (vy[pick] + max(r0 // sub, 0)) * sub + rng.uniform(-1, 1, pick.sum())

@@ -115,10 +115,11 @@ html, body {
 #event-ticks .tick {
   position: absolute;
   top: 0;
-  width: 2px;
+  width: 1.5px;
   height: 10px;
   background: var(--accent);
-  transform: translateX(-1px);
+  opacity: 0.85;
+  transform: translateX(-0.75px);
   pointer-events: auto;
   cursor: pointer;
 }
@@ -193,17 +194,17 @@ html, body {
 
 #attribution {
   position: absolute;
-  right: 6px;
-  bottom: 62px;
-  font-size: 11px;
-  color: var(--ink-soft);
-  background: rgba(250, 246, 238, 0.6);
-  padding: 2px 6px;
-  border-radius: 4px;
-  max-width: 60vw;
-  text-align: right;
+  right: 8px;
+  bottom: 60px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  opacity: 0.38;
+  transition: opacity 0.15s;
 }
-#attribution a { color: inherit; }
+#attribution:hover, #attribution:focus-within { opacity: 1; }
+#attribution a { color: var(--ink-soft); text-decoration: none; padding: 4px 2px; }
+#attribution a:hover { text-decoration: underline; }
 
 .maplibregl-ctrl-attrib { display: none; }
 
@@ -212,7 +213,7 @@ html, body {
   #year-label { bottom: 70px; left: 14px; }
   #era { left: 14px; top: 14px; }
   #population { right: 14px; top: 14px; }
-  #attribution { display: none; }
+  #attribution { bottom: 66px; }
   #info { left: 12px; right: 12px; max-width: none; top: auto; bottom: 150px; }
 }
 [hidden] { display: none !important; }

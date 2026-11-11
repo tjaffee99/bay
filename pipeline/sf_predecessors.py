@@ -29,6 +29,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import shapely
+import shapely.affinity
 from shapely.geometry import box
 
 from shapely.geometry import Point
@@ -51,6 +52,17 @@ def main():
     lots = lots.drop_duplicates("mapblklot")
     lots = lots[lots.geometry.area.between(40, 20000)].reset_index(drop=True)
     lots = lots[~lots.geometry.centroid.duplicated()].reset_index(drop=True)
+    # streets cut through older blocks (street_dates.csv rule = cut: Montgomery / Columbus
+    # Avenue, 1873-74): until the cut their ground was part of the blocks - lot-sized
+    # pieces of the right-of-way join the lots, and whatever stands on them ends at the cut
+    cut_lots, cut_rows = cut_street_lots(lots)
+    n_real = len(lots)
+    if len(cut_lots):
+        lots = gpd.GeoDataFrame(pd.concat([lots, cut_lots], ignore_index=True), geometry="geometry", crs=UTM)
+    cut = np.full(len(lots), np.inf)
+    if len(cut_lots):
+        cut[n_real:] = cut_lots.cut_year.values
+        log(f"predecessors: {len(cut_lots)} lot-sized pieces on the ground of streets cut later ({', '.join(nm for _, _, nm in cut_rows)})")
     cent = lots.geometry.representative_point()
 
     # first snapshot containing each lot
@@ -159,6 +171,19 @@ def main():
         c = cent.iloc[i]
         downtown = DOWNTOWN.contains(gpd.GeoSeries([c], crs=UTM).to_crs(4326).iloc[0])
         cl = clear[i]
+        if np.isfinite(cut[i]):
+            # the ground of a street cut later: built on like its block until the cut
+            end = cut[i] - 0.4 * h
+            if dev >= end - 1.5:
+                continue
+            fp = footprint(geom, False)
+            if fp is None:
+                continue
+            storeys, storey_h, base = massing(dev, downtown, key)
+            rows.append({"geometry": fp, "start_year": dev, "end_year": end, "height": storeys * storey_h + base,
+                         "stories": storeys, "kind": "building", "source": "sf_extent_procedural", "mapblklot": key,
+                         "year_confidence": "procedural", "year_reason": "predecessor_street_cut"})
+            continue
         if burned[i]:
             end = 1906.29
         elif np.isfinite(cl) and (np.isnan(m) or m > dev + 3) and fabric[i] != "vacant" and fabric[i] != "rail_yards":
@@ -256,6 +281,14 @@ def main():
     from ohm_import import apply_goldrush
     pred = apply_goldrush(pred, b)
     pred = consistency(pred, b, shapely.union_all(fire.geometry.values))
+    # nothing traced or documented stands in the path of a street after it was cut
+    for row_poly, cy_, nm in cut_rows:
+        rp_ = pred.geometry.representative_point()
+        hit = rp_.within(row_poly).values & (pred.start_year.values < cy_ - 1) & (pred.end_year.values > cy_) \
+            & (pred.year_reason.fillna("").values != "predecessor_street_cut")
+        if hit.any():
+            pred.loc[hit, "end_year"] = cy_ - 0.4 * np.array([h01(str(k), "cut") for k in pred.index[hit]])
+            log(f"predecessors: {int(hit.sum())} traced / documented buildings in the path of {nm} end at the cut ({cy_:g})")
     pred = pred.to_crs(4326)
     pred["base"] = 0.0
     pred["use"] = pred["use_sanborn"].map(SANBORN_USE).fillna(0).astype(int) if "use_sanborn" in pred else 0
@@ -264,6 +297,76 @@ def main():
     pred["end_year"] = pred.end_year.astype(float)
     pred.to_parquet(INTERIM / "sf_predecessors.parquet")
     log(f"predecessors: wrote {len(pred)} features")
+
+
+def cut_street_lots(lots):
+    """Lot-sized pieces of the right-of-way of streets cut through older blocks
+    (data/tables/street_dates.csv, rule = cut) -> (GeoDataFrame[mapblklot, cut_year, geometry],
+    [(right-of-way polygon, year, street name)]). The pieces are aligned with the street grid
+    around, not with the new street; squares the street crossed (Washington Square) stay open."""
+    empty = gpd.GeoDataFrame({"mapblklot": [], "cut_year": []}, geometry=[], crs=UTM)
+    sd = TABLES / "street_dates.csv"
+    files = glob.glob(str(RAW / "sf_streets_classes" / "page-*.geojson"))
+    if not sd.exists() or not files:
+        return empty, []
+    t = pd.read_csv(sd)
+    t = t[t.get("rule", pd.Series([""] * len(t))).fillna("").astype(str).str.strip().str.lower() == "cut"]
+    if not len(t):
+        return empty, []
+    st = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in files]), crs=4326).to_crs(UTM)
+    names = (st.street.fillna("").str.upper().str.strip() + " " + st.st_type.fillna("").str.upper().str.strip()).str.strip().values
+    squares = None
+    try:
+        pk = gpd.GeoDataFrame(pd.concat([gpd.read_file(f) for f in glob.glob(str(RAW / "sf_rpd_parks" / "*.geojson"))]), crs=4326).to_crs(UTM)
+        pk = pk[pk.geometry.notna()]
+        squares = pk
+    except Exception:  # noqa: BLE001
+        pass
+    out, rows_ = [], []
+    for r in t.itertuples():
+        m = names == str(r.street).upper().strip()
+        if not m.any():
+            continue
+        line = shapely.union_all(st.geometry.values[m])
+        row = line.buffer(12.2, cap_style="flat")
+        near = st.geometry.values[~m & st.intersects(line.buffer(150.0)).values]
+        others = shapely.union_all([g.buffer(10.5, cap_style="flat") for g in near]) if len(near) else None
+        ground = row
+        if others is not None:
+            ground = ground.difference(others)
+        ll = lots.geometry.values[lots.sindex.query(row.buffer(5.0), predicate="intersects")]
+        if len(ll):
+            ground = ground.difference(shapely.union_all(ll).buffer(0.4))
+        # a square the street crossed was open ground before, too: its whole old block
+        if squares is not None:
+            near_sq = squares[squares.intersects(row.buffer(40.0)) & (squares.geometry.area > 1500)]
+            if len(near_sq):
+                ground = ground.difference(shapely.union_all([g.minimum_rotated_rectangle.buffer(25.0) for g in near_sq.geometry.values]))
+        # the grid around: bearing of the longest straight street segment nearby
+        best, ang = 0.0, 0.0
+        for g in near:
+            cs = np.asarray(g.coords if g.geom_type == "LineString" else max(g.geoms, key=lambda q: q.length).coords)
+            d = cs[-1] - cs[0]
+            if np.hypot(*d) > best:
+                best, ang = float(np.hypot(*d)), float(np.degrees(np.arctan2(d[1], d[0])))
+        pieces = [g for g in (ground.geoms if hasattr(ground, "geoms") else [ground]) if g.geom_type == "Polygon" and g.area >= 60]
+        n = 0
+        for piece in pieces:
+            c0 = piece.centroid
+            rot = shapely.affinity.rotate(piece, -ang, origin=c0)
+            x0, y0, x1, y1 = rot.bounds
+            for gx in np.arange(x0, x1, 7.6):
+                for gy in np.arange(y0, y1, 16.0):
+                    cell = box(gx + 0.3, gy + 0.3, gx + 7.3, gy + 15.7).intersection(rot)
+                    if cell.is_empty or cell.geom_type != "Polygon" or cell.area < 45:
+                        continue
+                    out.append({"mapblklot": f"cut:{str(r.street).upper().replace(' ', '_')}:{n}", "cut_year": float(r.year_start),
+                                "geometry": shapely.affinity.rotate(cell, ang, origin=c0)})
+                    n += 1
+        rows_.append((line.buffer(9.0, cap_style="flat"), float(r.year_start), str(r.street)))
+    if not out:
+        return empty, rows_
+    return gpd.GeoDataFrame(out, geometry="geometry", crs=UTM), rows_
 
 
 # ---------------------------------------------------------------- industrial districts
@@ -808,6 +911,29 @@ def table_buildings(path, lots, source, embarcadero=None):
                 # (decision 13), so a village reads at map scale; confidence stays low
                 fp = _rect(cx, cy, b, a, -a_) if mat_key != "tule" else Point(cx, cy).buffer(a, 4)
             if fp is None or fp.is_empty:
+                continue
+            # a long wall or fence (the mission's pasture walls, 1.5 m high and over a
+            # kilometre long) goes in as short pieces: one footprint stands on one ground
+            # level, so a wall across a slope was drawn as high as the slope (10 m)
+            pieces = [fp]
+            if dims is not None and n == 1 and max(dims) >= 80 and min(dims) <= 4 and mat_key != "tule":
+                L, wdt = max(dims), max(min(dims), 2.0)
+                k_seg = int(np.ceil(L / 20.0))
+                seg = L / k_seg
+                # the long side is dims[0] (drawn along bearing a_, clockwise from north)
+                ux, uy = np.sin(np.radians(a_)), np.cos(np.radians(a_))
+                pieces = []
+                for q in range(k_seg):
+                    t_ = -L / 2 + (q + 0.5) * seg
+                    pieces.append(_rect(cx + t_ * ux, cy + t_ * uy, wdt, seg + 0.3, -a_) if dims[0] >= dims[1]
+                                  else _rect(cx + t_ * uy, cy - t_ * ux, seg + 0.3, wdt, -a_))
+            if len(pieces) > 1:
+                for q, piece in enumerate(pieces):
+                    rows.append({"geometry": piece, "start_year": float(r.start_year), "end_year": end,
+                                 "height": float(height), "stories": np.nan, "kind": "building",
+                                 "source": source, "material": mat_key, "mapblklot": f"n:{r.id}:w{q}",
+                                 "doc_id": str(r.id), "doc_traced": False,
+                                 "year_confidence": "estimated", "year_reason": "documented"})
                 continue
             # (groups go up over ~10 months, but never past their own end: the June-October
             # 1776 camp at the Dolores lagoon started "after" it ended)

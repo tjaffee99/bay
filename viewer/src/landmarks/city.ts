@@ -1164,6 +1164,48 @@ const coitTower: Landmark = {
   sources: [WIKI + 'Coit_Tower']
 };
 
+// =========================================================== Dewey Monument, Union Square
+// Granite column "over 85 ft (25.9 m) in height" and "over 5 ft (1.5 m) in diameter" with
+// Robert Aitken's 9 ft (2.7 m) bronze Victory holding a trident and a wreath (Wikipedia,
+// Dewey Monument; architect Newton Tharp). Read here as 25.9 m to the top of the capital and
+// 28.6 m with the statue. The stepped base and the pedestal are ESTIMATED from photographs.
+const deweyMonument: Landmark = {
+  id: 'dewey_monument',
+  name: 'Dewey Monument (Union Square)',
+  kind: 'monument',
+  built: [1901.39, 1903.37],
+  end: 9999,
+  anchor: [-122.4075, 37.78795],
+  build: b => {
+    const granite = '#CFCBC1';
+    const shade = '#BDB8AC';
+    // three steps and the square pedestal with its inscriptions
+    b.color(shade).box(0, 0, 0, 9.0, 9.0, 0.45).box(0, 0, 0.45, 7.6, 7.6, 0.45).box(0, 0, 0.9, 6.2, 6.2, 0.45);
+    b.color(granite).box(0, 0, 1.35, 4.2, 4.2, 0.6).box(0, 0, 1.95, 3.4, 3.4, 3.9).box(0, 0, 5.85, 4.0, 4.0, 0.5);
+    // column: base, shaft with a slight taper (1.5 m at the foot), Corinthian capital, abacus
+    b.color(shade).cylinder(0, 0, 1.05, 6.35, 6.85, 16);
+    b.color(granite).frustum(0, 0, 0.76, 0.64, 6.85, 23.5, 16, false);
+    b.color(shade).frustum(0, 0, 0.66, 1.1, 23.5, 25.2, 12, false);
+    b.color(granite).box(0, 0, 25.2, 2.3, 2.3, 0.7);
+    // Victory (bronze): globe, robed figure, head, the raised trident and the wreath
+    const bronze = '#4F5E52';
+    b.color(bronze).cylinder(0, 0, 0.45, 25.9, 26.3, 10);
+    b.frustum(0, 0, 0.42, 0.22, 26.3, 28.0, 8, false).cylinder(0, 0, 0.17, 28.0, 28.35, 8);
+    b.box(0.45, 0.1, 26.9, 0.07, 0.07, 1.7).box(0.45, 0.1, 28.45, 0.34, 0.07, 0.07);
+    b.cylinder(-0.5, 0.15, 0.26, 27.6, 27.72, 8);
+  },
+  replaces: [rect(0, 0, 9, 9)],
+  facts: {
+    Commemorates: "Admiral George Dewey's victory at Manila Bay, May 1, 1898 (Spanish–American War), and President McKinley",
+    Built: 'ground broken May 23, 1901 by President William McKinley; dedicated May 14, 1903 by President Theodore Roosevelt',
+    Column: 'granite, over 85 ft (25.9 m) high and over 5 ft (1.5 m) across, of blocks weighing 40,000 lb; architect Newton Tharp',
+    Statue: 'Victory, 9 ft (2.7 m), bronze, by Robert Ingersoll Aitken — a trident for Dewey, a wreath for McKinley',
+    History: 'stood through the 1906 earthquake and stayed in place when the garage was dug beneath the square (1941–42)',
+    Model: '25.9 m taken as the height to the top of the capital, 28.6 m with the statue; steps and pedestal ESTIMATED from photographs'
+  },
+  sources: [WIKI + 'Dewey_Monument']
+};
+
 // =========================================================== Palace of Fine Arts
 // Audit 2026-11: rebuilt from the OSM 3D geometry (the earlier hall arc was too
 // small and the colonnades curved the wrong way). Local metres from the rotunda
@@ -1931,6 +1973,7 @@ export const CITY_LANDMARKS: Landmark[] = [
   cliff1863,
   cliff1896,
   cliff1909,
+  deweyMonument,
   sutroBaths,
   embarcaderoFreeway,
   conservatory,

@@ -681,6 +681,14 @@ General note: San Francisco's professional baseball/football venues in chronolog
 ---
 
 ---
+### Dewey Monument, Union Square (`dewey_monument`)
+- Source: https://en.wikipedia.org/wiki/Dewey_Monument (checked 2026-11).
+- Column "over 85 ft (25.9 m) in height" and "over 5 ft (1.5 m) in diameter", assembled from blocks of 40,000 lb (18,144 kg); square base with an inscription on each side; architect Newton Tharp (budget $45,000).
+- Statue: Victory (Nike), 9 ft (2.7 m), by Robert Ingersoll Aitken, holding a trident (for Dewey) and a wreath (for McKinley).
+- Ground broken May 23, 1901 (President McKinley); dedicated May 14, 1903 (President Theodore Roosevelt). Commemorates the Battle of Manila Bay, May 1, 1898.
+- Position: the centre of Union Square (mean of the four street corners of the DataSF centrelines: 37.78795, -122.40750).
+- Model: 25.9 m read as the height to the top of the capital, 28.6 m with the statue. The three steps (9.0 / 7.6 / 6.2 m), the pedestal (3.4 m square, 3.9 m high) and the capital are ESTIMATED from photographs — no published dimensions found.
+
 ## Appendix: reference photo index
 
 All downloaded reference photos (960 px thumbnails from upload.wikimedia.org; originals on Commons). Author and licence from the Commons file-page metadata (`extmetadata`).

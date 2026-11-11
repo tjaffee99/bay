@@ -116,6 +116,22 @@ def main():
 
     cent = df.geometry.representative_point()
 
+    # a placeholder year (1900 and the other spikes) bounds the imputation: "not after 1900".
+    # Far outside the city of 1905 (the last researched built-up extent, sf_extent_1905) it
+    # is no bound at all — the assessor's "1900" there means "unknown", and with no neighbour
+    # that old the year was drawn from the Victorian distribution: two sheds of "1887" on the
+    # Sunset Reservoir block, lone houses of the 1880s in the dunes. Those take their
+    # neighbours' years (owner, 2026-11: the reservoir "appearing in the dunes in like 1890").
+    try:
+        from geocode import intersection_rings
+        ext05 = shapely.union_all(list(intersection_rings(str(MANUAL / "sf_extent_1905.csv"), crs=UTM).values())).buffer(250.0)
+        far = (reason == "spike") & ~cent.within(ext05).values
+        upper[far] = np.inf
+        log(f"years: {int(far.sum())} placeholder years more than 250 m outside the 1905 built-up extent are no upper bound")
+    except Exception as ex:  # noqa: BLE001
+        far = np.zeros(len(df), bool)
+        log(f"years: no 1905 extent ({ex})")
+
     fire = load_polygons(INTERIM / "fire_1906.geojson")
     in_fire = np.zeros(len(df), bool)
     if fire is not None:
@@ -266,7 +282,7 @@ def main():
         else:
             fallback += 1
             h = stable_hash01(str(df.sf16_bldgid.iloc[i] or i))
-            if reason[i] == "spike":
+            if reason[i] == "spike" and np.isfinite(upper[i]):
                 # draw from the empirical distribution of *exact* years in the
                 # 25 years up to the placeholder (e.g. 1900 -> real Victorian-era shape)
                 lo = raw.values[i] - 25

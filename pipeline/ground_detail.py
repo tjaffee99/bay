@@ -111,6 +111,21 @@ def main():
     ny = np.where(np.isfinite(d), b.start_year.values[np.minimum(idx, len(b) - 1)], np.inf)
     ny.sort(axis=1)
     nb = np.where(np.isfinite(ny[:, 1]), ny[:, 1], np.nan)
+    # a big lawn or plaza is as old as the blocks all round it, not as the two oldest
+    # buildings next to one point of it: the lawns of the Sunset Reservoir block (1938-60)
+    # appeared in the dunes in 1887 with two sheds whose year was a placeholder (owner,
+    # 2026-11). Buildings within 60 m of the outline, lower third of their years.
+    big = np.nonzero(np.isnan(year) & (fu_area := feats.to_crs(UTM).geometry.area.values > 2500))[0]
+    if len(big):
+        fug = feats.to_crs(UTM).geometry.values
+        for i in big:
+            ring = fug[i].exterior
+            samp = [ring.interpolate(d_) for d_ in np.arange(0, ring.length, 40.0)]
+            near_i = set()
+            for q in tree.query_ball_point([[p_.x, p_.y] for p_ in samp], 60.0):
+                near_i.update(q)
+            if len(near_i) >= 4:
+                nb[i] = float(np.percentile(b.start_year.values[list(near_i)], 30))
     year = np.where(np.isnan(year), nb, year)
     year = np.where(np.isnan(year), 1950.0, year)
     # fields and plazas of a reconstructed stadium / landmark site are no older than it

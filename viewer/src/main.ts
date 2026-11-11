@@ -344,15 +344,20 @@ legend.innerHTML = CONFIDENCE.map(
 // ---------------------------------------------------------------- events / bookmarks
 const ticks = $('event-ticks');
 const select = $<HTMLSelectElement>('events-select');
+// the red marks on the slider are the stops of the guided tour (owner, 2026-11: one per
+// stop); a click starts the tour there. The events table still fills the ?debug jump list.
+storyStops.forEach((stop, i) => {
+  if (stop.year < YEAR_MIN || stop.year > YEAR_MAX) return;
+  const el = document.createElement('div');
+  el.className = 'tick';
+  el.style.left = `${((stop.year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100}%`;
+  el.title = `${Math.floor(stop.year)} — ${stop.title}`;
+  el.addEventListener('click', () => story.start(i));
+  ticks.appendChild(el);
+});
 events.forEach((ev, i) => {
   const t = eventTime(ev);
   if (t < YEAR_MIN || t > YEAR_MAX) return;
-  const el = document.createElement('div');
-  el.className = 'tick';
-  el.style.left = `${((t - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100}%`;
-  el.title = `${ev.year} — ${ev.title}`;
-  el.addEventListener('click', () => goToEvent(i));
-  ticks.appendChild(el);
   const opt = document.createElement('option');
   opt.value = String(i);
   opt.textContent = `${ev.year} · ${ev.title}`;
@@ -522,13 +527,10 @@ if (DPR_FIXED) setDpr(Math.max(0.5, Math.min(3, DPR_FIXED)));
 else if (DPR_FULL > 1) requestAnimationFrame(governor);
 
 // ---------------------------------------------------------------- attribution
+// one small, quiet link (owner, 2026-11: no bar across the map): the sources and licences
+// page is SOURCES.md, built into the site by scripts/sources_html.mjs
 $('attribution').innerHTML =
-  'Buildings &amp; trees: <a href="https://datasf.org/opendata/" target="_blank" rel="noopener">DataSF</a> · ' +
-  'Street trees outside SF: city, county and campus inventories (San José CC BY 4.0, Oakland, Berkeley, Palo Alto, Mountain View and others) · ' +
-  'Shoreline: US Census TIGER/Line · Landmarks reconstructed from cited references · ' +
-  // (sources.html is SOURCES.md, built into the site by scripts/sources_html.mjs: the link
-  // used to point at a GitHub branch that does not exist)
-  '<a href="sources.html" target="_blank" rel="noopener">Sources</a>';
+  '<a href="sources.html" target="_blank" rel="noopener" title="Data sources, licences and attribution (OpenStreetMap / Overture, DataSF, USGS and others)">sources</a>';
 
 // ---------------------------------------------------------------- load
 const loading = $('loading');
