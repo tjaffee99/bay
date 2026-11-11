@@ -41,12 +41,14 @@ export type Story = {
   interrupt: () => void;
 };
 
-const FLY_MIN = 2600;
-const FLY_MAX = 5500;
+const FLY_MIN = 2200;
+const FLY_MAX = 4800;
 
-/** Time to hold a stop: the caption is already up during the flight, so this is short. */
+/** Time to hold a stop: the caption is already up during the flight, so this is short.
+ *  (2026-11, owner: "slightly faster": 1.3 s + 41 ms per character, 4.5-13 s - a 245-character
+ *  caption holds 11.3 s, about 220 words a minute before counting the flight; it was 2 s + 50 ms.) */
 export function readingMs(text: string): number {
-  return Math.max(6000, Math.min(16000, 2000 + 50 * text.length));
+  return Math.max(4500, Math.min(13000, 1300 + 41 * text.length));
 }
 
 function kmBetween(a: [number, number], b: [number, number]): number {
