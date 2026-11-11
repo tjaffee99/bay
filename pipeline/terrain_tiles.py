@@ -163,7 +163,11 @@ def sf_building_years(g):
     frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "end_year", "geometry"]]]
     pred = INTERIM / "sf_predecessors.parquet"
     if pred.exists():
-        frames.append(gpd.read_parquet(pred)[["start_year", "end_year", "geometry"]])
+        pr = gpd.read_parquet(pred)
+        # (a pasture wall - documented structures split into pieces, mapblklot n:<id>:w<k> -
+        # is not a building: it makes no city ground and dates no street)
+        pr = pr[~pr.mapblklot.astype(str).str.contains(r"^n:.*:w\d+$", regex=True)]
+        frames.append(pr[["start_year", "end_year", "geometry"]])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), geometry="geometry", crs=4326).to_crs(3857)
     b = b[b.start_year.values >= 1770]  # tule villages (from 1700) are not city ground
     c = b.geometry.representative_point()

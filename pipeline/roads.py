@@ -142,7 +142,10 @@ def building_years():
     frames = [b[["start_year", "geometry"]]]
     pred = INTERIM / "sf_predecessors.parquet"
     if pred.exists():
-        frames.append(gpd.read_parquet(pred).to_crs(UTM)[["start_year", "geometry"]])
+        pr = gpd.read_parquet(pred)
+        # walls (documented structures split into pieces, n:<id>:w<k>) date no street
+        pr = pr[~pr.mapblklot.astype(str).str.contains(r"^n:.*:w\d+$", regex=True)]
+        frames.append(pr.to_crs(UTM)[["start_year", "geometry"]])
     allb = pd.concat(frames, ignore_index=True)
     allb = allb[allb.start_year.values >= 1770]  # Ohlone villages (from 1700) don't date streets
     c = allb.geometry.representative_point()

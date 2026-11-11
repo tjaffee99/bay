@@ -101,7 +101,8 @@ def main():
     # otherwise when the neighbourhood around it was built
     frames = [gpd.read_parquet(INTERIM / "sf_buildings.parquet")[["start_year", "geometry"]]]
     if (INTERIM / "sf_predecessors.parquet").exists():
-        _p = gpd.read_parquet(INTERIM / "sf_predecessors.parquet")[["start_year", "geometry"]]
+        _p = gpd.read_parquet(INTERIM / "sf_predecessors.parquet")
+        _p = _p[~_p.mapblklot.astype(str).str.contains(r"^n:.*:w\d+$", regex=True)][["start_year", "geometry"]]
         frames.append(_p[_p.start_year >= 1770])
     b = gpd.GeoDataFrame(pd.concat(frames, ignore_index=True), crs=4326).to_crs(UTM)
     bc = b.geometry.representative_point()
