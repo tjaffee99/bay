@@ -1659,13 +1659,19 @@ def decorations(name, g, covers, years, elev, urban_y, park_y, wood_y):
             # trees on made land (bay, flats, marsh until filled) can't predate the land
             ly = at_vertex(land_year, fy, fx)
             start = np.where(np.isfinite(ly), np.fmax(start, ly + rng.uniform(4, 15, len(fy))), start)
+            # ... and none stands on a cell that is bay, flat or marsh through its whole history
+            # (today's canopy on a bridge approach, a breakwater or a marsh edge that the cover
+            # grid keeps as water: ~900 trees stood in the bay off Emeryville from 1769)
+            never_land = np.isin(nat, list(WET)) & ~np.isfinite(ly)
             # natural forest: always there (no start)
             conifer_p = np.where(at_vertex(elev, fy, fx) > 150, 0.65, 0.45)
             kind = np.where(rng.random(len(fy)) < conifer_p, D_CONIFER, D_BROADLEAF)
             kind = np.where(np.isfinite(uy) & (rng.random(len(fy)) < 0.06), D_PALM, kind)
             size = np.where(kind == D_CONIFER, rng.uniform(12, 26, len(fy)), rng.uniform(8, 18, len(fy)))
             size = np.where(np.isfinite(uy) & np.isnan(wy), size * 0.75, size)
-            kinds.append(kind); ys.append(fy); xs.append(fx); sizes.append(size); starts.append(start); ends.append(np.full(len(fy), np.nan))
+            ok_ = ~never_land
+            kinds.append(kind[ok_]); ys.append(fy[ok_]); xs.append(fx[ok_]); sizes.append(size[ok_]); starts.append(start[ok_])
+            ends.append(np.full(int(ok_.sum()), np.nan))
         # --- orchards and farmsteads: dated farm cells (procedural placement)
         cv = covers[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
         yv = years[:, max(r0 // sub, 0):min((r0 // sub) + VERTS + 1, g["rows"]), max(c0 // sub, 0):min((c0 // sub) + VERTS + 1, g["cols"])]
