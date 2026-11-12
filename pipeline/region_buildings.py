@@ -718,7 +718,7 @@ def main():
             pland = land_under(pred.geometry.values)
             psrc = pred.get("source", pd.Series("", index=pred.index)).fillna("").astype(str)
             # (groups scattered at random round a point — camps, villages — are not evidence)
-            pdoc = psrc.str.startswith(("notable", "early", "known")).values & ~pred.mapblklot.astype(str).str.startswith("n:").values
+            pdoc = psrc.str.startswith(("notable", "early", "known", "sanborn_tsheet")).values & ~pred.mapblklot.astype(str).str.startswith("n:").values
             pearly = np.isfinite(pland) & (pred.start_year.values.astype(float) < pland + 0.05) & ~pdoc
             from sf_export import build_years
             plead = 0.8 + build_years(pred.height.values.astype(float))

@@ -26,6 +26,7 @@ core towns is in the section *Ten-county towns* below; the tables hold all 36 to
 | `check/<town>.png` | the snapshots in sequence: each pixel coloured by the first snapshot whose extent holds it (dark red → light); dashed: area read; black dots: buildings standing today that predate the map |
 | `tools/extents.py` | the whole method (render, alignment, blocks, classification, checks, these tables) |
 | `tools/sanborn_key.py` | snapshots from Sanborn index key maps (`python -I tools/sanborn_key.py <town>_<year>`; control points and LOC items in its `CFG`) |
+| `tools/tsheet_houses.py` | buildings and the snapshot of a Coast Survey plane-table sheet that draws every house (`python -I tools/tsheet_houses.py oakland_1856`) |
 
 Properties of a snapshot feature: `town`, `year` (what the map shows: the survey year, the year of
 the culture revision, or the year of the aerial photographs the map was compiled from), `kind`,
@@ -179,6 +180,67 @@ Suisun City), `vacaville`, `dixon`, `rio_vista`, `gilroy`, `morgan_hill`, `antio
   Boulder Creek). Between a 1905-14 snapshot and the 1949-53 sheets (Petaluma, Santa Cruz, Antioch, Pittsburg,
   Vallejo west of 122°15') a block is only known to have been built "between the two"; the wartime camps and
   housing of Pittsburg (Camp Stoneman 1942) and Vallejo are inside the 1948-49 extents and need researched dates.
+
+## Oakland before 1890 (2026-11): the 1856 Coast Survey sheet and the 1889 Sanborn key map
+
+The first snapshot of Oakland used to be the USGS survey of 1892-94, and a town's dates before its first snapshot
+were spread over the 25 years before it: Oakland began in 1869 and held 68 buildings in 1870, when the census
+counted 10,500 people (owner: "Oakland isn't built up early enough I think. Look at older maps"). Two older maps
+that show buildings are now read, and the dating between snapshots follows the census (below).
+
+| file | what | source |
+|---|---|---|
+| `../tsheets/oakland_1856.geojson` | 564 buildings (67,100 m2 of roof), one polygon each | U.S. Coast Survey, *San Francisco Bay, California, Plane-Table Sheet No. XXIV*, Register No. 592, 1:10,000, 1856 (A. D. Bache, Superintendent). NOAA Historical Map & Chart Collection, https://historicalcharts.noaa.gov/search.php, file `T00592-00-1856` (15,656 x 9,413 px, 300 dpi = 0.85 m per pixel); public domain |
+| `oakland_1856.geojson` | `kind = buildings`: those houses grown by 12 m (0.51 km2); coverage 44.5 km2 = the sheet's land inside Oakland, Emeryville and Piedmont | same |
+| `oakland_1889.geojson`, `_partial` | 370 blocks, 4.49 km2 (Sanborn surveyed 728 blocks, 6.4 km2; kept where the 1894 survey reads the block as built); coverage = the extent itself | Sanborn Map & Publishing Co., *Insurance Maps of Oakland, California, Volume One*, 1889 (copyright deposit 24 Oct 1889; 73 images), key map on two pages. Library of Congress, https://www.loc.gov/item/sanborn00727_001/; public domain |
+
+**T-592** (`tools/tsheet_houses.py oakland_1856`) draws Oakland (the Kellersberger grid from the estuary to about
+14th Street, scattered houses to Oakland Point and along the San Pablo and Telegraph roads), Clinton and San Antonio
+(Brooklyn) house by house: solid black blocks, dashed fence lines, clover signs for the oaks.
+* *Georeference.* The sheet carries the graticule of the old "North American datum" as blue crosses and, at
+  122 15' / 37 47', a pencil tick "N.A. (1927) approx. F.B.K. 1933" 47 px west of the cross. An affine through four
+  crosses fits to under 2 m; shifted by the tick it gives NAD27, then WGS84 by PROJ. Check on today's street grid of
+  downtown (the 1853 grid survives): the share of building ink falling on a 16 m band along today's street centrelines
+  is lowest (5.5 %, against 7.8 % unshifted) with a further shift of 6 m west and 2 m south, which is applied. Outlines
+  are good to about 10 m.
+* *Reading.* Black ink, opened by 5 px so line work drops out; a block is a building when it is compact (short side
+  >= 6 m, aspect <= 4, fill >= 0.5), black and not the brown of the sheet's foxing, and stands free of long line work
+  (or is large: a shed touching the shoreline). Dropped: rows of dashes, lettering (the letters of OAKLAND and
+  BROOKLYN, road and creek names - by position, listed in the tool), marks in hatched marsh, anything on tide flat,
+  marsh or water of the c.1800 cover. Reviewed against the sheet tile by tile; the smallest sheds and a few houses
+  fused with fence or shore lines are missed (perhaps one in ten).
+* *Use* (`region_predecessors.tsheet_buildings`): a house stands from a year between 1851 and 1856 (it is on the
+  sheet: `estimated`) until the first building of today on its ground or a clearance, else for a frame-house
+  lifetime (ESTIMATED: gone 10-32 years after the survey inside the 1889 extent, 16-46 years outside); one or two
+  storeys. A snapshot of `kind = buildings` is exact: a lot without one of its buildings was empty that year.
+
+**Sanborn 1889** (`tools/sanborn_key.py oakland_1889`): the two pages are stitched (the right page repeats 97 px of
+the left), registered on 24 street intersections (RMS 10 m), and the washes are read in CIELAB against the measured
+paper colour because the atlas is tan and water-stained (stained margins are masked in the tool's `holes`). Volume
+One covers Oakland west of Lake Merritt; the coloured sheets are the close-built town from the estuary to about
+19th-24th Street and the railroad quarter at Oakland Point. The house blocks of West Oakland between them were not
+surveyed, so the snapshot's coverage is its own extent: outside it, it says nothing. Volume Two (East Oakland) is
+not among the Library of Congress scans.
+
+**Looked at and not used** (they show no buildings later than 1856): Coast Survey chart 621 *Entrance to San
+Francisco Bay*, edition of 1877 (`621-10-1877`: Oakland is still the 1856 topography, only the railroads and
+wharves are new); T-1625 *Oakland and Alameda, including wharves, roads and railroads*, supplementary topography of
+1881-82, and chart 5581 *San Francisco Harbor*, 1884 (the street plat only: "heavy lines indicate streets actually
+surveyed"); Thompson & West, *Official and Historical Atlas Map of Alameda County*, 1878, ward maps (David Rumsey:
+lots and tracts, no buildings). No map with buildings was found between 1856 and 1889.
+
+**Dating between snapshots** (`region_predecessors.TownGrowth`, all towns): a spot is unbuilt on the last earlier
+map that covers it and built on the first that shows it. Inside that bracket the buildings now go up in step with the
+town's census population (`data/tables/population_places.csv`, read between the counts) and in the order of a growth
+front - the blocks nearest the town of the earlier snapshots first, whole blocks together, with ~90 m of noise. The
+bracket before a town's first snapshot starts when the town did (`data/tables/town_since.csv`: Oakland 1850, Palo
+Alto 1889; else 8 years before its first census count, never later than 25 years before the snapshot). A Sanborn-
+traced building standing on a town's first traced map starts between the year its spot was first built on and five
+years before the map: a frame house mostly early (it is usually the first building), a masonry or large one anywhere
+in between. All `procedural` / `estimated`; the order inside 1856-1889 is the model, not a map.
+
+**Not done:** tracing the 73 sheets of the 1889 volume (the real footprints of the 1889 town); the Encinal
+(Alameda) half of T-592; the other 1850s plane-table sheets (San Francisco, the Contra Costa shore) read the same way.
 
 ## Validation
 

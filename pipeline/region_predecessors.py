@@ -118,46 +118,152 @@ def generated(today, areas):
     return out
 
 
-def extent_fill(today, pred, areas, lots=None):
+class TownGrowth:
+    """When a spot of a town was first built on (owner, 2026-11: "Oakland isn't built up early enough").
+
+    The built-up snapshots (data/manual/region_extents) only bracket it: unbuilt on the last earlier map
+    that covers the spot (y0), built on the first that shows it (y1). Inside a bracket the old rule drew
+    a date per block at random between 25 % and 90 % of the way, and before a town's first snapshot it
+    assumed the 25 years before it - Oakland, first mapped for this in 1894, began in 1869 and held 68
+    buildings in 1870, when the census counted 10,500 people. Now:
+      * the bracket before the first snapshot starts when the town did (`since`: data/tables/town_since.csv,
+        else 8 years before its first census count, never later than 25 years before the snapshot);
+      * inside a bracket the buildings go up in step with the town's census population
+        (data/tables/population_places.csv, read between the counts; a town without counts: evenly);
+      * in the order of a growth front: the blocks nearest the town of the earlier snapshots first
+        (distance from the block to everything already built, with ~90 m of noise so the edge is ragged).
+    A snapshot of kind "buildings" (a survey that draws every house: the 1856 plane-table sheet of
+    Oakland) only says what stood - its houses are added as buildings (tsheet_buildings); a lot
+    without one was empty that year. Procedural dates on real evidence."""
+
+    def __init__(self):
+        import glob
+        import re
+        from pathlib import Path
+        d = INTERIM.parent / "manual" / "region_extents"
+        files = sorted(f for f in glob.glob(str(d / "*.geojson")) if re.fullmatch(r"[a-z_]+_\d{4}", Path(f).stem))
+        self.snaps: dict = {}
+        for f in files:
+            g = gpd.read_file(f)
+            if not len(g) or "year" not in g:
+                continue
+            town = str(g["town"].iloc[0]) if "town" in g else Path(f).stem.rsplit("_", 1)[0]
+            y = float(pd.to_numeric(g["year"], errors="coerce").iloc[0])
+            if not np.isfinite(y):
+                continue
+            exact = "kind" in g and str(g["kind"].iloc[0]) == "buildings"
+            self.snaps.setdefault(town, []).append((y, shapely.union_all(g.to_crs(UTM).geometry.values), exact))
+        for lst in self.snaps.values():
+            lst.sort(key=lambda t: t[0])
+        self.bounds = {t: shapely.union_all([p for _, p, _ in lst]).bounds for t, lst in self.snaps.items()}
+        # what each snapshot's map sheets cover (a lot outside it says nothing about that year)
+        self.cov: dict = {}
+        cp = d / "coverage.geojson"
+        if cp.exists():
+            cg = gpd.read_file(cp).to_crs(UTM)
+            for t_, y_, gm in zip(cg["town"].astype(str), pd.to_numeric(cg["year"], errors="coerce"), cg.geometry):
+                self.cov[(t_, float(y_))] = gm
+        pop = pd.read_csv(TABLES / "population_places.csv")
+        pop = pop[pop.kind.isin(["city", "town", "cdp"]) & (pop.year >= 1850)]
+        norm = lambda n: str(n).lower().replace("é", "e").replace(".", "").replace(" ", "_")  # noqa: E731
+        series = {k: v.sort_values("year") for k, v in pop.assign(_t=pop.place.map(norm)).groupby("_t")}
+        sp = TABLES / "town_since.csv"
+        table = dict(zip(*[pd.read_csv(sp)[c] for c in ("town", "since")])) if sp.exists() else {}
+        self.since, self.curve = {}, {}
+        for town, lst in self.snaps.items():
+            first = lst[0][0]
+            ser = series.get(town)
+            if town in table:
+                since = float(table[town])
+            elif ser is not None and len(ser):
+                since = min(first - 25.0, max(1847.0, float(ser.year.iloc[0]) - 8.0))
+            else:
+                since = first - 25.0
+            self.since[town] = since
+            if ser is not None and len(ser):
+                ys = np.r_[since, ser.year.values[ser.year.values > since]].astype(float)
+                ps = np.r_[0.0, ser.population.values[ser.year.values > since]].astype(float)
+                self.curve[town] = (ys, np.maximum.accumulate(ps))      # a town that shrinks builds nothing new
+        self.groups: dict = {}
+
+    def bracket(self, town, inside, covered):
+        """(k1, y0, y1) of a spot from its row of the inside / covered tables; None if on no snapshot."""
+        lst = self.snaps[town]
+        hit = [k for k in range(len(lst)) if inside[k] and not lst[k][2]]
+        if not hit:
+            return None
+        k1 = hit[0]
+        prev = [lst[k][0] for k in range(k1) if covered[k]]
+        return k1, (prev[-1] if prev else min(self.since[town], lst[k1][0] - 1.0)), lst[k1][0]
+
+    def before(self, town, y0):
+        """The town already built at y0: every earlier snapshot, else the middle of its first one."""
+        lst = self.snaps[town]
+        g = [p for y, p, _ in lst if y <= y0 + 0.01 and not p.is_empty]
+        if g:
+            return shapely.union_all(g)
+        p = next(p for _, p, _ in lst if not p.is_empty)
+        return max(shapely.get_parts(p), key=lambda q: q.area).representative_point().buffer(150)
+
+    def year(self, town, y0, y1, u):
+        """Year at share u of the bracket's growth (census curve; 15 % of it evenly, so no year is empty)."""
+        t = np.linspace(y0, y1, 400)
+        f = (t - y0) / (y1 - y0)
+        if town in self.curve:
+            ys, ps = self.curve[town]
+            pt = np.interp(t, ys, ps)
+            if pt[-1] - pt[0] > 0:
+                f = 0.85 * (pt - pt[0]) / (pt[-1] - pt[0]) + 0.15 * f
+        return float(np.interp(u, f, t))
+
+    @staticmethod
+    def tau(geom, x, y):
+        bx, by = x // 120, y // 120
+        d = shapely.distance(shapely.points(bx * 120 + 60, by * 120 + 60), geom)
+        return d + 90.0 * (np.array([h01(f"b{int(i)}_{int(j)}", "grow") for i, j in zip(bx, by)]) - 0.5)
+
+    def dev_year(self, x, y, key):
+        """First-building year of any spot (for traced buildings that stand on a town's first map), or None."""
+        for town, lst in self.snaps.items():
+            b = self.bounds[town]
+            if not (b[0] <= x <= b[2] and b[1] <= y <= b[3]):
+                continue
+            inside = [p.contains(shapely.Point(x, y)) for _, p, _ in lst]
+            if not any(inside):
+                continue
+            covered = [(self.cov[(town, yk)].contains(shapely.Point(x, y)) if (town, yk) in self.cov else True) for yk, _, _ in lst]
+            br = self.bracket(town, inside, covered)
+            if br is None:
+                continue
+            _, y0, y1 = br
+            g = self.groups.get((town, y1))
+            if g is None:
+                return y0 + (y1 - y0) * (0.25 + 0.65 * h01(key, "grow"))
+            t = float(self.tau(g[1], np.array([x]), np.array([y]))[0])
+            u = (np.searchsorted(g[2], t) + 0.5) / (len(g[2]) + 1)
+            yr = self.year(town, min(g[0], y1 - 1.0), y1, 0.03 + 0.94 * u) + 1.5 * (h01(key, "lot") - 0.5)
+            return float(np.clip(yr, y0 + 0.3, y1 - 0.3))
+        return None
+
+
+def extent_fill(today, pred, areas, lots=None, growth=None):
     """Built-up extent snapshots (data/manual/region_extents/<town>_<year>.geojson: where a
-    town was built up at a map's date, digitised from USGS topo editions / Sanborn key maps;
-    README there). Inside a snapshot, a parcel whose building today is younger than the
-    snapshot had an older building: an era-typical predecessor (same massing rules as
-    pre-1906 SF) stands from when its block was built — between the previous snapshot that
-    didn't contain it and the first that does, one date per ~120 m block so whole blocks go
-    up together — until today's building replaced it (or a clearance). Vacant parcels inside
-    a snapshot keep their predecessor until 10 years after the last snapshot showing them
-    built. Parcels already carrying a predecessor (generated, documented, corridor) are left
-    alone; Sanborn tracings replace these inside their coverage. Procedural."""
-    import glob
-    from pathlib import Path
-    import re
-    # only the dated snapshots <town>_<year>.geojson (not coverage.geojson etc.)
-    files = sorted(f for f in glob.glob(str(INTERIM.parent / "manual" / "region_extents" / "*.geojson"))
-                   if re.fullmatch(r"[a-z_]+_\d{4}", Path(f).stem))
+    town was built up at a map's date, digitised from USGS topo editions / Sanborn key maps /
+    Coast Survey sheets; README there). Inside a snapshot, a parcel whose building today is
+    younger than the snapshot had an older building: an era-typical predecessor (same massing
+    rules as pre-1906 SF) stands from when its block was built - between the last earlier map
+    that shows it unbuilt and the first that shows it built, dated by the town's growth
+    (TownGrowth: census curve, nearest the older town first, whole blocks together) - until
+    today's building replaced it (or a clearance). Vacant parcels inside a snapshot keep their
+    predecessor until 10 years after the last snapshot showing them built. Parcels already
+    carrying a predecessor (generated, documented, a house of the 1856 survey) are left alone;
+    Sanborn tracings replace these inside their coverage. Procedural."""
+    growth = TownGrowth() if growth is None else growth
+    snaps = growth.snaps
     empty = gpd.GeoDataFrame(geometry=[], crs=UTM)
-    if not files:
-        return empty
-    snaps: dict = {}
-    for f in files:
-        g = gpd.read_file(f)
-        if not len(g) or "year" not in g:
-            continue
-        town = str(g["town"].iloc[0]) if "town" in g else Path(f).stem.rsplit("_", 1)[0]
-        y = float(pd.to_numeric(g["year"], errors="coerce").iloc[0])
-        if not np.isfinite(y):
-            continue
-        poly = shapely.union_all(g.to_crs(UTM).geometry.values)
-        snaps.setdefault(town, []).append((y, poly))
     if not snaps:
         return empty
-    # what each snapshot's map sheets cover (a lot outside it says nothing about that year)
-    cov: dict = {}
-    cp = INTERIM.parent / "manual" / "region_extents" / "coverage.geojson"
-    if cp.exists():
-        cg = gpd.read_file(cp).to_crs(UTM)
-        for t_, y_, gm in zip(cg["town"].astype(str), pd.to_numeric(cg["year"], errors="coerce"), cg.geometry):
-            cov[(t_, float(y_))] = gm
+    cov = growth.cov
     lots = load_lots() if lots is None else lots
     tu = today.to_crs(UTM)
     tp = gpd.GeoDataFrame({"start": tu.start_year.values, "h": tu.height.values, "use": tu.use.values},
@@ -174,11 +280,10 @@ def extent_fill(today, pred, areas, lots=None):
     rows = []
     n_lots = 0
     for town, lst in snaps.items():
-        lst.sort(key=lambda t: t[0])
-        years = [y for y, _ in lst]
+        years = [y for y, _, _ in lst]
         inside = np.zeros((len(lst), len(lots)), bool)
         covered = np.ones((len(lst), len(lots)), bool)
-        for k, (yk, poly) in enumerate(lst):
+        for k, (yk, poly, _exact) in enumerate(lst):
             shapely.prepare(poly)
             cand = sidx.query(poly, predicate="intersects")
             inside[k, cand] = shapely.contains_xy(poly, lxy[cand, 0], lxy[cand, 1])
@@ -188,13 +293,32 @@ def extent_fill(today, pred, areas, lots=None):
                 covered[k] = False
                 cc = sidx.query(cgm, predicate="intersects")
                 covered[k, cc] = shapely.contains_xy(cgm, lxy[cc, 0], lxy[cc, 1])
-        has = inside.any(axis=0)
-        for i in np.nonzero(has)[0]:
-            k1 = int(np.argmax(inside[:, i]))
-            y1 = years[k1]
-            # the last earlier map that covered this lot and showed it unbuilt
-            prev = [years[k] for k in range(k1) if covered[k, i]]
-            y0 = prev[-1] if prev else y1 - 25.0
+        # every lot of the town on a snapshot: its bracket, then its place in the bracket's growth front
+        br = {}
+        for i in np.nonzero(inside.any(axis=0))[0]:
+            b = growth.bracket(town, inside[:, i], covered[:, i])
+            if b is not None:
+                br[int(i)] = b
+        # lots first shown built on the same map form one growth front, measured from the town of the
+        # last map before it that most of them were on (sheets differ in what they cover)
+        share, front0 = {}, {}
+        by_group: dict = {}
+        for i, (_k1, y0, y1) in br.items():
+            by_group.setdefault(y1, []).append(i)
+        for y1, ii in by_group.items():
+            ii = np.array(ii)
+            y0s = np.array([br[int(i)][1] for i in ii])
+            vals, cnt = np.unique(y0s, return_counts=True)
+            Y0 = float(vals[np.argmax(cnt)])
+            geom = growth.before(town, Y0)
+            tau = growth.tau(geom, lxy[ii, 0], lxy[ii, 1])
+            order = np.argsort(tau, kind="stable")
+            u = np.empty(len(ii))
+            u[order] = (np.arange(len(ii)) + 0.5) / len(ii)
+            share.update(zip(ii.tolist(), u.tolist()))
+            front0.update((int(i), Y0) for i in ii)
+            growth.groups[(town, y1)] = (Y0, geom, np.sort(tau))
+        for i, (k1, y0, y1) in br.items():
             m = lots.m.values[i]
             # today's building already there (or put up within ~15 years: infill of a block
             # that was mostly built, not a replacement): it is the lot's first building
@@ -204,9 +328,8 @@ def extent_fill(today, pred, areas, lots=None):
             if psidx is not None and len(psidx.query(lot.buffer(-1.0), predicate="intersects")):
                 continue          # already has a predecessor (generated / documented / corridor)
             key = f"x{int(lxy[i, 0])}_{int(lxy[i, 1])}"
-            blk = f"b{int(lxy[i, 0] // 120)}_{int(lxy[i, 1] // 120)}"
-            start = y0 + (y1 - y0) * (0.25 + 0.65 * h01(blk, "grow")) + 1.5 * h01(key, "lot")
-            start = min(start, y1 - 0.3)
+            start = growth.year(town, min(front0[i], y1 - 1.0), y1, 0.03 + 0.94 * share[i]) + 1.5 * (h01(key, "lot") - 0.5)
+            start = float(np.clip(start, y0 + 0.3, y1 - 0.3))
             if np.isfinite(m):
                 end = m - 0.3
             else:
@@ -243,6 +366,53 @@ def extent_fill(today, pred, areas, lots=None):
     log(f"region predecessors: extents ({', '.join(f'{t} {len(v)}' for t, v in snaps.items())} snapshots): "
         f"{len(out)} buildings on {n_lots} parcels built up before today's building")
     return out
+
+
+def tsheet_buildings(today, growth):
+    """Houses read from a survey that draws every building (data/manual/tsheets/<town>_<year>.geojson:
+    the U.S. Coast Survey plane-table sheet of Oakland, 1856; tools/tsheet_houses.py). A house stands from
+    some year between the town's beginning and the survey (it is on the sheet: estimated), until the first
+    building of today on its ground or a clearance, else a frame-house lifetime (ESTIMATED: gone 10-32 years
+    after the survey inside the close-built town of the next snapshots, 16-46 years outside). Real outlines
+    (about 10 m), one or two storeys; a house that is a footprint of today is left to the modern data."""
+    from pathlib import Path
+    rows = []
+    tu = today
+    tidx = tu.sindex
+    ts = tu.start_year.values
+    for f in sorted((INTERIM.parent / "manual" / "tsheets").glob("*_[12][0-9][0-9][0-9].geojson")):
+        town, yr = Path(f).stem.rsplit("_", 1)
+        yr = float(yr)
+        g = gpd.read_file(f).to_crs(UTM)
+        since = growth.since.get(town, yr - 6.0)
+        later = [p for y, p, ex in growth.snaps.get(town, []) if y > yr and not ex][:1]
+        n_same = 0
+        for hid, geom in zip(g["id"].astype(str), g.geometry.values):
+            hk = h01(hid, "t")
+            start = max(since + 0.5, yr - 5.0) + (yr - 0.2 - max(since + 0.5, yr - 5.0)) * hk
+            dense = bool(later) and later[0].contains(geom.representative_point())
+            end = yr + (10.0 + 22.0 * h01(hid, "e") if dense else 16.0 + 30.0 * h01(hid, "e"))
+            same = False
+            for j in tidx.query(geom, predicate="intersects"):
+                inter = geom.intersection(tu.geometry.values[j]).area
+                if inter > 0.5 * geom.area and ts[j] <= yr + 1:
+                    same = True
+                elif inter > 0.25 * geom.area and ts[j] > yr:
+                    end = min(end, ts[j] - 0.3)
+            if same:
+                n_same += 1
+                continue
+            if end <= start + 1:
+                continue
+            big = geom.area > 260
+            st = 2 if (big or h01(hid, "s") < 0.35) else 1
+            rows.append({"geometry": geom, "start_year": start, "end_year": end, "height": st * 3.4 + 1.0, "stories": st,
+                         "kind": "building", "source": "sanborn_tsheet", "mapblklot": f"ts_{hid}",
+                         "use_sanborn": "store" if big else "dwelling", "material": "frame",
+                         "year_confidence": "estimated", "year_reason": f"tsheet:{town}_{int(yr)}"})
+        log(f"region predecessors: {len(g)} buildings on the {int(yr)} survey of {town}: {n_same} stand today, "
+            f"{len(rows)} drawn")
+    return gpd.GeoDataFrame(rows, geometry="geometry", crs=UTM) if rows else gpd.GeoDataFrame(geometry=[], crs=UTM)
 
 
 _DEBUG: dict = {}
@@ -702,7 +872,11 @@ def region_predecessors(today):
     from sf_buildings import redevelopment_areas
     areas = redevelopment_areas()
     pred = generated(today, areas)
-    ex = extent_fill(today, pred, areas)
+    growth = TownGrowth()
+    tsb = tsheet_buildings(today.to_crs(UTM).reset_index(drop=True), growth)
+    if len(tsb):
+        pred = gpd.GeoDataFrame(pd.concat([pred, tsb], ignore_index=True), geometry="geometry", crs=UTM)
+    ex = extent_fill(today, pred, areas, growth=growth)
     if len(ex):
         pred = gpd.GeoDataFrame(pd.concat([pred, ex], ignore_index=True), geometry="geometry", crs=UTM)
     # documented demolished buildings (data/tables/notable_demolished_region.csv): on their
@@ -757,7 +931,7 @@ def region_predecessors(today):
         quake["geometry"] = quake.geometry.buffer(40.0)
     else:
         quake = gpd.GeoDataFrame(geometry=[], crs=UTM)
-    pred = apply_sanborn(pred, tu, quake, areas, include=lambda area: area.startswith(REGION_SANBORN))
+    pred = apply_sanborn(pred, tu, quake, areas, include=lambda area: area.startswith(REGION_SANBORN), dev_year=growth.dev_year)
     # buildings of vanished large sites (data/manual/vanished_sites/buildings.geojson:
     # traced from aerials / topo maps — racetrack grandstands, office campuses, factories)
     vb = INTERIM.parent / "manual" / "vanished_sites" / "buildings.geojson"

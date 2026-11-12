@@ -515,7 +515,7 @@ SANBORN_USE = {"dwelling": 1, "flats": 2, "store": 3, "office": 4, "warehouse": 
 SANBORN_SKIP: set = set()  # wharf decks are kept as low timber platforms
 
 
-def apply_sanborn(pred, today, fire, areas, include=None):
+def apply_sanborn(pred, today, fire, areas, include=None, dev_year=None):
     """Traced Sanborn footprints (data/manual/sanborn/<area>_<map year>.geojson) replace
     the generated fabric in the blocks the sheets cover. The same building on
     consecutive maps (IoU >= 0.5) is one building; it starts at the block's development
@@ -619,10 +619,21 @@ def apply_sanborn(pred, today, fire, areas, include=None):
                     yp = years[kf - 1]
                     start = yp + (first - yp) * (0.2 + 0.7 * hk)
                 else:
-                    near = pred_sidx.query(g.buffer(25), predicate="intersects")
-                    # (not the Ohlone village houses, which stand from 1700)
-                    st = [pred.start_year.values[j] for j in near if 1770 <= pred.start_year.values[j] < first]
-                    start = float(np.median(st)) + 2 * (hk - 0.5) if st else first - 6 - 6 * hk
+                    # dev_year (the counties: region_predecessors.TownGrowth): the year the spot was first
+                    # built on, from the town's built-up snapshots and census. A building on the first map
+                    # of an old block is that first building or a later one in its place: a frame house is
+                    # mostly the first (skewed early), a masonry or large building a replacement (anywhere
+                    # up to 5 years before the map). ESTIMATED.
+                    dv = dev_year(c.x, c.y, key) if dev_year is not None else None
+                    if dv is not None:
+                        late = max(first - 5.0, dv)
+                        heavy = str(M.material.values[i] or "") in ("brick", "stone", "concrete") or g.area > 300
+                        start = dv + (late - dv) * ((0.35 + 0.6 * hk) if heavy else hk ** 2)
+                    else:
+                        near = pred_sidx.query(g.buffer(25), predicate="intersects")
+                        # (not the Ohlone village houses, which stand from 1700)
+                        st = [pred.start_year.values[j] for j in near if 1770 <= pred.start_year.values[j] < first]
+                        start = float(np.median(st)) + 2 * (hk - 0.5) if st else first - 6 - 6 * hk
                     start = min(start, first - 0.5)
                 if k + 1 < len(years) and c.within(cov_by_year[years[k + 1]]):
                     ny = years[k + 1]  # gone by the next map

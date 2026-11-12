@@ -57,6 +57,50 @@ CFG = {
              (["Brown Street"], ["Tupper Street"], 1555, 2080)],
         note="after the Sanborn survey of December 1904, sixteen months before the earthquake of 18 April 1906 "
              "destroyed the business district: buildings of this snapshot inside the destroyed area ended in 1906"),
+    "oakland_1889": dict(
+        town="oakland", year=1889, confirm=1894, grp="g4364om",
+        item="https://www.loc.gov/item/sanborn00727_001/",
+        # the key map fills two facing pages; the right page repeats the last 97 px (half size) of the left one
+        iiif=["service:gmd:gmd436m:g4364m:g4364om:g4364om_g007271889:00727_1889-0000L",
+              "service:gmd:gmd436m:g4364m:g4364om:g4364om_g007271889:00727_1889-0000R"], overlap=97, tint="lab", paper_lab=(75.5, -2.0, 17.0), coverage="extent",
+        title="Sanborn Insurance Maps of Oakland, California, Volume One, 1889 (copyright deposit 24 Oct 1889; 73 images), "
+              "key map on two pages",
+        box=(0, 0, 5516, 4075),
+        # water stains over the uncoloured street grid north of 18th St (left page, around the patch of sheet 25J), the
+        # title, the 'Corrected to' slip, the legend
+        holes=[(0, 0, 2800, 255), (725, 255, 2800, 1560), (0, 690, 725, 1560), (2800, 0, 3340, 725), (3340, 0, 3620, 1100),
+               (3620, 0, 5516, 1440), (4800, 2900, 5516, 3900), (5380, 0, 5516, 4075)],
+        cps=[(["Market Street"], ["14th Street", "West 14th Street"], 2303, 2270),
+             (["West Street"], ["14th Street", "West 14th Street"], 2435, 2270),
+             (["Brush Street"], ["14th Street", "West 14th Street"], 2545, 2270),
+             (["Castro Street"], ["14th Street", "West 14th Street"], 2660, 2270),
+             (["Market Street"], ["7th Street", "West 7th Street"], 2412, 2850),
+             (["Brush Street"], ["7th Street"], 2540, 2843),
+             (["Castro Street"], ["7th Street"], 2665, 2843),
+             (["Jefferson Street"], ["14th Street"], 2890, 2270),
+             (["Jefferson Street"], ["7th Street"], 2890, 2843),
+             (["Broadway"], ["14th Street"], 3238, 2275),
+             (["Broadway"], ["7th Street"], 3240, 2843),
+             (["Broadway"], ["19th Street"], 3238, 1855),
+             (["Broadway"], ["Embarcadero West", "1st Street"], 3240, 3352),
+             (["Webster Street"], ["14th Street"], 3475, 2275),
+             (["Webster Street"], ["7th Street"], 3471, 2843),
+             (["Harrison Street"], ["14th Street"], 3588, 2275),
+             (["Harrison Street"], ["19th Street"], 3588, 1855),
+             (["Jackson Street"], ["14th Street"], 3815, 2275),
+             (["Madison Street"], ["14th Street"], 3930, 2275),
+             (["Telegraph Avenue"], ["West Grand Avenue", "Grand Avenue"], 3062, 1500),          # 22nd St on the map
+             (["Telegraph Avenue"], ["24th Street"], 2970, 1220),
+             (["Wood Street"], ["7th Street", "West 7th Street"], 688, 3183),
+             (["Pine Street"], ["7th Street", "West 7th Street"], 562, 3205),
+             (["Willow Street"], ["7th Street", "West 7th Street"], 815, 3165),
+             (["Chester Street"], ["7th Street", "West 7th Street"], 1260, 3085),
+             (["Center Street"], ["7th Street", "West 7th Street"], 1348, 3066),
+             (["Linden Street"], ["12th Street", "West 12th Street"], 2028, 2455)],
+        note="Sanborn survey of 1889, Volume One (Oakland west of Lake Merritt; Volume Two, East Oakland / Brooklyn, is not in "
+             "the Library of Congress scans): the coloured sheets cover the close-built town from the estuary to about 19th-24th "
+             "Street and the railroad quarter at Oakland Point; the uncoloured house blocks of West Oakland between them were "
+             "not surveyed, so outside the colour patches this snapshot says nothing"),
     "petaluma_1910": dict(
         town="petaluma", year=1910, confirm=1912, grp="g4364pm",
         item="https://www.loc.gov/item/sanborn00756_005/", res="g007561910", img="00756_1910-0001",
@@ -259,9 +303,23 @@ def run(name):
     raw = E.RAW / "sanborn_key"
     raw.mkdir(parents=True, exist_ok=True)
     jp = raw / f"{name}_index_50.jpg"
-    url = (f"https://tile.loc.gov/image-services/iiif/{c['iiif']}/full/pct:50/0/default.jpg" if "iiif" in c
-           else IIIF.format(grp=c.get("grp", "g4364sm"), res=c["res"], img=c["img"]))
-    if not jp.exists() or jp.stat().st_size < 10000:
+    url = (f"https://tile.loc.gov/image-services/iiif/{c['iiif']}/full/pct:50/0/default.jpg" if isinstance(c.get("iiif"), str)
+           else "" if "iiif" in c else IIIF.format(grp=c.get("grp", "g4364sm"), res=c["res"], img=c["img"]))
+    if isinstance(c.get("iiif"), list):                      # a key map on facing pages: stitch them side by side
+        urls = [f"https://tile.loc.gov/image-services/iiif/{p}/full/pct:50/0/default.jpg" for p in c["iiif"]]
+        url = " ".join(urls)
+        if not jp.exists() or jp.stat().st_size < 10000:
+            pages = []
+            for k, u in enumerate(urls):
+                pj = raw / f"{name}_page{k}_50.jpg"
+                subprocess.run(["curl", "-sS", "-L", "--http1.1", "--retry", "3", "-m", "300", "-A", "Mozilla/5.0 (research script)",
+                                "-o", str(pj), u], check=True)
+                pg = cv2.imread(str(pj))
+                pages.append(pg if k == 0 else pg[:, c.get("overlap", 0):])
+            h = max(p.shape[0] for p in pages)
+            pages = [cv2.copyMakeBorder(p, 0, h - p.shape[0], 0, 0, cv2.BORDER_CONSTANT, value=(255, 255, 255)) for p in pages]
+            cv2.imwrite(str(jp), np.hstack(pages), [cv2.IMWRITE_JPEG_QUALITY, 92])
+    elif not jp.exists() or jp.stat().st_size < 10000:
         subprocess.run(["curl", "-sS", "-L", "--http1.1", "--retry", "3", "-m", "300", "-A", "Mozilla/5.0 (research script)",
                         "-o", str(jp), url], check=True)
     im = cv2.imread(str(jp))[:, :, ::-1]
@@ -294,6 +352,13 @@ def run(name):
     med = cv2.medianBlur(np.ascontiguousarray(im), 9).astype(np.int16)
     paper = np.median(med[::9, ::9].reshape(-1, 3), axis=0)              # the sheet is mostly paper (white to cream)
     col = (np.abs(med - paper[None, None, :]).max(2) >= 22).astype(np.uint8)
+    if c.get("tint") == "lab":
+        # tan, unevenly toned paper (Oakland 1889): a wash is a shift in hue or a clearly darker tone, read in CIELAB
+        lab = cv2.cvtColor(cv2.medianBlur(np.ascontiguousarray(im[:, :, ::-1]), 9), cv2.COLOR_BGR2LAB).astype(np.float32)
+        L, a, b = lab[..., 0] * 100 / 255, lab[..., 1] - 128, lab[..., 2] - 128
+        pL, pa, pb = c.get("paper_lab") or (float(np.median(v[::9, ::9])) for v in (L, a, b))
+        col = ((np.abs(a - pa) >= 6) | (b - pb >= 6.5) | (pb - b >= 8) | (pL - L >= 7.5)).astype(np.uint8)
+        print(f"paper L*a*b* {pL:.1f} {pa:.1f} {pb:.1f}")
     x0, y0, x1, y1 = c["box"]
     keep = np.zeros(col.shape, np.uint8)
     keep[y0:y1, x0:x1] = 1
@@ -341,6 +406,8 @@ def run(name):
     # 4. coverage = the key map's frame on today's land
     fr_poly = shapely.union_all([shapely.geometry.shape(g) for g, v in features.shapes(frame, mask=frame > 0, transform=grid.transform)])
     cov = fr_poly.buffer(0).intersection(clip)
+    if c.get("coverage") == "extent":        # a volume that left built-up house blocks unsurveyed: no negative evidence
+        cov = u.buffer(8).intersection(clip)
     props = {"town": town, "year": int(year), "kind": "built_up",
              "source": f"loc_sanborn:{c['item'].rstrip('/').split('/')[-1]}:index+usgs_htmc:{'+'.join(E.TOWNS[town]['snaps'][c['confirm']])}",
              "source_url": f"{c['item']} {url}", "confidence": c.get("confidence", "medium" if rms <= 12 else "low"),      # low: key map registered worse than 12 m
@@ -362,7 +429,7 @@ def run(name):
     fcp = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": pp,
                                                       "geometry": mapping(shapely.set_precision(E.to_ll(up), 1e-7))}]}
     (E.OUT / f"{town}_{year}_partial.geojson").write_text(json.dumps(fcp, separators=(",", ":")))
-    cv = {"town": town, "year": int(year), "sheets": [f"sanborn:{c.get('img') or c['iiif'].split(':')[-1]}"],
+    cv = {"town": town, "year": int(year), "sheets": [f"sanborn:{c.get('img') or (c['iiif'] if isinstance(c['iiif'], str) else c['iiif'][0]).split(':')[-1]}"],
           "area_km2": round(cov.area / 1e6, 3)}
     (E.INT / f"coverage_{town}_{year}.json").write_text(json.dumps({"props": cv, "geom": mapping(E.to_ll(cov))}))
     tot.to_parquet(E.INT / f"class_{town}_{year}.parquet")
