@@ -74,6 +74,13 @@ BAY_BRIDGE_JOINTS = [
     (-122.361317, 37.813815, 59.5),   # island east, westbound
 ]
 ELEV = {"ground": 0, "embankment": 1, "viaduct": 2, "bridge": 3, "tunnel": 4}
+# level spans - a timber trestle, a pile wharf, a causeway on piles whose line is the span
+# itself: the track runs straight from the ground at one end to the ground at the other and
+# at least 3 m over what lies between (a ravine, tide flats, the bay), instead of following
+# the ground down and up again. "trestle" is drawn with a deck and bents (written as a
+# viaduct); "span" is a trestle a landmark model draws (written as a bridge: path only).
+EL_SPAN, EL_SPAN_BARE = 5, 6
+ELEV.update({"trestle": EL_SPAN, "span": EL_SPAN_BARE})
 WIDTH = {K_STREET: 9, K_MAJOR: 14, K_FREEWAY: 24, K_HIGHWAY: 16, K_CABLE: 3, K_STREETCAR: 3, K_RAIL: 4,
          K_KEY: 4, K_BART: 5, K_FERRY: 6, K_LIGHTRAIL: 3}
 
@@ -230,8 +237,11 @@ def historic_rail():
     KIND = {"rail": K_RAIL, "narrow_gauge": K_RAIL, "interurban": K_RAIL, "streetcar": K_STREETCAR, "pier": K_RAIL}
     # rail bridges, piers and trestles sit a few metres over the creek / water, not at
     # road-bridge height
-    EL = {"ground": 0, "bridge": ELEV["embankment"], "tunnel": ELEV["tunnel"], "pier": ELEV["embankment"],
-          "trestle": ELEV["embankment"]}
+    # (a "bridge" row is a whole section of line with bridges along it, not one span; "pier" and
+    # "trestle" rows are the structures themselves - the Long Wharf, the Key Route pier, the
+    # trestles across the Alameda and San Leandro Bay marshes: level spans on bents)
+    EL = {"ground": 0, "bridge": ELEV["embankment"], "tunnel": ELEV["tunnel"], "pier": EL_SPAN,
+          "trestle": EL_SPAN}
     items = []
     for g, mode, y0, y1, el in zip(h.geometry, h["mode"], h["year_start"], h["year_end"], h["elevated"]):
         y0 = pd.to_numeric(y0, errors="coerce")
@@ -312,13 +322,21 @@ def write_paths(path, items, ground, z_offset_fn, step=25.0):
     pos = []
     kinds, widths, years, elev = [], [], [], []
     for line, kind, width, y0, y1, el in items:
-        pts = densify(line, step if kind not in (K_FERRY,) else 400)
+        span = el in (EL_SPAN, EL_SPAN_BARE)
+        pts = densify(line, 12.0 if span else (step if kind not in (K_FERRY,) else 400))
         if not pts:
             continue
         xy = gpd.GeoSeries(pts, crs=UTM).to_crs(4326)
         lon, lat = xy.x.values, xy.y.values
         if kind == K_FERRY:
             z = np.full(len(lon), 1.2)
+        elif span:
+            gz = np.asarray(ground(lon, lat), float)
+            d = np.concatenate([[0.0], np.cumsum(np.hypot(np.diff([p.x for p in pts]), np.diff([p.y for p in pts])))])
+            chord = gz[0] + (gz[-1] - gz[0]) * d / max(d[-1], 1.0)
+            ramp = np.clip(np.minimum(d, d[-1] - d) / 30.0, 0.0, 1.0)   # the clearance builds up over 30 m
+            z = np.maximum(chord, gz + 3.0 * ramp) + 0.6
+            el = ELEV["viaduct"] if el == EL_SPAN else ELEV["bridge"]
         else:
             z = ground(lon, lat) + z_offset_fn(kind, el)
         for a, b, c in zip(lon - ORIGIN[0], lat - ORIGIN[1], z):

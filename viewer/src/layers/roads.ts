@@ -189,21 +189,28 @@ function withColumns(set: PathSet) {
   const scl: number[] = [];
   const ang: number[] = [];
   const cyears: number[] = [];
+  const ccol: number[] = [];
   for (let p = 0; p < n; p++) {
     if (set.elevated[p] !== 2) continue;
-    const step = set.width[p] > 8 ? 3 : 4;
+    // a railway trestle or bridge (timber bents close together, down to a low deck) or a
+    // road viaduct (a concrete bent every ~60 m)
+    const rail = isRail(set.kind[p]);
+    const step = rail ? 1 : set.width[p] > 8 ? 3 : 4;
     for (let v = starts[p] + 1; v < starts[p + 1] - 1; v += step) {
       const lon = pos[v * 3] + origin[0];
       const lat = pos[v * 3 + 1] + origin[1];
       const g = elevationAt(lon, lat);
       const h = pos[v * 3 + 2] - g;
-      if (h < 4.5) continue;
+      if (h < (rail ? 1.6 : 4.5)) continue;
       const dx = (pos[(v + 1) * 3] - pos[(v - 1) * 3]) * kx;
       const dy = (pos[(v + 1) * 3 + 1] - pos[(v - 1) * 3 + 1]) * DEG;
       cols.push(pos[v * 3], pos[v * 3 + 1], g - 0.5);
-      scl.push(1.8, Math.max(2.5, set.width[p] * 0.55), h - 1.2);
+      if (rail) scl.push(0.55, Math.max(2.6, set.width[p] * 0.8), h - 0.2);
+      else scl.push(1.8, Math.max(2.5, set.width[p] * 0.55), h - 1.2);
       ang.push(Math.atan2(dy, dx));
       cyears.push(set.years[p * 2], set.years[p * 2 + 1]);
+      if (rail) ccol.push(150, 122, 96, 255);
+      else ccol.push(255, 255, 255, 255);
     }
   }
   if (cols.length) {
@@ -215,12 +222,18 @@ function withColumns(set: PathSet) {
           getPosition: {value: new Float32Array(cols), size: 3},
           getScale: {value: new Float32Array(scl), size: 3},
           getAngle: {value: new Float32Array(ang), size: 1},
-          getYears: {value: new Float32Array(cyears), size: 2}
+          getYears: {value: new Float32Array(cyears), size: 2},
+          getColor: {value: new Uint8Array(ccol), size: 4, normalized: true}
         }
       }
     };
   }
   return set;
+}
+
+/** Railway kinds: their elevated stretches are timber trestles and plain girder bridges. */
+function isRail(kind: number) {
+  return kind === K.RAIL || kind === K.KEY || kind === K.STREETCAR || kind === K.CABLE || kind === K.LIGHTRAIL;
 }
 
 /** Concrete deck slabs (with parapets) under every elevated stretch of a set (chunk). */
@@ -231,9 +244,14 @@ function addDecks(set: PathSet) {
   const SIDE = [0.74, 0.73, 0.7];
   const UNDER = [0.55, 0.55, 0.54];
   const TOP = [0.5, 0.5, 0.5];
+  // a railway deck: ties and stringers, no parapet
+  const R_SIDE = [0.4, 0.32, 0.24];
+  const R_UNDER = [0.3, 0.24, 0.18];
+  const R_TOP = [0.47, 0.4, 0.33];
   for (let p = 0; p < n; p++) {
     if (set.elevated[p] !== 2) continue;
-    const w = set.width[p] / 2 + 0.6;
+    const rail = isRail(set.kind[p]);
+    const w = set.width[p] / 2 + (rail ? 0.2 : 0.6);
     const y0 = set.years[p * 2];
     const y1 = set.years[p * 2 + 1];
     const a = starts[p];
@@ -260,26 +278,30 @@ function addDecks(set: PathSet) {
         out.times.push(y0, y0, y1, base);
       }
     };
+    const hMin = rail ? 1.2 : 3;
+    const slab = rail ? 0.7 : 1.7;
+    const par = rail ? 0 : 1.0;
+    const cTop = rail ? R_TOP : TOP, cUnder = rail ? R_UNDER : UNDER, cSide = rail ? R_SIDE : SIDE;
     for (let k = 0; k < b - a - 1; k++) {
-      if (H[k] < 3 || H[k + 1] < 3) continue;
+      if (H[k] < hMin && H[k + 1] < hMin) continue;
       const i0 = (a + k) * 3;
       const i1 = (a + k + 1) * 3;
       const top0 = pos[i0 + 2] - 0.15;
       const top1 = pos[i1 + 2] - 0.15;
       const P = (i: number, side: number, kk: number, z: number) => [pos[i] + side * L[kk][0], pos[i + 1] + side * L[kk][1], z];
       const lt0 = P(i0, 1, k, top0), rt0 = P(i0, -1, k, top0), lt1 = P(i1, 1, k + 1, top1), rt1 = P(i1, -1, k + 1, top1);
-      const lb0 = P(i0, 1, k, top0 - 1.7), rb0 = P(i0, -1, k, top0 - 1.7), lb1 = P(i1, 1, k + 1, top1 - 1.7), rb1 = P(i1, -1, k + 1, top1 - 1.7);
-      const lp0 = P(i0, 1, k, top0 + 1.0), rp0 = P(i0, -1, k, top0 + 1.0), lp1 = P(i1, 1, k + 1, top1 + 1.0), rp1 = P(i1, -1, k + 1, top1 + 1.0);
+      const lb0 = P(i0, 1, k, top0 - slab), rb0 = P(i0, -1, k, top0 - slab), lb1 = P(i1, 1, k + 1, top1 - slab), rb1 = P(i1, -1, k + 1, top1 - slab);
+      const lp0 = P(i0, 1, k, top0 + par), rp0 = P(i0, -1, k, top0 + par), lp1 = P(i1, 1, k + 1, top1 + par), rp1 = P(i1, -1, k + 1, top1 + par);
       const base = Math.min(G[k], G[k + 1]);
-      tri([lt0, rt0, rt1], TOP, base);
-      tri([lt0, rt1, lt1], TOP, base);
-      tri([lb0, rb1, rb0], UNDER, base);
-      tri([lb0, lb1, rb1], UNDER, base);
+      tri([lt0, rt0, rt1], cTop, base);
+      tri([lt0, rt1, lt1], cTop, base);
+      tri([lb0, rb1, rb0], cUnder, base);
+      tri([lb0, lb1, rb1], cUnder, base);
       // outer faces: slab edge + parapet
-      tri([lb0, lb1, lp1], SIDE, base);
-      tri([lb0, lp1, lp0], SIDE, base);
-      tri([rb0, rp1, rb1], SIDE, base);
-      tri([rb0, rp0, rp1], SIDE, base);
+      tri([lb0, lb1, lp1], cSide, base);
+      tri([lb0, lp1, lp0], cSide, base);
+      tri([rb0, rp1, rb1], cSide, base);
+      tri([rb0, rp0, rp1], cSide, base);
     }
   }
   if (out.pos.length) {

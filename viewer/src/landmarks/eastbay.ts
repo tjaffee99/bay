@@ -1668,6 +1668,70 @@ const fordRichmond: Landmark = {
 
 // =================================================================== export
 
+// =========================================================== Indian Gulch trestle (Trestle Glen)
+// The streetcar trestle that gave Trestle Glen its name (1893 - about 1906). No measured
+// dimensions are published; what the sources give (Oakland LocalWiki "Indian Gulch Trestle",
+// citing A. E. Norman's A Steeple Among the Oaks, a 1963 AC Transit history and the Oakland
+// Tribune of September 1904; Wikipedia "Trestle Glen"): built 1893 for Borax Smith's East
+// Oakland street railway to carry picnickers from 4th Avenue (Park Boulevard) across Indian
+// Gulch to the park on the Sather land; it crossed where Grosvenor Place crosses the glen
+// today, "enroute from upper Park Blvd. to Longridge Rd."; about 40-50 ft high by the 1898
+// photographs and "well over 500 feet" long. The model spans the ravine rim to rim on that
+// line at one level: the ground of the USGS 3DEP elevation model along Grosvenor Place's
+// crossing (lon -122.2310) is 43 m at 37.80561 N and at 37.80860 N and 28 m at the creek,
+// which gives 332 m (1,090 ft) and 15 m (49 ft) - consistent with the photo estimate.
+// Timber bents every 15 ft with sway bracing are standard practice of the time (ESTIMATED).
+const TRESTLE_GLEN: V2 = [-122.231, 37.807105];
+const trestleGlen: Landmark = {
+  id: 'indian_gulch_trestle',
+  name: 'Indian Gulch trestle (Trestle Glen)',
+  kind: 'monument',
+  built: [1892.9, 1893.31],
+  end: 1906.0,
+  anchor: TRESTLE_GLEN,
+  build: b => {
+    const L = 332;
+    const DECK = 15.0; // above the creek at the anchor
+    const timber = '#6E5A45';
+    const dark = '#55452F';
+    const n = Math.round(L / 4.572);
+    // deck: stringers and ties, one track
+    b.color(dark).beam([0, -L / 2, DECK - 0.4], [0, L / 2, DECK - 0.4], 3.4, 0.7);
+    b.color('#8A7A66').beam([0, -L / 2, DECK - 0.05], [0, L / 2, DECK - 0.05], 2.4, 0.12);
+    let prev: number | null = null;
+    for (let i = 0; i <= n; i++) {
+      const y = -L / 2 + (L * i) / n;
+      const g = groundDz(TRESTLE_GLEN, 0, 0, y) - 0.8; // posts stand a little into the ground
+      const h = DECK - 0.6 - g;
+      if (h < 1.2) { prev = null; continue; }
+      const splay = 1.1 + h / 7; // battered outer posts
+      b.color(timber).beam([-1.1, y, DECK - 0.6], [-splay, y, g], 0.42);
+      b.beam([1.1, y, DECK - 0.6], [splay, y, g], 0.42);
+      b.color(dark).beam([-1.9, y, DECK - 0.85], [1.9, y, DECK - 0.85], 0.42);
+      // sway braces every ~4 m of height
+      for (let z = DECK - 4.2; z > g + 1.5; z -= 4.2) {
+        const w = 1.1 + (splay - 1.1) * ((DECK - 0.6 - z) / h);
+        b.color(timber).beam([-w, y, z], [w, y, z], 0.28);
+      }
+      // longitudinal girts tie tall bents together
+      if (prev !== null && h > 7 && i % 1 === 0) {
+        const yp = -L / 2 + (L * (i - 1)) / n;
+        const zg = DECK - 0.6 - Math.min(h, prev) * 0.5;
+        b.color(dark).beam([0, yp, zg], [0, y, zg], 0.3);
+      }
+      prev = h;
+    }
+  },
+  facts: {
+    Built: '1893 for F. M. "Borax" Smith\'s East Oakland street railway: streetcars came up 4th Avenue (Park Boulevard) and crossed Indian Gulch to a picnic park on the Sather land (opened April 23, 1893)',
+    Gone: 'the cars stopped crossing about 1898–1904 (the sources disagree); the trestle was dismantled in 1906 when the line was rerouted',
+    Name: 'the neighborhood built in the glen from 1917 kept the name Trestle Glen',
+    Size: 'no measured dimensions are published: about 40–50 ft high by the 1898 photographs, "well over 500 feet" long',
+    Model: 'LOW CONFIDENCE — a level timber trestle rim to rim where Grosvenor Place crosses the glen: 332 m (1,090 ft) long and 15 m (49 ft) above the creek, from the USGS elevation model; bents every 15 ft and their bracing ESTIMATED; timbers drawn about a third thicker than real so they read at map scale'
+  },
+  sources: ['https://localwiki.org/oakland/Indian_Gulch_Trestle', WIKI + 'Trestle_Glen,_Oakland,_California']
+};
+
 export const EASTBAY: Landmark[] = [
   satherTower,
   satherGate,
@@ -1700,5 +1764,6 @@ export const EASTBAY: Landmark[] = [
   claremontHotel,
   cathedralChristTheLight,
   cathedralBuilding,
-  fordRichmond
+  fordRichmond,
+  trestleGlen
 ];
